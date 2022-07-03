@@ -1,0 +1,12 @@
+import { CircularProgress } from "@mui/material";
+import React, { useEffect } from "react";
+import { useSWRConfig } from "swr";
+import { createOAuthWindow } from "./oauthWindow";
+
+export const AuthComponent: React.FC = () => {
+  const { mutate } = useSWRConfig();
+  useEffect(() => {
+    createOAuthWindow("/api/auth/discord", mutate);
+  }, []);
+  return <CircularProgress />;
+};
