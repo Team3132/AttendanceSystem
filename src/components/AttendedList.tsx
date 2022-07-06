@@ -9,6 +9,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
+import { DateTime } from "luxon";
 import { useAuthStatus, useEventAttendanceStatuses, useUser } from "../hooks";
 import { isAdmin } from "../utils/roles";
 
@@ -28,6 +29,7 @@ export const AttendedList: React.FC<Props> = ({ eventId }) => {
           <Tr>
             <Th>Name</Th>
             <Th>Status</Th>
+            <Th>Changed</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -37,6 +39,12 @@ export const AttendedList: React.FC<Props> = ({ eventId }) => {
                 <Username userId={attendance.userId} />
               </Td>
               <Td>{attendance.status.toString()}</Td>
+              <Td>
+                {DateTime.fromISO(attendance.updatedAt).toLocaleString({
+                  timeStyle: "short",
+                  dateStyle: "short",
+                })}
+              </Td>
             </Tr>
           ))}
         </Tbody>
@@ -44,6 +52,7 @@ export const AttendedList: React.FC<Props> = ({ eventId }) => {
           <Tr>
             <Th>Name</Th>
             <Th>Status</Th>
+            <Th>Changed</Th>
           </Tr>
         </Tfoot>
       </Table>
