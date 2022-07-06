@@ -1,11 +1,10 @@
 import useSWR from "swr";
-import { components } from "../generated/types";
+import { AuthStatusDto, User } from "../generated";
 
 export const useAuthStatus = () => {
-  const { data, error } =
-    useSWR<components["schemas"]["AuthStatusDto"]>(`/api/auth/status`);
+  const { data, error } = useSWR<AuthStatusDto>(`/api/auth/status`);
   return {
-    data,
+    ...data,
     isLoading: !error && !data,
     isError: error,
   };
@@ -13,11 +12,11 @@ export const useAuthStatus = () => {
 
 export const useMe = () => {
   const { data: authData, error: authError } =
-    useSWR<components["schemas"]["AuthStatusDto"]>(`/api/auth/status`);
+    useSWR<AuthStatusDto>(`/api/auth/status`);
 
-  const { data: userData, error: userError } = useSWR<
-    components["schemas"]["User"]
-  >(authData?.isAuthenticated ? `/api/user/me` : null);
+  const { data: userData, error: userError } = useSWR<User>(
+    authData?.isAuthenticated ? `/api/user/me` : null
+  );
   return {
     user: userData,
     isLoading: (!userError || !authError) && (!userData || !authData),
