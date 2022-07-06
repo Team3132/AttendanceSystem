@@ -22,7 +22,7 @@ export const RSVPButtonRow: React.FC<Props> = ({ eventId }) => {
               eventId,
               Rsvp["status"].YES
             );
-            mutate(response);
+            mutate(response, { revalidate: false });
             globalMutate(`/api/event/${eventId}/rsvps`);
           }
         }}
@@ -38,7 +38,7 @@ export const RSVPButtonRow: React.FC<Props> = ({ eventId }) => {
               eventId,
               Rsvp["status"].MAYBE
             );
-            mutate(response);
+            mutate(response, { revalidate: false });
             globalMutate(`/api/event/${eventId}/rsvps`);
           }
         }}
@@ -54,7 +54,7 @@ export const RSVPButtonRow: React.FC<Props> = ({ eventId }) => {
               eventId,
               Rsvp["status"].NO
             );
-            mutate(response);
+            mutate(response, { revalidate: false });
             globalMutate(`/api/event/${eventId}/rsvps`);
           }
         }}
