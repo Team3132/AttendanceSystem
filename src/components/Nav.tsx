@@ -1,4 +1,5 @@
 import {
+  Button,
   ButtonGroup,
   Container,
   Flex,
@@ -10,6 +11,7 @@ import {
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useSWRConfig } from "swr";
+import { UserAvatar } from "./UserAvatar";
 // import Logo from "../logo.svg";
 
 export const Nav: React.FC = () => {
@@ -32,6 +34,7 @@ export const Nav: React.FC = () => {
             className="umami--click--theme-button"
             icon={colorMode === "dark" ? <MdDarkMode /> : <MdLightMode />}
           />
+          <Button leftIcon={<UserAvatar size="sm" />}>My Profile</Button>
         </ButtonGroup>
       </Flex>
     </Container>

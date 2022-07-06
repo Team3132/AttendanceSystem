@@ -54,6 +54,18 @@ requestBody: UpdateUserDto,
     }
 
     /**
+     * Get the currently authenticated user's avatar id
+     * @returns string 
+     * @throws ApiError
+     */
+    public static userControllerUserMeAvatar(): CancelablePromise<string> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/user/me/avatar',
+        });
+    }
+
+    /**
      * @returns Attendance 
      * @throws ApiError
      */
@@ -172,6 +184,24 @@ id: string,
         return __request(OpenAPI, {
             method: 'GET',
             url: '/user/{id}/attendance',
+            path: {
+                'id': id,
+            },
+        });
+    }
+
+    /**
+     * Get a user's discord avatar id
+     * @param id 
+     * @returns string 
+     * @throws ApiError
+     */
+    public static userControllerUserAvatar(
+id: string,
+): CancelablePromise<string> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/user/{id}/avatar',
             path: {
                 'id': id,
             },
