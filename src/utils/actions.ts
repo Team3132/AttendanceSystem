@@ -57,3 +57,5 @@ export const editUser = async (
   const response = await axios.patch<User>(`/api/user/${id}`, data);
   return response.data;
 };
+
+export const logout = () => axios.get(`/api/auth/logout`);
