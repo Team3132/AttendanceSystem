@@ -9,14 +9,13 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
-import { useSWRConfig } from "swr";
+import { Link } from "react-router-dom";
+import { useAuthStatus } from "../hooks";
 import { UserAvatar } from "./UserAvatar";
 // import Logo from "../logo.svg";
 
 export const Nav: React.FC = () => {
-  const navigate = useNavigate();
-  const { mutate } = useSWRConfig();
+  const { isAuthenticated } = useAuthStatus();
   const { colorMode, toggleColorMode } = useColorMode();
   return (
     <Container maxW="container.lg">
@@ -34,7 +33,11 @@ export const Nav: React.FC = () => {
             className="umami--click--theme-button"
             icon={colorMode === "dark" ? <MdDarkMode /> : <MdLightMode />}
           />
-          <Button leftIcon={<UserAvatar size="sm" />}>My Profile</Button>
+          {isAuthenticated ? (
+            <Button leftIcon={<UserAvatar size="sm" />} as={Link} to="/profile">
+              My Profile
+            </Button>
+          ) : null}
         </ButtonGroup>
       </Flex>
     </Container>

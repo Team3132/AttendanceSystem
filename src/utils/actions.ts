@@ -5,6 +5,8 @@ import {
   Event,
   Rsvp,
   UpdateEventDto,
+  UpdateUserDto,
+  User,
 } from "../generated";
 
 export const updateEvent = async (id: Event["id"], data: UpdateEventDto) => {
@@ -45,5 +47,13 @@ export const setEventAttendanceStatus = async (
   const response = await axios.post<Attendance>(`/api/event/${id}/rsvp`, {
     status,
   });
+  return response.data;
+};
+
+export const editUser = async (
+  id: User["id"] | "me" = "me",
+  data: UpdateUserDto
+) => {
+  const response = await axios.patch<User>(`/api/user/${id}`, data);
   return response.data;
 };

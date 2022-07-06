@@ -7,6 +7,7 @@ import { CreateEventDrawer, ViewDetailsModal } from "./components";
 import { EditDetailsModal } from "./components/EditDetailsDrawer";
 import { fetcher } from "./hooks";
 import { CalendarScreen, Layout } from "./screens";
+import { ProfileScreen } from "./screens/Profile";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>
   <ChakraProvider>
@@ -27,6 +28,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               <Route path="view/:eventId" element={<ViewDetailsModal />} />
               <Route path="create" element={<CreateEventDrawer />} />
             </Route>
+            <Route element={<ProfileScreen />} path="profile" />
+            <Route element={<ProfileScreen />} path="profile/:userId" />
           </Route>
         </Routes>
       </BrowserRouter>
