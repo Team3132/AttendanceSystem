@@ -24,6 +24,7 @@ export type { User } from './models/User';
 export { AppService } from './services/AppService';
 export { AttendanceService } from './services/AttendanceService';
 export { AuthService } from './services/AuthService';
+export { CalendarService } from './services/CalendarService';
 export { EventService } from './services/EventService';
 export { RsvpService } from './services/RsvpService';
 export { UserService } from './services/UserService';

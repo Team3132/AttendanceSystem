@@ -88,6 +88,19 @@ requestBody: UpdateUserDto,
     }
 
     /**
+     * Regenerates the calendar token of the signed in user.
+     * @returns User 
+     * @returns any 
+     * @throws ApiError
+     */
+    public static userControllerRegenerateToken(): CancelablePromise<User | any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/user/me/regenerateToken',
+        });
+    }
+
+    /**
      * @returns User 
      * @throws ApiError
      */
@@ -150,6 +163,25 @@ id: string,
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/user/{id}',
+            path: {
+                'id': id,
+            },
+        });
+    }
+
+    /**
+     * Regenerates the calendar token of the specified user.
+     * @param id 
+     * @returns User 
+     * @returns any 
+     * @throws ApiError
+     */
+    public static userControllerRegenerateUserToken(
+id: string,
+): CancelablePromise<User | any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/user/{id}/regenerateToken',
             path: {
                 'id': id,
             },

@@ -45,4 +45,15 @@ export class AuthService {
         });
     }
 
+    /**
+     * @returns any 
+     * @throws ApiError
+     */
+    public static authControllerLogout(): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/auth/logout',
+        });
+    }
+
 }

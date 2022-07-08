@@ -2,11 +2,13 @@ import {
   Button,
   Center,
   Container,
+  Flex,
   FormControl,
   FormLabel,
   Image,
   Input,
   Stack,
+  useClipboard,
 } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -46,6 +48,13 @@ export const ProfileScreen: React.FC = () => {
     mutate(user);
     globalMutate(`/api/user/${userId ?? "me"}`);
   };
+
+  const calendarUrl = `${window.location.origin}/api/calendar?secret=${
+    user?.calendarSecret ?? ""
+  }`;
+
+  const { hasCopied, onCopy } = useClipboard(calendarUrl);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Center>
@@ -77,6 +86,15 @@ export const ProfileScreen: React.FC = () => {
               placeholder="Last Name"
               {...register("lastName", { required: true })}
             />
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="calendar">Calendar Link</FormLabel>
+            <Flex mb={2}>
+              <Input value={calendarUrl} isReadOnly id="calendar" />
+              <Button onClick={onCopy} ml={2}>
+                {hasCopied ? "Copied" : "Copy"}
+              </Button>
+            </Flex>
           </FormControl>
           <Button type="submit" isLoading={isSubmitting} disabled={!isDirty}>
             Save

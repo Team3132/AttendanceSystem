@@ -19,6 +19,7 @@ import {
   Switch,
   Textarea,
 } from "@chakra-ui/react";
+import { pick } from "lodash";
 import { DateTime } from "luxon";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -48,7 +49,14 @@ export const EditDetailsModal: React.FC = () => {
   } = useForm<UpdateEventDto>();
   useEffect(() => {
     if (event) {
-      reset(event);
+      const pickedEvent = pick(event, [
+        "description",
+        "title",
+        "startDate",
+        "endDate",
+        "allDay",
+      ]);
+      reset(pickedEvent);
     }
   }, [event]);
 

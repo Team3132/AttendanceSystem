@@ -8,6 +8,7 @@ export type User = {
     lastName: string | null;
     createdAt: string;
     updatedAt: string;
-    discordToken: string;
     discordRefreshToken: string;
+    calendarSecret: string;
+    email: string;
 };
