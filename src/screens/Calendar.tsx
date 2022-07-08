@@ -30,7 +30,7 @@ export const CalendarScreen: React.FC = () => {
     start: Date;
     end: Date;
     resource: string;
-  }) => void = (event) => navigate(`/calendar/view/${event.id}`);
+  }) => void = (event) => navigate(`/calendar/${event.id}/view`);
 
   const selectSlotHandler = (slotInfo: SlotInfo) =>
     navigate(

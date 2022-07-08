@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { useSWRConfig } from "swr";
+import { ScancodeList } from "../components/ScanCodes";
 import { UpdateUserDto } from "../generated";
 import { userAvatar, useUser } from "../hooks";
 import { editUser } from "../utils";
@@ -44,7 +45,6 @@ export const ProfileScreen: React.FC = () => {
 
   const onSubmit = async (data: UpdateUserDto) => {
     const user = await editUser(userId, data);
-    // navigate(`/calendar/view/${event.id}`);
     mutate(user);
     globalMutate(`/api/user/${userId ?? "me"}`);
   };
@@ -56,7 +56,7 @@ export const ProfileScreen: React.FC = () => {
   const { hasCopied, onCopy } = useClipboard(calendarUrl);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <>
       <Center>
         <Image
           width={500}
@@ -69,38 +69,41 @@ export const ProfileScreen: React.FC = () => {
           alt="Profile Image"
         />
       </Center>
-      <Container>
-        <Stack>
-          <FormControl isInvalid={!!errors.firstName}>
-            <FormLabel htmlFor="firstName">First Name</FormLabel>
-            <Input
-              id="firstName"
-              placeholder="First Name"
-              {...register("firstName", { required: true })}
-            />
-          </FormControl>
-          <FormControl isInvalid={!!errors.lastName}>
-            <FormLabel htmlFor="lastName">Last Name</FormLabel>
-            <Input
-              id="lastName"
-              placeholder="Last Name"
-              {...register("lastName", { required: true })}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="calendar">Calendar Link</FormLabel>
-            <Flex mb={2}>
-              <Input value={calendarUrl} isReadOnly id="calendar" />
-              <Button onClick={onCopy} ml={2}>
-                {hasCopied ? "Copied" : "Copy"}
-              </Button>
-            </Flex>
-          </FormControl>
-          <Button type="submit" isLoading={isSubmitting} disabled={!isDirty}>
-            Save
-          </Button>
-        </Stack>
-      </Container>
-    </form>
+      <ScancodeList />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Container>
+          <Stack>
+            <FormControl isInvalid={!!errors.firstName}>
+              <FormLabel htmlFor="firstName">First Name</FormLabel>
+              <Input
+                id="firstName"
+                placeholder="First Name"
+                {...register("firstName", { required: true })}
+              />
+            </FormControl>
+            <FormControl isInvalid={!!errors.lastName}>
+              <FormLabel htmlFor="lastName">Last Name</FormLabel>
+              <Input
+                id="lastName"
+                placeholder="Last Name"
+                {...register("lastName", { required: true })}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="calendar">Calendar Link</FormLabel>
+              <Flex mb={2}>
+                <Input value={calendarUrl} isReadOnly id="calendar" />
+                <Button onClick={onCopy} ml={2}>
+                  {hasCopied ? "Copied" : "Copy"}
+                </Button>
+              </Flex>
+            </FormControl>
+            <Button type="submit" isLoading={isSubmitting} disabled={!isDirty}>
+              Save
+            </Button>
+          </Stack>
+        </Container>
+      </form>
+    </>
   );
 };

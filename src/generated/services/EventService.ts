@@ -5,6 +5,7 @@ import type { Attendance } from '../models/Attendance';
 import type { CreateEventDto } from '../models/CreateEventDto';
 import type { Event } from '../models/Event';
 import type { Rsvp } from '../models/Rsvp';
+import type { ScaninDto } from '../models/ScaninDto';
 import type { UpdateEventDto } from '../models/UpdateEventDto';
 import type { UpdateOrCreateAttendance } from '../models/UpdateOrCreateAttendance';
 import type { UpdateOrCreateRSVP } from '../models/UpdateOrCreateRSVP';
@@ -213,6 +214,27 @@ eventId: string,
             path: {
                 'eventId': eventId,
             },
+        });
+    }
+
+    /**
+     * @param eventId 
+     * @param requestBody 
+     * @returns Attendance 
+     * @throws ApiError
+     */
+    public static eventControllerScaninEvent(
+eventId: string,
+requestBody: ScaninDto,
+): CancelablePromise<Attendance> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/event/{eventId}/scanin',
+            path: {
+                'eventId': eventId,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
 
