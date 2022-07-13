@@ -35,10 +35,10 @@ export class AuthService {
 
     /**
      * Sign in using discord (callback)
-     * @returns string 
+     * @returns any 
      * @throws ApiError
      */
-    public static authControllerDiscordSigninCallback(): CancelablePromise<string> {
+    public static authControllerDiscordSigninCallback(): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/auth/discord/callback',

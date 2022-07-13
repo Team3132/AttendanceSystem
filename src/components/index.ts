@@ -11,3 +11,4 @@ export * from "./ScanCodes";
 export * from "./ScaninModal";
 export * from "./UserAvatar";
 export * from "./TDUIcon";
+export * from "./ChakraAlert";

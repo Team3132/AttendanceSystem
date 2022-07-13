@@ -11,7 +11,6 @@ import {
 } from "@chakra-ui/react";
 import { DateTime } from "luxon";
 import { useAuthStatus, useEventAttendanceStatuses, useUser } from "../hooks";
-import { isAdmin } from "../utils/roles";
 
 interface Props {
   eventId?: string;
@@ -19,8 +18,7 @@ interface Props {
 
 export const AttendedList: React.FC<Props> = ({ eventId }) => {
   const { attendances } = useEventAttendanceStatuses(eventId);
-  const { roles } = useAuthStatus();
-  const isAdminYes = roles?.some(isAdmin);
+  const { isAdmin } = useAuthStatus();
   return (
     <TableContainer>
       <Table variant="simple">

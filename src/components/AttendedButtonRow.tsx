@@ -3,7 +3,6 @@ import { useSWRConfig } from "swr";
 import { Attendance } from "../generated";
 import { useAuthStatus, useEventAttendanceStatus } from "../hooks";
 import { setEventAttendanceStatus } from "../utils";
-import { isAdmin } from "../utils/roles";
 
 interface Props {
   eventId?: string;
@@ -12,10 +11,10 @@ interface Props {
 export const AttendanceButtonRow: React.FC<Props> = ({ eventId }) => {
   const { attendance, mutate } = useEventAttendanceStatus(eventId);
   const { mutate: globalMutate } = useSWRConfig();
-  const { roles } = useAuthStatus();
-  const isAdminYes = roles?.some(isAdmin);
+  const { isAdmin } = useAuthStatus();
+
   return (
-    <ButtonGroup isAttached isDisabled={!isAdminYes}>
+    <ButtonGroup isAttached isDisabled={!isAdmin}>
       <Button
         colorScheme={"green"}
         variant={

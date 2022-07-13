@@ -62,9 +62,12 @@ export const ScancodeList: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      <Heading textAlign={"center"} mt={6}>
+        Your Codes
+      </Heading>
+      <Divider my={6} />
       <Container>
-        <Heading>Your Codes</Heading>
-        <Divider my={5} />
+        {" "}
         <Stack>
           {scancodes?.map((scancode) => (
             <ScancodeInput

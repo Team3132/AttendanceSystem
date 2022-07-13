@@ -1,4 +1,6 @@
 import {
+  Divider,
+  Heading,
   Menu,
   MenuButton,
   MenuDivider,
@@ -54,6 +56,10 @@ export const CalendarScreen: React.FC = () => {
 
   return (
     <>
+      <Heading textAlign={"center"} mt={6}>
+        Event Calendar
+      </Heading>
+      <Divider my={6} />
       <Outlet />
       <Calendar
         localizer={localizer}

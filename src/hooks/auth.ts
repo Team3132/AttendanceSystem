@@ -11,15 +11,23 @@ export const useAuthStatus = () => {
 };
 
 export const useMe = () => {
-  const { data: authData, error: authError } =
-    useSWR<AuthStatusDto>(`/api/auth/status`);
+  const { isAuthenticated } = useAuthStatus();
 
   const { data: userData, error: userError } = useSWR<User>(
-    authData?.isAuthenticated ? `/api/user/me` : null
+    isAuthenticated ? `/api/user/me` : null
   );
   return {
     user: userData,
-    isLoading: (!userError || !authError) && (!userData || !authData),
+    isLoading: !userError && !userData,
     isError: userError,
+  };
+};
+
+export const useIsAdmin = () => {
+  const { isAdmin, isError, isLoading } = useAuthStatus();
+  return {
+    isAdmin,
+    isError,
+    isLoading,
   };
 };

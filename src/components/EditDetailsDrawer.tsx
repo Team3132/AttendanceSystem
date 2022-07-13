@@ -28,7 +28,6 @@ import { useSWRConfig } from "swr";
 import { UpdateEventDto } from "../generated";
 import { useAuthStatus, useEvent } from "../hooks";
 import { deleteEvent, updateEvent } from "../utils";
-import { isAdmin } from "../utils/roles";
 
 export const EditDetailsModal: React.FC = () => {
   const { eventId } = useParams();
@@ -36,8 +35,10 @@ export const EditDetailsModal: React.FC = () => {
   const { roles } = useAuthStatus();
   const navigate = useNavigate();
   const { mutate: globalMutate } = useSWRConfig();
+  const { isAdmin } = useAuthStatus();
 
-  const readonly = roles?.some((role) => isAdmin(role));
+  const readonly = !isAdmin;
+
   const {
     register,
     handleSubmit,

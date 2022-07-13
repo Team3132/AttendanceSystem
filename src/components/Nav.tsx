@@ -1,4 +1,4 @@
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { CalendarIcon } from "@chakra-ui/icons";
 import {
   Button,
   ButtonGroup,
@@ -25,16 +25,26 @@ export const Nav: React.FC = () => {
   return (
     <Container maxW="container.lg">
       <Flex m={3}>
-        <IconButton
-          aria-label="TDU Logo"
-          color="#1C3B1E"
-          icon={<TDUIcon h={"2em"} w={"2em"} />}
-          variant={"ghost"}
-          as={Link}
-          to="/"
-          p={0}
-          m={0}
-        />
+        <ButtonGroup>
+          <IconButton
+            aria-label="TDU Logo"
+            color="#1C3B1E"
+            icon={<TDUIcon h={"2em"} w={"2em"} />}
+            variant={"ghost"}
+            as={Link}
+            to="/"
+            p={0}
+            m={0}
+          />
+          {isAuthenticated ? (
+            <IconButton
+              aria-label="calendar"
+              icon={<CalendarIcon />}
+              as={Link}
+              to={"/calendar"}
+            />
+          ) : null}
+        </ButtonGroup>
 
         <Spacer />
         <ButtonGroup spacing={6}>
@@ -47,9 +57,9 @@ export const Nav: React.FC = () => {
           {isAuthenticated ? (
             <Menu>
               <MenuButton
-                as={Button}
-                rightIcon={<ChevronDownIcon />}
-                leftIcon={<UserAvatar size="sm" />}
+                as={IconButton}
+                icon={<UserAvatar size="sm" />}
+                // leftIcon={}
               >
                 My Profile
               </MenuButton>

@@ -26,7 +26,6 @@ export const ScanIn: React.FC = () => {
   const { event } = useEvent(eventId);
   const { attendances, isLoading, isError, mutate } =
     useEventAttendanceStatuses(eventId);
-  // const { roles } = useAuthStatus();
   const navigate = useNavigate();
   const {
     formState: { errors, isSubmitting },

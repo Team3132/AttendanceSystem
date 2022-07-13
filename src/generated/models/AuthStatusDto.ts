@@ -5,4 +5,5 @@
 export type AuthStatusDto = {
     isAuthenticated: boolean;
     roles: Array<string>;
+    isAdmin: boolean;
 };
