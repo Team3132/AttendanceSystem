@@ -1,7 +1,22 @@
+import {
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
+  MenuListProps,
+  Portal,
+} from "@chakra-ui/react";
 import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
-import { Calendar, luxonLocalizer, SlotInfo } from "react-big-calendar";
-import { Outlet, useNavigate } from "react-router-dom";
+import {
+  Calendar,
+  EventProps,
+  EventWrapperProps,
+  luxonLocalizer,
+  SlotInfo,
+} from "react-big-calendar";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { Event } from "../generated";
 import { useEvents, useMe } from "../hooks";
 export const CalendarScreen: React.FC = () => {
@@ -52,13 +67,86 @@ export const CalendarScreen: React.FC = () => {
             resource: "any",
           })) ?? []
         }
-        // startAccessor="start"
-        // endAccessor="end"
+        startAccessor="start"
+        endAccessor="end"
         style={{ height: 800 }}
         selectable={true}
         onSelectEvent={(event) => selectEventHandler(event)}
         onSelectSlot={selectSlotHandler}
+        // components={{
+        //   eventWrapper: EventWrapper,
+        //   agenda: {
+        //     event: AgendaEventWrapper,
+        //   },
+        // }}
       />
     </>
+  );
+};
+
+type EventWrapperRealProps = EventWrapperProps<{
+  id: string;
+  allDay: boolean;
+  title: string;
+  start: Date;
+  end: Date;
+  resource: string;
+}>;
+
+const EventWrapper: React.FC<EventWrapperRealProps> = (props) => {
+  const realProps = props as EventWrapperRealProps & { children: any };
+  return (
+    <Menu isLazy>
+      <MenuButton
+        as="div"
+        style={props.style}
+        className={realProps.className}
+        // zIndex={4}
+      >
+        {realProps.children}
+      </MenuButton>
+      <Portal>
+        <EventMenuList zIndex={5} eventId={realProps.event.id} />
+      </Portal>
+    </Menu>
+  );
+};
+
+const AgendaEventWrapper: React.ComponentType<
+  EventProps<{
+    id: string;
+    allDay: boolean;
+    title: string;
+    start: Date;
+    end: Date;
+    resource: string;
+  }>
+> = (props) => {
+  return (
+    <Menu isLazy>
+      <MenuButton>{props.title}</MenuButton>
+      <Portal>
+        <EventMenuList zIndex={5} eventId={props.event.id} />
+      </Portal>
+    </Menu>
+  );
+};
+
+const EventMenuList: React.FC<
+  Omit<MenuListProps, "children"> & { eventId: string }
+> = ({ eventId, ...rest }) => {
+  return (
+    <MenuList {...rest}>
+      <MenuItem as={Link} to={`/calendar/${eventId}/view`}>
+        View
+      </MenuItem>
+      <MenuItem as={Link} to={`/calendar/${eventId}/edit`}>
+        Edit
+      </MenuItem>
+      <MenuDivider />
+      <MenuItem as={Link} to={`/calendar/${eventId}/scanin`}>
+        Scan in
+      </MenuItem>
+    </MenuList>
   );
 };

@@ -1,25 +1,16 @@
-import { Container, Flex, Spacer, Spinner } from "@chakra-ui/react";
+import { Container, Flex, Spacer } from "@chakra-ui/react";
 import * as React from "react";
 import { Outlet } from "react-router-dom";
-import { AuthComponent, Nav } from "../components";
-import { useAuthStatus } from "../hooks";
+import { Nav } from "../components";
 
 export const Layout: React.FC = () => {
-  const { isAuthenticated, isLoading } = useAuthStatus();
   return (
     <Flex direction={"column"} minH="100vh">
       <Nav />
       <Container maxW="container.lg">
-        {isLoading ? (
-          <Spinner />
-        ) : isAuthenticated ? (
-          <Outlet />
-        ) : (
-          <AuthComponent />
-        )}
+        <Outlet />
       </Container>
       <Spacer />
-      {/* <Footer /> */}
     </Flex>
   );
 };

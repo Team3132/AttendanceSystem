@@ -1,6 +1,7 @@
 import {
   Button,
   Center,
+  Container,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -8,10 +9,9 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
-  Flex,
-  IconButton,
   Input,
-  Spacer,
+  InputGroup,
+  InputRightElement,
   Spinner,
   Stack,
 } from "@chakra-ui/react";
@@ -54,37 +54,44 @@ export const ScanIn: React.FC = () => {
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
+
         <DrawerHeader>
           {isLoading ? "Loading" : `Scanin: ${event?.title}`}
         </DrawerHeader>
 
         <DrawerBody>
-          {isLoading ? (
-            <Center>
-              <Spinner />
-            </Center>
-          ) : (
-            <>
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <Flex>
-                  <Input
-                    {...register("code")}
-                    placeholder={"Paste your code here..."}
-                  />
-                  <Spacer />
-                  <IconButton
-                    aria-label="Add scancode"
-                    type="submit"
-                    isLoading={isSubmitting}
-                  />
-                </Flex>
-              </form>
+          <Container maxW={"container.md"}>
+            {isLoading ? (
+              <Center>
+                <Spinner />
+              </Center>
+            ) : (
+              <>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <InputGroup>
+                    <Input
+                      {...register("code")}
+                      placeholder={"Enter your code here..."}
+                    />
+                    <InputRightElement width="5rem">
+                      <Button
+                        type="submit"
+                        isLoading={isSubmitting}
+                        h="1.75rem"
+                        size="sm"
+                      >
+                        Submit
+                      </Button>
+                    </InputRightElement>
+                  </InputGroup>
+                </form>
 
-              <Stack>
-                <AttendedList eventId={eventId} />
-              </Stack>
-            </>
-          )}
+                <Stack>
+                  <AttendedList eventId={eventId} />
+                </Stack>
+              </>
+            )}
+          </Container>
         </DrawerBody>
 
         <DrawerFooter>

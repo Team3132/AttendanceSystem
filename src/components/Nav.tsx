@@ -4,7 +4,6 @@ import {
   ButtonGroup,
   Container,
   Flex,
-  Heading,
   IconButton,
   Menu,
   MenuButton,
@@ -15,24 +14,27 @@ import {
 } from "@chakra-ui/react";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 import { Link } from "react-router-dom";
-import { useSWRConfig } from "swr";
 import { useAuthStatus } from "../hooks";
-import { logout } from "../utils";
-import { createOAuthWindow } from "./oauthWindow";
+import { TDUIcon } from "./TDUIcon";
 import { UserAvatar } from "./UserAvatar";
 // import Logo from "../logo.svg";
 
 export const Nav: React.FC = () => {
   const { isAuthenticated } = useAuthStatus();
   const { colorMode, toggleColorMode } = useColorMode();
-  const { mutate } = useSWRConfig();
   return (
     <Container maxW="container.lg">
       <Flex m={3}>
-        {/* <Link to="">
-          <Image maxHeight={10} src={Logo} />
-        </Link> */}
-        <Heading size="md">Logo</Heading>
+        <IconButton
+          aria-label="TDU Logo"
+          color="#1C3B1E"
+          icon={<TDUIcon h={"2em"} w={"2em"} />}
+          variant={"ghost"}
+          as={Link}
+          to="/"
+          p={0}
+          m={0}
+        />
 
         <Spacer />
         <ButtonGroup spacing={6}>
@@ -51,27 +53,17 @@ export const Nav: React.FC = () => {
               >
                 My Profile
               </MenuButton>
-              <MenuList>
+              <MenuList zIndex={5}>
                 <MenuItem as={Link} to="/profile">
                   Profile
                 </MenuItem>
-                <MenuItem
-                  onClick={async () => {
-                    await logout();
-                    window.location.reload();
-                  }}
-                >
+                <MenuItem as="a" href="/api/auth/logout">
                   Logout
                 </MenuItem>
               </MenuList>
             </Menu>
           ) : (
-            <Button
-              as="a"
-              onClick={() => {
-                createOAuthWindow("/api/auth/discord", mutate);
-              }}
-            >
+            <Button as="a" href="/api/auth/discord">
               Login
             </Button>
           )}
