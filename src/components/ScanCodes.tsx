@@ -1,16 +1,25 @@
 import { AddIcon, MinusIcon, RepeatIcon } from "@chakra-ui/icons";
 import {
+  Button,
   Container,
   Divider,
+  FormControl,
+  FormErrorMessage,
   Heading,
   IconButton,
   Input,
   InputGroup,
   InputRightElement,
   Stack,
+  useClipboard,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import { CreateScancodeDto, ScancodeService } from "../generated";
+import {
+  ApiError,
+  CreateScancodeDto,
+  Scancode,
+  ScancodeService,
+} from "../generated";
 import { useScancodes } from "../hooks";
 import { generateString } from "../utils";
 
@@ -22,14 +31,33 @@ export const ScancodeList: React.FC = () => {
     handleSubmit,
     register,
     reset,
+    setError,
   } = useForm<CreateScancodeDto>();
 
   const onSubmit = async (data: CreateScancodeDto) => {
-    const result = await ScancodeService.scancodeControllerCreate(data);
-    if (scancodes) {
-      mutate(scancodes.concat(result));
+    try {
+      const result = await ScancodeService.scancodeControllerCreate(data);
+      if (scancodes) {
+        mutate(scancodes.concat(result));
+      }
+      reset();
+    } catch (error) {
+      if (error instanceof ApiError) {
+        const errorMessages = error.body["message"] as string[];
+        setError(
+          "code",
+          { message: errorMessages.join() },
+          { shouldFocus: true }
+        );
+      }
     }
-    reset();
+  };
+
+  const onDelete = async (scancode: Scancode) => {
+    const { code: resultCode } = await ScancodeService.scancodeControllerRemove(
+      scancode.code
+    );
+    mutate(scancodes?.filter(({ code }) => code !== resultCode));
   };
 
   return (
@@ -39,65 +67,83 @@ export const ScancodeList: React.FC = () => {
         <Divider my={5} />
         <Stack>
           {scancodes?.map((scancode) => (
-            <InputGroup size="md" key={scancode.code}>
+            <ScancodeInput
+              key={scancode.code}
+              scancode={scancode}
+              onDelete={onDelete}
+            />
+          ))}
+          <FormControl isInvalid={!!errors.code}>
+            <InputGroup size="md">
               <Input
-                readOnly={true}
-                value={scancode.code}
-                pr="3.5rem"
-                variant={"filled"}
-                isReadOnly={true}
+                pr="7rem"
+                {...register("code", {})}
+                placeholder={"Paste your code here..."}
+                id="newCode"
               />
-              <InputRightElement width="3.5rem">
+              <InputRightElement width="3.5rem" mr="2.5rem">
                 <IconButton
-                  aria-label="Delete Scancode"
-                  icon={<MinusIcon />}
                   h="1.75rem"
                   size="sm"
-                  onClick={async () => {
-                    const { code: resultCode } =
-                      await ScancodeService.scancodeControllerRemove(
-                        scancode.code
-                      );
-                    mutate(scancodes.filter(({ code }) => code !== resultCode));
+                  // isLoading={isSubmitting}
+                  onClick={() => {
+                    const randomString = generateString(6);
+
+                    setValue("code", randomString);
                   }}
+                  aria-label={"generate"}
+                  icon={<RepeatIcon />}
+                />
+              </InputRightElement>
+              <InputRightElement width="3.5rem">
+                <IconButton
+                  h="1.75rem"
+                  size="sm"
+                  type="submit"
+                  isLoading={isSubmitting}
+                  aria-label={"submit"}
+                  icon={<AddIcon />}
                 />
               </InputRightElement>
             </InputGroup>
-          ))}
-          <InputGroup size="md">
-            <Input
-              pr="7rem"
-              {...register("code", {})}
-              placeholder={"Paste your code here..."}
-              id="newCode"
-            />
-            <InputRightElement width="3.5rem" mr="2.5rem">
-              <IconButton
-                h="1.75rem"
-                size="sm"
-                // isLoading={isSubmitting}
-                onClick={() => {
-                  const randomString = generateString(6);
-
-                  setValue("code", randomString);
-                }}
-                aria-label={"generate"}
-                icon={<RepeatIcon />}
-              />
-            </InputRightElement>
-            <InputRightElement width="3.5rem">
-              <IconButton
-                h="1.75rem"
-                size="sm"
-                type="submit"
-                isLoading={isSubmitting}
-                aria-label={"submit"}
-                icon={<AddIcon />}
-              />
-            </InputRightElement>
-          </InputGroup>
+            {!!errors.code ? (
+              <FormErrorMessage>{errors.code.message}</FormErrorMessage>
+            ) : null}
+          </FormControl>
         </Stack>
       </Container>
     </form>
+  );
+};
+
+const ScancodeInput: React.FC<{
+  scancode: Scancode;
+  onDelete: (scancode: Scancode) => void;
+}> = ({ scancode, onDelete }) => {
+  const { hasCopied, onCopy } = useClipboard(scancode.code);
+  return (
+    <InputGroup size="md" key={scancode.code}>
+      <Input
+        readOnly={true}
+        value={scancode.code}
+        pr="7rem"
+        variant={"filled"}
+        isReadOnly={true}
+      />
+      <InputRightElement width="3.5rem" mr="3.5rem">
+        <Button h="1.75rem" size="sm" onClick={onCopy} aria-label={"generate"}>
+          {hasCopied ? "Copied" : "Copy"}
+        </Button>
+      </InputRightElement>
+      <InputRightElement width="3.5rem">
+        <IconButton
+          aria-label="Delete Scancode"
+          icon={<MinusIcon />}
+          h="1.75rem"
+          size="sm"
+          onClick={() => onDelete(scancode)}
+        />
+      </InputRightElement>
+    </InputGroup>
   );
 };

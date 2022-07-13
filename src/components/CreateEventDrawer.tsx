@@ -46,8 +46,6 @@ export const CreateEventDrawer: React.FC = () => {
     },
   });
 
-  console.log({ searchParams });
-
   const onSubmit = async (data: CreateEventDto) => {
     const event = await createEvent(data);
     navigate(`/calendar/${event.id}/view`);

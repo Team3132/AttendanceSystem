@@ -9,6 +9,7 @@ import { EditDetailsModal } from "./components/EditDetailsDrawer";
 import { ScanIn } from "./components/ScaninModal";
 import { fetcher } from "./hooks";
 import { CalendarScreen, Layout } from "./screens";
+import { Home } from "./screens/Home";
 import { ProfileScreen } from "./screens/Profile";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -25,7 +26,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<>Home</>} />
+            <Route index element={<Home />} />
             <Route
               element={
                 <AuthWrapper>
