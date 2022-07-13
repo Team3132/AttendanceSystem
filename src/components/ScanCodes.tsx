@@ -62,7 +62,7 @@ export const ScancodeList: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Container borderWidth="1px" borderRadius={"md"} p={5}>
+      <Container>
         <Heading>Your Codes</Heading>
         <Divider my={5} />
         <Stack>

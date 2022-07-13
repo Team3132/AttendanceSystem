@@ -2,10 +2,12 @@ import {
   Button,
   Center,
   Container,
+  Divider,
   Flex,
   FormControl,
   FormLabel,
-  Image,
+  Heading,
+  HStack,
   Input,
   Stack,
   useClipboard,
@@ -14,7 +16,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { useSWRConfig } from "swr";
-import { ScancodeList } from "../components/ScanCodes";
+import { UserAvatar } from "../components";
 import { UpdateUserDto } from "../generated";
 import { userAvatar, useUser } from "../hooks";
 import { editUser } from "../utils";
@@ -56,9 +58,9 @@ export const ProfileScreen: React.FC = () => {
   const { hasCopied, onCopy } = useClipboard(calendarUrl);
 
   return (
-    <>
-      <Center>
-        <Image
+    <Container>
+      {/* <Center> */}
+      {/* <Image
           width={500}
           height={500}
           src={
@@ -67,18 +69,28 @@ export const ProfileScreen: React.FC = () => {
               : undefined
           }
           alt="Profile Image"
-        />
+        /> */}
+      <Center>
+        <UserAvatar size={"2xl"} />
       </Center>
-      <ScancodeList />
+
+      <Heading textAlign={"center"}>
+        {user?.firstName} {user?.lastName}
+      </Heading>
+
+      <Divider my={6} />
+
+      {/* </Center> */}
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Container>
-          <Stack>
+        <Stack>
+          <HStack>
             <FormControl isInvalid={!!errors.firstName}>
               <FormLabel htmlFor="firstName">First Name</FormLabel>
               <Input
                 id="firstName"
                 placeholder="First Name"
                 {...register("firstName", { required: true })}
+                variant={"filled"}
               />
             </FormControl>
             <FormControl isInvalid={!!errors.lastName}>
@@ -87,23 +99,31 @@ export const ProfileScreen: React.FC = () => {
                 id="lastName"
                 placeholder="Last Name"
                 {...register("lastName", { required: true })}
+                variant={"filled"}
               />
             </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="calendar">Calendar Link</FormLabel>
-              <Flex mb={2}>
-                <Input value={calendarUrl} isReadOnly id="calendar" />
-                <Button onClick={onCopy} ml={2}>
-                  {hasCopied ? "Copied" : "Copy"}
-                </Button>
-              </Flex>
-            </FormControl>
-            <Button type="submit" isLoading={isSubmitting} disabled={!isDirty}>
-              Save
-            </Button>
-          </Stack>
-        </Container>
+          </HStack>
+
+          <FormControl>
+            <FormLabel htmlFor="calendar">Calendar Link</FormLabel>
+            <Flex mb={2}>
+              <Input
+                value={calendarUrl}
+                isReadOnly
+                id="calendar"
+                variant={"filled"}
+              />
+              <Button onClick={onCopy} ml={2}>
+                {hasCopied ? "Copied" : "Copy"}
+              </Button>
+            </Flex>
+          </FormControl>
+          <Button type="submit" isLoading={isSubmitting} disabled={!isDirty}>
+            Save
+          </Button>
+        </Stack>
+        {/* </> */}
       </form>
-    </>
+    </Container>
   );
 };

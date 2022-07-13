@@ -57,6 +57,9 @@ export const Nav: React.FC = () => {
                 <MenuItem as={Link} to="/profile">
                   Profile
                 </MenuItem>
+                <MenuItem as={Link} to="/codes">
+                  Codes
+                </MenuItem>
                 <MenuItem as="a" href="/api/auth/logout">
                   Logout
                 </MenuItem>

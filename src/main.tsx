@@ -3,7 +3,11 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { SWRConfig } from "swr";
-import { CreateEventDrawer, ViewDetailsModal } from "./components";
+import {
+  CreateEventDrawer,
+  ScancodeList,
+  ViewDetailsModal,
+} from "./components";
 import { AuthWrapper } from "./components/AuthWrapper";
 import { EditDetailsModal } from "./components/EditDetailsDrawer";
 import { ScanIn } from "./components/ScaninModal";
@@ -40,6 +44,14 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               <Route path=":eventId/scanin" element={<ScanIn />} />
               <Route path="create" element={<CreateEventDrawer />} />
             </Route>
+            <Route
+              element={
+                <AuthWrapper>
+                  <ScancodeList />
+                </AuthWrapper>
+              }
+              path="codes"
+            />
             <Route
               element={
                 <AuthWrapper>
