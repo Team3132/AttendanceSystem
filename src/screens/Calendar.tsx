@@ -20,10 +20,10 @@ import {
 } from "react-big-calendar";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { Event } from "../generated";
-import { useEvents, useMe } from "../hooks";
+import { useAuthStatus, useEvents } from "../hooks";
 export const CalendarScreen: React.FC = () => {
   /** User Data */
-  const { user, isLoading, isError } = useMe();
+  const { isAdmin } = useAuthStatus();
 
   /** Event Data */
   const {
@@ -47,7 +47,10 @@ export const CalendarScreen: React.FC = () => {
     start: Date;
     end: Date;
     resource: string;
-  }) => void = (event) => navigate(`/calendar/${event.id}/view`);
+  }) => void = (event) =>
+    isAdmin
+      ? navigate(`/calendar/${event.id}/edit`)
+      : navigate(`/calendar/${event.id}/view`);
 
   const selectSlotHandler = (slotInfo: SlotInfo) =>
     navigate(
@@ -76,7 +79,7 @@ export const CalendarScreen: React.FC = () => {
         startAccessor="start"
         endAccessor="end"
         style={{ height: 800 }}
-        selectable={true}
+        selectable={isAdmin}
         onSelectEvent={(event) => selectEventHandler(event)}
         onSelectSlot={selectSlotHandler}
         // components={{

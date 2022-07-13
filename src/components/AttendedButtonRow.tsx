@@ -28,7 +28,7 @@ export const AttendanceButtonRow: React.FC<Props> = ({ eventId }) => {
               eventId,
               Attendance["status"].ATTENDED
             );
-            mutate(response, { revalidate: false });
+            mutate(response);
             globalMutate(`/api/event/${eventId}/attendances`);
           }
         }}
