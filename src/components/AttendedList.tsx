@@ -12,11 +12,11 @@ import {
 import { DateTime } from "luxon";
 import { useAuthStatus, useEventAttendanceStatuses, useUser } from "../hooks";
 
-interface Props {
+export interface AttendedListProps {
   eventId?: string;
 }
 
-export const AttendedList: React.FC<Props> = ({ eventId }) => {
+export const AttendedList: React.FC<AttendedListProps> = ({ eventId }) => {
   const { attendances } = useEventAttendanceStatuses(eventId);
   const { isAdmin } = useAuthStatus();
   return (
@@ -70,3 +70,4 @@ const Username: React.FC<UsernameProps> = ({ userId }) => {
     </>
   );
 };
+export default AttendedList;

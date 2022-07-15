@@ -4,11 +4,11 @@ import { Rsvp } from "../generated";
 import { useEventRSVPStatus } from "../hooks";
 import { setEventRSVPStatus } from "../utils";
 
-interface Props {
+export interface RSVPButtonRowProps {
   eventId?: string;
 }
 
-export const RSVPButtonRow: React.FC<Props> = ({ eventId }) => {
+export const RSVPButtonRow: React.FC<RSVPButtonRowProps> = ({ eventId }) => {
   const { rsvp, mutate } = useEventRSVPStatus(eventId);
   const { mutate: globalMutate } = useSWRConfig();
   return (
@@ -64,3 +64,4 @@ export const RSVPButtonRow: React.FC<Props> = ({ eventId }) => {
     </ButtonGroup>
   );
 };
+export default RSVPButtonRow;

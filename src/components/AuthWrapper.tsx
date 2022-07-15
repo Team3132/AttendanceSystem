@@ -3,13 +3,13 @@ import { useEffect } from "react";
 import { useAlert } from "react-alert";
 import { useNavigate } from "react-router-dom";
 import { useAuthStatus } from "../hooks";
-interface Props {
+export interface AuthWrapperProps {
   children: any;
   adminOnly?: boolean;
   to?: string;
 }
 
-export const AuthWrapper: React.FC<Props> = ({
+export const AuthWrapper: React.FC<AuthWrapperProps> = ({
   children,
   to = "/",
   adminOnly = false,
@@ -58,3 +58,4 @@ const AuthRedirect: React.FC<AuthRedirectProps> = ({ to = "/" }) => {
   }, []);
   return <>You need to be logged in to access this</>;
 };
+export default AuthWrapper;

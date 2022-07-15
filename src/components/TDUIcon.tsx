@@ -11,3 +11,4 @@ export const TDUIcon = createIcon({
     </g>,
   ],
 });
+export default TDUIcon;

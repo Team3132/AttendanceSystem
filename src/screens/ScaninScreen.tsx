@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import { AttendedList } from "../components/AttendedList";
+import { AttendedList } from "../components";
 import { EventService, ScaninDto } from "../generated";
 import { useEvent, useEventAttendanceStatuses } from "../hooks";
 

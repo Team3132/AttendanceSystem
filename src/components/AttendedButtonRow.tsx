@@ -4,11 +4,13 @@ import { Attendance } from "../generated";
 import { useAuthStatus, useEventAttendanceStatus } from "../hooks";
 import { setEventAttendanceStatus } from "../utils";
 
-interface Props {
+export interface AttendanceButtonRowProps {
   eventId?: string;
 }
 
-export const AttendanceButtonRow: React.FC<Props> = ({ eventId }) => {
+export const AttendanceButtonRow: React.FC<AttendanceButtonRowProps> = ({
+  eventId,
+}) => {
   const { attendance, mutate } = useEventAttendanceStatus(eventId);
   const { mutate: globalMutate } = useSWRConfig();
   const { isAdmin } = useAuthStatus();
@@ -58,3 +60,4 @@ export const AttendanceButtonRow: React.FC<Props> = ({ eventId }) => {
     </ButtonGroup>
   );
 };
+export default AttendanceButtonRow;

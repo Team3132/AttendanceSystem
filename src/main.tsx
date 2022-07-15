@@ -1,11 +1,9 @@
-import { ChakraProvider } from "@chakra-ui/react";
+import loadable from "@loadable/component";
 import { Provider as AlertProvider } from "react-alert";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { SWRConfig } from "swr";
-import { ChakraAlert } from "./components";
-import { AuthWrapper } from "./components/AuthWrapper";
+import { AuthWrapper, ChakraAlert } from "./components";
 import { fetcher } from "./hooks";
 import {
   Agenda,
@@ -18,7 +16,13 @@ import {
   Profile,
   ScancodeScreen,
   ScaninScreen,
-} from "./loadables";
+} from "./screens";
+const ChakraProvider = loadable(() => import("@chakra-ui/react"), {
+  resolveComponent: (components) => components.ChakraProvider,
+});
+const SWRConfig = loadable(() => import("swr"), {
+  resolveComponent: (components) => components.SWRConfig,
+});
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>
   <ChakraProvider>

@@ -12,11 +12,11 @@ import {
 import { DateTime } from "luxon";
 import { useAuthStatus, useEventRSVPStatuses, useUser } from "../hooks";
 
-interface Props {
+export interface RSVPListProps {
   eventId?: string;
 }
 
-export const RSVPList: React.FC<Props> = ({ eventId }) => {
+export const RSVPList: React.FC<RSVPListProps> = ({ eventId }) => {
   const { rsvps } = useEventRSVPStatuses(eventId);
   const { isAdmin } = useAuthStatus();
 
@@ -71,3 +71,4 @@ const Username: React.FC<UsernameProps> = ({ userId }) => {
     </>
   );
 };
+export default RSVPList;

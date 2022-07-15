@@ -20,8 +20,7 @@ import {
 } from "@chakra-ui/react";
 import { DateTime } from "luxon";
 import { useParams } from "react-router-dom";
-import { AttendedList } from "../components/AttendedList";
-import { RSVPList } from "../components/RSVPList";
+import { AttendedList, RSVPList } from "../components";
 import { useEvent } from "../hooks";
 
 export const EventDetailsScreen: React.FC = () => {

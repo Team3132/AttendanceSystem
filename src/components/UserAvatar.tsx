@@ -1,11 +1,11 @@
 import { Avatar, AvatarProps } from "@chakra-ui/react";
 import { userAvatar, useUser } from "../hooks";
 
-type Props = {
+export type UserAvatarProps = {
   userId?: string;
 } & Omit<Omit<AvatarProps, "src">, "name">;
 
-export const UserAvatar: React.FC<Props> = ({ userId, ...rest }) => {
+export const UserAvatar: React.FC<UserAvatarProps> = ({ userId, ...rest }) => {
   const { avatarId } = userAvatar(userId);
   const { user } = useUser(userId);
   return (
@@ -21,3 +21,4 @@ export const UserAvatar: React.FC<Props> = ({ userId, ...rest }) => {
     />
   );
 };
+export default UserAvatar;

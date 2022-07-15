@@ -21,3 +21,4 @@ export const ChakraAlert = ({ style, options, message, close }: any) => (
     />
   </Alert>
 );
+export default ChakraAlert;

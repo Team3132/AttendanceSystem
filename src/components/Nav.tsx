@@ -262,3 +262,4 @@ export const Nav: React.FC = () => {
     </Container>
   );
 };
+export default Nav;
