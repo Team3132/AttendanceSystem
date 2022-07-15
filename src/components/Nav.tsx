@@ -1,86 +1,251 @@
-import { CalendarIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
 import {
+  Accordion,
+  AccordionButton,
+  AccordionItem,
+  AccordionPanel,
   Button,
   ButtonGroup,
+  Center,
   Container,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerProps,
   Flex,
+  HStack,
   IconButton,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
   Spacer,
+  Stack,
+  StackProps,
+  useBreakpointValue,
   useColorMode,
+  useDisclosure,
 } from "@chakra-ui/react";
+import { useEffect } from "react";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuthStatus } from "../hooks";
-import { TDUIcon } from "./TDUIcon";
 import { UserAvatar } from "./UserAvatar";
 // import Logo from "../logo.svg";
 
-export const Nav: React.FC = () => {
-  const { isAuthenticated } = useAuthStatus();
+const navItems = (isAuthenticated?: boolean): NavItem[] => [
+  { url: "/", label: "Home" },
+  ...(isAuthenticated
+    ? [
+        {
+          label: "Calendar",
+          subitems: [
+            { url: "/calendar", label: "Full" },
+            { url: "/calendar/agenda", label: "Agenda" },
+            { url: "/calendar/custom", label: "Custom" },
+          ],
+        },
+      ]
+    : []),
+
+  isAuthenticated
+    ? {
+        label: "Profile",
+        subitems: [
+          { url: "/profile", label: "Your Profile" },
+          { url: "/codes", label: "Codes" },
+          { url: "/api/auth/logout", label: "Logout", external: true },
+        ],
+      }
+    : {
+        label: "Login",
+        url: "/api/auth/discord",
+        external: true,
+      },
+];
+
+interface NavItem {
+  url?: string;
+  label: string;
+  disabled?: boolean;
+  external?: boolean;
+  subitems?: Omit<NavItem, "subitems">[];
+}
+
+const DesktopNav: React.FC<StackProps> = ({ ...props }) => {
+  const navigate = useNavigate();
   const { colorMode, toggleColorMode } = useColorMode();
+  const { isAuthenticated } = useAuthStatus();
+  return (
+    <HStack {...props}>
+      {navItems(isAuthenticated).map((navItem) => {
+        if (navItem.subitems) {
+          return (
+            <Menu>
+              <MenuButton
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+                disabled={navItem.disabled}
+              >
+                {navItem.label}
+              </MenuButton>
+              <MenuList>
+                {navItem.subitems.map((subItem) => (
+                  <MenuItem
+                    disabled={subItem.disabled}
+                    onClick={() => {
+                      if (subItem.url) {
+                        if (subItem.external) {
+                          window.location.href = subItem.url;
+                        } else {
+                          navigate(subItem.url);
+                        }
+                      }
+                    }}
+                  >
+                    {subItem.label}
+                  </MenuItem>
+                ))}
+              </MenuList>
+            </Menu>
+          );
+        } else {
+          return (
+            <Button
+              disabled={navItem.disabled}
+              onClick={() => {
+                if (navItem.url) {
+                  if (navItem.external) {
+                    window.location.href = navItem.url;
+                  } else {
+                    navigate(navItem.url);
+                  }
+                }
+              }}
+            >
+              {navItem.label}
+            </Button>
+          );
+        }
+      })}
+    </HStack>
+  );
+};
+
+const MobileDrawer: React.FC<Omit<DrawerProps, "children">> = ({
+  ...props
+}) => {
+  const navigate = useNavigate();
+  const { colorMode, toggleColorMode } = useColorMode();
+  const { isAuthenticated } = useAuthStatus();
+
+  return (
+    <Drawer {...props}>
+      <DrawerOverlay />
+      <DrawerContent>
+        <DrawerHeader>Navigation</DrawerHeader>
+        <DrawerCloseButton />
+        <DrawerBody>
+          <Flex flexDir={"column"} height="100%">
+            <Accordion allowMultiple>
+              {navItems(isAuthenticated).map((navItem) => {
+                return (
+                  <>
+                    <AccordionItem>
+                      <AccordionButton>
+                        <Button
+                          variant={"ghost"}
+                          borderRadius={0}
+                          width="100%"
+                          onClick={() => {
+                            if (navItem.url) {
+                              if (navItem.external) {
+                                window.location.href = navItem.url;
+                              } else {
+                                navigate(navItem.url);
+                                props.onClose();
+                              }
+                            }
+                          }}
+                        >
+                          {navItem.label}
+                        </Button>
+                      </AccordionButton>
+                      {navItem.subitems ? (
+                        <AccordionPanel>
+                          {navItem.subitems?.map((subItem, index) => (
+                            <Stack>
+                              <Button
+                                onClick={() => {
+                                  if (subItem.url) {
+                                    if (subItem.external) {
+                                      window.location.href = subItem.url;
+                                    } else {
+                                      navigate(subItem.url);
+                                      props.onClose();
+                                    }
+                                  }
+                                }}
+                                variant={"ghost"}
+                                borderRadius={0}
+                                width="100%"
+                                key={index}
+                                fontSize={"sm"}
+                              >
+                                {subItem.label}
+                              </Button>
+                            </Stack>
+                          )) ?? null}
+                        </AccordionPanel>
+                      ) : null}
+                    </AccordionItem>
+                  </>
+                );
+              })}
+            </Accordion>
+            <Spacer />
+            <Center m={2}>
+              <ButtonGroup>
+                <IconButton
+                  aria-label="switch theme"
+                  onClick={toggleColorMode}
+                  className="umami--click--theme-button"
+                  icon={colorMode === "dark" ? <MdDarkMode /> : <MdLightMode />}
+                />
+              </ButtonGroup>
+            </Center>
+          </Flex>
+        </DrawerBody>
+      </DrawerContent>
+    </Drawer>
+  );
+};
+
+export const Nav: React.FC = () => {
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  const isMobile = useBreakpointValue<boolean>({ base: true, md: false });
+  useEffect(() => {
+    if (!isMobile) {
+      onClose();
+    }
+  }, [isMobile]);
+
   return (
     <Container maxW="container.lg">
       <Flex m={3}>
-        <ButtonGroup>
-          <IconButton
-            aria-label="TDU Logo"
-            color="#1C3B1E"
-            icon={<TDUIcon h={"2em"} w={"2em"} />}
-            variant={"ghost"}
-            as={Link}
-            to="/"
-            p={0}
-            m={0}
-          />
-          {isAuthenticated ? (
-            <IconButton
-              aria-label="calendar"
-              icon={<CalendarIcon />}
-              as={Link}
-              to={"/calendar"}
-            />
-          ) : null}
-        </ButtonGroup>
-
+        <IconButton
+          aria-label="menu"
+          icon={<HamburgerIcon />}
+          onClick={onOpen}
+          hidden={!isMobile}
+        />
+        <MobileDrawer isOpen={isOpen} onClose={onClose} placement="left" />
+        <DesktopNav hidden={isMobile} />
         <Spacer />
-        <ButtonGroup spacing={6}>
-          <IconButton
-            aria-label="switch theme"
-            onClick={toggleColorMode}
-            className="umami--click--theme-button"
-            icon={colorMode === "dark" ? <MdDarkMode /> : <MdLightMode />}
-          />
-          {isAuthenticated ? (
-            <Menu>
-              <MenuButton
-                as={IconButton}
-                icon={<UserAvatar size="sm" />}
-                // leftIcon={}
-              >
-                My Profile
-              </MenuButton>
-              <MenuList zIndex={5}>
-                <MenuItem as={Link} to="/profile">
-                  Profile
-                </MenuItem>
-                <MenuItem as={Link} to="/codes">
-                  Codes
-                </MenuItem>
-                <MenuItem as="a" href="/api/auth/logout">
-                  Logout
-                </MenuItem>
-              </MenuList>
-            </Menu>
-          ) : (
-            <Button as="a" href="/api/auth/discord">
-              Login
-            </Button>
-          )}
-        </ButtonGroup>
+        <UserAvatar size="sm" />
       </Flex>
     </Container>
   );
