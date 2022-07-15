@@ -1,28 +1,33 @@
 import {
   Badge,
+  Container,
   Divider,
+  Flex,
+  FormControl,
+  FormLabel,
   Heading,
+  Input,
   LinkBox,
+  Spacer,
   Spinner,
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { RangeDatepicker } from "chakra-dayzed-datepicker";
 import { DateTime } from "luxon";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useEvents } from "../hooks";
 
 export const Agenda: React.FC = () => {
-  const [selectedDates, setSelectedDates] = useState<Date[]>([
-    new Date(),
-    new Date(),
-  ]);
+  const [startRange, setStartRange] = useState<DateTime>(DateTime.now());
+  const [endRange, setEndRange] = useState<DateTime>(
+    DateTime.now().plus({ days: 7 })
+  );
 
   const { events, isLoading } = useEvents(
     undefined,
-    selectedDates[0],
-    selectedDates[1]
+    startRange?.toJSDate(),
+    endRange?.toJSDate()
   );
 
   return (
@@ -31,10 +36,37 @@ export const Agenda: React.FC = () => {
         Agenda
       </Heading>
       <Divider my={6} />
-      <RangeDatepicker
-        selectedDates={selectedDates}
-        onDateChange={setSelectedDates}
-      />
+      <Container maxW="container.sm">
+        <Flex>
+          <FormControl maxW={"10em"}>
+            <FormLabel htmlFor="startDate" textAlign={"center"}>
+              Start
+            </FormLabel>
+            <Input
+              type="date"
+              id="startDate"
+              value={startRange.toISODate()}
+              onChange={(e) => {
+                setStartRange(DateTime.fromISO(e.target.value));
+              }}
+            />
+          </FormControl>
+          <Spacer />
+          <FormControl maxW={"10em"}>
+            <FormLabel htmlFor="endDate" textAlign={"center"}>
+              End
+            </FormLabel>
+            <Input
+              type="date"
+              id="endDate"
+              value={endRange.toISODate()}
+              onChange={(e) => {
+                setEndRange(DateTime.fromISO(e.target.value));
+              }}
+            />
+          </FormControl>
+        </Flex>
+      </Container>
       <Divider my={6} />
       <Stack>
         {isLoading ? (
