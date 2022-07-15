@@ -1,5 +1,4 @@
 export * from "./Nav";
-export * from "./CreateEventDrawer";
 export * from "./AttendedList";
 export * from "./RSVPList";
 export * from "./AttendedButtonRow";

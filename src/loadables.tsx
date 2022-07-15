@@ -15,3 +15,6 @@ export const ScancodeScreen = loadable(
   () => import("./screens/ScanCodesScreen")
 );
 export const ScaninScreen = loadable(() => import("./screens/ScaninScreen"));
+export const CreateEvent = loadable(
+  () => import("./screens/CreateEventScreen")
+);

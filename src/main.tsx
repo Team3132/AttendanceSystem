@@ -4,12 +4,13 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { SWRConfig } from "swr";
-import { ChakraAlert, CreateEventDrawer } from "./components";
+import { ChakraAlert } from "./components";
 import { AuthWrapper } from "./components/AuthWrapper";
 import { fetcher } from "./hooks";
 import {
   Agenda,
   Calendar,
+  CreateEvent,
   EventDetailsScreen,
   EventEditScreen,
   Home,
@@ -62,7 +63,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 }
                 path="calendar"
               >
-                <Route path="create" element={<CreateEventDrawer />} />
+                <Route path="create" element={<CreateEvent />} />
               </Route>
               <Route
                 element={
