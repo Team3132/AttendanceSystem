@@ -1,21 +1,20 @@
 import {
-  Button,
   Center,
+  Container,
   Divider,
-  FormControl,
-  FormLabel,
   Heading,
-  Input,
   Spinner,
   Stack,
-  Switch,
-  Textarea,
+  Stat,
+  StatGroup,
+  StatLabel,
+  StatNumber,
+  Tag,
+  Text,
 } from "@chakra-ui/react";
 import { DateTime } from "luxon";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuthStatus, useEvent, useEventRSVPStatus } from "../hooks";
-import { RSVPButtonRow } from "./RSVPButtonRow";
-import { RSVPList } from "./RSVPList";
 
 export const ViewDetailsModal: React.FC = () => {
   const { eventId } = useParams();
@@ -30,82 +29,56 @@ export const ViewDetailsModal: React.FC = () => {
 
   return (
     <>
-      <Heading textAlign={"center"} mt={6}>
-        Viewing: {event?.title}
-      </Heading>
-      <Divider my={6} />
-
-      {isLoading ? (
+      {isLoading || !event ? (
         <Center>
           <Spinner />
         </Center>
       ) : (
-        <Stack>
-          <FormControl>
-            <FormLabel htmlFor="title">Title</FormLabel>
-            <Input id="title" readOnly={true} value={event?.title} />
-          </FormControl>
-          <FormControl display="flex" alignItems="center">
-            <FormLabel htmlFor="allDay" mb="0">
-              All day
-            </FormLabel>
-            <Switch id="allDay" readOnly={true} isChecked={event?.allDay} />
-          </FormControl>
-          {/* Start Date */}
-          <FormControl>
-            <FormLabel htmlFor="startDate">Start Date</FormLabel>
-            <Input
-              id="startDate"
-              type="datetime-local"
-              readOnly={true}
-              value={
-                event?.startDate
-                  ? DateTime.fromISO(event?.startDate).toISO({
-                      includeOffset: false,
-                    })
-                  : undefined
-              }
-            />
-          </FormControl>
-          {/* End Date */}
-          <FormControl>
-            <FormLabel htmlFor="endDate">End Date</FormLabel>
-            <Input
-              readOnly={true}
-              id="endDate"
-              type="datetime-local"
-              value={
-                event?.endDate
-                  ? DateTime.fromISO(event?.endDate).toISO({
-                      includeOffset: false,
-                    })
-                  : undefined
-              }
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="description">Description</FormLabel>
-            <Textarea
-              id="description"
-              readOnly={true}
-              value={event?.description}
-            />
-          </FormControl>
-          <RSVPButtonRow eventId={event?.id} />
-          {/* <AttendanceButtonRow eventId={event?.id} /> */}
-          <RSVPList eventId={event?.id} />
-        </Stack>
-      )}
+        <Container maxW="container.md">
+          <Stack spacing={5} divider={<Divider />}>
+            <Heading textAlign={"center"} mt={6}>
+              {event?.title}
+              <br />
+              {event?.allDay ? (
+                <Tag colorScheme={"blue"} size="md">
+                  All Day
+                </Tag>
+              ) : null}
+            </Heading>
+            <StatGroup textAlign={"center"}>
+              <Stat>
+                <StatLabel>Start DateTime</StatLabel>
+                <StatNumber>
+                  {DateTime.fromISO(event.startDate).toLocaleString(
+                    DateTime.DATETIME_MED
+                  )}
+                </StatNumber>
+              </Stat>
 
-      <Button
-        colorScheme="blue"
-        mr={3}
-        onClick={() => {
-          navigate("/calendar");
-        }}
-      >
-        Close
-      </Button>
+              <Stat>
+                <StatLabel>End DateTime</StatLabel>
+                <StatNumber>
+                  {DateTime.fromISO(event.endDate).toLocaleString(
+                    DateTime.DATETIME_MED
+                  )}
+                </StatNumber>
+              </Stat>
+            </StatGroup>
+
+            <Stack textAlign={"center"}>
+              <Heading size="md">Description</Heading>
+              <Text>
+                {event.description.length > 0
+                  ? event.description
+                  : "No description"}
+              </Text>
+            </Stack>
+            {/* <RSVPButtonRow eventId={event?.id} /> */}
+            {/* <AttendanceButtonRow eventId={event?.id} /> */}
+            {/* <RSVPList eventId={event?.id} /> */}
+          </Stack>
+        </Container>
+      )}
     </>
   );
 };
