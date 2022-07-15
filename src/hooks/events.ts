@@ -1,15 +1,22 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { Attendance, AuthStatusDto, Event, Rsvp } from "../generated";
 import { useAuthStatus } from "./auth";
 
-export const useEvents = () => {
+export const useEvents = (take?: number, from?: Date, to?: Date) => {
   const { isAuthenticated } = useAuthStatus();
+  const [searchParams, setSearchParams] = useState<string | undefined>();
 
   const {
     data: eventData,
     error: userError,
     mutate,
-  } = useSWR<Event[]>(isAuthenticated ? `/api/event` : null);
+  } = useSWR<Event[]>(
+    isAuthenticated && from && to
+      ? () => ({ url: `/api/event`, params: { take, from, to } })
+      : null
+  );
 
   return {
     events: eventData,

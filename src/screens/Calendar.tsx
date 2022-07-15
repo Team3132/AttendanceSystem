@@ -8,6 +8,7 @@ import {
   MenuList,
   MenuListProps,
   Portal,
+  useConst,
 } from "@chakra-ui/react";
 import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
@@ -18,26 +19,24 @@ import {
   luxonLocalizer,
   SlotInfo,
 } from "react-big-calendar";
+import Toolbar from "react-big-calendar/lib/Toolbar";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { Event } from "../generated";
 import { useAuthStatus, useEvents } from "../hooks";
 export const CalendarScreen: React.FC = () => {
   /** User Data */
   const { isAdmin } = useAuthStatus();
 
+  const dateNow = useConst<Date>(new Date());
+  const [startRange, setStartRange] = useState<Date>();
+  const [endRange, setEndRange] = useState<Date>();
   /** Event Data */
   const {
     events: apiEvents,
     isLoading: isEventsLoading,
     isError: isEventsError,
-  } = useEvents();
-  const [mergedEvents, setMergedEvents] = useState<Event[]>([]);
-  const [localEvents, setLocalEvents] = useState<Event[]>([]);
+  } = useEvents(undefined, startRange, endRange);
   const localizer = luxonLocalizer(DateTime);
   const navigate = useNavigate();
-  useEffect(() => {
-    setMergedEvents([...(apiEvents ?? []), ...localEvents]);
-  }, [localEvents, apiEvents]);
 
   /** Handlers */
   const selectEventHandler: (event: {
@@ -82,6 +81,15 @@ export const CalendarScreen: React.FC = () => {
         selectable={isAdmin}
         onSelectEvent={(event) => selectEventHandler(event)}
         onSelectSlot={selectSlotHandler}
+        onRangeChange={(data) => {
+          const dates = data as {
+            start: Date;
+            end: Date;
+          };
+          setEndRange(dates.end);
+          setStartRange(dates.start);
+        }}
+        components={{ toolbar: InitialRangeChangeToolbar }}
         // components={{
         //   eventWrapper: EventWrapper,
         //   agenda: {
@@ -91,6 +99,13 @@ export const CalendarScreen: React.FC = () => {
       />
     </>
   );
+};
+
+const InitialRangeChangeToolbar = (props: any) => {
+  useEffect(() => {
+    props.onView(props.view);
+  }, []);
+  return <Toolbar {...props} />;
 };
 
 type EventWrapperRealProps = EventWrapperProps<{

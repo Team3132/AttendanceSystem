@@ -17,13 +17,25 @@ import { request as __request } from '../core/request';
 export class EventService {
 
     /**
+     * @param from 
+     * @param to 
+     * @param take 
      * @returns Event 
      * @throws ApiError
      */
-    public static eventControllerFindAll(): CancelablePromise<Array<Event>> {
+    public static eventControllerFindAll(
+from?: string,
+to?: string,
+take?: number,
+): CancelablePromise<Array<Event>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/event',
+            query: {
+                'from': from,
+                'to': to,
+                'take': take,
+            },
         });
     }
 
