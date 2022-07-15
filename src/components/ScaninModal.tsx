@@ -2,13 +2,8 @@ import {
   Button,
   Center,
   Container,
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
+  Divider,
+  Heading,
   Input,
   InputGroup,
   InputRightElement,
@@ -44,67 +39,53 @@ export const ScanIn: React.FC = () => {
     }
   };
   return (
-    <Drawer
-      isOpen={true}
-      placement="right"
-      onClose={() => navigate("/calendar")}
-      size="full"
-    >
-      <DrawerOverlay />
-      <DrawerContent>
-        <DrawerCloseButton />
+    <>
+      <Heading textAlign={"center"} mt={6}>
+        Scanin: {event?.title}
+      </Heading>
+      <Divider my={6} />
+      <Container maxW={"container.md"}>
+        {isLoading ? (
+          <Center>
+            <Spinner />
+          </Center>
+        ) : (
+          <>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <InputGroup>
+                <Input
+                  {...register("code")}
+                  placeholder={"Enter your code here..."}
+                />
+                <InputRightElement width="5rem">
+                  <Button
+                    type="submit"
+                    isLoading={isSubmitting}
+                    h="1.75rem"
+                    size="sm"
+                  >
+                    Submit
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+            </form>
 
-        <DrawerHeader>
-          {isLoading ? "Loading" : `Scanin: ${event?.title}`}
-        </DrawerHeader>
+            <Stack>
+              <AttendedList eventId={eventId} />
+            </Stack>
+          </>
+        )}
+      </Container>
 
-        <DrawerBody>
-          <Container maxW={"container.md"}>
-            {isLoading ? (
-              <Center>
-                <Spinner />
-              </Center>
-            ) : (
-              <>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <InputGroup>
-                    <Input
-                      {...register("code")}
-                      placeholder={"Enter your code here..."}
-                    />
-                    <InputRightElement width="5rem">
-                      <Button
-                        type="submit"
-                        isLoading={isSubmitting}
-                        h="1.75rem"
-                        size="sm"
-                      >
-                        Submit
-                      </Button>
-                    </InputRightElement>
-                  </InputGroup>
-                </form>
-
-                <Stack>
-                  <AttendedList eventId={eventId} />
-                </Stack>
-              </>
-            )}
-          </Container>
-        </DrawerBody>
-
-        <DrawerFooter>
-          <Button
-            colorScheme="blue"
-            mr={3}
-            onClick={() => {
-              navigate("/calendar");
-            }}
-          >
-            Close
-          </Button>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
+      <Button
+        colorScheme="blue"
+        mr={3}
+        onClick={() => {
+          navigate("/calendar");
+        }}
+      >
+        Close
+      </Button>
+    </>
   );
 };

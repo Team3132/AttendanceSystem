@@ -1,19 +1,13 @@
 import {
   Button,
   Center,
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
+  Divider,
   FormControl,
   FormErrorMessage,
   FormHelperText,
   FormLabel,
+  Heading,
   Input,
-  Skeleton,
   Spinner,
   Stack,
   Switch,
@@ -71,197 +65,159 @@ export const EditDetailsModal: React.FC = () => {
   };
 
   return (
-    <Drawer
-      isOpen={true}
-      placement="right"
-      onClose={() => navigate("/calendar")}
-      size="lg"
-    >
-      <DrawerOverlay />
-      <DrawerContent>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <DrawerCloseButton />
-          <DrawerHeader>
-            {isLoading ? (
-              <Skeleton>Loading</Skeleton>
-            ) : readonly ? (
-              `Viewing: ${event?.title}`
-            ) : (
-              `Editing: ${event?.title}`
-            )}
-          </DrawerHeader>
-
-          <DrawerBody>
-            {isLoading ? (
-              <Center>
-                <Spinner />
-              </Center>
-            ) : (
-              <Stack>
-                <FormControl isInvalid={!!errors.title}>
-                  <FormLabel htmlFor="title">Title</FormLabel>
-                  <Input
-                    id="title"
-                    {...register("title", { required: true })}
-                    readOnly={readonly}
-                  />
-                </FormControl>
-                <FormControl
-                  display="flex"
-                  alignItems="center"
-                  isInvalid={!!errors.allDay}
-                >
-                  <FormLabel htmlFor="allDay" mb="0">
-                    All day
-                  </FormLabel>
-                  <Switch
-                    id="allDay"
-                    {...register("allDay")}
-                    readOnly={readonly}
-                  />
-                </FormControl>
-                {/* Start Date */}
-                <Controller
-                  name="startDate"
-                  control={control}
-                  rules={{
-                    validate: {
-                      isNotNull: (v) =>
-                        v !== null ?? "Needs to be a valid date.",
-                    },
-                  }}
-                  render={(props) => (
-                    <FormControl isInvalid={!!errors.startDate}>
-                      <FormLabel htmlFor="startDate">Start Date</FormLabel>
-                      <Input
-                        id="startDate"
-                        type="datetime-local"
-                        readOnly={readonly}
-                        {...props.field}
-                        value={
-                          props.field.value
-                            ? DateTime.fromISO(props.field.value).toISO({
-                                includeOffset: false,
-                              })
-                            : undefined
-                        }
-                        onChange={(e) =>
-                          props.field.onChange(
-                            DateTime.fromISO(e.target.value).toISO()
-                          )
-                        }
-                      />
-                      {!errors.startDate ? (
-                        <FormHelperText>
-                          The start date of the event.
-                        </FormHelperText>
-                      ) : (
-                        <FormErrorMessage>
-                          {errors.startDate.message}
-                        </FormErrorMessage>
-                      )}
-                    </FormControl>
-                  )}
-                />
-
-                {/* End Date */}
-                <Controller
-                  name="endDate"
-                  control={control}
-                  rules={{
-                    validate: {
-                      isNotNull: (v) =>
-                        v !== null ?? "Needs to be a valid date.",
-                    },
-                  }}
-                  render={(props) => (
-                    <FormControl isInvalid={!!errors.endDate}>
-                      <FormLabel htmlFor="endDate">End Date</FormLabel>
-                      <Input
-                        readOnly={readonly}
-                        id="endDate"
-                        type="datetime-local"
-                        {...props.field}
-                        value={
-                          props.field.value
-                            ? DateTime.fromISO(props.field.value).toISO({
-                                includeOffset: false,
-                              })
-                            : undefined
-                        }
-                        onChange={(e) =>
-                          props.field.onChange(
-                            DateTime.fromISO(e.target.value).toISO()
-                          )
-                        }
-                      />
-                      {!errors.endDate ? (
-                        <FormHelperText>
-                          The end date of the event.
-                        </FormHelperText>
-                      ) : (
-                        <FormErrorMessage>
-                          {errors.endDate.message}
-                        </FormErrorMessage>
-                      )}
-                    </FormControl>
-                  )}
-                />
-
-                <FormControl isInvalid={!!errors.description}>
-                  <FormLabel htmlFor="description">Description</FormLabel>
-                  <Textarea
-                    id="description"
-                    {...register("description")}
-                    readOnly={readonly}
-                  />
-                  {!errors.description ? (
-                    <FormHelperText>
-                      The description of the event.
-                    </FormHelperText>
-                  ) : (
-                    <FormErrorMessage>
-                      {errors.description.message}
-                    </FormErrorMessage>
-                  )}
-                </FormControl>
-              </Stack>
-            )}
-          </DrawerBody>
-
-          <DrawerFooter>
-            <Button
-              colorScheme="blue"
-              mr={3}
-              onClick={() => {
-                navigate("/calendar");
-              }}
-            >
-              Close
-            </Button>
-            <Button
-              onClick={async () => {
-                if (eventId) {
-                  try {
-                    await deleteEvent(eventId);
-                  } catch (error) {
-                    console.log(`Deleted Event ${eventId}`);
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Heading textAlign={"center"} mt={6}>
+        Editing: {event?.title}
+      </Heading>
+      <Divider my={6} />
+      {isLoading ? (
+        <Center>
+          <Spinner />
+        </Center>
+      ) : (
+        <Stack>
+          <FormControl isInvalid={!!errors.title}>
+            <FormLabel htmlFor="title">Title</FormLabel>
+            <Input
+              id="title"
+              {...register("title", { required: true })}
+              readOnly={readonly}
+            />
+          </FormControl>
+          <FormControl
+            display="flex"
+            alignItems="center"
+            isInvalid={!!errors.allDay}
+          >
+            <FormLabel htmlFor="allDay" mb="0">
+              All day
+            </FormLabel>
+            <Switch id="allDay" {...register("allDay")} readOnly={readonly} />
+          </FormControl>
+          {/* Start Date */}
+          <Controller
+            name="startDate"
+            control={control}
+            rules={{
+              validate: {
+                isNotNull: (v) => v !== null ?? "Needs to be a valid date.",
+              },
+            }}
+            render={(props) => (
+              <FormControl isInvalid={!!errors.startDate}>
+                <FormLabel htmlFor="startDate">Start Date</FormLabel>
+                <Input
+                  id="startDate"
+                  type="datetime-local"
+                  readOnly={readonly}
+                  {...props.field}
+                  value={
+                    props.field.value
+                      ? DateTime.fromISO(props.field.value).toISO({
+                          includeOffset: false,
+                        })
+                      : undefined
                   }
-                  globalMutate("/api/event");
-                  navigate(`/calendar`);
-                }
-              }}
-              colorScheme="red"
-            >
-              Delete
-            </Button>
+                  onChange={(e) =>
+                    props.field.onChange(
+                      DateTime.fromISO(e.target.value).toISO()
+                    )
+                  }
+                />
+                {!errors.startDate ? (
+                  <FormHelperText>The start date of the event.</FormHelperText>
+                ) : (
+                  <FormErrorMessage>
+                    {errors.startDate.message}
+                  </FormErrorMessage>
+                )}
+              </FormControl>
+            )}
+          />
 
-            <Button variant="ghost" type="submit" isLoading={isSubmitting}>
-              Submit
-            </Button>
-          </DrawerFooter>
-        </form>
-      </DrawerContent>
-    </Drawer>
+          {/* End Date */}
+          <Controller
+            name="endDate"
+            control={control}
+            rules={{
+              validate: {
+                isNotNull: (v) => v !== null ?? "Needs to be a valid date.",
+              },
+            }}
+            render={(props) => (
+              <FormControl isInvalid={!!errors.endDate}>
+                <FormLabel htmlFor="endDate">End Date</FormLabel>
+                <Input
+                  readOnly={readonly}
+                  id="endDate"
+                  type="datetime-local"
+                  {...props.field}
+                  value={
+                    props.field.value
+                      ? DateTime.fromISO(props.field.value).toISO({
+                          includeOffset: false,
+                        })
+                      : undefined
+                  }
+                  onChange={(e) =>
+                    props.field.onChange(
+                      DateTime.fromISO(e.target.value).toISO()
+                    )
+                  }
+                />
+                {!errors.endDate ? (
+                  <FormHelperText>The end date of the event.</FormHelperText>
+                ) : (
+                  <FormErrorMessage>{errors.endDate.message}</FormErrorMessage>
+                )}
+              </FormControl>
+            )}
+          />
+
+          <FormControl isInvalid={!!errors.description}>
+            <FormLabel htmlFor="description">Description</FormLabel>
+            <Textarea
+              id="description"
+              {...register("description")}
+              readOnly={readonly}
+            />
+            {!errors.description ? (
+              <FormHelperText>The description of the event.</FormHelperText>
+            ) : (
+              <FormErrorMessage>{errors.description.message}</FormErrorMessage>
+            )}
+          </FormControl>
+        </Stack>
+      )}
+      <Button
+        colorScheme="blue"
+        mr={3}
+        onClick={() => {
+          navigate("/calendar");
+        }}
+      >
+        Close
+      </Button>
+      <Button
+        onClick={async () => {
+          if (eventId) {
+            try {
+              await deleteEvent(eventId);
+            } catch (error) {
+              console.log(`Deleted Event ${eventId}`);
+            }
+            globalMutate("/api/event");
+            navigate(`/calendar`);
+          }
+        }}
+        colorScheme="red"
+      >
+        Delete
+      </Button>
+
+      <Button variant="ghost" type="submit" isLoading={isSubmitting}>
+        Submit
+      </Button>
+    </form>
   );
 };

@@ -48,8 +48,8 @@ export const CalendarScreen: React.FC = () => {
     resource: string;
   }) => void = (event) =>
     isAdmin
-      ? navigate(`/calendar/${event.id}/edit`)
-      : navigate(`/calendar/${event.id}/view`);
+      ? navigate(`/event/${event.id}/edit`)
+      : navigate(`/event/${event.id}/view`);
 
   const selectSlotHandler = (slotInfo: SlotInfo) =>
     navigate(
@@ -161,14 +161,14 @@ const EventMenuList: React.FC<
 > = ({ eventId, ...rest }) => {
   return (
     <MenuList {...rest}>
-      <MenuItem as={Link} to={`/calendar/${eventId}/view`}>
+      <MenuItem as={Link} to={`/event/${eventId}/view`}>
         View
       </MenuItem>
-      <MenuItem as={Link} to={`/calendar/${eventId}/edit`}>
+      <MenuItem as={Link} to={`/event/${eventId}/edit`}>
         Edit
       </MenuItem>
       <MenuDivider />
-      <MenuItem as={Link} to={`/calendar/${eventId}/scanin`}>
+      <MenuItem as={Link} to={`/event/${eventId}/scanin`}>
         Scan in
       </MenuItem>
     </MenuList>

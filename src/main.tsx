@@ -34,6 +34,18 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
+              <Route path="event/:eventId">
+                <Route
+                  path="edit"
+                  element={
+                    <AuthWrapper adminOnly>
+                      <EditDetailsModal />
+                    </AuthWrapper>
+                  }
+                />
+                <Route path="view" element={<ViewDetailsModal />} />
+                <Route path="scanin" element={<ScanIn />} />
+              </Route>
               <Route
                 path="calendar/agenda"
                 element={
@@ -50,16 +62,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 }
                 path="calendar"
               >
-                <Route
-                  path=":eventId/edit"
-                  element={
-                    <AuthWrapper adminOnly>
-                      <EditDetailsModal />
-                    </AuthWrapper>
-                  }
-                />
-                <Route path=":eventId/view" element={<ViewDetailsModal />} />
-                <Route path=":eventId/scanin" element={<ScanIn />} />
                 <Route path="create" element={<CreateEventDrawer />} />
               </Route>
               <Route

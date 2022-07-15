@@ -48,7 +48,7 @@ export const CreateEventDrawer: React.FC = () => {
 
   const onSubmit = async (data: CreateEventDto) => {
     const event = await createEvent(data);
-    navigate(`/calendar/${event.id}/view`);
+    navigate(`/event/${event.id}/view`);
     globalMutate("/api/event");
   };
 

@@ -81,10 +81,10 @@ const DesktopNav: React.FC<StackProps> = ({ ...props }) => {
   const { isAuthenticated } = useAuthStatus();
   return (
     <HStack {...props}>
-      {navItems(isAuthenticated).map((navItem) => {
+      {navItems(isAuthenticated).map((navItem, menuIndex) => {
         if (navItem.subitems) {
           return (
-            <Menu>
+            <Menu key={menuIndex}>
               <MenuButton
                 as={Button}
                 rightIcon={<ChevronDownIcon />}
@@ -94,9 +94,10 @@ const DesktopNav: React.FC<StackProps> = ({ ...props }) => {
                 {navItem.label}
               </MenuButton>
               <MenuList>
-                {navItem.subitems.map((subItem) => (
+                {navItem.subitems.map((subItem, subItemIndex) => (
                   <MenuItem
                     disabled={subItem.disabled}
+                    key={subItemIndex}
                     onClick={() => {
                       if (subItem.url) {
                         if (subItem.external) {
@@ -116,6 +117,7 @@ const DesktopNav: React.FC<StackProps> = ({ ...props }) => {
         } else {
           return (
             <Button
+              key={menuIndex}
               disabled={navItem.disabled}
               variant={"ghost"}
               onClick={() => {
@@ -160,59 +162,60 @@ const MobileDrawer: React.FC<Omit<DrawerProps, "children">> = ({
         <DrawerBody>
           <Flex flexDir={"column"} height="100%">
             <Accordion allowMultiple>
-              {navItems(isAuthenticated).map((navItem) => {
+              {navItems(isAuthenticated).map((navItem, accordionIndex) => {
                 return (
-                  <>
-                    <AccordionItem isDisabled={navItem.disabled}>
-                      <AccordionButton>
-                        <Button
-                          variant={"ghost"}
-                          borderRadius={0}
-                          width="100%"
-                          onClick={() => {
-                            if (navItem.url) {
-                              if (navItem.external) {
-                                window.location.href = navItem.url;
-                              } else {
-                                navigate(navItem.url);
-                                props.onClose();
-                              }
+                  <AccordionItem
+                    isDisabled={navItem.disabled}
+                    key={accordionIndex}
+                  >
+                    <AccordionButton>
+                      <Button
+                        variant={"ghost"}
+                        borderRadius={0}
+                        width="100%"
+                        onClick={() => {
+                          if (navItem.url) {
+                            if (navItem.external) {
+                              window.location.href = navItem.url;
+                            } else {
+                              navigate(navItem.url);
+                              props.onClose();
                             }
-                          }}
-                        >
-                          {navItem.label}
-                        </Button>
-                      </AccordionButton>
-                      {navItem.subitems ? (
-                        <AccordionPanel>
-                          <Stack>
-                            {navItem.subitems?.map((subItem, index) => (
-                              <Button
-                                variant={"ghost"}
-                                onClick={() => {
-                                  if (subItem.url) {
-                                    if (subItem.external) {
-                                      window.location.href = subItem.url;
-                                    } else {
-                                      navigate(subItem.url);
-                                      props.onClose();
-                                    }
+                          }
+                        }}
+                      >
+                        {navItem.label}
+                      </Button>
+                    </AccordionButton>
+                    {navItem.subitems ? (
+                      <AccordionPanel>
+                        <Stack>
+                          {navItem.subitems?.map((subItem, subItemIndex) => (
+                            <Button
+                              variant={"ghost"}
+                              onClick={() => {
+                                if (subItem.url) {
+                                  if (subItem.external) {
+                                    window.location.href = subItem.url;
+                                  } else {
+                                    navigate(subItem.url);
+                                    props.onClose();
                                   }
-                                }}
-                                isDisabled={subItem.disabled}
-                                borderRadius={0}
-                                width="100%"
-                                key={index}
-                                fontSize={"sm"}
-                              >
-                                {subItem.label}
-                              </Button>
-                            )) ?? null}
-                          </Stack>
-                        </AccordionPanel>
-                      ) : null}
-                    </AccordionItem>
-                  </>
+                                }
+                              }}
+                              isDisabled={subItem.disabled}
+                              borderRadius={0}
+                              width="100%"
+                              key={subItemIndex}
+                              fontSize={"sm"}
+                            >
+                              {subItem.label}
+                            </Button>
+                          )) ?? null}
+                        </Stack>
+                      </AccordionPanel>
+                    ) : null}
+                  </AccordionItem>
                 );
               })}
             </Accordion>
