@@ -7,6 +7,13 @@ import { RSVPButtonRowProps } from "./RSVPButtonRow";
 import { RSVPListProps } from "./RSVPList";
 import { UserAvatarProps } from "./UserAvatar";
 
+const Box = loadable(() => import("@chakra-ui/react"), {
+  resolveComponent: (comps) => comps.Box,
+});
+const Skeleton = loadable(() => import("@chakra-ui/react"), {
+  resolveComponent: (comps) => comps.Skeleton,
+});
+
 export const AttendedButtonRow = loadable<AttendanceButtonRowProps>(
   () => import("./AttendedButtonRow")
 );
@@ -27,4 +34,14 @@ export const RSVPList = loadable<RSVPListProps>(() => import("./RSVPList"));
 export const TDUIcon = loadable(() => import("./TDUIcon"));
 export const UserAvatar = loadable<UserAvatarProps>(
   () => import("./UserAvatar")
+);
+export const CalendarWithLocalizer = loadable(
+  () => import("./CalendarWithLocalizer"),
+  {
+    fallback: (
+      <Skeleton>
+        <Box height="500px" width="100%" />
+      </Skeleton>
+    ),
+  }
 );
