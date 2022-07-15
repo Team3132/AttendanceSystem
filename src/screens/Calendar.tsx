@@ -53,7 +53,7 @@ export const CalendarScreen: React.FC = () => {
 
   const selectSlotHandler = (slotInfo: SlotInfo) =>
     navigate(
-      `/calendar/create?startDate=${slotInfo.start.toISOString()}&endDate=${slotInfo.end.toISOString()}`
+      `/event/create?startDate=${slotInfo.start.toISOString()}&endDate=${slotInfo.end.toISOString()}`
     );
 
   return (

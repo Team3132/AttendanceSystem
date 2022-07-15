@@ -35,6 +35,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
+              <Route path="event/create" element={<CreateEvent />} />
               <Route path="event/:eventId">
                 <Route
                   path="edit"
@@ -62,9 +63,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                   </AuthWrapper>
                 }
                 path="calendar"
-              >
-                <Route path="create" element={<CreateEvent />} />
-              </Route>
+              />
               <Route
                 element={
                   <AuthWrapper>
