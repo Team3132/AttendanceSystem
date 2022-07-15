@@ -1,105 +1,90 @@
 import useSWR from "swr";
 import { Attendance, AuthStatusDto, Event, Rsvp } from "../generated";
+import { useAuthStatus } from "./auth";
 
 export const useEvents = () => {
-  const { data: authData, error: authError } =
-    useSWR<AuthStatusDto>(`/api/auth/status`);
+  const { isAuthenticated } = useAuthStatus();
 
   const {
     data: eventData,
     error: userError,
     mutate,
-  } = useSWR<Event[]>(authData?.isAuthenticated ? `/api/event` : null);
+  } = useSWR<Event[]>(isAuthenticated ? `/api/event` : null);
+
   return {
     events: eventData,
-    isLoading: (!userError || !authError) && (!eventData || !authData),
+    isLoading: !userError && !eventData,
     isError: userError,
     mutate,
   };
 };
 
 export const useEvent = (eventId?: string) => {
-  const { data: authData, error: authError } =
-    useSWR<AuthStatusDto>(`/api/auth/status`);
+  const { isAuthenticated } = useAuthStatus();
 
   const {
     data: eventData,
     error: userError,
     mutate,
   } = useSWR<Event>(
-    authData?.isAuthenticated
-      ? eventId
-        ? `/api/event/${eventId}`
-        : null
-      : null
+    isAuthenticated ? (eventId ? `/api/event/${eventId}` : null) : null
   );
 
   return {
     event: eventData,
-    isLoading: (!userError || !authError) && (!eventData || !authData),
+    isLoading: !userError && !eventData,
     isError: userError,
     mutate,
   };
 };
 
 export const useEventRSVPStatus = (eventId?: string) => {
-  const { data: authData, error: authError } =
-    useSWR<AuthStatusDto>(`/api/auth/status`);
+  const { isAuthenticated } = useAuthStatus();
 
   const {
     data: rsvpData,
     error: rsvpError,
     mutate,
   } = useSWR<Rsvp>(
-    authData?.isAuthenticated
-      ? eventId
-        ? `/api/event/${eventId}/rsvp`
-        : null
-      : null
+    isAuthenticated ? (eventId ? `/api/event/${eventId}/rsvp` : null) : null
   );
 
   return {
     rsvp: rsvpData,
-    isLoading: (!rsvpError || !authError) && (!rsvpData || !authData),
+    isLoading: !rsvpError && !rsvpData,
     isError: rsvpError,
     mutate,
   };
 };
 
 export const useEventRSVPStatuses = (eventId?: string) => {
-  const { data: authData, error: authError } =
-    useSWR<AuthStatusDto>(`/api/auth/status`);
+  const { isAuthenticated } = useAuthStatus();
 
   const {
     data: rsvpData,
     error: rsvpError,
     mutate,
   } = useSWR<Rsvp[]>(
-    authData?.isAuthenticated
-      ? eventId
-        ? `/api/event/${eventId}/rsvps`
-        : null
-      : null
+    isAuthenticated ? (eventId ? `/api/event/${eventId}/rsvps` : null) : null
   );
 
   return {
     rsvps: rsvpData,
-    isLoading: (!rsvpError || !authError) && (!rsvpData || !authData),
+    isLoading: !rsvpError && !rsvpData,
     isError: rsvpError,
     mutate,
   };
 };
 
 export const useEventAttendanceStatus = (eventId?: string) => {
-  const { data: authData, error: authError } =
-    useSWR<AuthStatusDto>(`/api/auth/status`);
+  const { isAuthenticated } = useAuthStatus();
 
   const {
     data: attendanceData,
     error: attendanceError,
     mutate,
   } = useSWR<Attendance>(
-    authData?.isAuthenticated
+    isAuthenticated
       ? eventId
         ? `/api/event/${eventId}/attendance`
         : null
@@ -108,23 +93,21 @@ export const useEventAttendanceStatus = (eventId?: string) => {
 
   return {
     attendance: attendanceData,
-    isLoading:
-      (!attendanceError || !authError) && (!attendanceData || !authData),
+    isLoading: !attendanceError && !attendanceData,
     isError: attendanceError,
     mutate,
   };
 };
 
 export const useEventAttendanceStatuses = (eventId?: string) => {
-  const { data: authData, error: authError } =
-    useSWR<AuthStatusDto>(`/api/auth/status`);
+  const { isAuthenticated } = useAuthStatus();
 
   const {
     data: attendanceData,
     error: attendanceError,
     mutate,
   } = useSWR<Attendance[]>(
-    authData?.isAuthenticated
+    isAuthenticated
       ? eventId
         ? `/api/event/${eventId}/attendances`
         : null
@@ -133,8 +116,7 @@ export const useEventAttendanceStatuses = (eventId?: string) => {
 
   return {
     attendances: attendanceData,
-    isLoading:
-      (!attendanceError || !authError) && (!attendanceData || !authData),
+    isLoading: !attendanceError && !attendanceData,
     isError: attendanceError,
     mutate,
   };

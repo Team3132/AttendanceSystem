@@ -15,6 +15,7 @@ import { EditDetailsModal } from "./components/EditDetailsDrawer";
 import { ScanIn } from "./components/ScaninModal";
 import { fetcher } from "./hooks";
 import { CalendarScreen, Layout } from "./screens";
+import { Agenda } from "./screens/Agenda";
 import { Home } from "./screens/Home";
 import { ProfileScreen } from "./screens/Profile";
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -33,6 +34,14 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
+              <Route
+                path="calendar/agenda"
+                element={
+                  <AuthWrapper>
+                    <Agenda />
+                  </AuthWrapper>
+                }
+              />
               <Route
                 element={
                   <AuthWrapper>
