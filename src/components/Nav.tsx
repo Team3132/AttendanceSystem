@@ -31,7 +31,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthStatus } from "../hooks";
 import { UserAvatar } from "./UserAvatar";
 // import Logo from "../logo.svg";
@@ -89,6 +89,7 @@ const DesktopNav: React.FC<StackProps> = ({ ...props }) => {
                 as={Button}
                 rightIcon={<ChevronDownIcon />}
                 disabled={navItem.disabled}
+                variant={"ghost"}
               >
                 {navItem.label}
               </MenuButton>
@@ -116,6 +117,7 @@ const DesktopNav: React.FC<StackProps> = ({ ...props }) => {
           return (
             <Button
               disabled={navItem.disabled}
+              variant={"ghost"}
               onClick={() => {
                 if (navItem.url) {
                   if (navItem.external) {
@@ -131,6 +133,12 @@ const DesktopNav: React.FC<StackProps> = ({ ...props }) => {
           );
         }
       })}
+      <IconButton
+        aria-label="switch theme"
+        onClick={toggleColorMode}
+        icon={colorMode === "dark" ? <MdDarkMode /> : <MdLightMode />}
+        variant="ghost"
+      />
     </HStack>
   );
 };
@@ -141,6 +149,7 @@ const MobileDrawer: React.FC<Omit<DrawerProps, "children">> = ({
   const navigate = useNavigate();
   const { colorMode, toggleColorMode } = useColorMode();
   const { isAuthenticated } = useAuthStatus();
+  const location = useLocation();
 
   return (
     <Drawer {...props}>
@@ -154,7 +163,7 @@ const MobileDrawer: React.FC<Omit<DrawerProps, "children">> = ({
               {navItems(isAuthenticated).map((navItem) => {
                 return (
                   <>
-                    <AccordionItem>
+                    <AccordionItem isDisabled={navItem.disabled}>
                       <AccordionButton>
                         <Button
                           variant={"ghost"}
@@ -176,9 +185,10 @@ const MobileDrawer: React.FC<Omit<DrawerProps, "children">> = ({
                       </AccordionButton>
                       {navItem.subitems ? (
                         <AccordionPanel>
-                          {navItem.subitems?.map((subItem, index) => (
-                            <Stack>
+                          <Stack>
+                            {navItem.subitems?.map((subItem, index) => (
                               <Button
+                                variant={"ghost"}
                                 onClick={() => {
                                   if (subItem.url) {
                                     if (subItem.external) {
@@ -189,7 +199,7 @@ const MobileDrawer: React.FC<Omit<DrawerProps, "children">> = ({
                                     }
                                   }
                                 }}
-                                variant={"ghost"}
+                                isDisabled={subItem.disabled}
                                 borderRadius={0}
                                 width="100%"
                                 key={index}
@@ -197,8 +207,8 @@ const MobileDrawer: React.FC<Omit<DrawerProps, "children">> = ({
                               >
                                 {subItem.label}
                               </Button>
-                            </Stack>
-                          )) ?? null}
+                            )) ?? null}
+                          </Stack>
                         </AccordionPanel>
                       ) : null}
                     </AccordionItem>
@@ -212,7 +222,6 @@ const MobileDrawer: React.FC<Omit<DrawerProps, "children">> = ({
                 <IconButton
                   aria-label="switch theme"
                   onClick={toggleColorMode}
-                  className="umami--click--theme-button"
                   icon={colorMode === "dark" ? <MdDarkMode /> : <MdLightMode />}
                 />
               </ButtonGroup>
