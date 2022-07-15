@@ -1,4 +1,10 @@
 import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
+  Box,
   Center,
   Container,
   Divider,
@@ -13,19 +19,14 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { DateTime } from "luxon";
-import { useNavigate, useParams } from "react-router-dom";
-import { useAuthStatus, useEvent, useEventRSVPStatus } from "../hooks";
+import { useParams } from "react-router-dom";
+import { useEvent } from "../hooks";
+import { AttendedList } from "./AttendedList";
+import { RSVPList } from "./RSVPList";
 
 export const ViewDetailsModal: React.FC = () => {
   const { eventId } = useParams();
   const { event, isLoading, isError, mutate } = useEvent(eventId);
-  const {
-    rsvp,
-    isLoading: isRSVPStatusLoading,
-    isError: isRSVPStatusError,
-  } = useEventRSVPStatus(event?.id);
-  const { roles } = useAuthStatus();
-  const navigate = useNavigate();
 
   return (
     <>
@@ -73,6 +74,42 @@ export const ViewDetailsModal: React.FC = () => {
                   : "No description"}
               </Text>
             </Stack>
+            <Accordion allowMultiple>
+              <AccordionItem>
+                {({ isExpanded }) => (
+                  <>
+                    <h2>
+                      <AccordionButton>
+                        <Box flex="1" textAlign="left">
+                          RSVPs
+                        </Box>
+                        <AccordionIcon />
+                      </AccordionButton>
+                    </h2>
+                    <AccordionPanel pb={4}>
+                      {isExpanded ? <RSVPList eventId={event?.id} /> : null}
+                    </AccordionPanel>
+                  </>
+                )}
+              </AccordionItem>
+              <AccordionItem>
+                {({ isExpanded }) => (
+                  <>
+                    <h2>
+                      <AccordionButton>
+                        <Box flex="1" textAlign="left">
+                          Attendance
+                        </Box>
+                        <AccordionIcon />
+                      </AccordionButton>
+                    </h2>
+                    <AccordionPanel pb={4}>
+                      {isExpanded ? <AttendedList eventId={event?.id} /> : null}
+                    </AccordionPanel>
+                  </>
+                )}
+              </AccordionItem>
+            </Accordion>
             {/* <RSVPButtonRow eventId={event?.id} /> */}
             {/* <AttendanceButtonRow eventId={event?.id} /> */}
             {/* <RSVPList eventId={event?.id} /> */}
