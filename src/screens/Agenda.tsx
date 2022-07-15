@@ -112,3 +112,5 @@ export const Agenda: React.FC = () => {
     </>
   );
 };
+
+export default Agenda;

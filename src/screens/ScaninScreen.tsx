@@ -12,9 +12,9 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
+import { AttendedList } from "../components/AttendedList";
 import { EventService, ScaninDto } from "../generated";
 import { useEvent, useEventAttendanceStatuses } from "../hooks";
-import { AttendedList } from "./AttendedList";
 
 export const ScanIn: React.FC = () => {
   const { eventId } = useParams();
@@ -89,3 +89,4 @@ export const ScanIn: React.FC = () => {
     </>
   );
 };
+export default ScanIn;

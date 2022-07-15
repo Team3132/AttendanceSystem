@@ -14,3 +14,5 @@ export const Layout: React.FC = () => {
     </Flex>
   );
 };
+
+export default Layout;

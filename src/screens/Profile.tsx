@@ -127,3 +127,5 @@ export const ProfileScreen: React.FC = () => {
     </Container>
   );
 };
+
+export default ProfileScreen;

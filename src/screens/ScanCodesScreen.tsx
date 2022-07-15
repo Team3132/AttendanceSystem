@@ -23,7 +23,7 @@ import {
 import { useScancodes } from "../hooks";
 import { generateString } from "../utils";
 
-export const ScancodeList: React.FC = () => {
+export const ScancodeScreen: React.FC = () => {
   const { scancodes, mutate } = useScancodes();
   const {
     formState: { errors, isSubmitting },
@@ -150,3 +150,5 @@ const ScancodeInput: React.FC<{
     </InputGroup>
   );
 };
+
+export default ScancodeScreen;

@@ -174,3 +174,5 @@ const EventMenuList: React.FC<
     </MenuList>
   );
 };
+
+export default CalendarScreen;

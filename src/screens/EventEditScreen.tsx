@@ -14,7 +14,7 @@ import {
   Switch,
   Textarea,
 } from "@chakra-ui/react";
-import { pick } from "lodash";
+import pick from "lodash.pick";
 import { DateTime } from "luxon";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -24,7 +24,7 @@ import { UpdateEventDto } from "../generated";
 import { useAuthStatus, useEvent } from "../hooks";
 import { deleteEvent, updateEvent } from "../utils";
 
-export const EditDetailsModal: React.FC = () => {
+export const EventEditScreen: React.FC = () => {
   const { eventId } = useParams();
   const { event, isLoading, isError, mutate } = useEvent(eventId);
   const { roles } = useAuthStatus();
@@ -215,3 +215,5 @@ export const EditDetailsModal: React.FC = () => {
     </form>
   );
 };
+
+export default EventEditScreen;

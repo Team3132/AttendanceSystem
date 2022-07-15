@@ -20,11 +20,11 @@ import {
 } from "@chakra-ui/react";
 import { DateTime } from "luxon";
 import { useParams } from "react-router-dom";
+import { AttendedList } from "../components/AttendedList";
+import { RSVPList } from "../components/RSVPList";
 import { useEvent } from "../hooks";
-import { AttendedList } from "./AttendedList";
-import { RSVPList } from "./RSVPList";
 
-export const ViewDetailsModal: React.FC = () => {
+export const EventDetailsScreen: React.FC = () => {
   const { eventId } = useParams();
   const { event, isLoading, isError, mutate } = useEvent(eventId);
 
@@ -119,3 +119,5 @@ export const ViewDetailsModal: React.FC = () => {
     </>
   );
 };
+
+export default EventDetailsScreen;

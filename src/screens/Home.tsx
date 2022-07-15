@@ -35,3 +35,5 @@ export const Home: React.FC = () => {
     </Container>
   );
 };
+
+export default Home;
