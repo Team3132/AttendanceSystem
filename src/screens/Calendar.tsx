@@ -10,10 +10,10 @@ import {
   Portal,
   useConst,
 } from "@chakra-ui/react";
+import loadable from "@loadable/component";
 import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
 import {
-  Calendar,
   EventProps,
   EventWrapperProps,
   luxonLocalizer,
@@ -22,6 +22,11 @@ import {
 import Toolbar from "react-big-calendar/lib/Toolbar";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useAuthStatus, useEvents } from "../hooks";
+
+const Calendar = loadable(() => import("react-big-calendar"), {
+  resolveComponent: (components) => components.Calendar,
+});
+
 export const CalendarScreen: React.FC = () => {
   /** User Data */
   const { isAdmin } = useAuthStatus();
@@ -75,11 +80,19 @@ export const CalendarScreen: React.FC = () => {
             resource: "any",
           })) ?? []
         }
-        startAccessor="start"
-        endAccessor="end"
         style={{ height: 800 }}
         selectable={isAdmin}
-        onSelectEvent={(event) => selectEventHandler(event)}
+        onSelectEvent={(event) => {
+          const typedEvent = event as {
+            id: string;
+            allDay: boolean;
+            title: string;
+            start: Date;
+            end: Date;
+            resource: string;
+          };
+          selectEventHandler(typedEvent);
+        }}
         onSelectSlot={selectSlotHandler}
         onRangeChange={(data) => {
           const dates = data as {
