@@ -50,6 +50,7 @@ const MobileDrawer: React.FC<
                     <AccordionButton>
                       <Button
                         variant={"ghost"}
+                        leftIcon={navItem.icon}
                         borderRadius={0}
                         width="100%"
                         onClick={() => {
@@ -72,6 +73,7 @@ const MobileDrawer: React.FC<
                           {navItem.subitems?.map((subItem, subItemIndex) => (
                             <Button
                               variant={"ghost"}
+                              leftIcon={subItem.icon}
                               onClick={() => {
                                 if (subItem.url) {
                                   if (subItem.external) {
