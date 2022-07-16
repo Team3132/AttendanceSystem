@@ -12,6 +12,7 @@ export default defineConfig({
       registerType: "autoUpdate",
       injectRegister: "auto",
       manifest: {
+        theme_color: "#ffffff",
         icons: [
           {
             src: "/android-chrome-192x192.png",
@@ -22,6 +23,11 @@ export default defineConfig({
             src: "/android-chrome-512x512.png",
             sizes: "512x512",
             type: "image/png",
+          },
+          {
+            src: "/safari-pinned-tab.svg",
+            type: "image/svg+xml",
+            purpose: "any maskable",
           },
         ],
       },
