@@ -13,6 +13,7 @@ export default defineConfig({
       injectRegister: "auto",
       workbox: {
         navigateFallbackDenylist: [/^\/api/],
+        cleanupOutdatedCaches: true,
       },
       manifest: {
         name: "TDU Attendance",
