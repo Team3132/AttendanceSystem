@@ -1,6 +1,6 @@
 import { Button, ButtonGroup } from "@chakra-ui/react";
 import { Attendance } from "@generated";
-import { useAuthStatus, useEventAttendanceStatus } from "@hooks";
+import { useEventAttendanceStatus } from "@hooks";
 import { setEventAttendanceStatus } from "@utils";
 import { useSWRConfig } from "swr";
 
@@ -13,10 +13,9 @@ export const AttendanceButtonRow: React.FC<AttendanceButtonRowProps> = ({
 }) => {
   const { attendance, mutate } = useEventAttendanceStatus(eventId);
   const { mutate: globalMutate } = useSWRConfig();
-  const { isAdmin } = useAuthStatus();
 
   return (
-    <ButtonGroup isAttached isDisabled={!isAdmin}>
+    <ButtonGroup isAttached>
       <Button
         colorScheme={"green"}
         variant={

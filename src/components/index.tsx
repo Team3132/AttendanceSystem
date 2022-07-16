@@ -48,3 +48,4 @@ export const CalendarWithLocalizer = loadable(
 export const ChakraProvider = loadable(() => import("./ChakraProvider"));
 export const SWToast = loadable(() => import("./SWToast"));
 export const UserList = loadable(() => import("./UserList"));
+export const RSVPSelect = loadable(() => import("./RSVPSelect"));

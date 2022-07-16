@@ -1,5 +1,8 @@
+import { RSVPSelect } from "@/components";
 import {
   Badge,
+  Box,
+  Center,
   Container,
   Divider,
   Flex,
@@ -85,26 +88,49 @@ export const Agenda: React.FC = () => {
                 borderWidth={"medium"}
                 borderRadius={"lg"}
               >
-                {event.allDay ? (
-                  <Badge borderRadius="full" px="2" colorScheme="blue">
-                    All Day
-                  </Badge>
-                ) : null}
-                <Text fontSize="md" fontWeight={"semibold"} color="gray.600">
-                  {DateTime.fromISO(event.startDate).toLocaleString()}
-                  {" - "}
-                  {DateTime.fromISO(event.endDate).toLocaleString()}
-                </Text>
+                <Flex>
+                  <Box>
+                    {event.allDay ? (
+                      <Badge borderRadius="full" px="2" colorScheme="blue">
+                        All Day
+                      </Badge>
+                    ) : null}
+                    <Text
+                      fontSize="md"
+                      fontWeight={"semibold"}
+                      color="gray.600"
+                    >
+                      {DateTime.fromISO(event.startDate).toLocaleString()}
+                      {" - "}
+                      {DateTime.fromISO(event.endDate).toLocaleString()}
+                    </Text>
 
-                <Text
-                  fontSize="xl"
-                  fontWeight={"semibold"}
-                  as={Link}
-                  to={`/event/${event.id}/view`}
-                >
-                  {event.title}
-                </Text>
-                <Text>{event.description}</Text>
+                    <Text
+                      fontSize="xl"
+                      fontWeight={"semibold"}
+                      as={Link}
+                      to={`/event/${event.id}/view`}
+                    >
+                      {event.title}
+                    </Text>
+                    <Text>{event.description}</Text>
+                  </Box>
+                  <Spacer />
+                  <Center>
+                    <FormControl width={"8em"}>
+                      <FormLabel
+                        htmlFor={`rsvpSelect${event.id}`}
+                        textAlign="center"
+                      >
+                        RSVP Status
+                      </FormLabel>
+                      <RSVPSelect
+                        eventId={event.id}
+                        id={`rsvpSelect${event.id}`}
+                      />
+                    </FormControl>
+                  </Center>
+                </Flex>
               </LinkBox>
             )) ?? <>No events.</>
         )}
