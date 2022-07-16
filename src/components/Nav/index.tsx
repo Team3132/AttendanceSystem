@@ -10,7 +10,12 @@ import {
 } from "@chakra-ui/react";
 import loadable from "@loadable/component";
 import { ReactElement, useEffect } from "react";
-import { MdAccountCircle, MdCalendarToday, MdHome } from "react-icons/md";
+import {
+  MdAccountCircle,
+  MdCalendarToday,
+  MdHome,
+  MdLock,
+} from "react-icons/md";
 import { UserAvatar } from "../";
 import { useAuthStatus } from "../../hooks";
 export interface NavItem {
@@ -25,7 +30,7 @@ export interface NavItem {
 const DesktopNav = loadable(() => import("./DesktopNav"));
 const MobileDrawer = loadable(() => import("./MobileDrawer"));
 
-const navItems = (isAuthenticated?: boolean): NavItem[] => [
+const navItems = (isAuthenticated?: boolean, isAdmin?: boolean): NavItem[] => [
   { url: "/", label: "Home", icon: <Icon as={MdHome} /> },
   ...(isAuthenticated
     ? [
@@ -57,13 +62,22 @@ const navItems = (isAuthenticated?: boolean): NavItem[] => [
         url: "/api/auth/discord",
         external: true,
       },
+  ...(isAdmin
+    ? [
+        {
+          label: "Admin",
+          icon: <Icon as={MdLock} />,
+          url: "/admin",
+        },
+      ]
+    : []),
 ];
 
 export const Nav: React.FC = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const isMobile = useBreakpointValue<boolean>({ base: true, md: false });
-  const { isAuthenticated } = useAuthStatus();
-  const menuItems = navItems(isAuthenticated);
+  const { isAuthenticated, isAdmin } = useAuthStatus();
+  const menuItems = navItems(isAuthenticated, isAdmin);
   useEffect(() => {
     if (!isMobile) {
       onClose();

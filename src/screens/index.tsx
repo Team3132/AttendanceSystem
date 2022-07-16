@@ -30,3 +30,6 @@ export const CreateEvent = loadable(() => import("./CreateEventScreen"), {
   fallback: <Skeleton />,
 });
 export const ErrorBoundary = loadable(() => import("./ErrorBoundary"));
+export const AdminScreen = loadable(() => import("./Admin"), {
+  fallback: <Skeleton />,
+});

@@ -1,6 +1,7 @@
 import { AuthWrapper, ChakraAlert, ChakraProvider, SWToast } from "@components";
 import loadable from "@loadable/component";
 import {
+  AdminScreen,
   Agenda,
   Calendar,
   CreateEvent,
@@ -62,6 +63,14 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                     </AuthWrapper>
                   }
                   path="calendar"
+                />
+                <Route
+                  element={
+                    <AuthWrapper adminOnly>
+                      <AdminScreen />
+                    </AuthWrapper>
+                  }
+                  path="admin"
                 />
                 <Route
                   element={
