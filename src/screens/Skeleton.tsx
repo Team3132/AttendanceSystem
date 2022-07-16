@@ -1,17 +1,13 @@
-import { Box, Divider, Heading, Skeleton } from "@chakra-ui/react";
+import { Divider, Heading, Skeleton } from "@chakra-ui/react";
 
 const SkeletonScreen: React.FC = () => {
   return (
     <>
-      <Skeleton>
-        <Heading textAlign={"center"} mt={6}>
-          Agenda
-        </Heading>
-      </Skeleton>
+      <Heading textAlign={"center"} mt={6}>
+        <Skeleton>Skeleton</Skeleton>
+      </Heading>
+
       <Divider my={6} />
-      <Skeleton>
-        <Box width="100%" height="500px" />
-      </Skeleton>
     </>
   );
 };
