@@ -4,6 +4,7 @@ import {
   Agenda,
   Calendar,
   CreateEvent,
+  ErrorBoundary,
   EventDetailsScreen,
   EventEditScreen,
   Home,
@@ -29,70 +30,72 @@ const AlertProvider = loadable(() => import("react-alert"), {
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>
   <ChakraProvider>
-    <SWRConfigWithFetcher>
-      <AlertProvider template={ChakraAlert}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<Home />} />
-              <Route path="event/create" element={<CreateEvent />} />
-              <Route path="event/:eventId">
+    <ErrorBoundary>
+      <SWRConfigWithFetcher>
+        <AlertProvider template={ChakraAlert}>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Layout />}>
+                <Route index element={<Home />} />
+                <Route path="event/create" element={<CreateEvent />} />
+                <Route path="event/:eventId">
+                  <Route
+                    path="edit"
+                    element={
+                      <AuthWrapper adminOnly>
+                        <EventEditScreen />
+                      </AuthWrapper>
+                    }
+                  />
+                  <Route path="view" element={<EventDetailsScreen />} />
+                  <Route path="scanin" element={<ScaninScreen />} />
+                </Route>
                 <Route
-                  path="edit"
+                  path="calendar/agenda"
                   element={
-                    <AuthWrapper adminOnly>
-                      <EventEditScreen />
+                    <AuthWrapper>
+                      <Agenda />
                     </AuthWrapper>
                   }
                 />
-                <Route path="view" element={<EventDetailsScreen />} />
-                <Route path="scanin" element={<ScaninScreen />} />
+                <Route
+                  element={
+                    <AuthWrapper>
+                      <Calendar />
+                    </AuthWrapper>
+                  }
+                  path="calendar"
+                />
+                <Route
+                  element={
+                    <AuthWrapper>
+                      <ScancodeScreen />
+                    </AuthWrapper>
+                  }
+                  path="codes"
+                />
+                <Route
+                  element={
+                    <AuthWrapper>
+                      <Profile />
+                    </AuthWrapper>
+                  }
+                  path="profile"
+                />
+                <Route
+                  element={
+                    <AuthWrapper adminOnly>
+                      <Profile />
+                    </AuthWrapper>
+                  }
+                  path="profile/:userId"
+                />
               </Route>
-              <Route
-                path="calendar/agenda"
-                element={
-                  <AuthWrapper>
-                    <Agenda />
-                  </AuthWrapper>
-                }
-              />
-              <Route
-                element={
-                  <AuthWrapper>
-                    <Calendar />
-                  </AuthWrapper>
-                }
-                path="calendar"
-              />
-              <Route
-                element={
-                  <AuthWrapper>
-                    <ScancodeScreen />
-                  </AuthWrapper>
-                }
-                path="codes"
-              />
-              <Route
-                element={
-                  <AuthWrapper>
-                    <Profile />
-                  </AuthWrapper>
-                }
-                path="profile"
-              />
-              <Route
-                element={
-                  <AuthWrapper adminOnly>
-                    <Profile />
-                  </AuthWrapper>
-                }
-                path="profile/:userId"
-              />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </AlertProvider>
-    </SWRConfigWithFetcher>
+            </Routes>
+          </BrowserRouter>
+        </AlertProvider>
+      </SWRConfigWithFetcher>
+    </ErrorBoundary>
   </ChakraProvider>
   // </React.StrictMode>
 );

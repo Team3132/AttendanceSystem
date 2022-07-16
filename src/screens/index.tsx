@@ -29,3 +29,4 @@ export const ScaninScreen = loadable(() => import("./ScaninScreen"), {
 export const CreateEvent = loadable(() => import("./CreateEventScreen"), {
   fallback: <Skeleton />,
 });
+export const ErrorBoundary = loadable(() => import("./ErrorBoundary"));
