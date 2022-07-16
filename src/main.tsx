@@ -1,4 +1,4 @@
-import { AuthWrapper, ChakraAlert } from "@components";
+import { AuthWrapper, ChakraAlert, ChakraProvider } from "@components";
 import loadable from "@loadable/component";
 import {
   Agenda,
@@ -14,10 +14,7 @@ import {
 } from "@screens";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { theme } from "./utils";
-const ChakraProvider = loadable(() => import("@chakra-ui/react"), {
-  resolveComponent: (components) => components.ChakraProvider,
-});
+
 const SWRConfigWithFetcher = loadable(
   () => import("./components/SWRProviderWithFetcher")
 );
@@ -27,7 +24,7 @@ const AlertProvider = loadable(() => import("react-alert"), {
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>
-  <ChakraProvider theme={theme}>
+  <ChakraProvider>
     <SWRConfigWithFetcher>
       <AlertProvider template={ChakraAlert}>
         <BrowserRouter>
