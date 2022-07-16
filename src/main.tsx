@@ -1,4 +1,4 @@
-import { AuthWrapper, ChakraAlert, ChakraProvider } from "@components";
+import { AuthWrapper, ChakraAlert, ChakraProvider, SWToast } from "@components";
 import loadable from "@loadable/component";
 import {
   Agenda,
@@ -27,6 +27,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>
   <ChakraProvider>
     <ErrorBoundary>
+      <SWToast />
       <SWRConfigWithFetcher>
         <AlertProvider template={ChakraAlert}>
           <BrowserRouter>
