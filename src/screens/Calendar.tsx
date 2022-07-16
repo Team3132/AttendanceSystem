@@ -1,10 +1,10 @@
 import { Divider, Heading, useConst } from "@chakra-ui/react";
+import { CalendarWithLocalizer } from "@components";
+import { useAuthStatus, useEvents } from "@hooks";
 import { useEffect, useState } from "react";
 import { SlotInfo } from "react-big-calendar";
 import Toolbar from "react-big-calendar/lib/Toolbar";
 import { Outlet, useNavigate } from "react-router-dom";
-import { CalendarWithLocalizer } from "../components";
-import { useAuthStatus, useEvents } from "../hooks";
 
 export const CalendarScreen: React.FC = () => {
   /** User Data */

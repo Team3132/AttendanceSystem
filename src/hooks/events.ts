@@ -1,12 +1,10 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useSWR from "swr";
-import { Attendance, AuthStatusDto, Event, Rsvp } from "../generated";
-import { useAuthStatus } from "./auth";
+import { Attendance, Event, Rsvp } from "@generated";
+import { useAuthStatus } from "@hooks";
 
 export const useEvents = (take?: number, from?: Date, to?: Date) => {
   const { isAuthenticated } = useAuthStatus();
-  const [searchParams, setSearchParams] = useState<string | undefined>();
 
   const {
     data: eventData,

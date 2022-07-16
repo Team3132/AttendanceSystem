@@ -1,8 +1,8 @@
 import { Button, ButtonGroup } from "@chakra-ui/react";
+import { Rsvp } from "@generated";
+import { useEventRSVPStatus } from "@hooks";
+import { setEventRSVPStatus } from "@utils";
 import { useSWRConfig } from "swr";
-import { Rsvp } from "../generated";
-import { useEventRSVPStatus } from "../hooks";
-import { setEventRSVPStatus } from "../utils";
 
 export interface RSVPButtonRowProps {
   eventId?: string;

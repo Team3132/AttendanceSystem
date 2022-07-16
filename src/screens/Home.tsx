@@ -6,8 +6,8 @@ import {
   Heading,
   Text,
 } from "@chakra-ui/react";
+import { useAuthStatus } from "@hooks";
 import { Link } from "react-router-dom";
-import { useAuthStatus } from "../hooks";
 
 export const Home: React.FC = () => {
   const { isAuthenticated } = useAuthStatus();

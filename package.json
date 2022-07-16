@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "generate": "yarn openapi -i http://localhost:3000/api-json -o ./src/generated -c axios"
@@ -45,6 +45,7 @@
     "prettier": "^2.7.1",
     "rollup-plugin-visualizer": "^5.7.0",
     "typescript": "^4.6.3",
-    "vite": "^2.9.9"
+    "vite": "^2.9.9",
+    "vite-tsconfig-paths": "^3.5.0"
   }
 }

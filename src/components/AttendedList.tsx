@@ -9,8 +9,8 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
+import { useAuthStatus, useEventAttendanceStatuses, useUser } from "@hooks";
 import { DateTime } from "luxon";
-import { useAuthStatus, useEventAttendanceStatuses, useUser } from "../hooks";
 
 export interface AttendedListProps {
   eventId?: string;

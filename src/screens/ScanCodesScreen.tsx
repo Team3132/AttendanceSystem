@@ -13,15 +13,15 @@ import {
   Stack,
   useClipboard,
 } from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
 import {
   ApiError,
   CreateScancodeDto,
   Scancode,
   ScancodeService,
-} from "../generated";
-import { useScancodes } from "../hooks";
-import { generateString } from "../utils";
+} from "@generated";
+import { useScancodes } from "@hooks";
+import { generateString } from "@utils";
+import { useForm } from "react-hook-form";
 
 export const ScancodeScreen: React.FC = () => {
   const { scancodes, mutate } = useScancodes();

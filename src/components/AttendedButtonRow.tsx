@@ -1,8 +1,8 @@
 import { Button, ButtonGroup } from "@chakra-ui/react";
+import { Attendance } from "@generated";
+import { useAuthStatus, useEventAttendanceStatus } from "@hooks";
+import { setEventAttendanceStatus } from "@utils";
 import { useSWRConfig } from "swr";
-import { Attendance } from "../generated";
-import { useAuthStatus, useEventAttendanceStatus } from "../hooks";
-import { setEventAttendanceStatus } from "../utils";
 
 export interface AttendanceButtonRowProps {
   eventId?: string;

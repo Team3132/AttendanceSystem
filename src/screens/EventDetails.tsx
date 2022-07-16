@@ -18,10 +18,10 @@ import {
   Tag,
   Text,
 } from "@chakra-ui/react";
+import { AttendedList, RSVPList } from "@components";
+import { useEvent } from "@hooks";
 import { DateTime } from "luxon";
 import { useParams } from "react-router-dom";
-import { AttendedList, RSVPList } from "../components";
-import { useEvent } from "../hooks";
 
 export const EventDetailsScreen: React.FC = () => {
   const { eventId } = useParams();

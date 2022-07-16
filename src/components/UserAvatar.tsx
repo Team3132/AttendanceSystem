@@ -1,5 +1,5 @@
 import { Avatar, AvatarProps } from "@chakra-ui/react";
-import { userAvatar, useUser } from "../hooks";
+import { userAvatar, useUser } from "@hooks";
 
 export type UserAvatarProps = {
   userId?: string;

@@ -1,8 +1,8 @@
 import { Spinner } from "@chakra-ui/react";
+import { useAuthStatus } from "@hooks";
 import { useEffect } from "react";
 import { useAlert } from "react-alert";
 import { useNavigate } from "react-router-dom";
-import { useAuthStatus } from "../hooks";
 export interface AuthWrapperProps {
   children: any;
   adminOnly?: boolean;

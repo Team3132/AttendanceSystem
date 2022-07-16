@@ -1,10 +1,10 @@
+import { AuthWrapper } from "@components";
 import {
   IndexRouteProps,
   LayoutRouteProps,
   PathRouteProps,
   Route,
 } from "react-router-dom";
-import { AuthWrapper } from "./AuthWrapper";
 
 export type AuthRouteProps = (
   | PathRouteProps

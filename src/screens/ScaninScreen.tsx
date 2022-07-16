@@ -10,11 +10,11 @@ import {
   Spinner,
   Stack,
 } from "@chakra-ui/react";
+import { AttendedList } from "@components";
+import { EventService, ScaninDto } from "@generated";
+import { useEvent, useEventAttendanceStatuses } from "@hooks";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import { AttendedList } from "../components";
-import { EventService, ScaninDto } from "../generated";
-import { useEvent, useEventAttendanceStatuses } from "../hooks";
 
 export const ScanIn: React.FC = () => {
   const { eventId } = useParams();

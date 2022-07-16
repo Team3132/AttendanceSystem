@@ -1,5 +1,5 @@
+import { fetcher } from "@hooks";
 import loadable from "@loadable/component";
-import fetcher from "../hooks/fetcher";
 
 const SWRConfig = loadable(() => import("swr"), {
   resolveComponent: (components) => components.SWRConfig,

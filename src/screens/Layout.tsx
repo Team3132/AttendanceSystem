@@ -1,7 +1,7 @@
 import { Container, Flex } from "@chakra-ui/react";
+import { Nav } from "@components";
 import * as React from "react";
 import { Outlet } from "react-router-dom";
-import { Nav } from "../components";
 
 export const Layout: React.FC = () => {
   return (

@@ -9,8 +9,8 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
+import { useAuthStatus, useEventRSVPStatuses, useUser } from "@hooks";
 import { DateTime } from "luxon";
-import { useAuthStatus, useEventRSVPStatuses, useUser } from "../hooks";
 
 export interface RSVPListProps {
   eventId?: string;

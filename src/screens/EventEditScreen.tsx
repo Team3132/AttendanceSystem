@@ -14,15 +14,15 @@ import {
   Switch,
   Textarea,
 } from "@chakra-ui/react";
+import { UpdateEventDto } from "@generated";
+import { useAuthStatus, useEvent } from "@hooks";
+import { deleteEvent, updateEvent } from "@utils";
 import pick from "lodash.pick";
 import { DateTime } from "luxon";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSWRConfig } from "swr";
-import { UpdateEventDto } from "../generated";
-import { useAuthStatus, useEvent } from "../hooks";
-import { deleteEvent, updateEvent } from "../utils";
 
 export const EventEditScreen: React.FC = () => {
   const { eventId } = useParams();

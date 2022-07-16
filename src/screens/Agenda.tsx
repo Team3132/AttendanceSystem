@@ -13,10 +13,10 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { useEvents } from "@hooks";
 import { DateTime } from "luxon";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useEvents } from "../hooks";
 
 export const Agenda: React.FC = () => {
   const [startRange, setStartRange] = useState<DateTime>(DateTime.now());

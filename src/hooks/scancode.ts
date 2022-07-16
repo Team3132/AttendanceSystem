@@ -1,6 +1,6 @@
 import useSWR from "swr";
-import { AuthStatusDto, Scancode } from "../generated";
-import { useAuthStatus } from "./auth";
+import { Scancode } from "@generated";
+import { useAuthStatus } from "@hooks";
 
 export const useScancodes = () => {
   const { isAuthenticated } = useAuthStatus();

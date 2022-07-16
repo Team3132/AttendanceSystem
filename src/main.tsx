@@ -1,7 +1,5 @@
+import { AuthWrapper, ChakraAlert } from "@components";
 import loadable from "@loadable/component";
-import ReactDOM from "react-dom/client";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { AuthWrapper, ChakraAlert } from "./components";
 import {
   Agenda,
   Calendar,
@@ -13,7 +11,9 @@ import {
   Profile,
   ScancodeScreen,
   ScaninScreen,
-} from "./screens";
+} from "@screens";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 const ChakraProvider = loadable(() => import("@chakra-ui/react"), {
   resolveComponent: (components) => components.ChakraProvider,
 });

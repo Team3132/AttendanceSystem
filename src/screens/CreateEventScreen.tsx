@@ -10,12 +10,12 @@ import {
   Switch,
   Textarea,
 } from "@chakra-ui/react";
+import { CreateEventDto } from "@generated";
+import { createEvent } from "@utils";
 import { DateTime } from "luxon";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSWRConfig } from "swr";
-import { CreateEventDto } from "../generated";
-import { createEvent } from "../utils";
 
 export const CreateEventScreen: React.FC = () => {
   const navigate = useNavigate();

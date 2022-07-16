@@ -7,7 +7,7 @@ import {
   UpdateEventDto,
   UpdateUserDto,
   User,
-} from "../generated";
+} from "@generated";
 
 export const updateEvent = async (id: Event["id"], data: UpdateEventDto) => {
   const response = await axios.patch<Event>(`/api/event/${id}`, data, {

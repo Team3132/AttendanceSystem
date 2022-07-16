@@ -12,14 +12,14 @@ import {
   Stack,
   useClipboard,
 } from "@chakra-ui/react";
+import { UserAvatar } from "@components";
+import { UpdateUserDto } from "@generated";
+import { userAvatar, useUser } from "@hooks";
+import { editUser } from "@utils";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { useSWRConfig } from "swr";
-import { UserAvatar } from "../components";
-import { UpdateUserDto } from "../generated";
-import { userAvatar, useUser } from "../hooks";
-import { editUser } from "../utils";
 
 export const ProfileScreen: React.FC = () => {
   const { userId } = useParams();
