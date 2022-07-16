@@ -1,5 +1,4 @@
 import loadable from "@loadable/component";
-import "react-big-calendar/lib/css/react-big-calendar.css";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthWrapper, ChakraAlert } from "./components";

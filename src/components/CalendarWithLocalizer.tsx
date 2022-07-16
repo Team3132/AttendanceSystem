@@ -5,6 +5,7 @@ import {
   Event,
   luxonLocalizer,
 } from "react-big-calendar";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 
 export const CalendarWithLocalizer = (
   props: JSX.IntrinsicAttributes &
