@@ -75,8 +75,7 @@ export const Agenda: React.FC = () => {
           </FormControl>
         </Flex>
       </Container>
-      <Divider my={6} />
-      <Accordion defaultIndex={[0]} allowMultiple>
+      <Accordion defaultIndex={[0]} allowMultiple my={6}>
         <AccordionItem>
           <h2>
             <AccordionButton>
@@ -90,6 +89,12 @@ export const Agenda: React.FC = () => {
             <Stack>
               {isLoading ? (
                 <Spinner />
+              ) : events?.length === 0 ? (
+                <Center>
+                  <Box borderRadius={"md"} borderWidth="1px" p={6}>
+                    No events found
+                  </Box>
+                </Center>
               ) : (
                 events
                   ?.sort(
@@ -152,13 +157,12 @@ export const Agenda: React.FC = () => {
                         </Center>
                       </Flex>
                     </LinkBox>
-                  )) ?? <>No events.</>
+                  ))
               )}
             </Stack>
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
-      <Divider my={6} />
       <Container maxW="container.sm">
         <StatusForRangeButton
           // w="14em"
