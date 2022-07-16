@@ -11,6 +11,9 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       injectRegister: "auto",
+      workbox: {
+        navigateFallbackDenylist: [/^\/api/],
+      },
       manifest: {
         name: "TDU Attendance",
         short_name: "TDU",

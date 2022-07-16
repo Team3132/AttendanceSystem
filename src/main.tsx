@@ -1,4 +1,4 @@
-import { AuthWrapper, ChakraAlert } from "@components";
+import { AuthWrapper, ChakraAlert, ChakraProvider } from "@components";
 import loadable from "@loadable/component";
 import {
   Agenda,
@@ -15,10 +15,6 @@ import {
 } from "@screens";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
-const ChakraProvider = loadable(() => import("@chakra-ui/react"), {
-  resolveComponent: (comps) => comps.ChakraProvider,
-});
 
 const SWRConfigWithFetcher = loadable(
   () => import("./components/SWRProviderWithFetcher")

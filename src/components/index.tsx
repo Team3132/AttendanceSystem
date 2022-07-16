@@ -45,3 +45,4 @@ export const CalendarWithLocalizer = loadable(
     ),
   }
 );
+export const ChakraProvider = loadable(() => import("./ChakraProvider"));
