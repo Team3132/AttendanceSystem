@@ -1,16 +1,10 @@
 import { Divider, Heading, useConst } from "@chakra-ui/react";
-import loadable from "@loadable/component";
-import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
-import { luxonLocalizer, SlotInfo } from "react-big-calendar";
+import { SlotInfo } from "react-big-calendar";
 import Toolbar from "react-big-calendar/lib/Toolbar";
 import { Outlet, useNavigate } from "react-router-dom";
 import { CalendarWithLocalizer } from "../components";
 import { useAuthStatus, useEvents } from "../hooks";
-
-const Calendar = loadable(() => import("react-big-calendar"), {
-  resolveComponent: (components) => components.Calendar,
-});
 
 export const CalendarScreen: React.FC = () => {
   /** User Data */
@@ -25,7 +19,6 @@ export const CalendarScreen: React.FC = () => {
     isLoading: isEventsLoading,
     isError: isEventsError,
   } = useEvents(undefined, startRange, endRange);
-  const localizer = luxonLocalizer(DateTime);
   const navigate = useNavigate();
 
   /** Handlers */

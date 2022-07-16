@@ -4,7 +4,12 @@ import { visualizer } from "rollup-plugin-visualizer";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), visualizer()],
+  plugins: [
+    react(),
+    visualizer({
+      template: "treemap", // "sunburst" | "treemap" | "network"
+    }),
+  ],
   server: {
     port: 4000,
     proxy: {

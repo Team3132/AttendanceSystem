@@ -1,10 +1,8 @@
 import loadable from "@loadable/component";
-import { Provider as AlertProvider } from "react-alert";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthWrapper, ChakraAlert } from "./components";
-import { fetcher } from "./hooks";
 import {
   Agenda,
   Calendar,
@@ -20,20 +18,17 @@ import {
 const ChakraProvider = loadable(() => import("@chakra-ui/react"), {
   resolveComponent: (components) => components.ChakraProvider,
 });
-const SWRConfig = loadable(() => import("swr"), {
-  resolveComponent: (components) => components.SWRConfig,
+const SWRConfigWithFetcher = loadable(
+  () => import("./components/SWRProviderWithFetcher")
+);
+const AlertProvider = loadable(() => import("react-alert"), {
+  resolveComponent: (comps) => comps.Provider,
 });
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>
   <ChakraProvider>
-    <SWRConfig
-      value={{
-        fetcher,
-        onError: (error) => {
-          console.log("This is an error", error);
-        },
-      }}
-    >
+    <SWRConfigWithFetcher>
       <AlertProvider template={ChakraAlert}>
         <BrowserRouter>
           <Routes>
@@ -96,7 +91,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           </Routes>
         </BrowserRouter>
       </AlertProvider>
-    </SWRConfig>
+    </SWRConfigWithFetcher>
   </ChakraProvider>
   // </React.StrictMode>
 );

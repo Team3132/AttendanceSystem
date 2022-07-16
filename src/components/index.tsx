@@ -1,11 +1,11 @@
 import loadable from "@loadable/component";
 import type { AttendanceButtonRowProps } from "./AttendedButtonRow";
-import { AttendedListProps } from "./AttendedList";
-import { AuthRouteProps } from "./AuthRoute";
-import { AuthWrapperProps } from "./AuthWrapper";
-import { RSVPButtonRowProps } from "./RSVPButtonRow";
-import { RSVPListProps } from "./RSVPList";
-import { UserAvatarProps } from "./UserAvatar";
+import type { AttendedListProps } from "./AttendedList";
+import type { AuthRouteProps } from "./AuthRoute";
+import type { AuthWrapperProps } from "./AuthWrapper";
+import type { RSVPButtonRowProps } from "./RSVPButtonRow";
+import type { RSVPListProps } from "./RSVPList";
+import type { UserAvatarProps } from "./UserAvatar";
 
 const Box = loadable(() => import("@chakra-ui/react"), {
   resolveComponent: (comps) => comps.Box,
