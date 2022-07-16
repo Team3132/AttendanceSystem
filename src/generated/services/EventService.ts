@@ -9,6 +9,7 @@ import type { ScaninDto } from '../models/ScaninDto';
 import type { UpdateEventDto } from '../models/UpdateEventDto';
 import type { UpdateOrCreateAttendance } from '../models/UpdateOrCreateAttendance';
 import type { UpdateOrCreateRSVP } from '../models/UpdateOrCreateRSVP';
+import type { UpdateRangeRSVP } from '../models/UpdateRangeRSVP';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -150,6 +151,23 @@ requestBody: UpdateOrCreateRSVP,
             path: {
                 'eventId': eventId,
             },
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
+    /**
+     * Update RSVP Status of Events in range
+     * @param requestBody 
+     * @returns Rsvp 
+     * @throws ApiError
+     */
+    public static eventControllerSetEventsRsvp(
+requestBody: UpdateRangeRSVP,
+): CancelablePromise<Array<Rsvp>> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/event/rsvps',
             body: requestBody,
             mediaType: 'application/json',
         });

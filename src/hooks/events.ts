@@ -11,9 +11,7 @@ export const useEvents = (take?: number, from?: Date, to?: Date) => {
     error: userError,
     mutate,
   } = useSWR<Event[]>(
-    isAuthenticated && from && to
-      ? () => ({ url: `/api/event`, params: { take, from, to } })
-      : null
+    isAuthenticated && from && to ? [`/api/event`, { take, from, to }] : null
   );
 
   return {

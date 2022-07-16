@@ -20,6 +20,7 @@ export { UpdateAttendanceDto } from './models/UpdateAttendanceDto';
 export type { UpdateEventDto } from './models/UpdateEventDto';
 export { UpdateOrCreateAttendance } from './models/UpdateOrCreateAttendance';
 export { UpdateOrCreateRSVP } from './models/UpdateOrCreateRSVP';
+export { UpdateRangeRSVP } from './models/UpdateRangeRSVP';
 export { UpdateRsvpDto } from './models/UpdateRsvpDto';
 export type { UpdateUserDto } from './models/UpdateUserDto';
 export type { User } from './models/User';
