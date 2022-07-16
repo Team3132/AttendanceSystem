@@ -33,6 +33,7 @@ const DesktopNav: React.FC<StackProps & { menuItems: NavItem[] }> = ({
                 rightIcon={<ChevronDownIcon />}
                 disabled={navItem.disabled}
                 variant={"ghost"}
+                leftIcon={navItem.icon}
               >
                 {navItem.label}
               </MenuButton>
@@ -61,6 +62,7 @@ const DesktopNav: React.FC<StackProps & { menuItems: NavItem[] }> = ({
           return (
             <Button
               key={menuIndex}
+              leftIcon={navItem.icon}
               disabled={navItem.disabled}
               variant={"ghost"}
               onClick={() => {

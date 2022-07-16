@@ -2,22 +2,21 @@ import { HamburgerIcon } from "@chakra-ui/icons";
 import {
   Container,
   Flex,
+  Icon,
   IconButton,
   Spacer,
   useBreakpointValue,
   useDisclosure,
 } from "@chakra-ui/react";
 import loadable from "@loadable/component";
-import { useEffect } from "react";
+import { ReactElement, useEffect } from "react";
+import { MdAccountCircle, MdCalendarToday, MdHome } from "react-icons/md";
 import { UserAvatar } from "../";
 import { useAuthStatus } from "../../hooks";
-// import DesktopNav fr om "./DesktopNav";
-// import MobileDrawer from "./MobileDrawer";
-// import Logo from "../logo.svg";
-
 export interface NavItem {
   url?: string;
   label: string;
+  icon?: ReactElement<any, any>;
   disabled?: boolean;
   external?: boolean;
   subitems?: Omit<NavItem, "subitems">[];
@@ -27,11 +26,12 @@ const DesktopNav = loadable(() => import("./DesktopNav"));
 const MobileDrawer = loadable(() => import("./MobileDrawer"));
 
 const navItems = (isAuthenticated?: boolean): NavItem[] => [
-  { url: "/", label: "Home" },
+  { url: "/", label: "Home", icon: <Icon as={MdHome} /> },
   ...(isAuthenticated
     ? [
         {
           label: "Calendar",
+          icon: <Icon as={MdCalendarToday} />,
           subitems: [
             { url: "/calendar", label: "Full" },
             { url: "/calendar/agenda", label: "Agenda" },
@@ -44,6 +44,7 @@ const navItems = (isAuthenticated?: boolean): NavItem[] => [
   isAuthenticated
     ? {
         label: "Profile",
+        icon: <Icon as={MdAccountCircle} />,
         subitems: [
           { url: "/profile", label: "Your Profile" },
           { url: "/codes", label: "Codes" },
@@ -51,6 +52,7 @@ const navItems = (isAuthenticated?: boolean): NavItem[] => [
         ],
       }
     : {
+        icon: <Icon as={MdAccountCircle} />,
         label: "Login",
         url: "/api/auth/discord",
         external: true,
