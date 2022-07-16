@@ -27,8 +27,8 @@ export default defineConfig({
             type: "image/png",
           },
           {
-            src: "/safari-pinned-tab.svg",
-            type: "image/svg+xml",
+            src: "/maskable_icon.png",
+            type: "image/png",
             purpose: "any maskable",
           },
         ],
