@@ -7,7 +7,6 @@ import {
   FormHelperText,
   FormLabel,
   InputGroup,
-  InputRightAddon,
   Select,
 } from "@chakra-ui/react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -68,7 +67,7 @@ export const StatusForRangeButton: React.FC<
           <option value={UpdateRangeRSVP["status"].NO}>No</option>
           <option value={UpdateRangeRSVP["status"].YES}>Yes</option>
         </Select>
-        <Button type="submit" isLoading={isSubmitting} as={InputRightAddon}>
+        <Button type="submit" isLoading={isSubmitting}>
           Submit
         </Button>
       </InputGroup>
