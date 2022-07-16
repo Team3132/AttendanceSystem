@@ -17,6 +17,12 @@ export default defineConfig({
         theme_color: "#ffffff",
         icons: [
           {
+            src: "/maskable_icon.png",
+            type: "image/png",
+            sizes: "1024x1024",
+            purpose: "any maskable",
+          },
+          {
             src: "/android-chrome-192x192.png",
             sizes: "192x192",
             type: "image/png",
@@ -25,11 +31,6 @@ export default defineConfig({
             src: "/android-chrome-512x512.png",
             sizes: "512x512",
             type: "image/png",
-          },
-          {
-            src: "/maskable_icon.png",
-            type: "image/png",
-            purpose: "any maskable",
           },
         ],
       },
