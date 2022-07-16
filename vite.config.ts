@@ -14,7 +14,7 @@ export default defineConfig({
       manifest: {
         name: "TDU Attendance",
         short_name: "TDU",
-        theme_color: "#ffffff",
+        theme_color: "#1C3B1E",
         icons: [
           {
             src: "/maskable_icon.png",

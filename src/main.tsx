@@ -14,6 +14,7 @@ import {
 } from "@screens";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { theme } from "./utils";
 const ChakraProvider = loadable(() => import("@chakra-ui/react"), {
   resolveComponent: (components) => components.ChakraProvider,
 });
@@ -26,7 +27,7 @@ const AlertProvider = loadable(() => import("react-alert"), {
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>
-  <ChakraProvider>
+  <ChakraProvider theme={theme}>
     <SWRConfigWithFetcher>
       <AlertProvider template={ChakraAlert}>
         <BrowserRouter>
