@@ -12,6 +12,8 @@ export default defineConfig({
       registerType: "autoUpdate",
       injectRegister: "auto",
       manifest: {
+        name: "TDU Attendance",
+        short_name: "TDU",
         theme_color: "#ffffff",
         icons: [
           {
