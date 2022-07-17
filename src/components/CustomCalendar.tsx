@@ -1,11 +1,14 @@
 import { Event } from "@/generated";
 import {
+  Box,
   Button,
   Flex,
+  FlexProps,
   LinkBox,
   LinkOverlay,
   Spacer,
   Stack,
+  useColorMode,
 } from "@chakra-ui/react";
 import { DateTime, DateTimeUnit } from "luxon";
 import React, { useEffect, useState } from "react";
@@ -85,9 +88,19 @@ const Day: React.FC<{ date: DateTime; events: Event[] }> = ({
   date,
   events,
 }) => {
+  const { colorMode } = useColorMode();
+  const todayColour = colorMode === "light" ? "blue.200" : "blue.700";
+  const disabledColour = colorMode === "light" ? "gray.300" : "gray.600";
+  const borderColour = colorMode === "light" ? "gray.300" : "gray.600";
   // Add params to link overlay
   return (
-    <LinkBox w="8em" h="8em" borderWidth={"1px"}>
+    <LinkBox
+      w="8em"
+      h="8em"
+      borderWidth={"1px"}
+      borderColor={borderColour}
+      bgColor={DateTime.local().hasSame(date, "day") ? todayColour : undefined}
+    >
       <LinkOverlay
         as={Link}
         to={`/event/create?startDate=${date
@@ -144,8 +157,15 @@ const Week: React.FC<{ startDate: DateTime; events: Event[] }> = ({
   );
 };
 
-const Month: React.FC<MonthProps> = ({ initialDate, events, onRange }) => {
+const Month: React.FC<MonthProps & FlexProps> = ({
+  initialDate,
+  events,
+  onRange,
+  ...flexProps
+}) => {
+  const { colorMode } = useColorMode();
   const [weeks, setWeeks] = useState<DateTime[]>([]);
+  const borderColour = colorMode === "light" ? "gray.300" : "gray.600";
   useEffect(() => {
     const firstDayOfMonth = initialDate.startOf("month");
     const lastDayOfMonth = initialDate.endOf("month");
@@ -162,7 +182,19 @@ const Month: React.FC<MonthProps> = ({ initialDate, events, onRange }) => {
   }, [initialDate]);
 
   return (
-    <Flex flexDirection={"column"}>
+    <Flex {...flexProps} flexDirection={"column"}>
+      <Flex>
+        {new Array(7).fill(0).map((data, index) => (
+          <Box
+            w="8em"
+            borderWidth={"1px"}
+            borderColor={borderColour}
+            textAlign="center"
+          >
+            {initialDate.startOf("week").plus({ day: index }).weekdayLong}
+          </Box>
+        ))}
+      </Flex>
       {weeks.map((week) => (
         <Week
           startDate={week}
