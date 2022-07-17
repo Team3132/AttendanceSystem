@@ -36,7 +36,7 @@ export const CreateEventScreen: React.FC = () => {
         searchParams.get("startDate") ?? new Date(Date.now()).toISOString(),
       endDate:
         searchParams.get("endDate") ?? new Date(Date.now()).toISOString(),
-      allDay: false,
+      allDay: !!searchParams.get("allDay") ?? false,
     },
   });
 
