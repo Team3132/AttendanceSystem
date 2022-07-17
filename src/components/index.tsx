@@ -24,7 +24,6 @@ export const AuthRoute = loadable<AuthRouteProps>(() => import("./AuthRoute"));
 export const AuthWrapper = loadable<AuthWrapperProps>(
   () => import("./AuthWrapper")
 );
-export const ChakraAlert = loadable(() => import("./ChakraAlert"));
 export const Nav = loadable(() => import("./Nav"));
 export const RSVPButtonRow = loadable<RSVPButtonRowProps>(
   () => import("./RSVPButtonRow")
