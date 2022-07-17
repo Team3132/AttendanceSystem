@@ -40,6 +40,7 @@ const AdminRedirect: React.FC<AdminRedirectProps> = ({ to = "/calendar" }) => {
       status: "error",
       title: "You are not authorized to access this page",
       duration: 2000,
+      isClosable: true,
     });
 
     navigate(to, { replace: true });
@@ -59,6 +60,7 @@ const AuthRedirect: React.FC<AuthRedirectProps> = ({ to = "/" }) => {
       status: "error",
       title: "You need to be logged in to access this",
       duration: 2000,
+      isClosable: true,
     });
 
     navigate(to, { replace: true });
