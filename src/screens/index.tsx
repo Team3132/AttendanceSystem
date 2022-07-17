@@ -33,3 +33,4 @@ export const ErrorBoundary = loadable(() => import("./ErrorBoundary"));
 export const AdminScreen = loadable(() => import("./Admin"), {
   fallback: <Skeleton />,
 });
+export const CustomCalendar = loadable(() => import("./CustomCalendar"));

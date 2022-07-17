@@ -5,6 +5,7 @@ import {
   Agenda,
   Calendar,
   CreateEvent,
+  CustomCalendar,
   ErrorBoundary,
   EventDetailsScreen,
   EventEditScreen,
@@ -49,6 +50,14 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 element={
                   <AuthWrapper>
                     <Agenda />
+                  </AuthWrapper>
+                }
+              />
+              <Route
+                path="calendar/custom"
+                element={
+                  <AuthWrapper>
+                    <CustomCalendar />
                   </AuthWrapper>
                 }
               />
