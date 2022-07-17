@@ -84,14 +84,15 @@ const filteredEvents = (
       date.hasSame(DateTime.fromISO(event.endDate), unit)
   );
 
-const Day: React.FC<{ date: DateTime; events: Event[] }> = ({
-  date,
+const DayColumn: React.FC<{ initialDate: DateTime; events: Event[] }> = ({
+  initialDate,
   events,
 }) => {
   const { colorMode } = useColorMode();
   const todayColour = colorMode === "light" ? "blue.200" : "blue.700";
   const disabledColour = colorMode === "light" ? "gray.300" : "gray.600";
   const borderColour = colorMode === "light" ? "gray.300" : "gray.600";
+  const date = initialDate.startOf("day");
   // Add params to link overlay
   return (
     <LinkBox
@@ -132,23 +133,24 @@ const Day: React.FC<{ date: DateTime; events: Event[] }> = ({
   );
 };
 
-const Week: React.FC<{ startDate: DateTime; events: Event[] }> = ({
+const WeekRow: React.FC<{ startDate: DateTime; events: Event[] }> = ({
   startDate,
   events,
 }) => {
+  const beginningDate = startDate.startOf("week");
   const [days, setDays] = useState<DateTime[]>([]);
   useEffect(() => {
     const tempDays = Array(7)
       .fill(0)
-      .map((data, index) => startDate.plus({ days: index }));
+      .map((data, index) => beginningDate.plus({ days: index }));
     setDays(tempDays);
   }, [startDate]);
 
   return (
     <Flex flexDirection={"row"}>
       {days.map((day) => (
-        <Day
-          date={day}
+        <DayColumn
+          initialDate={day}
           events={filteredEvents(events, day, "day")}
           key={day.toMillis()}
         />
@@ -187,6 +189,7 @@ const Month: React.FC<MonthProps & FlexProps> = ({
         {new Array(7).fill(0).map((data, index) => (
           <Box
             w="8em"
+            key={index}
             borderWidth={"1px"}
             borderColor={borderColour}
             textAlign="center"
@@ -196,7 +199,7 @@ const Month: React.FC<MonthProps & FlexProps> = ({
         ))}
       </Flex>
       {weeks.map((week) => (
-        <Week
+        <WeekRow
           startDate={week}
           events={filteredEvents(events, week, "week")}
           key={week.toMillis()}
