@@ -32,11 +32,7 @@ export const Agenda: React.FC = () => {
     DateTime.now().plus({ days: 7 })
   );
 
-  const { events, isLoading } = useEvents(
-    undefined,
-    startRange?.toJSDate(),
-    endRange?.toJSDate()
-  );
+  const { events, isLoading } = useEvents(undefined, startRange, endRange);
 
   return (
     <>

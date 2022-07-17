@@ -1,4 +1,4 @@
-import { AuthWrapper, ChakraAlert, ChakraProvider, SWToast } from "@components";
+import { AuthWrapper, ChakraProvider, SWToast } from "@components";
 import loadable from "@loadable/component";
 import {
   AdminScreen,
@@ -20,9 +20,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 const SWRConfigWithFetcher = loadable(
   () => import("./components/SWRProviderWithFetcher")
 );
-const AlertProvider = loadable(() => import("react-alert"), {
-  resolveComponent: (comps) => comps.Provider,
-});
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>
@@ -30,76 +27,74 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <ErrorBoundary>
       <SWToast />
       <SWRConfigWithFetcher>
-        <AlertProvider template={ChakraAlert}>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Layout />}>
-                <Route index element={<Home />} />
-                <Route path="event/create" element={<CreateEvent />} />
-                <Route path="event/:eventId">
-                  <Route
-                    path="edit"
-                    element={
-                      <AuthWrapper adminOnly>
-                        <EventEditScreen />
-                      </AuthWrapper>
-                    }
-                  />
-                  <Route path="view" element={<EventDetailsScreen />} />
-                  <Route path="scanin" element={<ScaninScreen />} />
-                </Route>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="event/create" element={<CreateEvent />} />
+              <Route path="event/:eventId">
                 <Route
-                  path="calendar/agenda"
-                  element={
-                    <AuthWrapper>
-                      <Agenda />
-                    </AuthWrapper>
-                  }
-                />
-                <Route
-                  element={
-                    <AuthWrapper>
-                      <Calendar />
-                    </AuthWrapper>
-                  }
-                  path="calendar"
-                />
-                <Route
+                  path="edit"
                   element={
                     <AuthWrapper adminOnly>
-                      <AdminScreen />
+                      <EventEditScreen />
                     </AuthWrapper>
                   }
-                  path="admin"
                 />
-                <Route
-                  element={
-                    <AuthWrapper>
-                      <ScancodeScreen />
-                    </AuthWrapper>
-                  }
-                  path="codes"
-                />
-                <Route
-                  element={
-                    <AuthWrapper>
-                      <Profile />
-                    </AuthWrapper>
-                  }
-                  path="profile"
-                />
-                <Route
-                  element={
-                    <AuthWrapper adminOnly>
-                      <Profile />
-                    </AuthWrapper>
-                  }
-                  path="profile/:userId"
-                />
+                <Route path="view" element={<EventDetailsScreen />} />
+                <Route path="scanin" element={<ScaninScreen />} />
               </Route>
-            </Routes>
-          </BrowserRouter>
-        </AlertProvider>
+              <Route
+                path="calendar/agenda"
+                element={
+                  <AuthWrapper>
+                    <Agenda />
+                  </AuthWrapper>
+                }
+              />
+              <Route
+                element={
+                  <AuthWrapper>
+                    <Calendar />
+                  </AuthWrapper>
+                }
+                path="calendar"
+              />
+              <Route
+                element={
+                  <AuthWrapper adminOnly>
+                    <AdminScreen />
+                  </AuthWrapper>
+                }
+                path="admin"
+              />
+              <Route
+                element={
+                  <AuthWrapper>
+                    <ScancodeScreen />
+                  </AuthWrapper>
+                }
+                path="codes"
+              />
+              <Route
+                element={
+                  <AuthWrapper>
+                    <Profile />
+                  </AuthWrapper>
+                }
+                path="profile"
+              />
+              <Route
+                element={
+                  <AuthWrapper adminOnly>
+                    <Profile />
+                  </AuthWrapper>
+                }
+                path="profile/:userId"
+              />
+            </Route>
+          </Routes>
+        </BrowserRouter>
       </SWRConfigWithFetcher>
     </ErrorBoundary>
   </ChakraProvider>

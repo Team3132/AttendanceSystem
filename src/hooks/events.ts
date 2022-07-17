@@ -2,8 +2,9 @@ import { useState } from "react";
 import useSWR from "swr";
 import { Attendance, Event, Rsvp } from "@generated";
 import { useAuthStatus } from "@hooks";
+import { DateTime } from "luxon";
 
-export const useEvents = (take?: number, from?: Date, to?: Date) => {
+export const useEvents = (take?: number, from?: DateTime, to?: DateTime) => {
   const { isAuthenticated } = useAuthStatus();
 
   const {
@@ -11,7 +12,9 @@ export const useEvents = (take?: number, from?: Date, to?: Date) => {
     error: userError,
     mutate,
   } = useSWR<Event[]>(
-    isAuthenticated && from && to ? [`/api/event`, { take, from, to }] : null
+    isAuthenticated && from && to
+      ? [`/api/event`, { take, from: from.toISO(), to: to.toISO() }]
+      : null
   );
 
   return {

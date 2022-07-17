@@ -1,7 +1,6 @@
-import { Spinner } from "@chakra-ui/react";
+import { Spinner, useToast } from "@chakra-ui/react";
 import { useAuthStatus } from "@hooks";
 import { useEffect } from "react";
-import { useAlert } from "react-alert";
 import { useNavigate } from "react-router-dom";
 export interface AuthWrapperProps {
   children: any;
@@ -35,9 +34,12 @@ interface AdminRedirectProps {
 
 const AdminRedirect: React.FC<AdminRedirectProps> = ({ to = "/calendar" }) => {
   const navigate = useNavigate();
-  const alert = useAlert();
+  const toast = useToast();
   useEffect(() => {
-    alert.error("You need to be an admin to access this", { timeout: 2000 });
+    toast({
+      status: "error",
+      title: "You are not authorized to access this page",
+    });
 
     navigate(to, { replace: true });
   }, []);
@@ -50,9 +52,12 @@ interface AuthRedirectProps {
 
 const AuthRedirect: React.FC<AuthRedirectProps> = ({ to = "/" }) => {
   const navigate = useNavigate();
-  const alert = useAlert();
+  const toast = useToast();
   useEffect(() => {
-    alert.error("You need to be logged in to access this", { timeout: 2000 });
+    toast({
+      status: "error",
+      title: "You need to be logged in to access this",
+    });
 
     navigate(to, { replace: true });
   }, []);

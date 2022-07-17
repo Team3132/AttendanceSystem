@@ -1,6 +1,7 @@
 import { Divider, Heading, useConst } from "@chakra-ui/react";
 import { CalendarWithLocalizer } from "@components";
 import { useAuthStatus, useEvents } from "@hooks";
+import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
 import { SlotInfo } from "react-big-calendar";
 import Toolbar from "react-big-calendar/lib/Toolbar";
@@ -11,14 +12,14 @@ export const CalendarScreen: React.FC = () => {
   const { isAdmin } = useAuthStatus();
 
   const dateNow = useConst<Date>(new Date());
-  const [startRange, setStartRange] = useState<Date>();
+  const [range, setRange] = useState<[DateTime, DateTime]>();
   const [endRange, setEndRange] = useState<Date>();
   /** Event Data */
   const {
     events: apiEvents,
     isLoading: isEventsLoading,
     isError: isEventsError,
-  } = useEvents(undefined, startRange, endRange);
+  } = useEvents(undefined, range?.[0], range?.[1]);
   const navigate = useNavigate();
 
   /** Handlers */
@@ -76,8 +77,10 @@ export const CalendarScreen: React.FC = () => {
             start: Date;
             end: Date;
           };
-          setEndRange(dates.end);
-          setStartRange(dates.start);
+          setRange([
+            DateTime.fromJSDate(dates.start),
+            DateTime.fromJSDate(dates.end),
+          ]);
         }}
         components={{ toolbar: InitialRangeChangeToolbar }}
         // components={{
