@@ -2,6 +2,8 @@ import { Event } from "@/generated";
 import {
   Box,
   Button,
+  ButtonGroup,
+  Center,
   Flex,
   FlexProps,
   LinkBox,
@@ -166,11 +168,12 @@ const Month: React.FC<MonthProps & FlexProps> = ({
   ...flexProps
 }) => {
   const { colorMode } = useColorMode();
+  const [currentDate, setCurrentDate] = useState<DateTime>(initialDate);
   const [weeks, setWeeks] = useState<DateTime[]>([]);
   const borderColour = colorMode === "light" ? "gray.300" : "gray.600";
   useEffect(() => {
-    const firstDayOfMonth = initialDate.startOf("month");
-    const lastDayOfMonth = initialDate.endOf("month");
+    const firstDayOfMonth = currentDate.startOf("month");
+    const lastDayOfMonth = currentDate.endOf("month");
     const firstDayOfWeek = firstDayOfMonth.startOf("week");
     const daysInMonth = Math.round(
       lastDayOfMonth.diff(firstDayOfMonth, "days").days
@@ -181,30 +184,63 @@ const Month: React.FC<MonthProps & FlexProps> = ({
       .map((data, index) => firstDayOfWeek.plus({ weeks: index }));
     setWeeks(tempWeeks);
     onRange && onRange(firstDayOfMonth, lastDayOfMonth);
-  }, [initialDate]);
+  }, [currentDate]);
 
   return (
-    <Flex {...flexProps} flexDirection={"column"}>
-      <Flex>
-        {new Array(7).fill(0).map((data, index) => (
-          <Box
-            w="8em"
-            key={index}
-            borderWidth={"1px"}
-            borderColor={borderColour}
-            textAlign="center"
+    <Flex flexDir={"column"}>
+      <Flex py={2}>
+        <ButtonGroup isAttached variant={"outline"}>
+          <Button onClick={() => setCurrentDate(DateTime.local())}>
+            Today
+          </Button>
+          <Button
+            onClick={() => setCurrentDate(currentDate.minus({ month: 1 }))}
           >
-            {initialDate.startOf("week").plus({ day: index }).weekdayLong}
-          </Box>
+            Back
+          </Button>
+          <Button
+            onClick={() => setCurrentDate(currentDate.plus({ month: 1 }))}
+          >
+            Next
+          </Button>
+        </ButtonGroup>
+        <Spacer />
+        <Center>
+          {currentDate.monthLong} {currentDate.year}
+        </Center>
+
+        <Spacer />
+        <ButtonGroup isAttached variant={"outline"}>
+          <Button isActive isDisabled>
+            Month
+          </Button>
+          <Button isDisabled>Week</Button>
+          <Button isDisabled>Day</Button>
+          <Button isDisabled>Agenda</Button>
+        </ButtonGroup>
+      </Flex>
+      <Flex {...flexProps} flexDirection={"column"}>
+        <Flex>
+          {new Array(7).fill(0).map((data, index) => (
+            <Box
+              w="8em"
+              key={index}
+              borderWidth={"1px"}
+              borderColor={borderColour}
+              textAlign="center"
+            >
+              {currentDate.startOf("week").plus({ day: index }).weekdayLong}
+            </Box>
+          ))}
+        </Flex>
+        {weeks.map((week) => (
+          <WeekRow
+            startDate={week}
+            events={filteredEvents(events, week, "week")}
+            key={week.toMillis()}
+          />
         ))}
       </Flex>
-      {weeks.map((week) => (
-        <WeekRow
-          startDate={week}
-          events={filteredEvents(events, week, "week")}
-          key={week.toMillis()}
-        />
-      ))}
     </Flex>
   );
 };
