@@ -16,7 +16,7 @@ export const SWToast: React.FC = () => {
       console.log("SW registration error", error);
     },
     onOfflineReady: () => {
-      toast({ description: "This site now works offline." });
+      toast({ description: "This site now works offline.", duration: 10000 });
     },
   });
   return null;

@@ -32,7 +32,14 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
-              <Route path="event/create" element={<CreateEvent />} />
+              <Route
+                path="event/create"
+                element={
+                  <AuthWrapper adminOnly>
+                    <CreateEvent />
+                  </AuthWrapper>
+                }
+              />
               <Route path="event/:eventId">
                 <Route
                   path="edit"
