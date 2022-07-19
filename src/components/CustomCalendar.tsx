@@ -116,8 +116,7 @@ const DayColumn: React.FC<{ initialDate: DateTime; events: Event[] }> = ({
   // Add params to link overlay
   return (
     <LinkBox
-      w="8em"
-      h="8em"
+      style={{ aspectRatio: "1/1" }}
       borderWidth={"1px"}
       borderColor={borderColour}
       bgColor={DateTime.local().hasSame(date, "day") ? todayColour : undefined}
@@ -210,7 +209,7 @@ const MonthView: React.FC<MonthProps & FlexProps> = ({
         <Flex>
           {new Array(7).fill(0).map((data, index) => (
             <Box
-              w="8em"
+              // w="8em"
               key={index}
               borderWidth={"1px"}
               borderColor={borderColour}
@@ -260,7 +259,7 @@ const WeekView: React.FC<MonthProps & FlexProps> = ({
         <Flex>
           {new Array(7).fill(0).map((data, index) => (
             <Box
-              w="8em"
+              // w="8em"
               key={index}
               borderWidth={"1px"}
               borderColor={borderColour}
@@ -274,8 +273,8 @@ const WeekView: React.FC<MonthProps & FlexProps> = ({
           {days.map((day, index) => (
             <Box>
               <LinkBox
-                w="8em"
-                h="3em"
+                // w="8em"
+                // h="3em"
                 key={day.day}
                 borderWidth={"1px"}
                 borderColor={borderColour}
