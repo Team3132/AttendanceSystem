@@ -121,6 +121,8 @@ const DayColumn: React.FC<{ initialDate: DateTime; events: Event[] }> = ({
       borderWidth={"1px"}
       borderColor={borderColour}
       bgColor={DateTime.local().hasSame(date, "day") ? todayColour : undefined}
+      overflowY="scroll"
+      overflowX={"hidden"}
     >
       <LinkOverlay
         as={Link}
