@@ -21,7 +21,8 @@ import {
   Th,
   Thead,
   Tr,
-  useColorMode,
+  useBreakpointValue,
+  useColorMode
 } from "@chakra-ui/react";
 import { DateTime, DateTimeUnit } from "luxon";
 import React, { useEffect, useState } from "react";
@@ -188,6 +189,7 @@ const MonthView: React.FC<MonthProps & FlexProps> = ({
 
   ...flexProps
 }) => {
+  const isMobile = useBreakpointValue<boolean>({ base: true, md: false });
   const { colorMode } = useColorMode();
   const [weeks, setWeeks] = useState<DateTime[]>([]);
   const borderColour = colorMode === "light" ? "gray.300" : "gray.600";
@@ -218,7 +220,9 @@ const MonthView: React.FC<MonthProps & FlexProps> = ({
             textAlign="center"
             flex="1 1 "
           >
-            {date.startOf("week").plus({ day: index }).weekdayLong}
+            {isMobile
+              ? date.startOf("week").plus({ day: index }).weekdayShort
+              : date.startOf("week").plus({ day: index }).weekdayLong}
           </Box>
         ))}
         {weeks.map((week) => (
@@ -241,6 +245,7 @@ const WeekView: React.FC<MonthProps & FlexProps> = ({
 
   ...flexProps
 }) => {
+  const isMobile = useBreakpointValue<boolean>({ base: true, md: false });
   const { colorMode } = useColorMode();
   const [days, setDays] = useState<DateTime[]>([]);
   const borderColour = colorMode === "light" ? "gray.300" : "gray.600";
@@ -268,7 +273,7 @@ const WeekView: React.FC<MonthProps & FlexProps> = ({
               borderColor={borderColour}
               textAlign="center"
             >
-              {date.startOf("week").plus({ day: index }).weekdayLong}
+              {isMobile ? date.startOf("week").plus({ day: index }).weekdayShort ? date.startOf("week").plus({ day: index }).weekdayLong}
             </Box>
           ))}
 
