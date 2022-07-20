@@ -451,13 +451,13 @@ const RootCal: React.FC<RootCalProps> = ({
         <Stack direction={["column", "row"]} m={2} spacing={5}>
           <Center>
             <ButtonGroup isAttached variant={"outline"}>
-              <Button onClick={() => setCurrentDate(DateTime.local())}>
-                Today
-              </Button>
               <Button
                 onClick={() => setCurrentDate(currentDate.minus({ [view]: 1 }))}
               >
                 Back
+              </Button>
+              <Button onClick={() => setCurrentDate(DateTime.local())}>
+                Today
               </Button>
               <Button
                 onClick={() => setCurrentDate(currentDate.plus({ [view]: 1 }))}
