@@ -259,7 +259,7 @@ const WeekView: React.FC<MonthProps & FlexProps> = ({
   return (
     <>
       <Flex {...flexProps} flexDirection={"column"} w="100%">
-        <Flex w="100%" justifyContent={"space-evenly"} flex="1">
+        <SimpleGrid columns={7}>
           {new Array(7).fill(0).map((data, index) => (
             <Box
               // w="8em"
@@ -271,10 +271,10 @@ const WeekView: React.FC<MonthProps & FlexProps> = ({
               {date.startOf("week").plus({ day: index }).weekdayLong}
             </Box>
           ))}
-        </Flex>
-        <Flex w="100%" justifyContent={"space-evenly"} flex="1">
+
           {days.map((day, index) => (
             <Box>
+              {/* {day.day} */}
               <LinkBox
                 // w="8em"
                 // h="3em"
@@ -293,7 +293,8 @@ const WeekView: React.FC<MonthProps & FlexProps> = ({
                     .toJSDate()
                     .toISOString()}&allDay=true`}
                 />
-                {filteredEvents(events, date, "week")
+                {/* {filteredEvents(events, day, "day").length} */}
+                {filteredEvents(events, day, "day")
                   .filter((event) => event.allDay)
                   .map((event) => (
                     <Button colorScheme={"blue"}>{event.title}</Button>
@@ -301,7 +302,37 @@ const WeekView: React.FC<MonthProps & FlexProps> = ({
               </LinkBox>
             </Box>
           ))}
-        </Flex>
+          {days.map((day, index) => (
+            <Box>
+              {/* {day.day} */}
+              <LinkBox
+                // w="8em"
+                // h="3em"
+                key={day.day}
+                borderWidth={"1px"}
+                borderColor={borderColour}
+                textAlign="center"
+              >
+                <LinkOverlay
+                  as={Link}
+                  to={`/event/create?startDate=${day
+                    .startOf("day")
+                    .toJSDate()
+                    .toISOString()}&endDate=${day
+                    .endOf("day")
+                    .toJSDate()
+                    .toISOString()}`}
+                />
+                {/* {filteredEvents(events, day, "day").length} */}
+                {filteredEvents(events, day, "day")
+                  .filter((event) => !event.allDay)
+                  .map((event) => (
+                    <Button colorScheme={"blue"}>{event.title}</Button>
+                  ))}
+              </LinkBox>
+            </Box>
+          ))}
+        </SimpleGrid>
       </Flex>
     </>
   );
@@ -429,14 +460,14 @@ const RootCal: React.FC<RootCalProps> = ({
           <Button
             isActive={view === "week"}
             onClick={() => setView(View.WEEK)}
-            isDisabled
+            // isDisabled
           >
             Week
           </Button>
           <Button
             isActive={view === "day"}
             onClick={() => setView(View.DAY)}
-            isDisabled
+            // isDisabled
           >
             Day
           </Button>
