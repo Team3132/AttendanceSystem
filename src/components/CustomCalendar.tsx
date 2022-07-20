@@ -22,7 +22,7 @@ import {
   Thead,
   Tr,
   useBreakpointValue,
-  useColorMode
+  useColorMode,
 } from "@chakra-ui/react";
 import { DateTime, DateTimeUnit } from "luxon";
 import React, { useEffect, useState } from "react";
@@ -273,7 +273,9 @@ const WeekView: React.FC<MonthProps & FlexProps> = ({
               borderColor={borderColour}
               textAlign="center"
             >
-              {isMobile ? date.startOf("week").plus({ day: index }).weekdayShort ? date.startOf("week").plus({ day: index }).weekdayLong}
+              {isMobile
+                ? date.startOf("week").plus({ day: index }).weekdayShort
+                : date.startOf("week").plus({ day: index }).weekdayLong}
             </Box>
           ))}
 
