@@ -458,7 +458,15 @@ const RootCal: React.FC<RootCalProps> = ({
         </ButtonGroup>
         <Spacer />
         <Center>
-          {currentDate.monthLong} {currentDate.year}
+          {view === View.MONTH
+            ? `${currentDate.monthLong} ${currentDate.year}`
+            : view === View.WEEK
+            ? `${currentDate
+                .startOf("week")
+                .toLocaleString(DateTime.DATE_MED)} - ${currentDate
+                .endOf("week")
+                .toLocaleString(DateTime.DATE_MED)}`
+            : `${currentDate.toLocaleString(DateTime.DATE_MED)}`}
         </Center>
 
         <Spacer />
