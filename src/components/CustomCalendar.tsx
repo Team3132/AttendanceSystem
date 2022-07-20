@@ -447,60 +447,63 @@ const RootCal: React.FC<RootCalProps> = ({
   const [view, setView] = useState<View>(View.MONTH);
   return (
     <Flex flexDir={"column"} {...flexProps}>
-      <Flex py={2}>
-        <ButtonGroup isAttached variant={"outline"}>
-          <Button onClick={() => setCurrentDate(DateTime.local())}>
-            Today
-          </Button>
-          <Button
-            onClick={() => setCurrentDate(currentDate.minus({ [view]: 1 }))}
-          >
-            Back
-          </Button>
-          <Button
-            onClick={() => setCurrentDate(currentDate.plus({ [view]: 1 }))}
-          >
-            Next
-          </Button>
-        </ButtonGroup>
-        <Spacer />
-        <Center>
-          {view === View.MONTH
-            ? `${currentDate.monthLong} ${currentDate.year}`
-            : view === View.WEEK
-            ? `${currentDate
-                .startOf("week")
-                .toLocaleString(DateTime.DATE_MED)} - ${currentDate
-                .endOf("week")
-                .toLocaleString(DateTime.DATE_MED)}`
-            : `${currentDate.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)}`}
-        </Center>
-
-        <Spacer />
-        <ButtonGroup isAttached variant={"outline"}>
-          <Button
-            isActive={view === "month"}
-            onClick={() => setView(View.MONTH)}
-          >
-            Month
-          </Button>
-          <Button
-            isActive={view === "week"}
-            onClick={() => setView(View.WEEK)}
-            // isDisabled
-          >
-            Week
-          </Button>
-          <Button
-            isActive={view === "day"}
-            onClick={() => setView(View.DAY)}
-            // isDisabled
-          >
-            Day
-          </Button>
-          {/* <Button isDisabled>Agenda</Button> */}
-        </ButtonGroup>
-      </Flex>
+      <Center>
+        <Stack direction={["column", "row"]} m={2} spacing={5}>
+          <Center>
+            <ButtonGroup isAttached variant={"outline"}>
+              <Button onClick={() => setCurrentDate(DateTime.local())}>
+                Today
+              </Button>
+              <Button
+                onClick={() => setCurrentDate(currentDate.minus({ [view]: 1 }))}
+              >
+                Back
+              </Button>
+              <Button
+                onClick={() => setCurrentDate(currentDate.plus({ [view]: 1 }))}
+              >
+                Next
+              </Button>
+            </ButtonGroup>
+          </Center>
+          <Center>
+            {view === View.MONTH
+              ? `${currentDate.monthLong} ${currentDate.year}`
+              : view === View.WEEK
+              ? `${currentDate
+                  .startOf("week")
+                  .toLocaleString(DateTime.DATE_MED)} - ${currentDate
+                  .endOf("week")
+                  .toLocaleString(DateTime.DATE_MED)}`
+              : `${currentDate.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)}`}
+          </Center>
+          <Center>
+            <ButtonGroup isAttached variant={"outline"}>
+              <Button
+                isActive={view === "month"}
+                onClick={() => setView(View.MONTH)}
+              >
+                Month
+              </Button>
+              <Button
+                isActive={view === "week"}
+                onClick={() => setView(View.WEEK)}
+                // isDisabled
+              >
+                Week
+              </Button>
+              <Button
+                isActive={view === "day"}
+                onClick={() => setView(View.DAY)}
+                // isDisabled
+              >
+                Day
+              </Button>
+              {/* <Button isDisabled>Agenda</Button> */}
+            </ButtonGroup>
+          </Center>
+        </Stack>
+      </Center>
 
       {view === View.MONTH ? (
         <MonthView date={currentDate} events={events} onRange={onRange} />
