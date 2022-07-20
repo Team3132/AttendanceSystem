@@ -120,6 +120,7 @@ const DayColumn: React.FC<{ initialDate: DateTime; events: Event[] }> = ({
       borderWidth={"1px"}
       borderColor={borderColour}
       bgColor={DateTime.local().hasSame(date, "day") ? todayColour : undefined}
+      flex="1 1"
     >
       <LinkOverlay
         as={Link}
@@ -166,7 +167,7 @@ const WeekRow: React.FC<{ startDate: DateTime; events: Event[] }> = ({
   }, [startDate]);
 
   return (
-    <Flex flexDirection={"row"}>
+    <Flex flexDirection={"row"} alignItems={"stretch"}>
       {days.map((day) => (
         <DayColumn
           initialDate={day}
@@ -205,28 +206,29 @@ const MonthView: React.FC<MonthProps & FlexProps> = ({
 
   return (
     <>
-      <Flex {...flexProps} flexDirection={"column"}>
-        <Flex>
-          {new Array(7).fill(0).map((data, index) => (
-            <Box
-              // w="8em"
-              key={index}
-              borderWidth={"1px"}
-              borderColor={borderColour}
-              textAlign="center"
-            >
-              {date.startOf("week").plus({ day: index }).weekdayLong}
-            </Box>
-          ))}
-        </Flex>
-        {weeks.map((week) => (
-          <WeekRow
-            startDate={week}
-            events={filteredEvents(events, week, "week")}
-            key={week.toMillis()}
-          />
+      {/* <Flex {...flexProps} flexDirection={"column"}> */}
+      <Flex>
+        {new Array(7).fill(0).map((data, index) => (
+          <Box
+            // w="8em"
+            key={index}
+            borderWidth={"1px"}
+            borderColor={borderColour}
+            textAlign="center"
+            flex="1 1 "
+          >
+            {date.startOf("week").plus({ day: index }).weekdayLong}
+          </Box>
         ))}
       </Flex>
+      {weeks.map((week) => (
+        <WeekRow
+          startDate={week}
+          events={filteredEvents(events, week, "week")}
+          key={week.toMillis()}
+        />
+      ))}
+      {/* </Flex> */}
     </>
   );
 };
@@ -255,8 +257,8 @@ const WeekView: React.FC<MonthProps & FlexProps> = ({
 
   return (
     <>
-      <Flex {...flexProps} flexDirection={"column"}>
-        <Flex>
+      <Flex {...flexProps} flexDirection={"column"} w="100%">
+        <Flex w="100%" justifyContent={"space-evenly"} flex="1">
           {new Array(7).fill(0).map((data, index) => (
             <Box
               // w="8em"
@@ -269,7 +271,7 @@ const WeekView: React.FC<MonthProps & FlexProps> = ({
             </Box>
           ))}
         </Flex>
-        <Flex>
+        <Flex w="100%" justifyContent={"space-evenly"} flex="1">
           {days.map((day, index) => (
             <Box>
               <LinkBox
@@ -376,19 +378,24 @@ const DayView: React.FC<MonthProps & FlexProps> = ({
   );
 };
 
-interface RootCalProps {
+type RootCalProps = {
   initialDate?: DateTime;
   onRange: (start: DateTime, end: DateTime) => void;
   events?: Event[];
-}
+} & FlexProps;
 
-const RootCal: React.FC<RootCalProps> = ({ onRange, initialDate, events }) => {
+const RootCal: React.FC<RootCalProps> = ({
+  onRange,
+  initialDate,
+  events,
+  ...flexProps
+}) => {
   const [currentDate, setCurrentDate] = useState<DateTime>(
     initialDate ?? DateTime.local()
   );
   const [view, setView] = useState<View>(View.MONTH);
   return (
-    <Flex flexDir={"column"}>
+    <Flex flexDir={"column"} {...flexProps}>
       <Flex py={2}>
         <ButtonGroup isAttached variant={"outline"}>
           <Button onClick={() => setCurrentDate(DateTime.local())}>

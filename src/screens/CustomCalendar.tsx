@@ -1,6 +1,6 @@
 import { Calendar } from "@/components";
 import { useEvents } from "@/hooks";
-import { Center, Divider, Heading, useConst } from "@chakra-ui/react";
+import { Divider, Heading, useConst } from "@chakra-ui/react";
 import { DateTime } from "luxon";
 import { useState } from "react";
 
@@ -21,13 +21,15 @@ export const CustomCalendar: React.FC = () => {
         Custom Calendar
       </Heading>
       <Divider my={6} />
-      <Center>
-        <Calendar
-          initialDate={initialDate}
-          onRange={(start, end) => setRange({ start, end })}
-          events={apiEvents}
-        />
-      </Center>
+      {/* <Container maxW="container.lg"> */}
+      {/* <Center> */}
+      <Calendar
+        initialDate={initialDate}
+        onRange={(start, end) => setRange({ start, end })}
+        events={apiEvents}
+      />
+      {/* </Center>
+      </Container> */}
     </>
   );
 };
