@@ -8,6 +8,7 @@ import {
   FlexProps,
   LinkBox,
   LinkOverlay,
+  SimpleGrid,
   Spacer,
   Stack,
   Table,
@@ -120,7 +121,6 @@ const DayColumn: React.FC<{ initialDate: DateTime; events: Event[] }> = ({
       borderWidth={"1px"}
       borderColor={borderColour}
       bgColor={DateTime.local().hasSame(date, "day") ? todayColour : undefined}
-      flex="1 1"
     >
       <LinkOverlay
         as={Link}
@@ -167,7 +167,7 @@ const WeekRow: React.FC<{ startDate: DateTime; events: Event[] }> = ({
   }, [startDate]);
 
   return (
-    <Flex flexDirection={"row"} alignItems={"stretch"}>
+    <>
       {days.map((day) => (
         <DayColumn
           initialDate={day}
@@ -175,7 +175,7 @@ const WeekRow: React.FC<{ startDate: DateTime; events: Event[] }> = ({
           key={day.toMillis()}
         />
       ))}
-    </Flex>
+    </>
   );
 };
 
@@ -206,8 +206,7 @@ const MonthView: React.FC<MonthProps & FlexProps> = ({
 
   return (
     <>
-      {/* <Flex {...flexProps} flexDirection={"column"}> */}
-      <Flex>
+      <SimpleGrid columns={7}>
         {new Array(7).fill(0).map((data, index) => (
           <Box
             // w="8em"
@@ -220,14 +219,14 @@ const MonthView: React.FC<MonthProps & FlexProps> = ({
             {date.startOf("week").plus({ day: index }).weekdayLong}
           </Box>
         ))}
-      </Flex>
-      {weeks.map((week) => (
-        <WeekRow
-          startDate={week}
-          events={filteredEvents(events, week, "week")}
-          key={week.toMillis()}
-        />
-      ))}
+        {weeks.map((week) => (
+          <WeekRow
+            startDate={week}
+            events={filteredEvents(events, week, "week")}
+            key={week.toMillis()}
+          />
+        ))}
+      </SimpleGrid>
       {/* </Flex> */}
     </>
   );
