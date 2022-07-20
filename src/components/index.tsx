@@ -49,4 +49,4 @@ export const SWToast = loadable(() => import("./SWToast"));
 export const UserList = loadable(() => import("./UserList"));
 export const RSVPSelect = loadable(() => import("./RSVPSelect"));
 export const StatusForRangeButton = loadable(() => import("./StatusForRange"));
-export const Calendar = loadable(() => import("./CustomCalendar"));
+export const Calendar = loadable(() => import("./Calendar"));
