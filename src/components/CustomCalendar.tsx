@@ -466,7 +466,7 @@ const RootCal: React.FC<RootCalProps> = ({
                 .toLocaleString(DateTime.DATE_MED)} - ${currentDate
                 .endOf("week")
                 .toLocaleString(DateTime.DATE_MED)}`
-            : `${currentDate.toLocaleString(DateTime.DATE_MED)}`}
+            : `${currentDate.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)}`}
         </Center>
 
         <Spacer />
