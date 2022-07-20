@@ -297,7 +297,13 @@ const WeekView: React.FC<MonthProps & FlexProps> = ({
                 {filteredEvents(events, day, "day")
                   .filter((event) => event.allDay)
                   .map((event) => (
-                    <Button colorScheme={"blue"}>{event.title}</Button>
+                    <Button
+                      colorScheme={"blue"}
+                      as={Link}
+                      to={`/event/${event.id}/view`}
+                    >
+                      {event.title}
+                    </Button>
                   ))}
               </LinkBox>
             </Box>
@@ -327,7 +333,13 @@ const WeekView: React.FC<MonthProps & FlexProps> = ({
                 {filteredEvents(events, day, "day")
                   .filter((event) => !event.allDay)
                   .map((event) => (
-                    <Button colorScheme={"blue"}>{event.title}</Button>
+                    <Button
+                      colorScheme={"blue"}
+                      as={Link}
+                      to={`/event/${event.id}/view`}
+                    >
+                      {event.title}
+                    </Button>
                   ))}
               </LinkBox>
             </Box>
