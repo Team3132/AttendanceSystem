@@ -10,7 +10,7 @@ export const SWToast: React.FC = () => {
   } = useRegisterSW({
     onRegistered(r) {
       // eslint-disable-next-line prefer-template
-      toast({ description: "Site updated!" });
+      toast({ description: "Site updated!", isClosable: true, duration: 2000 });
     },
     onRegisterError(error) {
       console.log("SW registration error", error);
@@ -18,7 +18,7 @@ export const SWToast: React.FC = () => {
     onOfflineReady: () => {
       toast({
         description: "This site now works offline.",
-        duration: 10000,
+        duration: null,
         isClosable: true,
       });
     },
