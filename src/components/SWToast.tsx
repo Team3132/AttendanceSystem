@@ -10,7 +10,7 @@ export const SWToast: React.FC = () => {
   } = useRegisterSW({
     onRegistered(r) {
       // eslint-disable-next-line prefer-template
-      console.log("SW Registered: " + r);
+      toast({ description: "Site updated!" });
     },
     onRegisterError(error) {
       console.log("SW registration error", error);
