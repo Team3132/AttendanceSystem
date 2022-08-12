@@ -2,9 +2,8 @@
 
 ## Links
 
-- [Production]('https://attendance.team3132.com')
-
-- [Backend Repository]('https://github.com/Team3132/AttendanceBackend')
+- [Production](https://attendance.team3132.com)
+- [Backend Repository](https://github.com/Team3132/AttendanceBackend)
 
 ## Description
 
