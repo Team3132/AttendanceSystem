@@ -6,10 +6,11 @@ import type { CreateAttendanceDto } from '../models/CreateAttendanceDto';
 import type { UpdateAttendanceDto } from '../models/UpdateAttendanceDto';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
-import { OpenAPI } from '../core/OpenAPI';
-import { request as __request } from '../core/request';
+import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 
 export class AttendanceService {
+
+    constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
      * Create a new Attendance
@@ -18,10 +19,10 @@ export class AttendanceService {
      * @returns any 
      * @throws ApiError
      */
-    public static attendanceControllerCreate(
+    public attendanceControllerCreate(
 requestBody: CreateAttendanceDto,
 ): CancelablePromise<Attendance | any> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/attendance',
             body: requestBody,
@@ -33,8 +34,8 @@ requestBody: CreateAttendanceDto,
      * @returns Attendance 
      * @throws ApiError
      */
-    public static attendanceControllerFindAll(): CancelablePromise<Array<Attendance>> {
-        return __request(OpenAPI, {
+    public attendanceControllerFindAll(): CancelablePromise<Array<Attendance>> {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/attendance',
         });
@@ -46,10 +47,10 @@ requestBody: CreateAttendanceDto,
      * @returns Attendance 
      * @throws ApiError
      */
-    public static attendanceControllerFindOne(
+    public attendanceControllerFindOne(
 id: string,
 ): CancelablePromise<Attendance> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/attendance/{id}',
             path: {
@@ -65,11 +66,11 @@ id: string,
      * @returns Attendance 
      * @throws ApiError
      */
-    public static attendanceControllerUpdate(
+    public attendanceControllerUpdate(
 id: string,
 requestBody: UpdateAttendanceDto,
 ): CancelablePromise<Attendance> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'PATCH',
             url: '/attendance/{id}',
             path: {
@@ -86,10 +87,10 @@ requestBody: UpdateAttendanceDto,
      * @returns Attendance 
      * @throws ApiError
      */
-    public static attendanceControllerRemove(
+    public attendanceControllerRemove(
 id: string,
 ): CancelablePromise<Attendance> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'DELETE',
             url: '/attendance/{id}',
             path: {

@@ -5,20 +5,21 @@ import type { CreateScancodeDto } from '../models/CreateScancodeDto';
 import type { Scancode } from '../models/Scancode';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
-import { OpenAPI } from '../core/OpenAPI';
-import { request as __request } from '../core/request';
+import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 
 export class ScancodeService {
+
+    constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
      * @param requestBody 
      * @returns Scancode 
      * @throws ApiError
      */
-    public static scancodeControllerCreate(
+    public scancodeControllerCreate(
 requestBody: CreateScancodeDto,
 ): CancelablePromise<Scancode> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/scancode',
             body: requestBody,
@@ -30,8 +31,8 @@ requestBody: CreateScancodeDto,
      * @returns Scancode 
      * @throws ApiError
      */
-    public static scancodeControllerFindAll(): CancelablePromise<Array<Scancode>> {
-        return __request(OpenAPI, {
+    public scancodeControllerFindAll(): CancelablePromise<Array<Scancode>> {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/scancode',
         });
@@ -42,10 +43,10 @@ requestBody: CreateScancodeDto,
      * @returns Scancode 
      * @throws ApiError
      */
-    public static scancodeControllerRemove(
+    public scancodeControllerRemove(
 id: string,
 ): CancelablePromise<Scancode> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'DELETE',
             url: '/scancode/{id}',
             path: {

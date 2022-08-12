@@ -12,10 +12,11 @@ import type { UpdateOrCreateRSVP } from '../models/UpdateOrCreateRSVP';
 import type { UpdateRangeRSVP } from '../models/UpdateRangeRSVP';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
-import { OpenAPI } from '../core/OpenAPI';
-import { request as __request } from '../core/request';
+import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 
 export class EventService {
+
+    constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
      * @param from 
@@ -24,12 +25,12 @@ export class EventService {
      * @returns Event 
      * @throws ApiError
      */
-    public static eventControllerFindAll(
+    public eventControllerFindAll(
 from?: string,
 to?: string,
 take?: number,
 ): CancelablePromise<Array<Event>> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/event',
             query: {
@@ -47,10 +48,10 @@ take?: number,
      * @returns any 
      * @throws ApiError
      */
-    public static eventControllerCreate(
+    public eventControllerCreate(
 requestBody: CreateEventDto,
 ): CancelablePromise<Event | any> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/event',
             body: requestBody,
@@ -64,10 +65,10 @@ requestBody: CreateEventDto,
      * @returns Event 
      * @throws ApiError
      */
-    public static eventControllerFindOne(
+    public eventControllerFindOne(
 id: string,
 ): CancelablePromise<Event> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/event/{id}',
             path: {
@@ -83,11 +84,11 @@ id: string,
      * @returns Event 
      * @throws ApiError
      */
-    public static eventControllerUpdate(
+    public eventControllerUpdate(
 id: string,
 requestBody: UpdateEventDto,
 ): CancelablePromise<Event> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'PATCH',
             url: '/event/{id}',
             path: {
@@ -104,10 +105,10 @@ requestBody: UpdateEventDto,
      * @returns Event 
      * @throws ApiError
      */
-    public static eventControllerRemove(
+    public eventControllerRemove(
 id: string,
 ): CancelablePromise<Event> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'DELETE',
             url: '/event/{id}',
             path: {
@@ -122,10 +123,10 @@ id: string,
      * @returns Rsvp 
      * @throws ApiError
      */
-    public static eventControllerGetEventRsvp(
+    public eventControllerGetEventRsvp(
 eventId: string,
 ): CancelablePromise<Rsvp> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/event/{eventId}/rsvp',
             path: {
@@ -141,11 +142,11 @@ eventId: string,
      * @returns Rsvp 
      * @throws ApiError
      */
-    public static eventControllerSetEventRsvp(
+    public eventControllerSetEventRsvp(
 eventId: string,
 requestBody: UpdateOrCreateRSVP,
 ): CancelablePromise<Rsvp> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/event/{eventId}/rsvp',
             path: {
@@ -162,10 +163,10 @@ requestBody: UpdateOrCreateRSVP,
      * @returns Rsvp 
      * @throws ApiError
      */
-    public static eventControllerSetEventsRsvp(
+    public eventControllerSetEventsRsvp(
 requestBody: UpdateRangeRSVP,
 ): CancelablePromise<Array<Rsvp>> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/event/rsvps',
             body: requestBody,
@@ -178,10 +179,10 @@ requestBody: UpdateRangeRSVP,
      * @returns Rsvp 
      * @throws ApiError
      */
-    public static eventControllerGetEventRsvps(
+    public eventControllerGetEventRsvps(
 eventId: string,
 ): CancelablePromise<Array<Rsvp>> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/event/{eventId}/rsvps',
             path: {
@@ -196,10 +197,10 @@ eventId: string,
      * @returns Attendance 
      * @throws ApiError
      */
-    public static eventControllerGetEventAttendance(
+    public eventControllerGetEventAttendance(
 eventId: string,
 ): CancelablePromise<Attendance> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/event/{eventId}/attendance',
             path: {
@@ -215,11 +216,11 @@ eventId: string,
      * @returns Attendance 
      * @throws ApiError
      */
-    public static eventControllerSetEventAttendance(
+    public eventControllerSetEventAttendance(
 eventId: string,
 requestBody: UpdateOrCreateAttendance,
 ): CancelablePromise<Attendance> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/event/{eventId}/attendance',
             path: {
@@ -235,10 +236,10 @@ requestBody: UpdateOrCreateAttendance,
      * @returns Attendance 
      * @throws ApiError
      */
-    public static eventControllerGetEventAttendances(
+    public eventControllerGetEventAttendances(
 eventId: string,
 ): CancelablePromise<Array<Attendance>> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/event/{eventId}/attendances',
             path: {
@@ -253,11 +254,11 @@ eventId: string,
      * @returns Attendance 
      * @throws ApiError
      */
-    public static eventControllerScaninEvent(
+    public eventControllerScaninEvent(
 eventId: string,
 requestBody: ScaninDto,
 ): CancelablePromise<Attendance> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/event/{eventId}/scanin',
             path: {

@@ -1,4 +1,5 @@
-import { EventService, UpdateRangeRSVP } from "@/generated";
+import { api } from "@/client";
+import { UpdateRangeRSVP } from "@/generated";
 import {
   Button,
   FormControl,
@@ -30,7 +31,7 @@ export const StatusForRangeButton: React.FC<
   const { mutate: globalMutate } = useSWRConfig();
 
   const onSubmit: SubmitHandler<FormData> = async ({ status }) => {
-    const result = await EventService.eventControllerSetEventsRsvp({
+    const result = await api.event.eventControllerSetEventsRsvp({
       from,
       to,
       status,

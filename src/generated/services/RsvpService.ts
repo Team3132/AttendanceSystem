@@ -6,10 +6,11 @@ import type { Rsvp } from '../models/Rsvp';
 import type { UpdateRsvpDto } from '../models/UpdateRsvpDto';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
-import { OpenAPI } from '../core/OpenAPI';
-import { request as __request } from '../core/request';
+import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 
 export class RsvpService {
+
+    constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
      * Create an RSVP
@@ -18,10 +19,10 @@ export class RsvpService {
      * @returns any 
      * @throws ApiError
      */
-    public static rsvpControllerCreate(
+    public rsvpControllerCreate(
 requestBody: CreateRsvpDto,
 ): CancelablePromise<Rsvp | any> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/rsvp',
             body: requestBody,
@@ -33,8 +34,8 @@ requestBody: CreateRsvpDto,
      * @returns Rsvp 
      * @throws ApiError
      */
-    public static rsvpControllerFindAll(): CancelablePromise<Array<Rsvp>> {
-        return __request(OpenAPI, {
+    public rsvpControllerFindAll(): CancelablePromise<Array<Rsvp>> {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/rsvp',
         });
@@ -46,10 +47,10 @@ requestBody: CreateRsvpDto,
      * @returns Rsvp 
      * @throws ApiError
      */
-    public static rsvpControllerFindOne(
+    public rsvpControllerFindOne(
 id: string,
 ): CancelablePromise<Rsvp> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/rsvp/{id}',
             path: {
@@ -65,11 +66,11 @@ id: string,
      * @returns Rsvp 
      * @throws ApiError
      */
-    public static rsvpControllerUpdate(
+    public rsvpControllerUpdate(
 id: string,
 requestBody: UpdateRsvpDto,
 ): CancelablePromise<Rsvp> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'PATCH',
             url: '/rsvp/{id}',
             path: {
@@ -86,10 +87,10 @@ requestBody: UpdateRsvpDto,
      * @returns Rsvp 
      * @throws ApiError
      */
-    public static rsvpControllerRemove(
+    public rsvpControllerRemove(
 id: string,
 ): CancelablePromise<Rsvp> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'DELETE',
             url: '/rsvp/{id}',
             path: {

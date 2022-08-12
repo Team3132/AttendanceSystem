@@ -1,4 +1,5 @@
-import { EventService, UpdateOrCreateRSVP } from "@/generated";
+import { api } from "@/client";
+import { UpdateOrCreateRSVP } from "@/generated";
 import { useEventRSVPStatus, useMe } from "@/hooks";
 import { Select, SelectProps } from "@chakra-ui/react";
 
@@ -20,7 +21,7 @@ export const RSVPSelect: React.FC<
       currentValue === statusEnum.NO ||
       currentValue === statusEnum.YES
     ) {
-      const result = EventService.eventControllerSetEventRsvp(eventId, {
+      const result = api.event.eventControllerSetEventRsvp(eventId, {
         status: currentValue,
       });
       mutate(result, {

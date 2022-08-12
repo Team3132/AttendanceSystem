@@ -7,18 +7,19 @@ import type { UpdateUserDto } from '../models/UpdateUserDto';
 import type { User } from '../models/User';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
-import { OpenAPI } from '../core/OpenAPI';
-import { request as __request } from '../core/request';
+import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 
 export class UserService {
+
+    constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
      * Get the currently authenticated user.
      * @returns User 
      * @throws ApiError
      */
-    public static userControllerMe(): CancelablePromise<User> {
-        return __request(OpenAPI, {
+    public userControllerMe(): CancelablePromise<User> {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/user/me',
         });
@@ -30,10 +31,10 @@ export class UserService {
      * @returns User 
      * @throws ApiError
      */
-    public static userControllerUpdate(
+    public userControllerUpdate(
 requestBody: UpdateUserDto,
 ): CancelablePromise<User> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'PATCH',
             url: '/user/me',
             body: requestBody,
@@ -46,8 +47,8 @@ requestBody: UpdateUserDto,
      * @returns User 
      * @throws ApiError
      */
-    public static userControllerRemove(): CancelablePromise<User> {
-        return __request(OpenAPI, {
+    public userControllerRemove(): CancelablePromise<User> {
+        return this.httpRequest.request({
             method: 'DELETE',
             url: '/user/me',
         });
@@ -58,8 +59,8 @@ requestBody: UpdateUserDto,
      * @returns string 
      * @throws ApiError
      */
-    public static userControllerUserMeAvatar(): CancelablePromise<string> {
-        return __request(OpenAPI, {
+    public userControllerUserMeAvatar(): CancelablePromise<string> {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/user/me/avatar',
         });
@@ -69,8 +70,8 @@ requestBody: UpdateUserDto,
      * @returns Attendance 
      * @throws ApiError
      */
-    public static userControllerMeAttendance(): CancelablePromise<Array<Attendance>> {
-        return __request(OpenAPI, {
+    public userControllerMeAttendance(): CancelablePromise<Array<Attendance>> {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/user/me/attendance',
         });
@@ -80,8 +81,8 @@ requestBody: UpdateUserDto,
      * @returns Rsvp 
      * @throws ApiError
      */
-    public static userControllerMeRsvp(): CancelablePromise<Array<Rsvp>> {
-        return __request(OpenAPI, {
+    public userControllerMeRsvp(): CancelablePromise<Array<Rsvp>> {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/user/me/rsvp',
         });
@@ -93,8 +94,8 @@ requestBody: UpdateUserDto,
      * @returns any 
      * @throws ApiError
      */
-    public static userControllerRegenerateToken(): CancelablePromise<User | any> {
-        return __request(OpenAPI, {
+    public userControllerRegenerateToken(): CancelablePromise<User | any> {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/user/me/regenerateToken',
         });
@@ -104,8 +105,8 @@ requestBody: UpdateUserDto,
      * @returns User 
      * @throws ApiError
      */
-    public static userControllerUsers(): CancelablePromise<Array<User>> {
-        return __request(OpenAPI, {
+    public userControllerUsers(): CancelablePromise<Array<User>> {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/user',
         });
@@ -117,10 +118,10 @@ requestBody: UpdateUserDto,
      * @returns User 
      * @throws ApiError
      */
-    public static userControllerUser(
+    public userControllerUser(
 id: string,
 ): CancelablePromise<User> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/user/{id}',
             path: {
@@ -136,11 +137,11 @@ id: string,
      * @returns User 
      * @throws ApiError
      */
-    public static userControllerUpdateUser(
+    public userControllerUpdateUser(
 id: string,
 requestBody: UpdateUserDto,
 ): CancelablePromise<User> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'PATCH',
             url: '/user/{id}',
             path: {
@@ -157,10 +158,10 @@ requestBody: UpdateUserDto,
      * @returns User 
      * @throws ApiError
      */
-    public static userControllerRemoveUser(
+    public userControllerRemoveUser(
 id: string,
 ): CancelablePromise<User> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'DELETE',
             url: '/user/{id}',
             path: {
@@ -176,10 +177,10 @@ id: string,
      * @returns any 
      * @throws ApiError
      */
-    public static userControllerRegenerateUserToken(
+    public userControllerRegenerateUserToken(
 id: string,
 ): CancelablePromise<User | any> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'POST',
             url: '/user/{id}/regenerateToken',
             path: {
@@ -193,10 +194,10 @@ id: string,
      * @returns Rsvp 
      * @throws ApiError
      */
-    public static userControllerUserRsvPs(
+    public userControllerUserRsvPs(
 id: string,
 ): CancelablePromise<Array<Rsvp>> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/user/{id}/rsvp',
             path: {
@@ -210,10 +211,10 @@ id: string,
      * @returns Attendance 
      * @throws ApiError
      */
-    public static userControllerUserAttendance(
+    public userControllerUserAttendance(
 id: string,
 ): CancelablePromise<Array<Attendance>> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/user/{id}/attendance',
             path: {
@@ -228,10 +229,10 @@ id: string,
      * @returns string 
      * @throws ApiError
      */
-    public static userControllerUserAvatar(
+    public userControllerUserAvatar(
 id: string,
 ): CancelablePromise<string> {
-        return __request(OpenAPI, {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/user/{id}/avatar',
             path: {

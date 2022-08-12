@@ -4,18 +4,19 @@
 import type { AuthStatusDto } from '../models/AuthStatusDto';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
-import { OpenAPI } from '../core/OpenAPI';
-import { request as __request } from '../core/request';
+import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 
 export class AuthService {
+
+    constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
      * Auth Status
      * @returns AuthStatusDto 
      * @throws ApiError
      */
-    public static authControllerStatus(): CancelablePromise<AuthStatusDto> {
-        return __request(OpenAPI, {
+    public authControllerStatus(): CancelablePromise<AuthStatusDto> {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/auth/status',
         });
@@ -26,8 +27,8 @@ export class AuthService {
      * @returns any 
      * @throws ApiError
      */
-    public static authControllerDiscordSignin(): CancelablePromise<any> {
-        return __request(OpenAPI, {
+    public authControllerDiscordSignin(): CancelablePromise<any> {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/auth/discord',
         });
@@ -38,8 +39,8 @@ export class AuthService {
      * @returns any 
      * @throws ApiError
      */
-    public static authControllerDiscordSigninCallback(): CancelablePromise<any> {
-        return __request(OpenAPI, {
+    public authControllerDiscordSigninCallback(): CancelablePromise<any> {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/auth/discord/callback',
         });
@@ -49,8 +50,8 @@ export class AuthService {
      * @returns any 
      * @throws ApiError
      */
-    public static authControllerLogout(): CancelablePromise<any> {
-        return __request(OpenAPI, {
+    public authControllerLogout(): CancelablePromise<any> {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/auth/logout',
         });

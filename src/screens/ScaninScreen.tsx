@@ -1,3 +1,4 @@
+import { api } from "@/client";
 import {
   Button,
   Center,
@@ -11,7 +12,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { AttendedList } from "@components";
-import { EventService, ScaninDto } from "@generated";
+import { ScaninDto } from "@generated";
 import { useEvent, useEventAttendanceStatuses } from "@hooks";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
@@ -31,7 +32,7 @@ export const ScanIn: React.FC = () => {
 
   const onSubmit = async (data: ScaninDto) => {
     if (eventId) {
-      await EventService.eventControllerScaninEvent(eventId, data);
+      await api.event.eventControllerScaninEvent(eventId, data);
 
       mutate();
 

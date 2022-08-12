@@ -1,3 +1,4 @@
+import { api } from "@/client";
 import { AddIcon, MinusIcon, RepeatIcon } from "@chakra-ui/icons";
 import {
   Button,
@@ -13,12 +14,7 @@ import {
   Stack,
   useClipboard,
 } from "@chakra-ui/react";
-import {
-  ApiError,
-  CreateScancodeDto,
-  Scancode,
-  ScancodeService,
-} from "@generated";
+import { ApiError, CreateScancodeDto, Scancode } from "@generated";
 import { useScancodes } from "@hooks";
 import { generateString } from "@utils";
 import { useForm } from "react-hook-form";
@@ -36,7 +32,7 @@ export const ScancodeScreen: React.FC = () => {
 
   const onSubmit = async (data: CreateScancodeDto) => {
     try {
-      const result = await ScancodeService.scancodeControllerCreate(data);
+      const result = await api.scancode.scancodeControllerCreate(data);
       if (scancodes) {
         mutate(scancodes.concat(result));
       }
@@ -54,7 +50,7 @@ export const ScancodeScreen: React.FC = () => {
   };
 
   const onDelete = async (scancode: Scancode) => {
-    const { code: resultCode } = await ScancodeService.scancodeControllerRemove(
+    const { code: resultCode } = await api.scancode.scancodeControllerRemove(
       scancode.code
     );
     mutate(scancodes?.filter(({ code }) => code !== resultCode));

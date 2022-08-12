@@ -2,17 +2,18 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CancelablePromise } from '../core/CancelablePromise';
-import { OpenAPI } from '../core/OpenAPI';
-import { request as __request } from '../core/request';
+import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 
 export class CalendarService {
+
+    constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
      * @returns any 
      * @throws ApiError
      */
-    public static calendarControllerCalendar(): CancelablePromise<any> {
-        return __request(OpenAPI, {
+    public calendarControllerCalendar(): CancelablePromise<any> {
+        return this.httpRequest.request({
             method: 'GET',
             url: '/calendar',
         });
