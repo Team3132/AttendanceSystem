@@ -29,3 +29,5 @@ Prerequisites: [NodeJS](https://nodejs.org), [Yarn](https://yarnpkg.com)
 ## Deployment
 
 At the moment the frontend is setup to use vercel's static site hosting which is directly linked to the reposity (may cease to work under TDU org). It will update the site on push to the master branch.
+
+Note: A good solution for the future would be to move to Cloudflare's pages (and functions for API proxy) product which isn't fussy about deploying from organisations.
