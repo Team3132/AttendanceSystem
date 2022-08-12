@@ -25,3 +25,7 @@ Prerequisites: [NodeJS](https://nodejs.org), [Yarn](https://yarnpkg.com)
 
 1. Install dependancies with `yarn install`
 2. Start the project with `yarn dev`
+
+## Deployment
+
+At the moment the frontend is setup to use vercel's static site hosting which is directly linked to the reposity (may cease to work under TDU org). It will update the site on push to the master branch.
