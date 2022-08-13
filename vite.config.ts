@@ -11,9 +11,6 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       injectRegister: "auto",
-      workbox: {
-        cleanupOutdatedCaches: true,
-      },
       manifest: {
         name: "TDU Attendance",
         short_name: "TDU",
