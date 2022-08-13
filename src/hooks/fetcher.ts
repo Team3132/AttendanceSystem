@@ -2,7 +2,7 @@ import axios, { Axios } from "axios";
 import { BareFetcher } from "swr";
 
 const api = axios.create({
-  baseURL: "https://api.sebasptsch.dev",
+  baseURL: "https://api.team3132.com",
   withCredentials: true,
 });
 
