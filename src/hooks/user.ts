@@ -9,7 +9,7 @@ export const useUser = (userId: string = "me") => {
     data: userData,
     error: userError,
     mutate,
-  } = useSWR<User>(isAuthenticated && userId ? `/api/user/${userId}` : null);
+  } = useSWR<User>(isAuthenticated && userId ? `/user/${userId}` : null);
 
   return {
     user: userData,
@@ -27,7 +27,7 @@ export const userAvatar = (userId: string = "me") => {
     error: userError,
     mutate,
   } = useSWR<string>(
-    isAuthenticated && userId ? `/api/user/${userId}/avatar` : null
+    isAuthenticated && userId ? `/user/${userId}/avatar` : null
   );
 
   return {
@@ -44,7 +44,7 @@ export const useUsers = () => {
     data: usersData,
     error: usersError,
     mutate,
-  } = useSWR<User[]>(isAuthenticated && isAdmin ? `/api/user` : null);
+  } = useSWR<User[]>(isAuthenticated && isAdmin ? `/user` : null);
   return {
     users: usersData,
     isLoading: !usersError && !usersData,

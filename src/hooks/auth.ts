@@ -2,7 +2,7 @@ import useSWR from "swr";
 import { AuthStatusDto, User } from "@generated";
 
 export const useAuthStatus = () => {
-  const { data, error } = useSWR<AuthStatusDto>(`/api/auth/status`);
+  const { data, error } = useSWR<AuthStatusDto>(`/auth/status`);
   return {
     ...data,
     isLoading: !error && !data,
@@ -14,7 +14,7 @@ export const useMe = () => {
   const { isAuthenticated } = useAuthStatus();
 
   const { data: userData, error: userError } = useSWR<User>(
-    isAuthenticated ? `/api/user/me` : null
+    isAuthenticated ? `/user/me` : null
   );
   return {
     user: userData,

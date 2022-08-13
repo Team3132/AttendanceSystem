@@ -1,3 +1,4 @@
+import { api } from "@/client";
 import {
   Button,
   Center,
@@ -15,7 +16,6 @@ import {
 import { UserAvatar } from "@components";
 import { UpdateUserDto } from "@generated";
 import { userAvatar, useUser } from "@hooks";
-import { editUser } from "@utils";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
@@ -46,9 +46,16 @@ export const ProfileScreen: React.FC = () => {
   }, [user]);
 
   const onSubmit = async (data: UpdateUserDto) => {
-    const user = await editUser(userId, data);
-    mutate(user);
-    globalMutate(`/api/user/${userId ?? "me"}`);
+    const userIdent = userId ?? "me";
+    if (userIdent === "me") {
+      const user = await api.user.userControllerUpdate(data);
+      mutate(user);
+      globalMutate(`/api/user/${userId ?? "me"}`);
+    } else {
+      const user = await api.user.userControllerUpdateUser(userIdent, data);
+      mutate(user);
+      globalMutate(`/api/user/${userId ?? "me"}`);
+    }
   };
 
   const calendarUrl = `${window.location.origin}/api/calendar?secret=${

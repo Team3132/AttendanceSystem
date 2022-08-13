@@ -1,7 +1,7 @@
+import { api } from "@/client";
 import { Button, ButtonGroup } from "@chakra-ui/react";
 import { Rsvp } from "@generated";
 import { useEventRSVPStatus } from "@hooks";
-import { setEventRSVPStatus } from "@utils";
 import { useSWRConfig } from "swr";
 
 export interface RSVPButtonRowProps {
@@ -18,12 +18,17 @@ export const RSVPButtonRow: React.FC<RSVPButtonRowProps> = ({ eventId }) => {
         variant={rsvp?.status === Rsvp["status"].YES ? "solid" : "outline"}
         onClick={async () => {
           if (eventId) {
-            const response = await setEventRSVPStatus(
-              eventId,
-              Rsvp["status"].YES
-            );
+            // const response = await setEventRSVPStatus(
+            //   eventId,
+            //   Rsvp["status"].YES
+            // );
+
+            const response = api.event.eventControllerSetEventRsvp(eventId, {
+              status: Rsvp["status"].YES,
+            });
+
             mutate(response, { revalidate: false });
-            globalMutate(`/api/event/${eventId}/rsvps`);
+            globalMutate(`https://api.team3132.com/event/${eventId}/rsvps`);
           }
         }}
       >
@@ -34,12 +39,12 @@ export const RSVPButtonRow: React.FC<RSVPButtonRowProps> = ({ eventId }) => {
         variant={rsvp?.status === Rsvp["status"].MAYBE ? "solid" : "outline"}
         onClick={async () => {
           if (eventId) {
-            const response = await setEventRSVPStatus(
-              eventId,
-              Rsvp["status"].MAYBE
-            );
+            const response = api.event.eventControllerSetEventRsvp(eventId, {
+              status: Rsvp["status"].MAYBE,
+            });
+
             mutate(response, { revalidate: false });
-            globalMutate(`/api/event/${eventId}/rsvps`);
+            globalMutate(`https://api.team3132.com/event/${eventId}/rsvps`);
           }
         }}
       >
@@ -50,12 +55,12 @@ export const RSVPButtonRow: React.FC<RSVPButtonRowProps> = ({ eventId }) => {
         variant={rsvp?.status === Rsvp["status"].NO ? "solid" : "outline"}
         onClick={async () => {
           if (eventId) {
-            const response = await setEventRSVPStatus(
-              eventId,
-              Rsvp["status"].NO
-            );
+            const response = api.event.eventControllerSetEventRsvp(eventId, {
+              status: Rsvp["status"].NO,
+            });
+
             mutate(response, { revalidate: false });
-            globalMutate(`/api/event/${eventId}/rsvps`);
+            globalMutate(`https://api.team3132.com/event/${eventId}/rsvps`);
           }
         }}
       >

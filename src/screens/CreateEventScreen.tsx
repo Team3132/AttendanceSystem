@@ -1,3 +1,4 @@
+import { api } from "@/client";
 import {
   Button,
   FormControl,
@@ -11,7 +12,6 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { CreateEventDto } from "@generated";
-import { createEvent } from "@utils";
 import { DateTime } from "luxon";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -41,7 +41,7 @@ export const CreateEventScreen: React.FC = () => {
   });
 
   const onSubmit = async (data: CreateEventDto) => {
-    const event = await createEvent(data);
+    const event = await api.event.eventControllerCreate(data);
     navigate(`/event/${event.id}/view`);
     globalMutate("/api/event");
   };

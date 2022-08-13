@@ -1,7 +1,7 @@
+import { api } from "@/client";
 import { Button, ButtonGroup } from "@chakra-ui/react";
 import { Attendance } from "@generated";
 import { useEventAttendanceStatus } from "@hooks";
-import { setEventAttendanceStatus } from "@utils";
 import { useSWRConfig } from "swr";
 
 export interface AttendanceButtonRowProps {
@@ -25,12 +25,14 @@ export const AttendanceButtonRow: React.FC<AttendanceButtonRowProps> = ({
         }
         onClick={async () => {
           if (eventId) {
-            const response = await setEventAttendanceStatus(
+            const response = await api.event.eventControllerSetEventAttendance(
               eventId,
-              Attendance["status"].ATTENDED
+              { status: Attendance["status"].ATTENDED }
             );
             mutate(response);
-            globalMutate(`/api/event/${eventId}/attendances`);
+            globalMutate(
+              `https://api.team3132.com/event/${eventId}/attendances`
+            );
           }
         }}
       >
@@ -45,9 +47,9 @@ export const AttendanceButtonRow: React.FC<AttendanceButtonRowProps> = ({
         }
         onClick={async () => {
           if (eventId) {
-            const response = await setEventAttendanceStatus(
+            const response = await api.event.eventControllerSetEventAttendance(
               eventId,
-              Attendance["status"].NOT_ATTENDED
+              { status: Attendance["status"].NOT_ATTENDED }
             );
             mutate(response, { revalidate: false });
             globalMutate(`/api/event/${eventId}/attendances`);

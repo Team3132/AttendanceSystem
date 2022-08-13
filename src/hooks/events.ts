@@ -13,7 +13,7 @@ export const useEvents = (take?: number, from?: DateTime, to?: DateTime) => {
     mutate,
   } = useSWR<Event[]>(
     isAuthenticated && from && to
-      ? [`/api/event`, { take, from: from.toISO(), to: to.toISO() }]
+      ? [`/event`, { take, from: from.toISO(), to: to.toISO() }]
       : null
   );
 
@@ -33,7 +33,7 @@ export const useEvent = (eventId?: string) => {
     error: userError,
     mutate,
   } = useSWR<Event>(
-    isAuthenticated ? (eventId ? `/api/event/${eventId}` : null) : null
+    isAuthenticated ? (eventId ? `/event/${eventId}` : null) : null
   );
 
   return {
@@ -52,7 +52,7 @@ export const useEventRSVPStatus = (eventId?: string) => {
     error: rsvpError,
     mutate,
   } = useSWR<Rsvp>(
-    isAuthenticated ? (eventId ? `/api/event/${eventId}/rsvp` : null) : null
+    isAuthenticated ? (eventId ? `/event/${eventId}/rsvp` : null) : null
   );
 
   return {
@@ -71,7 +71,7 @@ export const useEventRSVPStatuses = (eventId?: string) => {
     error: rsvpError,
     mutate,
   } = useSWR<Rsvp[]>(
-    isAuthenticated ? (eventId ? `/api/event/${eventId}/rsvps` : null) : null
+    isAuthenticated ? (eventId ? `/event/${eventId}/rsvps` : null) : null
   );
 
   return {
@@ -90,11 +90,7 @@ export const useEventAttendanceStatus = (eventId?: string) => {
     error: attendanceError,
     mutate,
   } = useSWR<Attendance>(
-    isAuthenticated
-      ? eventId
-        ? `/api/event/${eventId}/attendance`
-        : null
-      : null
+    isAuthenticated ? (eventId ? `/event/${eventId}/attendance` : null) : null
   );
 
   return {
@@ -113,11 +109,7 @@ export const useEventAttendanceStatuses = (eventId?: string) => {
     error: attendanceError,
     mutate,
   } = useSWR<Attendance[]>(
-    isAuthenticated
-      ? eventId
-        ? `/api/event/${eventId}/attendances`
-        : null
-      : null
+    isAuthenticated ? (eventId ? `/event/${eventId}/attendances` : null) : null
   );
 
   return {

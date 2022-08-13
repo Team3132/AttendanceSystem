@@ -38,9 +38,13 @@ export const StatusForRangeButton: React.FC<
     });
     await Promise.all(
       result.map((rsvp) =>
-        globalMutate(`/api/event/${rsvp.eventId}/rsvp`, undefined, {
-          optimisticData: rsvp,
-        })
+        globalMutate(
+          `https://api.team3132.com/event/${rsvp.eventId}/rsvp`,
+          undefined,
+          {
+            optimisticData: rsvp,
+          }
+        )
       )
     );
   };

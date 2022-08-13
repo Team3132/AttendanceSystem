@@ -12,7 +12,6 @@ export default defineConfig({
       registerType: "autoUpdate",
       injectRegister: "auto",
       workbox: {
-        navigateFallbackDenylist: [/^\/api/],
         cleanupOutdatedCaches: true,
       },
       manifest: {

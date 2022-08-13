@@ -1,3 +1,4 @@
+import { api } from "@/client";
 import {
   Button,
   ButtonGroup,
@@ -16,7 +17,6 @@ import {
 } from "@chakra-ui/react";
 import { UpdateEventDto } from "@generated";
 import { useAuthStatus, useEvent } from "@hooks";
-import { deleteEvent, updateEvent } from "@utils";
 import pick from "lodash.pick";
 import { DateTime } from "luxon";
 import { useEffect } from "react";
@@ -59,7 +59,10 @@ export const EventEditScreen: React.FC = () => {
   const onSubmit = async (data: UpdateEventDto) => {
     const formData = { ...data };
     if (event?.id) {
-      const eventRes = await updateEvent(event.id, formData);
+      const eventRes = await api.event.eventControllerUpdate(
+        event.id,
+        formData
+      );
       mutate(eventRes);
       globalMutate("/api/event");
     }
@@ -81,7 +84,8 @@ export const EventEditScreen: React.FC = () => {
             onClick={async () => {
               if (event.id) {
                 try {
-                  await deleteEvent(event.id);
+                  await api.event.eventControllerRemove(event.id);
+                  // await deleteEvent(event.id);
                 } catch (error) {
                   console.log(`Deleted Event ${event.id}`);
                 }

@@ -9,7 +9,7 @@ export const useScancodes = () => {
     data: scancodeData,
     error: scancodeError,
     mutate,
-  } = useSWR<Scancode[]>(isAuthenticated ? `/api/scancode` : null);
+  } = useSWR<Scancode[]>(isAuthenticated ? `/scancode` : null);
   return {
     scancodes: scancodeData,
     isLoading: !scancodeError && !scancodeData,
