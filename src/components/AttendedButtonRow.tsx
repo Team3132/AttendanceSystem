@@ -52,7 +52,9 @@ export const AttendanceButtonRow: React.FC<AttendanceButtonRowProps> = ({
               { status: Attendance["status"].NOT_ATTENDED }
             );
             mutate(response, { revalidate: false });
-            globalMutate(`/api/event/${eventId}/attendances`);
+            globalMutate(
+              `https://api.team3132.com/event/${eventId}/attendances`
+            );
           }
         }}
       >

@@ -50,15 +50,15 @@ export const ProfileScreen: React.FC = () => {
     if (userIdent === "me") {
       const user = await api.user.userControllerUpdate(data);
       mutate(user);
-      globalMutate(`/api/user/${userId ?? "me"}`);
+      globalMutate(`https://api.team3132.com/user/${userId ?? "me"}`);
     } else {
       const user = await api.user.userControllerUpdateUser(userIdent, data);
       mutate(user);
-      globalMutate(`/api/user/${userId ?? "me"}`);
+      globalMutate(`https://api.team3132.com/user/${userId ?? "me"}`);
     }
   };
 
-  const calendarUrl = `${window.location.origin}/api/calendar?secret=${
+  const calendarUrl = `https://api.team3132.com/calendar?secret=${
     user?.calendarSecret ?? ""
   }`;
 

@@ -64,7 +64,7 @@ export const EventEditScreen: React.FC = () => {
         formData
       );
       mutate(eventRes);
-      globalMutate("/api/event");
+      globalMutate("https://api.team3132.com/event");
     }
   };
 
@@ -89,7 +89,7 @@ export const EventEditScreen: React.FC = () => {
                 } catch (error) {
                   console.log(`Deleted Event ${event.id}`);
                 }
-                globalMutate("/api/event");
+                globalMutate("https://api.team3132.com/event");
                 navigate(`/calendar`);
               }
             }}

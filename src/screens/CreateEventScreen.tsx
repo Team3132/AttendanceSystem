@@ -43,7 +43,7 @@ export const CreateEventScreen: React.FC = () => {
   const onSubmit = async (data: CreateEventDto) => {
     const event = await api.event.eventControllerCreate(data);
     navigate(`/event/${event.id}/view`);
-    globalMutate("/api/event");
+    globalMutate("https://api.team3132.com/event");
   };
 
   return (
