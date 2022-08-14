@@ -17,6 +17,7 @@ import {
   MdLock,
 } from "react-icons/md";
 import { UserAvatar } from "../..";
+
 export interface NavItem {
   url?: string;
   label: string;
