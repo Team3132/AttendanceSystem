@@ -56,6 +56,29 @@ export const parameters = {
           })
         );
       }),
+      rest.get<User>(
+        "https://api.team3132.com/user/201596915702300673",
+        (req, res, ctx) => {
+          return res(
+            ctx.json({
+              id: "201596915702300673",
+              firstName: "Sebastian",
+              lastName: "Pietschner",
+              createdAt: "2022-07-13T11:53:17.505Z",
+              updatedAt: "2022-08-14T05:47:45.969Z",
+              discordRefreshToken: "DaIV2hmedxF41yNOpVcQqIsIVbN21f",
+              calendarSecret: "eeef7845-e0a4-49ca-b7aa-96e57c478345",
+              email: "sebasptsch@gmail.com",
+            })
+          );
+        }
+      ),
+      rest.get<string>(
+        "https://api.team3132.com/user/201596915702300673/avatar",
+        (req, res, ctx) => {
+          return res(ctx.json("5f51c11760d6247d2ce2f194da7b05e4"));
+        }
+      ),
       rest.get<Rsvp>(
         "https://api.team3132.com/event/cl6def3iu001401n0t7f9zlj6/rsvp",
         (req, res, ctx) => {
