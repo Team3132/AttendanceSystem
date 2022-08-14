@@ -1,5 +1,8 @@
 import theme from "../src/utils/theme";
 import { initialize, mswDecorator } from "msw-storybook-addon";
+import { rest } from "msw";
+import type { Event, AuthStatusDto, User, Rsvp } from "../src/generated";
+import { handlers } from "../mock";
 
 initialize();
 
@@ -13,6 +16,9 @@ export const parameters = {
   },
   chakra: {
     theme,
+  },
+  msw: {
+    handlers,
   },
 };
 
