@@ -15,13 +15,13 @@ jobs:
         with:
           node-version: 16
           cache: "yarn"
-      - name: Setup Wrangler
-        uses: cloudflare/wrangler-action@2.0.0
-        with:
-          apiToken: ${{ secrets.CF_API_TOKEN }}
+
       - name: Install Dependancies
         run: yarn install
       - name: Build
         run: yarn build
       - name: Deploy
-        run: wrangler pages publish dist --project-name=attendancefrontend
+        uses: cloudflare/wrangler-action@2.0.0
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          command: wrangler pages publish dist --project-name=attendancefrontend
