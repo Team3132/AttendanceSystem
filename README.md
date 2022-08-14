@@ -16,6 +16,7 @@ A project started to better coordinate both student and mentor attendance.
 - [Chakra-UI](https://chakra-ui.com) - A UI component framework that works well on desktop and mobile screen sizes.
 - [SWR](https://swr.vercel.app) - A flexible data fetching library to avoid duplication of requests and manage state. `isLoading`,`isError` etc.
 - [Vite](https://vitejs.dev) - The compiler for the project. Very fast and reasonably easy to configure.
+- [Storybook](https://storybook.js.org/) - Framework for prototyping and testing UI components.
 
 ## Getting started
 
