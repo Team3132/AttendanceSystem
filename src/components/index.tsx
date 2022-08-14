@@ -1,11 +1,11 @@
 import loadable from "@loadable/component";
+import type { UserAvatarProps } from "./atoms/UserAvatar";
 import type { AttendanceButtonRowProps } from "./AttendedButtonRow";
 import type { AttendedListProps } from "./AttendedList";
 import type { AuthRouteProps } from "./AuthRoute";
 import type { AuthWrapperProps } from "./AuthWrapper";
 import type { RSVPButtonRowProps } from "./RSVPButtonRow";
 import type { RSVPListProps } from "./RSVPList";
-import type { UserAvatarProps } from "./UserAvatar";
 
 const Box = loadable(() => import("@chakra-ui/react"), {
   resolveComponent: (comps) => comps.Box,
@@ -32,7 +32,7 @@ export const RSVPList = loadable<RSVPListProps>(() => import("./RSVPList"));
 
 export const TDUIcon = loadable(() => import("./atoms/TDUIcon"));
 export const UserAvatar = loadable<UserAvatarProps>(
-  () => import("./UserAvatar")
+  () => import("./atoms/UserAvatar")
 );
 export const CalendarWithLocalizer = loadable(
   () => import("./CalendarWithLocalizer"),
