@@ -1,4 +1,5 @@
 import { UserList } from "@/components";
+import { useUsers } from "@/hooks";
 import {
   Accordion,
   AccordionButton,
@@ -11,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 
 export const AdminScreen: React.FC = () => {
+  const { users, isLoading } = useUsers();
   return (
     <>
       <Heading textAlign={"center"} mt={6}>
@@ -30,7 +32,9 @@ export const AdminScreen: React.FC = () => {
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4}>
-                {isExpanded ? <UserList /> : null}
+                {isExpanded ? (
+                  <UserList users={users} isLoading={isLoading} />
+                ) : null}
               </AccordionPanel>
             </>
           )}
