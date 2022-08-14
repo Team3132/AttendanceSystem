@@ -47,6 +47,8 @@ export const CalendarWithLocalizer = loadable(
 export const ChakraProvider = loadable(() => import("./ChakraProvider"));
 export const SWToast = loadable(() => import("./SWToast"));
 export const UserList = loadable(() => import("./organism/UserList"));
-export const RSVPSelect = loadable(() => import("./RSVPSelect"));
-export const StatusForRangeButton = loadable(() => import("./StatusForRange"));
+export const RSVPSelect = loadable(() => import("./atoms/RSVPSelect"));
+export const StatusForRangeButton = loadable(
+  () => import("./atoms/StatusForRange")
+);
 export const Calendar = loadable(() => import("./organism/Calendar"));
