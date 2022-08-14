@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Flex,
-  FlexProps,
   LinkBox,
   LinkOverlay,
   SimpleGrid,
@@ -11,20 +10,25 @@ import {
 } from "@chakra-ui/react";
 import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { filteredEvents, MonthProps } from ".";
+import { filteredEvents } from ".";
+import {
+  useCalendarDate,
+  useCalendarEvents,
+  useCalendarOnEmptyClicked,
+  useCalendarOnEventClicked,
+  useCalendarOnRange,
+} from "./CalendarProvider";
 
-const WeekView: React.FC<MonthProps & FlexProps> = ({
-  date,
-  events,
-  onRange,
-
-  ...flexProps
-}) => {
+const WeekView: React.FC = () => {
   const isMobile = useBreakpointValue<boolean>({ base: true, md: false });
   const { colorMode } = useColorMode();
   const [days, setDays] = useState<DateTime[]>([]);
   const borderColour = colorMode === "light" ? "gray.300" : "gray.600";
+
+  const [date] = useCalendarDate();
+  const onRange = useCalendarOnRange();
+  const events = useCalendarEvents();
+
   useEffect(() => {
     const lastDayOfWeek = date.endOf("week");
     const firstDayOfWeek = date.startOf("week");
@@ -37,9 +41,12 @@ const WeekView: React.FC<MonthProps & FlexProps> = ({
     onRange && onRange(firstDayOfWeek, lastDayOfWeek);
   }, [date]);
 
+  const emptyClicked = useCalendarOnEmptyClicked();
+  const eventClicked = useCalendarOnEventClicked();
+
   return (
     <>
-      <Flex {...flexProps} flexDirection={"column"} w="100%">
+      <Flex flexDirection={"column"} w="100%">
         <SimpleGrid columns={7}>
           {new Array(7).fill(0).map((data, index) => (
             <Box
@@ -67,14 +74,17 @@ const WeekView: React.FC<MonthProps & FlexProps> = ({
                 textAlign="center"
               >
                 <LinkOverlay
-                  as={Link}
-                  to={`/event/create?startDate=${day
-                    .startOf("day")
-                    .toJSDate()
-                    .toISOString()}&endDate=${day
-                    .endOf("day")
-                    .toJSDate()
-                    .toISOString()}&allDay=true`}
+                  // as={Link}
+                  onClick={() => {
+                    emptyClicked(day.startOf("day"), day.endOf("day"));
+                  }}
+                  // to={`/event/create?startDate=${day
+                  //   .startOf("day")
+                  //   .toJSDate()
+                  //   .toISOString()}&endDate=${day
+                  //   .endOf("day")
+                  //   .toJSDate()
+                  //   .toISOString()}&allDay=true`}
                 />
                 {/* {filteredEvents(events, day, "day").length} */}
                 {filteredEvents(events, day, "day")
@@ -82,8 +92,7 @@ const WeekView: React.FC<MonthProps & FlexProps> = ({
                   .map((event) => (
                     <Button
                       colorScheme={"blue"}
-                      as={Link}
-                      to={`/event/${event.id}/view`}
+                      onClick={() => eventClicked(event)}
                     >
                       {event.title}
                     </Button>
@@ -103,14 +112,17 @@ const WeekView: React.FC<MonthProps & FlexProps> = ({
                 textAlign="center"
               >
                 <LinkOverlay
-                  as={Link}
-                  to={`/event/create?startDate=${day
-                    .startOf("day")
-                    .toJSDate()
-                    .toISOString()}&endDate=${day
-                    .endOf("day")
-                    .toJSDate()
-                    .toISOString()}`}
+                  // as={Link}
+                  onClick={() => {
+                    emptyClicked(day.startOf("day"), day.endOf("day"));
+                  }}
+                  // to={`/event/create?startDate=${day
+                  //   .startOf("day")
+                  //   .toJSDate()
+                  //   .toISOString()}&endDate=${day
+                  //   .endOf("day")
+                  //   .toJSDate()
+                  //   .toISOString()}`}
                 />
                 {/* {filteredEvents(events, day, "day").length} */}
                 {filteredEvents(events, day, "day")
@@ -118,8 +130,10 @@ const WeekView: React.FC<MonthProps & FlexProps> = ({
                   .map((event) => (
                     <Button
                       colorScheme={"blue"}
-                      as={Link}
-                      to={`/event/${event.id}/view`}
+                      // as={Link}
+                      onClick={() => {
+                        eventClicked(event);
+                      }}
                     >
                       {event.title}
                     </Button>

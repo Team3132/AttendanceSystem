@@ -12,7 +12,6 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
-  DrawerProps,
   Flex,
   IconButton,
   Spacer,
@@ -20,20 +19,24 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { NavItem } from ".";
-import { useAuthStatus } from "../../hooks";
 
-const MobileDrawer: React.FC<
-  Omit<DrawerProps, "children"> & { menuItems: NavItem[] }
-> = ({ menuItems, ...props }) => {
+interface MobileDrawerProps {
+  isOpen: boolean;
+  onClose: () => void;
+  menuItems: NavItem[];
+}
+
+const MobileDrawer: React.FC<MobileDrawerProps> = ({
+  menuItems,
+  isOpen,
+  onClose,
+}) => {
   const navigate = useNavigate();
   const { colorMode, toggleColorMode } = useColorMode();
-  const { isAuthenticated } = useAuthStatus();
-  const location = useLocation();
-
   return (
-    <Drawer {...props}>
+    <Drawer isOpen={isOpen} onClose={onClose} placement="left">
       <DrawerOverlay />
       <DrawerContent>
         <DrawerHeader>Navigation</DrawerHeader>
@@ -59,7 +62,7 @@ const MobileDrawer: React.FC<
                               window.location.href = navItem.url;
                             } else {
                               navigate(navItem.url);
-                              props.onClose();
+                              onClose();
                             }
                           }
                         }}
@@ -80,7 +83,7 @@ const MobileDrawer: React.FC<
                                     window.location.href = subItem.url;
                                   } else {
                                     navigate(subItem.url);
-                                    props.onClose();
+                                    onClose();
                                   }
                                 }
                               }}

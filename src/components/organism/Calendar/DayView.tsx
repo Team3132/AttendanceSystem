@@ -1,6 +1,5 @@
 import {
   Flex,
-  FlexProps,
   LinkBox,
   Stack,
   Table,
@@ -17,15 +16,12 @@ import {
 } from "@chakra-ui/react";
 import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
-import { MonthProps } from ".";
+import { useCalendarDate, useCalendarOnRange } from "./CalendarProvider";
 
-const DayView: React.FC<MonthProps & FlexProps> = ({
-  date,
-  events,
-  onRange,
+const DayView: React.FC = () => {
+  const [date] = useCalendarDate();
+  const onRange = useCalendarOnRange();
 
-  ...flexProps
-}) => {
   const { colorMode } = useColorMode();
   const [day, setDay] = useState<DateTime>();
   const [hours, setHours] = useState<[DateTime, DateTime][]>();
@@ -46,7 +42,7 @@ const DayView: React.FC<MonthProps & FlexProps> = ({
     onRange && onRange(dayBegin, dayEnd);
   }, [date]);
   return (
-    <Flex {...flexProps} flexDirection={"column"}>
+    <Flex flexDirection={"column"}>
       <Flex>{day?.toLocaleString(DateTime.DATETIME_FULL)}</Flex>{" "}
       {/** All Day */}
       <TableContainer>

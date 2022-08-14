@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   Flex,
-  FlexProps,
   //   Link,
   LinkBox,
   LinkOverlay,
@@ -16,20 +15,25 @@ import {
 // import { Box, Box } from "framer-motion";
 import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { filteredEvents, MonthProps } from ".";
+import { filteredEvents } from ".";
+import {
+  useCalendarDate,
+  useCalendarEvents,
+  useCalendarOnEmptyClicked,
+  useCalendarOnEventClicked,
+  useCalendarOnRange,
+} from "./CalendarProvider";
 
-const MonthView: React.FC<MonthProps & FlexProps> = ({
-  date,
-  events,
-  onRange,
-
-  ...flexProps
-}) => {
+const MonthView: React.FC = () => {
   const isMobile = useBreakpointValue<boolean>({ base: true, md: false });
   const { colorMode } = useColorMode();
   const [weeks, setWeeks] = useState<DateTime[]>([]);
   const borderColour = colorMode === "light" ? "gray.300" : "gray.600";
+
+  const [date] = useCalendarDate();
+  const onRange = useCalendarOnRange();
+  const events = useCalendarEvents();
+
   useEffect(() => {
     const firstDayOfMonth = date.startOf("month");
     const lastDayOfMonth = date.endOf("month");
@@ -110,6 +114,8 @@ const DayColumn: React.FC<{ initialDate: DateTime; events: Event[] }> = ({
   const disabledColour = colorMode === "light" ? "gray.300" : "gray.600";
   const borderColour = colorMode === "light" ? "gray.300" : "gray.600";
   const date = initialDate.startOf("day");
+  const eventClicked = useCalendarOnEventClicked();
+  const emptyClicked = useCalendarOnEmptyClicked();
   // Add params to link overlay
   return (
     <LinkBox
@@ -121,14 +127,17 @@ const DayColumn: React.FC<{ initialDate: DateTime; events: Event[] }> = ({
       overflowX={"hidden"}
     >
       <LinkOverlay
-        as={Link}
-        to={`/event/create?startDate=${date
-          .startOf("day")
-          .toJSDate()
-          .toISOString()}&endDate=${date
-          .endOf("day")
-          .toJSDate()
-          .toISOString()}`}
+        // as={Link}
+        onClick={() => {
+          emptyClicked(date.startOf("day"), date.endOf("day"));
+        }}
+        // to={`/event/create?startDate=${date
+        //   .startOf("day")
+        //   .toJSDate()
+        //   .toISOString()}&endDate=${date
+        //   .endOf("day")
+        //   .toJSDate()
+        //   .toISOString()}`}
       />
       <Flex>
         <Spacer />
@@ -140,8 +149,9 @@ const DayColumn: React.FC<{ initialDate: DateTime; events: Event[] }> = ({
             size="sm"
             colorScheme={"blue"}
             key={event.id}
-            as={Link}
-            to={`/event/${event.id}/view`}
+            onClick={() => {
+              eventClicked(event);
+            }}
           >
             {event.title}
           </Button>

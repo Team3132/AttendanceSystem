@@ -1,15 +1,13 @@
 import { Event } from "@/generated";
-import {
-  Button,
-  ButtonGroup,
-  Center,
-  Flex,
-  FlexProps,
-  Stack,
-} from "@chakra-ui/react";
+import { Button, ButtonGroup, Center, Flex, Stack } from "@chakra-ui/react";
 import loadable from "@loadable/component";
 import { DateTime, DateTimeUnit } from "luxon";
-import React, { useState } from "react";
+import React from "react";
+import {
+  CalendarProvider,
+  useCalendarDate,
+  useCalendarView,
+} from "./CalendarProvider";
 
 export interface MonthProps {
   date: DateTime;
@@ -38,24 +36,21 @@ type RootCalProps = {
   initialDate?: DateTime;
   onRange: (start: DateTime, end: DateTime) => void;
   events?: Event[];
-} & FlexProps;
+  initialView?: View;
+  onEmptyClicked?: (start: DateTime, end: DateTime) => void;
+  onEventClicked?: (event: Event) => void;
+};
 
 const DayView = loadable(() => import("./DayView"));
 const WeekView = loadable(() => import("./WeekView"));
 const MonthView = loadable(() => import("./MonthView"));
 
-const RootCal: React.FC<RootCalProps> = ({
-  onRange,
-  initialDate,
-  events,
-  ...flexProps
-}) => {
-  const [currentDate, setCurrentDate] = useState<DateTime>(
-    initialDate ?? DateTime.local()
-  );
-  const [view, setView] = useState<View>(View.MONTH);
+const RootCalendar: React.FC = () => {
+  const [currentDate, setCurrentDate] = useCalendarDate();
+  const [view, setView] = useCalendarView();
+
   return (
-    <Flex flexDir={"column"} {...flexProps}>
+    <Flex flexDir={"column"}>
       <Center>
         <Stack direction={["column", "row"]} m={2} spacing={5}>
           <Center>
@@ -112,14 +107,36 @@ const RootCal: React.FC<RootCalProps> = ({
       </Center>
 
       {view === View.MONTH ? (
-        <MonthView date={currentDate} events={events} onRange={onRange} />
+        <MonthView />
       ) : view === View.WEEK ? (
-        <WeekView date={currentDate} events={events} onRange={onRange} />
+        <WeekView />
       ) : view === View.DAY ? (
-        <DayView date={currentDate} events={events} onRange={onRange} />
+        <DayView />
       ) : null}
     </Flex>
   );
 };
 
-export default RootCal;
+const Calendar: React.FC<RootCalProps> = ({
+  initialDate,
+  events,
+  onRange,
+  initialView,
+  onEmptyClicked,
+  onEventClicked,
+}) => {
+  return (
+    <CalendarProvider
+      initialDate={initialDate}
+      events={events}
+      onRange={onRange}
+      initialView={initialView}
+      onEmptyClicked={onEmptyClicked}
+      onEventClicked={onEventClicked}
+    >
+      <RootCalendar />
+    </CalendarProvider>
+  );
+};
+
+export default Calendar;

@@ -16,8 +16,7 @@ import {
   MdHome,
   MdLock,
 } from "react-icons/md";
-import { UserAvatar } from "../";
-import { useAuthStatus } from "../../hooks";
+import { UserAvatar } from "../..";
 export interface NavItem {
   url?: string;
   label: string;
@@ -77,10 +76,14 @@ const navItems = (isAuthenticated?: boolean, isAdmin?: boolean): NavItem[] => [
     : []),
 ];
 
-export const Nav: React.FC = () => {
+interface NavProps {
+  isAuthenticated: boolean;
+  isAdmin: boolean;
+}
+
+export const Nav: React.FC<NavProps> = ({ isAuthenticated, isAdmin }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const isMobile = useBreakpointValue<boolean>({ base: true, md: false });
-  const { isAuthenticated, isAdmin } = useAuthStatus();
   const menuItems = navItems(isAuthenticated, isAdmin);
   useEffect(() => {
     if (!isMobile) {
@@ -101,11 +104,10 @@ export const Nav: React.FC = () => {
           <MobileDrawer
             isOpen={isOpen}
             onClose={onClose}
-            placement="left"
             menuItems={menuItems}
           />
         ) : (
-          <DesktopNav hidden={isMobile} menuItems={menuItems} />
+          <DesktopNav menuItems={menuItems} />
         )}
 
         <Spacer />

@@ -7,21 +7,18 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  StackProps,
   useColorMode,
 } from "@chakra-ui/react";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { NavItem } from ".";
-import { useAuthStatus } from "../../hooks";
 
-const DesktopNav: React.FC<StackProps & { menuItems: NavItem[] }> = ({
+const DesktopNav: React.FC<{ menuItems: NavItem[] }> = ({
   menuItems,
   ...props
 }) => {
   const navigate = useNavigate();
   const { colorMode, toggleColorMode } = useColorMode();
-  const { isAuthenticated } = useAuthStatus();
   return (
     <HStack {...props}>
       {menuItems.map((navItem, menuIndex) => {

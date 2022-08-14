@@ -24,13 +24,13 @@ export const AuthRoute = loadable<AuthRouteProps>(() => import("./AuthRoute"));
 export const AuthWrapper = loadable<AuthWrapperProps>(
   () => import("./AuthWrapper")
 );
-export const Nav = loadable(() => import("./Nav"));
+export const Nav = loadable(() => import("./organism/Nav"));
 export const RSVPButtonRow = loadable<RSVPButtonRowProps>(
   () => import("./RSVPButtonRow")
 );
 export const RSVPList = loadable<RSVPListProps>(() => import("./RSVPList"));
 
-export const TDUIcon = loadable(() => import("./TDUIcon"));
+export const TDUIcon = loadable(() => import("./atoms/TDUIcon"));
 export const UserAvatar = loadable<UserAvatarProps>(
   () => import("./UserAvatar")
 );
@@ -49,4 +49,4 @@ export const SWToast = loadable(() => import("./SWToast"));
 export const UserList = loadable(() => import("./UserList"));
 export const RSVPSelect = loadable(() => import("./RSVPSelect"));
 export const StatusForRangeButton = loadable(() => import("./StatusForRange"));
-export const Calendar = loadable(() => import("./Calendar"));
+export const Calendar = loadable(() => import("./organism/Calendar"));
