@@ -1,0 +1,27 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "yarn"
+      - name: Setup Wrangler
+        uses: cloudflare/wrangler-action@2.0.0
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+      - name: Install Dependancies
+        run: yarn install
+      - name: Build
+        run: yarn build
+      - name: Deploy
+        run: wrangler pages publish dist --project-name=attendancefrontend
