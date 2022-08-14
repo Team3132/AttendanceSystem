@@ -1,9 +1,6 @@
-import { api } from "@/client";
-import { UpdateRangeRSVP } from "@/generated";
 import {
   Button,
   FormControl,
-  FormControlProps,
   FormErrorMessage,
   FormHelperText,
   FormLabel,
@@ -12,17 +9,22 @@ import {
 } from "@chakra-ui/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useSWRConfig } from "swr";
+import { api } from "../../client";
+import { UpdateRangeRSVP } from "../../generated";
 interface StatusForRangeButtonProps {
   to: string;
   from: string;
 }
 
+type Promiseable<T> = Promise<T> | T;
+
 interface FormData {
   status: UpdateRangeRSVP["status"];
 }
-export const StatusForRangeButton: React.FC<
-  Omit<FormControlProps, "children"> & StatusForRangeButtonProps
-> = ({ to, from, ...formControlProps }) => {
+export const StatusForRangeButton: React.FC<StatusForRangeButtonProps> = ({
+  to,
+  from,
+}) => {
   const {
     handleSubmit,
     formState: { isSubmitting, errors },
@@ -31,6 +33,7 @@ export const StatusForRangeButton: React.FC<
   const { mutate: globalMutate } = useSWRConfig();
 
   const onSubmit: SubmitHandler<FormData> = async ({ status }) => {
+    // handleEventRSVPUpdate(from, to, status);
     const result = await api.event.eventControllerSetEventsRsvp({
       from,
       to,
@@ -51,7 +54,6 @@ export const StatusForRangeButton: React.FC<
 
   return (
     <FormControl
-      {...formControlProps}
       as="form"
       onSubmit={handleSubmit(onSubmit)}
       isInvalid={!!errors.status}

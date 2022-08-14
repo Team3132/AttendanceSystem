@@ -1,6 +1,6 @@
 import useSWR from "swr";
-import { AuthStatusDto, User } from "@generated";
-import { useAuthStatus } from "@hooks";
+import { AuthStatusDto, User } from "../generated";
+import { useAuthStatus } from "../hooks";
 
 export const useUser = (userId: string = "me") => {
   const { isAuthenticated } = useAuthStatus();

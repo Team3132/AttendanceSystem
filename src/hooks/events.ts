@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useSWR from "swr";
-import { Attendance, Event, Rsvp } from "@generated";
-import { useAuthStatus } from "@hooks";
+import { Attendance, Event, Rsvp } from "../generated";
+import { useAuthStatus } from "../hooks";
 import { DateTime } from "luxon";
 
 export const useEvents = (take?: number, from?: DateTime, to?: DateTime) => {

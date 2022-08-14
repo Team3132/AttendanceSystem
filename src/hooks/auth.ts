@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { AuthStatusDto, User } from "@generated";
+import { AuthStatusDto, User } from "../generated";
 
 export const useAuthStatus = () => {
   const { data, error } = useSWR<AuthStatusDto>(`/auth/status`);

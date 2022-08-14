@@ -1,7 +1,7 @@
-import { api } from "@/client";
-import { UpdateOrCreateRSVP } from "@/generated";
-import { useEventRSVPStatus, useMe } from "@/hooks";
 import { Select, SelectProps } from "@chakra-ui/react";
+import { api } from "../../client";
+import { UpdateOrCreateRSVP } from "../../generated";
+import { useEventRSVPStatus, useMe } from "../../hooks";
 
 interface RSVPSelectProps {
   eventId: string;

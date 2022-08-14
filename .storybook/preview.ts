@@ -1,4 +1,7 @@
 import theme from "../src/utils/theme";
+import { initialize, mswDecorator } from "msw-storybook-addon";
+
+initialize();
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -12,3 +15,5 @@ export const parameters = {
     theme,
   },
 };
+
+export const decorators = [mswDecorator];

@@ -1,4 +1,4 @@
-import { Divider, Heading, useConst } from "@chakra-ui/react";
+import { Divider, Heading } from "@chakra-ui/react";
 import { CalendarWithLocalizer } from "@components";
 import { useAuthStatus, useEvents } from "@hooks";
 import { DateTime } from "luxon";
@@ -11,9 +11,7 @@ export const CalendarScreen: React.FC = () => {
   /** User Data */
   const { isAdmin } = useAuthStatus();
 
-  const dateNow = useConst<Date>(new Date());
   const [range, setRange] = useState<[DateTime, DateTime]>();
-  const [endRange, setEndRange] = useState<Date>();
   /** Event Data */
   const {
     events: apiEvents,
