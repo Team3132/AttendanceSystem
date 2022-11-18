@@ -10,7 +10,7 @@ export class AppService {
 
     /**
      * A simple hello world just for you.
-     * @returns string 
+     * @returns string
      * @throws ApiError
      */
     public appControllerHelloWorld(): CancelablePromise<string> {

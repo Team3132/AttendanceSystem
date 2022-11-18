@@ -2,7 +2,6 @@ import { api } from "@/client";
 import { Button, ButtonGroup } from "@chakra-ui/react";
 import { Rsvp } from "@generated";
 import { useEventRSVPStatus } from "@hooks";
-import { useSWRConfig } from "swr";
 
 export interface RSVPButtonRowProps {
   eventId?: string;
@@ -10,7 +9,7 @@ export interface RSVPButtonRowProps {
 
 export const RSVPButtonRow: React.FC<RSVPButtonRowProps> = ({ eventId }) => {
   const { rsvp, mutate } = useEventRSVPStatus(eventId);
-  const { mutate: globalMutate } = useSWRConfig();
+  // const { mutate: globalMutate } = useSWRConfig();
   return (
     <ButtonGroup isAttached>
       <Button
@@ -28,7 +27,7 @@ export const RSVPButtonRow: React.FC<RSVPButtonRowProps> = ({ eventId }) => {
             });
 
             mutate(response, { revalidate: false });
-            globalMutate(`https://api.team3132.com/event/${eventId}/rsvps`);
+            // globalMutate(`https://api.team3132.com/event/${eventId}/rsvps`);
           }
         }}
       >
@@ -44,7 +43,7 @@ export const RSVPButtonRow: React.FC<RSVPButtonRowProps> = ({ eventId }) => {
             });
 
             mutate(response, { revalidate: false });
-            globalMutate(`https://api.team3132.com/event/${eventId}/rsvps`);
+            // globalMutate(`https://api.team3132.com/event/${eventId}/rsvps`);
           }
         }}
       >
@@ -60,7 +59,7 @@ export const RSVPButtonRow: React.FC<RSVPButtonRowProps> = ({ eventId }) => {
             });
 
             mutate(response, { revalidate: false });
-            globalMutate(`https://api.team3132.com/event/${eventId}/rsvps`);
+            // globalMutate(`https://api.team3132.com/event/${eventId}/rsvps`);
           }
         }}
       >

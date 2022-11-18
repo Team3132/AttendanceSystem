@@ -1,8 +1,12 @@
+import { api } from "@/client";
+import { useQuery } from "@tanstack/react-query";
 import useSWR from "swr";
-import { AuthStatusDto, User } from "../generated";
+import { ApiClient, AuthService, AuthStatusDto, User } from "../generated";
 
 export const useAuthStatus = () => {
-  const { data, error } = useSWR<AuthStatusDto>(`/auth/status`);
+  
+
+  const { data, error } = useQuery({queryFn: () => api.auth.authControllerStatus()})
   return {
     ...data,
     isLoading: !error && !data,
@@ -13,9 +17,7 @@ export const useAuthStatus = () => {
 export const useMe = () => {
   const { isAuthenticated } = useAuthStatus();
 
-  const { data: userData, error: userError } = useSWR<User>(
-    isAuthenticated ? `/user/me` : null
-  );
+  const { data: userData, error: userError } = useQuery({queryFn: () => api.user.userControllerMe(), enabled: !!isAuthenticated})
   return {
     user: userData,
     isLoading: !userError && !userData,

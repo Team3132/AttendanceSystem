@@ -14,14 +14,14 @@ export class AttendanceService {
 
     /**
      * Create a new Attendance
-     * @param requestBody 
-     * @returns Attendance 
-     * @returns any 
+     * @param requestBody
+     * @returns Attendance
+     * @returns any
      * @throws ApiError
      */
     public attendanceControllerCreate(
-requestBody: CreateAttendanceDto,
-): CancelablePromise<Attendance | any> {
+        requestBody: CreateAttendanceDto,
+    ): CancelablePromise<Attendance | any> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/attendance',
@@ -31,7 +31,7 @@ requestBody: CreateAttendanceDto,
     }
 
     /**
-     * @returns Attendance 
+     * @returns Attendance
      * @throws ApiError
      */
     public attendanceControllerFindAll(): CancelablePromise<Array<Attendance>> {
@@ -43,13 +43,13 @@ requestBody: CreateAttendanceDto,
 
     /**
      * Get a specific attendance status
-     * @param id 
-     * @returns Attendance 
+     * @param id
+     * @returns Attendance
      * @throws ApiError
      */
     public attendanceControllerFindOne(
-id: string,
-): CancelablePromise<Attendance> {
+        id: string,
+    ): CancelablePromise<Attendance> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/attendance/{id}',
@@ -61,15 +61,15 @@ id: string,
 
     /**
      * Update an Attendance status
-     * @param id 
-     * @param requestBody 
-     * @returns Attendance 
+     * @param id
+     * @param requestBody
+     * @returns Attendance
      * @throws ApiError
      */
     public attendanceControllerUpdate(
-id: string,
-requestBody: UpdateAttendanceDto,
-): CancelablePromise<Attendance> {
+        id: string,
+        requestBody: UpdateAttendanceDto,
+    ): CancelablePromise<Attendance> {
         return this.httpRequest.request({
             method: 'PATCH',
             url: '/attendance/{id}',
@@ -83,13 +83,13 @@ requestBody: UpdateAttendanceDto,
 
     /**
      * Delete an attendance
-     * @param id 
-     * @returns Attendance 
+     * @param id
+     * @returns Attendance
      * @throws ApiError
      */
     public attendanceControllerRemove(
-id: string,
-): CancelablePromise<Attendance> {
+        id: string,
+    ): CancelablePromise<Attendance> {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/attendance/{id}',

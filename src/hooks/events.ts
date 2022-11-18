@@ -3,6 +3,8 @@ import useSWR from "swr";
 import { Attendance, Event, Rsvp } from "../generated";
 import { useAuthStatus } from "../hooks";
 import { DateTime } from "luxon";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/client";
 
 export const useEvents = (take?: number, from?: DateTime, to?: DateTime) => {
   const { isAuthenticated } = useAuthStatus();
@@ -10,18 +12,21 @@ export const useEvents = (take?: number, from?: DateTime, to?: DateTime) => {
   const {
     data: eventData,
     error: userError,
-    mutate,
-  } = useSWR<Event[]>(
-    isAuthenticated && from && to
-      ? [`/event`, { take, from: from.toISO(), to: to.toISO() }]
-      : null
-  );
+  } = useQuery({queryFn: () => api.event.eventControllerFindAll( from?.toISO(), to?.toISO(), take) })
+  // const {
+  //   data: eventData,
+  //   error: userError,
+  //   mutate,
+  // } = useSWR<Event[]>(
+  //   isAuthenticated && from && to
+  //     ? [`/event`, { take, from: from.toISO(), to: to.toISO() }]
+  //     : null
+  // );
 
   return {
     events: eventData,
     isLoading: !userError && !eventData,
     isError: userError,
-    mutate,
   };
 };
 
@@ -31,16 +36,19 @@ export const useEvent = (eventId?: string) => {
   const {
     data: eventData,
     error: userError,
-    mutate,
-  } = useSWR<Event>(
-    isAuthenticated ? (eventId ? `/event/${eventId}` : null) : null
-  );
+  } = useQuery({queryFn: () => api.event.eventControllerFindOne(eventId!), enabled: !!eventId && isAuthenticated})
+  // const {
+  //   data: eventData,
+  //   error: userError,
+  //   mutate,
+  // } = useSWR<Event>(
+  //   isAuthenticated ? (eventId ? `/event/${eventId}` : null) : null
+  // );
 
   return {
     event: eventData,
     isLoading: !userError && !eventData,
     isError: userError,
-    mutate,
   };
 };
 
@@ -88,16 +96,21 @@ export const useEventAttendanceStatus = (eventId?: string) => {
   const {
     data: attendanceData,
     error: attendanceError,
-    mutate,
-  } = useSWR<Attendance>(
-    isAuthenticated ? (eventId ? `/event/${eventId}/attendance` : null) : null
-  );
+  } = useQuery({queryFn: () => api.event.eventControllerGetEventAttendance(eventId!), enabled: isAuthenticated && !!eventId})
+  // const {
+  //   data: attendanceData,
+  //   error: attendanceError,
+  //   mutate,
+  // } = useSWR<Attendance>(
+  //   isAuthenticated ? (eventId ? `/event/${eventId}/attendance` : null) : null
+  // );
+
+
 
   return {
     attendance: attendanceData,
     isLoading: !attendanceError && !attendanceData,
     isError: attendanceError,
-    mutate,
   };
 };
 
@@ -107,15 +120,18 @@ export const useEventAttendanceStatuses = (eventId?: string) => {
   const {
     data: attendanceData,
     error: attendanceError,
-    mutate,
-  } = useSWR<Attendance[]>(
-    isAuthenticated ? (eventId ? `/event/${eventId}/attendances` : null) : null
-  );
+  } = useQuery({queryFn: () => api.event.eventControllerGetEventAttendances(eventId!), enabled: !!eventId && isAuthenticated})
+  // const {
+  //   data: attendanceData,
+  //   error: attendanceError,
+  //   mutate,
+  // } = useSWR<Attendance[]>(
+  //   isAuthenticated ? (eventId ? `/event/${eventId}/attendances` : null) : null
+  // );
 
   return {
     attendances: attendanceData,
     isLoading: !attendanceError && !attendanceData,
     isError: attendanceError,
-    mutate,
   };
 };

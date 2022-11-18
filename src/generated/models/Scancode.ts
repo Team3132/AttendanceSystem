@@ -8,3 +8,4 @@ export type Scancode = {
     updatedAt: string;
     userId: string;
 };
+

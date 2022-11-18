@@ -5,10 +5,10 @@ import {
   FormHelperText,
   FormLabel,
   InputGroup,
-  Select,
+  Select
 } from "@chakra-ui/react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useSWRConfig } from "swr";
+// import { useSWRConfig } from "swr";
 import { api } from "../../client";
 import { UpdateRangeRSVP } from "../../generated";
 interface StatusForRangeButtonProps {
@@ -30,26 +30,26 @@ export const StatusForRangeButton: React.FC<StatusForRangeButtonProps> = ({
     formState: { isSubmitting, errors },
     register,
   } = useForm<FormData>();
-  const { mutate: globalMutate } = useSWRConfig();
+  // const { mutate: globalMutate } = useSWRConfig();
 
   const onSubmit: SubmitHandler<FormData> = async ({ status }) => {
     // handleEventRSVPUpdate(from, to, status);
-    const result = await api.event.eventControllerSetEventsRsvp({
+     await api.event.eventControllerSetEventsRsvp({
       from,
       to,
       status,
     });
-    await Promise.all(
-      result.map((rsvp) =>
-        globalMutate(
-          `https://api.team3132.com/event/${rsvp.eventId}/rsvp`,
-          undefined,
-          {
-            optimisticData: rsvp,
-          }
-        )
-      )
-    );
+    // await Promise.all(
+    //   result.map((rsvp) =>
+    //     globalMutate(
+    //       `https://api.team3132.com/event/${rsvp.eventId}/rsvp`,
+    //       undefined,
+    //       {
+    //         optimisticData: rsvp,
+    //       }
+    //     )
+    //   )
+    // );
   };
 
   return (

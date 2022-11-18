@@ -13,8 +13,9 @@ import {
   Layout,
   Profile,
   ScancodeScreen,
-  ScaninScreen,
+  ScaninScreen
 } from "@screens";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -22,12 +23,14 @@ const SWRConfigWithFetcher = loadable(
   () => import("./components/SWRProviderWithFetcher")
 );
 
+const queryClient = new QueryClient()
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>
   <ChakraProvider>
     <ErrorBoundary>
       <SWToast />
-      <SWRConfigWithFetcher>
+      <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Layout />}>
@@ -111,7 +114,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             </Route>
           </Routes>
         </BrowserRouter>
-      </SWRConfigWithFetcher>
+      </QueryClientProvider>
     </ErrorBoundary>
   </ChakraProvider>
   // </React.StrictMode>
