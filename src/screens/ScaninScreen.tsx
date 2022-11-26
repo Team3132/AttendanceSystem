@@ -1,4 +1,3 @@
-import { api } from "@/client";
 import {
   Button,
   Center,
@@ -13,14 +12,14 @@ import {
 } from "@chakra-ui/react";
 import { AttendedList } from "@components";
 import { ScaninDto } from "@generated";
-import { useEvent, useEventAttendanceStatuses } from "@hooks";
+import { useEvent, useEventAttendanceStatuses, useScanin } from "@hooks";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 
 export const ScanIn: React.FC = () => {
   const { eventId } = useParams();
   const { event } = useEvent(eventId);
-  const { attendances, isLoading, isError, mutate } =
+  const { attendances, isLoading, isError } =
     useEventAttendanceStatuses(eventId);
   const navigate = useNavigate();
   const {
@@ -30,11 +29,11 @@ export const ScanIn: React.FC = () => {
     reset,
   } = useForm<ScaninDto>();
 
+  const { mutateAsync: scanin } = useScanin();
+
   const onSubmit = async (data: ScaninDto) => {
     if (eventId) {
-      await api.event.eventControllerScaninEvent(eventId, data);
-
-      mutate();
+      await scanin({ eventId, scan: data });
 
       reset();
     }

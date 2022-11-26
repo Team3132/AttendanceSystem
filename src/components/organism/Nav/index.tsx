@@ -54,7 +54,7 @@ const navItems = (isAuthenticated?: boolean, isAdmin?: boolean): NavItem[] => [
           { url: "/profile", label: "Your Profile" },
           { url: "/codes", label: "Codes" },
           {
-            url: "https://localhost:3443/auth/discord",
+            url: `${import.meta.env.VITE_BACKEND_URL}/auth/discord`,
             label: "Logout",
             external: true,
           },
@@ -63,7 +63,7 @@ const navItems = (isAuthenticated?: boolean, isAdmin?: boolean): NavItem[] => [
     : {
         icon: <Icon as={MdAccountCircle} />,
         label: "Login",
-        url: "https://localhost:3443/auth/discord",
+        url: `${import.meta.env.VITE_BACKEND_URL}/auth/discord`,
         external: true,
       },
   ...(isAdmin

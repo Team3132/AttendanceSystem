@@ -1,7 +1,11 @@
 import { Select, SelectProps } from "@chakra-ui/react";
 import { api } from "../../client";
 import { UpdateOrCreateRSVP } from "../../generated";
-import { useEventRSVPStatus, useMe } from "../../hooks";
+import {
+  useEventRSVPStatus,
+  useMe,
+  useUpdateEventRSVPStatus,
+} from "../../hooks";
 
 interface RSVPSelectProps {
   eventId: string;
@@ -10,7 +14,8 @@ interface RSVPSelectProps {
 export const RSVPSelect: React.FC<
   RSVPSelectProps & Omit<SelectProps, "children">
 > = ({ eventId, ...selectProps }) => {
-  const { rsvp, mutate } = useEventRSVPStatus(eventId);
+  const { rsvp } = useEventRSVPStatus(eventId);
+  const { mutate: mutateEventRSVP } = useUpdateEventRSVPStatus();
   const { user } = useMe();
   // const { mutate: globalMutate } = useSWRConfig();
   const statusEnum = UpdateOrCreateRSVP["status"];
@@ -24,17 +29,11 @@ export const RSVPSelect: React.FC<
       const result = api.event.eventControllerSetEventRsvp(eventId, {
         status: currentValue,
       });
-      mutate(result, {
-        optimisticData: (current) => ({
-          ...(current ?? {
-            id: "",
-            eventId,
-            userId: user?.id ?? "",
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-          }),
+      mutateEventRSVP({
+        eventId,
+        rsvp: {
           status: currentValue,
-        }),
+        },
       });
     } else {
       console.log("Not Valid");

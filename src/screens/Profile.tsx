@@ -1,4 +1,3 @@
-import { api } from "@/client";
 import {
   Button,
   Center,
@@ -15,17 +14,17 @@ import {
 } from "@chakra-ui/react";
 import { UserAvatar } from "@components";
 import { UpdateUserDto } from "@generated";
-import { userAvatar, useUser } from "@hooks";
+import { userAvatar, useUpdateMe, useUpdateUser, useUser } from "@hooks";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import { useSWRConfig } from "swr";
+// import { useSWRConfig } from "swr";
 
 export const ProfileScreen: React.FC = () => {
   const { userId } = useParams();
-  const { user, mutate } = useUser(userId);
+  const { user } = useUser(userId);
   const { avatarId } = userAvatar(userId);
-  const { mutate: globalMutate } = useSWRConfig();
+  // const { mutate: globalMutate } = useSWRConfig();
   const {
     register,
     handleSubmit,
@@ -45,16 +44,15 @@ export const ProfileScreen: React.FC = () => {
     }
   }, [user]);
 
+  const { mutateAsync: mutateMe } = useUpdateMe();
+  const { mutateAsync: mutateUser } = useUpdateUser();
+
   const onSubmit = async (data: UpdateUserDto) => {
     const userIdent = userId ?? "me";
     if (userIdent === "me") {
-      const user = await api.user.userControllerUpdate(data);
-      mutate(user);
-      globalMutate(`https://api.team3132.com/user/${userId ?? "me"}`);
+      await mutateMe(data);
     } else {
-      const user = await api.user.userControllerUpdateUser(userIdent, data);
-      mutate(user);
-      globalMutate(`https://api.team3132.com/user/${userId ?? "me"}`);
+      await mutateUser({ id: userIdent, user: data });
     }
   };
 

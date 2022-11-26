@@ -12,14 +12,14 @@ import {
   Layout,
   Profile,
   ScancodeScreen,
-  ScaninScreen
+  ScaninScreen,
 } from "@screens";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-const queryClient = new QueryClient()
+export const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>

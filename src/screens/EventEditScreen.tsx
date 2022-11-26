@@ -1,4 +1,3 @@
-import { api } from "@/client";
 import {
   Button,
   ButtonGroup,
@@ -16,20 +15,25 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { UpdateEventDto } from "@generated";
-import { useAuthStatus, useEvent } from "@hooks";
+import {
+  useAuthStatus,
+  useDeleteEvent,
+  useEvent,
+  useUpdateEvent,
+} from "@hooks";
 import pick from "lodash.pick";
 import { DateTime } from "luxon";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import { useSWRConfig } from "swr";
+// import { useSWRConfig } from "swr";
 
 export const EventEditScreen: React.FC = () => {
   const { eventId } = useParams();
-  const { event, isLoading, isError, mutate } = useEvent(eventId);
+  const { event, isLoading, isError } = useEvent(eventId);
   const { roles } = useAuthStatus();
   const navigate = useNavigate();
-  const { mutate: globalMutate } = useSWRConfig();
+  // const { mutate: globalMutate } = useSWRConfig();
   const { isAdmin } = useAuthStatus();
 
   const readonly = !isAdmin;
@@ -56,17 +60,15 @@ export const EventEditScreen: React.FC = () => {
     }
   }, [event]);
 
+  const { mutateAsync: updateEvent } = useUpdateEvent();
+
   const onSubmit = async (data: UpdateEventDto) => {
-    const formData = { ...data };
     if (event?.id) {
-      const eventRes = await api.event.eventControllerUpdate(
-        event.id,
-        formData
-      );
-      mutate(eventRes);
-      globalMutate("https://api.team3132.com/event");
+      await updateEvent({ id: event.id, data });
     }
   };
+
+  const { mutateAsync: deleteEvent } = useDeleteEvent();
 
   return isLoading || !event ? (
     <Center>
@@ -84,13 +86,13 @@ export const EventEditScreen: React.FC = () => {
             onClick={async () => {
               if (event.id) {
                 try {
-                  await api.event.eventControllerRemove(event.id);
+                  await deleteEvent(event.id);
+
+                  navigate(`/calendar`);
                   // await deleteEvent(event.id);
                 } catch (error) {
                   console.log(`Deleted Event ${event.id}`);
                 }
-                globalMutate("https://api.team3132.com/event");
-                navigate(`/calendar`);
               }
             }}
             colorScheme="red"

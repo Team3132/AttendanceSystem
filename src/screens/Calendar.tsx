@@ -1,5 +1,5 @@
+import { CalendarWithLocalizer } from "@/components/CalendarWithLocalizer";
 import { Divider, Heading } from "@chakra-ui/react";
-import { CalendarWithLocalizer } from "@components";
 import { useAuthStatus, useEvents } from "@hooks";
 import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
@@ -45,6 +45,7 @@ export const CalendarScreen: React.FC = () => {
       </Heading>
       <Divider my={6} />
       <Outlet />
+
       <CalendarWithLocalizer
         events={
           apiEvents?.map((event) => ({

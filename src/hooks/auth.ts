@@ -4,9 +4,10 @@ import useSWR from "swr";
 import { ApiClient, AuthService, AuthStatusDto, User } from "../generated";
 
 export const useAuthStatus = () => {
-  
-
-  const { data, error } = useQuery({queryFn: () => api.auth.authControllerStatus()})
+  const { data, error } = useQuery({
+    queryFn: () => api.auth.authControllerStatus(),
+    queryKey: ["AuthStatus"],
+  });
   return {
     ...data,
     isLoading: !error && !data,
@@ -17,7 +18,11 @@ export const useAuthStatus = () => {
 export const useMe = () => {
   const { isAuthenticated } = useAuthStatus();
 
-  const { data: userData, error: userError } = useQuery({queryFn: () => api.user.userControllerMe(), enabled: !!isAuthenticated})
+  const { data: userData, error: userError } = useQuery({
+    queryFn: () => api.user.userControllerMe(),
+    enabled: !!isAuthenticated,
+    queryKey: ["Me"],
+  });
   return {
     user: userData,
     isLoading: !userError && !userData,

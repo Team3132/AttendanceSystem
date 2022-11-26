@@ -1,4 +1,3 @@
-import { api } from "@/client";
 import { AddIcon, MinusIcon, RepeatIcon } from "@chakra-ui/icons";
 import {
   Button,
@@ -15,12 +14,14 @@ import {
   useClipboard,
 } from "@chakra-ui/react";
 import { ApiError, CreateScancodeDto, Scancode } from "@generated";
-import { useScancodes } from "@hooks";
+import { useCreateScancode, useDeleteScancode, useScancodes } from "@hooks";
 import { generateString } from "@utils";
 import { useForm } from "react-hook-form";
 
 export const ScancodeScreen: React.FC = () => {
-  const { scancodes, mutate } = useScancodes();
+  const { scancodes } = useScancodes();
+  const { mutateAsync: createScancode } = useCreateScancode();
+  const { mutateAsync: deleteScancode } = useDeleteScancode();
   const {
     formState: { errors, isSubmitting },
     setValue,
@@ -32,10 +33,7 @@ export const ScancodeScreen: React.FC = () => {
 
   const onSubmit = async (data: CreateScancodeDto) => {
     try {
-      const result = await api.scancode.scancodeControllerCreate(data);
-      if (scancodes) {
-        mutate(scancodes.concat(result));
-      }
+      await createScancode(data);
       reset();
     } catch (error) {
       if (error instanceof ApiError) {
@@ -50,10 +48,7 @@ export const ScancodeScreen: React.FC = () => {
   };
 
   const onDelete = async (scancode: Scancode) => {
-    const { code: resultCode } = await api.scancode.scancodeControllerRemove(
-      scancode.code
-    );
-    mutate(scancodes?.filter(({ code }) => code !== resultCode));
+    await deleteScancode(scancode.code);
   };
 
   return (
