@@ -8,5 +8,17 @@ export type CreateEventDto = {
     startDate: string;
     endDate: string;
     allDay?: boolean;
+    type: CreateEventDto.type;
 };
+
+export namespace CreateEventDto {
+
+    export enum type {
+        OUTREACH = 'Outreach',
+        REGULAR = 'Regular',
+        SOCIAL = 'Social',
+    }
+
+
+}
 

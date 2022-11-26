@@ -10,14 +10,15 @@ export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
 export type { AuthStatusDto } from './models/AuthStatusDto';
-export type { CreateEventDto } from './models/CreateEventDto';
+export { CreateEventDto } from './models/CreateEventDto';
 export { CreateRsvpDto } from './models/CreateRsvpDto';
 export type { CreateScancodeDto } from './models/CreateScancodeDto';
-export type { Event } from './models/Event';
+export { Event } from './models/Event';
+export type { OutreachReport } from './models/OutreachReport';
 export { Rsvp } from './models/Rsvp';
 export type { Scancode } from './models/Scancode';
 export type { ScaninDto } from './models/ScaninDto';
-export type { UpdateEventDto } from './models/UpdateEventDto';
+export { UpdateEventDto } from './models/UpdateEventDto';
 export { UpdateOrCreateRSVP } from './models/UpdateOrCreateRSVP';
 export { UpdateRangeRSVP } from './models/UpdateRangeRSVP';
 export { UpdateRsvpDto } from './models/UpdateRsvpDto';

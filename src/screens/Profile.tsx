@@ -14,14 +14,26 @@ import {
 } from "@chakra-ui/react";
 import { UserAvatar } from "@components";
 import { UpdateUserDto } from "@generated";
-import { userAvatar, useUpdateMe, useUpdateUser, useUser } from "@hooks";
+import {
+  useAuthStatus,
+  userAvatar,
+  useUpdateMe,
+  useUpdateUser,
+  useUser,
+} from "@hooks";
+import loadable from "@loadable/component";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
+const OutreachReportLoadable = loadable(
+  () => import("../components/organism/OutreachReport")
+);
+
 export const ProfileScreen: React.FC = () => {
   const { userId } = useParams();
   const { user } = useUser(userId);
+  const { isAdmin } = useAuthStatus();
   const { avatarId } = userAvatar(userId);
   // const { mutate: globalMutate } = useSWRConfig();
   const {
@@ -83,6 +95,12 @@ export const ProfileScreen: React.FC = () => {
       </Heading>
 
       <Divider my={6} />
+      {isAdmin && (
+        <>
+          <OutreachReportLoadable userId={userId} />
+          <Divider my={6} />
+        </>
+      )}
 
       {/* </Center> */}
       <form onSubmit={handleSubmit(onSubmit)}>

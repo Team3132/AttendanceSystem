@@ -9,12 +9,13 @@ import {
   FormLabel,
   Heading,
   Input,
+  Select,
   Spinner,
   Stack,
   Switch,
   Textarea,
 } from "@chakra-ui/react";
-import { UpdateEventDto } from "@generated";
+import { Event, UpdateEventDto } from "@generated";
 import {
   useAuthStatus,
   useDeleteEvent,
@@ -54,6 +55,7 @@ export const EventEditScreen: React.FC = () => {
         "startDate",
         "endDate",
         "allDay",
+        "type",
       ]);
       reset(pickedEvent);
     }
@@ -102,6 +104,7 @@ export const EventEditScreen: React.FC = () => {
       </Center>
       <Divider my={6} />
       <Stack spacing={5}>
+        {/* Title */}
         <FormControl isInvalid={!!errors.title}>
           <FormLabel htmlFor="title">Title</FormLabel>
           <Input
@@ -110,6 +113,8 @@ export const EventEditScreen: React.FC = () => {
             readOnly={readonly}
           />
         </FormControl>
+
+        {/* All Day */}
         <FormControl
           display="flex"
           alignItems="center"
@@ -120,6 +125,21 @@ export const EventEditScreen: React.FC = () => {
           </FormLabel>
           <Switch id="allDay" {...register("allDay")} readOnly={readonly} />
         </FormControl>
+
+        {/* Select Type */}
+        <FormControl>
+          <FormLabel>Event Type</FormLabel>
+          <Select
+            placeholder="Select event type"
+            defaultValue={Event.type.REGULAR}
+            {...register("type")}
+          >
+            <option value={Event.type.REGULAR}>Regular</option>
+            <option value={Event.type.SOCIAL}>Social</option>
+            <option value={Event.type.OUTREACH}>Outreach</option>
+          </Select>
+        </FormControl>
+
         {/* Start Date */}
         <Controller
           name="startDate"
@@ -194,6 +214,7 @@ export const EventEditScreen: React.FC = () => {
           )}
         />
 
+        {/* Description */}
         <FormControl isInvalid={!!errors.description}>
           <FormLabel htmlFor="description">Description</FormLabel>
           <Textarea
@@ -209,6 +230,7 @@ export const EventEditScreen: React.FC = () => {
         </FormControl>
       </Stack>
 
+      {/* Submit */}
       <Button
         variant="solid"
         colorScheme={"blue"}

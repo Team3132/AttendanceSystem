@@ -8,11 +8,12 @@ import {
   FormLabel,
   Heading,
   Input,
+  Select,
   Stack,
   Switch,
   Textarea,
 } from "@chakra-ui/react";
-import { CreateEventDto } from "@generated";
+import { CreateEventDto, Event } from "@generated";
 import { DateTime } from "luxon";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -57,6 +58,7 @@ export const CreateEventScreen: React.FC = () => {
           <FormLabel htmlFor="title">Title</FormLabel>
           <Input id="title" {...register("title", { required: true })} />
         </FormControl>
+        {/* All Day */}
         <FormControl
           display="flex"
           alignItems="center"
@@ -67,6 +69,20 @@ export const CreateEventScreen: React.FC = () => {
           </FormLabel>
           <Switch id="allDay" {...register("allDay")} />
         </FormControl>
+        {/* Select Type */}
+        <FormControl>
+          <FormLabel>Event Type</FormLabel>
+          <Select
+            placeholder="Select event type"
+            defaultValue={Event.type.REGULAR}
+            {...register("type")}
+          >
+            <option value={Event.type.REGULAR}>Regular</option>
+            <option value={Event.type.SOCIAL}>Social</option>
+            <option value={Event.type.OUTREACH}>Outreach</option>
+          </Select>
+        </FormControl>
+
         {/* Start Date */}
         <Controller
           name="startDate"

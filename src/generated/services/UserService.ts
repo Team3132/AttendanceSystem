@@ -1,6 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { OutreachReport } from '../models/OutreachReport';
 import type { Rsvp } from '../models/Rsvp';
 import type { UpdateUserDto } from '../models/UpdateUserDto';
 import type { User } from '../models/User';
@@ -196,6 +197,31 @@ export class UserService {
             url: '/user/{id}/avatar',
             path: {
                 'id': id,
+            },
+        });
+    }
+
+    /**
+     * @param id
+     * @param from
+     * @param to
+     * @returns OutreachReport
+     * @throws ApiError
+     */
+    public userControllerOutreachReport(
+        id: string,
+        from?: string,
+        to?: string,
+    ): CancelablePromise<OutreachReport> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/user/{id}/outreach',
+            path: {
+                'id': id,
+            },
+            query: {
+                'from': from,
+                'to': to,
             },
         });
     }

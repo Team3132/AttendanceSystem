@@ -13,6 +13,7 @@ import {
   Stack,
   Stat,
   StatGroup,
+  StatHelpText,
   StatLabel,
   StatNumber,
   Tag,
@@ -45,6 +46,15 @@ export const EventDetailsScreen: React.FC = () => {
                 </Tag>
               ) : null}
             </Heading>
+            {/* Event type */}
+            <StatGroup>
+              <Stat>
+                <StatLabel>Type</StatLabel>
+                <StatNumber>{event?.type}</StatNumber>
+                <StatHelpText>The type of the event.</StatHelpText>
+              </Stat>
+            </StatGroup>
+
             <StatGroup textAlign={"center"}>
               <Stat>
                 <StatLabel>Start DateTime</StatLabel>

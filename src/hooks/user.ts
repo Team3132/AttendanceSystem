@@ -84,3 +84,15 @@ export const useUpdateUser = () => {
     },
   });
 };
+
+export const useOutreachReport = (
+  userId: string = "me",
+  from?: string,
+  to?: string
+) => {
+  const { data, ...rest } = useQuery({
+    queryFn: () => api.user.userControllerOutreachReport(userId, from, to),
+    queryKey: ["OutreachReport", userId],
+  });
+  return { report: data, ...rest };
+};

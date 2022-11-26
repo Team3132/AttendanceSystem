@@ -8,5 +8,17 @@ export type UpdateEventDto = {
     startDate?: string;
     endDate?: string;
     allDay?: boolean;
+    type: UpdateEventDto.type;
 };
+
+export namespace UpdateEventDto {
+
+    export enum type {
+        OUTREACH = 'Outreach',
+        REGULAR = 'Regular',
+        SOCIAL = 'Social',
+    }
+
+
+}
 
