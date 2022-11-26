@@ -18,7 +18,6 @@ import { userAvatar, useUpdateMe, useUpdateUser, useUser } from "@hooks";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
-// import { useSWRConfig } from "swr";
 
 export const ProfileScreen: React.FC = () => {
   const { userId } = useParams();

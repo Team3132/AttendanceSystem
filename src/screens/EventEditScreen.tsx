@@ -26,7 +26,6 @@ import { DateTime } from "luxon";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-// import { useSWRConfig } from "swr";
 
 export const EventEditScreen: React.FC = () => {
   const { eventId } = useParams();

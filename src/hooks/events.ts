@@ -1,5 +1,4 @@
 import { useState } from "react";
-import useSWR from "swr";
 import {
   ApiError,
   Attendance,

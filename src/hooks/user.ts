@@ -1,7 +1,6 @@
 import { api } from "@/client";
 import { queryClient } from "@/main";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import useSWR from "swr";
 import { ApiError, AuthStatusDto, UpdateUserDto, User } from "../generated";
 import { useAuthStatus } from "../hooks";
 

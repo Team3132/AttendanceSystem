@@ -25,7 +25,7 @@ import { useParams } from "react-router-dom";
 
 export const EventDetailsScreen: React.FC = () => {
   const { eventId } = useParams();
-  const { event, isLoading, isError, mutate } = useEvent(eventId);
+  const { event, isLoading, isError } = useEvent(eventId);
 
   return (
     <>

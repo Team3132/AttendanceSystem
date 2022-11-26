@@ -9,7 +9,6 @@ import {
   Select,
 } from "@chakra-ui/react";
 import { SubmitHandler, useForm } from "react-hook-form";
-// import { useSWRConfig } from "swr";
 import { UpdateRangeRSVP } from "../../generated";
 interface StatusForRangeButtonProps {
   to: string;
