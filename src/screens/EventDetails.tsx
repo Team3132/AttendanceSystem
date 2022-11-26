@@ -91,27 +91,7 @@ export const EventDetailsScreen: React.FC = () => {
                   </>
                 )}
               </AccordionItem>
-              <AccordionItem>
-                {({ isExpanded }) => (
-                  <>
-                    <h2>
-                      <AccordionButton>
-                        <Box flex="1" textAlign="left">
-                          Attendance
-                        </Box>
-                        <AccordionIcon />
-                      </AccordionButton>
-                    </h2>
-                    <AccordionPanel pb={4}>
-                      {/* {isExpanded ? <AttendedList eventId={event?.id} /> : null} */}
-                    </AccordionPanel>
-                  </>
-                )}
-              </AccordionItem>
             </Accordion>
-            {/* <RSVPButtonRow eventId={event?.id} /> */}
-            {/* <AttendanceButtonRow eventId={event?.id} /> */}
-            {/* <RSVPList eventId={event?.id} /> */}
           </Stack>
         </Container>
       )}

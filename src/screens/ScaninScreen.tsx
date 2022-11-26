@@ -1,13 +1,12 @@
+import RSVPList from "@/components/RSVPList";
 import {
   Button,
-  Center,
   Container,
   Divider,
   Heading,
   Input,
   InputGroup,
   InputRightElement,
-  Spinner,
   Stack,
 } from "@chakra-ui/react";
 import { ScaninDto } from "@generated";
@@ -44,34 +43,28 @@ export const ScanIn: React.FC = () => {
       </Heading>
       <Divider my={6} />
       <Container maxW={"container.md"}>
-        {true ? (
-          <Center>
-            <Spinner />
-          </Center>
-        ) : (
-          <>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <InputGroup>
-                <Input
-                  {...register("code")}
-                  placeholder={"Enter your code here..."}
-                />
-                <InputRightElement width="5rem">
-                  <Button
-                    type="submit"
-                    isLoading={isSubmitting}
-                    h="1.75rem"
-                    size="sm"
-                  >
-                    Submit
-                  </Button>
-                </InputRightElement>
-              </InputGroup>
-            </form>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <InputGroup>
+            <Input
+              {...register("code")}
+              placeholder={"Enter your code here..."}
+            />
+            <InputRightElement width="5rem">
+              <Button
+                type="submit"
+                isLoading={isSubmitting}
+                h="1.75rem"
+                size="sm"
+              >
+                Submit
+              </Button>
+            </InputRightElement>
+          </InputGroup>
+        </form>
 
-            <Stack>{/* <AttendedList eventId={eventId} /> */}</Stack>
-          </>
-        )}
+        <Stack>
+          <RSVPList />
+        </Stack>
       </Container>
 
       <Button
