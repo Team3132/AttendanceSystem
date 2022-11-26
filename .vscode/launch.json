@@ -1,0 +1,33 @@
+{
+  "configurations": [
+    {
+      "name": "Launch Edge",
+      "request": "launch",
+      "type": "msedge",
+      "url": "https://localhost:4000",
+      "skipFiles": ["${workspaceFolder}/node_modules/**/*.js"],
+      "webRoot": "${workspaceFolder}/src",
+      "preLaunchTask": "npm: dev",
+      "sourceMaps": true
+    },
+    {
+      "name": "Launch Chrome",
+      "request": "launch",
+      "type": "chrome",
+      "skipFiles": ["${workspaceFolder}/node_modules/**/*.js"],
+      "url": "https://localhost:4000",
+      "webRoot": "${workspaceFolder}/src",
+      "preLaunchTask": "npm: dev",
+      "sourceMaps": true
+    },
+    {
+      "name": "Launch Firefox",
+      "type": "firefox",
+      "request": "launch",
+      "preLaunchTask": "npm: dev",
+      "skipFiles": ["${workspaceFolder}/node_modules/**/*.js"],
+      "url": "https://localhost:4000",
+      "webRoot": "${workspaceFolder}/src"
+    }
+  ]
+}

@@ -54,7 +54,7 @@ const navItems = (isAuthenticated?: boolean, isAdmin?: boolean): NavItem[] => [
           { url: "/profile", label: "Your Profile" },
           { url: "/codes", label: "Codes" },
           {
-            url: "https://api.team3132.com/auth/logout",
+            url: "https://localhost:3443/auth/discord",
             label: "Logout",
             external: true,
           },
@@ -63,7 +63,7 @@ const navItems = (isAuthenticated?: boolean, isAdmin?: boolean): NavItem[] => [
     : {
         icon: <Icon as={MdAccountCircle} />,
         label: "Login",
-        url: "https://api.team3132.com/auth/discord",
+        url: "https://localhost:3443/auth/discord",
         external: true,
       },
   ...(isAdmin
