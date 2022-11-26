@@ -29,9 +29,7 @@ const OutreachReport: React.FC<OutreachReportProps> = ({ userId }) => {
       <Stat>
         <StatLabel>Hours</StatLabel>
         <StatNumber>
-          {isLoading
-            ? `${hours ?? 0}h ${minutes ? Math.round(minutes) : 0}m`
-            : "Loading"}
+          {hours ?? 0}h {minutes ? Math.round(minutes) : 0}m
         </StatNumber>
         <StatHelpText>Total Number of Outreach Hours</StatHelpText>
       </Stat>
