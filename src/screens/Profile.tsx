@@ -87,7 +87,7 @@ export const ProfileScreen: React.FC = () => {
           alt="Profile Image"
         /> */}
       <Center>
-        <UserAvatar size={"2xl"} />
+        <UserAvatar size={"2xl"} userId={userId} />
       </Center>
 
       <Heading textAlign={"center"}>
