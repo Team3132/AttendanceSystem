@@ -56,7 +56,7 @@ export const useUsers = () => {
   //   mutate,
   // } = useSWR<User[]>(isAuthenticated && isAdmin ? `/user` : null);
   const { data: usersData, error: usersError } = useQuery({
-    queryFn: api.user.userControllerUsers,
+    queryFn: () => api.user.userControllerUsers(),
     enabled: !!isAdmin && !!isAuthenticated,
     queryKey: ["Users"],
   });
