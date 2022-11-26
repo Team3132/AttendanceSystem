@@ -6,6 +6,7 @@ import {
   StatLabel,
   StatNumber,
 } from "@chakra-ui/react";
+import { Duration } from "luxon";
 
 interface OutreachReportProps {
   userId?: string;
@@ -13,6 +14,11 @@ interface OutreachReportProps {
 
 const OutreachReport: React.FC<OutreachReportProps> = ({ userId }) => {
   const { report, isLoading } = useOutreachReport(userId);
+  const { hours, minutes } = Duration.fromObject({
+    hours: report?.hourCount || 0,
+  })
+    .shiftTo("hours", "minutes")
+    .toObject();
   return (
     <StatGroup>
       <Stat>
@@ -22,7 +28,9 @@ const OutreachReport: React.FC<OutreachReportProps> = ({ userId }) => {
       </Stat>
       <Stat>
         <StatLabel>Hours</StatLabel>
-        <StatNumber>{report?.hourCount}</StatNumber>
+        <StatNumber>
+          {report?.hourCount ? `${hours}h ${minutes}m` : "Loading"}
+        </StatNumber>
         <StatHelpText>Total Number of Outreach Hours</StatHelpText>
       </Stat>
     </StatGroup>
