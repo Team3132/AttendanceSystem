@@ -1,4 +1,5 @@
 import {
+  IconButton,
   Skeleton,
   Table,
   TableContainer,
@@ -10,6 +11,8 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import React from "react";
+import { FaUserCircle } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 interface PartialUser {
   firstName?: string | null;
@@ -35,6 +38,7 @@ export const UserList: React.FC<UserListProps> = ({
             <Th>First Name</Th>
             <Th>Last Name</Th>
             <Th>Email</Th>
+            <Th>Profile</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -49,6 +53,9 @@ export const UserList: React.FC<UserListProps> = ({
               <Td>
                 <Skeleton>Email</Skeleton>
               </Td>
+              <Td>
+                <Skeleton>Profile</Skeleton>
+              </Td>
             </Tr>
           ) : (
             users?.map((user) => (
@@ -56,6 +63,14 @@ export const UserList: React.FC<UserListProps> = ({
                 <Td>{user.firstName}</Td>
                 <Td>{user.lastName}</Td>
                 <Td>{user.email}</Td>
+                <Td>
+                  <IconButton
+                    aria-label={`${user.firstName} ${user.lastName} profile`}
+                    as={Link}
+                    to={`/profile/${user.id}`}
+                    icon={<FaUserCircle />}
+                  />
+                </Td>
               </Tr>
             ))
           )}
