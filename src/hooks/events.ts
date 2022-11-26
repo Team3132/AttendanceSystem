@@ -141,7 +141,7 @@ export const useScanin = () => {
     ({ eventId, scan }) => api.event.eventControllerScanin(eventId, scan),
     {
       onSuccess: (data, { eventId }) => {
-        queryClient.invalidateQueries(["EventAttendances", eventId]);
+        queryClient.invalidateQueries(["EventRsvps", eventId]);
       },
     }
   );
