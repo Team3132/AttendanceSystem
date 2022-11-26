@@ -1,13 +1,11 @@
 import { useState } from "react";
 import {
   ApiError,
-  Attendance,
   CreateEventDto,
   Event,
   Rsvp,
   ScaninDto,
   UpdateEventDto,
-  UpdateOrCreateAttendance,
   UpdateOrCreateRSVP,
   UpdateRangeRSVP,
 } from "../generated";
@@ -138,60 +136,9 @@ export const useEventRSVPStatuses = (eventId?: string) => {
   };
 };
 
-export const useEventAttendanceStatus = (eventId?: string) => {
-  const { isAuthenticated } = useAuthStatus();
-
-  const { data: attendanceData, error: attendanceError } = useQuery({
-    queryFn: () => api.event.eventControllerGetEventAttendance(eventId!),
-    enabled: isAuthenticated && !!eventId,
-    queryKey: ["EventAttendance", eventId],
-  });
-
-  return {
-    attendance: attendanceData,
-    isLoading: !attendanceError && !attendanceData,
-    isError: attendanceError,
-  };
-};
-
-export const useUpdateEventAttendanceStatus = () => {
-  return useMutation<
-    Attendance,
-    ApiError,
-    { eventId: string; attendance: UpdateOrCreateAttendance }
-  >({
-    mutationFn: ({ eventId, attendance }) =>
-      api.event.eventControllerSetEventAttendance(eventId, attendance),
-    onSuccess: (data, { eventId, attendance }) => {
-      queryClient.setQueryData(["EventAttendance", eventId], data);
-      queryClient.invalidateQueries(["EventAttendances", eventId]);
-    },
-  });
-};
-
-export const useEventAttendanceStatuses = (eventId?: string) => {
-  const { isAuthenticated } = useAuthStatus();
-
-  const { data: attendanceData, error: attendanceError } = useQuery({
-    queryFn: () => api.event.eventControllerGetEventAttendances(eventId!),
-    enabled: !!eventId && isAuthenticated,
-    queryKey: ["EventAttendances", eventId],
-  });
-
-  return {
-    attendances: attendanceData,
-    isLoading: !attendanceError && !attendanceData,
-    isError: attendanceError,
-  };
-};
-
 export const useScanin = () => {
-  return useMutation<
-    Attendance,
-    ApiError,
-    { eventId: string; scan: ScaninDto }
-  >(
-    ({ eventId, scan }) => api.event.eventControllerScaninEvent(eventId, scan),
+  return useMutation<Rsvp, ApiError, { eventId: string; scan: ScaninDto }>(
+    ({ eventId, scan }) => api.event.eventControllerScanin(eventId, scan),
     {
       onSuccess: (data, { eventId }) => {
         queryClient.invalidateQueries(["EventAttendances", eventId]);

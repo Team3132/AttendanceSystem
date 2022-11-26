@@ -14,6 +14,7 @@ export namespace UpdateRangeRSVP {
         YES = 'YES',
         NO = 'NO',
         MAYBE = 'MAYBE',
+        ATTENDED = 'ATTENDED',
     }
 
 

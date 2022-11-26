@@ -9,9 +9,7 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
-export { Attendance } from './models/Attendance';
 export type { AuthStatusDto } from './models/AuthStatusDto';
-export { CreateAttendanceDto } from './models/CreateAttendanceDto';
 export type { CreateEventDto } from './models/CreateEventDto';
 export { CreateRsvpDto } from './models/CreateRsvpDto';
 export type { CreateScancodeDto } from './models/CreateScancodeDto';
@@ -19,9 +17,7 @@ export type { Event } from './models/Event';
 export { Rsvp } from './models/Rsvp';
 export type { Scancode } from './models/Scancode';
 export type { ScaninDto } from './models/ScaninDto';
-export { UpdateAttendanceDto } from './models/UpdateAttendanceDto';
 export type { UpdateEventDto } from './models/UpdateEventDto';
-export { UpdateOrCreateAttendance } from './models/UpdateOrCreateAttendance';
 export { UpdateOrCreateRSVP } from './models/UpdateOrCreateRSVP';
 export { UpdateRangeRSVP } from './models/UpdateRangeRSVP';
 export { UpdateRsvpDto } from './models/UpdateRsvpDto';
@@ -29,7 +25,6 @@ export type { UpdateUserDto } from './models/UpdateUserDto';
 export type { User } from './models/User';
 
 export { AppService } from './services/AppService';
-export { AttendanceService } from './services/AttendanceService';
 export { AuthService } from './services/AuthService';
 export { CalendarService } from './services/CalendarService';
 export { EventService } from './services/EventService';

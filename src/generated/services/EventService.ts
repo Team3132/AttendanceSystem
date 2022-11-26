@@ -1,13 +1,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Attendance } from '../models/Attendance';
 import type { CreateEventDto } from '../models/CreateEventDto';
 import type { Event } from '../models/Event';
 import type { Rsvp } from '../models/Rsvp';
 import type { ScaninDto } from '../models/ScaninDto';
 import type { UpdateEventDto } from '../models/UpdateEventDto';
-import type { UpdateOrCreateAttendance } from '../models/UpdateOrCreateAttendance';
 import type { UpdateOrCreateRSVP } from '../models/UpdateOrCreateRSVP';
 import type { UpdateRangeRSVP } from '../models/UpdateRangeRSVP';
 
@@ -42,15 +40,13 @@ export class EventService {
     }
 
     /**
-     * Create a new event
      * @param requestBody
      * @returns Event
-     * @returns any
      * @throws ApiError
      */
     public eventControllerCreate(
         requestBody: CreateEventDto,
-    ): CancelablePromise<Event | any> {
+    ): CancelablePromise<Event> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/event',
@@ -60,7 +56,6 @@ export class EventService {
     }
 
     /**
-     * Get a specific event
      * @param id
      * @returns Event
      * @throws ApiError
@@ -78,7 +73,6 @@ export class EventService {
     }
 
     /**
-     * Update an event.
      * @param id
      * @param requestBody
      * @returns Event
@@ -100,7 +94,6 @@ export class EventService {
     }
 
     /**
-     * Delete an event
      * @param id
      * @returns Event
      * @throws ApiError
@@ -118,7 +111,6 @@ export class EventService {
     }
 
     /**
-     * Get a user's rsvp status for an event.
      * @param eventId
      * @returns Rsvp
      * @throws ApiError
@@ -136,7 +128,6 @@ export class EventService {
     }
 
     /**
-     * Set a logged in user's RSVP status for an event.
      * @param eventId
      * @param requestBody
      * @returns Rsvp
@@ -158,7 +149,6 @@ export class EventService {
     }
 
     /**
-     * Update RSVP Status of Events in range
      * @param requestBody
      * @returns Rsvp
      * @throws ApiError
@@ -192,72 +182,15 @@ export class EventService {
     }
 
     /**
-     * Get a user's attendance status for an event
-     * @param eventId
-     * @returns Attendance
-     * @throws ApiError
-     */
-    public eventControllerGetEventAttendance(
-        eventId: string,
-    ): CancelablePromise<Attendance> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/event/{eventId}/attendance',
-            path: {
-                'eventId': eventId,
-            },
-        });
-    }
-
-    /**
-     * Set a user's attendance status for an event.
      * @param eventId
      * @param requestBody
-     * @returns Attendance
+     * @returns Rsvp
      * @throws ApiError
      */
-    public eventControllerSetEventAttendance(
-        eventId: string,
-        requestBody: UpdateOrCreateAttendance,
-    ): CancelablePromise<Attendance> {
-        return this.httpRequest.request({
-            method: 'POST',
-            url: '/event/{eventId}/attendance',
-            path: {
-                'eventId': eventId,
-            },
-            body: requestBody,
-            mediaType: 'application/json',
-        });
-    }
-
-    /**
-     * @param eventId
-     * @returns Attendance
-     * @throws ApiError
-     */
-    public eventControllerGetEventAttendances(
-        eventId: string,
-    ): CancelablePromise<Array<Attendance>> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/event/{eventId}/attendances',
-            path: {
-                'eventId': eventId,
-            },
-        });
-    }
-
-    /**
-     * @param eventId
-     * @param requestBody
-     * @returns Attendance
-     * @throws ApiError
-     */
-    public eventControllerScaninEvent(
+    public eventControllerScanin(
         eventId: string,
         requestBody: ScaninDto,
-    ): CancelablePromise<Attendance> {
+    ): CancelablePromise<Rsvp> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/event/{eventId}/scanin',
@@ -266,6 +199,9 @@ export class EventService {
             },
             body: requestBody,
             mediaType: 'application/json',
+            errors: {
+                400: `Invalid Scancode`,
+            },
         });
     }
 

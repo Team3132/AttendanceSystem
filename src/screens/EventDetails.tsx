@@ -18,7 +18,7 @@ import {
   Tag,
   Text,
 } from "@chakra-ui/react";
-import { AttendedList, RSVPList } from "@components";
+import { RSVPList } from "@components";
 import { useEvent } from "@hooks";
 import { DateTime } from "luxon";
 import { useParams } from "react-router-dom";
@@ -103,7 +103,7 @@ export const EventDetailsScreen: React.FC = () => {
                       </AccordionButton>
                     </h2>
                     <AccordionPanel pb={4}>
-                      {isExpanded ? <AttendedList eventId={event?.id} /> : null}
+                      {/* {isExpanded ? <AttendedList eventId={event?.id} /> : null} */}
                     </AccordionPanel>
                   </>
                 )}

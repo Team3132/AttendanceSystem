@@ -1,7 +1,5 @@
 import loadable from "@loadable/component";
 import type { UserAvatarProps } from "./atoms/UserAvatar";
-import type { AttendanceButtonRowProps } from "./AttendedButtonRow";
-import type { AttendedListProps } from "./AttendedList";
 import type { AuthRouteProps } from "./AuthRoute";
 import type { AuthWrapperProps } from "./AuthWrapper";
 import type { RSVPButtonRowProps } from "./RSVPButtonRow";
@@ -14,12 +12,6 @@ const Skeleton = loadable(() => import("@chakra-ui/react"), {
   resolveComponent: (comps) => comps.Skeleton,
 });
 
-export const AttendedButtonRow = loadable<AttendanceButtonRowProps>(
-  () => import("./AttendedButtonRow")
-);
-export const AttendedList = loadable<AttendedListProps>(
-  () => import("./AttendedList")
-);
 export const AuthRoute = loadable<AuthRouteProps>(() => import("./AuthRoute"));
 export const AuthWrapper = loadable<AuthWrapperProps>(
   () => import("./AuthWrapper")

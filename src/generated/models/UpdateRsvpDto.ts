@@ -13,6 +13,7 @@ export namespace UpdateRsvpDto {
         YES = 'YES',
         NO = 'NO',
         MAYBE = 'MAYBE',
+        ATTENDED = 'ATTENDED',
     }
 
 

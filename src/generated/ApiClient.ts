@@ -6,7 +6,6 @@ import type { OpenAPIConfig } from './core/OpenAPI';
 import { FetchHttpRequest } from './core/FetchHttpRequest';
 
 import { AppService } from './services/AppService';
-import { AttendanceService } from './services/AttendanceService';
 import { AuthService } from './services/AuthService';
 import { CalendarService } from './services/CalendarService';
 import { EventService } from './services/EventService';
@@ -19,7 +18,6 @@ type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 export class ApiClient {
 
     public readonly app: AppService;
-    public readonly attendance: AttendanceService;
     public readonly auth: AuthService;
     public readonly calendar: CalendarService;
     public readonly event: EventService;
@@ -43,7 +41,6 @@ export class ApiClient {
         });
 
         this.app = new AppService(this.request);
-        this.attendance = new AttendanceService(this.request);
         this.auth = new AuthService(this.request);
         this.calendar = new CalendarService(this.request);
         this.event = new EventService(this.request);

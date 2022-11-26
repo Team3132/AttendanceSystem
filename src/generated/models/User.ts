@@ -4,8 +4,8 @@
 
 export type User = {
     id: string;
-    firstName: string | null;
-    lastName: string | null;
+    firstName: any;
+    lastName: any;
     createdAt: string;
     updatedAt: string;
     discordRefreshToken: string;

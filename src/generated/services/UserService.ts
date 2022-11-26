@@ -1,7 +1,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Attendance } from '../models/Attendance';
 import type { Rsvp } from '../models/Rsvp';
 import type { UpdateUserDto } from '../models/UpdateUserDto';
 import type { User } from '../models/User';
@@ -14,7 +13,6 @@ export class UserService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
-     * Get the currently authenticated user.
      * @returns User
      * @throws ApiError
      */
@@ -26,7 +24,6 @@ export class UserService {
     }
 
     /**
-     * Edit the signed-in user.
      * @param requestBody
      * @returns User
      * @throws ApiError
@@ -43,7 +40,6 @@ export class UserService {
     }
 
     /**
-     * Delete the signed in user.
      * @returns User
      * @throws ApiError
      */
@@ -55,7 +51,6 @@ export class UserService {
     }
 
     /**
-     * Get the currently authenticated user's avatar id
      * @returns string
      * @throws ApiError
      */
@@ -63,17 +58,6 @@ export class UserService {
         return this.httpRequest.request({
             method: 'GET',
             url: '/user/me/avatar',
-        });
-    }
-
-    /**
-     * @returns Attendance
-     * @throws ApiError
-     */
-    public userControllerMeAttendance(): CancelablePromise<Array<Attendance>> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/user/me/attendance',
         });
     }
 
@@ -89,12 +73,10 @@ export class UserService {
     }
 
     /**
-     * Regenerates the calendar token of the signed in user.
      * @returns User
-     * @returns any
      * @throws ApiError
      */
-    public userControllerRegenerateToken(): CancelablePromise<User | any> {
+    public userControllerRegenerateToken(): CancelablePromise<User> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/user/me/regenerateToken',
@@ -113,7 +95,6 @@ export class UserService {
     }
 
     /**
-     * Get a specific user.
      * @param id
      * @returns User
      * @throws ApiError
@@ -131,7 +112,6 @@ export class UserService {
     }
 
     /**
-     * Edit a user.
      * @param id
      * @param requestBody
      * @returns User
@@ -153,7 +133,6 @@ export class UserService {
     }
 
     /**
-     * Delete a user.
      * @param id
      * @returns User
      * @throws ApiError
@@ -171,15 +150,13 @@ export class UserService {
     }
 
     /**
-     * Regenerates the calendar token of the specified user.
      * @param id
      * @returns User
-     * @returns any
      * @throws ApiError
      */
     public userControllerRegenerateUserToken(
         id: string,
-    ): CancelablePromise<User | any> {
+    ): CancelablePromise<User> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/user/{id}/regenerateToken',
@@ -207,24 +184,6 @@ export class UserService {
     }
 
     /**
-     * @param id
-     * @returns Attendance
-     * @throws ApiError
-     */
-    public userControllerUserAttendance(
-        id: string,
-    ): CancelablePromise<Array<Attendance>> {
-        return this.httpRequest.request({
-            method: 'GET',
-            url: '/user/{id}/attendance',
-            path: {
-                'id': id,
-            },
-        });
-    }
-
-    /**
-     * Get a user's discord avatar id
      * @param id
      * @returns string
      * @throws ApiError

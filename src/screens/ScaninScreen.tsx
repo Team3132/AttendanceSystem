@@ -10,17 +10,16 @@ import {
   Spinner,
   Stack,
 } from "@chakra-ui/react";
-import { AttendedList } from "@components";
 import { ScaninDto } from "@generated";
-import { useEvent, useEventAttendanceStatuses, useScanin } from "@hooks";
+import { useEvent, useScanin } from "@hooks";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 
 export const ScanIn: React.FC = () => {
   const { eventId } = useParams();
   const { event } = useEvent(eventId);
-  const { attendances, isLoading, isError } =
-    useEventAttendanceStatuses(eventId);
+  // const { attendances, isLoading, isError } =
+  //   useEventAttendanceStatuses(eventId);
   const navigate = useNavigate();
   const {
     formState: { errors, isSubmitting },
@@ -45,7 +44,7 @@ export const ScanIn: React.FC = () => {
       </Heading>
       <Divider my={6} />
       <Container maxW={"container.md"}>
-        {isLoading ? (
+        {true ? (
           <Center>
             <Spinner />
           </Center>
@@ -70,9 +69,7 @@ export const ScanIn: React.FC = () => {
               </InputGroup>
             </form>
 
-            <Stack>
-              <AttendedList eventId={eventId} />
-            </Stack>
+            <Stack>{/* <AttendedList eventId={eventId} /> */}</Stack>
           </>
         )}
       </Container>

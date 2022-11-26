@@ -13,15 +13,13 @@ export class RsvpService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
-     * Create an RSVP
      * @param requestBody
      * @returns Rsvp
-     * @returns any
      * @throws ApiError
      */
     public rsvpControllerCreate(
         requestBody: CreateRsvpDto,
-    ): CancelablePromise<Rsvp | any> {
+    ): CancelablePromise<Rsvp> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/rsvp',
@@ -42,7 +40,6 @@ export class RsvpService {
     }
 
     /**
-     * Get a specific RSVP
      * @param id
      * @returns Rsvp
      * @throws ApiError
@@ -60,7 +57,6 @@ export class RsvpService {
     }
 
     /**
-     * Edit a specific RSVP
      * @param id
      * @param requestBody
      * @returns Rsvp
@@ -82,7 +78,6 @@ export class RsvpService {
     }
 
     /**
-     * Delete an RSVP
      * @param id
      * @returns Rsvp
      * @throws ApiError

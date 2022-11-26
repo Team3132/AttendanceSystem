@@ -11,7 +11,6 @@ export class AuthService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
-     * Auth Status
      * @returns AuthStatusDto
      * @throws ApiError
      */
@@ -23,7 +22,6 @@ export class AuthService {
     }
 
     /**
-     * Sign in using discord
      * @returns any
      * @throws ApiError
      */
@@ -35,7 +33,6 @@ export class AuthService {
     }
 
     /**
-     * Sign in using discord (callback)
      * @returns any
      * @throws ApiError
      */
