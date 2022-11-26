@@ -1,8 +1,9 @@
-import { api } from "@/client";
 import { Button, ButtonGroup } from "@chakra-ui/react";
 import { Attendance } from "@generated";
-import { useEventAttendanceStatus } from "@hooks";
-import { useSWRConfig } from "swr";
+import {
+  useEventAttendanceStatus,
+  useUpdateEventAttendanceStatus,
+} from "@hooks";
 
 export interface AttendanceButtonRowProps {
   eventId?: string;
@@ -11,11 +12,13 @@ export interface AttendanceButtonRowProps {
 export const AttendanceButtonRow: React.FC<AttendanceButtonRowProps> = ({
   eventId,
 }) => {
-  const { attendance, mutate } = useEventAttendanceStatus(eventId);
-  const { mutate: globalMutate } = useSWRConfig();
+  const { attendance } = useEventAttendanceStatus(eventId);
+  const { mutate: mutateAttendance, isLoading: attendanceLoading } =
+    useUpdateEventAttendanceStatus();
+  // const { mutate: globalMutate } = useSWRConfig();
 
   return (
-    <ButtonGroup isAttached>
+    <ButtonGroup isAttached isDisabled={attendanceLoading}>
       <Button
         colorScheme={"green"}
         variant={
@@ -25,14 +28,10 @@ export const AttendanceButtonRow: React.FC<AttendanceButtonRowProps> = ({
         }
         onClick={async () => {
           if (eventId) {
-            const response = await api.event.eventControllerSetEventAttendance(
+            mutateAttendance({
               eventId,
-              { status: Attendance["status"].ATTENDED }
-            );
-            mutate(response);
-            globalMutate(
-              `https://api.team3132.com/event/${eventId}/attendances`
-            );
+              attendance: { status: Attendance["status"].ATTENDED },
+            });
           }
         }}
       >
@@ -47,14 +46,10 @@ export const AttendanceButtonRow: React.FC<AttendanceButtonRowProps> = ({
         }
         onClick={async () => {
           if (eventId) {
-            const response = await api.event.eventControllerSetEventAttendance(
+            mutateAttendance({
               eventId,
-              { status: Attendance["status"].NOT_ATTENDED }
-            );
-            mutate(response, { revalidate: false });
-            globalMutate(
-              `https://api.team3132.com/event/${eventId}/attendances`
-            );
+              attendance: { status: Attendance["status"].NOT_ATTENDED },
+            });
           }
         }}
       >

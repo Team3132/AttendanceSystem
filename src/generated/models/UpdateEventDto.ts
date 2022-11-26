@@ -9,3 +9,4 @@ export type UpdateEventDto = {
     endDate?: string;
     allDay?: boolean;
 };
+

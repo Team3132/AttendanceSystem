@@ -12,3 +12,4 @@ export type User = {
     calendarSecret: string;
     email: string;
 };
+

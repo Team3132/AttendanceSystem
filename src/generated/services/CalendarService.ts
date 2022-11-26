@@ -9,7 +9,7 @@ export class CalendarService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
-     * @returns any 
+     * @returns any
      * @throws ApiError
      */
     public calendarControllerCalendar(): CancelablePromise<any> {

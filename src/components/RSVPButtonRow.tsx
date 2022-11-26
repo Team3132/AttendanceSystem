@@ -1,16 +1,15 @@
-import { api } from "@/client";
 import { Button, ButtonGroup } from "@chakra-ui/react";
 import { Rsvp } from "@generated";
-import { useEventRSVPStatus } from "@hooks";
-import { useSWRConfig } from "swr";
+import { useEventRSVPStatus, useUpdateEventRSVPStatus } from "@hooks";
 
 export interface RSVPButtonRowProps {
   eventId?: string;
 }
 
 export const RSVPButtonRow: React.FC<RSVPButtonRowProps> = ({ eventId }) => {
-  const { rsvp, mutate } = useEventRSVPStatus(eventId);
-  const { mutate: globalMutate } = useSWRConfig();
+  const { rsvp } = useEventRSVPStatus(eventId);
+  const { mutate: mutateRSVP } = useUpdateEventRSVPStatus();
+  // const { mutate: globalMutate } = useSWRConfig();
   return (
     <ButtonGroup isAttached>
       <Button
@@ -18,17 +17,12 @@ export const RSVPButtonRow: React.FC<RSVPButtonRowProps> = ({ eventId }) => {
         variant={rsvp?.status === Rsvp["status"].YES ? "solid" : "outline"}
         onClick={async () => {
           if (eventId) {
-            // const response = await setEventRSVPStatus(
-            //   eventId,
-            //   Rsvp["status"].YES
-            // );
-
-            const response = api.event.eventControllerSetEventRsvp(eventId, {
-              status: Rsvp["status"].YES,
+            mutateRSVP({
+              eventId,
+              rsvp: {
+                status: Rsvp["status"].YES,
+              },
             });
-
-            mutate(response, { revalidate: false });
-            globalMutate(`https://api.team3132.com/event/${eventId}/rsvps`);
           }
         }}
       >
@@ -39,12 +33,12 @@ export const RSVPButtonRow: React.FC<RSVPButtonRowProps> = ({ eventId }) => {
         variant={rsvp?.status === Rsvp["status"].MAYBE ? "solid" : "outline"}
         onClick={async () => {
           if (eventId) {
-            const response = api.event.eventControllerSetEventRsvp(eventId, {
-              status: Rsvp["status"].MAYBE,
+            mutateRSVP({
+              eventId,
+              rsvp: {
+                status: Rsvp["status"].MAYBE,
+              },
             });
-
-            mutate(response, { revalidate: false });
-            globalMutate(`https://api.team3132.com/event/${eventId}/rsvps`);
           }
         }}
       >
@@ -55,12 +49,12 @@ export const RSVPButtonRow: React.FC<RSVPButtonRowProps> = ({ eventId }) => {
         variant={rsvp?.status === Rsvp["status"].NO ? "solid" : "outline"}
         onClick={async () => {
           if (eventId) {
-            const response = api.event.eventControllerSetEventRsvp(eventId, {
-              status: Rsvp["status"].NO,
+            mutateRSVP({
+              eventId,
+              rsvp: {
+                status: Rsvp["status"].NO,
+              },
             });
-
-            mutate(response, { revalidate: false });
-            globalMutate(`https://api.team3132.com/event/${eventId}/rsvps`);
           }
         }}
       >

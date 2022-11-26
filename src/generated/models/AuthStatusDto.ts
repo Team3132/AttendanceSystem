@@ -7,3 +7,4 @@ export type AuthStatusDto = {
     roles: Array<string>;
     isAdmin: boolean;
 };
+

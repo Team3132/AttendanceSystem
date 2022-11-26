@@ -12,13 +12,13 @@ export class ScancodeService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
-     * @param requestBody 
-     * @returns Scancode 
+     * @param requestBody
+     * @returns Scancode
      * @throws ApiError
      */
     public scancodeControllerCreate(
-requestBody: CreateScancodeDto,
-): CancelablePromise<Scancode> {
+        requestBody: CreateScancodeDto,
+    ): CancelablePromise<Scancode> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/scancode',
@@ -28,7 +28,7 @@ requestBody: CreateScancodeDto,
     }
 
     /**
-     * @returns Scancode 
+     * @returns Scancode
      * @throws ApiError
      */
     public scancodeControllerFindAll(): CancelablePromise<Array<Scancode>> {
@@ -39,13 +39,13 @@ requestBody: CreateScancodeDto,
     }
 
     /**
-     * @param id 
-     * @returns Scancode 
+     * @param id
+     * @returns Scancode
      * @throws ApiError
      */
     public scancodeControllerRemove(
-id: string,
-): CancelablePromise<Scancode> {
+        id: string,
+    ): CancelablePromise<Scancode> {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/scancode/{id}',

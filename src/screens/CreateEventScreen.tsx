@@ -1,4 +1,5 @@
 import { api } from "@/client";
+import { useCreateEvent } from "@/hooks/events";
 import {
   Button,
   FormControl,
@@ -15,12 +16,10 @@ import { CreateEventDto } from "@generated";
 import { DateTime } from "luxon";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useSWRConfig } from "swr";
 
 export const CreateEventScreen: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { mutate: globalMutate } = useSWRConfig();
   const {
     register,
     handleSubmit,
@@ -40,10 +39,13 @@ export const CreateEventScreen: React.FC = () => {
     },
   });
 
+  const { mutateAsync: createEvent } = useCreateEvent();
+
   const onSubmit = async (data: CreateEventDto) => {
     const event = await api.event.eventControllerCreate(data);
     navigate(`/event/${event.id}/view`);
-    globalMutate("https://api.team3132.com/event");
+
+    await createEvent(data);
   };
 
   return (

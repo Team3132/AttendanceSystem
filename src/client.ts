@@ -1,6 +1,6 @@
 import { ApiClient } from "./generated";
 
 export const api = new ApiClient({
-  BASE: "https://api.team3132.com",
+  BASE: import.meta.env.VITE_BACKEND_URL,
   WITH_CREDENTIALS: true,
 });

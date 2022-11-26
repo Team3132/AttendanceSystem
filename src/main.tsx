@@ -1,5 +1,4 @@
 import { AuthWrapper, ChakraProvider, SWToast } from "@components";
-import loadable from "@loadable/component";
 import {
   AdminScreen,
   Agenda,
@@ -15,19 +14,19 @@ import {
   ScancodeScreen,
   ScaninScreen,
 } from "@screens";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-const SWRConfigWithFetcher = loadable(
-  () => import("./components/SWRProviderWithFetcher")
-);
+export const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>
   <ChakraProvider>
     <ErrorBoundary>
       <SWToast />
-      <SWRConfigWithFetcher>
+      <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Layout />}>
@@ -111,7 +110,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             </Route>
           </Routes>
         </BrowserRouter>
-      </SWRConfigWithFetcher>
+        <ReactQueryDevtools />
+      </QueryClientProvider>
     </ErrorBoundary>
   </ChakraProvider>
   // </React.StrictMode>

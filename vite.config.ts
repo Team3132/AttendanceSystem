@@ -41,5 +41,9 @@ export default defineConfig({
   ],
   server: {
     port: 4000,
+    https: {
+      key: "./security/localhost.key",
+      cert: "./security/localhost.crt",
+    },
   },
 });

@@ -10,3 +10,4 @@ export type Event = {
     endDate: string;
     allDay: boolean;
 };
+

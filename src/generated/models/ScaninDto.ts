@@ -5,3 +5,4 @@
 export type ScaninDto = {
     code: string;
 };
+

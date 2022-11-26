@@ -12,7 +12,7 @@ export class AuthService {
 
     /**
      * Auth Status
-     * @returns AuthStatusDto 
+     * @returns AuthStatusDto
      * @throws ApiError
      */
     public authControllerStatus(): CancelablePromise<AuthStatusDto> {
@@ -24,7 +24,7 @@ export class AuthService {
 
     /**
      * Sign in using discord
-     * @returns any 
+     * @returns any
      * @throws ApiError
      */
     public authControllerDiscordSignin(): CancelablePromise<any> {
@@ -36,7 +36,7 @@ export class AuthService {
 
     /**
      * Sign in using discord (callback)
-     * @returns any 
+     * @returns any
      * @throws ApiError
      */
     public authControllerDiscordSigninCallback(): CancelablePromise<any> {
@@ -47,7 +47,7 @@ export class AuthService {
     }
 
     /**
-     * @returns any 
+     * @returns any
      * @throws ApiError
      */
     public authControllerLogout(): CancelablePromise<any> {
