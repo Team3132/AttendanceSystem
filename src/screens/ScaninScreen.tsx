@@ -63,7 +63,7 @@ export const ScanIn: React.FC = () => {
         </form>
 
         <Stack>
-          <RSVPList />
+          <RSVPList eventId={eventId} />
         </Stack>
       </Container>
 
