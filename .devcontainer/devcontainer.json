@@ -1,15 +1,20 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node-postgres
 {
-  "name": "Node.js & TypeScript",
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:16-bullseye",
+  "name": "Node.js & PostgreSQL",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 
   // Features to add to the dev container. More info: https://containers.dev/features.
   // "features": {},
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  "forwardPorts": [4000],
+  // This can be used to network with other containers or with the host.
+  "forwardPorts": [3000, 4000]
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "yarn install"
+  // "postCreateCommand": "yarn install",
 
   // Configure tool-specific properties.
   // "customizations": {},

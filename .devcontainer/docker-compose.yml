@@ -1,0 +1,58 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    volumes:
+      - ../..:/workspaces:cached
+
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+
+    network_mode: service:core
+
+  postgres:
+    image: postgres:14
+    hostname: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+    restart: unless-stopped
+    user: "1000:1000"
+    networks:
+      attendance_frontend_devcontainer:
+        aliases:
+          - postgres
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+
+  redis:
+    image: redis
+    hostname: redis
+    networks:
+      attendance_frontend_devcontainer:
+        aliases:
+          - redis
+    restart: unless-stopped
+
+  core:
+    depends_on:
+      - postgres
+      - redis
+    image: ghcr.io/team3132/tduattendance:latest
+    env_file: .env
+    networks:
+      attendance_frontend_devcontainer:
+        aliases:
+          - core
+
+    # Add "forwardPorts": ["5432"] to **devcontainer.json** to forward PostgreSQL locally.
+    # (Adding the "ports" property to this file will not forward from a Codespace.)
+
+volumes:
+  postgres-data:
+
+networks:
+  attendance_frontend_devcontainer:
