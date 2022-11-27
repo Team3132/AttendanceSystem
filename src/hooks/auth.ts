@@ -4,7 +4,7 @@ import { ApiClient, AuthService, AuthStatusDto, User } from "../generated";
 
 export const useAuthStatus = () => {
   const { data, error } = useQuery({
-    queryFn: () => api.auth.authControllerStatus(),
+    queryFn: () => api.auth.authStatus(),
     queryKey: ["AuthStatus"],
   });
   return {
@@ -18,7 +18,7 @@ export const useMe = () => {
   const { isAuthenticated } = useAuthStatus();
 
   const { data: userData, error: userError } = useQuery({
-    queryFn: () => api.user.userControllerMe(),
+    queryFn: () => api.user.getMe(),
     enabled: !!isAuthenticated,
     queryKey: ["Me"],
   });

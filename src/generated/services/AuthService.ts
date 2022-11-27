@@ -11,10 +11,11 @@ export class AuthService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
+     * Get auth status
      * @returns AuthStatusDto
      * @throws ApiError
      */
-    public authControllerStatus(): CancelablePromise<AuthStatusDto> {
+    public authStatus(): CancelablePromise<AuthStatusDto> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/auth/status',
@@ -22,10 +23,11 @@ export class AuthService {
     }
 
     /**
+     * Sign in using discord
      * @returns any
      * @throws ApiError
      */
-    public authControllerDiscordSignin(): CancelablePromise<any> {
+    public discordSignin(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/auth/discord',
@@ -33,10 +35,11 @@ export class AuthService {
     }
 
     /**
+     * Sign in using discord (callback)
      * @returns any
      * @throws ApiError
      */
-    public authControllerDiscordSigninCallback(): CancelablePromise<any> {
+    public discordSigninCallback(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/auth/discord/callback',
@@ -44,10 +47,11 @@ export class AuthService {
     }
 
     /**
+     * Sign out
      * @returns any
      * @throws ApiError
      */
-    public authControllerLogout(): CancelablePromise<any> {
+    public signout(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/auth/logout',

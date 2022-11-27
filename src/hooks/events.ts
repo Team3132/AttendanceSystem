@@ -19,8 +19,7 @@ export const useEvents = (take?: number, from?: DateTime, to?: DateTime) => {
   const { isAuthenticated } = useAuthStatus();
 
   const { data: eventData, error: userError } = useQuery({
-    queryFn: () =>
-      api.event.eventControllerFindAll(from?.toISO(), to?.toISO(), take),
+    queryFn: () => api.event.getEvents(from?.toISO(), to?.toISO(), take),
     enabled: !!isAuthenticated,
     queryKey: ["Events", from?.toISO(), to?.toISO(), take],
   });
@@ -36,7 +35,7 @@ export const useEvent = (eventId?: string) => {
   const { isAuthenticated } = useAuthStatus();
 
   const { data: eventData, error: userError } = useQuery({
-    queryFn: () => api.event.eventControllerFindOne(eventId!),
+    queryFn: () => api.event.getEvent(eventId!),
     enabled: !!eventId && isAuthenticated,
     queryKey: ["Event", eventId],
   });
@@ -50,7 +49,7 @@ export const useEvent = (eventId?: string) => {
 
 export const useUpdateEvent = () => {
   return useMutation<Event, ApiError, { id: string; data: UpdateEventDto }>({
-    mutationFn: ({ id, data }) => api.event.eventControllerUpdate(id, data),
+    mutationFn: ({ id, data }) => api.event.updateEvent(id, data),
     onSuccess: (data, { id }) => {
       queryClient.setQueryData(["Event", id], data);
       queryClient.invalidateQueries(["Events"]);
@@ -62,7 +61,7 @@ export const useEventRSVPStatus = (eventId?: string) => {
   const { isAuthenticated } = useAuthStatus();
 
   const { data: rsvpData, error: rsvpError } = useQuery({
-    queryFn: () => api.event.eventControllerGetEventRsvp(eventId!),
+    queryFn: () => api.event.getEventRsvp(eventId!),
     queryKey: ["EventRSVP", eventId],
     enabled: !!eventId,
   });
@@ -80,8 +79,7 @@ export const useUpdateEventRSVPStatus = () => {
     ApiError,
     { eventId: string; rsvp: UpdateOrCreateRSVP }
   >({
-    mutationFn: ({ eventId, rsvp }) =>
-      api.event.eventControllerSetEventRsvp(eventId, rsvp),
+    mutationFn: ({ eventId, rsvp }) => api.event.setEventRsvp(eventId, rsvp),
     onSuccess: (data, { eventId }) => {
       queryClient.setQueryData(["EventRSVP", eventId], data);
       queryClient.invalidateQueries(["EventRsvps", eventId]);
@@ -91,7 +89,7 @@ export const useUpdateEventRSVPStatus = () => {
 
 export const useUpdateEventsRSVPStatus = () => {
   return useMutation<Rsvp[], ApiError, UpdateRangeRSVP>({
-    mutationFn: (data) => api.event.eventControllerSetEventsRsvp(data),
+    mutationFn: (data) => api.event.updateEventRsvpRange(data),
     onSuccess: (data) => {
       data.map((rsvp) => {
         queryClient.setQueryData(["EventRSVP", rsvp.eventId], rsvp);
@@ -103,7 +101,7 @@ export const useUpdateEventsRSVPStatus = () => {
 
 export const useDeleteEvent = () => {
   return useMutation<Event, ApiError, string>({
-    mutationFn: (id) => api.event.eventControllerRemove(id),
+    mutationFn: (id) => api.event.deleteEvent(id),
     onSuccess: (data, id) => {
       queryClient.invalidateQueries(["Events"]);
       queryClient.invalidateQueries(["Event", id]);
@@ -113,7 +111,7 @@ export const useDeleteEvent = () => {
 
 export const useCreateEvent = () => {
   return useMutation<Event, ApiError, CreateEventDto>({
-    mutationFn: (data) => api.event.eventControllerCreate(data),
+    mutationFn: (data) => api.event.createEvent(data),
     onSuccess: (data) => {
       queryClient.invalidateQueries(["Events"]);
     },
@@ -124,7 +122,7 @@ export const useEventRSVPStatuses = (eventId?: string) => {
   const { isAuthenticated } = useAuthStatus();
 
   const { data: rsvpData, error: rsvpError } = useQuery({
-    queryFn: () => api.event.eventControllerGetEventRsvps(eventId!),
+    queryFn: () => api.event.getEventRsvps(eventId!),
     enabled: !!eventId,
     queryKey: ["EventRsvps", eventId],
   });
@@ -138,7 +136,7 @@ export const useEventRSVPStatuses = (eventId?: string) => {
 
 export const useScanin = () => {
   return useMutation<Rsvp, ApiError, { eventId: string; scan: ScaninDto }>(
-    ({ eventId, scan }) => api.event.eventControllerScanin(eventId, scan),
+    ({ eventId, scan }) => api.event.scaninEvent(eventId, scan),
     {
       onSuccess: (data, { eventId }) => {
         queryClient.invalidateQueries(["EventRsvps", eventId]);

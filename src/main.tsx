@@ -30,83 +30,30 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Layout />}>
+              {/* Public Pages */}
               <Route index element={<Home />} />
-              <Route
-                path="event/create"
-                element={
-                  <AuthWrapper adminOnly>
-                    <CreateEvent />
-                  </AuthWrapper>
-                }
-              />
-              <Route path="event/:eventId">
-                <Route
-                  path="edit"
-                  element={
-                    <AuthWrapper adminOnly>
-                      <EventEditScreen />
-                    </AuthWrapper>
-                  }
-                />
-                <Route path="view" element={<EventDetailsScreen />} />
-                <Route path="scanin" element={<ScaninScreen />} />
+              {/* Authenticated-only pages */}
+              <Route element={<AuthWrapper />}>
+                <Route path="event/:eventId">
+                  <Route path="view" element={<EventDetailsScreen />} />
+                  <Route path="scanin" element={<ScaninScreen />} />
+                </Route>
+                <Route path="calendar/agenda" element={<Agenda />} />
+                <Route path="calendar/custom" element={<CustomCalendar />} />
+                <Route element={<Calendar />} path="calendar" />
+                <Route element={<ScancodeScreen />} path="codes" />
+                <Route element={<Profile />} path="profile" />
               </Route>
-              <Route
-                path="calendar/agenda"
-                element={
-                  <AuthWrapper>
-                    <Agenda />
-                  </AuthWrapper>
-                }
-              />
-              <Route
-                path="calendar/custom"
-                element={
-                  <AuthWrapper>
-                    <CustomCalendar />
-                  </AuthWrapper>
-                }
-              />
-              <Route
-                element={
-                  <AuthWrapper>
-                    <Calendar />
-                  </AuthWrapper>
-                }
-                path="calendar"
-              />
-              <Route
-                element={
-                  <AuthWrapper adminOnly>
-                    <AdminScreen />
-                  </AuthWrapper>
-                }
-                path="admin"
-              />
-              <Route
-                element={
-                  <AuthWrapper>
-                    <ScancodeScreen />
-                  </AuthWrapper>
-                }
-                path="codes"
-              />
-              <Route
-                element={
-                  <AuthWrapper>
-                    <Profile />
-                  </AuthWrapper>
-                }
-                path="profile"
-              />
-              <Route
-                element={
-                  <AuthWrapper adminOnly>
-                    <Profile />
-                  </AuthWrapper>
-                }
-                path="profile/:userId"
-              />
+              {/* Admin only pages */}
+              <Route element={<AuthWrapper adminOnly />}>
+                <Route path="event/create" element={<CreateEvent />} />
+                <Route
+                  path="event/:eventId/edit"
+                  element={<EventEditScreen />}
+                />
+                <Route element={<AdminScreen />} path="admin" />
+                <Route element={<Profile />} path="profile/:userId" />
+              </Route>
             </Route>
           </Routes>
         </BrowserRouter>

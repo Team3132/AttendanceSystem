@@ -1,6 +1,5 @@
 import loadable from "@loadable/component";
 import type { UserAvatarProps } from "./atoms/UserAvatar";
-import type { AuthRouteProps } from "./AuthRoute";
 import type { AuthWrapperProps } from "./AuthWrapper";
 import type { RSVPButtonRowProps } from "./RSVPButtonRow";
 import type { RSVPListProps } from "./RSVPList";
@@ -12,7 +11,6 @@ const Skeleton = loadable(() => import("@chakra-ui/react"), {
   resolveComponent: (comps) => comps.Skeleton,
 });
 
-export const AuthRoute = loadable<AuthRouteProps>(() => import("./AuthRoute"));
 export const AuthWrapper = loadable<AuthWrapperProps>(
   () => import("./AuthWrapper")
 );

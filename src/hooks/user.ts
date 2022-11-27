@@ -14,7 +14,7 @@ export const useUser = (userId: string = "me") => {
   // } = useSWR<User>(isAuthenticated && userId ? `/user/${userId}` : null);
 
   const { data: userData, error: userError } = useQuery({
-    queryFn: () => api.user.userControllerUser(userId),
+    queryFn: () => api.user.getUser(userId),
     queryKey: ["User", userId],
   });
 
@@ -36,7 +36,7 @@ export const userAvatar = (userId: string = "me") => {
   //   isAuthenticated && userId ? `/user/${userId}/avatar` : null
   // );
   const { data: userData, error: userError } = useQuery({
-    queryFn: () => api.user.userControllerUserAvatar(userId),
+    queryFn: () => api.user.getUserAvatar(userId),
     enabled: !!isAuthenticated,
     queryKey: ["Avatar", userId],
   });
@@ -56,7 +56,7 @@ export const useUsers = () => {
   //   mutate,
   // } = useSWR<User[]>(isAuthenticated && isAdmin ? `/user` : null);
   const { data: usersData, error: usersError } = useQuery({
-    queryFn: () => api.user.userControllerUsers(),
+    queryFn: () => api.user.getUsers(),
     enabled: !!isAdmin && !!isAuthenticated,
     queryKey: ["Users"],
   });
@@ -69,7 +69,7 @@ export const useUsers = () => {
 
 export const useUpdateMe = () => {
   return useMutation<User, ApiError, UpdateUserDto>({
-    mutationFn: (data) => api.user.userControllerUpdate(data),
+    mutationFn: (data) => api.user.editMe(data),
     onSuccess: (data) => {
       queryClient.setQueryData(["User", "me"], data);
     },
@@ -78,7 +78,7 @@ export const useUpdateMe = () => {
 
 export const useUpdateUser = () => {
   return useMutation<User, ApiError, { id: string; user: UpdateUserDto }>({
-    mutationFn: (data) => api.user.userControllerUpdateUser(data.id, data.user),
+    mutationFn: (data) => api.user.editUser(data.id, data.user),
     onSuccess: (data) => {
       queryClient.setQueryData(["User", data.id], data);
     },
@@ -91,7 +91,7 @@ export const useOutreachReport = (
   to?: string
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => api.user.userControllerOutreachReport(userId, from, to),
+    queryFn: () => api.user.getUserOutreachReport(userId, from, to),
     queryKey: ["OutreachReport", userId],
   });
   return { report: data, ...rest };

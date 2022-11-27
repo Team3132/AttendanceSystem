@@ -9,10 +9,11 @@ export class CalendarService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
+     * Download calendar
      * @returns any
      * @throws ApiError
      */
-    public calendarControllerCalendar(): CancelablePromise<any> {
+    public downloadCalendar(): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/calendar',

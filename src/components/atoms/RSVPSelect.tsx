@@ -26,7 +26,7 @@ export const RSVPSelect: React.FC<
       currentValue === statusEnum.NO ||
       currentValue === statusEnum.YES
     ) {
-      const result = api.event.eventControllerSetEventRsvp(eventId, {
+      const result = api.event.setEventRsvp(eventId, {
         status: currentValue,
       });
       mutateEventRSVP({

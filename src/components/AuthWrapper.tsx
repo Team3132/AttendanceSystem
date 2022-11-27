@@ -1,15 +1,15 @@
 import { Spinner, useToast } from "@chakra-ui/react";
 import { useAuthStatus } from "@hooks";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 export interface AuthWrapperProps {
-  children: any;
+  // children: any;
   adminOnly?: boolean;
   to?: string;
 }
 
 export const AuthWrapper: React.FC<AuthWrapperProps> = ({
-  children,
+  // children,
   to = "/",
   adminOnly = false,
 }) => {
@@ -21,7 +21,7 @@ export const AuthWrapper: React.FC<AuthWrapperProps> = ({
     adminOnly && !isAdmin ? (
       <AdminRedirect />
     ) : (
-      children
+      <Outlet />
     )
   ) : (
     <AuthRedirect to={to} />

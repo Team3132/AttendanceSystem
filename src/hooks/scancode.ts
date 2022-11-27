@@ -13,7 +13,7 @@ export const useScancodes = () => {
   //   mutate,
   // } = useSWR<Scancode[]>(isAuthenticated ? `/scancode` : null);
   const { data: scancodeData, error: scancodeError } = useQuery({
-    queryFn: () => api.scancode.scancodeControllerFindAll(),
+    queryFn: () => api.user.getMeScancodes(),
     queryKey: ["Scancodes"],
   });
 
@@ -26,7 +26,7 @@ export const useScancodes = () => {
 
 export const useCreateScancode = () => {
   return useMutation<Scancode, ApiError, CreateScancodeDto>({
-    mutationFn: (dto) => api.scancode.scancodeControllerCreate(dto),
+    mutationFn: (dto) => api.user.createMeScancode(dto),
     onSuccess: () => {
       queryClient.invalidateQueries(["Scancodes"]);
     },
@@ -35,7 +35,7 @@ export const useCreateScancode = () => {
 
 export const useDeleteScancode = () => {
   return useMutation<Scancode, ApiError, string>({
-    mutationFn: (id) => api.scancode.scancodeControllerRemove(id),
+    mutationFn: (id) => api.scancode.deleteScancode(id),
     onSuccess: () => {
       queryClient.invalidateQueries(["Scancodes"]);
     },

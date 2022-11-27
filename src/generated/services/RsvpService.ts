@@ -13,11 +13,12 @@ export class RsvpService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
+     * Create an RSVP
      * @param requestBody
      * @returns Rsvp
      * @throws ApiError
      */
-    public rsvpControllerCreate(
+    public createRsvp(
         requestBody: CreateRsvpDto,
     ): CancelablePromise<Rsvp> {
         return this.httpRequest.request({
@@ -29,10 +30,11 @@ export class RsvpService {
     }
 
     /**
+     * Get all RSVPs
      * @returns Rsvp
      * @throws ApiError
      */
-    public rsvpControllerFindAll(): CancelablePromise<Array<Rsvp>> {
+    public getRsvPs(): CancelablePromise<Array<Rsvp>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/rsvp',
@@ -40,11 +42,12 @@ export class RsvpService {
     }
 
     /**
+     * Get a specific RSVP
      * @param id
      * @returns Rsvp
      * @throws ApiError
      */
-    public rsvpControllerFindOne(
+    public getRsvp(
         id: string,
     ): CancelablePromise<Rsvp> {
         return this.httpRequest.request({
@@ -57,12 +60,13 @@ export class RsvpService {
     }
 
     /**
+     * Edit a specific RSVP
      * @param id
      * @param requestBody
      * @returns Rsvp
      * @throws ApiError
      */
-    public rsvpControllerUpdate(
+    public editRsvp(
         id: string,
         requestBody: UpdateRsvpDto,
     ): CancelablePromise<Rsvp> {
@@ -78,11 +82,12 @@ export class RsvpService {
     }
 
     /**
+     * Delete an RSVP
      * @param id
      * @returns Rsvp
      * @throws ApiError
      */
-    public rsvpControllerRemove(
+    public deleteRsvp(
         id: string,
     ): CancelablePromise<Rsvp> {
         return this.httpRequest.request({

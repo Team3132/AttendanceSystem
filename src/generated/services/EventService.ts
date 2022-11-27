@@ -17,13 +17,14 @@ export class EventService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
+     * Get all events
      * @param from
      * @param to
      * @param take
      * @returns Event
      * @throws ApiError
      */
-    public eventControllerFindAll(
+    public getEvents(
         from?: string,
         to?: string,
         take?: number,
@@ -40,11 +41,12 @@ export class EventService {
     }
 
     /**
+     * Create a new event
      * @param requestBody
      * @returns Event
      * @throws ApiError
      */
-    public eventControllerCreate(
+    public createEvent(
         requestBody: CreateEventDto,
     ): CancelablePromise<Event> {
         return this.httpRequest.request({
@@ -56,11 +58,12 @@ export class EventService {
     }
 
     /**
+     * Get a specific event
      * @param id
      * @returns Event
      * @throws ApiError
      */
-    public eventControllerFindOne(
+    public getEvent(
         id: string,
     ): CancelablePromise<Event> {
         return this.httpRequest.request({
@@ -73,12 +76,13 @@ export class EventService {
     }
 
     /**
+     * Update an event
      * @param id
      * @param requestBody
      * @returns Event
      * @throws ApiError
      */
-    public eventControllerUpdate(
+    public updateEvent(
         id: string,
         requestBody: UpdateEventDto,
     ): CancelablePromise<Event> {
@@ -94,11 +98,12 @@ export class EventService {
     }
 
     /**
+     * Delete an event
      * @param id
      * @returns Event
      * @throws ApiError
      */
-    public eventControllerRemove(
+    public deleteEvent(
         id: string,
     ): CancelablePromise<Event> {
         return this.httpRequest.request({
@@ -111,11 +116,12 @@ export class EventService {
     }
 
     /**
+     * Get a user's rsvp status for an event
      * @param eventId
      * @returns Rsvp
      * @throws ApiError
      */
-    public eventControllerGetEventRsvp(
+    public getEventRsvp(
         eventId: string,
     ): CancelablePromise<Rsvp> {
         return this.httpRequest.request({
@@ -128,12 +134,13 @@ export class EventService {
     }
 
     /**
+     * Set a logged in user's RSVP status for an event
      * @param eventId
      * @param requestBody
      * @returns Rsvp
      * @throws ApiError
      */
-    public eventControllerSetEventRsvp(
+    public setEventRsvp(
         eventId: string,
         requestBody: UpdateOrCreateRSVP,
     ): CancelablePromise<Rsvp> {
@@ -149,11 +156,12 @@ export class EventService {
     }
 
     /**
+     * Update RSVP Status of Events in range
      * @param requestBody
      * @returns Rsvp
      * @throws ApiError
      */
-    public eventControllerSetEventsRsvp(
+    public updateEventRsvpRange(
         requestBody: UpdateRangeRSVP,
     ): CancelablePromise<Array<Rsvp>> {
         return this.httpRequest.request({
@@ -165,11 +173,12 @@ export class EventService {
     }
 
     /**
+     * Get an event's asociated RSVPs
      * @param eventId
      * @returns Rsvp
      * @throws ApiError
      */
-    public eventControllerGetEventRsvps(
+    public getEventRsvps(
         eventId: string,
     ): CancelablePromise<Array<Rsvp>> {
         return this.httpRequest.request({
@@ -182,12 +191,13 @@ export class EventService {
     }
 
     /**
+     * RSVP to an event by using a scancode
      * @param eventId
      * @param requestBody
      * @returns Rsvp
      * @throws ApiError
      */
-    public eventControllerScanin(
+    public scaninEvent(
         eventId: string,
         requestBody: ScaninDto,
     ): CancelablePromise<Rsvp> {

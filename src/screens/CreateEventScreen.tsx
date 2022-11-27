@@ -43,7 +43,7 @@ export const CreateEventScreen: React.FC = () => {
   const { mutateAsync: createEvent } = useCreateEvent();
 
   const onSubmit = async (data: CreateEventDto) => {
-    const event = await api.event.eventControllerCreate(data);
+    const event = await api.event.createEvent(data);
     navigate(`/event/${event.id}/view`);
 
     await createEvent(data);

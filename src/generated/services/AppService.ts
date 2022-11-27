@@ -9,10 +9,11 @@ export class AppService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
-     * @returns any
+     * A simple hello world just for you.
+     * @returns string
      * @throws ApiError
      */
-    public appControllerHelloWorld(): CancelablePromise<any> {
+    public helloWorld(): CancelablePromise<string> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/',

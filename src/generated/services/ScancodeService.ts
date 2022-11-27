@@ -12,11 +12,12 @@ export class ScancodeService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
+     * Get a scancode by code
      * @param requestBody
      * @returns Scancode
      * @throws ApiError
      */
-    public scancodeControllerCreate(
+    public getScancode(
         requestBody: CreateScancodeDto,
     ): CancelablePromise<Scancode> {
         return this.httpRequest.request({
@@ -28,10 +29,11 @@ export class ScancodeService {
     }
 
     /**
+     * Get a list of all scancodes for the signed in user
      * @returns Scancode
      * @throws ApiError
      */
-    public scancodeControllerFindAll(): CancelablePromise<Array<Scancode>> {
+    public getScancodes(): CancelablePromise<Array<Scancode>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/scancode',
@@ -39,11 +41,12 @@ export class ScancodeService {
     }
 
     /**
+     * Delete a scancode by code
      * @param id
      * @returns Scancode
      * @throws ApiError
      */
-    public scancodeControllerRemove(
+    public deleteScancode(
         id: string,
     ): CancelablePromise<Scancode> {
         return this.httpRequest.request({
