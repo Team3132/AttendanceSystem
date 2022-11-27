@@ -13,15 +13,14 @@ import {
   Stack,
   useClipboard,
 } from "@chakra-ui/react";
-import { ApiError, CreateScancodeDto, Scancode } from "@generated";
+import { CreateScancodeDto, Scancode } from "@generated";
 import { useCreateScancode, useDeleteScancode, useScancodes } from "@hooks";
 import { generateString } from "@utils";
 import { useForm } from "react-hook-form";
 
 export const ScancodeScreen: React.FC = () => {
   const { scancodes } = useScancodes();
-  const { mutateAsync: createScancode } = useCreateScancode();
-  const { mutateAsync: deleteScancode } = useDeleteScancode();
+  const createScancode = useCreateScancode();
   const {
     formState: { errors, isSubmitting },
     setValue,
@@ -31,25 +30,16 @@ export const ScancodeScreen: React.FC = () => {
     setError,
   } = useForm<CreateScancodeDto>();
 
-  const onSubmit = async (data: CreateScancodeDto) => {
-    try {
-      await createScancode(data);
-      reset();
-    } catch (error) {
-      if (error instanceof ApiError) {
-        const errorMessages = error.body["message"] as string[];
-        setError(
-          "code",
-          { message: errorMessages.join() },
-          { shouldFocus: true }
-        );
-      }
-    }
-  };
-
-  const onDelete = async (scancode: Scancode) => {
-    await deleteScancode(scancode.code);
-  };
+  const onSubmit = async (data: CreateScancodeDto) =>
+    new Promise<void>((res, rej) => {
+      createScancode
+        .mutateAsync(data)
+        .then((result) => {
+          reset();
+          res();
+        })
+        .catch(rej);
+    });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -58,16 +48,11 @@ export const ScancodeScreen: React.FC = () => {
       </Heading>
       <Divider my={6} />
       <Container>
-        {" "}
         <Stack>
           {scancodes?.map((scancode) => (
-            <ScancodeInput
-              key={scancode.code}
-              scancode={scancode}
-              onDelete={onDelete}
-            />
+            <ScancodeInput key={scancode.code} scancode={scancode} />
           ))}
-          <FormControl isInvalid={!!errors.code}>
+          <FormControl isInvalid={createScancode.isError}>
             <InputGroup size="md">
               <Input
                 pr="7rem"
@@ -79,7 +64,7 @@ export const ScancodeScreen: React.FC = () => {
                 <IconButton
                   h="1.75rem"
                   size="sm"
-                  // isLoading={isSubmitting}
+                  isLoading={createScancode.isLoading}
                   onClick={() => {
                     const randomString = generateString(6);
 
@@ -100,9 +85,7 @@ export const ScancodeScreen: React.FC = () => {
                 />
               </InputRightElement>
             </InputGroup>
-            {!!errors.code ? (
-              <FormErrorMessage>{errors.code.message}</FormErrorMessage>
-            ) : null}
+            <FormErrorMessage>{createScancode.error?.message}</FormErrorMessage>
           </FormControl>
         </Stack>
       </Container>
@@ -112,9 +95,13 @@ export const ScancodeScreen: React.FC = () => {
 
 const ScancodeInput: React.FC<{
   scancode: Scancode;
-  onDelete: (scancode: Scancode) => void;
-}> = ({ scancode, onDelete }) => {
+}> = ({ scancode }) => {
   const { hasCopied, onCopy } = useClipboard(scancode.code);
+
+  const deleteScancode = useDeleteScancode();
+
+  const onDelete = () => deleteScancode.mutateAsync(scancode.code);
+
   return (
     <InputGroup size="md" key={scancode.code}>
       <Input
@@ -135,7 +122,8 @@ const ScancodeInput: React.FC<{
           icon={<MinusIcon />}
           h="1.75rem"
           size="sm"
-          onClick={() => onDelete(scancode)}
+          isLoading={deleteScancode.isLoading}
+          onClick={onDelete}
         />
       </InputRightElement>
     </InputGroup>
