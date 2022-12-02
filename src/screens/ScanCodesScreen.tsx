@@ -13,7 +13,7 @@ import {
   Stack,
   useClipboard,
 } from "@chakra-ui/react";
-import { CreateScancodeDto, Scancode } from "@generated";
+import { ApiError, CreateScancodeDto, Scancode } from "@generated";
 import { useCreateScancode, useDeleteScancode, useScancodes } from "@hooks";
 import { generateString } from "@utils";
 import { useForm } from "react-hook-form";
@@ -30,16 +30,20 @@ export const ScancodeScreen: React.FC = () => {
     setError,
   } = useForm<CreateScancodeDto>();
 
-  const onSubmit = async (data: CreateScancodeDto) =>
-    new Promise<void>((res, rej) => {
-      createScancode
-        .mutateAsync(data)
-        .then((result) => {
-          reset();
-          res();
-        })
-        .catch(rej);
-    });
+  const onSubmit = async (data: CreateScancodeDto) => {
+    try {
+      await createScancode.mutateAsync(data);
+      reset();
+    } catch (error) {
+      if (error instanceof ApiError) {
+        console.log({ error });
+        setError("code", {
+          type: "custom",
+          message: error.body.message,
+        });
+      }
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -52,11 +56,11 @@ export const ScancodeScreen: React.FC = () => {
           {scancodes?.map((scancode) => (
             <ScancodeInput key={scancode.code} scancode={scancode} />
           ))}
-          <FormControl isInvalid={createScancode.isError}>
+          <FormControl isInvalid={!!errors.code}>
             <InputGroup size="md">
               <Input
                 pr="7rem"
-                {...register("code", {})}
+                {...register("code")}
                 placeholder={"Paste your code here..."}
                 id="newCode"
               />
@@ -64,7 +68,6 @@ export const ScancodeScreen: React.FC = () => {
                 <IconButton
                   h="1.75rem"
                   size="sm"
-                  isLoading={createScancode.isLoading}
                   onClick={() => {
                     const randomString = generateString(6);
 
@@ -85,7 +88,7 @@ export const ScancodeScreen: React.FC = () => {
                 />
               </InputRightElement>
             </InputGroup>
-            <FormErrorMessage>{createScancode.error?.message}</FormErrorMessage>
+            <FormErrorMessage>{errors.code?.message}</FormErrorMessage>
           </FormControl>
         </Stack>
       </Container>
