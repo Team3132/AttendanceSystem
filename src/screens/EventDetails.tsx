@@ -1,10 +1,4 @@
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Box,
   Center,
   Container,
   Divider,
@@ -48,7 +42,7 @@ export const EventDetailsScreen: React.FC = () => {
             </Heading>
             {/* Event type */}
             <StatGroup>
-              <Stat>
+              <Stat textAlign={"center"}>
                 <StatLabel>Type</StatLabel>
                 <StatNumber>{event?.type}</StatNumber>
                 <StatHelpText>The type of the event.</StatHelpText>
@@ -83,25 +77,8 @@ export const EventDetailsScreen: React.FC = () => {
                   : "No description"}
               </Text>
             </Stack>
-            <Accordion allowMultiple>
-              <AccordionItem>
-                {({ isExpanded }) => (
-                  <>
-                    <h2>
-                      <AccordionButton>
-                        <Box flex="1" textAlign="left">
-                          RSVPs
-                        </Box>
-                        <AccordionIcon />
-                      </AccordionButton>
-                    </h2>
-                    <AccordionPanel pb={4}>
-                      {isExpanded ? <RSVPList eventId={event?.id} /> : null}
-                    </AccordionPanel>
-                  </>
-                )}
-              </AccordionItem>
-            </Accordion>
+
+            <RSVPList eventId={event?.id} />
           </Stack>
         </Container>
       )}

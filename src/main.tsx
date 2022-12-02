@@ -38,9 +38,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                   <Route path="view" element={<EventDetailsScreen />} />
                   <Route path="scanin" element={<ScaninScreen />} />
                 </Route>
-                <Route path="calendar/agenda" element={<Agenda />} />
-                <Route path="calendar/custom" element={<CustomCalendar />} />
-                <Route element={<Calendar />} path="calendar" />
+                <Route path="calendar">
+                  <Route element={<Agenda />} index />
+                  <Route path="calendar" element={<Calendar />} />
+                  <Route path="custom" element={<CustomCalendar />} />
+                </Route>
                 <Route element={<ScancodeScreen />} path="codes" />
                 <Route element={<Profile />} path="profile" />
               </Route>

@@ -1,3 +1,4 @@
+import { Rsvp } from "@/generated";
 import {
   Table,
   TableCaption,
@@ -9,8 +10,48 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { useAuthStatus, useEventRSVPStatuses, useUser } from "@hooks";
+import { useEventRSVPStatuses, useUser } from "@hooks";
+import {
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  SortingState,
+  useReactTable,
+} from "@tanstack/react-table";
 import { DateTime } from "luxon";
+import React from "react";
+
+const columnHelper = createColumnHelper<Rsvp>();
+
+const columns = [
+  columnHelper.accessor("userId", {
+    id: "user",
+    header: "User",
+    footer: "User",
+    cell: (props) => {
+      return <Username userId={props.getValue()} />;
+    },
+  }),
+  columnHelper.accessor("status", {
+    id: "status",
+    header: "Status",
+    footer: "Status",
+    cell: (props) => {
+      return props.getValue().toString();
+    },
+  }),
+  columnHelper.accessor("updatedAt", {
+    id: "changed",
+    header: "Changed",
+    footer: "Changed",
+    cell: (props) => {
+      return DateTime.fromISO(props.getValue()).toLocaleString({
+        timeStyle: "short",
+        dateStyle: "short",
+      });
+    },
+  }),
+];
 
 export interface RSVPListProps {
   eventId?: string;
@@ -18,41 +59,66 @@ export interface RSVPListProps {
 
 export const RSVPList: React.FC<RSVPListProps> = ({ eventId }) => {
   const { rsvps } = useEventRSVPStatuses(eventId);
-  const { isAdmin } = useAuthStatus();
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const table = useReactTable({
+    data: rsvps ?? [],
+    state: {
+      sorting,
+    },
+    onSortingChange: setSorting,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
 
   return (
     <TableContainer>
       <Table variant="simple">
         <TableCaption>RSVP Status by Name</TableCaption>
         <Thead>
-          <Tr>
-            <Th>Name</Th>
-            <Th>Status</Th>
-            <Th>Changed</Th>
-          </Tr>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <Tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <Th
+                  key={header.id}
+                  onClick={header.column.getToggleSortingHandler()}
+                >
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                </Th>
+              ))}
+            </Tr>
+          ))}
         </Thead>
         <Tbody>
-          {rsvps?.map((rsvp) => (
-            <Tr key={rsvp.id}>
-              <Td>
-                <Username userId={rsvp.userId} />
-              </Td>
-              <Td>{rsvp.status.toString()}</Td>
-              <Td>
-                {DateTime.fromISO(rsvp.updatedAt).toLocaleString({
-                  timeStyle: "short",
-                  dateStyle: "short",
-                })}
-              </Td>
+          {table.getRowModel().rows.map((row) => (
+            <Tr key={row.id}>
+              {row.getVisibleCells().map((cell) => (
+                <Td key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </Td>
+              ))}
             </Tr>
           ))}
         </Tbody>
         <Tfoot>
-          <Tr>
-            <Th>Name</Th>
-            <Th>Status</Th>
-            <Th>Changed</Th>
-          </Tr>
+          {table.getFooterGroups().map((footerGroup) => (
+            <Tr key={footerGroup.id}>
+              {footerGroup.headers.map((header) => (
+                <Th key={header.id}>
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.footer,
+                        header.getContext()
+                      )}
+                </Th>
+              ))}
+            </Tr>
+          ))}
         </Tfoot>
       </Table>
     </TableContainer>

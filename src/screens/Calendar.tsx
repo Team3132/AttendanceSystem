@@ -28,10 +28,7 @@ export const CalendarScreen: React.FC = () => {
     start: Date;
     end: Date;
     resource: string;
-  }) => void = (event) =>
-    isAdmin
-      ? navigate(`/event/${event.id}/edit`)
-      : navigate(`/event/${event.id}/view`);
+  }) => void = (event) => navigate(`/event/${event.id}/edit`);
 
   const selectSlotHandler = (slotInfo: SlotInfo) =>
     navigate(
