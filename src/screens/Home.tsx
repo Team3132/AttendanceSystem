@@ -21,19 +21,22 @@ export const Home: React.FC = () => {
         This is where the students in the Thunder Down Under Robotics team can
         record their attendance.
       </Text>
-
-      {isAuthenticated ? (
-        <>
-          <Divider my={6} />
-          <Center>
-            <Button as={Link} to="/calendar">
-              View Calendar
-            </Button>
-          </Center>
-        </>
-      ) : null}
+      <Divider my={6} />
+      <Center>
+        {isAuthenticated ? (
+          <Button as={Link} to="/calendar">
+            View Calendar
+          </Button>
+        ) : (
+          <Button
+            as={"a"}
+            href={`${import.meta.env.VITE_BACKEND_URL}/auth/discord`}
+          >
+            Login
+          </Button>
+        )}
+      </Center>
     </Container>
   );
 };
-
 export default Home;

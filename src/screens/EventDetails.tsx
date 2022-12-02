@@ -1,9 +1,11 @@
 import {
   Button,
+  ButtonGroup,
   Center,
   Container,
   Divider,
   Heading,
+  IconButton,
   Spinner,
   Stack,
   Stat,
@@ -17,7 +19,7 @@ import {
 import { RSVPList } from "@components";
 import { useEvent, useIsAdmin } from "@hooks";
 import { DateTime } from "luxon";
-import { FaArrowRight } from "react-icons/fa";
+import { FaArrowRight, FaCamera } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 
 export const EventDetailsScreen: React.FC = () => {
@@ -36,17 +38,27 @@ export const EventDetailsScreen: React.FC = () => {
             <Heading textAlign={"center"} mt={6} w="100%" position={"relative"}>
               {event?.title}
               {isAdmin && (
-                <Button
-                  rightIcon={<FaArrowRight />}
-                  position="absolute"
+                <ButtonGroup
                   right={0}
                   bottom="auto"
                   top="auto"
-                  as={Link}
-                  to={`/event/${event.id}/edit`}
+                  position="absolute"
                 >
-                  Edit
-                </Button>
+                  <IconButton
+                    aria-label="scancodes"
+                    as={Link}
+                    to={`/event/${event.id}/scanin`}
+                  >
+                    <FaCamera />
+                  </IconButton>
+                  <Button
+                    rightIcon={<FaArrowRight />}
+                    as={Link}
+                    to={`/event/${event.id}/edit`}
+                  >
+                    Edit
+                  </Button>
+                </ButtonGroup>
               )}
             </Heading>
             {/* Event type */}
