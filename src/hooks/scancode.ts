@@ -12,15 +12,14 @@ export const useScancodes = () => {
   //   error: scancodeError,
   //   mutate,
   // } = useSWR<Scancode[]>(isAuthenticated ? `/scancode` : null);
-  const { data: scancodeData, error: scancodeError } = useQuery({
+  const { data: scancodeData, ...rest } = useQuery({
     queryFn: () => api.user.getMeScancodes(),
     queryKey: ["Scancodes"],
   });
 
   return {
     scancodes: scancodeData,
-    isLoading: !scancodeError && !scancodeData,
-    isError: scancodeError,
+    ...rest,
   };
 };
 

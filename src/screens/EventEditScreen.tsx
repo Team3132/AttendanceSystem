@@ -26,7 +26,8 @@ import pick from "lodash.pick";
 import { DateTime } from "luxon";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
+import { FaArrowRight } from "react-icons/fa";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 export const EventEditScreen: React.FC = () => {
   const { eventId } = useParams();
@@ -69,7 +70,7 @@ export const EventEditScreen: React.FC = () => {
     }
   };
 
-  const { mutateAsync: deleteEvent } = useDeleteEvent();
+  const deleteEvent = useDeleteEvent();
 
   return isLoading || !event ? (
     <Center>
@@ -77,30 +78,30 @@ export const EventEditScreen: React.FC = () => {
     </Center>
   ) : (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Heading textAlign={"center"} mt={6}>
+      <Heading
+        textAlign={"center"}
+        mt={6}
+        position="relative"
+        right={0}
+        bottom={"auto"}
+        top={"auto"}
+      >
         Editing: {event?.title}
+        <Button
+          rightIcon={<FaArrowRight />}
+          position="absolute"
+          right={0}
+          bottom="auto"
+          top="auto"
+          as={Link}
+          to={`/event/${event.id}/view`}
+        >
+          View
+        </Button>
       </Heading>
       <Divider my={6} />
       <Center>
-        <ButtonGroup>
-          <Button
-            onClick={async () => {
-              if (event.id) {
-                try {
-                  await deleteEvent(event.id);
-
-                  navigate(`/calendar`);
-                  // await deleteEvent(event.id);
-                } catch (error) {
-                  console.log(`Deleted Event ${event.id}`);
-                }
-              }
-            }}
-            colorScheme="red"
-          >
-            Delete
-          </Button>
-        </ButtonGroup>
+        <ButtonGroup></ButtonGroup>
       </Center>
       <Divider my={6} />
       <Stack spacing={5}>
@@ -231,14 +232,34 @@ export const EventEditScreen: React.FC = () => {
       </Stack>
 
       {/* Submit */}
-      <Button
-        variant="solid"
-        colorScheme={"blue"}
-        type="submit"
-        isLoading={isSubmitting}
-      >
-        Submit
-      </Button>
+      <ButtonGroup>
+        <Button
+          onClick={async () => {
+            if (event.id) {
+              try {
+                await deleteEvent.mutateAsync(event.id);
+
+                navigate(`/calendar`);
+                // await deleteEvent(event.id);
+              } catch (error) {
+                console.log(`Deleted Event ${event.id}`);
+              }
+            }
+          }}
+          isLoading={deleteEvent.isLoading}
+          colorScheme="red"
+        >
+          Delete
+        </Button>
+        <Button
+          variant="solid"
+          colorScheme={"blue"}
+          type="submit"
+          isLoading={isSubmitting}
+        >
+          Submit
+        </Button>
+      </ButtonGroup>
     </form>
   );
 };

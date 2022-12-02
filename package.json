@@ -27,7 +27,7 @@
     "react-big-calendar": "^1.5.2",
     "react-dom": "^18.0.0",
     "react-hook-form": "^7.39.6",
-    "react-icons": "^4.6.0",
+    "react-icons": "^4.7.1",
     "react-router-dom": "6",
     "validator": "^13.7.0"
   },

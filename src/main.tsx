@@ -23,11 +23,11 @@ export const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>
-  <ChakraProvider>
-    <ErrorBoundary>
-      <SWToast />
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
+  <BrowserRouter>
+    <ChakraProvider>
+      <ErrorBoundary>
+        <SWToast />
+        <QueryClientProvider client={queryClient}>
           <Routes>
             <Route path="/" element={<Layout />}>
               {/* Public Pages */}
@@ -58,10 +58,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               </Route>
             </Route>
           </Routes>
-        </BrowserRouter>
-        <ReactQueryDevtools />
-      </QueryClientProvider>
-    </ErrorBoundary>
-  </ChakraProvider>
+
+          <ReactQueryDevtools />
+        </QueryClientProvider>
+      </ErrorBoundary>
+    </ChakraProvider>
+  </BrowserRouter>
   // </React.StrictMode>
 );

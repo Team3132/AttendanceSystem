@@ -1,4 +1,5 @@
 import {
+  Button,
   Center,
   Container,
   Divider,
@@ -14,14 +15,15 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { RSVPList } from "@components";
-import { useEvent } from "@hooks";
+import { useEvent, useIsAdmin } from "@hooks";
 import { DateTime } from "luxon";
-import { useParams } from "react-router-dom";
+import { FaArrowRight } from "react-icons/fa";
+import { Link, useParams } from "react-router-dom";
 
 export const EventDetailsScreen: React.FC = () => {
   const { eventId } = useParams();
   const { event, isLoading, isError } = useEvent(eventId);
-
+  const { isAdmin } = useIsAdmin();
   return (
     <>
       {isLoading || !event ? (
@@ -31,20 +33,34 @@ export const EventDetailsScreen: React.FC = () => {
       ) : (
         <Container maxW="container.md">
           <Stack spacing={5} divider={<Divider />}>
-            <Heading textAlign={"center"} mt={6}>
+            <Heading textAlign={"center"} mt={6} w="100%" position={"relative"}>
               {event?.title}
-              <br />
-              {event?.allDay ? (
-                <Tag colorScheme={"blue"} size="md">
-                  All Day
-                </Tag>
-              ) : null}
+              {isAdmin && (
+                <Button
+                  rightIcon={<FaArrowRight />}
+                  position="absolute"
+                  right={0}
+                  bottom="auto"
+                  top="auto"
+                  as={Link}
+                  to={`/event/${event.id}/edit`}
+                >
+                  Edit
+                </Button>
+              )}
             </Heading>
             {/* Event type */}
             <StatGroup>
               <Stat textAlign={"center"}>
                 <StatLabel>Type</StatLabel>
-                <StatNumber>{event?.type}</StatNumber>
+                <StatNumber>
+                  {event?.type}{" "}
+                  {event?.allDay ? (
+                    <Tag colorScheme={"blue"} size="md">
+                      All Day
+                    </Tag>
+                  ) : null}
+                </StatNumber>
                 <StatHelpText>The type of the event.</StatHelpText>
               </Stat>
             </StatGroup>

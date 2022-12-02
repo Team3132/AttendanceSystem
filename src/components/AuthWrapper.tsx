@@ -1,7 +1,7 @@
 import { Spinner, useToast } from "@chakra-ui/react";
-import { useAuthStatus } from "@hooks";
+import { useAuthStatus, useScancodes } from "@hooks";
 import { useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Link, Navigate, Outlet, useNavigate } from "react-router-dom";
 export interface AuthWrapperProps {
   // children: any;
   adminOnly?: boolean;
@@ -13,19 +13,47 @@ export const AuthWrapper: React.FC<AuthWrapperProps> = ({
   to = "/",
   adminOnly = false,
 }) => {
-  const { isAuthenticated, isLoading, isAdmin } = useAuthStatus();
+  const authStatusQuery = useAuthStatus();
+  const scancodeQuery = useScancodes();
+  const toast = useToast();
 
-  return isLoading ? (
-    <Spinner />
-  ) : isAuthenticated ? (
-    adminOnly && !isAdmin ? (
-      <AdminRedirect />
-    ) : (
-      <Outlet />
-    )
-  ) : (
-    <AuthRedirect to={to} />
-  );
+  if (!authStatusQuery.isSuccess) {
+    return <Spinner />;
+  }
+
+  if (!authStatusQuery.isAuthenticated) {
+    return <Navigate to="/" />;
+  }
+
+  if (!authStatusQuery.isAdmin && adminOnly) {
+    return <Navigate to="/calendar" />;
+  }
+
+  if (!scancodeQuery.isSuccess) {
+    return <Spinner />;
+  }
+
+  if (!scancodeQuery.scancodes?.length) {
+    const showToast =
+      !toast.isActive("scancode") &&
+      !window.localStorage.getItem("scancodeToastClosed");
+    if (showToast) {
+      toast({
+        id: "scancode",
+        status: "warning",
+        description: (
+          <>Please add a scancode {<Link to="/codes">here</Link>}.</>
+        ),
+        duration: 5000,
+        isClosable: true,
+        onCloseComplete: () => {
+          window.localStorage.setItem("scancodeToastClosed", "true");
+        },
+      });
+    }
+  }
+
+  return <Outlet />;
 };
 
 interface AdminRedirectProps {

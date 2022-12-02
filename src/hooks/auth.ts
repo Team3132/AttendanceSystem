@@ -3,14 +3,13 @@ import { useQuery } from "@tanstack/react-query";
 import { ApiClient, AuthService, AuthStatusDto, User } from "../generated";
 
 export const useAuthStatus = () => {
-  const { data, error } = useQuery({
+  const { data, ...rest } = useQuery({
     queryFn: () => api.auth.authStatus(),
     queryKey: ["AuthStatus"],
   });
   return {
     ...data,
-    isLoading: !error && !data,
-    isError: error,
+    ...rest,
   };
 };
 
