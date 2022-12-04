@@ -17,13 +17,7 @@ export const Profile = loadable(() => import("./Profile"), {
 export const EventEditScreen = loadable(() => import("./EventEditScreen"), {
   fallback: <Skeleton />,
 });
-export const EventDetailsScreen = loadable(() => import("./EventDetails"), {
-  fallback: <Skeleton />,
-});
 export const ScancodeScreen = loadable(() => import("./ScanCodesScreen"), {
-  fallback: <Skeleton />,
-});
-export const ScaninScreen = loadable(() => import("./ScaninScreen"), {
   fallback: <Skeleton />,
 });
 export const CreateEvent = loadable(() => import("./CreateEventScreen"), {

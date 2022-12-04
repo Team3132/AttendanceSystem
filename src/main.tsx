@@ -5,18 +5,17 @@ import {
   Calendar,
   CreateEvent,
   ErrorBoundary,
-  EventDetailsScreen,
   EventEditScreen,
   Home,
   Layout,
   Profile,
   ScancodeScreen,
-  ScaninScreen,
 } from "@screens";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Event from "./screens/Event";
 
 export const queryClient = new QueryClient();
 
@@ -33,10 +32,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               <Route index element={<Home />} />
               {/* Authenticated-only pages */}
               <Route element={<AuthWrapper />}>
-                <Route path="event/:eventId">
-                  <Route path="view" element={<EventDetailsScreen />} />
-                  <Route path="scanin" element={<ScaninScreen />} />
-                </Route>
+                <Route path="event/:eventId" element={<Event />} />
                 <Route path="calendar">
                   <Route element={<Agenda />} index />
                   <Route path="calendar" element={<Calendar />} />

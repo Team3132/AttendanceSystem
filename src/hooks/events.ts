@@ -32,19 +32,11 @@ export const useEvents = (take?: number, from?: DateTime, to?: DateTime) => {
 };
 
 export const useEvent = (eventId?: string) => {
-  const { isAuthenticated } = useAuthStatus();
-
-  const { data: eventData, error: userError } = useQuery({
+  return useQuery({
     queryFn: () => api.event.getEvent(eventId!),
-    enabled: !!eventId && isAuthenticated,
+    enabled: !!eventId,
     queryKey: ["Event", eventId],
   });
-
-  return {
-    event: eventData,
-    isLoading: !userError && !eventData,
-    isError: userError,
-  };
 };
 
 export const useUpdateEvent = () => {
