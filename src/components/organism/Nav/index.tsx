@@ -40,7 +40,6 @@ const navItems = (isAuthenticated?: boolean, isAdmin?: boolean): NavItem[] => [
           subitems: [
             { url: "/calendar", label: "Agenda" },
             { url: "/calendar/calendar", label: "Calendar" },
-            { url: "/calendar/custom", label: "Custom" },
           ],
         },
       ]

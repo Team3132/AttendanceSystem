@@ -1,14 +1,14 @@
 import { UserList } from "@/components";
+import RoleList from "@/components/organism/RoleList";
 import { useUsers } from "@/hooks";
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Box,
   Divider,
   Heading,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
 } from "@chakra-ui/react";
 
 export const AdminScreen: React.FC = () => {
@@ -19,44 +19,22 @@ export const AdminScreen: React.FC = () => {
         Admin
       </Heading>
       <Divider my={6} />
-      <Accordion allowMultiple>
-        <AccordionItem>
-          {({ isExpanded }) => (
-            <>
-              <h2>
-                <AccordionButton>
-                  <Box flex="1" textAlign="left">
-                    User List
-                  </Box>
-                  <AccordionIcon />
-                </AccordionButton>
-              </h2>
-              <AccordionPanel pb={4}>
-                {isExpanded ? (
-                  <UserList users={users} isLoading={isLoading} />
-                ) : null}
-              </AccordionPanel>
-            </>
-          )}
-        </AccordionItem>
-        {/* <AccordionItem>
-          {({ isExpanded }) => (
-            <>
-              <h2>
-                <AccordionButton>
-                  <Box flex="1" textAlign="left">
-                    Attendance
-                  </Box>
-                  <AccordionIcon />
-                </AccordionButton>
-              </h2>
-              <AccordionPanel pb={4}>
-                {isExpanded ? <AttendedList eventId={event?.id} /> : null}
-              </AccordionPanel>
-            </>
-          )}
-        </AccordionItem> */}
-      </Accordion>
+      <Tabs isLazy>
+        <TabList>
+          <Tab>User List</Tab>
+
+          <Tab>Role List</Tab>
+        </TabList>
+
+        <TabPanels>
+          <TabPanel>
+            <UserList users={users} isLoading={isLoading} />
+          </TabPanel>
+          <TabPanel>
+            <RoleList />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </>
   );
 };

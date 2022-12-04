@@ -38,7 +38,6 @@ export const UserList: React.FC<UserListProps> = ({
           <Tr>
             <Th>First Name</Th>
             <Th>Last Name</Th>
-            <Th>Email</Th>
             <Th>Profile</Th>
           </Tr>
         </Thead>

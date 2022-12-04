@@ -4,7 +4,6 @@ import {
   Agenda,
   Calendar,
   CreateEvent,
-  CustomCalendar,
   ErrorBoundary,
   EventDetailsScreen,
   EventEditScreen,
@@ -41,7 +40,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 <Route path="calendar">
                   <Route element={<Agenda />} index />
                   <Route path="calendar" element={<Calendar />} />
-                  <Route path="custom" element={<CustomCalendar />} />
+                  {/* <Route path="custom" element={<CustomCalendar />} /> */}
                 </Route>
                 <Route element={<ScancodeScreen />} path="codes" />
                 <Route element={<Profile />} path="profile" />
