@@ -13,11 +13,11 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import TotpToken from "./TotpToken";
 
-interface EventCheckinProps {
+interface AdminCheckinProps {
   event: EventResponseType;
 }
 
-export default function EventCheckin(props: EventCheckinProps) {
+export default function AdminCheckin(props: AdminCheckinProps) {
   const { event } = props;
 
   const navigate = useNavigate();

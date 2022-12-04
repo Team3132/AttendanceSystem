@@ -11,7 +11,7 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import EventCheckin from "./EventCheckIn";
+import AdminCheckin from "./AdminCheckin";
 import EventDetails from "./EventDetails";
 
 export default function Event() {
@@ -19,7 +19,7 @@ export default function Event() {
   const event = useEvent(eventId);
   const auth = useAuthStatus();
 
-  if (!event.isSuccess) {
+  if (!event.isSuccess || !auth.isSuccess) {
     return <Spinner />;
   }
 
@@ -32,7 +32,7 @@ export default function Event() {
         <TabList justifyContent={"center"}>
           <Tab>Details</Tab>
           <Tab>Attendance</Tab>
-          <Tab isDisabled={!auth?.isAdmin}>Check-in</Tab>
+          <Tab>Check-in</Tab>
         </TabList>
 
         <TabPanels>
@@ -48,7 +48,7 @@ export default function Event() {
           </TabPanel>
           <TabPanel>
             <Container maxW="container.md">
-              <EventCheckin event={event.data} />
+              {auth.isAdmin ? <AdminCheckin event={event.data} /> : null}
             </Container>
           </TabPanel>
         </TabPanels>
