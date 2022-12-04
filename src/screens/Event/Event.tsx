@@ -1,7 +1,6 @@
 import { RSVPList } from "@/components";
 import { useAuthStatus, useEvent } from "@/hooks";
 import {
-  Box,
   Container,
   Heading,
   Spinner,
@@ -44,16 +43,12 @@ export default function Event() {
           </TabPanel>
           <TabPanel>
             <Container maxW="container.md">
-              <Box borderRadius={10} borderWidth={1} p={5}>
-                <RSVPList eventId={event.data.id} />
-              </Box>
+              <RSVPList eventId={event.data.id} />
             </Container>
           </TabPanel>
           <TabPanel>
             <Container maxW="container.md">
-              <Box borderRadius={10} borderWidth={1} p={5}>
-                <EventCheckin event={event.data} />
-              </Box>
+              <EventCheckin event={event.data} />
             </Container>
           </TabPanel>
         </TabPanels>

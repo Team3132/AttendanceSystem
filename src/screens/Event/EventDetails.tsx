@@ -1,6 +1,7 @@
 import { EventResponseType } from "@/generated";
 import {
   Box,
+  Divider,
   Heading,
   Stack,
   Stat,
@@ -26,8 +27,8 @@ export default function EventDetails(props: EventDetailsProps) {
     .shiftTo("hours", "minutes")
     .toObject();
   return (
-    <Stack>
-      <StatGroup textAlign={"center"} borderRadius={10} borderWidth={1} p={5}>
+    <Stack divider={<Divider />} spacing={5} my={5}>
+      <StatGroup>
         <Stat>
           <StatLabel>Start DateTime</StatLabel>
           <StatNumber>
@@ -46,8 +47,8 @@ export default function EventDetails(props: EventDetailsProps) {
           </StatNumber>
         </Stat>
       </StatGroup>
-      <StatGroup textAlign={"center"} borderRadius={10} borderWidth={1} p={5}>
-        <Stat textAlign={"center"}>
+      <StatGroup>
+        <Stat>
           <StatLabel>Type</StatLabel>
           <StatNumber>
             {event?.type}{" "}
@@ -70,7 +71,7 @@ export default function EventDetails(props: EventDetailsProps) {
       {/* <StatGroup>
         
       </StatGroup> */}
-      <Box borderRadius={10} borderWidth={1} p={5}>
+      <Box>
         <Heading size="md">Description</Heading>
         <Text>
           {event.description.length > 0 ? event.description : "No description"}
