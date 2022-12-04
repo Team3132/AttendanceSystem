@@ -1,3 +1,4 @@
+import { useAuthStatus } from "@/features/auth";
 import {
   Button,
   Center,
@@ -6,7 +7,6 @@ import {
   Heading,
   Text,
 } from "@chakra-ui/react";
-import { useAuthStatus } from "@hooks";
 import { Link } from "react-router-dom";
 
 export const Home: React.FC = () => {
