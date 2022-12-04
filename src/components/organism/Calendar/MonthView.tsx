@@ -1,4 +1,4 @@
-import { Event } from "@/generated";
+import { EventResponseType } from "@/generated";
 import {
   Box,
   Button,
@@ -79,10 +79,10 @@ const MonthView: React.FC = () => {
   );
 };
 
-const WeekRow: React.FC<{ startDate: DateTime; events: Event[] }> = ({
-  startDate,
-  events,
-}) => {
+const WeekRow: React.FC<{
+  startDate: DateTime;
+  events: EventResponseType[];
+}> = ({ startDate, events }) => {
   const beginningDate = startDate.startOf("week");
   const [days, setDays] = useState<DateTime[]>([]);
   useEffect(() => {
@@ -105,10 +105,10 @@ const WeekRow: React.FC<{ startDate: DateTime; events: Event[] }> = ({
   );
 };
 
-const DayColumn: React.FC<{ initialDate: DateTime; events: Event[] }> = ({
-  initialDate,
-  events,
-}) => {
+const DayColumn: React.FC<{
+  initialDate: DateTime;
+  events: EventResponseType[];
+}> = ({ initialDate, events }) => {
   const { colorMode } = useColorMode();
   const todayColour = colorMode === "light" ? "blue.200" : "blue.700";
   const disabledColour = colorMode === "light" ? "gray.300" : "gray.600";

@@ -2,7 +2,7 @@ import { useState } from "react";
 import {
   ApiError,
   CreateEventDto,
-  Event,
+  EventResponseType,
   Rsvp,
   ScaninDto,
   UpdateEventDto,
@@ -48,7 +48,11 @@ export const useEvent = (eventId?: string) => {
 };
 
 export const useUpdateEvent = () => {
-  return useMutation<Event, ApiError, { id: string; data: UpdateEventDto }>({
+  return useMutation<
+    EventResponseType,
+    ApiError,
+    { id: string; data: UpdateEventDto }
+  >({
     mutationFn: ({ id, data }) => api.event.updateEvent(id, data),
     onSuccess: (data, { id }) => {
       queryClient.setQueryData(["Event", id], data);
@@ -100,7 +104,7 @@ export const useUpdateEventsRSVPStatus = () => {
 };
 
 export const useDeleteEvent = () => {
-  return useMutation<Event, ApiError, string>({
+  return useMutation<EventResponseType, ApiError, string>({
     mutationFn: (id) => api.event.deleteEvent(id),
     onSuccess: (data, id) => {
       queryClient.invalidateQueries(["Events"]);
@@ -110,7 +114,7 @@ export const useDeleteEvent = () => {
 };
 
 export const useCreateEvent = () => {
-  return useMutation<Event, ApiError, CreateEventDto>({
+  return useMutation<EventResponseType, ApiError, CreateEventDto>({
     mutationFn: (data) => api.event.createEvent(data),
     onSuccess: (data) => {
       queryClient.invalidateQueries(["Events"]);

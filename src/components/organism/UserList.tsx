@@ -1,3 +1,4 @@
+import { User } from "@/generated";
 import {
   IconButton,
   Skeleton,
@@ -22,7 +23,7 @@ interface PartialUser {
 }
 
 interface UserListProps {
-  users: PartialUser[] | undefined;
+  users: User[] | undefined;
   isLoading: boolean;
 }
 
@@ -62,7 +63,6 @@ export const UserList: React.FC<UserListProps> = ({
               <Tr key={user.id}>
                 <Td>{user.firstName}</Td>
                 <Td>{user.lastName}</Td>
-                <Td>{user.email}</Td>
                 <Td>
                   <IconButton
                     aria-label={`${user.firstName} ${user.lastName} profile`}

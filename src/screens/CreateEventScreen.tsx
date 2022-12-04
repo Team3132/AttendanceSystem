@@ -13,7 +13,7 @@ import {
   Switch,
   Textarea,
 } from "@chakra-ui/react";
-import { CreateEventDto, Event } from "@generated";
+import { CreateEventDto, EventResponseType } from "@generated";
 import { DateTime } from "luxon";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -73,12 +73,12 @@ export const CreateEventScreen: React.FC = () => {
           <FormLabel>Event Type</FormLabel>
           <Select
             placeholder="Select event type"
-            defaultValue={Event.type.REGULAR}
+            defaultValue={EventResponseType.type.REGULAR}
             {...register("type")}
           >
-            <option value={Event.type.REGULAR}>Regular</option>
-            <option value={Event.type.SOCIAL}>Social</option>
-            <option value={Event.type.OUTREACH}>Outreach</option>
+            <option value={EventResponseType.type.REGULAR}>Regular</option>
+            <option value={EventResponseType.type.SOCIAL}>Social</option>
+            <option value={EventResponseType.type.OUTREACH}>Outreach</option>
           </Select>
         </FormControl>
 

@@ -1,4 +1,4 @@
-import { Event } from "@/generated";
+import { EventResponseType } from "@/generated";
 import { DateTime } from "luxon";
 import React, { useContext, useState } from "react";
 
@@ -11,9 +11,9 @@ enum View {
 export interface CalendarProviderProps {
   children?: React.ReactNode;
   initialDate?: DateTime;
-  events?: Event[];
+  events?: EventResponseType[];
   onRange?: (start: DateTime, end: DateTime) => void;
-  onEventClicked?: (event: Event) => void;
+  onEventClicked?: (event: EventResponseType) => void;
   onEmptyClicked?: (start: DateTime, end: DateTime) => void;
   initialView?: View;
 }
@@ -21,9 +21,9 @@ export interface CalendarProviderProps {
 export interface CalendarContextType {
   date: [DateTime, React.Dispatch<React.SetStateAction<DateTime>>];
   onRange: (start: DateTime, end: DateTime) => void;
-  onEventClicked: (event: Event) => void;
+  onEventClicked: (event: EventResponseType) => void;
   onEmptyClicked: (start: DateTime, end: DateTime) => void;
-  events: Event[];
+  events: EventResponseType[];
   view: [View, React.Dispatch<React.SetStateAction<View>>];
 }
 

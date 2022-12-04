@@ -1,4 +1,4 @@
-import { Event } from "@/generated";
+import { EventResponseType } from "@/generated";
 import { Button, ButtonGroup, Center, Flex, Stack } from "@chakra-ui/react";
 import loadable from "@loadable/component";
 import { DateTime, DateTimeUnit } from "luxon";
@@ -22,7 +22,7 @@ enum View {
 }
 
 export const filteredEvents = (
-  events: Event[] = [],
+  events: EventResponseType[] = [],
   date: DateTime,
   unit: DateTimeUnit
 ) =>
@@ -35,10 +35,10 @@ export const filteredEvents = (
 type RootCalProps = {
   initialDate?: DateTime;
   onRange: (start: DateTime, end: DateTime) => void;
-  events?: Event[];
+  events?: EventResponseType[];
   initialView?: View;
   onEmptyClicked?: (start: DateTime, end: DateTime) => void;
-  onEventClicked?: (event: Event) => void;
+  onEventClicked?: (event: EventResponseType) => void;
 };
 
 const DayView = loadable(() => import("./DayView"));

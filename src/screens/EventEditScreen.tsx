@@ -15,7 +15,7 @@ import {
   Switch,
   Textarea,
 } from "@chakra-ui/react";
-import { Event, UpdateEventDto } from "@generated";
+import { EventResponseType, UpdateEventDto } from "@generated";
 import {
   useAuthStatus,
   useDeleteEvent,
@@ -132,12 +132,12 @@ export const EventEditScreen: React.FC = () => {
           <FormLabel>Event Type</FormLabel>
           <Select
             placeholder="Select event type"
-            defaultValue={Event.type.REGULAR}
+            defaultValue={EventResponseType.type.REGULAR}
             {...register("type")}
           >
-            <option value={Event.type.REGULAR}>Regular</option>
-            <option value={Event.type.SOCIAL}>Social</option>
-            <option value={Event.type.OUTREACH}>Outreach</option>
+            <option value={EventResponseType.type.REGULAR}>Regular</option>
+            <option value={EventResponseType.type.SOCIAL}>Social</option>
+            <option value={EventResponseType.type.OUTREACH}>Outreach</option>
           </Select>
         </FormControl>
 
