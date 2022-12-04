@@ -1,3 +1,4 @@
+import { RSVPList } from "@/components";
 import { EventResponseType, ScaninDto } from "@/generated";
 import { useEventToken, useScanin } from "@/hooks";
 import {
@@ -66,9 +67,7 @@ export default function EventCheckin(props: EventCheckinProps) {
         <TotpToken secret={eventSecret.data.secret} />
       </StatGroup>
 
-      {/* <Stack>
-        <RSVPList eventId={event.id} />
-      </Stack> */}
+      <RSVPList eventId={event.id} />
     </>
   );
 }
