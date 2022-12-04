@@ -48,6 +48,7 @@ export const ScanIn: React.FC = () => {
             <Input
               {...register("code")}
               placeholder={"Enter your code here..."}
+              autoFocus
             />
             <InputRightElement width="5rem">
               <Button

@@ -36,11 +36,12 @@ export const ScancodeScreen: React.FC = () => {
       reset();
     } catch (error) {
       if (error instanceof ApiError) {
-        console.log({ error });
         setError("code", {
           type: "custom",
           message: error.body.message,
         });
+      } else {
+        throw error;
       }
     }
   };
@@ -63,6 +64,7 @@ export const ScancodeScreen: React.FC = () => {
                 {...register("code")}
                 placeholder={"Paste your code here..."}
                 id="newCode"
+                autoFocus
               />
               <InputRightElement width="3.5rem" mr="2.5rem">
                 <IconButton
