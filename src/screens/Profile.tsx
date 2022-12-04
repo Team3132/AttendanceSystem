@@ -1,3 +1,4 @@
+import { useRole } from "@/hooks/bot";
 import {
   Button,
   Center,
@@ -10,17 +11,14 @@ import {
   HStack,
   Input,
   Stack,
+  Tag,
+  TagProps,
   useClipboard,
+  Wrap,
 } from "@chakra-ui/react";
 import { UserAvatar } from "@components";
 import { UpdateUserDto } from "@generated";
-import {
-  useAuthStatus,
-  userAvatar,
-  useUpdateMe,
-  useUpdateUser,
-  useUser,
-} from "@hooks";
+import { useAuthStatus, userAvatar, useUpdateUser, useUser } from "@hooks";
 import loadable from "@loadable/component";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -33,8 +31,9 @@ const OutreachReportLoadable = loadable(
 export const ProfileScreen: React.FC = () => {
   const { userId } = useParams();
   const { user } = useUser(userId);
-  const { isAdmin } = useAuthStatus();
+  const { roles } = useAuthStatus();
   const { avatarId } = userAvatar(userId);
+  const userIdent = userId ?? "me";
   // const { mutate: globalMutate } = useSWRConfig();
   const {
     register,
@@ -55,16 +54,12 @@ export const ProfileScreen: React.FC = () => {
     }
   }, [user]);
 
-  const { mutateAsync: mutateMe } = useUpdateMe();
   const { mutateAsync: mutateUser } = useUpdateUser();
 
-  const onSubmit = async (data: UpdateUserDto) => {
+  const onSubmit = (data: UpdateUserDto) => {
     const userIdent = userId ?? "me";
-    if (userIdent === "me") {
-      await mutateMe(data);
-    } else {
-      await mutateUser({ id: userIdent, user: data });
-    }
+
+    return mutateUser({ id: userIdent, user: data });
   };
 
   const calendarUrl = `https://api.team3132.com/calendar?secret=${
@@ -72,20 +67,8 @@ export const ProfileScreen: React.FC = () => {
   }`;
 
   const { hasCopied, onCopy } = useClipboard(calendarUrl);
-
   return (
     <Container>
-      {/* <Center> */}
-      {/* <Image
-          width={500}
-          height={500}
-          src={
-            user && avatarId
-              ? `https://cdn.discordapp.com/avatars/${user?.id}/${avatarId}.png`
-              : undefined
-          }
-          alt="Profile Image"
-        /> */}
       <Center>
         <UserAvatar size={"2xl"} userId={userId} />
       </Center>
@@ -93,16 +76,19 @@ export const ProfileScreen: React.FC = () => {
       <Heading textAlign={"center"}>
         {user?.firstName} {user?.lastName}
       </Heading>
+      <Wrap justify={"center"} marginY={5}>
+        {roles?.map((role) => (
+          <RoleTag key={role} roleId={role} colorScheme={"blue"}>
+            {role}
+          </RoleTag>
+        ))}
+      </Wrap>
 
       <Divider my={6} />
-      {isAdmin && (
-        <>
-          <OutreachReportLoadable userId={userId} />
-          <Divider my={6} />
-        </>
-      )}
 
-      {/* </Center> */}
+      <OutreachReportLoadable userId={userId} />
+      <Divider my={6} />
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack>
           <HStack>
@@ -144,10 +130,18 @@ export const ProfileScreen: React.FC = () => {
             Save
           </Button>
         </Stack>
-        {/* </> */}
       </form>
     </Container>
   );
 };
+
+interface RoleTagProps extends TagProps {
+  roleId: string;
+}
+
+function RoleTag({ roleId, ...rest }: RoleTagProps) {
+  const { data: role } = useRole(roleId);
+  return <Tag {...rest}>{role?.name}</Tag>;
+}
 
 export default ProfileScreen;
