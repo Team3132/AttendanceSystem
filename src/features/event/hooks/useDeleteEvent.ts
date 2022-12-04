@@ -9,6 +9,7 @@ export default function useDeleteEvent() {
     mutationFn: (id) => api.event.deleteEvent(id),
     onSuccess: (data, id) => {
       queryClient.invalidateQueries(eventKeys.all);
+      queryClient.removeQueries(eventKeys.detail(id));
     },
   });
 }
