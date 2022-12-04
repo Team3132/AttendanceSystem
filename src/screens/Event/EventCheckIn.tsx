@@ -3,7 +3,6 @@ import { EventResponseType, ScaninDto } from "@/generated";
 import { useScanin } from "@/hooks";
 import {
   Button,
-  Container,
   Input,
   InputGroup,
   InputRightElement,
@@ -35,7 +34,7 @@ export default function EventCheckin(props: EventCheckinProps) {
     reset();
   };
   return (
-    <Container maxW={"container.md"}>
+    <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <InputGroup>
           <Input
@@ -59,6 +58,6 @@ export default function EventCheckin(props: EventCheckinProps) {
       <Stack>
         <RSVPList eventId={event.id} />
       </Stack>
-    </Container>
+    </>
   );
 }
