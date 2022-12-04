@@ -2,7 +2,6 @@ import { UserList } from "@/components";
 import RoleList from "@/components/organism/RoleList";
 import { useUsers } from "@/hooks";
 import {
-  Divider,
   Heading,
   Tab,
   TabList,
@@ -15,12 +14,11 @@ export const AdminScreen: React.FC = () => {
   const { users, isLoading } = useUsers();
   return (
     <>
-      <Heading textAlign={"center"} mt={6}>
+      <Heading textAlign={"center"} my={6}>
         Admin
       </Heading>
-      <Divider my={6} />
       <Tabs isLazy>
-        <TabList>
+        <TabList justifyContent={"center"}>
           <Tab>User List</Tab>
 
           <Tab>Role List</Tab>
