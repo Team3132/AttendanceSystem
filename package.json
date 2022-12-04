@@ -6,7 +6,7 @@
     "dev": "vite --host",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "generate": "yarn openapi -i https://api.team3132.com/api-json -o ./src/generated --name ApiClient",
+    "generate": "yarn openapi -i http://localhost:3000/api-json -o ./src/generated --name ApiClient",
     "format": "prettier --write \"./src/**/*.{ts,tsx}\""
   },
   "dependencies": {

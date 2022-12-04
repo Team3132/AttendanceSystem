@@ -32,7 +32,6 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 export const EventEditScreen: React.FC = () => {
   const { eventId } = useParams();
   const { event, isLoading, isError } = useEvent(eventId);
-  const { roles } = useAuthStatus();
   const navigate = useNavigate();
   // const { mutate: globalMutate } = useSWRConfig();
   const { isAdmin } = useAuthStatus();

@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { UserAvatar } from "@components";
 import { UpdateUserDto } from "@generated";
-import { useAuthStatus, userAvatar, useUpdateUser, useUser } from "@hooks";
+import { userAvatar, useUpdateUser, useUser } from "@hooks";
 import loadable from "@loadable/component";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -31,7 +31,6 @@ const OutreachReportLoadable = loadable(
 export const ProfileScreen: React.FC = () => {
   const { userId } = useParams();
   const { user } = useUser(userId);
-  const { roles } = useAuthStatus();
   const { avatarId } = userAvatar(userId);
   const userIdent = userId ?? "me";
   // const { mutate: globalMutate } = useSWRConfig();
@@ -77,7 +76,7 @@ export const ProfileScreen: React.FC = () => {
         {user?.firstName} {user?.lastName}
       </Heading>
       <Wrap justify={"center"} marginY={5}>
-        {roles?.map((role) => (
+        {user?.roles?.map((role) => (
           <RoleTag key={role} roleId={role} colorScheme={"blue"}>
             {role}
           </RoleTag>

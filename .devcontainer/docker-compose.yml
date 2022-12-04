@@ -40,7 +40,7 @@ services:
     depends_on:
       - postgres
       - redis
-    image: ghcr.io/team3132/tduattendance:1.0.16
+    image: ghcr.io/team3132/tduattendance:1.0.18
     env_file: .env
     networks:
       attendance_frontend_devcontainer:

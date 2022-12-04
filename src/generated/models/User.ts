@@ -9,4 +9,5 @@ export type User = {
   createdAt: string;
   updatedAt: string;
   calendarSecret: string;
+  roles: Array<string>;
 };
