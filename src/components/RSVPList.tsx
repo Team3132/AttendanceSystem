@@ -18,7 +18,6 @@ import {
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
-import { DateTime } from "luxon";
 import React from "react";
 
 const columnHelper = createColumnHelper<Rsvp>();
@@ -38,17 +37,6 @@ const columns = [
     footer: "Status",
     cell: (props) => {
       return props.getValue().toString();
-    },
-  }),
-  columnHelper.accessor("updatedAt", {
-    id: "changed",
-    header: "Changed",
-    footer: "Changed",
-    cell: (props) => {
-      return DateTime.fromISO(props.getValue()).toLocaleString({
-        timeStyle: "short",
-        dateStyle: "short",
-      });
     },
   }),
 ];

@@ -5,23 +5,20 @@ import { ApiError, AuthStatusDto, UpdateUserDto, User } from "../generated";
 import { useAuthStatus } from "../hooks";
 
 export const useUser = (userId: string = "me") => {
-  const { isAuthenticated } = useAuthStatus();
-
   // const {
   //   data: userData,
   //   error: userError,
   //   mutate,
   // } = useSWR<User>(isAuthenticated && userId ? `/user/${userId}` : null);
 
-  const { data: userData, error: userError } = useQuery({
+  const { data: userData, ...rest } = useQuery({
     queryFn: () => api.user.getUser(userId),
     queryKey: ["User", userId],
   });
 
   return {
     user: userData,
-    isLoading: !userError && !userData,
-    isError: userError,
+    ...rest,
   };
 };
 
