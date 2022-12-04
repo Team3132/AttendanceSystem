@@ -1,5 +1,5 @@
 import { useRoles } from "@/hooks/bot";
-import { Spinner, Stack, Tag } from "@chakra-ui/react";
+import { Spinner, Tag, Wrap } from "@chakra-ui/react";
 
 export default function RoleList() {
   const roles = useRoles();
@@ -7,10 +7,10 @@ export default function RoleList() {
   if (!roles.isSuccess) return <Spinner />;
 
   return (
-    <Stack>
+    <Wrap justify={"center"}>
       {roles.data.map((role) => (
-        <Tag>{role.name}</Tag>
+        <Tag colorScheme={"blue"}>{role.name}</Tag>
       ))}
-    </Stack>
+    </Wrap>
   );
 }
