@@ -140,3 +140,10 @@ export const useScanin = () => {
     }
   );
 };
+
+export const useEventToken = (eventId: string) => {
+  return useQuery({
+    queryFn: () => api.event.getEventSecret(eventId!),
+    queryKey: ["EventToken", eventId],
+  });
+};

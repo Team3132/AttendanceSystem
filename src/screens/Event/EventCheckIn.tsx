@@ -1,15 +1,16 @@
-import { RSVPList } from "@/components";
 import { EventResponseType, ScaninDto } from "@/generated";
-import { useScanin } from "@/hooks";
+import { useEventToken, useScanin } from "@/hooks";
 import {
   Button,
   Input,
   InputGroup,
   InputRightElement,
-  Stack,
+  Spinner,
+  StatGroup,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import TotpToken from "./TotpToken";
 
 interface EventCheckinProps {
   event: EventResponseType;
@@ -33,6 +34,13 @@ export default function EventCheckin(props: EventCheckinProps) {
 
     reset();
   };
+
+  const eventSecret = useEventToken(event.id);
+
+  if (!eventSecret.isSuccess) {
+    return <Spinner />;
+  }
+
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -54,10 +62,13 @@ export default function EventCheckin(props: EventCheckinProps) {
           </InputRightElement>
         </InputGroup>
       </form>
+      <StatGroup p={5} textAlign="center">
+        <TotpToken secret={eventSecret.data.secret} />
+      </StatGroup>
 
-      <Stack>
+      {/* <Stack>
         <RSVPList eventId={event.id} />
-      </Stack>
+      </Stack> */}
     </>
   );
 }
