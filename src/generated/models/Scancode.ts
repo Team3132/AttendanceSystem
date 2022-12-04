@@ -3,9 +3,8 @@
 /* eslint-disable */
 
 export type Scancode = {
-    code: string;
-    createdAt: string;
-    updatedAt: string;
-    userId: string;
+  code: string;
+  createdAt: string;
+  updatedAt: string;
+  userId: string;
 };
-

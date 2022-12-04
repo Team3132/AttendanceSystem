@@ -3,6 +3,5 @@
 /* eslint-disable */
 
 export type ScaninDto = {
-    code: string;
+  code: string;
 };
-

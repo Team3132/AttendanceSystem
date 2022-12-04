@@ -3,8 +3,6 @@
 /* eslint-disable */
 
 export type UpdateUserDto = {
-    firstName?: string;
-    lastName?: string;
-    email?: string;
+  firstName?: string;
+  lastName?: string;
 };
-

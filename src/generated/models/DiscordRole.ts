@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type CreateScancodeDto = {
-  code: string;
+export type DiscordRole = {
+  name: string;
+  id: string;
 };

@@ -3,7 +3,6 @@
 /* eslint-disable */
 
 export type OutreachReport = {
-    eventCount: number;
-    hourCount: number;
+  eventCount: number;
+  hourCount: number;
 };
-

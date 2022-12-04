@@ -3,18 +3,14 @@
 /* eslint-disable */
 
 export type UpdateOrCreateRSVP = {
-    status: UpdateOrCreateRSVP.status;
+  status: UpdateOrCreateRSVP.status;
 };
 
 export namespace UpdateOrCreateRSVP {
-
-    export enum status {
-        YES = 'YES',
-        NO = 'NO',
-        MAYBE = 'MAYBE',
-        ATTENDED = 'ATTENDED',
-    }
-
-
+  export enum status {
+    YES = "YES",
+    NO = "NO",
+    MAYBE = "MAYBE",
+    ATTENDED = "ATTENDED",
+  }
 }
-

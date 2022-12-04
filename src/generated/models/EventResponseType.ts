@@ -2,16 +2,17 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type CreateEventDto = {
-  description?: string;
+export type EventResponseType = {
+  id: string;
+  description: string;
   title: string;
   startDate: string;
   endDate: string;
-  allDay?: boolean;
-  type: CreateEventDto.type;
+  allDay: boolean;
+  type: EventResponseType.type;
 };
 
-export namespace CreateEventDto {
+export namespace EventResponseType {
   export enum type {
     OUTREACH = "Outreach",
     REGULAR = "Regular",
