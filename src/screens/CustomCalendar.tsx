@@ -35,7 +35,7 @@ export const CustomCalendar: React.FC = () => {
               .toISOString()}&endDate=${end.toJSDate().toISOString()}`
           )
         }
-        onEventClicked={(event) => navigate(`/event/${event.id}/view`)}
+        onEventClicked={(event) => navigate(`/event/${event.id}`)}
         events={apiEvents}
       />
       {/* </Center>

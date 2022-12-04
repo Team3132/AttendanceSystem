@@ -143,7 +143,7 @@ export const Agenda: React.FC<AgendaProps> = ({
                             fontSize="xl"
                             fontWeight={"semibold"}
                             as={Link}
-                            to={`/event/${event.id}/view`}
+                            to={`/event/${event.id}`}
                           >
                             {event.title}
                           </Text>

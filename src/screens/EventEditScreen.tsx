@@ -93,7 +93,7 @@ export const EventEditScreen: React.FC = () => {
           bottom="auto"
           top="auto"
           as={Link}
-          to={`/event/${event.id}/view`}
+          to={`/event/${event.id}`}
         >
           View
         </Button>
