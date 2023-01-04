@@ -1,6 +1,14 @@
 import { useAttend } from "@/features/rsvp";
 import { EventResponseType } from "@/generated";
-import { Button, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
+import {
+  Button,
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  Input,
+  InputGroup,
+  InputRightElement
+} from "@chakra-ui/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 interface UserCheckinProps {
@@ -19,7 +27,7 @@ export default function UserCheckin(props: UserCheckinProps) {
   const {
     formState: { isSubmitting },
     handleSubmit,
-    register
+    register,
   } = useForm<FormFields>();
 
   const onSubmit: SubmitHandler<FormFields> = ({ token }) =>
@@ -27,14 +35,28 @@ export default function UserCheckin(props: UserCheckinProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <InputGroup>
-        <Input placeholder={"Enter the checkin code here..."} autoFocus {...register("token", {required: "A code is required!"})}/>
-        <InputRightElement width="5rem">
-          <Button type="submit" isLoading={isSubmitting} h="1.75rem" size="sm">
-            Submit
-          </Button>
-        </InputRightElement>
-      </InputGroup>
+      <FormControl>
+      <FormLabel>Event Code</FormLabel>
+        <InputGroup>
+     
+          <Input
+            placeholder={"Enter the checkin code here..."}
+            autoFocus
+            {...register("token", { required: "A code is required!" })}
+          />
+          <InputRightElement width="5rem">
+            <Button
+              type="submit"
+              isLoading={isSubmitting}
+              h="1.75rem"
+              size="sm"
+            >
+              Submit
+            </Button>
+          </InputRightElement>
+        </InputGroup>
+        <FormHelperText>{tokenCheckin.error?.body.message}</FormHelperText>
+      </FormControl>
     </form>
   );
 }
