@@ -12,6 +12,5 @@ export namespace CreateRsvpDto {
     YES = "YES",
     NO = "NO",
     MAYBE = "MAYBE",
-    ATTENDED = "ATTENDED",
   }
 }

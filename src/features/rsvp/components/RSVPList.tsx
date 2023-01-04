@@ -40,6 +40,12 @@ const columns = [
       return props.getValue().toString();
     },
   }),
+  columnHelper.accessor("attended", {
+    id: "attended",
+    header: "Attended",
+    footer: "Attended",
+    cell: (props) => (props.getValue() ? "Yes" : "No"),
+  }),
 ];
 
 export interface RSVPListProps {

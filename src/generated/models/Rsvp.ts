@@ -9,6 +9,7 @@ export type Rsvp = {
   status: Rsvp.status;
   createdAt: string;
   updatedAt: string;
+  attended: boolean;
 };
 
 export namespace Rsvp {
@@ -16,6 +17,5 @@ export namespace Rsvp {
     YES = "YES",
     NO = "NO",
     MAYBE = "MAYBE",
-    ATTENDED = "ATTENDED",
   }
 }
