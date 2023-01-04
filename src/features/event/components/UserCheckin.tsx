@@ -19,6 +19,7 @@ export default function UserCheckin(props: UserCheckinProps) {
   const {
     formState: { isSubmitting },
     handleSubmit,
+    register
   } = useForm<FormFields>();
 
   const onSubmit: SubmitHandler<FormFields> = ({ token }) =>
@@ -27,7 +28,7 @@ export default function UserCheckin(props: UserCheckinProps) {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <InputGroup>
-        <Input placeholder={"Enter the checkin code here..."} autoFocus />
+        <Input placeholder={"Enter the checkin code here..."} autoFocus {...register("token", {required: "A code is required!"})}/>
         <InputRightElement width="5rem">
           <Button type="submit" isLoading={isSubmitting} h="1.75rem" size="sm">
             Submit
