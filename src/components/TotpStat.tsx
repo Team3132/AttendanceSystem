@@ -15,7 +15,7 @@ export default function TotpStat({ secret, ...rest }: TotpStatProps) {
   const { timeRemaining, timeSpent, token, isLoading } = useTotp(secret);
   return (
     <Stat {...rest} fontFamily={"monospace"}>
-      <StatLabel>Token</StatLabel>
+      <StatLabel>Event Code</StatLabel>
       <StatNumber>{!token.length ? "Loading..." : token}</StatNumber>
       <StatHelpText>{timeRemaining} Seconds until expiry</StatHelpText>
     </Stat>

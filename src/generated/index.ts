@@ -21,6 +21,7 @@ export type { OutreachReport } from "./models/OutreachReport";
 export { Rsvp } from "./models/Rsvp";
 export type { Scancode } from "./models/Scancode";
 export type { ScaninDto } from "./models/ScaninDto";
+export type { TokenCheckinDto } from "./models/TokenCheckinDto";
 export { UpdateEventDto } from "./models/UpdateEventDto";
 export { UpdateOrCreateRSVP } from "./models/UpdateOrCreateRSVP";
 export { UpdateRangeRSVP } from "./models/UpdateRangeRSVP";

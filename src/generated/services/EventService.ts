@@ -6,6 +6,7 @@ import type { EventResponseType } from "../models/EventResponseType";
 import type { EventSecret } from "../models/EventSecret";
 import type { Rsvp } from "../models/Rsvp";
 import type { ScaninDto } from "../models/ScaninDto";
+import type { TokenCheckinDto } from "../models/TokenCheckinDto";
 import type { UpdateEventDto } from "../models/UpdateEventDto";
 import type { UpdateOrCreateRSVP } from "../models/UpdateOrCreateRSVP";
 import type { UpdateRangeRSVP } from "../models/UpdateRangeRSVP";
@@ -152,21 +153,23 @@ export class EventService {
 
   /**
    * Callback for a valid code (client input)
-   * @param code
    * @param eventId
+   * @param requestBody
    * @returns Rsvp
    * @throws ApiError
    */
-  public scanintoEvent(code: string, eventId: string): CancelablePromise<Rsvp> {
+  public scanintoEvent(
+    eventId: string,
+    requestBody: TokenCheckinDto
+  ): CancelablePromise<Rsvp> {
     return this.httpRequest.request({
       method: "POST",
       url: "/event/{eventId}/token/callback",
       path: {
         eventId: eventId,
       },
-      query: {
-        code: code,
-      },
+      body: requestBody,
+      mediaType: "application/json",
     });
   }
 

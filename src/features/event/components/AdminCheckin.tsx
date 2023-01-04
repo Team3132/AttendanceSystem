@@ -1,7 +1,6 @@
-import { RSVPList } from "@/features/rsvp";
 import { ScancodeInput } from "@/features/scancode";
 import { EventResponseType } from "@/generated";
-import { StatGroup } from "@chakra-ui/react";
+import { Stack, StatGroup } from "@chakra-ui/react";
 import EventTotpStat from "./EventTotpStat";
 
 interface AdminCheckinProps {
@@ -12,13 +11,13 @@ export default function AdminCheckin(props: AdminCheckinProps) {
   const { event } = props;
 
   return (
-    <>
-      <ScancodeInput eventId={event.id} />
+    <Stack alignContent={"center"}>
       <StatGroup p={5} textAlign="center">
         <EventTotpStat eventId={event.id} />
       </StatGroup>
+      <ScancodeInput eventId={event.id} />
 
-      <RSVPList eventId={event.id} />
-    </>
+      {/* <RSVPList eventId={event.id} /> */}
+    </Stack>
   );
 }

@@ -13,6 +13,7 @@ import {
 import { useParams } from "react-router-dom";
 import AdminCheckin from "../components/AdminCheckin";
 import EventDetails from "../components/EventDetails";
+import UserCheckin from "../components/UserCheckin";
 import useEvent from "../hooks/useEvent";
 
 export default function EventPage() {
@@ -33,7 +34,8 @@ export default function EventPage() {
         <TabList justifyContent={"center"}>
           <Tab>Details</Tab>
           <Tab>Attendance</Tab>
-          <Tab>Check-in</Tab>
+          <Tab>User Check-in</Tab>
+          <Tab>Event Check-in</Tab>
         </TabList>
 
         <TabPanels>
@@ -49,7 +51,14 @@ export default function EventPage() {
           </TabPanel>
           <TabPanel>
             <Container maxW="container.md">
-              {auth.isAdmin ? <AdminCheckin event={event.data} /> : null}
+              {/* User Checkin, i.e entering event code */}
+              <UserCheckin event={event.data} />
+            </Container>
+          </TabPanel>
+          <TabPanel>
+            <Container maxW="container.md">
+              {auth.isAdmin ? <AdminCheckin event={event.data} /> : null}{" "}
+              {/** Used to display checkin qr and code entering */}
             </Container>
           </TabPanel>
         </TabPanels>
