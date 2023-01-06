@@ -4,7 +4,7 @@ import { rsvpKeys } from "./keys";
 
 export default function useEventRSVPStatus(eventId: string) {
   return useQuery({
-    queryKey: rsvpKeys.event(eventId),
+    queryKey: rsvpKeys.one(eventId),
     queryFn: () => api.event.getEventRsvp(eventId),
   });
 }
