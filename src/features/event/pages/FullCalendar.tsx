@@ -76,7 +76,7 @@ export default function Calendar() {
         //     })) ?? [],
         //   ]}
         // dateClick={() => }
-        eventClick={(event => navigate(`/event/${event.event.id}/edit`))}
+        eventClick={(event => navigate(`/event/${event.event.id}`))}
         datesSet={(dates) => setRange([DateTime.fromJSDate(dates.start), DateTime.fromJSDate(dates.end)])}
       />
       {/* <CalendarWithLocalizer
