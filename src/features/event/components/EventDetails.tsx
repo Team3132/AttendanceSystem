@@ -1,6 +1,7 @@
 import { EventResponseType } from "@/generated";
 import {
   Box,
+  Center,
   Divider,
   Heading,
   Stack,
@@ -10,7 +11,7 @@ import {
   StatLabel,
   StatNumber,
   Tag,
-  Text,
+  Text
 } from "@chakra-ui/react";
 import { DateTime, Duration } from "luxon";
 
@@ -28,21 +29,41 @@ export default function EventDetails(props: EventDetailsProps) {
     .toObject();
   return (
     <Stack divider={<Divider />} spacing={5} my={5}>
+      {event?.allDay ? (
+        <Center>
+          <Tag colorScheme={"blue"} size="md">
+            All Day
+          </Tag>{" "}
+        </Center>
+      ) : null}
+
       <StatGroup>
         <Stat>
-          <StatLabel>Start DateTime</StatLabel>
+          <StatLabel>Start</StatLabel>
           <StatNumber>
             {DateTime.fromISO(event.startDate).toLocaleString(
-              DateTime.DATETIME_MED
+              event.allDay
+                ? {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  }
+                : DateTime.DATETIME_MED
             )}
           </StatNumber>
         </Stat>
 
         <Stat>
-          <StatLabel>End DateTime</StatLabel>
+          <StatLabel>End</StatLabel>
           <StatNumber>
             {DateTime.fromISO(event.endDate).toLocaleString(
-              DateTime.DATETIME_MED
+              event.allDay
+                ? {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  }
+                : DateTime.DATETIME_MED
             )}
           </StatNumber>
         </Stat>
@@ -50,14 +71,7 @@ export default function EventDetails(props: EventDetailsProps) {
       <StatGroup>
         <Stat>
           <StatLabel>Type</StatLabel>
-          <StatNumber>
-            {event?.type}{" "}
-            {event?.allDay ? (
-              <Tag colorScheme={"blue"} size="md">
-                All Day
-              </Tag>
-            ) : null}
-          </StatNumber>
+          <StatNumber>{event?.type}</StatNumber>
           <StatHelpText>The type of the event.</StatHelpText>
         </Stat>
         <Stat>
