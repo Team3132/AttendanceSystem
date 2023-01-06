@@ -1,5 +1,5 @@
+import { useLogout } from "@/features/auth";
 import { UserAvatar } from "@/features/user";
-import api from "@/services/api";
 import { ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
 import {
   Button,
@@ -62,6 +62,7 @@ interface NavProps {
 export default function Navigation({ isAuthenticated, isAdmin }: NavProps) {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const isMobile = useBreakpointValue<boolean>({ base: true, md: false });
+  const logout = useLogout()
   const menuItems = navItems(isAuthenticated, isAdmin);
   useEffect(() => {
     if (!isMobile) {
@@ -89,7 +90,7 @@ export default function Navigation({ isAuthenticated, isAdmin }: NavProps) {
         )}
 
         <Spacer />
-        <Menu>
+        {isAuthenticated && <Menu>
           <MenuButton
             leftIcon={<UserAvatar size="sm" />}
             as={Button}
@@ -104,9 +105,10 @@ export default function Navigation({ isAuthenticated, isAdmin }: NavProps) {
             <MenuItem as={Link} to="/codes">
               Codes
             </MenuItem>
-            <MenuItem onClick={() => api.auth.signout()}>Logout</MenuItem>
+            <MenuItem as="a" href={`${import.meta.env.VITE_BACKEND_URL}/auth/logout`}>Logout</MenuItem>
           </MenuList>
-        </Menu>
+        </Menu>}
+        
       </Flex>
     </Container>
   );
