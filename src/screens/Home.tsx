@@ -24,8 +24,8 @@ export const Home: React.FC = () => {
       <Divider my={6} />
       <Center>
         {isAuthenticated ? (
-          <Button as={Link} to="/agenda">
-            View Agenda
+          <Button as={Link} to="/calendar">
+            View Calendar
           </Button>
         ) : (
           <Button

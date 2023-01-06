@@ -37,10 +37,7 @@ const navItems = (isAuthenticated?: boolean, isAdmin?: boolean): NavItem[] => [
         {
           label: "Calendar",
           icon: <Icon as={MdCalendarToday} />,
-          subitems: [
-            { url: "/agenda", label: "Agenda" },
-            { url: "/calendar", label: "Calendar" },
-          ],
+          url: "/calendar",
         },
       ]
     : []),

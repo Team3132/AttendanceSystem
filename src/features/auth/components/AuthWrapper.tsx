@@ -24,7 +24,7 @@ export default function AuthWrapper({
   }
 
   if (!authStatusQuery.isAdmin && adminOnly) {
-    return <Navigate to="/agenda" />;
+    return <Navigate to="/calendar" />;
   }
 
   return <Outlet />;

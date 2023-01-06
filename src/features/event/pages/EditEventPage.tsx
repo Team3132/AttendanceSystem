@@ -236,7 +236,7 @@ export default function EditEventPage() {
               try {
                 await deleteEvent.mutateAsync(event.id);
 
-                navigate(`/agenda`);
+                navigate(`/calendar`);
                 // await deleteEvent(event.id);
               } catch (error) {
                 console.log(`Deleted Event ${event.id}`);
