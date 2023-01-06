@@ -5,13 +5,14 @@ import {
   Divider,
   FormControl,
   FormErrorMessage,
+  FormHelperText,
   Heading,
   IconButton,
   Input,
   InputGroup,
   InputRightElement,
   Stack,
-  useClipboard,
+  useClipboard
 } from "@chakra-ui/react";
 import { ApiError, CreateScancodeDto, Scancode } from "@generated";
 import { generateString } from "@utils";
@@ -92,7 +93,8 @@ export const ScancodeScreen: React.FC = () => {
                 />
               </InputRightElement>
             </InputGroup>
-            <FormErrorMessage>{errors.code?.message}</FormErrorMessage>
+            {errors.code ? <FormErrorMessage>{errors.code?.message}</FormErrorMessage> : <FormHelperText>A code from using the card scanner or something you'll remember. It can't be the same as someone else's code.</FormHelperText>}
+            
           </FormControl>
         </Stack>
       </Container>
