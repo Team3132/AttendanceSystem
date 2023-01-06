@@ -8,9 +8,9 @@ import {
   Tfoot,
   Th,
   Thead,
-  Tr,
+  Tr
 } from "@chakra-ui/react";
-import { FaUserCircle } from "react-icons/fa";
+import { FaCode, FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import useUsers from "../hooks/useUsers";
 
@@ -25,6 +25,7 @@ export default function UserList() {
             <Th>First Name</Th>
             <Th>Last Name</Th>
             <Th>Profile</Th>
+            <Th>Codes</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -42,6 +43,9 @@ export default function UserList() {
               <Td>
                 <Skeleton>Profile</Skeleton>
               </Td>
+              <Td>
+                <Skeleton>Codes</Skeleton>
+              </Td>
             </Tr>
           ) : (
             users.data.map((user) => (
@@ -56,6 +60,14 @@ export default function UserList() {
                     icon={<FaUserCircle />}
                   />
                 </Td>
+                <Td>
+                  <IconButton
+                    aria-label={`${user.firstName} ${user.lastName} profile`}
+                    as={Link}
+                    to={`/codes/${user.id}`}
+                    icon={<FaCode />}
+                  />
+                </Td>
               </Tr>
             ))
           )}
@@ -65,6 +77,7 @@ export default function UserList() {
             <Th>First Name</Th>
             <Th>Last Name</Th>
             <Th>Email</Th>
+            <Th>Codes</Th>
           </Tr>
         </Tfoot>
       </Table>
