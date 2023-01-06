@@ -14,7 +14,7 @@ import {
   Spinner,
   Stack,
   Switch,
-  Textarea,
+  Textarea
 } from "@chakra-ui/react";
 import { EventResponseType, UpdateEventDto } from "@generated";
 import pick from "lodash.pick";
@@ -236,7 +236,7 @@ export default function EditEventPage() {
               try {
                 await deleteEvent.mutateAsync(event.id);
 
-                navigate(`/calendar`);
+                navigate(`/agenda`);
                 // await deleteEvent(event.id);
               } catch (error) {
                 console.log(`Deleted Event ${event.id}`);

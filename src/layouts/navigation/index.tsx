@@ -7,7 +7,7 @@ import {
   IconButton,
   Spacer,
   useBreakpointValue,
-  useDisclosure,
+  useDisclosure
 } from "@chakra-ui/react";
 import loadable from "@loadable/component";
 import { ReactElement, useEffect } from "react";
@@ -15,7 +15,7 @@ import {
   MdAccountCircle,
   MdCalendarToday,
   MdHome,
-  MdLock,
+  MdLock
 } from "react-icons/md";
 
 export interface NavItem {
@@ -38,8 +38,8 @@ const navItems = (isAuthenticated?: boolean, isAdmin?: boolean): NavItem[] => [
           label: "Calendar",
           icon: <Icon as={MdCalendarToday} />,
           subitems: [
-            { url: "/calendar", label: "Agenda" },
-            { url: "/calendar/calendar", label: "Calendar" },
+            { url: "/agenda", label: "Agenda" },
+            { url: "/calendar", label: "Calendar" },
           ],
         },
       ]
