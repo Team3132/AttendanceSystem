@@ -9,7 +9,7 @@ import {
   Select,
   Stack,
   Switch,
-  Textarea,
+  Textarea
 } from "@chakra-ui/react";
 import { CreateEventDto, EventResponseType } from "@generated";
 import { DateTime } from "luxon";
@@ -20,6 +20,8 @@ import useCreateEvent from "../hooks/useCreateEvent";
 const CreateEventScreen: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const startQuery = searchParams.get("startDate");
+  const endQuery = searchParams.get("endDate");
   const {
     register,
     handleSubmit,
@@ -31,10 +33,12 @@ const CreateEventScreen: React.FC = () => {
   } = useForm<CreateEventDto>({
     defaultValues: {
       title: "Event Title",
-      startDate:
-        searchParams.get("startDate") ?? new Date(Date.now()).toISOString(),
-      endDate:
-        searchParams.get("endDate") ?? new Date(Date.now()).toISOString(),
+      startDate: startQuery
+        ? new Date(startQuery).toISOString()
+        : new Date().toISOString(),
+      endDate: endQuery
+        ? new Date(endQuery).toISOString()
+        : new Date().toISOString(),
       allDay: !!searchParams.get("allDay") ?? false,
     },
   });
