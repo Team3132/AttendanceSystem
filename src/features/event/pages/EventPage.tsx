@@ -1,16 +1,17 @@
 import { useAuthStatus } from "@/features/auth";
 import { RSVPStatus } from "@/features/rsvp";
 import {
-  Container,
+  Button, Container,
   Heading,
   Spinner,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
-  Tabs,
+  Tabs
 } from "@chakra-ui/react";
-import { useParams } from "react-router-dom";
+import { FaArrowRight } from "react-icons/fa";
+import { Link, useParams } from "react-router-dom";
 import AdminCheckin from "../components/AdminCheckin";
 import EventDetails from "../components/EventDetails";
 import UserCheckin from "../components/UserCheckin";
@@ -27,8 +28,27 @@ export default function EventPage() {
 
   return (
     <>
-      <Heading textAlign={"center"} my={6}>
+      
+      <Heading
+        textAlign={"center"}
+        mt={6}
+        position="relative"
+        right={0}
+        bottom={"auto"}
+        top={"auto"}
+      >
         {event.data.title}
+        {auth.isAdmin && <Button
+          rightIcon={<FaArrowRight />}
+          position="absolute"
+          right={0}
+          bottom="auto"
+          top="auto"
+          as={Link}
+          to={`/event/${eventId}/edit`}
+        >
+          Edit
+        </Button>}
       </Heading>
       <Tabs isLazy>
         <TabList justifyContent={"center"}>
