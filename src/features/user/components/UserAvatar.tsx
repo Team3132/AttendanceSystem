@@ -2,9 +2,9 @@ import { Avatar, AvatarProps } from "@chakra-ui/react";
 import useAvatar from "../hooks/useAvatar";
 import useUser from "../hooks/useUser";
 
-export type UserAvatarProps = {
+export interface UserAvatarProps extends Omit<AvatarProps, "src" | "name"> {
   userId?: string;
-} & Omit<Omit<AvatarProps, "src">, "name">;
+}
 
 export const UserAvatar: React.FC<UserAvatarProps> = ({ userId, ...rest }) => {
   const { data: avatarId } = useAvatar(userId);

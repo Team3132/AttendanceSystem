@@ -1,22 +1,24 @@
 import { UserAvatar } from "@/features/user";
-import { HamburgerIcon } from "@chakra-ui/icons";
+import api from "@/services/api";
+import { ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
 import {
+  Button,
   Container,
   Flex,
   Icon,
   IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Spacer,
   useBreakpointValue,
   useDisclosure
 } from "@chakra-ui/react";
 import loadable from "@loadable/component";
 import { ReactElement, useEffect } from "react";
-import {
-  MdAccountCircle,
-  MdCalendarToday,
-  MdHome,
-  MdLock
-} from "react-icons/md";
+import { MdCalendarToday, MdHome, MdLock } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 export interface NavItem {
   url?: string;
@@ -41,27 +43,6 @@ const navItems = (isAuthenticated?: boolean, isAdmin?: boolean): NavItem[] => [
         },
       ]
     : []),
-
-  isAuthenticated
-    ? {
-        label: "Profile",
-        icon: <Icon as={MdAccountCircle} />,
-        subitems: [
-          { url: "/profile", label: "Your Profile" },
-          { url: "/codes", label: "Codes" },
-          {
-            url: `${import.meta.env.VITE_BACKEND_URL}/auth/discord`,
-            label: "Logout",
-            external: true,
-          },
-        ],
-      }
-    : {
-        icon: <Icon as={MdAccountCircle} />,
-        label: "Login",
-        url: `${import.meta.env.VITE_BACKEND_URL}/auth/discord`,
-        external: true,
-      },
   ...(isAdmin
     ? [
         {
@@ -108,7 +89,24 @@ export default function Navigation({ isAuthenticated, isAdmin }: NavProps) {
         )}
 
         <Spacer />
-        <UserAvatar size="sm" />
+        <Menu>
+          <MenuButton
+            leftIcon={<UserAvatar size="sm" />}
+            as={Button}
+            rightIcon={<ChevronDownIcon />}
+          >
+            Profile
+          </MenuButton>
+          <MenuList>
+            <MenuItem as={Link} to="/profile">
+              Your Profile
+            </MenuItem>
+            <MenuItem as={Link} to="/codes">
+              Codes
+            </MenuItem>
+            <MenuItem onClick={() => api.auth.signout()}>Logout</MenuItem>
+          </MenuList>
+        </Menu>
       </Flex>
     </Container>
   );

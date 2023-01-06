@@ -62,7 +62,7 @@ export default function UserList() {
                 </Td>
                 <Td>
                   <IconButton
-                    aria-label={`${user.firstName} ${user.lastName} profile`}
+                    aria-label={`${user.firstName} ${user.lastName} codes`}
                     as={Link}
                     to={`/codes/${user.id}`}
                     icon={<FaCode />}
