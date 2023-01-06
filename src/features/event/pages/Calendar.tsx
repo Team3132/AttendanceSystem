@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import { SlotInfo } from "react-big-calendar";
 import Toolbar from "react-big-calendar/lib/Toolbar";
 import { Outlet, useNavigate } from "react-router-dom";
+import { CalendarWithLocalizer } from "../components/CalendarWithLocalizer";
 import useEvents from "../hooks/useEvents";
-import { CalendarWithLocalizer } from "./CalendarWithLocalizer";
 
 export default function Calendar() {
   /** User Data */
