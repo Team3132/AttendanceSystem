@@ -5,9 +5,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthWrapper } from "./features/auth";
 import {
-  AgendaPage,
-  Calendar,
-  CreateEventPage,
+  AgendaPage, CreateEventPage,
   EditEventPage,
   EventPage,
   FullCalendar
@@ -36,8 +34,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               <Route element={<AuthWrapper />}>
                 <Route path="event/:eventId" element={<EventPage />} />
                 <Route path="agenda" element={<AgendaPage />} />
-                <Route path="calendar" element={<Calendar />} />
-                <Route path="full-calendar" element={<FullCalendar />} />
+                {/* <Route path="calendar" element={<Calendar />} /> */}
+                <Route path="calendar" element={<FullCalendar />} />
                 {/* <Route path="custom" element={<CustomCalendar />} /> */}
                 <Route element={<ScancodePage />} path="codes" />
                 <Route element={<ProfilePage />} path="profile" />

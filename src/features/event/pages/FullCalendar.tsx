@@ -65,63 +65,16 @@ export default function Calendar() {
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay,listYear'
           }}
-          
+          selectable={isAdmin}
+          select={(sel) => {
+            navigate(
+                `/event/create?startDate=${sel.startStr}&endDate=${sel.endStr}`
+              );
+          }}
         events={events}
-        // initialEvents={[
-        //     apiEvents?.map((apiEvent) => ({
-        //       title: apiEvent.title,
-        //       allDay: apiEvent.allDay,
-        //       start: apiEvent.startDate,
-        //       end: apiEvent.endDate
-        //     })) ?? [],
-        //   ]}
-        // dateClick={() => }
         eventClick={(event => navigate(`/event/${event.event.id}`))}
         datesSet={(dates) => setRange([DateTime.fromJSDate(dates.start), DateTime.fromJSDate(dates.end)])}
       />
-      {/* <CalendarWithLocalizer
-        events={
-          apiEvents?.map((event) => ({
-            id: event.id,
-            allDay: event.allDay,
-            title: event.title,
-            start: new Date(event.startDate),
-            end: new Date(event.endDate),
-            resource: "any",
-          })) ?? []
-        }
-        style={{ height: 800 }}
-        selectable={isAdmin}
-        onSelectEvent={(event) => {
-          const typedEvent = event as {
-            id: string;
-            allDay: boolean;
-            title: string;
-            start: Date;
-            end: Date;
-            resource: string;
-          };
-          selectEventHandler(typedEvent);
-        }}
-        onSelectSlot={selectSlotHandler}
-        onRangeChange={(data) => {
-          const dates = data as {
-            start: Date;
-            end: Date;
-          };
-          setRange([
-            DateTime.fromJSDate(dates.start),
-            DateTime.fromJSDate(dates.end),
-          ]);
-        }}
-        components={{ toolbar: InitialRangeChangeToolbar }}
-        // components={{
-        //   eventWrapper: EventWrapper,
-        //   agenda: {
-        //     event: AgendaEventWrapper,
-        //   },
-        // }}
-      /> */}
     </>
   );
 }
