@@ -1,6 +1,6 @@
 import { useScanin } from "@/features/rsvp";
 import { ScaninDto } from "@/generated";
-import { Button, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
+import { Button, FormControl, FormHelperText, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
 interface ScancodeInputProps {
@@ -26,6 +26,7 @@ export default function ScancodeInput(props: ScancodeInputProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      <FormControl>
       <InputGroup>
         <Input
           {...register("code")}
@@ -38,6 +39,8 @@ export default function ScancodeInput(props: ScancodeInputProps) {
           </Button>
         </InputRightElement>
       </InputGroup>
+      <FormHelperText>The code from scanning a card using the reader. Should be on the codes page of your profile.</FormHelperText>
+      </FormControl>
     </form>
   );
 }

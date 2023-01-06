@@ -55,7 +55,7 @@ export default function UserCheckin(props: UserCheckinProps) {
             </Button>
           </InputRightElement>
         </InputGroup>
-        <FormHelperText>{tokenCheckin.error?.body.message}</FormHelperText>
+        <FormHelperText>{tokenCheckin.error?.body.message ?? "The code displayed on a screen at the event."}</FormHelperText>
       </FormControl>
     </form>
   );
