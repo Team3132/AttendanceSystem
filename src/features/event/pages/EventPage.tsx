@@ -55,7 +55,7 @@ export default function EventPage() {
           <Tab>Details</Tab>
           <Tab>Attendance</Tab>
           <Tab>User Check-in</Tab>
-          <Tab>Event Check-in</Tab>
+          {auth.isLoading || !auth.isAdmin && <Tab>Event Check-in</Tab>}
         </TabList>
 
         <TabPanels>
@@ -75,12 +75,13 @@ export default function EventPage() {
               <UserCheckin event={event.data} />
             </Container>
           </TabPanel>
-          <TabPanel>
+          {auth.isLoading || !auth.isAdmin && <TabPanel>
             <Container maxW="container.md">
               {auth.isAdmin ? <AdminCheckin event={event.data} /> : null}{" "}
               {/** Used to display checkin qr and code entering */}
             </Container>
-          </TabPanel>
+          </TabPanel>}
+          
         </TabPanels>
       </Tabs>
     </>
