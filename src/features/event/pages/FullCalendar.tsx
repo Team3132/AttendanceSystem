@@ -59,7 +59,7 @@ export default function Calendar() {
       <Outlet />
       <FullCalendar
         plugins={[luxon2Plugin, dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin ]}
-        initialView="listYear"
+        initialView="dayGridMonth"
         headerToolbar={{
             left: 'prev,next today',
             center: 'title',
