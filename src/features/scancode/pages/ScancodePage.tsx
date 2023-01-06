@@ -17,13 +17,15 @@ import {
 import { ApiError, CreateScancodeDto, Scancode } from "@generated";
 import { generateString } from "@utils";
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
 import useCreateScancode from "../hooks/useCreateScancode";
 import useDeleteScancode from "../hooks/useDeleteScancode";
 import useScancodes from "../hooks/useScancodes";
 
 export const ScancodeScreen: React.FC = () => {
-  const { data: scancodes } = useScancodes();
-  const createScancode = useCreateScancode();
+  const {userId} = useParams()
+  const { data: scancodes } = useScancodes(userId);
+  const createScancode = useCreateScancode(userId);
   const {
     formState: { errors, isSubmitting },
     setValue,

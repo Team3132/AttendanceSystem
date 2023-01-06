@@ -46,6 +46,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 <Route path="event/:eventId/edit" element={<EditEventPage />} />
                 <Route element={<AdminPage />} path="admin" />
                 <Route element={<ProfilePage />} path="profile/:userId" />
+                <Route element={<ScancodePage />} path="codes/:userId" />
               </Route>
             </Route>
           </Routes>
