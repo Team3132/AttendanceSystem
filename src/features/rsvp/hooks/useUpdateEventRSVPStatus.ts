@@ -12,7 +12,8 @@ export default function useUpdateEventRSVPStatus() {
   >({
     mutationFn: ({ eventId, rsvp }) => api.event.setEventRsvp(eventId, rsvp),
     onSuccess: (data, { eventId }) => {
-      queryClient.setQueryData(rsvpKeys.event(eventId), data);
+      queryClient.setQueryData(rsvpKeys.one(eventId), data);
+      queryClient.invalidateQueries(rsvpKeys.event(eventId))
       // queryClient.invalidateQueries(["EventRSVP", eventId]);
     },
   });
