@@ -9,7 +9,7 @@ import {
   Calendar,
   CreateEventPage,
   EditEventPage,
-  EventPage,
+  EventPage
 } from "./features/event";
 import { SWToast } from "./features/pwa";
 import { ScancodePage } from "./features/scancode";
@@ -34,11 +34,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               {/* Authenticated-only pages */}
               <Route element={<AuthWrapper />}>
                 <Route path="event/:eventId" element={<EventPage />} />
-                <Route path="calendar">
-                  <Route element={<AgendaPage />} index />
-                  <Route path="calendar" element={<Calendar />} />
-                  {/* <Route path="custom" element={<CustomCalendar />} /> */}
-                </Route>
+                <Route path="agenda" element={<AgendaPage />} />
+                <Route path="calendar" element={<Calendar />} />
+                {/* <Route path="custom" element={<CustomCalendar />} /> */}
                 <Route element={<ScancodePage />} path="codes" />
                 <Route element={<ProfilePage />} path="profile" />
               </Route>

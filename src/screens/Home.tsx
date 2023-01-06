@@ -5,7 +5,7 @@ import {
   Container,
   Divider,
   Heading,
-  Text,
+  Text
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
@@ -24,8 +24,8 @@ export const Home: React.FC = () => {
       <Divider my={6} />
       <Center>
         {isAuthenticated ? (
-          <Button as={Link} to="/calendar">
-            View Calendar
+          <Button as={Link} to="/agenda">
+            View Agenda
           </Button>
         ) : (
           <Button
