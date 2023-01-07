@@ -1,86 +1,58 @@
-import {
-  IconButton,
-  Skeleton,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Tfoot,
-  Th,
-  Thead,
-  Tr
-} from "@chakra-ui/react";
+import { DataTable } from "@/components/DataTable";
+import { User } from "@/generated";
+import { IconButton, TableContainer } from "@chakra-ui/react";
+import { createColumnHelper } from "@tanstack/react-table";
 import { FaCode, FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import useUsers from "../hooks/useUsers";
+
+const columnHelper = createColumnHelper<User>();
+
+const columns = [
+  columnHelper.accessor("firstName", {
+    id: "firstName",
+    header: "First Name",
+    footer: "First Name",
+  }),
+  columnHelper.accessor("lastName", {
+    id: "lastName",
+    header: "Last Name",
+    footer: "Last Name",
+  }),
+  columnHelper.accessor((row) => `${row.firstName} ${row.lastName} profile`, {
+    id: "profile",
+    header: "Profile",
+    footer: "Profile",
+    cell: ({ row: { original: row } }) => (
+      <IconButton
+        aria-label={`${row.firstName} ${row.lastName} profile`}
+        as={Link}
+        to={`/profile/${row.id}`}
+        icon={<FaUserCircle />}
+      />
+    ),
+  }),
+  columnHelper.accessor((row) => `${row.firstName}-${row.lastName}-codes`, {
+    id: "codes",
+    header: "Codes",
+    footer: "Codes",
+    cell: ({ row: { original: row } }) => (
+      <IconButton
+        aria-label={`${row.firstName} ${row.lastName} codes`}
+        as={Link}
+        to={`/codes/${row.id}`}
+        icon={<FaCode />}
+      />
+    ),
+  }),
+];
 
 export default function UserList() {
   const users = useUsers();
 
   return (
     <TableContainer>
-      <Table variant="simple">
-        <Thead>
-          <Tr>
-            <Th>First Name</Th>
-            <Th>Last Name</Th>
-            <Th>Profile</Th>
-            <Th>Codes</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {!users.isSuccess ? (
-            <Tr>
-              <Td>
-                <Skeleton>First Name</Skeleton>
-              </Td>
-              <Td>
-                <Skeleton>Last Name</Skeleton>
-              </Td>
-              <Td>
-                <Skeleton>Email</Skeleton>
-              </Td>
-              <Td>
-                <Skeleton>Profile</Skeleton>
-              </Td>
-              <Td>
-                <Skeleton>Codes</Skeleton>
-              </Td>
-            </Tr>
-          ) : (
-            users.data.map((user) => (
-              <Tr key={user.id}>
-                <Td>{user.firstName}</Td>
-                <Td>{user.lastName}</Td>
-                <Td>
-                  <IconButton
-                    aria-label={`${user.firstName} ${user.lastName} profile`}
-                    as={Link}
-                    to={`/profile/${user.id}`}
-                    icon={<FaUserCircle />}
-                  />
-                </Td>
-                <Td>
-                  <IconButton
-                    aria-label={`${user.firstName} ${user.lastName} codes`}
-                    as={Link}
-                    to={`/codes/${user.id}`}
-                    icon={<FaCode />}
-                  />
-                </Td>
-              </Tr>
-            ))
-          )}
-        </Tbody>
-        <Tfoot>
-          <Tr>
-            <Th>First Name</Th>
-            <Th>Last Name</Th>
-            <Th>Email</Th>
-            <Th>Codes</Th>
-          </Tr>
-        </Tfoot>
-      </Table>
+      <DataTable columns={columns} data={users.data ?? []} />
     </TableContainer>
   );
 }

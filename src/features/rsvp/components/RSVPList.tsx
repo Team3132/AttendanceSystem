@@ -1,22 +1,11 @@
+import { DataTable } from "@/components/DataTable";
 import { Username } from "@/features/user";
 import { Rsvp } from "@/generated";
 import {
-  Table,
-  TableCaption,
-  TableContainer,
-  Tbody,
-  Td,
-  Tfoot,
-  Th,
-  Thead,
-  Tr,
+  TableContainer
 } from "@chakra-ui/react";
 import {
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  SortingState,
-  useReactTable,
+  createColumnHelper
 } from "@tanstack/react-table";
 import React from "react";
 import useEventRSVPStatuses from "../hooks/useEventRSVPStatuses";
@@ -54,68 +43,20 @@ export interface RSVPListProps {
 
 export const RSVPList: React.FC<RSVPListProps> = ({ eventId }) => {
   const { data: rsvps } = useEventRSVPStatuses(eventId);
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const table = useReactTable({
-    data: rsvps ?? [],
-    state: {
-      sorting,
-    },
-    onSortingChange: setSorting,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
+  // const [sorting, setSorting] = React.useState<SortingState>([]);
+  // const table = useReactTable({
+  //   data: rsvps ?? [],
+  //   state: {
+  //     sorting,
+  //   },
+  //   onSortingChange: setSorting,
+  //   columns,
+  //   getCoreRowModel: getCoreRowModel(),
+  // });
 
   return (
     <TableContainer>
-      <Table variant="simple">
-        <TableCaption>RSVP Status by Name</TableCaption>
-        <Thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <Tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <Th
-                  key={header.id}
-                  onClick={header.column.getToggleSortingHandler()}
-                >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                </Th>
-              ))}
-            </Tr>
-          ))}
-        </Thead>
-        <Tbody>
-          {table.getRowModel().rows.map((row) => (
-            <Tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <Td key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </Td>
-              ))}
-            </Tr>
-          ))}
-        </Tbody>
-        <Tfoot>
-          {table.getFooterGroups().map((footerGroup) => (
-            <Tr key={footerGroup.id}>
-              {footerGroup.headers.map((header) => (
-                <Th key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.footer,
-                        header.getContext()
-                      )}
-                </Th>
-              ))}
-            </Tr>
-          ))}
-        </Tfoot>
-      </Table>
+      <DataTable columns={columns} data={rsvps ?? []} />
     </TableContainer>
   );
 };
