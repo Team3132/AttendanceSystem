@@ -8,7 +8,7 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -31,14 +31,14 @@ export default function UserCheckin(props: UserCheckinProps) {
     register,
   } = useForm<FormFields>();
 
-  const toast = useToast()
+  const toast = useToast();
 
   const onSubmit: SubmitHandler<FormFields> = async ({ token }) => {
     const checkinRes = await tokenCheckin.mutateAsync({ token });
     if (checkinRes.attended) {
-      toast({status: "success", description: "Signed In!"})
+      toast({ status: "success", description: "Signed In!" });
     } else {
-      toast({status: "error", description: "Failed to mark attendance."})
+      toast({ status: "error", description: "Failed to mark attendance." });
     }
   };
 

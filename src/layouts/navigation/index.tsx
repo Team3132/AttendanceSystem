@@ -13,7 +13,7 @@ import {
   MenuList,
   Spacer,
   useBreakpointValue,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 import loadable from "@loadable/component";
 import { ReactElement, useEffect } from "react";
@@ -62,7 +62,7 @@ interface NavProps {
 export default function Navigation({ isAuthenticated, isAdmin }: NavProps) {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const isMobile = useBreakpointValue<boolean>({ base: true, md: false });
-  const logout = useLogout()
+  const logout = useLogout();
   const menuItems = navItems(isAuthenticated, isAdmin);
   useEffect(() => {
     if (!isMobile) {
@@ -90,25 +90,31 @@ export default function Navigation({ isAuthenticated, isAdmin }: NavProps) {
         )}
 
         <Spacer />
-        {isAuthenticated && <Menu>
-          <MenuButton
-            leftIcon={<UserAvatar size="sm" />}
-            as={Button}
-            rightIcon={<ChevronDownIcon />}
-          >
-            Profile
-          </MenuButton>
-          <MenuList>
-            <MenuItem as={Link} to="/profile">
-              Your Profile
-            </MenuItem>
-            <MenuItem as={Link} to="/codes">
-              Codes
-            </MenuItem>
-            <MenuItem as="a" href={`${import.meta.env.VITE_BACKEND_URL}/auth/logout`}>Logout</MenuItem>
-          </MenuList>
-        </Menu>}
-        
+        {isAuthenticated && (
+          <Menu>
+            <MenuButton
+              leftIcon={<UserAvatar size="sm" />}
+              as={Button}
+              rightIcon={<ChevronDownIcon />}
+            >
+              Profile
+            </MenuButton>
+            <MenuList>
+              <MenuItem as={Link} to="/profile">
+                Your Profile
+              </MenuItem>
+              <MenuItem as={Link} to="/codes">
+                Codes
+              </MenuItem>
+              <MenuItem
+                as="a"
+                href={`${import.meta.env.VITE_BACKEND_URL}/auth/logout`}
+              >
+                Logout
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        )}
       </Flex>
     </Container>
   );

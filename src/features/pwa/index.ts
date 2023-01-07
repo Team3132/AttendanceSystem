@@ -1,3 +1,3 @@
 import loadable from "@loadable/component";
 
-export const SWToast = loadable(() => import("./components/SWToast"))
+export const SWToast = loadable(() => import("./components/SWToast"));

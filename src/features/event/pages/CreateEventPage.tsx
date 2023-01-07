@@ -9,7 +9,7 @@ import {
   Select,
   Stack,
   Switch,
-  Textarea
+  Textarea,
 } from "@chakra-ui/react";
 import { CreateEventDto, EventResponseType } from "@generated";
 import { DateTime } from "luxon";

@@ -13,7 +13,7 @@ import {
   Input,
   Stack,
   useClipboard,
-  Wrap
+  Wrap,
 } from "@chakra-ui/react";
 import { UpdateUserDto } from "@generated";
 import loadable from "@loadable/component";
@@ -118,7 +118,10 @@ export const ProfileScreen: React.FC = () => {
                 {hasCopied ? "Copied" : "Copy"}
               </Button>
             </Flex>
-            <FormHelperText>If you give this link to Google Calendar etc. it should show all the events.</FormHelperText>
+            <FormHelperText>
+              If you give this link to Google Calendar etc. it should show all
+              the events.
+            </FormHelperText>
           </FormControl>
           <Button type="submit" isLoading={isSubmitting} disabled={!isDirty}>
             Save

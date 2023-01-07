@@ -5,10 +5,11 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthWrapper } from "./features/auth";
 import {
-  AgendaPage, CreateEventPage,
+  AgendaPage,
+  CreateEventPage,
   EditEventPage,
   EventPage,
-  FullCalendar
+  FullCalendar,
 } from "./features/event";
 import { SWToast } from "./features/pwa";
 import { ScancodePage } from "./features/scancode";

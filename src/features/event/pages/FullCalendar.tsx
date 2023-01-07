@@ -40,15 +40,17 @@ export default function Calendar() {
       `/event/create?startDate=${slotInfo.start.toISOString()}&endDate=${slotInfo.end.toISOString()}`
     );
 
-    const events = useMemo(() => {
-        return apiEvents?.map((apiEvent) => ({
-            id: apiEvent.id,
-            title: apiEvent.title,
-            allDay: apiEvent.allDay,
-            start: apiEvent.startDate,
-            end: apiEvent.endDate
-          })) ?? []
-    }, [apiEvents])
+  const events = useMemo(() => {
+    return (
+      apiEvents?.map((apiEvent) => ({
+        id: apiEvent.id,
+        title: apiEvent.title,
+        allDay: apiEvent.allDay,
+        start: apiEvent.startDate,
+        end: apiEvent.endDate,
+      })) ?? []
+    );
+  }, [apiEvents]);
 
   return (
     <>
@@ -58,22 +60,33 @@ export default function Calendar() {
       <Divider my={6} />
       <Outlet />
       <FullCalendar
-        plugins={[luxon2Plugin, dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin ]}
+        plugins={[
+          luxon2Plugin,
+          dayGridPlugin,
+          timeGridPlugin,
+          listPlugin,
+          interactionPlugin,
+        ]}
         initialView="dayGridMonth"
         headerToolbar={{
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay,listYear'
-          }}
-          selectable={isAdmin}
-          select={(sel) => {
-            navigate(
-                `/event/create?startDate=${sel.startStr}&endDate=${sel.endStr}`
-              );
-          }}
+          left: "prev,next today",
+          center: "title",
+          right: "dayGridMonth,timeGridWeek,timeGridDay,listYear",
+        }}
+        selectable={isAdmin}
+        select={(sel) => {
+          navigate(
+            `/event/create?startDate=${sel.startStr}&endDate=${sel.endStr}`
+          );
+        }}
         events={events}
-        eventClick={(event => navigate(`/event/${event.event.id}`))}
-        datesSet={(dates) => setRange([DateTime.fromJSDate(dates.start), DateTime.fromJSDate(dates.end)])}
+        eventClick={(event) => navigate(`/event/${event.event.id}`)}
+        datesSet={(dates) =>
+          setRange([
+            DateTime.fromJSDate(dates.start),
+            DateTime.fromJSDate(dates.end),
+          ])
+        }
       />
     </>
   );

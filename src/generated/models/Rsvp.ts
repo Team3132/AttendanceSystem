@@ -6,7 +6,7 @@ export type Rsvp = {
   id: string;
   eventId: string;
   userId: string;
-  status: Rsvp.status;
+  status: Rsvp.status | null;
   createdAt: string;
   updatedAt: string;
   attended: boolean;

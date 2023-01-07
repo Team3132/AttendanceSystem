@@ -1,12 +1,8 @@
 import { DataTable } from "@/components/DataTable";
 import { Username } from "@/features/user";
 import { Rsvp } from "@/generated";
-import {
-  TableContainer
-} from "@chakra-ui/react";
-import {
-  createColumnHelper
-} from "@tanstack/react-table";
+import { TableContainer } from "@chakra-ui/react";
+import { createColumnHelper } from "@tanstack/react-table";
 import React from "react";
 import useEventRSVPStatuses from "../hooks/useEventRSVPStatuses";
 
@@ -26,7 +22,7 @@ const columns = [
     header: "Status",
     footer: "Status",
     cell: (props) => {
-      return props.getValue().toString();
+      return props.getValue()?.toString() ?? "Unknown";
     },
   }),
   columnHelper.accessor("attended", {

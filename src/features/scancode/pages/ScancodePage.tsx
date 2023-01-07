@@ -12,7 +12,7 @@ import {
   InputGroup,
   InputRightElement,
   Stack,
-  useClipboard
+  useClipboard,
 } from "@chakra-ui/react";
 import { ApiError, CreateScancodeDto, Scancode } from "@generated";
 import { generateString } from "@utils";
@@ -23,7 +23,7 @@ import useDeleteScancode from "../hooks/useDeleteScancode";
 import useScancodes from "../hooks/useScancodes";
 
 export const ScancodeScreen: React.FC = () => {
-  const {userId} = useParams()
+  const { userId } = useParams();
   const { data: scancodes } = useScancodes(userId);
   const createScancode = useCreateScancode(userId);
   const {
@@ -95,8 +95,15 @@ export const ScancodeScreen: React.FC = () => {
                 />
               </InputRightElement>
             </InputGroup>
-            {errors.code ? <FormErrorMessage>{errors.code?.message}</FormErrorMessage> : <FormHelperText>A code from using the card scanner or something you'll remember. It can't be the same as someone else's code. It also shouldn't be a password as these codes aren't encrypted.</FormHelperText>}
-            
+            {errors.code ? (
+              <FormErrorMessage>{errors.code?.message}</FormErrorMessage>
+            ) : (
+              <FormHelperText>
+                A code from using the card scanner or something you'll remember.
+                It can't be the same as someone else's code. It also shouldn't
+                be a password as these codes aren't encrypted.
+              </FormHelperText>
+            )}
           </FormControl>
         </Stack>
       </Container>

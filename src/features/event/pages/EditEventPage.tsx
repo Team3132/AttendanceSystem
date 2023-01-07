@@ -14,7 +14,7 @@ import {
   Spinner,
   Stack,
   Switch,
-  Textarea
+  Textarea,
 } from "@chakra-ui/react";
 import { EventResponseType, UpdateEventDto } from "@generated";
 import pick from "lodash.pick";

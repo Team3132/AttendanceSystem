@@ -11,7 +11,7 @@ import {
   StatLabel,
   StatNumber,
   Tag,
-  Text
+  Text,
 } from "@chakra-ui/react";
 import { DateTime, Duration } from "luxon";
 

@@ -1,8 +1,12 @@
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import { chakra, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import {
-    ColumnDef, flexRender,
-    getCoreRowModel, getSortedRowModel, SortingState, useReactTable
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  SortingState,
+  useReactTable,
 } from "@tanstack/react-table";
 import * as React from "react";
 
@@ -13,7 +17,7 @@ export type DataTableProps<Data extends object> = {
 
 export function DataTable<Data extends object>({
   data,
-  columns
+  columns,
 }: DataTableProps<Data>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const table = useReactTable({
@@ -23,8 +27,8 @@ export function DataTable<Data extends object>({
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     state: {
-      sorting
-    }
+      sorting,
+    },
   });
 
   return (

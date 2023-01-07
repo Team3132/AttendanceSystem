@@ -1,14 +1,15 @@
 import { useAuthStatus } from "@/features/auth";
 import { RSVPStatus } from "@/features/rsvp";
 import {
-  Button, Container,
+  Button,
+  Container,
   Heading,
   Spinner,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
-  Tabs
+  Tabs,
 } from "@chakra-ui/react";
 import { FaArrowRight } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
@@ -28,7 +29,6 @@ export default function EventPage() {
 
   return (
     <>
-      
       <Heading
         textAlign={"center"}
         mt={6}
@@ -38,24 +38,26 @@ export default function EventPage() {
         top={"auto"}
       >
         {event.data.title}
-        {auth.isAdmin && <Button
-          rightIcon={<FaArrowRight />}
-          position="absolute"
-          right={0}
-          bottom="auto"
-          top="auto"
-          as={Link}
-          to={`/event/${eventId}/edit`}
-        >
-          Edit
-        </Button>}
+        {auth.isAdmin && (
+          <Button
+            rightIcon={<FaArrowRight />}
+            position="absolute"
+            right={0}
+            bottom="auto"
+            top="auto"
+            as={Link}
+            to={`/event/${eventId}/edit`}
+          >
+            Edit
+          </Button>
+        )}
       </Heading>
       <Tabs isLazy>
         <TabList justifyContent={"center"}>
           <Tab>Details</Tab>
           <Tab>Attendance</Tab>
           <Tab>User Check-in</Tab>
-          {auth.isLoading || auth.isAdmin && <Tab>Event Check-in</Tab>}
+          {auth.isLoading || (auth.isAdmin && <Tab>Event Check-in</Tab>)}
         </TabList>
 
         <TabPanels>
@@ -75,13 +77,15 @@ export default function EventPage() {
               <UserCheckin event={event.data} />
             </Container>
           </TabPanel>
-          {auth.isLoading || auth.isAdmin && <TabPanel>
-            <Container maxW="container.md">
-              {auth.isAdmin ? <AdminCheckin event={event.data} /> : null}{" "}
-              {/** Used to display checkin qr and code entering */}
-            </Container>
-          </TabPanel>}
-          
+          {auth.isLoading ||
+            (auth.isAdmin && (
+              <TabPanel>
+                <Container maxW="container.md">
+                  {auth.isAdmin ? <AdminCheckin event={event.data} /> : null}{" "}
+                  {/** Used to display checkin qr and code entering */}
+                </Container>
+              </TabPanel>
+            ))}
         </TabPanels>
       </Tabs>
     </>

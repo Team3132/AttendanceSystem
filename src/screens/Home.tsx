@@ -5,7 +5,7 @@ import {
   Container,
   Divider,
   Heading,
-  Text
+  Text,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
