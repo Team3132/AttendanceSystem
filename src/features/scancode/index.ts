@@ -1,2 +1,5 @@
-export { default as ScancodePage } from "./pages/ScancodePage";
-export { default as ScancodeInput } from "./components/ScancodeInput";
+import loadable from "@loadable/component";
+
+export const ScancodePage = loadable(() => import("./pages/ScancodePage"))
+
+export const ScancodeInput = loadable(() => import("./components/ScancodeInput"))

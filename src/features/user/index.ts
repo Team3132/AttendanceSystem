@@ -1,5 +1,8 @@
-export { default as UserAvatar } from "./components/UserAvatar";
-export { default as ProfilePage } from "./pages/ProfilePage";
-export { default as UserList } from "./components/UserList";
-export { default as Username } from "./components/Username";
+import loadable from "@loadable/component";
+
 export { default as useUser } from "./hooks/useUser";
+
+export const UserAvatar = loadable(() => import("./components/UserAvatar"))
+export const ProfilePage = loadable(() => import("./pages/ProfilePage"))
+export const UserList = loadable(() => import("./components/UserList"))
+export const Username  = loadable(() => import("./components/Username"))

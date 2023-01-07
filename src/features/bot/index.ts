@@ -1,2 +1,4 @@
-export { default as RoleList } from "./components/RoleList";
-export { default as RoleTag } from "./components/RoleTag";
+import loadable from "@loadable/component";
+
+export const RoleList = loadable(() => import("./components/RoleList"))
+export const RoleTag = loadable(() => import("./components/RoleTag"))

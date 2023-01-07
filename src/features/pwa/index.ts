@@ -1,1 +1,3 @@
-export { default as SWToast } from "./components/SWToast";
+import loadable from "@loadable/component";
+
+export const SWToast = loadable(() => import("./components/SWToast"))

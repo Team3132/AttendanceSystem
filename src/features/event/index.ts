@@ -1,6 +1,8 @@
-export { default as CreateEventPage } from "./pages/CreateEventPage";
-export { default as AgendaPage } from "./pages/AgendaPage";
-export { default as EditEventPage } from "./pages/EditEventPage";
-export { default as EventPage } from "./pages/EventPage";
-export { default as Calendar } from "./pages/Calendar";
-export { default as FullCalendar} from "./pages/FullCalendar"
+import loadable from "@loadable/component";
+
+export const CreateEventPage = loadable(() => import("./pages/CreateEventPage"))
+export const AgendaPage = loadable(() => import("./pages/AgendaPage"))
+export const EditEventPage = loadable(() => import("./pages/EditEventPage"))
+export const Calendar = loadable(() => import("./pages/Calendar"))
+export const FullCalendar = loadable(() => import("./pages/FullCalendar"))
+export const EventPage = loadable(() => import("./pages/EventPage"))
