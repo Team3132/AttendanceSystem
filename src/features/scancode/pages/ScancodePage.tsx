@@ -95,7 +95,7 @@ export const ScancodeScreen: React.FC = () => {
                 />
               </InputRightElement>
             </InputGroup>
-            {errors.code ? <FormErrorMessage>{errors.code?.message}</FormErrorMessage> : <FormHelperText>A code from using the card scanner or something you'll remember. It can't be the same as someone else's code.</FormHelperText>}
+            {errors.code ? <FormErrorMessage>{errors.code?.message}</FormErrorMessage> : <FormHelperText>A code from using the card scanner or something you'll remember. It can't be the same as someone else's code. It also shouldn't be a password as these codes aren't encrypted.</FormHelperText>}
             
           </FormControl>
         </Stack>
