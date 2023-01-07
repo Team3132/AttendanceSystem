@@ -1,6 +1,7 @@
 import { useScanin } from "@/features/rsvp";
 import { ScaninDto } from "@/generated";
-import { Button, FormControl, FormHelperText, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
+import api from "@/services/api";
+import { Button, FormControl, FormHelperText, Input, InputGroup, InputRightElement, useToast } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
 interface ScancodeInputProps {
@@ -18,9 +19,12 @@ export default function ScancodeInput(props: ScancodeInputProps) {
 
   const { mutateAsync: scanin } = useScanin();
 
-  const onSubmit = async (data: ScaninDto) => {
-    await scanin({ eventId, scan: data });
+  const toast = useToast()
 
+  const onSubmit = async (data: ScaninDto) => {
+    const rsvp = await scanin({ eventId, scan: data });
+    const user = await api.user.getUser(rsvp.userId)
+    toast({status: "success", description: `${user.firstName} ${user.lastName} signed in!`})
     reset();
   };
 

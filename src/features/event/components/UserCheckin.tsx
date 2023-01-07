@@ -7,7 +7,8 @@ import {
   FormLabel,
   Input,
   InputGroup,
-  InputRightElement
+  InputRightElement,
+  useToast
 } from "@chakra-ui/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -30,15 +31,22 @@ export default function UserCheckin(props: UserCheckinProps) {
     register,
   } = useForm<FormFields>();
 
-  const onSubmit: SubmitHandler<FormFields> = ({ token }) =>
-    tokenCheckin.mutateAsync({ token });
+  const toast = useToast()
+
+  const onSubmit: SubmitHandler<FormFields> = async ({ token }) => {
+    const checkinRes = await tokenCheckin.mutateAsync({ token });
+    if (checkinRes.attended) {
+      toast({status: "success", description: "Signed In!"})
+    } else {
+      toast({status: "error", description: "Failed to mark attendance."})
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormControl>
-      <FormLabel>Event Code</FormLabel>
+        <FormLabel>Event Code</FormLabel>
         <InputGroup>
-     
           <Input
             placeholder={"Enter the checkin code here..."}
             autoFocus
@@ -55,7 +63,10 @@ export default function UserCheckin(props: UserCheckinProps) {
             </Button>
           </InputRightElement>
         </InputGroup>
-        <FormHelperText>{tokenCheckin.error?.body.message ?? "The code displayed on a screen at the event."}</FormHelperText>
+        <FormHelperText>
+          {tokenCheckin.error?.body.message ??
+            "The code displayed on a screen at the event."}
+        </FormHelperText>
       </FormControl>
     </form>
   );
