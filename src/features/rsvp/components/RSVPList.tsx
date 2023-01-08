@@ -1,22 +1,30 @@
 import { DataTable } from "@/components/DataTable";
-import { Username } from "@/features/user";
-import { Rsvp } from "@/generated";
+import { RsvpUser } from "@/generated";
 import { TableContainer } from "@chakra-ui/react";
 import { createColumnHelper } from "@tanstack/react-table";
 import React from "react";
 import useEventRSVPStatuses from "../hooks/useEventRSVPStatuses";
 
-const columnHelper = createColumnHelper<Rsvp>();
+const columnHelper = createColumnHelper<RsvpUser>();
 
 const columns = [
-  columnHelper.accessor("userId", {
-    id: "user",
-    header: "User",
-    footer: "User",
-    cell: (props) => {
-      return <Username userId={props.getValue()} />;
-    },
+  columnHelper.accessor("user.firstName", {
+    header: "First Name",
+    footer: "First Name",
   }),
+  columnHelper.accessor("user.lastName", {
+    header: "Last Name",
+    footer: "Last Name",
+  }),
+
+  // columnHelper.accessor("userId", {
+  //   id: "user",
+  //   header: "User",
+  //   footer: "User",
+  //   cell: (props) => {
+  //     return <Username userId={props.getValue()} />;
+  //   },
+  // }),
   columnHelper.accessor("status", {
     id: "status",
     header: "Status",

@@ -5,6 +5,7 @@ import type { CreateEventDto } from "../models/CreateEventDto";
 import type { EventResponseType } from "../models/EventResponseType";
 import type { EventSecret } from "../models/EventSecret";
 import type { Rsvp } from "../models/Rsvp";
+import type { RsvpUser } from "../models/RsvpUser";
 import type { ScaninDto } from "../models/ScaninDto";
 import type { TokenCheckinDto } from "../models/TokenCheckinDto";
 import type { UpdateEventDto } from "../models/UpdateEventDto";
@@ -231,10 +232,10 @@ export class EventService {
   /**
    * Get an event's asociated RSVPs
    * @param eventId
-   * @returns Rsvp
+   * @returns RsvpUser
    * @throws ApiError
    */
-  public getEventRsvps(eventId: string): CancelablePromise<Array<Rsvp>> {
+  public getEventRsvps(eventId: string): CancelablePromise<Array<RsvpUser>> {
     return this.httpRequest.request({
       method: "GET",
       url: "/event/{eventId}/rsvps",

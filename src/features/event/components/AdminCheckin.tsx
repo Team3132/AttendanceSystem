@@ -18,7 +18,13 @@ export default function AdminCheckin(props: AdminCheckinProps) {
   };
 
   return (
-    <Stack alignContent={"center"}  position="relative" bgColor={"chakra-body-bg"} ref={adminScreenRef} p={5}>
+    <Stack
+      alignContent={"center"}
+      position="relative"
+      bgColor={"chakra-body-bg"}
+      ref={adminScreenRef}
+      p={5}
+    >
       <IconButton
         icon={<MdFullscreen />}
         position="absolute"

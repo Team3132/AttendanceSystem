@@ -33,7 +33,11 @@ export const RSVPSelect: React.FC<
   };
 
   return (
-    <Select {...selectProps} onChange={onChange} value={rsvp?.status ?? undefined}>
+    <Select
+      {...selectProps}
+      onChange={onChange}
+      value={rsvp?.status ?? undefined}
+    >
       <option>Please Select</option>
       <option value={statusEnum.MAYBE}>Maybe</option>
       <option value={statusEnum.NO}>No</option>
