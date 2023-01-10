@@ -10,7 +10,9 @@ import {
   InputRightElement,
   useToast,
 } from "@chakra-ui/react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import useNFC from "../hooks/useNFC";
 
 interface ScancodeInputProps {
   eventId: string;
@@ -23,6 +25,7 @@ export default function ScancodeInput(props: ScancodeInputProps) {
     handleSubmit,
     register,
     reset,
+    setValue
   } = useForm<ScaninDto>();
 
   const { mutateAsync: scanin } = useScanin();
@@ -38,6 +41,13 @@ export default function ScancodeInput(props: ScancodeInputProps) {
     });
     reset();
   };
+
+  const getNfc = useNFC()
+
+  useEffect(() => {
+    if(!getNfc.data) return
+    setValue("code", getNfc.data)
+  }, [getNfc.data])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -64,6 +74,9 @@ export default function ScancodeInput(props: ScancodeInputProps) {
           page of your profile.
         </FormHelperText>
       </FormControl>
+      <Button onClick={() => getNfc.mutate()}>
+
+      </Button>
     </form>
   );
 }
