@@ -34,7 +34,7 @@ export default function EventDetails(props: EventDetailsProps) {
         <Center>
           <Tag colorScheme={"blue"} size="md">
             All Day
-          </Tag>{" "}
+          </Tag>
         </Center>
       ) : null}
 
