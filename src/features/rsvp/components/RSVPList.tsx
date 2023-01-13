@@ -2,6 +2,7 @@ import { DataTable } from "@/components/DataTable";
 import { RsvpUser } from "@/generated";
 import { TableContainer } from "@chakra-ui/react";
 import { createColumnHelper } from "@tanstack/react-table";
+import { DateTime } from "luxon";
 import React from "react";
 import useEventRSVPStatuses from "../hooks/useEventRSVPStatuses";
 
@@ -33,7 +34,8 @@ const columns = [
   columnHelper.accessor("updatedAt", {
     id: "updatedAt",
     header: "Updated At",
-    footer: "Updated At"
+    footer: "Updated At",
+    cell: (props) => DateTime.fromISO(props.getValue()).toLocaleString(DateTime.DATETIME_MED)
   })
 ];
 
