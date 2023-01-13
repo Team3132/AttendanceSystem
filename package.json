@@ -60,7 +60,7 @@
     "rollup-plugin-visualizer": "^5.7.0",
     "typescript": "^4.9.4",
     "vite": "^3.0.7",
-    "vite-plugin-pwa": "^0.13.3",
+    "vite-plugin-pwa": "^0.14.1",
     "vite-tsconfig-paths": "^4.0.3"
   }
 }
