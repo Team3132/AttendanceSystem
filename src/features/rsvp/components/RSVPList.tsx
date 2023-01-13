@@ -16,15 +16,6 @@ const columns = [
     header: "Last Name",
     footer: "Last Name",
   }),
-
-  // columnHelper.accessor("userId", {
-  //   id: "user",
-  //   header: "User",
-  //   footer: "User",
-  //   cell: (props) => {
-  //     return <Username userId={props.getValue()} />;
-  //   },
-  // }),
   columnHelper.accessor("status", {
     id: "status",
     header: "Status",
@@ -39,6 +30,11 @@ const columns = [
     footer: "Attended",
     cell: (props) => (props.getValue() ? "Yes" : "No"),
   }),
+  columnHelper.accessor("updatedAt", {
+    id: "updatedAt",
+    header: "Updated At",
+    footer: "Updated At"
+  })
 ];
 
 export interface RSVPListProps {
