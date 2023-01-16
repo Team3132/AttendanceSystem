@@ -27,7 +27,7 @@
     "@otplib/plugin-crypto-js": "^12.0.1",
     "@otplib/preset-browser": "^12.0.1",
     "@tanstack/react-query": "^4.16.1",
-    "@tanstack/react-table": "^8.7.0",
+    "@tanstack/react-table": "^8.7.6",
     "@types/lodash.pick": "^4.4.7",
     "axios": "^1.2.0",
     "buffer": "^6.0.3",
