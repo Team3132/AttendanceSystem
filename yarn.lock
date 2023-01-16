@@ -1962,10 +1962,10 @@
   resolved "https://registry.yarnpkg.com/@esbuild/linux-loong64/-/linux-loong64-0.15.18.tgz#128b76ecb9be48b60cf5cfc1c63a4f00691a3239"
   integrity sha512-L4jVKS82XVhw2nvzLg/19ClLWg0y27ulRwuP7lcyL6AbUWB5aPglXY3M21mauDQMDfRLs8cQmeT03r/+X3cZYQ==
 
-"@fullcalendar/core@^6.0.2":
-  version "6.0.2"
-  resolved "https://registry.yarnpkg.com/@fullcalendar/core/-/core-6.0.2.tgz#adbf7917905a74807ba067506c0b3d17f712727b"
-  integrity sha512-mpJ+8l2t6b98umrRG2FfDnMqEr0Z+wNT2SjY7H49V3wcj4oe3gwuty8GBYHG/vgxS+DXR/NcEvW1CsMQh4Cr/A==
+"@fullcalendar/core@^6.0.3":
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/@fullcalendar/core/-/core-6.0.3.tgz#cb2d78e747d9baf8a609d2cc54c6a7cfe2e2f833"
+  integrity sha512-4REVuYAxqJjXpLhOC0oABap4Xl8gmykCsHgL61Yy3rdCwWVx/SoE5L3hs8ZUCmsRrgSZOzgiH8sle87RaGi8iw==
   dependencies:
     preact "^10.0.5"
 
