@@ -3,6 +3,7 @@ import { ScaninDto } from "@/generated";
 import api from "@/services/api";
 import {
   Button,
+  Center,
   FormControl,
   FormHelperText,
   Input,
@@ -25,7 +26,7 @@ export default function ScancodeInput(props: ScancodeInputProps) {
     handleSubmit,
     register,
     reset,
-    setValue
+    setValue,
   } = useForm<ScaninDto>();
 
   const { mutateAsync: scanin } = useScanin();
@@ -42,12 +43,12 @@ export default function ScancodeInput(props: ScancodeInputProps) {
     reset();
   };
 
-  const getNfc = useNFC()
+  const getNfc = useNFC();
 
   useEffect(() => {
-    if(!getNfc.data) return
-    setValue("code", getNfc.data)
-  }, [getNfc.data])
+    if (!getNfc.data) return;
+    setValue("code", getNfc.data);
+  }, [getNfc.isSuccess]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -74,9 +75,20 @@ export default function ScancodeInput(props: ScancodeInputProps) {
           page of your profile.
         </FormHelperText>
       </FormControl>
-      <Button onClick={() => getNfc.mutate()}>
-
-      </Button>
+      <Center>
+        {"NDEFReader" in window && (
+          <Button
+            onClick={async () => {
+              const nfcRes = await getNfc.mutateAsync();
+              if (nfcRes) {
+                setValue("code", nfcRes);
+              }
+            }}
+          >
+            Scan NFC
+          </Button>
+        )}
+      </Center>
     </form>
   );
 }

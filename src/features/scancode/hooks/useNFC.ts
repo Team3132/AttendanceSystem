@@ -6,7 +6,7 @@ export default function useNFC() {
     })
 }
 
-const getNFC = async () => new Promise<string | null>(async (res, rej) => {
+const getNFC = async () => new Promise<string | undefined>(async (res, rej) => {
     if ("NDEFReader" in window) {
         const ndef = new NDEFReader();
         await ndef.scan();
@@ -19,7 +19,7 @@ const getNFC = async () => new Promise<string | null>(async (res, rej) => {
                 console.log("Record type:  " + record.recordType);
                 console.log("MIME type:    " + record.mediaType);
                 console.log("Record id:    " + record.id);
-                res( record.id ?? null)
+                res( record.id)
               }
         }
       } else {
