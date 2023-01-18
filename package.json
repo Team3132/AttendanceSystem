@@ -33,6 +33,8 @@
     "@types/lodash.pick": "^4.4.7",
     "axios": "^1.2.0",
     "buffer": "^6.0.3",
+    "chakra-ui-autocomplete": "^1.4.5",
+    "downshift": "^7.2.0",
     "framer-motion": "^8.2.4",
     "lodash.pick": "^4.4.0",
     "luxon": "^3.2.1",

@@ -1,10 +1,13 @@
 import { DataTable } from "@/components/DataTable";
+import useRoles from "@/features/bot/hooks/useRoles";
 import { RsvpUser } from "@/generated";
-import { TableContainer } from "@chakra-ui/react";
+import { filter, TableContainer } from "@chakra-ui/react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { DateTime } from "luxon";
-import React from "react";
+import React, { useMemo, useState } from "react";
 import useEventRSVPStatuses from "../hooks/useEventRSVPStatuses";
+import { CUIAutoComplete } from "chakra-ui-autocomplete";
+import Autocomplete from "@/components/Autocomplete";
 
 const columnHelper = createColumnHelper<RsvpUser>();
 
@@ -75,8 +78,25 @@ export interface RSVPListProps {
   eventId?: string;
 }
 
+interface RoleItem {
+  label: string;
+  value: string;
+}
+
 export const RSVPList: React.FC<RSVPListProps> = ({ eventId }) => {
   const { data: rsvps } = useEventRSVPStatuses(eventId);
+  const roles = useRoles();
+
+  const options = useMemo(() => {
+    if (!roles.data) return [];
+    return roles.data.map((role) => ({ label: role.name, value: role.id }));
+  }, [roles.data]);
+
+  const handleSelectedItemsChange = (selectedItems?: RoleItem[]) => {
+    if (selectedItems) {
+      setSelected(selectedItems);
+    }
+  };
   // const [sorting, setSorting] = React.useState<SortingState>([]);
   // const table = useReactTable({
   //   data: rsvps ?? [],
@@ -87,10 +107,29 @@ export const RSVPList: React.FC<RSVPListProps> = ({ eventId }) => {
   //   columns,
   //   getCoreRowModel: getCoreRowModel(),
   // });
+  const [selected, setSelected] = useState<Array<RoleItem>>([])
+
+  const filteredRsvps = useMemo(() => {
+    if (!rsvps) return []
+    if (!selected.length) return rsvps
+
+    return rsvps.filter(rsvp => selected.some((v) => rsvp.user.roles.includes(v.value)))
+  }, [selected, rsvps])
 
   return (
     <TableContainer>
-      <DataTable columns={columns} data={rsvps ?? []} />
+      <Autocomplete
+        options={options}
+        filter={(items, filterValue) =>
+          items.filter((item) =>
+            item.label.toLowerCase().includes(filterValue.toLowerCase())
+          )
+        }
+        itemToString={(item) => item?.label ?? ""}
+        onChange={setSelected}
+        value={selected}
+      />
+      <DataTable columns={columns} data={filteredRsvps ?? []} />
     </TableContainer>
   );
 };
