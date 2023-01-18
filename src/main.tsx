@@ -19,6 +19,12 @@ import AdminPage from "./pages/AdminPage";
 import ErrorBoundary from "./screens/ErrorBoundary";
 import Home from "./screens/Home";
 import queryClient from "./services/queryClient";
+import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
+import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
+
+const persister = createSyncStoragePersister({
+  storage: window.localStorage,
+});
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>
@@ -26,7 +32,10 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <ChakraProvider>
       <ErrorBoundary>
         <SWToast />
-        <QueryClientProvider client={queryClient}>
+        <PersistQueryClientProvider
+          client={queryClient}
+          persistOptions={{ persister }}
+        >
           <Routes>
             <Route path="/" element={<Layout />}>
               {/* Public Pages */}
@@ -53,7 +62,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           </Routes>
 
           <ReactQueryDevtools />
-        </QueryClientProvider>
+        </PersistQueryClientProvider>
       </ErrorBoundary>
     </ChakraProvider>
   </BrowserRouter>
