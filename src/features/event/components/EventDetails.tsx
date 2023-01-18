@@ -38,19 +38,17 @@ export default function EventDetails(props: EventDetailsProps) {
         </Center>
       ) : null}
 
-        <StatGroup textAlign={"center"}>
-          <Stat>
-            <StatLabel>
-              Your Status
-            </StatLabel>
-            <StatNumber py={2}>
-              <RSVPButtonRow eventId={event.id}/>
-            </StatNumber>
-            <StatHelpText>
-              Whether or not you're coming to the event.
-            </StatHelpText>
-          </Stat>
-        </StatGroup>
+      <StatGroup textAlign={"center"}>
+        <Stat>
+          <StatLabel>Your Status</StatLabel>
+          <StatNumber py={2}>
+            <RSVPButtonRow eventId={event.id} />
+          </StatNumber>
+          <StatHelpText>
+            Whether or not you're coming to the event.
+          </StatHelpText>
+        </Stat>
+      </StatGroup>
       <StatGroup>
         <Stat>
           <StatLabel>Start</StatLabel>

@@ -2,35 +2,31 @@ import { useTab, useToast } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 
 export default function useNFC() {
-  const toast = useToast()
+  const toast = useToast();
 
-    return useMutation({
-        mutationFn: () => getNFC(),
-    })
+  return useMutation({
+    mutationFn: () => getNFC(),
+  });
 }
 
-const getNFC = async () => new Promise<string | undefined>(async (res, rej) => {
+const getNFC = async () =>
+  new Promise<string | undefined>(async (res, rej) => {
     if ("NDEFReader" in window) {
-        const ndef = new NDEFReader();
-        await ndef.scan();
-        ndef.onreadingerror = () => {
-          throw new Error("Reading failed");
-        };
-        ndef.onreading = (event) => {
-            const {message, serialNumber} = event;
-            res( serialNumber)
-            for (const record of message.records) {
-                console.log("Record type:  " + record.recordType);
-                console.log("MIME type:    " + record.mediaType);
-                console.log("Record id:    " + record.id);
-                
-              
-              }
+      const ndef = new NDEFReader();
+      await ndef.scan();
+      ndef.onreadingerror = () => {
+        throw new Error("Reading failed");
+      };
+      ndef.onreading = (event) => {
+        const { message, serialNumber } = event;
+        res(serialNumber);
+        for (const record of message.records) {
+          console.log("Record type:  " + record.recordType);
+          console.log("MIME type:    " + record.mediaType);
+          console.log("Record id:    " + record.id);
         }
-      } else {
-        rej()
-      }
-    
-})
-  
-
+      };
+    } else {
+      rej();
+    }
+  });

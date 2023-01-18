@@ -26,7 +26,6 @@ export default function EventPage() {
   if (!event.isSuccess || !auth.isSuccess) {
     return <Spinner />;
   }
-  
 
   return (
     <>
@@ -68,9 +67,9 @@ export default function EventPage() {
             </Container>
           </TabPanel>
           <TabPanel>
-            <Container maxW="container.md">
+            {/* <Container maxW="container.md"> */}
               <RSVPList eventId={event.data.id} />
-            </Container>
+            {/* </Container> */}
           </TabPanel>
           <TabPanel>
             <Container maxW="container.md">
