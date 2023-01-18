@@ -113,7 +113,7 @@ export const RSVPList: React.FC<RSVPListProps> = ({ eventId }) => {
     if (!rsvps) return []
     if (!selected.length) return rsvps
 
-    return rsvps.filter(rsvp => selected.some((v) => rsvp.user.roles.includes(v.value)))
+    return rsvps.filter(rsvp => selected.every((v) => rsvp.user.roles.includes(v.value)))
   }, [selected, rsvps])
 
   return (
