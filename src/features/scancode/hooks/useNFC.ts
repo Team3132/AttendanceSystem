@@ -6,9 +6,6 @@ export default function useNFC() {
 
     return useMutation({
         mutationFn: () => getNFC(),
-        onSuccess(data, variables, context) {
-          toast({description: JSON.stringify(data)})
-        },
     })
 }
 
