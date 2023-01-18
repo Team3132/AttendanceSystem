@@ -84,6 +84,7 @@ export default function ScancodeInput(props: ScancodeInputProps) {
                 setValue("code", nfcRes);
               }
             }}
+            isLoading={getNfc.isLoading}
           >
             Scan NFC
           </Button>
