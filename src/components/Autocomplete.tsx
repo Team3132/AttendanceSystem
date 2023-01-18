@@ -31,7 +31,7 @@ type AutocompleteProps<D extends unknown> = Omit<
   filter: (items: D[], input: string) => D[];
   options: D[];
   onChange: (newVal: D[]) => void;
-  value: D[]
+  value: D[];
 };
 
 export default function Autocomplete<D>({
@@ -121,22 +121,38 @@ export default function Autocomplete<D>({
           <Box {...getMenuProps()} as="ul" overflow={"scroll"}>
             {isOpen && (
               <Stack divider={<Divider />}>
-                {items.map((item, index) => (
-                  <HStack
-                    as="li"
-                    key={index}
-                    {...getItemProps({ item, index })}
-                  >
-                    <Checkbox
-                      isChecked={selectedItems.includes(item)}
+                {items
+                  // sort items by whether they are selected
+                  .sort((a, b) => {
+                    const aIndex = selectedItems.indexOf(a);
+                    const bIndex = selectedItems.indexOf(b);
+                    if (aIndex === -1 && bIndex === -1) {
+                      return 0;
+                    }
+                    if (aIndex === -1) {
+                      return 1;
+                    }
+                    if (bIndex === -1) {
+                      return -1;
+                    }
+                    return aIndex - bIndex;
+                  })
+                  .map((item, index) => (
+                    <HStack
+                      as="li"
+                      key={index}
                       {...getItemProps({ item, index })}
                     >
-                      <Tag>
-                        {props.itemToString && props.itemToString(item)}
-                      </Tag>
-                    </Checkbox>
-                  </HStack>
-                ))}
+                      <Checkbox
+                        isChecked={selectedItems.includes(item)}
+                        {...getItemProps({ item, index })}
+                      >
+                        <Tag>
+                          {props.itemToString && props.itemToString(item)}
+                        </Tag>
+                      </Checkbox>
+                    </HStack>
+                  ))}
               </Stack>
             )}
           </Box>
