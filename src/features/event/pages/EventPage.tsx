@@ -1,5 +1,5 @@
 import { useAuthStatus } from "@/features/auth";
-import { RSVPStatus } from "@/features/rsvp";
+import { RSVPList, RSVPStatus } from "@/features/rsvp";
 import {
   Button,
   Container,
@@ -26,6 +26,7 @@ export default function EventPage() {
   if (!event.isSuccess || !auth.isSuccess) {
     return <Spinner />;
   }
+  
 
   return (
     <>
@@ -68,7 +69,7 @@ export default function EventPage() {
           </TabPanel>
           <TabPanel>
             <Container maxW="container.md">
-              <RSVPStatus event={event.data} />
+              <RSVPList eventId={event.data.id} />
             </Container>
           </TabPanel>
           <TabPanel>

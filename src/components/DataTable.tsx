@@ -1,5 +1,5 @@
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
-import { chakra, Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import { chakra, Table, Tbody, Td, Tfoot, Th, Thead, Tr } from "@chakra-ui/react";
 import {
   ColumnDef,
   flexRender,
@@ -20,14 +20,18 @@ export function DataTable<Data extends object>({
   columns,
 }: DataTableProps<Data>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [columnVisibility, setColumnVisibility] = React.useState({})
   const table = useReactTable({
     columns,
     data,
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
+    onColumnVisibilityChange: setColumnVisibility,
     getSortedRowModel: getSortedRowModel(),
+
     state: {
       sorting,
+      columnVisibility,
     },
   });
 
@@ -44,6 +48,7 @@ export function DataTable<Data extends object>({
                   key={header.id}
                   onClick={header.column.getToggleSortingHandler()}
                   isNumeric={meta?.isNumeric}
+                  colSpan={header.colSpan}
                 >
                   {flexRender(
                     header.column.columnDef.header,
@@ -80,6 +85,27 @@ export function DataTable<Data extends object>({
           </Tr>
         ))}
       </Tbody>
+      <Tfoot>
+        {table.getFooterGroups().map(footerGroup => <Tr key={footerGroup.id}>
+            {footerGroup.headers.map((footer) => {
+              // see https://tanstack.com/table/v8/docs/api/core/column-def#meta to type this correctly
+              const meta: any = footer.column.columnDef.meta;
+              return (
+                <Th
+                  key={footer.id}
+                  onClick={footer.column.getToggleSortingHandler()}
+                  isNumeric={meta?.isNumeric}
+                  colSpan={footer.colSpan}
+                >
+                  {flexRender(
+                    footer.column.columnDef.header,
+                    footer.getContext()
+                  )}
+                </Th>
+              );
+            })}
+          </Tr>)}
+      </Tfoot>
     </Table>
   );
 }
