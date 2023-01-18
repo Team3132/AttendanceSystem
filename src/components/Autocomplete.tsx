@@ -109,7 +109,7 @@ export default function Autocomplete<D>({
       isOpen={isOpen}
       closeOnBlur={false}
       isLazy
-      placement="auto-start"
+      placement="bottom-start"
       lazyBehavior="keepMounted"
     >
       <PopoverAnchor>
@@ -118,7 +118,7 @@ export default function Autocomplete<D>({
 
       <PopoverContent>
         <PopoverBody>
-          <Box {...getMenuProps()} as="ul">
+          <Box {...getMenuProps()} as="ul" overflow={"scroll"}>
             {isOpen && (
               <Stack divider={<Divider />}>
                 {items.map((item, index) => (
