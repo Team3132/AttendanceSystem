@@ -35,6 +35,12 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <PersistQueryClientProvider
           client={queryClient}
           persistOptions={{ persister }}
+          onSuccess={() => {
+            // resume mutations after initial restore from localStorage was successful
+            queryClient.resumePausedMutations().then(() => {
+              queryClient.invalidateQueries();
+            });
+          }}
         >
           <Routes>
             <Route path="/" element={<Layout />}>
