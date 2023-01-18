@@ -21,12 +21,13 @@ const getNFC = async () => new Promise<string | undefined>(async (res, rej) => {
         };
         ndef.onreading = (event) => {
             const {message, serialNumber} = event;
+            res( serialNumber)
             for (const record of message.records) {
                 console.log("Record type:  " + record.recordType);
                 console.log("MIME type:    " + record.mediaType);
                 console.log("Record id:    " + record.id);
                 
-                res( serialNumber)
+              
               }
         }
       } else {
