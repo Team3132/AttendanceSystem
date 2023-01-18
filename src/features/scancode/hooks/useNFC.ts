@@ -19,14 +19,14 @@ const getNFC = async () => new Promise<string | undefined>(async (res, rej) => {
         ndef.onreadingerror = () => {
           throw new Error("Reading failed");
         };
-        ndef.onreading = event => {
-            const {message} = event;
+        ndef.onreading = (event) => {
+            const {message, serialNumber} = event;
             for (const record of message.records) {
                 console.log("Record type:  " + record.recordType);
                 console.log("MIME type:    " + record.mediaType);
                 console.log("Record id:    " + record.id);
                 
-                res( record.id)
+                res( serialNumber)
               }
         }
       } else {
