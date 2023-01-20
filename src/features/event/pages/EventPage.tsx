@@ -12,11 +12,12 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import { FaArrowRight } from "react-icons/fa";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import AdminCheckin from "../components/AdminCheckin";
 import EventDetails from "../components/EventDetails";
 import UserCheckin from "../components/UserCheckin";
 import useEvent from "../hooks/useEvent";
+import useRouteMatch from "../hooks/useRouteMatch";
 
 export default function EventPage() {
   const { eventId } = useParams();
@@ -26,6 +27,22 @@ export default function EventPage() {
   if (!event.isSuccess || !auth.isSuccess) {
     return <Spinner />;
   }
+
+  const { pathname } = useLocation();
+
+  // const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleChange = (v: string) => {
+    navigate(v);
+  };
+
+  const routeMatch = useRouteMatch([
+    "/gallery/:siteId/tile",
+    "/gallery/:siteId/list",
+    "/gallery/:siteId/map",
+  ]);
+  
+  const currentTab = routeMatch?.pattern.path;
 
   return (
     <>
