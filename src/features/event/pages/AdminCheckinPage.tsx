@@ -14,7 +14,7 @@ export default function AdminCheckinPage() {
   }
 
   return (
-    <Container maxW="container.md">
+    <Container maxW="container.sm">
       <AdminCheckin event={event.data} />
     </Container>
   );
