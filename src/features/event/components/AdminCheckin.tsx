@@ -11,29 +11,9 @@ interface AdminCheckinProps {
 
 export default function AdminCheckin(props: AdminCheckinProps) {
   const { event } = props;
-  const adminScreenRef = useRef<HTMLDivElement | null>(null);
-
-  const handleFullscreen: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    adminScreenRef.current?.requestFullscreen();
-  };
 
   return (
-    <Stack
-      alignContent={"center"}
-      position="relative"
-      bgColor={"chakra-body-bg"}
-      ref={adminScreenRef}
-      p={5}
-    >
-      <IconButton
-        icon={<MdFullscreen />}
-        position="absolute"
-        right={5}
-        bottom="auto"
-        top={5}
-        aria-label={"Fullscreen"}
-        onClick={handleFullscreen}
-      />
+    <Stack alignContent={"center"} bgColor={"chakra-body-bg"} p={5}>
       <StatGroup p={5} textAlign="center">
         <EventTotpStat eventId={event.id} />
       </StatGroup>

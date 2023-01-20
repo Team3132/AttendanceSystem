@@ -12,9 +12,15 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import { FaArrowRight } from "react-icons/fa";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  Link,
+  Outlet,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import AdminCheckin from "../components/AdminCheckin";
-import EventDetails from "../components/EventDetails";
+import EventDetails from "./EventDetailsPage";
 import UserCheckin from "../components/UserCheckin";
 import useEvent from "../hooks/useEvent";
 import useRouteMatch from "../hooks/useRouteMatch";
@@ -24,10 +30,6 @@ export default function EventPage() {
   const event = useEvent(eventId);
   const auth = useAuthStatus();
 
-  if (!event.isSuccess || !auth.isSuccess) {
-    return <Spinner />;
-  }
-
   const { pathname } = useLocation();
 
   // const dispatch = useDispatch();
@@ -36,13 +38,21 @@ export default function EventPage() {
     navigate(v);
   };
 
-  const routeMatch = useRouteMatch([
-    "/gallery/:siteId/tile",
-    "/gallery/:siteId/list",
-    "/gallery/:siteId/map",
-  ]);
-  
-  const currentTab = routeMatch?.pattern.path;
+  const routeMatchFound = useRouteMatch(
+    [
+      "/event/:eventId",
+      "/event/:eventId/attendance",
+      "/event/:eventId/checkin",
+    ].concat(auth?.isAdmin ? ["/event/:eventId/admin-checkin"] : [])
+  );
+
+  const currentTab = routeMatchFound?.match.pattern.path;
+
+  const currentIndex = routeMatchFound?.i;
+
+  if (!event.isSuccess || !auth.isSuccess) {
+    return <Spinner />;
+  }
 
   return (
     <>
@@ -69,38 +79,37 @@ export default function EventPage() {
           </Button>
         )}
       </Heading>
-      <Tabs isLazy>
+      <Tabs index={currentIndex}>
         <TabList justifyContent={"center"}>
-          <Tab>Details</Tab>
-          <Tab>Attendance</Tab>
-          <Tab>User Check-in</Tab>
-          {auth.isLoading || (auth.isAdmin && <Tab>Event Check-in</Tab>)}
+          <Tab onClick={() => navigate(`/event/${eventId}`)}>Details</Tab>
+          <Tab onClick={() => navigate(`/event/${eventId}/attendance`)}>
+            Attendance
+          </Tab>
+          <Tab onClick={() => navigate(`/event/${eventId}/checkin`)}>
+            User Check-in
+          </Tab>
+          {auth.isLoading ||
+            (auth.isAdmin && (
+              <Tab onClick={() => navigate(`/event/${eventId}/admin-checkin`)}>
+                Event Check-in
+              </Tab>
+            ))}
         </TabList>
 
         <TabPanels>
           <TabPanel>
-            <Container maxW="container.md">
-              <EventDetails event={event.data} />
-            </Container>
+            <Outlet />
           </TabPanel>
           <TabPanel>
-            {/* <Container maxW="container.md"> */}
-              <RSVPList eventId={event.data.id} />
-            {/* </Container> */}
+            <Outlet />
           </TabPanel>
           <TabPanel>
-            <Container maxW="container.md">
-              {/* User Checkin, i.e entering event code */}
-              <UserCheckin event={event.data} />
-            </Container>
+            <Outlet />
           </TabPanel>
           {auth.isLoading ||
             (auth.isAdmin && (
               <TabPanel>
-                <Container maxW="container.md">
-                  {auth.isAdmin ? <AdminCheckin event={event.data} /> : null}{" "}
-                  {/** Used to display checkin qr and code entering */}
-                </Container>
+                <Outlet />
               </TabPanel>
             ))}
         </TabPanels>

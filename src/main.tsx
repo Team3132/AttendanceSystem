@@ -5,11 +5,15 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthWrapper } from "./features/auth";
 import {
+  AdminCheckinPage,
   AgendaPage,
+  AttendancePage,
   CreateEventPage,
   EditEventPage,
+  EventDetailsPage,
   EventPage,
   FullCalendar,
+  UserCheckinPage,
 } from "./features/event";
 import { SWToast } from "./features/pwa";
 import { ScancodePage } from "./features/scancode";
@@ -48,11 +52,13 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               <Route index element={<Home />} />
               {/* Authenticated-only pages */}
               <Route element={<AuthWrapper />}>
-                <Route path="event/:eventId" element={<EventPage />} />
+                <Route path="event/:eventId" element={<EventPage />}>
+                  <Route index element={<EventDetailsPage />} />
+                  <Route path="attendance" element={<AttendancePage />} />
+                  <Route path="checkin" element={<UserCheckinPage />} />
+                </Route>
                 <Route path="agenda" element={<AgendaPage />} />
-                {/* <Route path="calendar" element={<Calendar />} /> */}
                 <Route path="calendar" element={<FullCalendar />} />
-                {/* <Route path="custom" element={<CustomCalendar />} /> */}
                 <Route element={<ScancodePage />} path="codes" />
                 <Route element={<ProfilePage />} path="profile" />
               </Route>
@@ -64,6 +70,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 <Route element={<ProfilePage />} path="profile/:userId" />
                 <Route element={<ScancodePage />} path="codes/:userId" />
               </Route>
+            </Route>
+            <Route element={<AuthWrapper adminOnly />}>
+              <Route path="/event/:eventId/admin-checkin" element={<AdminCheckinPage />} />
             </Route>
           </Routes>
 

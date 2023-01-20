@@ -6,9 +6,9 @@ export default function useRouteMatch(patterns: readonly string[]) {
     for (let i = 0; i < patterns.length; i += 1) {
       const pattern = patterns[i];
       if (!pattern) continue;
-      const possibleMatch = matchPath(pattern, pathname);
-      if (possibleMatch !== null) {
-        return possibleMatch;
+      const match = matchPath(pattern, pathname);
+      if (match !== null) {
+        return {match, i};
       }
     }
   }
