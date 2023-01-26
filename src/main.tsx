@@ -36,15 +36,15 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <ChakraProvider>
       <ErrorBoundary>
         <SWToast />
-        <PersistQueryClientProvider
+        <QueryClientProvider
           client={queryClient}
-          persistOptions={{ persister }}
-          onSuccess={() => {
-            // resume mutations after initial restore from localStorage was successful
-            queryClient.resumePausedMutations().then(() => {
-              queryClient.invalidateQueries();
-            });
-          }}
+          // persistOptions={{ persister }}
+          // onSuccess={() => {
+          //   // resume mutations after initial restore from localStorage was successful
+          //   queryClient.resumePausedMutations().then(() => {
+          //     queryClient.invalidateQueries();
+          //   });
+          // }}
         >
           <Routes>
             <Route path="/" element={<Layout />}>
@@ -69,18 +69,16 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 <Route element={<AdminPage />} path="admin" />
                 <Route element={<ProfilePage />} path="profile/:userId" />
                 <Route element={<ScancodePage />} path="codes/:userId" />
+                <Route
+                  path="event/:eventId/admin-checkin"
+                  element={<AdminCheckinPage />}
+                />
               </Route>
-            </Route>
-            <Route element={<AuthWrapper adminOnly />}>
-              <Route
-                path="/event/:eventId/admin-checkin"
-                element={<AdminCheckinPage />}
-              />
             </Route>
           </Routes>
 
           <ReactQueryDevtools />
-        </PersistQueryClientProvider>
+        </QueryClientProvider>
       </ErrorBoundary>
     </ChakraProvider>
   </BrowserRouter>
