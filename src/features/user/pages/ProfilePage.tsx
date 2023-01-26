@@ -87,13 +87,12 @@ export const ProfileScreen: React.FC = () => {
               <FormLabel htmlFor="firstName">Default RSVP Status</FormLabel>
               <Select
                 id="firstName"
-                placeholder="Default RSVP Status"
                 {...register("defaultStatus", { required: true })}
                 variant={"filled"}
               >
-                <option value={UpdateUserDto.defaultStatus.MAYBE}></option>
-                <option value={UpdateUserDto.defaultStatus.YES}></option>
-                <option value={UpdateUserDto.defaultStatus.NO}></option>
+                <option value={UpdateUserDto.defaultStatus.MAYBE}>Maybe</option>
+                <option value={UpdateUserDto.defaultStatus.YES}>Yes</option>
+                <option value={UpdateUserDto.defaultStatus.NO}>No</option>
               </Select>
             </FormControl>
           </HStack>
