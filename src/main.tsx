@@ -47,12 +47,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           // }}
         >
           <Routes>
-            <Route element={<AuthWrapper adminOnly />}>
-              <Route
-                path="/event/:eventId/admin-checkin"
-                element={<AdminCheckinPage />}
-              />
-            </Route>
+            
             <Route path="/" element={<Layout />}>
               {/* Public Pages */}
               <Route index element={<Home />} />
@@ -75,13 +70,15 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 <Route element={<AdminPage />} path="admin" />
                 <Route element={<ProfilePage />} path="profile/:userId" />
                 <Route element={<ScancodePage />} path="codes/:userId" />
-                <Route
-                  path="event/:eventId/admin-checkin"
-                  element={<AdminCheckinPage />}
-                />
+              
               </Route>
             </Route>
-            
+            <Route element={<AuthWrapper adminOnly />}>
+              <Route
+                path="/event/:eventId/admin-checkin"
+                element={<AdminCheckinPage />}
+              />
+            </Route>
           </Routes>
 
           <ReactQueryDevtools />
