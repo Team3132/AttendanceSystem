@@ -9,36 +9,31 @@ import useUsers from "../hooks/useUsers";
 const columnHelper = createColumnHelper<User>();
 
 const columns = [
-  columnHelper.accessor("firstName", {
-    id: "firstName",
-    header: "First Name",
-    footer: "First Name",
+  columnHelper.accessor("username", {
+    id: "username",
+    header: "Username",
+    footer: "Username",
   }),
-  columnHelper.accessor("lastName", {
-    id: "lastName",
-    header: "Last Name",
-    footer: "Last Name",
-  }),
-  columnHelper.accessor((row) => `${row.firstName} ${row.lastName} profile`, {
+  columnHelper.accessor((row) => `${row.username} profile`, {
     id: "profile",
     header: "Profile",
     footer: "Profile",
     cell: ({ row: { original: row } }) => (
       <IconButton
-        aria-label={`${row.firstName} ${row.lastName} profile`}
+        aria-label={`${row.username} profile`}
         as={Link}
         to={`/profile/${row.id}`}
         icon={<FaUserCircle />}
       />
     ),
   }),
-  columnHelper.accessor((row) => `${row.firstName}-${row.lastName}-codes`, {
+  columnHelper.accessor((row) => `${row.username}-codes`, {
     id: "codes",
     header: "Codes",
     footer: "Codes",
     cell: ({ row: { original: row } }) => (
       <IconButton
-        aria-label={`${row.firstName} ${row.lastName} codes`}
+        aria-label={`${row.username} codes`}
         as={Link}
         to={`/codes/${row.id}`}
         icon={<FaCode />}

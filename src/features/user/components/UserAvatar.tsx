@@ -16,7 +16,7 @@ export const UserAvatar: React.FC<UserAvatarProps> = ({ userId, ...rest }) => {
           ? `https://cdn.discordapp.com/avatars/${user?.id}/${avatarId}.png`
           : undefined
       }
-      name={`${user?.firstName ?? ""} ${user?.lastName ?? ""}`}
+      name={user?.username}
       bgColor="transparent"
       {...rest}
     />

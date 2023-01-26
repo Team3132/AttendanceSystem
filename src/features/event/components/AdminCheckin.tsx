@@ -15,8 +15,8 @@ export default function AdminCheckin(props: AdminCheckinProps) {
   return (
     <Stack alignContent={"center"} bgColor={"chakra-body-bg"} p={5}>
       <Heading size="lg" textAlign={"center"}>
-            {event.title}
-          </Heading>
+        {event.title}
+      </Heading>
       <StatGroup p={5} textAlign="center">
         <EventTotpStat eventId={event.id} />
       </StatGroup>

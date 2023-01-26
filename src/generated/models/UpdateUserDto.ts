@@ -3,6 +3,13 @@
 /* eslint-disable */
 
 export type UpdateUserDto = {
-  firstName?: string;
-  lastName?: string;
+  defaultStatus?: UpdateUserDto.defaultStatus;
 };
+
+export namespace UpdateUserDto {
+  export enum defaultStatus {
+    YES = "YES",
+    NO = "NO",
+    MAYBE = "MAYBE",
+  }
+}

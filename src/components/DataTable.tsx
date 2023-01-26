@@ -1,5 +1,14 @@
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
-import { chakra, Table, Tbody, Td, Tfoot, Th, Thead, Tr } from "@chakra-ui/react";
+import {
+  chakra,
+  Table,
+  Tbody,
+  Td,
+  Tfoot,
+  Th,
+  Thead,
+  Tr,
+} from "@chakra-ui/react";
 import {
   ColumnDef,
   flexRender,
@@ -20,7 +29,7 @@ export function DataTable<Data extends object>({
   columns,
 }: DataTableProps<Data>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnVisibility, setColumnVisibility] = React.useState({})
+  const [columnVisibility, setColumnVisibility] = React.useState({});
   const table = useReactTable({
     columns,
     data,
@@ -86,7 +95,8 @@ export function DataTable<Data extends object>({
         ))}
       </Tbody>
       <Tfoot>
-        {table.getFooterGroups().map(footerGroup => <Tr key={footerGroup.id}>
+        {table.getFooterGroups().map((footerGroup) => (
+          <Tr key={footerGroup.id}>
             {footerGroup.headers.map((footer) => {
               // see https://tanstack.com/table/v8/docs/api/core/column-def#meta to type this correctly
               const meta: any = footer.column.columnDef.meta;
@@ -104,7 +114,8 @@ export function DataTable<Data extends object>({
                 </Th>
               );
             })}
-          </Tr>)}
+          </Tr>
+        ))}
       </Tfoot>
     </Table>
   );

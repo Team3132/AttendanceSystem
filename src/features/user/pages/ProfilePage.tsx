@@ -11,6 +11,7 @@ import {
   Heading,
   HStack,
   Input,
+  Select,
   Stack,
   useClipboard,
   Wrap,
@@ -41,8 +42,7 @@ export const ProfileScreen: React.FC = () => {
   useEffect(() => {
     if (user) {
       reset({
-        firstName: user.firstName ?? undefined,
-        lastName: user.lastName ?? undefined,
+        defaultStatus: user.defaultStatus,
       });
     }
   }, [user]);
@@ -66,9 +66,7 @@ export const ProfileScreen: React.FC = () => {
         <UserAvatar size={"2xl"} userId={userId} />
       </Center>
 
-      <Heading textAlign={"center"}>
-        {user?.firstName} {user?.lastName}
-      </Heading>
+      <Heading textAlign={"center"}>{user?.username}</Heading>
       <Wrap justify={"center"} marginY={5}>
         {user?.roles?.map((role) => (
           <RoleTag key={role} roleId={role} colorScheme={"blue"}>
@@ -85,23 +83,18 @@ export const ProfileScreen: React.FC = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack>
           <HStack>
-            <FormControl isInvalid={!!errors.firstName}>
-              <FormLabel htmlFor="firstName">First Name</FormLabel>
-              <Input
+            <FormControl isInvalid={!!errors.defaultStatus}>
+              <FormLabel htmlFor="firstName">Default RSVP Status</FormLabel>
+              <Select
                 id="firstName"
-                placeholder="First Name"
-                {...register("firstName", { required: true })}
+                placeholder="Default RSVP Status"
+                {...register("defaultStatus", { required: true })}
                 variant={"filled"}
-              />
-            </FormControl>
-            <FormControl isInvalid={!!errors.lastName}>
-              <FormLabel htmlFor="lastName">Last Name</FormLabel>
-              <Input
-                id="lastName"
-                placeholder="Last Name"
-                {...register("lastName", { required: true })}
-                variant={"filled"}
-              />
+              >
+                <option value={UpdateUserDto.defaultStatus.MAYBE}></option>
+                <option value={UpdateUserDto.defaultStatus.YES}></option>
+                <option value={UpdateUserDto.defaultStatus.NO}></option>
+              </Select>
             </FormControl>
           </HStack>
 

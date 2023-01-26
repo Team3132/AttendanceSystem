@@ -28,8 +28,8 @@ export { UpdateEventDto } from "./models/UpdateEventDto";
 export { UpdateOrCreateRSVP } from "./models/UpdateOrCreateRSVP";
 export { UpdateRangeRSVP } from "./models/UpdateRangeRSVP";
 export { UpdateRsvpDto } from "./models/UpdateRsvpDto";
-export type { UpdateUserDto } from "./models/UpdateUserDto";
-export type { User } from "./models/User";
+export { UpdateUserDto } from "./models/UpdateUserDto";
+export { User } from "./models/User";
 
 export { AppService } from "./services/AppService";
 export { AuthService } from "./services/AuthService";

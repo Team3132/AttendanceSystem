@@ -26,8 +26,7 @@ export default function AdminCheckinPage() {
     <Flex h="100vh" flexDir={"column"}>
       <Spacer />
       <Container maxW="container.sm">
-          
-          <AdminCheckin event={event.data} />
+        <AdminCheckin event={event.data} />
       </Container>
       <Spacer />
     </Flex>

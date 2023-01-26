@@ -38,7 +38,7 @@ export default function ScancodeInput(props: ScancodeInputProps) {
     const user = await api.user.getUser(rsvp.userId);
     toast({
       status: "success",
-      description: `${user.firstName} ${user.lastName} signed in!`,
+      description: `${user.username} signed in!`,
     });
     reset();
   };

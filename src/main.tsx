@@ -72,7 +72,10 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               </Route>
             </Route>
             <Route element={<AuthWrapper adminOnly />}>
-              <Route path="/event/:eventId/admin-checkin" element={<AdminCheckinPage />} />
+              <Route
+                path="/event/:eventId/admin-checkin"
+                element={<AdminCheckinPage />}
+              />
             </Route>
           </Routes>
 

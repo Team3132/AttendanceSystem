@@ -12,20 +12,11 @@ import Autocomplete from "@/components/Autocomplete";
 const columnHelper = createColumnHelper<RsvpUser>();
 
 const columns = [
-  columnHelper.group({
-    id: "name",
+  columnHelper.accessor("user.username", {
     header: "Name",
-    columns: [
-      columnHelper.accessor("user.firstName", {
-        header: "First Name",
-        // footer: "First Name",
-      }),
-      columnHelper.accessor("user.lastName", {
-        header: "Last Name",
-        // footer: "Last Name",
-      }),
-    ],
+    // footer: "First Name",
   }),
+
   columnHelper.group({
     id: "status",
     header: "Status",
@@ -107,14 +98,16 @@ export const RSVPList: React.FC<RSVPListProps> = ({ eventId }) => {
   //   columns,
   //   getCoreRowModel: getCoreRowModel(),
   // });
-  const [selected, setSelected] = useState<Array<RoleItem>>([])
+  const [selected, setSelected] = useState<Array<RoleItem>>([]);
 
   const filteredRsvps = useMemo(() => {
-    if (!rsvps) return []
-    if (!selected.length) return rsvps
+    if (!rsvps) return [];
+    if (!selected.length) return rsvps;
 
-    return rsvps.filter(rsvp => selected.every((v) => rsvp.user.roles.includes(v.value)))
-  }, [selected, rsvps])
+    return rsvps.filter((rsvp) =>
+      selected.every((v) => rsvp.user.roles.includes(v.value))
+    );
+  }, [selected, rsvps]);
 
   return (
     <TableContainer>

@@ -4,7 +4,6 @@
 
 export type MinimalUser = {
   id: string;
-  firstName: string;
-  lastName: string;
+  username: string;
   roles: Array<string>;
 };

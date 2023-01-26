@@ -4,10 +4,18 @@
 
 export type User = {
   id: string;
-  firstName: any;
-  lastName: any;
+  username: any;
   createdAt: string;
   updatedAt: string;
+  defaultStatus: User.defaultStatus;
   calendarSecret: string;
   roles: Array<string>;
 };
+
+export namespace User {
+  export enum defaultStatus {
+    YES = "YES",
+    NO = "NO",
+    MAYBE = "MAYBE",
+  }
+}
