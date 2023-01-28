@@ -51,7 +51,7 @@ export const ProfileScreen: React.FC = () => {
 
   const onSubmit = (data: UpdateUserDto) => {
     const userIdent = userId ?? "me";
-
+    console.log({ data: data.defaultStatus });
     return mutateUser({ id: userIdent, user: data });
   };
 
@@ -87,8 +87,9 @@ export const ProfileScreen: React.FC = () => {
               <FormLabel htmlFor="firstName">Default RSVP Status</FormLabel>
               <Select
                 id="firstName"
-                {...register("defaultStatus", { required: true })}
+                {...register("defaultStatus")}
                 variant={"filled"}
+                placeholder="No option"
               >
                 <option value={UpdateUserDto.defaultStatus.MAYBE}>Maybe</option>
                 <option value={UpdateUserDto.defaultStatus.YES}>Yes</option>

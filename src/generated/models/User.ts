@@ -7,7 +7,7 @@ export type User = {
   username: any;
   createdAt: string;
   updatedAt: string;
-  defaultStatus: User.defaultStatus;
+  defaultStatus: User.defaultStatus | null;
   calendarSecret: string;
   roles: Array<string>;
 };

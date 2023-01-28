@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 export type UpdateUserDto = {
-  defaultStatus?: UpdateUserDto.defaultStatus;
+  defaultStatus?: UpdateUserDto.defaultStatus | null;
 };
 
 export namespace UpdateUserDto {

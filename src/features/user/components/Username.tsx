@@ -6,9 +6,5 @@ interface UsernameProps {
 
 export default function Username({ userId }: UsernameProps) {
   const { data: user, isLoading } = useUser(userId);
-  return (
-    <>
-      {user?.username}
-    </>
-  );
+  return <>{user?.username}</>;
 }

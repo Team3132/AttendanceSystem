@@ -47,7 +47,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           // }}
         >
           <Routes>
-            
             <Route path="/" element={<Layout />}>
               {/* Public Pages */}
               <Route index element={<Home />} />
@@ -70,7 +69,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 <Route element={<AdminPage />} path="admin" />
                 <Route element={<ProfilePage />} path="profile/:userId" />
                 <Route element={<ScancodePage />} path="codes/:userId" />
-              
               </Route>
             </Route>
             <Route element={<AuthWrapper adminOnly />}>
