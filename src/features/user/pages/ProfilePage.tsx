@@ -29,6 +29,10 @@ const OutreachReportLoadable = loadable(
   () => import("../components/OutreachReport")
 );
 
+interface OnSubmitData {
+  defaultStatus?: UpdateUserDto.defaultStatus | "";
+}
+
 export const ProfileScreen: React.FC = () => {
   const { userId } = useParams();
   const { data: user } = useUser(userId);
@@ -37,22 +41,27 @@ export const ProfileScreen: React.FC = () => {
     handleSubmit,
     formState: { errors, isSubmitting, isDirty },
     reset,
-  } = useForm<UpdateUserDto>();
+  } = useForm<OnSubmitData>();
 
   useEffect(() => {
     if (user) {
       reset({
-        defaultStatus: user.defaultStatus,
+        defaultStatus: user.defaultStatus === null ? "" : user.defaultStatus,
       });
     }
   }, [user]);
 
   const { mutateAsync: mutateUser } = useUpdateUser();
 
-  const onSubmit = (data: UpdateUserDto) => {
+  const onSubmit = (data: OnSubmitData) => {
     const userIdent = userId ?? "me";
-    console.log({ data: data.defaultStatus });
-    return mutateUser({ id: userIdent, user: data });
+    return mutateUser({
+      id: userIdent,
+      user: {
+        ...data,
+        defaultStatus: data.defaultStatus === "" ? null : data.defaultStatus,
+      },
+    });
   };
 
   const calendarUrl = `https://api.team3132.com/calendar?secret=${
