@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ESNext",
+    "noEmit": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./src",
+    "incremental": false,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "useDefineForClassFields": true,
+    "paths": {
+      "@/*": ["*"],
+      "@auth/*": ["auth/*"],
+      "@authenticator/*": ["authenticator/*"],
+      "@bot/*": ["bot/*"],
+      "@calendar/*": ["calendar/*"],
+      "@discord/*": ["discord/*"],
+      "@event/*": ["event/*"],
+      "@prisma/*": ["prisma/*"],
+      "@rsvp/*": ["rsvp/*"],
+      "@scancode/*": ["scancode/*"],
+      "@user/*": ["user/*"]
+    }
+  }
+}
