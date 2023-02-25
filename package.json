@@ -8,5 +8,19 @@
   "private": true,
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "scripts": {
+    "build:frontend": "yarn workspace frontend build",
+    "build:backend": "yarn workspace backend build",
+    "build": "concurrently \"npm:build:*\"",
+    "dev:frontend": "yarn workspace frontend dev",
+    "dev:backend": "yarn workspace backend dev",
+    "dev": "concurrently \"npm:dev:*\"",
+    "lint:frontend": "yarn workspace frontend lint",
+    "lint:backend": "yarn workspace backend lint",
+    "lint": "concurrently \"npm:lint:*\""
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  }
 }
