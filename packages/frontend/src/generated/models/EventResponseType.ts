@@ -10,6 +10,7 @@ export type EventResponseType = {
   endDate: string;
   allDay: boolean;
   type: EventResponseType.type;
+  roles: Array<string>;
 };
 
 export namespace EventResponseType {

@@ -9,6 +9,7 @@ export type UpdateEventDto = {
   endDate?: string;
   allDay?: boolean;
   type: UpdateEventDto.type;
+  roles: Array<string>;
 };
 
 export namespace UpdateEventDto {

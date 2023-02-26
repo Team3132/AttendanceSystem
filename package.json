@@ -21,7 +21,9 @@
     "lint": "yarn lint:frontend && yarn lint:backend",
     "typecheck:frontend": "yarn workspace frontend tsc --noEmit",
     "typecheck:backend": "yarn workspace backend tsc --noEmit",
-    "typecheck": "yarn typecheck:frontend && yarn typecheck:backend"
+    "typecheck": "yarn typecheck:frontend && yarn typecheck:backend",
+    "generate:openapi": "yarn workspace frontend generate",
+    "generate:prisma": "yarn workspace backend prisma generate"
   },
   "devDependencies": {
     "concurrently": "^7.6.0",
