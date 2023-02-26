@@ -3,11 +3,30 @@ import { AuthenticatorService } from '@/authenticator/authenticator.service';
 import { Module } from '@nestjs/common';
 import { BotController } from './bot.controller';
 import { BotService } from './bot.service';
+import { RsvpButton } from './buttons/RsvpButton';
+import { RsvpsButton } from './buttons/RsvpsButton';
+import { AttendanceCommand } from './commands/Attendance.command';
+import { CheckinCommand } from './commands/Checkin.command';
+import { MeetingsCommand } from './commands/Meetings.command';
+import { RequestRsvpCommand } from './commands/RequestRsvp.command';
+import { RsvpCommand } from './commands/Rsvp.command';
+import { RsvpsCommand } from './commands/Rsvps.command';
 
 @Module({
   controllers: [BotController],
   imports: [AuthenticatorModule],
-  providers: [BotService, AuthenticatorService],
+  providers: [
+    BotService,
+    AuthenticatorService,
+    RsvpButton,
+    RsvpsButton,
+    AttendanceCommand,
+    CheckinCommand,
+    MeetingsCommand,
+    RequestRsvpCommand,
+    RsvpCommand,
+    RsvpsCommand,
+  ],
   exports: [BotService],
 })
 export class BotModule {}
