@@ -29,5 +29,6 @@
       "@scancode/*": ["scancode/*"],
       "@user/*": ["user/*"]
     }
-  }
+  },
+  "exclude": ["**/node_modules"],
 }

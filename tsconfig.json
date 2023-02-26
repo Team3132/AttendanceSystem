@@ -9,6 +9,7 @@
     ],
     "compilerOptions": {
         "noEmit": true,
-        "declaration": false
+        "declaration": false,
+        "skipLibCheck": true
     }
 }

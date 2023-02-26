@@ -6,7 +6,7 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Cron } from '@nestjs/schedule';
-import { bold, Client } from 'discord.js';
+import { bold, ChannelType, Client } from 'discord.js';
 import { DateTime } from 'luxon';
 
 @Injectable()
@@ -114,6 +114,9 @@ export class TaskService {
 
     if (fetchedChannel.isDMBased())
       throw new Error('This channel is not in a server');
+
+    if (fetchedChannel.type === ChannelType.GuildStageVoice) 
+      throw new Error('This channel is a stage voice channel');
 
     const messages = nextEvents.map((event) =>
       rsvpReminderMessage(
