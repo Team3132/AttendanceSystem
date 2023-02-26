@@ -11,6 +11,7 @@ import { MeetingsCommand } from './commands/Meetings.command';
 import { RequestRsvpCommand } from './commands/RequestRsvp.command';
 import { RsvpCommand } from './commands/Rsvp.command';
 import { RsvpsCommand } from './commands/Rsvps.command';
+import { DelayModal } from './modals/Delay.modal';
 
 @Module({
   controllers: [BotController],
@@ -26,6 +27,7 @@ import { RsvpsCommand } from './commands/Rsvps.command';
     RequestRsvpCommand,
     RsvpCommand,
     RsvpsCommand,
+    DelayModal,
   ],
   exports: [BotService],
 })

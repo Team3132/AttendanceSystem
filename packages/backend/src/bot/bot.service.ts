@@ -1,55 +1,9 @@
 import { PrismaService } from '@/prisma/prisma.service';
-import {
-  bold,
-  EmbedBuilder,
-  ModalActionRowComponentBuilder,
-  roleMention,
-  time,
-} from '@discordjs/builders';
-import {
-  BadRequestException,
-  Injectable,
-  Logger,
-  NotFoundException,
-  UseInterceptors,
-} from '@nestjs/common';
-import { Event, RSVP, RSVPStatus } from '@prisma/client';
-import {
-  ActionRowBuilder,
-  BaseMessageOptions,
-  ButtonBuilder,
-  ButtonStyle,
-  GuildMember,
-  ModalBuilder,
-  PermissionFlagsBits,
-  StringSelectMenuBuilder,
-  StringSelectMenuComponentData,
-  TextInputBuilder,
-} from 'discord.js';
-import {
-  Button,
-  ButtonContext,
-  ComponentParam,
-  Context,
-  ContextOf,
-  On,
-  Options,
-  SlashCommand,
-  SlashCommandContext,
-} from 'necord';
+import { Injectable, Logger } from '@nestjs/common';
+import { Context, ContextOf, On } from 'necord';
 import { Client } from 'discord.js';
 import { ConfigService } from '@nestjs/config';
-import { EventAutocompleteInterceptor } from './interceptors/event.interceptor';
-import { AttendanceDto } from './dto/attendance.dto';
-import { DateTime } from 'luxon';
-import { RsvpDto } from './dto/rsvp.dto';
-import { RequestRSVPDto } from './dto/requestRSVP.dto';
-import { CheckinDto } from './dto/checkin.dto';
 import { AuthenticatorService } from '@/authenticator/authenticator.service';
-import rsvpReminderMessage from './utils/rsvpReminderMessage';
-import rsvpToDescription from './utils/rsvpToDescription';
-import connectOrCreateGuildMember from './utils/connectOrCreateGuildMember';
-import attendanceToDescription from './utils/attendanceToDescription';
 
 @Injectable()
 export class BotService {

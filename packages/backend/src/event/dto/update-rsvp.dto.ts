@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { RSVPStatus } from '@prisma/client';
-import { IsDateString, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 /**
  * The data used to edit or create a new RSVP
@@ -10,4 +10,8 @@ export class UpdateOrCreateRSVP {
   @IsNotEmpty()
   @ApiProperty({ enum: RSVPStatus })
   status: RSVPStatus;
+  @IsOptional()
+  @IsNumber()
+  @ApiProperty({ nullable: true })
+  delay?: number;
 }
