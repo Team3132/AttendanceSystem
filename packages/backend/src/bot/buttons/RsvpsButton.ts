@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { RSVPStatus } from '@prisma/client';
 import { GuildMember } from 'discord.js';
 import { Button, Context, ButtonContext, ComponentParam } from 'necord';
+import { DelayModalBuilder } from '../modals/Delay.modal';
 import connectOrCreateGuildMember from '../utils/connectOrCreateGuildMember';
 import rsvpReminderMessage from '../utils/rsvpReminderMessage';
 
@@ -96,13 +97,18 @@ export class RsvpsButton {
     const rsvps = event.RSVP;
     const frontendUrl = this.config.getOrThrow('FRONTEND_URL');
 
-    return interaction.update({
-      ...rsvpReminderMessage(
-        rsvp.event,
-        rsvps,
-        frontendUrl,
-        interaction.guild.roles.everyone.id,
-      ),
-    });
+    if (rsvpStatus === RSVPStatus.LATE) {
+      // return interaction.deferUpdate();
+      return interaction.showModal(DelayModalBuilder(event.id));
+    } else {
+      return interaction.update({
+        ...rsvpReminderMessage(
+          rsvp.event,
+          rsvps,
+          frontendUrl,
+          interaction.guild.roles.everyone.id,
+        ),
+      });
+    }
   }
 }
