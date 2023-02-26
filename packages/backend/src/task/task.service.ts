@@ -1,5 +1,5 @@
 import { AuthenticatorService } from '@/authenticator/authenticator.service';
-import { rsvpReminderMessage } from '@/bot/bot.service';
+import rsvpReminderMessage from '@/bot/utils/rsvpReminderMessage';
 import { ROLES } from '@/constants';
 import { GcalService } from '@/gcal/gcal.service';
 import { PrismaService } from '@/prisma/prisma.service';
@@ -115,7 +115,7 @@ export class TaskService {
     if (fetchedChannel.isDMBased())
       throw new Error('This channel is not in a server');
 
-    if (fetchedChannel.type === ChannelType.GuildStageVoice) 
+    if (fetchedChannel.type === ChannelType.GuildStageVoice)
       throw new Error('This channel is a stage voice channel');
 
     const messages = nextEvents.map((event) =>

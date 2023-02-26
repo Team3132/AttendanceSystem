@@ -11,5 +11,6 @@ export namespace UpdateUserDto {
     YES = "YES",
     NO = "NO",
     MAYBE = "MAYBE",
+    LATE = "LATE",
   }
 }

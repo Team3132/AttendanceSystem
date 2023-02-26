@@ -11,5 +11,6 @@ export namespace UpdateOrCreateRSVP {
     YES = "YES",
     NO = "NO",
     MAYBE = "MAYBE",
+    LATE = "LATE",
   }
 }
