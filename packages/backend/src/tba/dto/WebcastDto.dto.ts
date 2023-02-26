@@ -1,4 +1,4 @@
-import { Webcast } from '@/../tbaApi';
+import { Webcast } from '@/utils/tbaApi';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class WebcastDto implements Webcast {

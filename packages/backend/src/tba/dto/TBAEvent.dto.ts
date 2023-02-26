@@ -1,4 +1,4 @@
-import { District_List, Event, Webcast } from '@/../tbaApi';
+import { District_List, Event, Webcast } from '@/utils/tbaApi';
 import { ApiProperty } from '@nestjs/swagger';
 import { DistrictListDto } from './DistrictList.dto';
 import { WebcastDto } from './WebcastDto.dto';

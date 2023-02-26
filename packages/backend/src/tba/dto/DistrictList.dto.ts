@@ -1,4 +1,4 @@
-import { District_List } from '@/../tbaApi';
+import { District_List } from '@/utils/tbaApi';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class DistrictListDto implements District_List {

@@ -6,10 +6,10 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "yarn tsup",
+   "build": "tsup",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "node --enable-source-maps dist/main.js --inspect",
-    "dev": "yarn tsup --watch",
+    "dev": "tsup --watch",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },
   "main": "./dist/main.js",

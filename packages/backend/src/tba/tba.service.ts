@@ -1,4 +1,4 @@
-import { Event, TBAApi } from '@/../tbaApi';
+import { Event, TBAApi } from '@/utils/tbaApi';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
