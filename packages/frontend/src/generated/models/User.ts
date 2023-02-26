@@ -17,5 +17,6 @@ export namespace User {
     YES = "YES",
     NO = "NO",
     MAYBE = "MAYBE",
+    LATE = "LATE",
   }
 }

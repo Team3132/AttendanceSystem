@@ -60,6 +60,8 @@ const readableStatus = (status: RsvpUser.status | null) => {
     return "Coming";
   } else if (status === "MAYBE") {
     return "Maybe";
+  } else if(status === "LATE") {
+    return "Late";
   } else {
     return "Not Coming";
   }

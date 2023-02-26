@@ -17,5 +17,6 @@ export namespace Rsvp {
     YES = "YES",
     NO = "NO",
     MAYBE = "MAYBE",
+    LATE = "LATE",
   }
 }

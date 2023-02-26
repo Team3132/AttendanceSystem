@@ -1,7 +1,8 @@
-import { Button, ButtonGroup, ButtonGroupProps } from "@chakra-ui/react";
+import { Button, ButtonGroup, ButtonGroupProps, ButtonProps } from "@chakra-ui/react";
 import { Rsvp } from "@generated";
 import useEventRSVPStatus from "../hooks/useEventRSVPStatus";
 import useUpdateEventRSVPStatus from "../hooks/useUpdateEventRSVPStatus";
+import StatusButton from "./StatusButton";
 
 export interface RSVPButtonRowProps extends ButtonGroupProps {
   eventId: string;
@@ -11,57 +12,39 @@ export const RSVPButtonRow: React.FC<RSVPButtonRowProps> = ({
   eventId,
   ...buttonGroupProps
 }) => {
-  const { data: rsvp } = useEventRSVPStatus(eventId);
-  const updateRSVP = useUpdateEventRSVPStatus();
-  // const { mutate: globalMutate } = useSWRConfig();
   return (
     <ButtonGroup {...buttonGroupProps} isAttached>
-      <Button
+      <StatusButton
         colorScheme={"green"}
-        variant={rsvp?.status === Rsvp["status"].YES ? "solid" : "outline"}
-        onClick={() =>
-          updateRSVP.mutate({
-            eventId,
-            rsvp: {
-              status: Rsvp["status"].YES,
-            },
-          })
-        }
-        isLoading={updateRSVP.isLoading}
+        status={Rsvp["status"].YES}
+        eventId={eventId}
       >
         Coming
-      </Button>
-      <Button
+      </StatusButton>
+      <StatusButton
         colorScheme={"blue"}
-        variant={rsvp?.status === Rsvp["status"].MAYBE ? "solid" : "outline"}
-        onClick={() =>
-          updateRSVP.mutate({
-            eventId,
-            rsvp: {
-              status: Rsvp["status"].MAYBE,
-            },
-          })
-        }
-        isLoading={updateRSVP.isLoading}
+        status={Rsvp["status"].MAYBE}
+        eventId={eventId}
       >
         Maybe
-      </Button>
-      <Button
+      </StatusButton>
+      <StatusButton
         colorScheme={"red"}
-        variant={rsvp?.status === Rsvp["status"].NO ? "solid" : "outline"}
-        onClick={() =>
-          updateRSVP.mutate({
-            eventId,
-            rsvp: {
-              status: Rsvp["status"].NO,
-            },
-          })
-        }
-        isLoading={updateRSVP.isLoading}
+        status={Rsvp["status"].NO}
+        eventId={eventId}
       >
         Not coming
-      </Button>
+      </StatusButton>
+      <StatusButton
+        colorScheme={"orange"}
+        status={Rsvp["status"].LATE}
+        eventId={eventId}
+      >
+        Late
+      </StatusButton>
     </ButtonGroup>
   );
 };
+
+
 export default RSVPButtonRow;

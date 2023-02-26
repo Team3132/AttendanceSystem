@@ -20,5 +20,6 @@ export namespace RsvpUser {
     YES = "YES",
     NO = "NO",
     MAYBE = "MAYBE",
+    LATE = "LATE",
   }
 }

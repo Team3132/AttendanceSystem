@@ -1,5 +1,11 @@
 import { PrismaService } from '@/prisma/prisma.service';
-import { bold, EmbedBuilder, roleMention, time } from '@discordjs/builders';
+import {
+  bold,
+  EmbedBuilder,
+  ModalActionRowComponentBuilder,
+  roleMention,
+  time,
+} from '@discordjs/builders';
 import {
   BadRequestException,
   Injectable,
@@ -14,7 +20,11 @@ import {
   ButtonBuilder,
   ButtonStyle,
   GuildMember,
+  ModalBuilder,
   PermissionFlagsBits,
+  StringSelectMenuBuilder,
+  StringSelectMenuComponentData,
+  TextInputBuilder,
 } from 'discord.js';
 import {
   Button,
@@ -36,6 +46,10 @@ import { RsvpDto } from './dto/rsvp.dto';
 import { RequestRSVPDto } from './dto/requestRSVP.dto';
 import { CheckinDto } from './dto/checkin.dto';
 import { AuthenticatorService } from '@/authenticator/authenticator.service';
+import rsvpReminderMessage from './utils/rsvpReminderMessage';
+import rsvpToDescription from './utils/rsvpToDescription';
+import connectOrCreateGuildMember from './utils/connectOrCreateGuildMember';
+import attendanceToDescription from './utils/attendanceToDescription';
 
 @Injectable()
 export class BotService {
@@ -594,103 +608,3 @@ export class BotService {
     });
   }
 }
-
-const connectOrCreateGuildMember = (guildMember: GuildMember) => {
-  return {
-    where: { id: guildMember.id },
-    create: {
-      id: guildMember.id,
-      username: guildMember.nickname ?? guildMember.user.username,
-      roles: [...guildMember.roles.cache.mapValues((role) => role.id).values()],
-    },
-  };
-};
-
-const rsvpToDescription = (rsvp: {
-  status: RSVPStatus;
-  userId: string;
-  user: { username?: string };
-}) =>
-  `${rsvp.user.username ?? ''} - ${
-    rsvp.status === 'YES'
-      ? `:white_check_mark:`
-      : rsvp.status === 'MAYBE'
-      ? ':grey_question:'
-      : ':x:'
-  }`;
-
-const attendanceToDescription = (rsvp: {
-  attended: boolean;
-  userId: string;
-  user: { username?: string };
-}) =>
-  `${rsvp.user.username ?? ''} - ${bold(
-    rsvp.attended ? 'Attended' : 'Not Attended',
-  )}`;
-
-// function readableStatus(status: RSVPStatus) {
-//   if (status === 'YES') {
-//     return 'Coming';
-//   } else if (status === 'MAYBE') {
-//     return 'Maybe';
-//   } else {
-//     return 'Not Coming';
-//   }
-// }
-
-export const rsvpReminderMessage = (
-  event: Event,
-  rsvp: (RSVP & {
-    user: {
-      username?: string;
-    };
-  })[],
-  frontendUrl: string,
-  everyoneRole: string,
-): BaseMessageOptions => {
-  const description = rsvp.map(rsvpToDescription).join('\n');
-
-  const meetingEmbed = new EmbedBuilder({
-    description: description ?? undefined,
-  })
-    .setTitle(event.title)
-    .addFields(
-      {
-        name: 'Roles',
-        value: event.roles.length
-          ? event.roles.map((role) => roleMention(role)).join()
-          : roleMention(everyoneRole),
-      },
-      { name: 'All Day', value: event.allDay ? 'Yes' : 'No' },
-      { name: 'Start Time', value: time(event.startDate) },
-      { name: 'End Time', value: time(event.endDate) },
-    )
-    .setURL(`${frontendUrl}/event/${event.id}`);
-
-  const messageComponent = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    new ButtonBuilder()
-      .setCustomId(`event/${event.id}/rsvp/${RSVPStatus.YES}`)
-      .setStyle(ButtonStyle.Primary)
-      .setLabel('Coming')
-      .setEmoji('✅'),
-    new ButtonBuilder()
-      .setCustomId(`event/${event.id}/rsvp/${RSVPStatus.MAYBE}`)
-      .setStyle(ButtonStyle.Primary)
-      .setLabel('Maybe')
-      .setEmoji('❔'),
-    new ButtonBuilder()
-      .setCustomId(`event/${event.id}/rsvp/${RSVPStatus.NO}`)
-      .setStyle(ButtonStyle.Primary)
-      .setLabel('Not Coming')
-      .setEmoji('❌'),
-    // new ButtonBuilder()
-    //   .setCustomId(`event/${event.id}/rsvps`)
-    //   .setStyle(ButtonStyle.Primary)
-    //   .setLabel('RSVPs'),
-  );
-
-  return {
-    embeds: [meetingEmbed],
-    components: [messageComponent],
-  };
-};

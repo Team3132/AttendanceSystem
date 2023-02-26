@@ -10,7 +10,7 @@
   // "features": {},
   "customizations": {
     "vscode": {
-      "extensions": ["esbenp.prettier-vscode", "ms-azuretools.vscode-docker"]
+      "extensions": ["esbenp.prettier-vscode", "ms-azuretools.vscode-docker", "Prisma.prisma"]
     }
   },
 
