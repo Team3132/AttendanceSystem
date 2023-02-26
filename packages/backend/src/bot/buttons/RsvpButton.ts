@@ -24,6 +24,9 @@ export class RsvpButton {
       },
       include: {
         RSVP: {
+          orderBy: {
+            updatedAt: 'asc',
+          },
           where: {
             status: {
               not: null,

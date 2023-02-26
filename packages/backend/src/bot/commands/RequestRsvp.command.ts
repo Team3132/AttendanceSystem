@@ -31,6 +31,9 @@ export class RequestRsvpCommand {
       },
       include: {
         RSVP: {
+          orderBy: {
+            updatedAt: 'asc',
+          },
           include: {
             user: {
               select: {

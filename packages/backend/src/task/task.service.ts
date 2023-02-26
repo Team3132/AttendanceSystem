@@ -97,6 +97,9 @@ export class TaskService {
       },
       include: {
         RSVP: {
+          orderBy: {
+            updatedAt: 'asc',
+          },
           include: {
             user: {
               select: {

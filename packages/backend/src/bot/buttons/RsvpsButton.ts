@@ -79,6 +79,9 @@ export class RsvpsButton {
         event: {
           include: {
             RSVP: {
+              orderBy: {
+                updatedAt: 'asc',
+              },
               include: {
                 user: {
                   select: {

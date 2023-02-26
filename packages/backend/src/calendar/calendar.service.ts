@@ -20,6 +20,9 @@ export class CalendarService {
       const events = await this.prismaService.event.findMany({
         include: {
           RSVP: {
+            orderBy: {
+              updatedAt: 'asc',
+            },
             include: {
               user: true,
             },
