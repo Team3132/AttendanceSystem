@@ -671,15 +671,15 @@ export const rsvpReminderMessage = (
     new ButtonBuilder()
       .setCustomId(`event/${event.id}/rsvp/${RSVPStatus.YES}`)
       .setStyle(ButtonStyle.Success)
-      .setLabel('Coming'),
+      .setLabel('Coming').setEmoji(':white_check_mark:'),
     new ButtonBuilder()
       .setCustomId(`event/${event.id}/rsvp/${RSVPStatus.MAYBE}`)
       .setStyle(ButtonStyle.Secondary)
-      .setLabel('Maybe'),
+      .setLabel('Maybe').setEmoji(':grey_question:'),
     new ButtonBuilder()
       .setCustomId(`event/${event.id}/rsvp/${RSVPStatus.NO}`)
       .setStyle(ButtonStyle.Danger)
-      .setLabel('Not Coming'),
+      .setLabel('Not Coming').setEmoji(':x:'),
     // new ButtonBuilder()
     //   .setCustomId(`event/${event.id}/rsvps`)
     //   .setStyle(ButtonStyle.Primary)
