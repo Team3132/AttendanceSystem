@@ -8,6 +8,7 @@
     "allowSyntheticDefaultImports": true,
     "target": "ESNext",
     "sourceMap": true,
+    "noEmit": true,
     "baseUrl": "./src",
     "skipLibCheck": true,
     "strictNullChecks": false,

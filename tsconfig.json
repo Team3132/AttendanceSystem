@@ -6,10 +6,5 @@
         {
             "path": "./packages/frontend/tsconfig.json"
         },
-    ],
-    "compilerOptions": {
-        "noEmit": true,
-        "declaration": false,
-        "skipLibCheck": true
-    }
+    ]
 }
