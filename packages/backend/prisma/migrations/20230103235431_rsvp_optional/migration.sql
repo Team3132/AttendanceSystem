@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "RSVP" ALTER COLUMN "status" DROP NOT NULL;

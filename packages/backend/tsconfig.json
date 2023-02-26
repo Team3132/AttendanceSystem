@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "module": "commonjs",
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ESNext",
+    "sourceMap": true,
+    "baseUrl": "./src",
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "useDefineForClassFields": true,
+    "paths": {
+      "@/*": ["*"],
+      "@auth/*": ["auth/*"],
+      "@authenticator/*": ["authenticator/*"],
+      "@bot/*": ["bot/*"],
+      "@calendar/*": ["calendar/*"],
+      "@discord/*": ["discord/*"],
+      "@event/*": ["event/*"],
+      "@prisma/*": ["prisma/*"],
+      "@rsvp/*": ["rsvp/*"],
+      "@scancode/*": ["scancode/*"],
+      "@user/*": ["user/*"]
+    }
+  },
+  "exclude": ["**/node_modules"]
+}

@@ -12,7 +12,9 @@ services:
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
 
-    network_mode: service:core
+    links:
+      - postgres
+      - redis
 
   postgres:
     image: postgres:14
@@ -27,18 +29,12 @@ services:
   redis:
     image: redis
     hostname: redis
-  
-    restart: unless-stopped
 
-  core:
-    depends_on:
-      - postgres
-      - redis
-    image: ghcr.io/team3132/tduattendance:1.3.16
-    env_file: .env
-    links:
-      - postgres
-      - redis
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    
 
 volumes:
   postgres-data:
+  redis-data:

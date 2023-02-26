@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext", "WebWorker"],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "noEmit": true,
+    "baseUrl": ".",
+    "types": ["vite-plugin-pwa/client", "vite/client"],
+    "paths": {
+      "@/*": ["./src/*"],
+      "@components/*": ["./src/components/*"],
+      "@components": ["./src/components"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@hooks": ["./src/hooks"],
+      "@screens/*": ["./src/screens/*"],
+      "@screens": ["./src/screens"],
+      "@utils/*": ["./src/utils/*"],
+      "@utils": ["./src/utils"],
+      "@generated/*": ["./src/generated/*"],
+      "@generated": ["./src/generated"]
+    }
+  },
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }],
+}
