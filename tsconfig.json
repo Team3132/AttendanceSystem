@@ -1,17 +1,14 @@
 {
     "references": [
         {
-            "path": "./packages/backend",
+            "path": "./packages/backend/tsconfig.json",
         },
         {
-            "path": "./packages/frontend"
+            "path": "./packages/frontend/tsconfig.json"
         },
     ],
     "compilerOptions": {
         "noEmit": true,
-        
-    },
-    "include": [
-        "packages"
-    ]
+        "declaration": false
+    }
 }
