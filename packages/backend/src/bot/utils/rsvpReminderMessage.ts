@@ -42,24 +42,21 @@ export default function rsvpReminderMessage(
   const messageComponent = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
       .setCustomId(`event/${event.id}/rsvp/${RSVPStatus.YES}`)
-      .setStyle(ButtonStyle.Primary)
-      .setLabel('Coming')
-      .setEmoji('✅'),
+      .setStyle(ButtonStyle.Success)
+      .setLabel('Coming'),
     new ButtonBuilder()
       .setCustomId(`event/${event.id}/rsvp/${RSVPStatus.MAYBE}`)
-      .setStyle(ButtonStyle.Primary)
-      .setLabel('Maybe')
-      .setEmoji('❔'),
+      .setStyle(ButtonStyle.Secondary)
+      .setLabel('Maybe'),
     new ButtonBuilder()
       .setCustomId(`event/${event.id}/rsvp/${RSVPStatus.NO}`)
-      .setStyle(ButtonStyle.Primary)
-      .setLabel('Not Coming')
-      .setEmoji('❌'),
+      .setStyle(ButtonStyle.Danger)
+      .setLabel('Not Coming'),
+    //   .setEmoji('❌'),
     new ButtonBuilder()
       .setCustomId(`event/${event.id}/rsvp/${RSVPStatus.LATE}`)
       .setStyle(ButtonStyle.Primary)
-      .setLabel('Late')
-      .setEmoji('🕒'),
+      .setLabel('Late'),
     // new ButtonBuilder()
     //   .setCustomId(`event/${event.id}/rsvps`)
     //   .setStyle(ButtonStyle.Primary)
