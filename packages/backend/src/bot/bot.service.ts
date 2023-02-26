@@ -670,16 +670,19 @@ export const rsvpReminderMessage = (
   const messageComponent = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
       .setCustomId(`event/${event.id}/rsvp/${RSVPStatus.YES}`)
-      .setStyle(ButtonStyle.Success)
-      .setLabel('Coming').setEmoji(':white_check_mark:'),
+      .setStyle(ButtonStyle.Primary)
+      .setLabel('Coming')
+      .setEmoji('✅'),
     new ButtonBuilder()
       .setCustomId(`event/${event.id}/rsvp/${RSVPStatus.MAYBE}`)
-      .setStyle(ButtonStyle.Secondary)
-      .setLabel('Maybe').setEmoji(':grey_question:'),
+      .setStyle(ButtonStyle.Primary)
+      .setLabel('Maybe')
+      .setEmoji('❔'),
     new ButtonBuilder()
       .setCustomId(`event/${event.id}/rsvp/${RSVPStatus.NO}`)
-      .setStyle(ButtonStyle.Danger)
-      .setLabel('Not Coming').setEmoji(':x:'),
+      .setStyle(ButtonStyle.Primary)
+      .setLabel('Not Coming')
+      .setEmoji('❌'),
     // new ButtonBuilder()
     //   .setCustomId(`event/${event.id}/rsvps`)
     //   .setStyle(ButtonStyle.Primary)
