@@ -24,3 +24,4 @@ dist-ssr
 .devcontainer/data/**/*
 .devcontainer/.env
 tsconfig.tsbuildinfo
+stats.html
