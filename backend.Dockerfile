@@ -5,16 +5,14 @@ ENV NODE_ENV build
 USER node
 WORKDIR /home/node
 
-COPY --chown=node:node package*.json ./
-COPY --chown=node:node yarn.lock ./
-COPY --chown=node:node prisma /home/node/prisma
-COPY --chown=node:node security ./home/node/security
-RUN yarn install
+COPY --chown=node:node ./packages/backend .
+COPY --chown=node:node yarn.lock .
+
+RUN yarn install --frozen-lockfile
 RUN npx prisma generate
 
-COPY --chown=node:node . .
 RUN yarn build
-RUN yarn install --production
+RUN yarn install --production --frozen-lockfile
 
 # ---
 
