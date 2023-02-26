@@ -5,10 +5,10 @@ ENV NODE_ENV build
 USER node
 WORKDIR /home/node
 
-COPY package*.json ./
-COPY yarn.lock ./
-COPY prisma /home/node/prisma
-COPY security ./home/node/security
+COPY --chown=node:node package*.json ./
+COPY --chown=node:node yarn.lock ./
+COPY --chown=node:node prisma /home/node/prisma
+COPY --chown=node:node security ./home/node/security
 RUN yarn install
 RUN npx prisma generate
 
