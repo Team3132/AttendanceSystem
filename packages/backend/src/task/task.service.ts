@@ -6,7 +6,14 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Cron } from '@nestjs/schedule';
-import { bold, ChannelType, Client } from 'discord.js';
+import { Event, RSVP } from '@prisma/client';
+import {
+  BaseMessageOptions,
+  bold,
+  ChannelType,
+  Client,
+  roleMention,
+} from 'discord.js';
 import { DateTime } from 'luxon';
 
 @Injectable()
@@ -118,19 +125,38 @@ export class TaskService {
     if (fetchedChannel.type === ChannelType.GuildStageVoice)
       throw new Error('This channel is a stage voice channel');
 
-    const messages = nextEvents.map((event) =>
-      rsvpReminderMessage(
-        event,
-        event.RSVP,
-        this.config.get('FRONTEND_URL'),
-        fetchedChannel.guild.roles.everyone.id,
-      ),
+    type MessageEvent = [
+      message: BaseMessageOptions,
+      event: Event & {
+        RSVP: (RSVP & {
+          user: {
+            username: string;
+          };
+        })[];
+      },
+    ];
+
+    const messages = nextEvents.map(
+      (event) =>
+        [
+          rsvpReminderMessage(
+            event,
+            event.RSVP,
+            this.config.get('FRONTEND_URL'),
+            fetchedChannel.guild.roles.everyone.id,
+          ),
+          event,
+        ] satisfies MessageEvent,
     );
 
     const sentMessages = await Promise.all(
-      messages.map((message) =>
+      messages.map(([message, event]) =>
         fetchedChannel.send({
-          content: `${fetchedChannel.guild.roles.everyone.toString()} ${bold(
+          content: `${
+            event.roles.length
+              ? event.roles.map(roleMention)
+              : fetchedChannel.guild.roles.everyone
+          } ${bold(
             `10pm reminder`,
           )}: This channel should be used to let us know any last minute attendance changes on the day of the meeting.`,
           ...message,
