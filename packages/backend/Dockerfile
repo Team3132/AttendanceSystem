@@ -9,12 +9,12 @@ COPY package*.json ./
 COPY yarn.lock ./
 COPY prisma /home/node/prisma
 COPY security ./home/node/security
-RUN yarn install --frozen-lockfile
+RUN yarn install
 RUN npx prisma generate
 
 COPY --chown=node:node . .
 RUN yarn build
-RUN yarn install --production --frozen-lockfile
+RUN yarn install --production
 
 # ---
 

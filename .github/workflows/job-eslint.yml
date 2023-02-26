@@ -15,7 +15,7 @@ jobs:
           node-version: 18
           cache: 'yarn'
       - name: Install Dependancies
-        run: yarn install --frozen-lockfile
+        run: yarn install
       - name: Generate
         run: yarn workspace backend prisma generate
       - name: Add Problem Matcher
