@@ -20,5 +20,5 @@ jobs:
         run: yarn workspace backend prisma generate
       - name: Add Problem Matcher
         run: echo "::add-matcher::.github/problem-matchers/tsc.json"
-      - name: Type Check
-        run: yarn tsc
+      - name: Type Check Backend
+        run: yarn typecheck

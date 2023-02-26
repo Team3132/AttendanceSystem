@@ -18,7 +18,10 @@
     "dev": "concurrently \"npm:dev:*\"",
     "lint:frontend": "yarn workspace frontend lint",
     "lint:backend": "yarn workspace backend lint",
-    "lint": "concurrently \"npm:lint:*\""
+    "lint": "yarn lint:frontend && yarn lint:backend",
+    "typecheck:frontend": "yarn workspace frontend tsc",
+    "typecheck:backend": "yarn workspace backend tsc",
+    "typecheck": "yarn typecheck:frontend && yarn typecheck:backend"
   },
   "devDependencies": {
     "concurrently": "^7.6.0"
