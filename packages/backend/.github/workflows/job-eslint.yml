@@ -4,7 +4,7 @@ on:
 name: Lint
 
 jobs:
-  lint:
+  backend-lint:
     name: Lint
     runs-on: ubuntu-latest
     steps:
@@ -17,8 +17,8 @@ jobs:
       - name: Install Dependancies
         run: yarn install
       - name: Generate
-        run: yarn prisma generate
+        run: yarn workspace backend prisma generate
       - name: Add Problem Matcher
         run: echo "::add-matcher::.github/problem-matchers/eslint-stylish.json"
       - name: Lint
-        run: yarn lint
+        run: yarn lint:backend

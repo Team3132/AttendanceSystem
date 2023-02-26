@@ -4,7 +4,7 @@ on:
 name: Type Check
 
 jobs:
-  type-check:
+  typecheck:
     name: Typecheck
     runs-on: ubuntu-latest
     steps:
@@ -17,7 +17,7 @@ jobs:
       - name: Install Dependancies
         run: yarn install
       - name: Generate
-        run: yarn prisma generate
+        run: yarn workspace backend prisma generate
       - name: Add Problem Matcher
         run: echo "::add-matcher::.github/problem-matchers/tsc.json"
       - name: Type Check

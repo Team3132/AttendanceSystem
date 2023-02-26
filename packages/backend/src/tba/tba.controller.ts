@@ -1,4 +1,10 @@
-import { CacheInterceptor, Controller, Get, NotFoundException, UseInterceptors } from '@nestjs/common';
+import {
+  CacheInterceptor,
+  Controller,
+  Get,
+  NotFoundException,
+  UseInterceptors,
+} from '@nestjs/common';
 import {
   ApiNoContentResponse,
   ApiNotFoundResponse,

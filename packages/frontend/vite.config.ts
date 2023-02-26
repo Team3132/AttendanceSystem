@@ -5,8 +5,9 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import { VitePWA } from "vite-plugin-pwa";
 // https://vitejs.dev/config/
 export default defineConfig({
+  
   plugins: [
-    tsconfigPaths(),
+    tsconfigPaths({projects: ["tsconfig.json"]}),
     react(),
     VitePWA({
       registerType: "autoUpdate",

@@ -1,10 +1,17 @@
 {
     "references": [
         {
-            "path": "./packages/backend"
+            "path": "./packages/backend",
         },
         {
             "path": "./packages/frontend"
         },
+    ],
+    "compilerOptions": {
+        "noEmit": true,
+        
+    },
+    "include": [
+        "packages"
     ]
 }
