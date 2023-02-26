@@ -154,8 +154,8 @@ export class TaskService {
         fetchedChannel.send({
           content: `${
             event.roles.length
-              ? event.roles.map(roleMention)
-              : fetchedChannel.guild.roles.everyone
+              ? event.roles.map(roleMention).join(', ')
+              : fetchedChannel.guild.roles.everyone.toString()
           } ${bold(
             `10pm reminder`,
           )}: This channel should be used to let us know any last minute attendance changes on the day of the meeting.`,
