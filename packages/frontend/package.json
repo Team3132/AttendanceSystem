@@ -63,7 +63,7 @@
     "prettier": "^2.8.4",
     "rollup-plugin-visualizer": "^5.7.0",
     "typescript": "^4.9.4",
-    "vite": "^3.0.7",
+    "vite": "^4.1.4",
     "vite-plugin-pwa": "^0.14.1",
     "vite-tsconfig-paths": "^4.0.3"
   }
