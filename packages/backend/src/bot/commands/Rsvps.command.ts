@@ -58,7 +58,17 @@ export class RsvpsCommand {
     if (!fetchedRSVPs.length)
       return interaction.reply({ content: 'No RSVPs', ephemeral: true });
 
-    const description = fetchedRSVPs.map(rsvpToDescription).join(`\n`);
+    const clonedRsvp = [...fetchedRSVPs];
+
+    const sortedByCreated = clonedRsvp.sort(
+      (rsvpA, rsvpB) => rsvpB.createdAt.getTime() - rsvpA.createdAt.getTime(),
+    );
+
+    const firstId = sortedByCreated.at(-1).id;
+
+    const description = fetchedRSVPs
+      .map((rsvp) => rsvpToDescription(rsvp, rsvp.id === firstId))
+      .join(`\n`);
 
     const rsvpEmbed = new EmbedBuilder()
       .setTitle(

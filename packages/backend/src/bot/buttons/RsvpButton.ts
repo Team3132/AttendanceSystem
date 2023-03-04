@@ -49,7 +49,17 @@ export class RsvpButton {
     if (!fetchedMeeting.RSVP.length)
       return interaction.reply({ content: 'No RSVPs', ephemeral: true });
 
-    const description = fetchedMeeting.RSVP.map(rsvpToDescription).join(`\n`);
+    const clonedRsvp = [...fetchedMeeting.RSVP];
+
+    const sortedByCreated = clonedRsvp.sort(
+      (rsvpA, rsvpB) => rsvpB.createdAt.getTime() - rsvpA.createdAt.getTime(),
+    );
+
+    const firstId = sortedByCreated.at(-1).id;
+
+    const description = fetchedMeeting.RSVP.map((rsvp) =>
+      rsvpToDescription(rsvp, firstId === rsvp.id),
+    ).join(`\n`);
 
     const rsvpEmbed = new EmbedBuilder()
       .setTitle(
