@@ -49,6 +49,15 @@ const columns = [
             DateTime.DATETIME_MED
           ),
       }),
+      columnHelper.accessor("createdAt", {
+        id: "createdAt",
+        header: "Created At",
+        // footer: "Created At",
+        cell: (props) =>
+          DateTime.fromISO(props.getValue()).toLocaleString(
+            DateTime.DATETIME_MED
+          ),
+      })
     ],
   }),
 ];
