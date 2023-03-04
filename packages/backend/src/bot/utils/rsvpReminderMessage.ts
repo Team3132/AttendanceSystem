@@ -20,7 +20,17 @@ export default function rsvpReminderMessage(
   frontendUrl: string,
   everyoneRole: string,
 ): BaseMessageOptions {
-  const description = rsvp.map(rsvpToDescription).join('\n');
+  const clonedRsvp = [...rsvp];
+
+  const sortedByCreated = clonedRsvp.sort(
+    (rsvpA, rsvpB) => rsvpB.createdAt.getTime() - rsvpA.createdAt.getTime(),
+  );
+
+  const firstId = sortedByCreated.at(-1).id;
+
+  const description = rsvp
+    .map((rawRsvp) => rsvpToDescription(rawRsvp, rawRsvp.id === firstId))
+    .join('\n');
 
   const meetingEmbed = new EmbedBuilder({
     description: description ?? undefined,
