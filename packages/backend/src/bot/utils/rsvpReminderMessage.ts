@@ -26,7 +26,7 @@ export default function rsvpReminderMessage(
     (rsvpA, rsvpB) => rsvpB.createdAt.getTime() - rsvpA.createdAt.getTime(),
   );
 
-  const firstId = sortedByCreated.at(-1).id;
+  const firstId = sortedByCreated.at(-1)?.id;
 
   const description = rsvp
     .map((rawRsvp) => rsvpToDescription(rawRsvp, rawRsvp.id === firstId))

@@ -64,7 +64,7 @@ export class RsvpsCommand {
       (rsvpA, rsvpB) => rsvpB.createdAt.getTime() - rsvpA.createdAt.getTime(),
     );
 
-    const firstId = sortedByCreated.at(-1).id;
+    const firstId = sortedByCreated.at(-1)?.id;
 
     const description = fetchedRSVPs
       .map((rsvp) => rsvpToDescription(rsvp, rsvp.id === firstId))
