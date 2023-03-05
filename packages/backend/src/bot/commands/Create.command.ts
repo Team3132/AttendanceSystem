@@ -27,7 +27,7 @@ export class CreateCommand {
   })
   public async onCreate(
     @Context() [interaction]: SlashCommandContext,
-    @Options() { eventName, eventType, role, allday }: CreateDto,
+    @Options() { eventName, eventType, role, allday, description }: CreateDto,
   ) {
     const frontendUrl = this.config.getOrThrow<string>('FRONTEND_URL');
 
@@ -58,6 +58,10 @@ export class CreateCommand {
 
     if (role) {
       params.append('role', role.id);
+    }
+
+    if (description) {
+      params.append('description', description);
     }
 
     const createUrl = `${frontendUrl}/event/create?${params.toString()}`;

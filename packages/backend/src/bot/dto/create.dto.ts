@@ -4,6 +4,11 @@ import { BooleanOption, RoleOption, StringOption } from 'necord';
 
 export class CreateDto {
   @StringOption({
+    name: 'eventname',
+    description: 'The name of the event',
+  })
+  eventName: string;
+  @StringOption({
     choices: Object.entries(EventTypes).map(([name, value]) => ({
       name,
       value,
@@ -13,11 +18,6 @@ export class CreateDto {
     required: false,
   })
   eventType?: 'Outreach' | 'Regular' | 'Social';
-  @StringOption({
-    name: 'eventname',
-    description: 'The name of the event',
-  })
-  eventName: string;
   @RoleOption({
     name: 'role',
     description: 'The primary role for this event',
@@ -30,4 +30,10 @@ export class CreateDto {
     required: false,
   })
   allday?: boolean;
+  @StringOption({
+    name: 'description',
+    description: 'Description of the event',
+    required: false,
+  })
+  description?: string;
 }

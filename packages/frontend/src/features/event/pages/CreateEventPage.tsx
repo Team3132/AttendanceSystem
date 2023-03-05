@@ -54,6 +54,8 @@ const CreateEventScreen: React.FC = () => {
       : undefined
     : undefined;
 
+    const description = searchParams.get("description") ?? undefined
+
   const eventNameQuery = searchParams.get("eventName")
 
   const {
@@ -71,7 +73,8 @@ const CreateEventScreen: React.FC = () => {
       startDate,
       endDate,
       allDay,
-      roles: role ? [role] : undefined
+      roles: role ? [role] : undefined,
+      description,
     },
   });
 
