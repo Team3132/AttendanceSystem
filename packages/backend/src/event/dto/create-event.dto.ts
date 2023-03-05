@@ -35,6 +35,7 @@ export class CreateEventDto {
   @ApiProperty({ enum: EventTypes })
   type?: EventTypes;
   @IsOptional()
+  @ApiProperty({ required: false })
   @IsString({
     each: true,
   })

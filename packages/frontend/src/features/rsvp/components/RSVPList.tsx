@@ -57,7 +57,7 @@ const columns = [
           DateTime.fromISO(props.getValue()).toLocaleString(
             DateTime.DATETIME_MED
           ),
-      })
+      }),
     ],
   }),
 ];
@@ -69,7 +69,7 @@ const readableStatus = (status: RsvpUser.status | null) => {
     return "Coming";
   } else if (status === "MAYBE") {
     return "Maybe";
-  } else if(status === "LATE") {
+  } else if (status === "LATE") {
     return "Late";
   } else {
     return "Not Coming";

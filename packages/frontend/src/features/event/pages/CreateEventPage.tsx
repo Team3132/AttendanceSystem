@@ -20,8 +20,42 @@ import useCreateEvent from "../hooks/useCreateEvent";
 const CreateEventScreen: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const startQuery = searchParams.get("startDate");
+
+  const startDateQuery = searchParams.get("startDate");
+  const startDate = startDateQuery
+    ? new Date(startDateQuery).toISOString()
+    : new Date().toISOString();
+
   const endQuery = searchParams.get("endDate");
+  const endDate = endQuery
+    ? new Date(endQuery).toISOString()
+    : new Date().toISOString();
+
+  const allDayQuery = searchParams.get("allDay");
+  const allDay: boolean = allDayQuery
+    ? allDayQuery === "true"
+      ? true
+      : allDayQuery === "false"
+      ? false
+      : false
+    : false;
+
+  const role = searchParams.get("role");
+
+  const eventTypeQuery = searchParams.get("eventType");
+
+  const eventType = eventTypeQuery
+    ? eventTypeQuery === CreateEventDto.type.OUTREACH
+      ? CreateEventDto.type.OUTREACH
+      : eventTypeQuery === CreateEventDto.type.REGULAR
+      ? CreateEventDto.type.REGULAR
+      : eventTypeQuery === CreateEventDto.type.SOCIAL
+      ? CreateEventDto.type.SOCIAL
+      : undefined
+    : undefined;
+
+  const eventNameQuery = searchParams.get("eventName")
+
   const {
     register,
     handleSubmit,
@@ -32,14 +66,12 @@ const CreateEventScreen: React.FC = () => {
     setValue,
   } = useForm<CreateEventDto>({
     defaultValues: {
-      title: "Event Title",
-      startDate: startQuery
-        ? new Date(startQuery).toISOString()
-        : new Date().toISOString(),
-      endDate: endQuery
-        ? new Date(endQuery).toISOString()
-        : new Date().toISOString(),
-      allDay: !!searchParams.get("allDay") ?? false,
+      title: eventNameQuery ?? "Event Title",
+      type: eventType,
+      startDate,
+      endDate,
+      allDay,
+      roles: role ? [role] : undefined
     },
   });
 

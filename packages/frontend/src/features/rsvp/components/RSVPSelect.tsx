@@ -19,12 +19,13 @@ export const RSVPSelect: React.FC<
     if (
       currentValue === statusEnum.MAYBE ||
       currentValue === statusEnum.NO ||
-      currentValue === statusEnum.YES
+      currentValue === statusEnum.YES || currentValue === statusEnum.LATE
     ) {
       mutateEventRSVP({
         eventId,
         rsvp: {
           status: currentValue,
+          delay: null,
         },
       });
     } else {
@@ -42,6 +43,7 @@ export const RSVPSelect: React.FC<
       <option value={statusEnum.MAYBE}>Maybe</option>
       <option value={statusEnum.NO}>No</option>
       <option value={statusEnum.YES}>Yes</option>
+      <option value={statusEnum.LATE}>Late</option>
     </Select>
   );
 };

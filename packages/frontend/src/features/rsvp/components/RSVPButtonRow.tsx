@@ -1,4 +1,9 @@
-import { Button, ButtonGroup, ButtonGroupProps, ButtonProps } from "@chakra-ui/react";
+import {
+  Button,
+  ButtonGroup,
+  ButtonGroupProps,
+  ButtonProps,
+} from "@chakra-ui/react";
 import { Rsvp } from "@generated";
 import useEventRSVPStatus from "../hooks/useEventRSVPStatus";
 import useUpdateEventRSVPStatus from "../hooks/useUpdateEventRSVPStatus";
@@ -45,6 +50,5 @@ export const RSVPButtonRow: React.FC<RSVPButtonRowProps> = ({
     </ButtonGroup>
   );
 };
-
 
 export default RSVPButtonRow;

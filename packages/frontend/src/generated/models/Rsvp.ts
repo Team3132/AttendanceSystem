@@ -7,6 +7,7 @@ export type Rsvp = {
   eventId: string;
   userId: string;
   status: Rsvp.status | null;
+  delay: any;
   createdAt: string;
   updatedAt: string;
   attended: boolean;
