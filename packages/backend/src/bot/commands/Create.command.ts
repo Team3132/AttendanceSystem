@@ -68,7 +68,9 @@ export class CreateCommand {
 
     const successEmbed = new EmbedBuilder()
       .setTitle('Success')
-      .setColor('Default').setDescription(`
+      .setColor('Green').setDescription(`
+        Click on the link below to create the event,
+        
         ${hideLinkEmbed(createUrl)}
       `);
 
