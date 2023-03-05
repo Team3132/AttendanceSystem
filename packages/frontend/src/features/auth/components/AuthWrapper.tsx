@@ -27,7 +27,7 @@ export default function AuthWrapper({
   }
 
   if (!authStatusQuery.isAuthenticated) {
-    window.localStorage.setItem(key, location.pathname);
+    window.localStorage.setItem(key, `${location.pathname}${location.search}`);
     window.location.replace(`${import.meta.env.VITE_BACKEND_URL}/auth/discord`);
     return <>Loading</>;
   }
