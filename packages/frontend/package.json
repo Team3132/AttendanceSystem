@@ -45,7 +45,7 @@
     "react-icons": "^4.7.1",
     "react-qr-code": "^2.0.11",
     "react-router-dom": "6",
-    "validator": "^13.7.0"
+    "validator": "^13.9.0"
   },
   "devDependencies": {
     "@babel/core": "^7.18.10",
@@ -55,7 +55,7 @@
     "@types/react": "^18.0.28",
     "@types/react-big-calendar": "^1.6.0",
     "@types/react-dom": "^18.0.0",
-    "@types/validator": "^13.7.3",
+    "@types/validator": "^13.7.12",
     "@vitejs/plugin-react": "^2.2.0",
     "@vitejs/plugin-react-swc": "^3.0.1",
     "babel-loader": "^9.1.0",
