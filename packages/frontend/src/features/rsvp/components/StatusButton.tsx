@@ -22,6 +22,7 @@ export default function StatusButton({
       eventId,
       rsvp: {
         status,
+        delay: null,
       },
     });
   };

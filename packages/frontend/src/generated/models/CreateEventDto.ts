@@ -9,6 +9,7 @@ export type CreateEventDto = {
   endDate: string;
   allDay?: boolean;
   type: CreateEventDto.type;
+  roles?: Array<string>;
 };
 
 export namespace CreateEventDto {

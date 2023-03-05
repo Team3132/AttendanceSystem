@@ -4,6 +4,7 @@
 
 export type UpdateOrCreateRSVP = {
   status: UpdateOrCreateRSVP.status;
+  delay: number | null;
 };
 
 export namespace UpdateOrCreateRSVP {
