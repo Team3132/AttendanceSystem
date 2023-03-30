@@ -28,7 +28,7 @@
     "generate:prisma": "yarn workspace backend prisma generate"
   },
   "devDependencies": {
-    "concurrently": "^7.6.0",
+    "concurrently": "^8.0.0",
     "rimraf": "^4.1.2",
     "typescript": "^5.0.3"
   }
