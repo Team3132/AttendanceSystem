@@ -17,19 +17,6 @@
                 "*"
             ],
             "automerge": true
-        },
-        {
-            "groupName": "all major dependencies",
-            "matchManagers": [
-                "npm"
-            ],
-            "matchUpdateTypes": [
-                "major"
-            ],
-            "matchPackagePatterns": [
-                "*"
-            ],
-            "automerge": false
         }
     ]
 }
