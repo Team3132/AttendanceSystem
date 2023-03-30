@@ -14,7 +14,7 @@
     "@chakra-ui/react": "^2.5.1",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
-    "@fullcalendar/core": "6.0.2",
+    "@fullcalendar/core": "6.1.5",
     "@fullcalendar/daygrid": "^6.0.2",
     "@fullcalendar/interaction": "^6.0.2",
     "@fullcalendar/list": "^6.0.2",
