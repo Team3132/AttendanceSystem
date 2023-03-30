@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "concurrently": "^7.6.0",
-    "rimraf": "^4.1.2"
+    "rimraf": "^4.1.2",
+    "typescript": "^5.0.3"
   }
 }
