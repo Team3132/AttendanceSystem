@@ -1,4 +1,4 @@
-FROM node:18-alpine as builder
+FROM node:19-alpine as builder
 
 ENV NODE_ENV build
 
@@ -16,7 +16,7 @@ RUN yarn install --production --frozen-lockfile
 
 # ---
 
-FROM node:18-alpine
+FROM node:19-alpine
 
 ENV NODE_ENV production
 
