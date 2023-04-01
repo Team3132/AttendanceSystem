@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import passport from 'passport';
 import Redis from 'ioredis';
-import connectRedis from 'connect-redis';
+import RedisStore from 'connect-redis';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import helmet from 'helmet';
@@ -36,7 +36,10 @@ async function bootstrap() {
     port: parseInt(config.get('REDIS_PORT')),
     db: 0,
   });
-  const redisStore = connectRedis(session);
+
+  const redisStore = new RedisStore({
+    client: redisClient,
+  });
 
   app.use(
     session({
@@ -46,9 +49,7 @@ async function bootstrap() {
         domain: config.get('COOKIE_DOMAIN') ?? 'team3132.com',
       },
       saveUninitialized: true,
-      store: new redisStore({
-        client: redisClient,
-      }),
+      store: redisStore,
     }),
   );
   app.use(passport.initialize());

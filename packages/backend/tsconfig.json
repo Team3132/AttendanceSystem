@@ -17,18 +17,45 @@
     "noFallthroughCasesInSwitch": false,
     "useDefineForClassFields": true,
     "paths": {
-      "@/*": ["*"],
-      "@auth/*": ["auth/*"],
-      "@authenticator/*": ["authenticator/*"],
-      "@bot/*": ["bot/*"],
-      "@calendar/*": ["calendar/*"],
-      "@discord/*": ["discord/*"],
-      "@event/*": ["event/*"],
-      "@prisma/*": ["prisma/*"],
-      "@rsvp/*": ["rsvp/*"],
-      "@scancode/*": ["scancode/*"],
-      "@user/*": ["user/*"]
-    }
+      "@/*": [
+        "*"
+      ],
+      "@auth/*": [
+        "auth/*"
+      ],
+      "@authenticator/*": [
+        "authenticator/*"
+      ],
+      "@bot/*": [
+        "bot/*"
+      ],
+      "@calendar/*": [
+        "calendar/*"
+      ],
+      "@discord/*": [
+        "discord/*"
+      ],
+      "@event/*": [
+        "event/*"
+      ],
+      "@prisma/*": [
+        "prisma/*"
+      ],
+      "@rsvp/*": [
+        "rsvp/*"
+      ],
+      "@scancode/*": [
+        "scancode/*"
+      ],
+      "@user/*": [
+        "user/*"
+      ]
+    },
+    "types": [
+      "@types/express-session"
+    ]
   },
-  "exclude": ["**/node_modules"]
+  "exclude": [
+    "**/node_modules"
+  ]
 }
