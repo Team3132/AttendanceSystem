@@ -6,7 +6,6 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { DateTime } from "luxon";
 import React, { useMemo, useState } from "react";
 import useEventRSVPStatuses from "../hooks/useEventRSVPStatuses";
-import { CUIAutoComplete } from "chakra-ui-autocomplete";
 import Autocomplete from "@/components/Autocomplete";
 
 const columnHelper = createColumnHelper<RsvpUser>();
