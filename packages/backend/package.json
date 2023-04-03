@@ -14,7 +14,7 @@
   },
   "main": "./dist/main.js",
   "dependencies": {
-    "@discordjs/rest": "^1.4.0",
+    "@discordjs/rest": "^1.7.0",
     "@google-cloud/local-auth": "2.1.1",
     "@nestjs/common": "^9.2.0",
     "@nestjs/config": "^2.2.0",
