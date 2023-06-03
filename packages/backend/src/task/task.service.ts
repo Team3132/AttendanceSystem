@@ -6,7 +6,7 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Cron } from '@nestjs/schedule';
-import { Event, RSVP } from '@prisma/client';
+import { Event, EventTypes, RSVP } from '@prisma/client';
 import {
   BaseMessageOptions,
   bold,
@@ -36,7 +36,16 @@ export class TaskService {
     const databaseEvents = await Promise.all(
       events.items.map((event) => {
         const secret = this.authenticatorService.generateSecret();
+        const eventTitle = event.summary;
+
+        // const valueBetweenSquareBrackets = eventTitle.match(/\[(.*?)\]/); // Maybe switch to this later
+
         const isMentorEvent = event.summary.toLowerCase().includes('mentor');
+
+        const isOutreachEvent = event.summary
+          .toLowerCase()
+          .includes('outreach');
+
         return this.db.event.upsert({
           where: {
             id: event.id,
@@ -52,6 +61,7 @@ export class TaskService {
               event.end.dateTime ??
               DateTime.fromISO(event.end.date).endOf('day').toJSDate(),
             description: event.description,
+            type: isOutreachEvent ? EventTypes.Outreach : undefined,
           },
           create: {
             id: event.id,
@@ -65,6 +75,7 @@ export class TaskService {
               event.end.dateTime ??
               DateTime.fromISO(event.end.date).endOf('day').toJSDate(),
             description: event.description,
+            type: isOutreachEvent ? EventTypes.Outreach : undefined,
             secret,
           },
         });
