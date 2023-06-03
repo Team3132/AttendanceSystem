@@ -3196,12 +3196,12 @@
     socket.io "4.6.1"
     tslib "2.5.0"
 
-"@nestjs/platform-ws@^9.2.1":
-  version "9.3.12"
-  resolved "https://registry.yarnpkg.com/@nestjs/platform-ws/-/platform-ws-9.3.12.tgz#913636dcfc1bb8352418d9f97b0d05fd84abcb71"
-  integrity sha512-OEKDgrffzhqy6667crxw4dgII5/1ni5Oq9WAkzgAtL0E2DPLJXylzvQhutNbcNcI1JFP60DCtCAjwTho7c0zwQ==
+"@nestjs/platform-ws@^9.4.2":
+  version "9.4.2"
+  resolved "https://registry.yarnpkg.com/@nestjs/platform-ws/-/platform-ws-9.4.2.tgz#7fd90c12b4b1a1a28d7d950c608e3696de410719"
+  integrity sha512-JURYiQ/0yoDD/Z14szKDMts6xUP7hI/z5CSBOSAEJk+GdhKB4VW6noTgZQu8KRSZxtLj5tm73JIaOMX9P97Buw==
   dependencies:
-    tslib "2.5.0"
+    tslib "2.5.2"
     ws "8.13.0"
 
 "@nestjs/schedule@^2.1.0":
