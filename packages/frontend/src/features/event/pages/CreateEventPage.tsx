@@ -54,9 +54,9 @@ const CreateEventScreen: React.FC = () => {
       : undefined
     : undefined;
 
-    const description = searchParams.get("description") ?? undefined
+  const description = searchParams.get("description") ?? undefined;
 
-  const eventNameQuery = searchParams.get("eventName")
+  const eventNameQuery = searchParams.get("eventName");
 
   const {
     register,
@@ -140,7 +140,7 @@ const CreateEventScreen: React.FC = () => {
                   props.field.value
                     ? DateTime.fromISO(props.field.value).toISO({
                         includeOffset: false,
-                      })
+                      }) ?? ""
                     : undefined
                 }
                 onChange={(e) =>
@@ -177,7 +177,7 @@ const CreateEventScreen: React.FC = () => {
                   props.field.value
                     ? DateTime.fromISO(props.field.value).toISO({
                         includeOffset: false,
-                      })
+                      }) ?? ""
                     : undefined
                 }
                 onChange={(e) =>

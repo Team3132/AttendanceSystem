@@ -159,7 +159,7 @@ export default function EditEventPage() {
                   props.field.value
                     ? DateTime.fromISO(props.field.value).toISO({
                         includeOffset: false,
-                      })
+                      }) ?? ""
                     : undefined
                 }
                 onChange={(e) =>
@@ -196,7 +196,7 @@ export default function EditEventPage() {
                   props.field.value
                     ? DateTime.fromISO(props.field.value).toISO({
                         includeOffset: false,
-                      })
+                      }) ?? ""
                     : undefined
                 }
                 onChange={(e) =>

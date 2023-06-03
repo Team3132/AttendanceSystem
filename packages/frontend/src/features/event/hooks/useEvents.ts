@@ -10,7 +10,12 @@ export default function useEvents(
   to?: DateTime
 ) {
   return useQuery({
-    queryFn: () => api.event.getEvents(from?.toISO(), to?.toISO(), take),
+    queryFn: () =>
+      api.event.getEvents(
+        from?.toISO() ?? undefined,
+        to?.toISO() ?? undefined,
+        take
+      ),
     queryKey: eventKeys.range(take, from, to),
   });
 }

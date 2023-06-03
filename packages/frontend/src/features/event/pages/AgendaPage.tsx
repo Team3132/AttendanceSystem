@@ -52,7 +52,7 @@ export default function AgendaPage() {
             <Input
               type="date"
               id="startDate"
-              value={startRange.toISODate()}
+              value={startRange.toISODate() ?? ""}
               onChange={(e) => {
                 setStartRange(DateTime.fromISO(e.target.value));
               }}
@@ -66,7 +66,7 @@ export default function AgendaPage() {
             <Input
               type="date"
               id="endDate"
-              value={endRange.toISODate()}
+              value={endRange.toISODate() ?? ""}
               onChange={(e) => {
                 setEndRange(DateTime.fromISO(e.target.value));
               }}
