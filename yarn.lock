@@ -4741,9 +4741,9 @@ cache-manager-redis-yet@^4.1.0:
     redis "^4.3.1"
 
 cache-manager@^5.1.0, cache-manager@^5.1.4:
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/cache-manager/-/cache-manager-5.2.1.tgz#c1fbc1b56da2f364c4f8eb8385bf94a19a00befd"
-  integrity sha512-qYHx0DlM0mepUqXkpDg83K1dYEXOinq9+sYdHxs1c5LQjR1MPgm34im+JVtsy9+uoeE2T1JLzJSAB+nV4IH5dQ==
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/cache-manager/-/cache-manager-5.2.2.tgz#1f2e3328247a3c5c63b722cadab6e084b924d320"
+  integrity sha512-QYEct/rVt5HfNvyWpHQurOa1IgpjP9V0X3E5O8rdEmuKcucpnMs7CwK0bHvv92svxZXlN2w5hgMFdrbiYoHeIQ==
   dependencies:
     lodash.clonedeep "^4.5.0"
     lru-cache "~9.1.1"
