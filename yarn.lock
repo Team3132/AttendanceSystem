@@ -8766,9 +8766,9 @@ raw-body@2.5.2:
     unpipe "1.0.0"
 
 react-big-calendar@^1.6.8:
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/react-big-calendar/-/react-big-calendar-1.8.0.tgz#290f75f2db324c82c166901f80299bf5aca52d31"
-  integrity sha512-A1+T9IxF7lgTr24v69FSRCB/tdT5ikxSOCb4vmT7x8kjmSI3FFc25Lz5EntHIlSFSBBXDaD4zqMCRiJLL9TnPQ==
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/react-big-calendar/-/react-big-calendar-1.8.1.tgz#07886a66086fcae16934572c5ace8c4c433dbbed"
+  integrity sha512-yEiScxReMrRCc0qFdZIKY/L6+argK4ZiYzLk5bck8CRYVbHjCCb/6Ictv42kPs/g3Q4RIb8+GUjDzk/uFtu76Q==
   dependencies:
     "@babel/runtime" "^7.20.7"
     clsx "^1.2.1"
