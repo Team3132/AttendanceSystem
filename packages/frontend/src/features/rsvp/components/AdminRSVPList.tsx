@@ -183,17 +183,6 @@ export const RSVPList: React.FC<RSVPListProps> = ({ eventId }) => {
 
   return (
     <TableContainer>
-      <Autocomplete
-        options={options}
-        filter={(items, filterValue) =>
-          items.filter((item) =>
-            item.label.toLowerCase().includes(filterValue.toLowerCase())
-          )
-        }
-        itemToString={(item) => item?.label ?? ""}
-        onChange={setSelected}
-        value={selected}
-      />
       <DataTable columns={columns} data={filteredRsvps ?? []} />
     </TableContainer>
   );

@@ -122,9 +122,9 @@ export default function EventPage() {
               <TabPanel>
                 <Outlet />
               </TabPanel>
-              <TabPanel>
+              {/* <TabPanel>
                 <Outlet />
-              </TabPanel>
+              </TabPanel> */}
             </>
           ) : null}
         </TabPanels>

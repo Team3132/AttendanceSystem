@@ -57,6 +57,12 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                   <Route index element={<EventDetailsPage />} />
                   <Route path="attendance" element={<AttendancePage />} />
                   <Route path="checkin" element={<UserCheckinPage />} />
+                  <Route element={<AuthWrapper adminOnly />}>
+                    <Route
+                      path="admin-attendance"
+                      element={<AdminAttendancePage />}
+                    />
+                  </Route>
                 </Route>
                 <Route path="agenda" element={<AgendaPage />} />
                 <Route path="calendar" element={<FullCalendar />} />
@@ -65,12 +71,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               </Route>
               {/* Admin only pages */}
               <Route element={<AuthWrapper adminOnly />}>
-                <Route path="event/:eventId" element={<EventPage />}>
-                  <Route
-                    path="admin-attendance"
-                    element={<AdminAttendancePage />}
-                  />
-                </Route>
                 <Route path="event/create" element={<CreateEventPage />} />
                 <Route path="event/:eventId/edit" element={<EditEventPage />} />
 

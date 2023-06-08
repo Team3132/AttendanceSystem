@@ -1,4 +1,4 @@
-import { AdminRSVPList, RSVPList } from "@/features/rsvp";
+import { AdminRSVPList } from "@/features/rsvp";
 import { useParams } from "react-router-dom";
 
 export default function AdminAtttendancePage() {
