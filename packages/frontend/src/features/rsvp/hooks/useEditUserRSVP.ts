@@ -8,7 +8,7 @@ export default function useEditUserRSVP() {
   return useMutation<Rsvp, ApiError, { rsvpId: string; rsvp: UpdateRsvpDto }>({
     mutationFn: ({ rsvpId: rsvpId, rsvp }) => api.rsvp.editRsvp(rsvpId, rsvp),
     onSuccess: (data, { rsvpId: eventId }) => {
-      queryClient.invalidateQueries(rsvpKeys.event(eventId));
+      queryClient.invalidateQueries(rsvpKeys.event(data.eventId));
       // queryClient.invalidateQueries(["EventRSVP", eventId]);
     },
   });
