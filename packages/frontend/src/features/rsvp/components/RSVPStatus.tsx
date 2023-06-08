@@ -3,7 +3,7 @@ import { EventResponseType } from "@/generated";
 import { Center, Heading, Stack } from "@chakra-ui/react";
 import RSVPButtonRow from "./RSVPButtonRow";
 
-interface AttendanceProps {
+export interface AttendanceProps {
   event: EventResponseType;
 }
 

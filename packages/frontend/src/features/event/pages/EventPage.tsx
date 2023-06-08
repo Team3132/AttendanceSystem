@@ -85,6 +85,9 @@ export default function EventPage() {
           <Tab onClick={() => navigate(`/event/${eventId}/attendance`)}>
             Attendance
           </Tab>
+          <Tab onClick={() => navigate(`/event/${eventId}/admin-attendance`)}>
+            Admin Attendance
+          </Tab>
           <Tab onClick={() => navigate(`/event/${eventId}/checkin`)}>
             User Check-in
           </Tab>
@@ -106,12 +109,16 @@ export default function EventPage() {
           <TabPanel>
             <Outlet />
           </TabPanel>
-          {auth.isLoading ||
-            (auth.isAdmin && (
+          {!auth.isLoading && auth.isAdmin ? (
+            <>
               <TabPanel>
                 <Outlet />
               </TabPanel>
-            ))}
+              <TabPanel>
+                <Outlet />
+              </TabPanel>
+            </>
+          ) : null}
         </TabPanels>
       </Tabs>
     </>

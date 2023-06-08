@@ -18,3 +18,6 @@ export const UserCheckinPage = loadable(
   () => import("./pages/UserCheckinPage")
 );
 export const AttendancePage = loadable(() => import("./pages/AttendancePage"));
+export const AdminAttendancePage = loadable(
+  () => import("./pages/AdminAttendancePage")
+);

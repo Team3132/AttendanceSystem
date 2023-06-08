@@ -5,6 +5,7 @@
 export type UpdateRsvpDto = {
   eventId?: string;
   status?: UpdateRsvpDto.status;
+  attended?: boolean;
 };
 
 export namespace UpdateRsvpDto {

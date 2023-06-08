@@ -5,6 +5,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthWrapper } from "./features/auth";
 import {
+  AdminAttendancePage,
   AdminCheckinPage,
   AgendaPage,
   AttendancePage,
@@ -75,6 +76,10 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               <Route
                 path="/event/:eventId/admin-checkin"
                 element={<AdminCheckinPage />}
+              />
+              <Route
+                path="/event/:eventId/admin-attendance"
+                element={<AdminAttendancePage />}
               />
             </Route>
           </Routes>

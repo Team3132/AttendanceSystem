@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { RSVPStatus } from '@prisma/client';
-import { IsString, IsEnum, IsOptional } from 'class-validator';
+import { IsString, IsEnum, IsOptional, IsBoolean } from 'class-validator';
 
 /**
  * The data used to update an RSVP
@@ -14,4 +14,8 @@ export class UpdateRsvpDto {
   @ApiProperty({ enum: RSVPStatus, required: false })
   @IsOptional()
   status?: RSVPStatus;
+  @IsBoolean()
+  @ApiProperty({ required: false })
+  @IsOptional()
+  attended?: boolean;
 }
