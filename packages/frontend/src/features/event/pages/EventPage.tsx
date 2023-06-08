@@ -43,7 +43,11 @@ export default function EventPage() {
       "/event/:eventId",
       "/event/:eventId/attendance",
       "/event/:eventId/checkin",
-    ].concat(auth?.isAdmin ? ["/event/:eventId/admin-checkin"] : [])
+    ].concat(
+      auth?.isAdmin
+        ? ["/event/:eventId/admin-attendance", "/event/:eventId/admin-checkin"]
+        : []
+    )
   );
 
   const currentTab = routeMatchFound?.match.pattern.path;
