@@ -42,7 +42,7 @@
     "express-session": "^1.17.3",
     "googleapis": "118",
     "helmet": "^7.0.0",
-    "ical-generator": "^4.0.0",
+    "ical-generator": "^5.0.0",
     "ioredis": "^5.1.0",
     "luxon": "^3.0.1",
     "necord": "^5.4.4",
