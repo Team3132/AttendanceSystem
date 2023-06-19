@@ -3098,10 +3098,10 @@
     socket.io "4.6.2"
     tslib "2.5.3"
 
-"@nestjs/platform-ws@^9.4.2":
-  version "9.4.3"
-  resolved "https://registry.yarnpkg.com/@nestjs/platform-ws/-/platform-ws-9.4.3.tgz#9edb2ad9b2952c7010a741779ff727a134c897cb"
-  integrity sha512-JK0wrPlV0vbU+H+ISrj0+APFzVmtb7lX5X3NZgW99kevusSkwkfmya9jzQwWh7fe0ErgYZISvmxkb3PuyhDOlw==
+"@nestjs/platform-ws@^10.0.1":
+  version "10.0.1"
+  resolved "https://registry.yarnpkg.com/@nestjs/platform-ws/-/platform-ws-10.0.1.tgz#343711f414e4ecc21281126f4712b678bc3b708f"
+  integrity sha512-GL1Q3INx7rKnp3rCiY5r9Mb3XLXym104AbQjzrNBqYry2rkKFOb8gyJwc6mcpyzylrg/xrglnZqsMpDEw8Hrcg==
   dependencies:
     tslib "2.5.3"
     ws "8.13.0"
