@@ -17,7 +17,7 @@
     "@discordjs/rest": "^1.4.0",
     "@google-cloud/local-auth": "2.1.1",
     "@nestjs/common": "^9.2.0",
-    "@nestjs/config": "^2.2.0",
+    "@nestjs/config": "^3.0.0",
     "@nestjs/core": "^9.2.0",
     "@nestjs/mapped-types": "*",
     "@nestjs/passport": "^9.0.0",
