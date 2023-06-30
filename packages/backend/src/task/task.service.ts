@@ -33,10 +33,40 @@ export class TaskService {
   async handleCron() {
     this.logger.debug('Updating events');
     const events = await this.gcal.events();
+
+    /** Existing events in the next month */
+    const currentSyncedEventIds = await this.db.event.findMany({
+      where: {
+        startDate: {
+          gte: DateTime.now().toJSDate(),
+        },
+        endDate: {
+          lte: DateTime.now().plus({ month: 1 }).toJSDate(),
+        },
+        isSyncedEvent: {
+          equals: true,
+        },
+      },
+    });
+
+    /** Deleted Events */
+    const deletedEventIds = currentSyncedEventIds
+      .filter((event) => {
+        return !events.items.find((item) => item.id === event.id);
+      })
+      .map((event) => event.id);
+
+    await this.db.event.deleteMany({
+      where: {
+        id: {
+          in: deletedEventIds,
+        },
+      },
+    });
+
     const databaseEvents = await Promise.all(
       events.items.map((event) => {
         const secret = this.authenticatorService.generateSecret();
-        const eventTitle = event.summary;
 
         // const valueBetweenSquareBrackets = eventTitle.match(/\[(.*?)\]/); // Maybe switch to this later
 
@@ -62,6 +92,7 @@ export class TaskService {
               DateTime.fromISO(event.end.date).endOf('day').toJSDate(),
             description: event.description,
             type: isOutreachEvent ? EventTypes.Outreach : undefined,
+            isSyncedEvent: true,
           },
           create: {
             id: event.id,
@@ -77,6 +108,7 @@ export class TaskService {
             description: event.description,
             type: isOutreachEvent ? EventTypes.Outreach : undefined,
             secret,
+            isSyncedEvent: true,
           },
         });
       }),
