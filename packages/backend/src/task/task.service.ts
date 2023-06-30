@@ -56,13 +56,15 @@ export class TaskService {
       })
       .map((event) => event.id);
 
-    await this.db.event.deleteMany({
+    const deletedEvents = await this.db.event.deleteMany({
       where: {
         id: {
           in: deletedEventIds,
         },
       },
     });
+
+    this.logger.debug(`Deleted ${deletedEvents.count} events`);
 
     const databaseEvents = await Promise.all(
       events.items.map((event) => {
