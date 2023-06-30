@@ -55,6 +55,7 @@ export class DelayModal {
                     user: {
                       select: {
                         username: true,
+                        roles: true,
                       },
                     },
                   },

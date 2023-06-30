@@ -74,6 +74,11 @@ export async function loader({ request: { url } }: LoaderFunctionArgs) {
   };
 }
 
+type CreateEventDtoForm = Omit<CreateEventDto, "startDate" | "endDate"> & {
+  startDate: Date | string;
+  endDate: Date | string;
+};
+
 export function Component() {
   const {
     allDay,
@@ -92,7 +97,7 @@ export function Component() {
     handleSubmit,
     formState: { errors, isSubmitting },
     control,
-  } = useForm<CreateEventDto>({
+  } = useForm<CreateEventDtoForm>({
     defaultValues: {
       title: eventNameQuery ?? "Event Title",
       type: eventType,
@@ -106,10 +111,20 @@ export function Component() {
 
   const { mutateAsync: createEvent } = useCreateEvent();
 
-  const onSubmit = async (data: CreateEventDto) => {
+  const onSubmit = async (data: CreateEventDtoForm) => {
     console.log(data);
-    // const event = await createEvent(data);
-    // navigate(`/event/${event.id}`);
+    const event = await createEvent({
+      ...data,
+      startDate:
+        typeof data.startDate === "string"
+          ? data.startDate
+          : data.startDate.toISOString(),
+      endDate:
+        typeof data.endDate === "string"
+          ? data.endDate
+          : data.endDate.toISOString(),
+    });
+    navigate(`/event/${event.id}`);
   };
 
   return (

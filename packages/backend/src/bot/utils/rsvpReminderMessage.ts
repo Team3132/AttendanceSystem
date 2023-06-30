@@ -9,12 +9,14 @@ import {
   time,
 } from 'discord.js';
 import rsvpToDescription from './rsvpToDescription';
+import { ROLES } from '@/constants';
 
 export default function rsvpReminderMessage(
   event: Event,
   rsvp: (RSVP & {
     user: {
       username?: string;
+      roles: string[];
     };
   })[],
   frontendUrl: string,
@@ -28,13 +30,27 @@ export default function rsvpReminderMessage(
 
   const firstId = sortedByCreated.at(-1)?.id;
 
-  const description = rsvp
-    .map((rawRsvp) => rsvpToDescription(rawRsvp, rawRsvp.id === firstId))
-    .join('\n');
+  const mentorRSVPs = rsvp.filter((rsvpUser) =>
+    rsvpUser.user.roles.includes(ROLES.MENTOR),
+  );
 
-  const meetingEmbed = new EmbedBuilder({
-    description: description ?? undefined,
-  })
+  const otherRSVPs = rsvp.filter(
+    (rsvpUser) => !rsvpUser.user.roles.includes(ROLES.MENTOR),
+  );
+
+  const mentorDescription = mentorRSVPs.length
+    ? mentorRSVPs
+        .map((rawRsvp) => rsvpToDescription(rawRsvp, rawRsvp.id === firstId))
+        .join('\n')
+    : undefined;
+
+  const otherDescription = otherRSVPs.length
+    ? otherRSVPs
+        .map((rawRsvp) => rsvpToDescription(rawRsvp, rawRsvp.id === firstId))
+        .join('\n')
+    : undefined;
+
+  const meetingInfo = new EmbedBuilder()
     .setTitle(event.title)
     .addFields(
       {
@@ -42,12 +58,21 @@ export default function rsvpReminderMessage(
         value: event.roles.length
           ? event.roles.map((role) => roleMention(role)).join()
           : roleMention(everyoneRole),
+        inline: true,
       },
-      { name: 'All Day', value: event.allDay ? 'Yes' : 'No' },
-      { name: 'Start Time', value: time(event.startDate) },
-      { name: 'End Time', value: time(event.endDate) },
+      { name: 'All Day', value: event.allDay ? 'Yes' : 'No', inline: true },
+      { name: 'Start Time', value: time(event.startDate), inline: true },
+      { name: 'End Time', value: time(event.endDate), inline: true },
     )
     .setURL(`${frontendUrl}/event/${event.id}`);
+
+  const mentorEmbed = mentorDescription
+    ? new EmbedBuilder().setTitle('Mentors').setDescription(mentorDescription)
+    : undefined;
+
+  const otherEmbed = otherDescription
+    ? new EmbedBuilder().setTitle('Others').setDescription(otherDescription)
+    : undefined;
 
   const messageComponent = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
@@ -62,19 +87,20 @@ export default function rsvpReminderMessage(
       .setCustomId(`event/${event.id}/rsvp/${RSVPStatus.NO}`)
       .setStyle(ButtonStyle.Danger)
       .setLabel('Not Coming'),
-    //   .setEmoji('❌'),
     new ButtonBuilder()
       .setCustomId(`event/${event.id}/rsvp/${RSVPStatus.LATE}`)
       .setStyle(ButtonStyle.Primary)
       .setLabel('Late'),
-    // new ButtonBuilder()
-    //   .setCustomId(`event/${event.id}/rsvps`)
-    //   .setStyle(ButtonStyle.Primary)
-    //   .setLabel('RSVPs'),
   );
 
+  const embeds: Array<EmbedBuilder> = [meetingInfo];
+
+  if (mentorEmbed) embeds.push(mentorEmbed);
+
+  if (otherEmbed) embeds.push(otherEmbed);
+
   return {
-    embeds: [meetingEmbed],
+    embeds: embeds,
     components: [messageComponent],
   };
 }
