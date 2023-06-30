@@ -1,10 +1,6 @@
-import {
-  CacheInterceptor,
-  Controller,
-  Get,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Controller, Get, UseInterceptors } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @ApiTags('App')
 @Controller()
