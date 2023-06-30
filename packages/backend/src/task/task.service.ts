@@ -215,5 +215,24 @@ export class TaskService {
     );
 
     this.logger.debug(`${sentMessages.length} reminder messages sent`);
+
+    const threadsEnabled =
+      this.config.get<string>('ATTENDANCE_THREADS_ENABLED') === 'true'
+        ? true
+        : false;
+
+    if (threadsEnabled) {
+      const attendanceThreads = await Promise.all(
+        sentMessages.map(async (message, index) => {
+          const event = messages[index][1];
+          await message.startThread({
+            name: `Attendance ${event.title}`,
+            autoArchiveDuration: 1440,
+            reason: 'Attendance thread',
+          });
+        }),
+      );
+      this.logger.debug(`${attendanceThreads.length} threads created`);
+    }
   }
 }
