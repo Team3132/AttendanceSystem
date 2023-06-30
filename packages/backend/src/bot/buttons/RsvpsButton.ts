@@ -87,6 +87,7 @@ export class RsvpsButton {
                 user: {
                   select: {
                     username: true,
+                    roles: true,
                   },
                 },
               },

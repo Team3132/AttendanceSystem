@@ -22,19 +22,40 @@ import { DateTime } from "luxon";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { FaArrowRight } from "react-icons/fa";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  Link,
+  LoaderFunctionArgs,
+  useLoaderData,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import useDeleteEvent from "../hooks/useDeleteEvent";
 import useEvent from "../hooks/useEvent";
 import useUpdateEvent from "../hooks/useUpdateEvent";
 
-export default function EditEventPage() {
-  const { eventId } = useParams();
-  const { data: event, isLoading, isError } = useEvent(eventId);
-  const navigate = useNavigate();
-  // const { mutate: globalMutate } = useSWRConfig();
-  const { isAdmin } = useAuthStatus();
+export async function loader({ request: { url }, params }: LoaderFunctionArgs) {
+  const { searchParams } = new URL(url);
+  const eventId = params?.eventId;
 
-  const readonly = !isAdmin;
+  if (!eventId) throw new Error("No event id provided");
+
+  return {
+    eventId,
+  };
+}
+
+interface UpdateEventDtoForm
+  extends Omit<UpdateEventDto, "startDate" | "endDate"> {
+  startDate: string | Date;
+  endDate: string | Date;
+}
+
+const dateTimeLocalFormat = "kkkk-LL-dd'T'HH:mm";
+
+export function Component() {
+  const { eventId } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const { data: event, isLoading } = useEvent(eventId);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -44,27 +65,36 @@ export default function EditEventPage() {
     reset,
     control,
     setValue,
-  } = useForm<UpdateEventDto>();
+  } = useForm<UpdateEventDtoForm>();
   useEffect(() => {
     if (event) {
-      const pickedEvent = pick(event, [
-        "description",
-        "title",
-        "startDate",
-        "endDate",
-        "allDay",
-        "type",
-      ]);
-      reset(pickedEvent);
+      const existingEventData = {
+        ...event,
+        startDate: DateTime.fromISO(event.startDate).toFormat(
+          dateTimeLocalFormat
+        ),
+        endDate: DateTime.fromISO(event.endDate).toFormat(dateTimeLocalFormat),
+      } satisfies UpdateEventDtoForm;
+      reset(existingEventData);
     }
   }, [event]);
 
   const { mutateAsync: updateEvent } = useUpdateEvent();
 
-  const onSubmit = async (data: UpdateEventDto) => {
-    if (event?.id) {
-      await updateEvent({ id: event.id, data });
-    }
+  const onSubmit = async (data: UpdateEventDtoForm) => {
+    const newEventData = {
+      ...data,
+      startDate:
+        typeof data.startDate === "string"
+          ? data.startDate
+          : data.startDate.toISOString(),
+      endDate:
+        typeof data.endDate === "string"
+          ? data.endDate
+          : data.endDate.toISOString(),
+    };
+
+    await updateEvent({ id: eventId, data: newEventData });
   };
 
   const deleteEvent = useDeleteEvent();
@@ -105,11 +135,7 @@ export default function EditEventPage() {
         {/* Title */}
         <FormControl isInvalid={!!errors.title}>
           <FormLabel htmlFor="title">Title</FormLabel>
-          <Input
-            id="title"
-            {...register("title", { required: true })}
-            readOnly={readonly}
-          />
+          <Input id="title" {...register("title", { required: true })} />
         </FormControl>
 
         {/* All Day */}
@@ -121,7 +147,7 @@ export default function EditEventPage() {
           <FormLabel htmlFor="allDay" mb="0">
             All day
           </FormLabel>
-          <Switch id="allDay" {...register("allDay")} readOnly={readonly} />
+          <Switch id="allDay" {...register("allDay")} />
         </FormControl>
 
         {/* Select Type */}
@@ -139,87 +165,45 @@ export default function EditEventPage() {
         </FormControl>
 
         {/* Start Date */}
-        <Controller
-          name="startDate"
-          control={control}
-          rules={{
-            validate: {
-              isNotNull: (v) => v !== null ?? "Needs to be a valid date.",
-            },
-          }}
-          render={(props) => (
-            <FormControl isInvalid={!!errors.startDate}>
-              <FormLabel htmlFor="startDate">Start Date</FormLabel>
-              <Input
-                id="startDate"
-                type="datetime-local"
-                readOnly={readonly}
-                {...props.field}
-                value={
-                  props.field.value
-                    ? DateTime.fromISO(props.field.value).toISO({
-                        includeOffset: false,
-                      }) ?? ""
-                    : undefined
-                }
-                onChange={(e) =>
-                  props.field.onChange(DateTime.fromISO(e.target.value).toISO())
-                }
-              />
-              {!errors.startDate ? (
-                <FormHelperText>The start date of the event.</FormHelperText>
-              ) : (
-                <FormErrorMessage>{errors.startDate.message}</FormErrorMessage>
-              )}
-            </FormControl>
+        <FormControl isInvalid={!!errors.startDate}>
+          <FormLabel htmlFor="startDate">Start Date</FormLabel>
+          <Input
+            id="startDate"
+            type="datetime-local"
+            {...register("startDate", {
+              valueAsDate: true,
+              required: true,
+            })}
+          />
+          {!errors.startDate ? (
+            <FormHelperText>The start date of the event.</FormHelperText>
+          ) : (
+            <FormErrorMessage>{errors.startDate.message}</FormErrorMessage>
           )}
-        />
+        </FormControl>
 
         {/* End Date */}
-        <Controller
-          name="endDate"
-          control={control}
-          rules={{
-            validate: {
-              isNotNull: (v) => v !== null ?? "Needs to be a valid date.",
-            },
-          }}
-          render={(props) => (
-            <FormControl isInvalid={!!errors.endDate}>
-              <FormLabel htmlFor="endDate">End Date</FormLabel>
-              <Input
-                readOnly={readonly}
-                id="endDate"
-                type="datetime-local"
-                {...props.field}
-                value={
-                  props.field.value
-                    ? DateTime.fromISO(props.field.value).toISO({
-                        includeOffset: false,
-                      }) ?? ""
-                    : undefined
-                }
-                onChange={(e) =>
-                  props.field.onChange(DateTime.fromISO(e.target.value).toISO())
-                }
-              />
-              {!errors.endDate ? (
-                <FormHelperText>The end date of the event.</FormHelperText>
-              ) : (
-                <FormErrorMessage>{errors.endDate.message}</FormErrorMessage>
-              )}
-            </FormControl>
+        <FormControl isInvalid={!!errors.endDate}>
+          <FormLabel htmlFor="endDate">End Date</FormLabel>
+          <Input
+            id="endDate"
+            type="datetime-local"
+            {...register("endDate", {
+              valueAsDate: true,
+              required: true,
+            })}
+          />
+          {!errors.endDate ? (
+            <FormHelperText>The end date of the event.</FormHelperText>
+          ) : (
+            <FormErrorMessage>{errors.endDate.message}</FormErrorMessage>
           )}
-        />
+        </FormControl>
 
         {/* Description */}
         <FormControl isInvalid={!!errors.description}>
           <FormLabel htmlFor="description">Description</FormLabel>
-          <Textarea
-            id="description"
-            {...register("description")}
-            readOnly={readonly}
-          />
+          <Textarea id="description" {...register("description")} />
           {!errors.description ? (
             <FormHelperText>The description of the event.</FormHelperText>
           ) : (

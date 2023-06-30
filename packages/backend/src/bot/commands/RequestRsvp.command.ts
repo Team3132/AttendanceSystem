@@ -38,6 +38,7 @@ export class RequestRsvpCommand {
             user: {
               select: {
                 username: true,
+                roles: true,
               },
             },
           },

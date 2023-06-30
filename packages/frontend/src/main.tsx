@@ -2,15 +2,17 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
 import { AuthWrapper } from "./features/auth";
 import {
   AdminAttendancePage,
   AdminCheckinPage,
   AgendaPage,
   AttendancePage,
-  CreateEventPage,
-  EditEventPage,
   EventDetailsPage,
   EventPage,
   FullCalendar,
@@ -31,66 +33,104 @@ const persister = createSyncStoragePersister({
   storage: window.localStorage,
 });
 
+const router = createBrowserRouter([
+  {
+    element: <Layout />,
+    children: [
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        element: <AuthWrapper />,
+        children: [
+          {
+            path: "event/:eventId",
+            element: <EventPage />,
+            children: [
+              {
+                index: true,
+                element: <EventDetailsPage />,
+              },
+              {
+                path: "attendance",
+                element: <AttendancePage />,
+              },
+              {
+                path: "checkin",
+                element: <UserCheckinPage />,
+              },
+              {
+                element: <AuthWrapper adminOnly />,
+                children: [
+                  {
+                    path: "admin-attendance",
+                    element: <AdminAttendancePage />,
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "agenda",
+            element: <AgendaPage />,
+          },
+          {
+            path: "calendar",
+            element: <FullCalendar />,
+          },
+          {
+            path: "codes",
+            element: <ScancodePage />,
+          },
+          {
+            path: "profile",
+            element: <ProfilePage />,
+          },
+        ],
+      },
+      {
+        element: <AuthWrapper adminOnly />,
+        children: [
+          {
+            path: "event/create",
+            lazy: () => import("./features/event/pages/CreateEventPage"),
+          },
+          {
+            path: "event/:eventId/edit",
+            lazy: () => import("./features/event/pages/EditEventPage"),
+          },
+          {
+            path: "event/:eventId/admin-checkin",
+            element: <AdminCheckinPage />,
+          },
+          {
+            path: "admin",
+            element: <AdminPage />,
+          },
+          {
+            path: "profile/:userId",
+            element: <ProfilePage />,
+          },
+          {
+            path: "codes/:userId",
+            element: <ScancodePage />,
+          },
+        ],
+      },
+    ],
+  },
+]);
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  // <React.StrictMode>
-  <BrowserRouter>
-    <ChakraProvider>
-      <ErrorBoundary>
-        <SWToast />
-        <QueryClientProvider
-          client={queryClient}
-          // persistOptions={{ persister }}
-          // onSuccess={() => {
-          //   // resume mutations after initial restore from localStorage was successful
-          //   queryClient.resumePausedMutations().then(() => {
-          //     queryClient.invalidateQueries();
-          //   });
-          // }}
-        >
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              {/* Public Pages */}
-              <Route index element={<Home />} />
-              {/* Authenticated-only pages */}
-              <Route element={<AuthWrapper />}>
-                <Route path="event/:eventId" element={<EventPage />}>
-                  <Route index element={<EventDetailsPage />} />
-                  <Route path="attendance" element={<AttendancePage />} />
-                  <Route path="checkin" element={<UserCheckinPage />} />
-                  <Route element={<AuthWrapper adminOnly />}>
-                    <Route
-                      path="admin-attendance"
-                      element={<AdminAttendancePage />}
-                    />
-                  </Route>
-                </Route>
-                <Route path="agenda" element={<AgendaPage />} />
-                <Route path="calendar" element={<FullCalendar />} />
-                <Route element={<ScancodePage />} path="codes" />
-                <Route element={<ProfilePage />} path="profile" />
-              </Route>
-              {/* Admin only pages */}
-              <Route element={<AuthWrapper adminOnly />}>
-                <Route path="event/create" element={<CreateEventPage />} />
-                <Route path="event/:eventId/edit" element={<EditEventPage />} />
-
-                <Route element={<AdminPage />} path="admin" />
-                <Route element={<ProfilePage />} path="profile/:userId" />
-                <Route element={<ScancodePage />} path="codes/:userId" />
-              </Route>
-            </Route>
-            <Route element={<AuthWrapper adminOnly />}>
-              <Route
-                path="/event/:eventId/admin-checkin"
-                element={<AdminCheckinPage />}
-              />
-            </Route>
-          </Routes>
-
-          <ReactQueryDevtools />
-        </QueryClientProvider>
-      </ErrorBoundary>
-    </ChakraProvider>
-  </BrowserRouter>
+  <ChakraProvider>
+    <ErrorBoundary>
+      <SWToast />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+        <ReactQueryDevtools />
+      </QueryClientProvider>
+    </ErrorBoundary>
+  </ChakraProvider>
   // </React.StrictMode>
 );

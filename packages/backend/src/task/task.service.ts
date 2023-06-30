@@ -115,6 +115,7 @@ export class TaskService {
             user: {
               select: {
                 username: true,
+                roles: true,
               },
             },
           },
@@ -145,6 +146,7 @@ export class TaskService {
         RSVP: (RSVP & {
           user: {
             username: string;
+            roles: string[];
           };
         })[];
       },

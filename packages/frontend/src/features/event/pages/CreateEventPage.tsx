@@ -4,6 +4,7 @@ import {
   FormErrorMessage,
   FormHelperText,
   FormLabel,
+  HStack,
   Heading,
   Input,
   Select,
@@ -14,22 +15,26 @@ import {
 import { CreateEventDto, EventResponseType } from "@generated";
 import { DateTime } from "luxon";
 import { Controller, useForm } from "react-hook-form";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import {
+  LoaderFunctionArgs,
+  useLoaderData,
+  useNavigate,
+} from "react-router-dom";
 import useCreateEvent from "../hooks/useCreateEvent";
 
-const CreateEventScreen: React.FC = () => {
-  const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
+const dateTimeLocalFormat = "kkkk-LL-dd'T'HH:mm";
 
+export async function loader({ request: { url } }: LoaderFunctionArgs) {
+  const { searchParams } = new URL(url);
   const startDateQuery = searchParams.get("startDate");
   const startDate = startDateQuery
-    ? new Date(startDateQuery).toISOString()
-    : new Date().toISOString();
+    ? DateTime.fromISO(startDateQuery).toFormat(dateTimeLocalFormat)
+    : DateTime.now().toFormat(dateTimeLocalFormat);
 
   const endQuery = searchParams.get("endDate");
   const endDate = endQuery
-    ? new Date(endQuery).toISOString()
-    : new Date().toISOString();
+    ? DateTime.fromISO(endQuery).toFormat(dateTimeLocalFormat)
+    : DateTime.now().toFormat(dateTimeLocalFormat);
 
   const allDayQuery = searchParams.get("allDay");
   const allDay: boolean = allDayQuery
@@ -40,9 +45,9 @@ const CreateEventScreen: React.FC = () => {
       : false
     : false;
 
-  const role = searchParams.get("role");
+  const role = searchParams.get("role") ?? undefined;
 
-  const eventTypeQuery = searchParams.get("eventType");
+  const eventTypeQuery = searchParams.get("eventType") ?? undefined;
 
   const eventType = eventTypeQuery
     ? eventTypeQuery === CreateEventDto.type.OUTREACH
@@ -56,17 +61,43 @@ const CreateEventScreen: React.FC = () => {
 
   const description = searchParams.get("description") ?? undefined;
 
-  const eventNameQuery = searchParams.get("eventName");
+  const eventNameQuery = searchParams.get("eventName") ?? undefined;
+
+  return {
+    eventNameQuery,
+    description,
+    eventType,
+    role,
+    allDay,
+    startDate,
+    endDate,
+  };
+}
+
+type CreateEventDtoForm = Omit<CreateEventDto, "startDate" | "endDate"> & {
+  startDate: Date | string;
+  endDate: Date | string;
+};
+
+export function Component() {
+  const {
+    allDay,
+    startDate,
+    endDate,
+    role,
+    eventType,
+    description,
+    eventNameQuery,
+  } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors, isSubmitting },
-    reset,
     control,
-    setValue,
-  } = useForm<CreateEventDto>({
+  } = useForm<CreateEventDtoForm>({
     defaultValues: {
       title: eventNameQuery ?? "Event Title",
       type: eventType,
@@ -80,8 +111,19 @@ const CreateEventScreen: React.FC = () => {
 
   const { mutateAsync: createEvent } = useCreateEvent();
 
-  const onSubmit = async (data: CreateEventDto) => {
-    const event = await createEvent(data);
+  const onSubmit = async (data: CreateEventDtoForm) => {
+    console.log(data);
+    const event = await createEvent({
+      ...data,
+      startDate:
+        typeof data.startDate === "string"
+          ? data.startDate
+          : data.startDate.toISOString(),
+      endDate:
+        typeof data.endDate === "string"
+          ? data.endDate
+          : data.endDate.toISOString(),
+    });
     navigate(`/event/${event.id}`);
   };
 
@@ -120,78 +162,57 @@ const CreateEventScreen: React.FC = () => {
         </FormControl>
 
         {/* Start Date */}
-        <Controller
-          name="startDate"
-          control={control}
-          rules={{
-            required: true,
-            validate: {
-              isNotNull: (v) => v !== null ?? "Needs to be a valid date.",
-            },
-          }}
-          render={(props) => (
-            <FormControl isInvalid={!!errors.startDate}>
-              <FormLabel htmlFor="startDate">Start Date</FormLabel>
-              <Input
-                id="startDate"
-                type="datetime-local"
-                {...props.field}
-                value={
-                  props.field.value
-                    ? DateTime.fromISO(props.field.value).toISO({
-                        includeOffset: false,
-                      }) ?? ""
-                    : undefined
-                }
-                onChange={(e) =>
-                  props.field.onChange(DateTime.fromISO(e.target.value).toISO())
-                }
-              />
-              {!errors.startDate ? (
-                <FormHelperText>The start date of the event.</FormHelperText>
-              ) : (
-                <FormErrorMessage>{errors.startDate.message}</FormErrorMessage>
-              )}
-            </FormControl>
-          )}
-        />
+        <HStack>
+          <FormControl isInvalid={!!errors.startDate}>
+            <FormLabel htmlFor="startDate">Start Date</FormLabel>
+            <Input
+              id="startDate"
+              type="datetime-local"
+              {...register("startDate", {
+                valueAsDate: true,
+              })}
+            />
+            {!errors.startDate ? (
+              <FormHelperText>The start date of the event.</FormHelperText>
+            ) : (
+              <FormErrorMessage>{errors.startDate.message}</FormErrorMessage>
+            )}
+          </FormControl>
+        </HStack>
 
         {/* End Date */}
-        <Controller
-          name="endDate"
-          control={control}
-          rules={{
-            required: true,
-            validate: {
-              isNotNull: (v) => v !== null ?? "Needs to be a valid date.",
-            },
-          }}
-          render={(props) => (
-            <FormControl isInvalid={!!errors.endDate}>
-              <FormLabel htmlFor="endDate">End Date</FormLabel>
-              <Input
-                id="endDate"
-                type="datetime-local"
-                {...props.field}
-                value={
-                  props.field.value
-                    ? DateTime.fromISO(props.field.value).toISO({
-                        includeOffset: false,
-                      }) ?? ""
-                    : undefined
-                }
-                onChange={(e) =>
-                  props.field.onChange(DateTime.fromISO(e.target.value).toISO())
-                }
-              />
-              {!errors.endDate ? (
-                <FormHelperText>The end date of the event.</FormHelperText>
-              ) : (
-                <FormErrorMessage>{errors.endDate.message}</FormErrorMessage>
-              )}
-            </FormControl>
-          )}
-        />
+        <HStack>
+          <FormControl isInvalid={!!errors.endDate}>
+            <FormLabel htmlFor="endDate">End Date</FormLabel>
+            <Input
+              id="endDate"
+              type="datetime-local"
+              {...register("endDate", {
+                valueAsDate: true,
+              })}
+            />
+            {!errors.endDate ? (
+              <FormHelperText>The end date of the event.</FormHelperText>
+            ) : (
+              <FormErrorMessage>{errors.endDate.message}</FormErrorMessage>
+            )}
+          </FormControl>
+          {/* <FormControl isInvalid={!!errors.endTime}>
+            <FormLabel htmlFor="endTime">End Time</FormLabel>
+            <Input
+              id="endTime"
+              type="time"
+              {...register("endTime", {
+                valueAsDate: true,
+              })}
+            />
+            {!errors.endTime ? (
+              <FormHelperText>The end time of the event.</FormHelperText>
+            ) : (
+              <FormErrorMessage>{errors.endTime.message}</FormErrorMessage>
+            )}
+          </FormControl> */}
+        </HStack>
 
         <FormControl isInvalid={!!errors.description}>
           <FormLabel htmlFor="description">Description</FormLabel>
@@ -209,6 +230,6 @@ const CreateEventScreen: React.FC = () => {
       </Button>
     </form>
   );
-};
+}
 
-export default CreateEventScreen;
+export default Component;
