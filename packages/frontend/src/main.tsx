@@ -100,7 +100,7 @@ const router = createBrowserRouter([
           },
           {
             path: "event/:eventId/edit",
-            element: <EditEventPage />,
+            lazy: () => import("./features/event/pages/EditEventPage"),
           },
           {
             path: "event/:eventId/admin-checkin",
