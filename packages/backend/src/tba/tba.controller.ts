@@ -1,5 +1,4 @@
 import {
-  CacheInterceptor,
   Controller,
   Get,
   NotFoundException,
@@ -12,6 +11,7 @@ import {
 } from '@nestjs/swagger';
 import { TBAEventDto } from './dto/TBAEvent.dto';
 import { TbaService } from './tba.service';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('tba')
 export class TbaController {

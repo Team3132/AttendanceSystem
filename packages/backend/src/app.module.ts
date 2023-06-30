@@ -1,4 +1,4 @@
-import { CacheModule, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -21,6 +21,7 @@ import { NecordModule } from 'necord';
 import { BotService } from './bot/bot.service';
 import { redisStore } from 'cache-manager-ioredis-yet';
 import { TbaModule } from './tba/tba.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [

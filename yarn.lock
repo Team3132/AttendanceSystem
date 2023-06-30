@@ -3131,6 +3131,11 @@
     got "^11.8.5"
     os-filter-obj "^2.0.0"
 
+"@nestjs/cache-manager@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@nestjs/cache-manager/-/cache-manager-2.0.1.tgz#a0a6f2a8322176739d8871bf1a251addffe159d2"
+  integrity sha512-UxDeuarskoSPVzLRl6SVNaUlGnwclhq48JCvQ/zu7W2RRaBqlxzfM8/CaRjrpSwC7/LVrLKv+f9EoAWYOvSULg==
+
 "@nestjs/cli@^10.0.0":
   version "10.0.5"
   resolved "https://registry.yarnpkg.com/@nestjs/cli/-/cli-10.0.5.tgz#eeff9e6e54eedea2927bd4a83993b59d2557ec13"
