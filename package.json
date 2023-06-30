@@ -25,7 +25,9 @@
     "typecheck:backend:watch": "yarn workspace backend tsc --noEmit --watch",
     "typecheck": "yarn typecheck:frontend && yarn typecheck:backend",
     "generate:openapi": "yarn workspace frontend generate",
-    "generate:prisma": "yarn workspace backend prisma generate"
+    "generate:prisma": "yarn workspace backend prisma generate",
+    "back": "yarn workspace backend",
+    "front": "yarn workspace frontend"
   },
   "devDependencies": {
     "concurrently": "^8.0.0",
