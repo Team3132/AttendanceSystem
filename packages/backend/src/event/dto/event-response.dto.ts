@@ -24,6 +24,9 @@ export class EventResponse implements Event {
   @Exclude()
   secret: string;
 
+  @ApiProperty()
+  isSyncedEvent: boolean;
+
   constructor(event: Event) {
     Object.assign(this, event);
   }
