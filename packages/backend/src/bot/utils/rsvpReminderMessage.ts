@@ -86,7 +86,7 @@ export default function rsvpReminderMessage(
     ? new EmbedBuilder()
         .setTitle(`Others (${comingStudentCount})`)
         .setDescription(otherDescription)
-        .setColor('##71d11f')
+        .setColor('#71d11f')
     : undefined;
 
   const messageComponent = new ActionRowBuilder<ButtonBuilder>().addComponents(
