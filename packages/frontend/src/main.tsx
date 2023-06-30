@@ -13,8 +13,6 @@ import {
   AdminCheckinPage,
   AgendaPage,
   AttendancePage,
-  CreateEventPage,
-  EditEventPage,
   EventDetailsPage,
   EventPage,
   FullCalendar,
