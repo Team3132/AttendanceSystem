@@ -64,14 +64,29 @@ export default function rsvpReminderMessage(
       { name: 'Start Time', value: time(event.startDate), inline: true },
       { name: 'End Time', value: time(event.endDate), inline: true },
     )
-    .setURL(`${frontendUrl}/event/${event.id}`);
+    .setURL(`${frontendUrl}/event/${event.id}`)
+    .setColor('Blue');
+
+  const comingMentorCount = mentorRSVPs.filter(
+    (rsvp) => rsvp.status === RSVPStatus.YES || rsvp.status === RSVPStatus.LATE,
+  ).length;
+
+  const comingStudentCount = otherRSVPs.filter(
+    (rsvp) => rsvp.status === RSVPStatus.YES || rsvp.status === RSVPStatus.LATE,
+  ).length;
 
   const mentorEmbed = mentorDescription
-    ? new EmbedBuilder().setTitle('Mentors').setDescription(mentorDescription)
+    ? new EmbedBuilder()
+        .setTitle(`Mentors (${comingMentorCount})`)
+        .setDescription(mentorDescription)
+        .setColor('#ccb010')
     : undefined;
 
   const otherEmbed = otherDescription
-    ? new EmbedBuilder().setTitle('Others').setDescription(otherDescription)
+    ? new EmbedBuilder()
+        .setTitle(`Others (${comingStudentCount})`)
+        .setDescription(otherDescription)
+        .setColor('##71d11f')
     : undefined;
 
   const messageComponent = new ActionRowBuilder<ButtonBuilder>().addComponents(
