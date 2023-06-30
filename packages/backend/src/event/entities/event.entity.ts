@@ -23,4 +23,6 @@ export class Event implements PrismaEvent {
   secret: string;
   @ApiProperty()
   roles: string[];
+  @ApiProperty()
+  isSyncedEvent: boolean;
 }

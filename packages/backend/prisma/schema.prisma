@@ -18,15 +18,15 @@ enum RSVPStatus {
 }
 
 model User {
-  id                  String     @id
-  username            String
-  createdAt           DateTime   @default(now())
-  updatedAt           DateTime   @default(now()) @updatedAt
-  calendarSecret      String     @unique @default(uuid())
-  defaultStatus       RSVPStatus?
-  roles               String[]
-  RSVP                RSVP[]
-  Scancode            Scancode[]
+  id             String      @id
+  username       String
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @default(now()) @updatedAt
+  calendarSecret String      @unique @default(uuid())
+  defaultStatus  RSVPStatus?
+  roles          String[]
+  RSVP           RSVP[]
+  Scancode       Scancode[]
 }
 
 model Scancode {
@@ -44,29 +44,30 @@ enum EventTypes {
 }
 
 model Event {
-  id          String     @id @default(cuid())
-  description String     @default("")
-  title       String
-  allDay      Boolean    @default(false)
-  startDate   DateTime
-  roles       String[]
-  endDate     DateTime
-  type        EventTypes @default(Regular)
-  secret      String     @unique @default(uuid())
-  RSVP        RSVP[]     @relation("EventOnRsvp")
+  id            String     @id @default(cuid())
+  description   String     @default("")
+  title         String
+  allDay        Boolean    @default(false)
+  startDate     DateTime
+  roles         String[]
+  endDate       DateTime
+  type          EventTypes @default(Regular)
+  secret        String     @unique @default(uuid())
+  RSVP          RSVP[]     @relation("EventOnRsvp")
+  isSyncedEvent Boolean    @default(false)
 }
 
 model RSVP {
-  id        String     @id @default(cuid())
+  id        String      @id @default(cuid())
   eventId   String
-  event     Event      @relation(name: "EventOnRsvp", fields: [eventId], references: [id], onDelete: Cascade)
+  event     Event       @relation(name: "EventOnRsvp", fields: [eventId], references: [id], onDelete: Cascade)
   userId    String
-  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   status    RSVPStatus?
   delay     Int?
-  attended  Boolean    @default(false)
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @default(now()) @updatedAt
+  attended  Boolean     @default(false)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @default(now()) @updatedAt
 
   @@unique([eventId, userId])
 }
