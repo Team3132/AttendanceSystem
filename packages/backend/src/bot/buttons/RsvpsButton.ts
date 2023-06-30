@@ -45,6 +45,16 @@ export class RsvpsButton {
       ? fetchedEvent.roles
       : [interaction.guild.roles.everyone.id];
 
+    const connectedOrCreatedGuildMember = connectOrCreateGuildMember(user);
+
+    await this.db.user.upsert({
+      ...connectedOrCreatedGuildMember,
+      update: {
+        username: connectedOrCreatedGuildMember.create.username,
+        roles: connectedOrCreatedGuildMember.create.roles,
+      },
+    });
+
     if (!user.roles.cache.some((role) => roles.includes(role.id)))
       return interaction.reply({
         ephemeral: true,
