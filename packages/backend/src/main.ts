@@ -60,7 +60,6 @@ async function bootstrap() {
       whitelist: true,
       stopAtFirstError: false,
       transform: true,
-      forbidNonWhitelisted: true,
     }),
   );
   const swaggerConfig = new DocumentBuilder()

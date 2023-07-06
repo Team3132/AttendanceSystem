@@ -119,7 +119,7 @@ export class TaskService {
   }
 
   @Cron('00 22 * * *')
-  async handleAttendanceReminder() {
+  public async handleAttendanceReminder() {
     const enabled = this.config.get('REMINDER_ENABLED');
     if (!enabled) return;
 
