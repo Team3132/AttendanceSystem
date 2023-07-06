@@ -50,7 +50,9 @@ export default function rsvpReminderMessage(
         .join('\n')
     : undefined;
 
-  const meetingInfo = new EmbedBuilder()
+  const meetingInfo = new EmbedBuilder({
+    description: event.description.length ? event.description : undefined,
+  })
     .setTitle(event.title)
     .addFields(
       {
@@ -60,6 +62,7 @@ export default function rsvpReminderMessage(
           : roleMention(everyoneRole),
         inline: true,
       },
+      { name: 'Type', value: event.type, inline: true },
       { name: 'All Day', value: event.allDay ? 'Yes' : 'No', inline: true },
       { name: 'Start Time', value: time(event.startDate), inline: true },
       { name: 'End Time', value: time(event.endDate), inline: true },
