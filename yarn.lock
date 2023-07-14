@@ -6723,9 +6723,9 @@ forwarded@0.2.0:
   integrity sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow==
 
 framer-motion@^10.0.0:
-  version "10.12.20"
-  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-10.12.20.tgz#dce81636404cf3f7f5446b90e08be2625813c022"
-  integrity sha512-O4ODHTlov2cGHWjtMSuZhm2wX0eM33VK8+vCxren2uw9g3k/RubPCa0/tT6PtLzCvYgAhgKmaczVbY2qEJVWOw==
+  version "10.12.21"
+  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-10.12.21.tgz#ea36b8db4dbb561d5fac7a978c2cd467f6d39a1b"
+  integrity sha512-EmnP73O5+1OGm2jtQNoBPPuAJvhySl+p4/9PL7PPJHt58nkPWeFaxhCJaUDXDf6N3jSLluefxopc0FrMCQ+/tQ==
   dependencies:
     tslib "^2.4.0"
   optionalDependencies:
@@ -10980,9 +10980,9 @@ vite-tsconfig-paths@^4.0.3:
     tsconfck "^2.1.0"
 
 vite@^4.1.4:
-  version "4.4.3"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-4.4.3.tgz#dfaf86f4cba3058bf2724e2e2c88254fb0f21a5a"
-  integrity sha512-IMnXQXXWgLi5brBQx/4WzDxdzW0X3pjO4nqFJAuNvwKtxzAmPzFE1wszW3VDpAGQJm3RZkm/brzRdyGsnwgJIA==
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-4.4.4.tgz#b76e6049c0e080cb54e735ad2d18287753752118"
+  integrity sha512-4mvsTxjkveWrKDJI70QmelfVqTm+ihFAb6+xf4sjEU2TmUCTlVX87tmg/QooPEMQb/lM9qGHT99ebqPziEd3wg==
   dependencies:
     esbuild "^0.18.10"
     postcss "^8.4.25"
