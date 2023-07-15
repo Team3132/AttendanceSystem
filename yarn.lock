@@ -5843,9 +5843,9 @@ dotenv@16.1.4:
   integrity sha512-m55RtE8AsPeJBpOIFKihEmqUcoVncQIwo7x9U8ZwLEZw9ZpXboz2c+rvog+jUaJvVrZ5kBOeYQBX5+8Aa/OZQw==
 
 downshift@^7.2.0:
-  version "7.6.1"
-  resolved "https://registry.yarnpkg.com/downshift/-/downshift-7.6.1.tgz#e4c089519b66994504fa1e8d40798a15e0445cfa"
-  integrity sha512-XIqM6WtPRL2qpyRncleOVThV6rhknB3i9okRYRCxUmviNdVS4pJ1SUICt2XHya5SrRwzEShDaK5h+xB2xLdpZw==
+  version "7.6.2"
+  resolved "https://registry.yarnpkg.com/downshift/-/downshift-7.6.2.tgz#16fc951b7ff8f9c1c47d0f71b5ff10d78fb06e4c"
+  integrity sha512-iOv+E1Hyt3JDdL9yYcOgW7nZ7GQ2Uz6YbggwXvKUSleetYhU2nXD482Rz6CzvM4lvI1At34BYruKAL4swRGxaA==
   dependencies:
     "@babel/runtime" "^7.14.8"
     compute-scroll-into-view "^2.0.4"
