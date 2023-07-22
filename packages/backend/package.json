@@ -46,7 +46,7 @@
     "ical-generator": "^5.0.0",
     "ioredis": "^5.1.0",
     "luxon": "^3.0.1",
-    "necord": "^5.4.4",
+    "necord": "^6.0.0",
     "nestjs-dynamic-providers": "^0.1.7",
     "openapi-typescript-codegen": "^0.25.0",
     "otplib": "^12.0.1",
