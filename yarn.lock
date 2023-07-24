@@ -8646,10 +8646,10 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
 
-necord@^5.4.4:
-  version "5.9.0"
-  resolved "https://registry.yarnpkg.com/necord/-/necord-5.9.0.tgz#0a2ed7bdb551b1dd715530113140064372b71863"
-  integrity sha512-Toexl5GxUxm9kn/nWKrZ5zxfzw6q+4XZCx5vPSLwBMpF+m779F98CYDIU10wSN7ctI6e4XarD4jUTmTpqxCqbw==
+necord@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/necord/-/necord-6.0.0.tgz#f9901da6d914b31f0e35ab581484125a10b085a4"
+  integrity sha512-Q8wJ6fEEvtHgNXkKSMh5k/+mhr43wrE4CPw5/DN2zDm2X+iBt9PSy8kFMqEsX7g8x9TGFOD4iHD8sLGyK9AHxQ==
   dependencies:
     path-to-regexp "6.2.1"
 
