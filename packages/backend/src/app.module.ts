@@ -22,12 +22,15 @@ import { BotService } from './bot/bot.service';
 import { redisStore } from 'cache-manager-ioredis-yet';
 import { TbaModule } from './tba/tba.module';
 import { CacheModule } from '@nestjs/cache-manager';
+import { OutreachModule } from './outreach/outreach.module';
+import { DrizzleModule } from './drizzle/drizzle.module';
 
 @Module({
   imports: [
     AuthModule,
     PrismaModule,
     ConfigModule.forRoot({ isGlobal: true, cache: true }),
+    DrizzleModule,
     NecordModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
         token: configService.getOrThrow('DISCORD_TOKEN'),
@@ -64,6 +67,7 @@ import { CacheModule } from '@nestjs/cache-manager';
     TaskModule,
     GcalModule,
     TbaModule,
+    OutreachModule,
   ],
   controllers: [AppController],
   providers: [
