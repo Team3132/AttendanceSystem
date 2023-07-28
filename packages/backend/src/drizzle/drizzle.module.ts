@@ -5,13 +5,13 @@ import * as schema from '../../drizzle.config';
 import { ConfigService } from '@nestjs/config';
 import { Client } from 'pg';
 
-export const PG_CONNECTION = Symbol('PG_CONNECTION');
+export const DRIZZLE_TOKEN = Symbol('PG_CONNECTION');
 
 @Global()
 @Module({
   providers: [
     {
-      provide: PG_CONNECTION,
+      provide: DRIZZLE_TOKEN,
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
         const logger = new Logger(DrizzleModule.name);
@@ -36,7 +36,7 @@ export const PG_CONNECTION = Symbol('PG_CONNECTION');
       },
     },
   ],
-  exports: [PG_CONNECTION],
+  exports: [DRIZZLE_TOKEN],
 })
 export class DrizzleModule {}
 

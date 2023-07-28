@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm';
 import {
   pgTable,
   pgEnum,
@@ -39,6 +40,11 @@ export const user = pgTable(
   },
 );
 
+export const userRelations = relations(user, ({ many }) => ({
+  rsvps: many(rsvp),
+  scancodes: many(scancode),
+}));
+
 export const rsvp = pgTable(
   'RSVP',
   {
@@ -69,6 +75,11 @@ export const rsvp = pgTable(
   },
 );
 
+export const rsvpRelations = relations(rsvp, ({ one }) => ({
+  user: one(user, { fields: [rsvp.userId], references: [user.id] }),
+  event: one(event, { fields: [rsvp.eventId], references: [event.id] }),
+}));
+
 export const event = pgTable(
   'Event',
   {
@@ -93,6 +104,10 @@ export const event = pgTable(
   },
 );
 
+export const eventRelations = relations(event, ({ many }) => ({
+  rsvps: many(rsvp),
+}));
+
 export const scancode = pgTable('Scancode', {
   code: text('code').primaryKey().notNull(),
   createdAt: timestamp('createdAt', { precision: 3, mode: 'string' })
@@ -105,3 +120,7 @@ export const scancode = pgTable('Scancode', {
     .notNull()
     .references(() => user.id, { onDelete: 'restrict', onUpdate: 'cascade' }),
 });
+
+export const scancodeRelations = relations(scancode, ({ one }) => ({
+  user: one(user, { fields: [scancode.userId], references: [user.id] }),
+}));

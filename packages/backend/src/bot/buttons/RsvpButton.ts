@@ -1,15 +1,18 @@
 import { PrismaService } from '@/prisma/prisma.service';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EmbedBuilder } from 'discord.js';
 import { DateTime } from 'luxon';
 import { Button, Context, ButtonContext, ComponentParam } from 'necord';
 import rsvpToDescription from '../utils/rsvpToDescription';
+import { DRIZZLE_TOKEN, DrizzleDatabase } from '@/drizzle/drizzle.module';
+import { event, rsvp, user } from '../../../drizzle/schema';
+import { asc, eq } from 'drizzle-orm';
 
 @Injectable()
 export class RsvpButton {
   constructor(
-    private readonly db: PrismaService,
+    @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
     private readonly config: ConfigService,
   ) {}
 
@@ -18,58 +21,68 @@ export class RsvpButton {
     @Context() [interaction]: ButtonContext,
     @ComponentParam('eventId') eventId: string,
   ) {
-    const fetchedMeeting = await this.db.event.findUnique({
-      where: {
-        id: eventId,
-      },
-      include: {
-        RSVP: {
-          orderBy: {
-            updatedAt: 'asc',
-          },
-          where: {
-            status: {
-              not: null,
-            },
-          },
-          include: {
-            user: {
-              select: {
-                username: true,
-              },
-            },
-          },
-        },
-      },
-    });
+    const rsvpEvents = await this.db
+      .select()
+      .from(event)
+      .where(eq(event.id, eventId));
 
-    if (!fetchedMeeting)
+    const rsvpEvent = rsvpEvents[0];
+
+    // const fetchedMeeting = await this.db.event.findUnique({
+    //   where: {
+    //     id: eventId,
+    //   },
+    //   include: {
+    //     RSVP: {
+    //       orderBy: {
+    //         updatedAt: 'asc',
+    //       },
+    //       where: {
+    //         status: {
+    //           not: null,
+    //         },
+    //       },
+    //       include: {
+    //         user: {
+    //           select: {
+    //             username: true,
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    // });
+
+    if (!rsvpEvent)
       return interaction.reply({ content: 'Unknown event', ephemeral: true });
 
-    if (!fetchedMeeting.RSVP.length)
+    const eventRsvps = await this.db
+      .select()
+      .from(rsvp)
+      .where(eq(rsvp.eventId, eventId))
+      .leftJoin(user, eq(rsvp.userId, user.id))
+      .orderBy(asc(rsvp.createdAt));
+
+    if (!eventRsvps.length)
       return interaction.reply({ content: 'No RSVPs', ephemeral: true });
 
-    const clonedRsvp = [...fetchedMeeting.RSVP];
+    const firstIdRsvp = eventRsvps[0].RSVP.id;
 
-    const sortedByCreated = clonedRsvp.sort(
-      (rsvpA, rsvpB) => rsvpB.createdAt.getTime() - rsvpA.createdAt.getTime(),
-    );
-
-    const firstId = sortedByCreated.at(-1)?.id;
-
-    const description = fetchedMeeting.RSVP.map((rsvp) =>
-      rsvpToDescription(rsvp, firstId === rsvp.id),
-    ).join(`\n`);
+    const description = eventRsvps
+      .map(({ RSVP, User }) =>
+        rsvpToDescription(RSVP, User, firstIdRsvp === RSVP.id),
+      )
+      .join(`\n`);
 
     const rsvpEmbed = new EmbedBuilder()
       .setTitle(
-        `RSVPs for ${fetchedMeeting.title} at ${DateTime.fromJSDate(
-          fetchedMeeting.startDate,
+        `RSVPs for ${rsvpEvent.title} at ${DateTime.fromISO(
+          rsvpEvent.startDate,
         ).toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}`,
       )
       .setDescription(description)
       .setTimestamp(new Date())
-      .setURL(`${this.config.get('FRONTEND_URL')}/event/${fetchedMeeting.id}`);
+      .setURL(`${this.config.get('FRONTEND_URL')}/event/${rsvpEvent.id}`);
 
     return interaction.reply({
       ephemeral: true,
