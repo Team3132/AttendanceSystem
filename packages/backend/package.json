@@ -41,7 +41,7 @@
     "discord-api-types": "^0.37.20",
     "discord.js": "^14.7.1",
     "express-session": "^1.17.3",
-    "googleapis": "120",
+    "googleapis": "123",
     "helmet": "^7.0.0",
     "ical-generator": "^5.0.0",
     "ioredis": "^5.1.0",
