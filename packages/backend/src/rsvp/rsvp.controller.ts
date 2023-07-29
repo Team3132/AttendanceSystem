@@ -96,12 +96,17 @@ export class RsvpController {
   @Roles(['MENTOR'])
   @ApiCreatedResponse({ type: Rsvp })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRsvpDto: UpdateRsvpDto) {
-    return this.db
+  async update(
+    @Param('id') id: string,
+    @Body() updateRsvpDto: UpdateRsvpDto,
+  ): Promise<Rsvp> {
+    const updatedRSVP = await this.db
       .update(rsvp)
       .set(updateRsvpDto)
       .where(eq(rsvp.id, id))
       .returning();
+
+    return new Rsvp(updatedRSVP.at(0));
   }
 
   /**
