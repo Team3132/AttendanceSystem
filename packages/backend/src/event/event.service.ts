@@ -2,12 +2,10 @@ import {
   BadRequestException,
   Inject,
   Injectable,
-  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { AuthenticatorService } from '@authenticator/authenticator.service';
 import { RsvpService } from '@rsvp/rsvp.service';
-import { PrismaService } from '../prisma/prisma.service';
 import {
   DRIZZLE_TOKEN,
   DrizzleDatabase,
@@ -22,11 +20,9 @@ import { RsvpUser } from './dto/rsvp-user.dto';
 export class EventService {
   constructor(
     @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
-    private readonly prismaService: PrismaService,
     private readonly authenticatorService: AuthenticatorService,
     private readonly rsvpService: RsvpService,
   ) {}
-  private readonly logger = new Logger(EventService.name);
 
   async createEvent(data: Omit<NewEvent, 'secret'>) {
     const secret = this.authenticatorService.generateSecret();
@@ -40,8 +36,12 @@ export class EventService {
     return newEvent.at(0);
   }
 
-  deleteEvent(id: Event['id']) {
-    return this.prismaService.event.delete({ where: { id } });
+  async deleteEvent(id: Event['id']) {
+    const deletedEvents = await this.db
+      .delete(event)
+      .where(eq(event.id, id))
+      .returning();
+    return deletedEvents.at(0);
   }
 
   async verifyUserEventToken(eventId: string, userId: string, token: string) {
@@ -53,32 +53,47 @@ export class EventService {
     const isValid = this.authenticatorService.verifyToken(event.secret, token);
     if (!isValid) throw new BadRequestException('Code not valid');
 
-    const rsvp = this.rsvpService.upsertRSVP({
-      where: {
-        eventId_userId: {
-          eventId,
-          userId,
-        },
-      },
-      update: {
-        attended: true,
-      },
-      create: {
-        attended: true,
-        event: {
-          connect: {
-            id: eventId,
-          },
-        },
-        user: {
-          connect: {
-            id: userId,
-          },
-        },
-      },
-    });
+    // const rsvp = this.rsvpService.upsertRSVP({
+    //   where: {
+    //     eventId_userId: {
+    //       eventId,
+    //       userId,
+    //     },
+    //   },
+    //   update: {
+    //     attended: true,
+    //   },
+    //   create: {
+    //     attended: true,
+    //     event: {
+    //       connect: {
+    //         id: eventId,
+    //       },
+    //     },
+    //     user: {
+    //       connect: {
+    //         id: userId,
+    //       },
+    //     },
+    //   },
+    // });
 
-    return rsvp;
+    const upsertedRsvp = await this.db
+      .insert(rsvp)
+      .values({
+        eventId,
+        userId,
+        attended: true,
+      })
+      .onConflictDoUpdate({
+        target: [rsvp.eventId, rsvp.userId],
+        set: {
+          attended: true,
+        },
+      })
+      .returning();
+
+    return upsertedRsvp;
   }
 
   async getEventUserRsvps(eventId: string): Promise<RsvpUser[]> {

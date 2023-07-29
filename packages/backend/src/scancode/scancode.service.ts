@@ -1,10 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { DRIZZLE_TOKEN, DrizzleDatabase } from '@/drizzle/drizzle.module';
+import { Inject, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '@prisma/prisma.service';
+import { scancode } from '../../drizzle/schema';
+import { eq } from 'drizzle-orm';
 
 @Injectable()
 export class ScancodeService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(@Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase) {}
 
   createScancode(data: Prisma.ScancodeCreateInput) {
     return this.prismaService.scancode.create({
@@ -41,18 +44,7 @@ export class ScancodeService {
     });
   }
 
-  updateScancode(params: {
-    where: Prisma.ScancodeWhereUniqueInput;
-    data: Prisma.ScancodeUpdateInput;
-  }) {
-    const { data, where } = params;
-    return this.prismaService.scancode.update({
-      data,
-      where,
-    });
-  }
-
-  deleteScancode(where: Prisma.ScancodeWhereUniqueInput) {
-    return this.prismaService.scancode.delete({ where });
+  deleteScancode(code: string) {
+    return this.db.delete(scancode).where(eq(scancode.code, code)).returning();
   }
 }

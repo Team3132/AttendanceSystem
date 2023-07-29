@@ -25,7 +25,6 @@ import {
   ApiBadRequestResponse,
   ApiCookieAuth,
   ApiCreatedResponse,
-  ApiNotAcceptableResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
@@ -38,18 +37,16 @@ import { UpdateOrCreateRSVP } from './dto/update-rsvp.dto';
 import { ScancodeService } from '@scancode/scancode.service';
 import { ScaninDto } from './dto/scanin.dto';
 import { GetEventsDto } from './dto/get-events.dto';
-import { UpdateRangeRSVP } from './dto/update-rsvp-range';
 import { EventResponse, EventResponseType } from './dto/event-response.dto';
 import { EventSecret } from './dto/event-secret.dto';
 import { ApiResponseTypeNotFound } from '@/standard-error.entity';
 import { AuthenticatorService } from '@authenticator/authenticator.service';
 import { ConfigService } from '@nestjs/config';
 import TokenCheckinDto from './dto/checkin-dto';
-import { PrismaService } from '@/prisma/prisma.service';
 import { RsvpUser } from './dto/rsvp-user.dto';
 import { Request, Response } from 'express';
 import { DRIZZLE_TOKEN, DrizzleDatabase } from '@/drizzle/drizzle.module';
-import { asc, between } from 'drizzle-orm';
+import { asc, between, eq } from 'drizzle-orm';
 import { DateTime } from 'luxon';
 import { event } from '../../drizzle/schema';
 
@@ -241,6 +238,7 @@ export class EventController {
     const updatedEvent = await this.db
       .update(event)
       .set(updateEventDto)
+      .where(eq(event.id, id))
       .returning();
 
     const firstReturned = updatedEvent.at(0);
