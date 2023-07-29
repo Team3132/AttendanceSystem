@@ -5,7 +5,9 @@
       "request": "launch",
       "type": "msedge",
       "url": "http://localhost:4000",
-      "skipFiles": ["${workspaceFolder}/node_modules/**/*.js"],
+      "skipFiles": [
+        "${workspaceFolder}/node_modules/**/*.js"
+      ],
       "webRoot": "${workspaceFolder}/src",
       "preLaunchTask": "npm: dev",
       "sourceMaps": true
@@ -14,7 +16,9 @@
       "name": "Launch Chrome",
       "request": "launch",
       "type": "chrome",
-      "skipFiles": ["${workspaceFolder}/node_modules/**/*.js"],
+      "skipFiles": [
+        "${workspaceFolder}/node_modules/**/*.js"
+      ],
       "url": "http://localhost:4000",
       "webRoot": "${workspaceFolder}/src",
       "preLaunchTask": "npm: dev",
@@ -25,7 +29,9 @@
       "type": "firefox",
       "request": "launch",
       "preLaunchTask": "npm: dev",
-      "skipFiles": ["${workspaceFolder}/node_modules/**/*.js"],
+      "skipFiles": [
+        "${workspaceFolder}/node_modules/**/*.js"
+      ],
       "url": "http://localhost:4000",
       "webRoot": "${workspaceFolder}/src"
     }
