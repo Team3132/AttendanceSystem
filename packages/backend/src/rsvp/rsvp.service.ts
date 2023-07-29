@@ -73,6 +73,6 @@ export class RsvpService {
       })
       .returning();
 
-    return updatedRsvp;
+    return updatedRsvp.at(0);
   }
 }

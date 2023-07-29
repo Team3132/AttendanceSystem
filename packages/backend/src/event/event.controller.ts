@@ -73,7 +73,9 @@ export class EventController {
   @ApiOkResponse({ type: [EventResponseType] })
   @ApiOperation({ description: 'Get all events', operationId: 'getEvents' })
   @Get()
-  async findAll(@Query() eventsGet: GetEventsDto) {
+  async findAll(
+    @Query() eventsGet: GetEventsDto,
+  ): Promise<EventResponseType[]> {
     const { from, to, take } = eventsGet;
     const events = await this.db.query.event.findMany({
       where:
@@ -105,7 +107,9 @@ export class EventController {
   @ApiCreatedResponse({ type: EventResponseType })
   @Roles(['MENTOR'])
   @Post()
-  async create(@Body() createEventDto: CreateEventDto) {
+  async create(
+    @Body() createEventDto: CreateEventDto,
+  ): Promise<EventResponseType> {
     const event = await this.eventService.createEvent({
       id: uuid(),
       ...createEventDto,
@@ -126,7 +130,7 @@ export class EventController {
   @ApiNotFoundResponse({ type: ApiResponseTypeNotFound })
   @ApiOkResponse({ type: EventResponseType })
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string): Promise<EventResponseType> {
     const event = await this.db.query.event.findFirst({
       where: (event, { eq }) => eq(event.id, id),
     });
@@ -150,7 +154,9 @@ export class EventController {
   @ApiOkResponse({ type: EventSecret })
   @ApiNotFoundResponse({ type: ApiResponseTypeNotFound })
   @Get(':eventId/token')
-  async getEventSecret(@Param('eventId') eventId: string) {
+  async getEventSecret(
+    @Param('eventId') eventId: string,
+  ): Promise<EventSecret> {
     const event = await this.db.query.event.findFirst({
       where: (event, { eq }) => eq(event.id, eventId),
     });
@@ -205,7 +211,7 @@ export class EventController {
     @Body() body: TokenCheckinDto,
     @Param('eventId') eventId: string,
     @GetUser('id') userId: string,
-  ) {
+  ): Promise<Rsvp[]> {
     const { code } = body;
     const rsvp = await this.eventService.verifyUserEventToken(
       eventId,
@@ -229,11 +235,7 @@ export class EventController {
   async update(
     @Param('id') id: string,
     @Body() updateEventDto: UpdateEventDto,
-  ) {
-    // const event = await this.eventService.updateEvent({
-    //   data: updateEventDto,
-    //   where: { id },
-    // });
+  ): Promise<EventResponseType> {
     const updatedEvent = await this.db
       .update(event)
       .set(updateEventDto)
@@ -257,7 +259,7 @@ export class EventController {
   @ApiOkResponse({ type: EventResponseType })
   @Roles(['MENTOR'])
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string): Promise<EventResponse> {
     const event = await this.eventService.deleteEvent(id);
     return new EventResponse(event);
   }
@@ -277,12 +279,12 @@ export class EventController {
   async getEventRsvp(
     @Param('eventId') eventId: string,
     @GetUser('id') userId: Express.User['id'],
-  ) {
+  ): Promise<Rsvp> {
     const eventRsvp = await this.db.query.rsvp.findFirst({
       where: (rsvp, { and }) =>
         and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
     });
-    return eventRsvp;
+    return new Rsvp(eventRsvp);
   }
 
   /**
@@ -302,33 +304,7 @@ export class EventController {
     @Param('eventId') eventId: string,
     @GetUser('id') userId: Express.User['id'],
     @Body() { status }: UpdateOrCreateRSVP,
-  ) {
-    // return this.rsvpService.upsertRSVP({
-    //   where: {
-    //     eventId_userId: {
-    //       eventId,
-    //       userId,
-    //     },
-    //   },
-    //   create: {
-    //     event: {
-    //       connect: { id: eventId },
-    //     },
-    //     user: {
-    //       connect: { id: userId },
-    //     },
-    //     status,
-    //   },
-    //   update: {
-    //     event: {
-    //       connect: { id: eventId },
-    //     },
-    //     user: {
-    //       connect: { id: userId },
-    //     },
-    //     status,
-    //   },
-    // });
+  ): Promise<Rsvp> {
     const newOrUpdatedRsvp = await this.db
       .insert(rsvp)
       .values({
@@ -345,7 +321,10 @@ export class EventController {
       })
       .returning();
 
-    return newOrUpdatedRsvp;
+    if (newOrUpdatedRsvp.length === 0)
+      throw new BadRequestException('Invalid status');
+
+    return new Rsvp(newOrUpdatedRsvp.at(0));
   }
 
   /**
@@ -360,7 +339,7 @@ export class EventController {
   })
   @ApiOkResponse({ type: [RsvpUser] })
   @Get(':eventId/rsvps')
-  async getEventRsvps(@Param('eventId') eventId: string) {
+  async getEventRsvps(@Param('eventId') eventId: string): Promise<RsvpUser[]> {
     const eventUserRsvps = await this.eventService.getEventUserRsvps(eventId);
 
     return eventUserRsvps.map((rsvp) => new RsvpUser(rsvp));
@@ -381,8 +360,12 @@ export class EventController {
   @ApiCreatedResponse({ type: Rsvp })
   @ApiBadRequestResponse({ description: 'Invalid Scancode' })
   @Post(':eventId/scanin')
-  scanin(@Param('eventId') eventId: string, @Body() scanin: ScaninDto) {
+  async scanin(@Param('eventId') eventId: string, @Body() scanin: ScaninDto) {
     const { code } = scanin;
-    return this.rsvpService.scanin({ eventId, code });
+    const scaninResult = await this.rsvpService.scanin({ eventId, code });
+
+    if (!scaninResult) throw new BadRequestException('Invalid Scancode');
+
+    return new Rsvp(scaninResult);
   }
 }
