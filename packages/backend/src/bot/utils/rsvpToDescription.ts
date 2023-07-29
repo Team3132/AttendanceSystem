@@ -5,8 +5,8 @@ export default function rsvpToDescription(
     status: RSVPStatus;
     userId: string;
     delay?: number | null;
+    user: { username?: string };
   },
-  user: { username?: string },
   first = false,
 ) {
   return `${rsvp.user.username ?? ''} - ${

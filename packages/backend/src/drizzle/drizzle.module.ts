@@ -1,9 +1,10 @@
 import { Global, Logger, Module } from '@nestjs/common';
 import { NodePgDatabase, drizzle } from 'drizzle-orm/node-postgres';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
-import * as schema from '../../drizzle.config';
+import * as schema from '../../drizzle/schema';
 import { ConfigService } from '@nestjs/config';
 import { Client } from 'pg';
+import { InferModel } from 'drizzle-orm';
 
 export const DRIZZLE_TOKEN = Symbol('PG_CONNECTION');
 
@@ -41,3 +42,18 @@ export const DRIZZLE_TOKEN = Symbol('PG_CONNECTION');
 export class DrizzleModule {}
 
 export type DrizzleDatabase = NodePgDatabase<typeof schema>;
+
+export type User = InferModel<typeof schema.user, 'select'>;
+export type NewUser = InferModel<typeof schema.user, 'insert'>;
+
+export type Event = InferModel<typeof schema.event, 'select'>;
+export type NewEvent = InferModel<typeof schema.event, 'insert'>;
+
+export type Rsvp = InferModel<typeof schema.rsvp, 'select'>;
+export type NewRsvp = InferModel<typeof schema.rsvp, 'insert'>;
+
+export type Scancode = InferModel<typeof schema.scancode, 'select'>;
+export type NewScancode = InferModel<typeof schema.scancode, 'insert'>;
+
+export type RSVPStatus = NewRsvp['status'];
+export type EventTypes = NewEvent['type'];

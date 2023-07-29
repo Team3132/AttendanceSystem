@@ -1,4 +1,3 @@
-import { Event, RSVP, RSVPStatus } from '@prisma/client';
 import {
   ActionRowBuilder,
   BaseMessageOptions,
@@ -10,10 +9,12 @@ import {
 } from 'discord.js';
 import rsvpToDescription from './rsvpToDescription';
 import { ROLES } from '@/constants';
+import { Rsvp, Event } from '@/drizzle/drizzle.module';
+import { DateTime } from 'luxon';
 
 export default function rsvpReminderMessage(
   event: Event,
-  rsvp: (RSVP & {
+  rsvp: (Rsvp & {
     user: {
       username?: string;
       roles: string[];
@@ -25,7 +26,9 @@ export default function rsvpReminderMessage(
   const clonedRsvp = [...rsvp];
 
   const sortedByCreated = clonedRsvp.sort(
-    (rsvpA, rsvpB) => rsvpB.createdAt.getTime() - rsvpA.createdAt.getTime(),
+    (rsvpA, rsvpB) =>
+      DateTime.fromISO(rsvpB.createdAt).toMillis() -
+      DateTime.fromISO(rsvpA.createdAt).toMillis(),
   );
 
   const firstId = sortedByCreated.at(-1)?.id;
@@ -64,18 +67,26 @@ export default function rsvpReminderMessage(
       },
       { name: 'Type', value: event.type, inline: true },
       { name: 'All Day', value: event.allDay ? 'Yes' : 'No', inline: true },
-      { name: 'Start Time', value: time(event.startDate), inline: true },
-      { name: 'End Time', value: time(event.endDate), inline: true },
+      {
+        name: 'Start Time',
+        value: time(DateTime.fromISO(event.startDate).toJSDate()),
+        inline: true,
+      },
+      {
+        name: 'End Time',
+        value: time(DateTime.fromISO(event.endDate).toJSDate()),
+        inline: true,
+      },
     )
     .setURL(`${frontendUrl}/event/${event.id}`)
     .setColor('Blue');
 
   const comingMentorCount = mentorRSVPs.filter(
-    (rsvp) => rsvp.status === RSVPStatus.YES || rsvp.status === RSVPStatus.LATE,
+    (rsvp) => rsvp.status === 'YES' || rsvp.status === 'LATE',
   ).length;
 
   const comingStudentCount = otherRSVPs.filter(
-    (rsvp) => rsvp.status === RSVPStatus.YES || rsvp.status === RSVPStatus.LATE,
+    (rsvp) => rsvp.status === 'YES' || 'LATE',
   ).length;
 
   const mentorEmbed = mentorDescription
@@ -94,19 +105,19 @@ export default function rsvpReminderMessage(
 
   const messageComponent = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
-      .setCustomId(`event/${event.id}/rsvp/${RSVPStatus.YES}`)
+      .setCustomId(`event/${event.id}/rsvp/${'YES'}`)
       .setStyle(ButtonStyle.Success)
       .setLabel('Coming'),
     new ButtonBuilder()
-      .setCustomId(`event/${event.id}/rsvp/${RSVPStatus.MAYBE}`)
+      .setCustomId(`event/${event.id}/rsvp/${'MAYBE'}`)
       .setStyle(ButtonStyle.Secondary)
       .setLabel('Maybe'),
     new ButtonBuilder()
-      .setCustomId(`event/${event.id}/rsvp/${RSVPStatus.NO}`)
+      .setCustomId(`event/${event.id}/rsvp/${'NO'}`)
       .setStyle(ButtonStyle.Danger)
       .setLabel('Not Coming'),
     new ButtonBuilder()
-      .setCustomId(`event/${event.id}/rsvp/${RSVPStatus.LATE}`)
+      .setCustomId(`event/${event.id}/rsvp/${'LATE'}`)
       .setStyle(ButtonStyle.Primary)
       .setLabel('Late'),
   );

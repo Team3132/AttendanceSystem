@@ -6,8 +6,7 @@ import { DateTime } from 'luxon';
 import { Button, Context, ButtonContext, ComponentParam } from 'necord';
 import rsvpToDescription from '../utils/rsvpToDescription';
 import { DRIZZLE_TOKEN, DrizzleDatabase } from '@/drizzle/drizzle.module';
-import { event, rsvp, user } from '../../../drizzle/schema';
-import { asc, eq } from 'drizzle-orm';
+import { and, asc, eq, ne } from 'drizzle-orm';
 
 @Injectable()
 export class RsvpButton {
@@ -21,12 +20,9 @@ export class RsvpButton {
     @Context() [interaction]: ButtonContext,
     @ComponentParam('eventId') eventId: string,
   ) {
-    const rsvpEvents = await this.db
-      .select()
-      .from(event)
-      .where(eq(event.id, eventId));
-
-    const rsvpEvent = rsvpEvents[0];
+    const rsvpEvent = await this.db.query.event.findFirst({
+      where: (event, { eq }) => eq(event.id, eventId),
+    });
 
     // const fetchedMeeting = await this.db.event.findUnique({
     //   where: {
@@ -56,22 +52,25 @@ export class RsvpButton {
     if (!rsvpEvent)
       return interaction.reply({ content: 'Unknown event', ephemeral: true });
 
-    const eventRsvps = await this.db
-      .select()
-      .from(rsvp)
-      .where(eq(rsvp.eventId, eventId))
-      .leftJoin(user, eq(rsvp.userId, user.id))
-      .orderBy(asc(rsvp.createdAt));
+    const eventRsvps = await this.db.query.rsvp.findMany({
+      where: (rsvp) => and(eq(rsvp.eventId, eventId), ne(rsvp.status, null)),
+      orderBy: (rsvp) => [asc(rsvp.updatedAt)],
+      with: {
+        user: {
+          columns: {
+            username: true,
+          },
+        },
+      },
+    });
 
     if (!eventRsvps.length)
       return interaction.reply({ content: 'No RSVPs', ephemeral: true });
 
-    const firstIdRsvp = eventRsvps[0].RSVP.id;
+    const firstIdRsvp = eventRsvps.at(0).id;
 
     const description = eventRsvps
-      .map(({ RSVP, User }) =>
-        rsvpToDescription(RSVP, User, firstIdRsvp === RSVP.id),
-      )
+      .map((rsvp) => rsvpToDescription(rsvp, firstIdRsvp === rsvp.id))
       .join(`\n`);
 
     const rsvpEmbed = new EmbedBuilder()
