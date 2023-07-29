@@ -76,11 +76,14 @@ export class EventController {
   async findAll(@Query() eventsGet: GetEventsDto) {
     const { from, to, take } = eventsGet;
     const events = await this.db.query.event.findMany({
-      where: (event, { or }) =>
-        or(
-          between(event.startDate, from, to),
-          between(event.endDate, from, to),
-        ),
+      where:
+        from && to
+          ? (event, { or }) =>
+              or(
+                between(event.startDate, from, to),
+                between(event.endDate, from, to),
+              )
+          : undefined,
       limit: take,
       orderBy: (event) => [asc(event.startDate)],
     });
