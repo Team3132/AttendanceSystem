@@ -24,11 +24,11 @@ export class UpdateEventDto implements Partial<Event> {
   @ApiProperty({ required: false })
   @IsDateString()
   @IsOptional()
-  startDate?: Date;
+  startDate?: string;
   @IsDateString()
   @ApiProperty({ required: false })
   @IsOptional()
-  endDate?: Date;
+  endDate?: string;
   @ApiProperty({ required: false })
   @IsBoolean()
   @IsOptional()

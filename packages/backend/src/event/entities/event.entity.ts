@@ -15,9 +15,9 @@ export class Event implements DrizzleEvent {
   @ApiProperty()
   title: string;
   @ApiProperty()
-  startDate: Date;
+  startDate: string;
   @ApiProperty()
-  endDate: Date;
+  endDate: string;
   @ApiProperty()
   allDay: boolean;
   @ApiProperty({ enum: ['Social', 'Regular', 'Outreach'] })

@@ -58,8 +58,8 @@ export class TaskService {
     const currentSyncedEventIds = await this.db.query.event.findMany({
       where: (event, { and, eq }) =>
         and(
-          gte(event.startDate, DateTime.now().toJSDate()),
-          lte(event.endDate, DateTime.now().plus({ month: 1 }).toJSDate()),
+          gte(event.startDate, DateTime.now().toISO()),
+          lte(event.endDate, DateTime.now().plus({ month: 1 }).toISO()),
           eq(event.isSyncedEvent, true),
         ),
     });
@@ -102,11 +102,11 @@ export class TaskService {
           allDay: !gcalEvent.start.dateTime && !gcalEvent.end.dateTime,
           roles: isMentorEvent ? [ROLES.MENTOR] : [],
           startDate: gcalEvent.start.dateTime
-            ? DateTime.fromISO(gcalEvent.start.dateTime).toJSDate()
-            : DateTime.fromISO(gcalEvent.start.date).startOf('day').toJSDate(),
+            ? gcalEvent.start.dateTime
+            : DateTime.fromISO(gcalEvent.start.date).startOf('day').toISO(),
           endDate: gcalEvent.end.dateTime
-            ? DateTime.fromISO(gcalEvent.end.dateTime).toJSDate()
-            : DateTime.fromISO(gcalEvent.end.date).endOf('day').toJSDate(),
+            ? gcalEvent.end.dateTime
+            : DateTime.fromISO(gcalEvent.end.date).endOf('day').toISO(),
           description: gcalEvent.description,
           type: isOutreachEvent ? 'Outreach' : undefined,
           isSyncedEvent: true,
@@ -118,11 +118,11 @@ export class TaskService {
           allDay: !gcalEvent.start.dateTime && !gcalEvent.end.dateTime,
           roles: isMentorEvent ? [ROLES.MENTOR] : [],
           startDate: gcalEvent.start.dateTime
-            ? DateTime.fromISO(gcalEvent.start.dateTime).toJSDate()
-            : DateTime.fromISO(gcalEvent.start.date).startOf('day').toJSDate(),
+            ? gcalEvent.start.dateTime
+            : DateTime.fromISO(gcalEvent.start.date).startOf('day').toISO(),
           endDate: gcalEvent.end.dateTime
-            ? DateTime.fromISO(gcalEvent.end.dateTime).toJSDate()
-            : DateTime.fromISO(gcalEvent.end.date).endOf('day').toJSDate(),
+            ? gcalEvent.end.dateTime
+            : DateTime.fromISO(gcalEvent.end.date).endOf('day').toISO(),
           description: gcalEvent.description,
           type: isOutreachEvent ? ('Outreach' as const) : undefined,
           isSyncedEvent: true,
@@ -181,11 +181,7 @@ export class TaskService {
     // });
     const nextEvents = await this.db.query.event.findMany({
       where: (event) =>
-        between(
-          event.startDate,
-          startNextDay.toJSDate(),
-          endNextDay.toJSDate(),
-        ),
+        between(event.startDate, startNextDay.toISO(), endNextDay.toISO()),
       with: {
         rsvps: {
           orderBy: [asc(rsvp.updatedAt)],

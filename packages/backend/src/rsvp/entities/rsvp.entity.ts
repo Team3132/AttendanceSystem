@@ -5,7 +5,7 @@ import { rsvpStatus } from '../../../drizzle/schema';
 /**
  * The RSVP object.
  */
-export class Rsvp implements Rsvp {
+export class Rsvp implements DrizzleRsvp {
   @ApiProperty()
   id: string;
   @ApiProperty()
@@ -17,9 +17,9 @@ export class Rsvp implements Rsvp {
   @ApiProperty({ nullable: true })
   delay: number | null;
   @ApiProperty()
-  createdAt: Date;
+  createdAt: string;
   @ApiProperty()
-  updatedAt: Date;
+  updatedAt: string;
   @ApiProperty()
   attended: boolean;
 

@@ -23,10 +23,10 @@ export class CreateEventDto {
   title: string;
   @ApiProperty()
   @IsDateString()
-  startDate: Date;
+  startDate: string;
   @IsDateString()
   @ApiProperty()
-  endDate: Date;
+  endDate: string;
   @ApiProperty({ required: false })
   @IsBoolean()
   @IsOptional()

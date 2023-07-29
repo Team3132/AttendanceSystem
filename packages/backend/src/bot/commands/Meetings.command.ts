@@ -39,7 +39,7 @@ export class MeetingsCommand {
     // });
 
     const nextFive = await this.db.query.event.findMany({
-      where: (event) => gte(event.startDate, DateTime.local().toJSDate()),
+      where: (event) => gte(event.startDate, DateTime.local().toISO()),
       orderBy: (event) => asc(event.startDate),
       limit: 5,
     });

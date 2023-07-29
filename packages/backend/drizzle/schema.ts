@@ -18,10 +18,10 @@ export const rsvpStatus = pgEnum('RSVPStatus', ['LATE', 'MAYBE', 'NO', 'YES']);
 
 export const user = pgTable('User', {
   username: text('username').notNull(),
-  createdAt: timestamp('createdAt', { precision: 3, mode: 'date' })
+  createdAt: timestamp('createdAt', { precision: 3, mode: 'string' })
     .defaultNow()
     .notNull(),
-  updatedAt: timestamp('updatedAt', { precision: 3, mode: 'date' })
+  updatedAt: timestamp('updatedAt', { precision: 3, mode: 'string' })
     .defaultNow()
     .notNull(),
   id: text('id').primaryKey().notNull(),
@@ -44,10 +44,10 @@ export const rsvp = pgTable(
     userId: text('userId')
       .notNull()
       .references(() => user.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
-    createdAt: timestamp('createdAt', { precision: 3, mode: 'date' })
+    createdAt: timestamp('createdAt', { precision: 3, mode: 'string' })
       .defaultNow()
       .notNull(),
-    updatedAt: timestamp('updatedAt', { precision: 3, mode: 'date' })
+    updatedAt: timestamp('updatedAt', { precision: 3, mode: 'string' })
       .defaultNow()
       .notNull(),
     status: rsvpStatus('status'),
@@ -77,9 +77,9 @@ export const event = pgTable(
     title: text('title').notNull(),
     startDate: timestamp('startDate', {
       precision: 3,
-      mode: 'date',
+      mode: 'string',
     }).notNull(),
-    endDate: timestamp('endDate', { precision: 3, mode: 'date' }).notNull(),
+    endDate: timestamp('endDate', { precision: 3, mode: 'string' }).notNull(),
     allDay: boolean('allDay').default(false).notNull(),
     type: eventTypes('type').default('Regular').notNull(),
     secret: text('secret').notNull(),
@@ -99,10 +99,10 @@ export const eventRelations = relations(event, ({ many }) => ({
 
 export const scancode = pgTable('Scancode', {
   code: text('code').primaryKey().notNull(),
-  createdAt: timestamp('createdAt', { precision: 3, mode: 'date' })
+  createdAt: timestamp('createdAt', { precision: 3, mode: 'string' })
     .defaultNow()
     .notNull(),
-  updatedAt: timestamp('updatedAt', { precision: 3, mode: 'date' })
+  updatedAt: timestamp('updatedAt', { precision: 3, mode: 'string' })
     .defaultNow()
     .notNull(),
   userId: text('userId')

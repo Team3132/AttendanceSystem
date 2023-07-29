@@ -6,6 +6,7 @@ import { SlashCommand, Context, SlashCommandContext, Options } from 'necord';
 import { URLSearchParams } from 'url';
 import { CreateDto } from '../dto/create.dto';
 import { EventAutocompleteInterceptor } from '../interceptors/event.interceptor';
+import { DateTime } from 'luxon';
 
 @Injectable()
 export class CreateCommand {
@@ -31,7 +32,7 @@ export class CreateCommand {
 
     const startDate = interaction.createdAt.toISOString();
 
-    const endDate = new Date(startDate);
+    const endDate = DateTime.fromISO(startDate).toJSDate();
 
     endDate.setHours(interaction.createdAt.getHours() + 3);
 

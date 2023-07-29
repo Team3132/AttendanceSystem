@@ -11,9 +11,9 @@ export class User implements Partial<DrizzleUser> {
   @ApiProperty()
   username?: string | null;
   @ApiProperty()
-  createdAt: Date;
+  createdAt: string;
   @ApiProperty()
-  updatedAt: Date;
+  updatedAt: string;
   @ApiProperty({
     enum: ['LATE', 'MAYBE', 'NO', 'YES'],
     required: true,

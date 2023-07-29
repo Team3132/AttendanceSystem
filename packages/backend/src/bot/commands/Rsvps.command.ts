@@ -81,7 +81,7 @@ export class RsvpsCommand {
 
     const rsvpEmbed = new EmbedBuilder()
       .setTitle(
-        `RSVPs for ${fetchedMeeting.title} at ${DateTime.fromJSDate(
+        `RSVPs for ${fetchedMeeting.title} at ${DateTime.fromISO(
           fetchedMeeting.startDate,
         ).toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}`,
       )

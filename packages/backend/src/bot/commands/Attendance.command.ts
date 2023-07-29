@@ -73,7 +73,7 @@ export class AttendanceCommand {
 
     const attendanceEmbed = new EmbedBuilder()
       .setTitle(
-        `Attendance for ${fetchedMeeting.title} at ${DateTime.fromJSDate(
+        `Attendance for ${fetchedMeeting.title} at ${DateTime.fromISO(
           fetchedMeeting.startDate,
         ).toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}`,
       )

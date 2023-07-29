@@ -27,8 +27,8 @@ export default function rsvpReminderMessage(
 
   const sortedByCreated = clonedRsvp.sort(
     (rsvpA, rsvpB) =>
-      DateTime.fromJSDate(rsvpB.createdAt).toMillis() -
-      DateTime.fromJSDate(rsvpA.createdAt).toMillis(),
+      DateTime.fromISO(rsvpB.createdAt).toMillis() -
+      DateTime.fromISO(rsvpA.createdAt).toMillis(),
   );
 
   const firstId = sortedByCreated.at(-1)?.id;
@@ -69,12 +69,12 @@ export default function rsvpReminderMessage(
       { name: 'All Day', value: event.allDay ? 'Yes' : 'No', inline: true },
       {
         name: 'Start Time',
-        value: time(event.startDate),
+        value: time(DateTime.fromISO(event.startDate).toJSDate()),
         inline: true,
       },
       {
         name: 'End Time',
-        value: time(event.endDate),
+        value: time(DateTime.fromISO(event.endDate).toJSDate()),
         inline: true,
       },
     )

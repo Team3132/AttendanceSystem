@@ -78,16 +78,8 @@ export class EventController {
     const events = await this.db.query.event.findMany({
       where: (event, { or }) =>
         or(
-          between(
-            event.startDate,
-            DateTime.fromISO(from).toJSDate(),
-            DateTime.fromISO(to).toJSDate(),
-          ),
-          between(
-            event.endDate,
-            DateTime.fromISO(from).toJSDate(),
-            DateTime.fromISO(to).toJSDate(),
-          ),
+          between(event.startDate, from, to),
+          between(event.endDate, from, to),
         ),
       limit: take,
       orderBy: (event) => [asc(event.startDate)],
@@ -347,7 +339,8 @@ export class EventController {
           status,
         },
         target: [rsvp.eventId, rsvp.userId],
-      });
+      })
+      .returning();
 
     return newOrUpdatedRsvp;
   }

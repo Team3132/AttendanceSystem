@@ -11,9 +11,9 @@ export class EventResponse implements Event {
   @ApiProperty()
   title: string;
   @ApiProperty()
-  startDate: Date;
+  startDate: string;
   @ApiProperty()
-  endDate: Date;
+  endDate: string;
   @ApiProperty()
   allDay: boolean;
   @ApiProperty({ enum: eventTypes.enumValues })
@@ -40,9 +40,9 @@ export class EventResponseType implements Partial<Event> {
   @ApiProperty()
   title: string;
   @ApiProperty()
-  startDate: Date;
+  startDate: string;
   @ApiProperty()
-  endDate: Date;
+  endDate: string;
   @ApiProperty()
   allDay: boolean;
   @ApiProperty({ enum: eventTypes.enumValues })

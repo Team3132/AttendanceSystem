@@ -1,5 +1,5 @@
 import { Global, Logger, Module } from '@nestjs/common';
-import { drizzle } from 'drizzle-orm/postgres-js';
+import { PostgresJsDatabase, drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import * as schema from '../../drizzle/schema';
@@ -33,6 +33,17 @@ export const DRIZZLE_TOKEN = Symbol('PG_CONNECTION');
 
         const queryPgClient = postgres(
           `postgres://${username}:${password}@${host}/${database}`,
+          {
+            transform: {
+              value(value) {
+                if (value instanceof Date) {
+                  return value.toISOString();
+                } else {
+                  return value;
+                }
+              },
+            },
+          },
         );
 
         const db = drizzle(queryPgClient, { schema });
@@ -45,7 +56,7 @@ export const DRIZZLE_TOKEN = Symbol('PG_CONNECTION');
 })
 export class DrizzleModule {}
 
-export type DrizzleDatabase = NodePgDatabase<typeof schema>;
+export type DrizzleDatabase = PostgresJsDatabase<typeof schema>;
 
 export type User = InferModel<typeof schema.user, 'select'>;
 export type NewUser = InferModel<typeof schema.user, 'insert'>;

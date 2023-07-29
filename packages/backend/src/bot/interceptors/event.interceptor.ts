@@ -40,16 +40,16 @@ export class EventAutocompleteInterceptor extends AutocompleteInterceptor {
       where: (event) =>
         and(
           ilike(event.title, focused.value.toString()),
-          gte(event.endDate, new Date()),
+          gte(event.endDate, DateTime.local().toISO()),
         ),
       orderBy: (event) => [asc(event.startDate)],
       limit: 10,
     });
 
     const dateEvent = (event: Event) => ({
-      name: `${event.title} - ${DateTime.fromJSDate(
+      name: `${event.title} - ${DateTime.fromISO(
         event.startDate,
-      ).toLocaleString(DateTime.DATETIME_SHORT)} - ${DateTime.fromJSDate(
+      ).toLocaleString(DateTime.DATETIME_SHORT)} - ${DateTime.fromISO(
         event.endDate,
       ).toLocaleString(DateTime.DATETIME_SHORT)} `,
       value: event.id,

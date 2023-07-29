@@ -97,7 +97,11 @@ export class RsvpController {
   @ApiCreatedResponse({ type: Rsvp })
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateRsvpDto: UpdateRsvpDto) {
-    return this.db.update(rsvp).set(updateRsvpDto).where(eq(rsvp.id, id));
+    return this.db
+      .update(rsvp)
+      .set(updateRsvpDto)
+      .where(eq(rsvp.id, id))
+      .returning();
   }
 
   /**

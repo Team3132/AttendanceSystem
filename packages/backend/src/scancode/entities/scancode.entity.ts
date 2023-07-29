@@ -5,9 +5,9 @@ export class Scancode implements DrizzleScancode {
   @ApiProperty()
   code: string;
   @ApiProperty()
-  createdAt: Date;
+  createdAt: string;
   @ApiProperty()
-  updatedAt: Date;
+  updatedAt: string;
   @ApiProperty()
   userId: string;
 
