@@ -9,7 +9,7 @@ export class User implements Partial<DrizzleUser> {
   @ApiProperty()
   id: string;
   @ApiProperty()
-  username?: string | null;
+  username?: string;
   @ApiProperty()
   createdAt: string;
   @ApiProperty()

@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -10,7 +11,6 @@ import type { ScaninDto } from "../models/ScaninDto";
 import type { TokenCheckinDto } from "../models/TokenCheckinDto";
 import type { UpdateEventDto } from "../models/UpdateEventDto";
 import type { UpdateOrCreateRSVP } from "../models/UpdateOrCreateRSVP";
-import type { UpdateRangeRSVP } from "../models/UpdateRangeRSVP";
 
 import type { CancelablePromise } from "../core/CancelablePromise";
 import type { BaseHttpRequest } from "../core/BaseHttpRequest";
@@ -207,23 +207,6 @@ export class EventService {
       path: {
         eventId: eventId,
       },
-      body: requestBody,
-      mediaType: "application/json",
-    });
-  }
-
-  /**
-   * Update RSVP Status of Events in range
-   * @param requestBody
-   * @returns Rsvp
-   * @throws ApiError
-   */
-  public updateEventRsvpRange(
-    requestBody: UpdateRangeRSVP
-  ): CancelablePromise<Array<Rsvp>> {
-    return this.httpRequest.request({
-      method: "POST",
-      url: "/event/rsvps",
       body: requestBody,
       mediaType: "application/json",
     });

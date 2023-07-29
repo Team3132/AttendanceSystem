@@ -1,22 +1,22 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 
 export type User = {
   id: string;
-  username: any;
+  username: string;
   createdAt: string;
   updatedAt: string;
   defaultStatus: User.defaultStatus | null;
-  calendarSecret: string;
   roles: Array<string>;
 };
 
 export namespace User {
   export enum defaultStatus {
-    YES = "YES",
-    NO = "NO",
-    MAYBE = "MAYBE",
     LATE = "LATE",
+    MAYBE = "MAYBE",
+    NO = "NO",
+    YES = "YES",
   }
 }

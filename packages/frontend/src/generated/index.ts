@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -19,7 +20,6 @@ export type { DistrictListDto } from "./models/DistrictListDto";
 export { EventResponseType } from "./models/EventResponseType";
 export type { EventSecret } from "./models/EventSecret";
 export type { MinimalUser } from "./models/MinimalUser";
-export type { OutreachReport } from "./models/OutreachReport";
 export { Rsvp } from "./models/Rsvp";
 export { RsvpUser } from "./models/RsvpUser";
 export type { Scancode } from "./models/Scancode";
@@ -28,7 +28,6 @@ export type { TBAEventDto } from "./models/TBAEventDto";
 export type { TokenCheckinDto } from "./models/TokenCheckinDto";
 export { UpdateEventDto } from "./models/UpdateEventDto";
 export { UpdateOrCreateRSVP } from "./models/UpdateOrCreateRSVP";
-export { UpdateRangeRSVP } from "./models/UpdateRangeRSVP";
 export { UpdateRsvpDto } from "./models/UpdateRsvpDto";
 export { UpdateUserDto } from "./models/UpdateUserDto";
 export { User } from "./models/User";
@@ -36,7 +35,6 @@ export { User } from "./models/User";
 export { AppService } from "./services/AppService";
 export { AuthService } from "./services/AuthService";
 export { BotService } from "./services/BotService";
-export { CalendarService } from "./services/CalendarService";
 export { DefaultService } from "./services/DefaultService";
 export { EventService } from "./services/EventService";
 export { RsvpService } from "./services/RsvpService";

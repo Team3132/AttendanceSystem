@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -23,18 +24,6 @@ export class RsvpService {
       url: "/rsvp",
       body: requestBody,
       mediaType: "application/json",
-    });
-  }
-
-  /**
-   * Get all RSVPs
-   * @returns Rsvp
-   * @throws ApiError
-   */
-  public getRsvPs(): CancelablePromise<Array<Rsvp>> {
-    return this.httpRequest.request({
-      method: "GET",
-      url: "/rsvp",
     });
   }
 

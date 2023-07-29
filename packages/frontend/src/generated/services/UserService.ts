@@ -1,8 +1,8 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateScancodeDto } from "../models/CreateScancodeDto";
-import type { OutreachReport } from "../models/OutreachReport";
 import type { Rsvp } from "../models/Rsvp";
 import type { Scancode } from "../models/Scancode";
 import type { UpdateUserDto } from "../models/UpdateUserDto";
@@ -164,34 +164,6 @@ export class UserService {
   }
 
   /**
-   * Regenerates the calendar token of the signed in user.
-   * @returns User
-   * @throws ApiError
-   */
-  public regenerateMeCalendarToken(): CancelablePromise<User> {
-    return this.httpRequest.request({
-      method: "POST",
-      url: "/user/me/regenerateToken",
-    });
-  }
-
-  /**
-   * Regenerates the calendar token of the specified user.
-   * @param id
-   * @returns User
-   * @throws ApiError
-   */
-  public regenerateUserCalendarToken(id: string): CancelablePromise<User> {
-    return this.httpRequest.request({
-      method: "POST",
-      url: "/user/{id}/regenerateToken",
-      path: {
-        id: id,
-      },
-    });
-  }
-
-  /**
    * Get a list of all users.
    * @returns User
    * @throws ApiError
@@ -200,53 +172,6 @@ export class UserService {
     return this.httpRequest.request({
       method: "GET",
       url: "/user",
-    });
-  }
-
-  /**
-   * Get an outreach report of the logged in user.
-   * @param from
-   * @param to
-   * @returns OutreachReport
-   * @throws ApiError
-   */
-  public getMeOutreachReport(
-    from?: string,
-    to?: string
-  ): CancelablePromise<OutreachReport> {
-    return this.httpRequest.request({
-      method: "GET",
-      url: "/user/me/outreach",
-      query: {
-        from: from,
-        to: to,
-      },
-    });
-  }
-
-  /**
-   * Get an outreach report of the specified user.
-   * @param id
-   * @param from
-   * @param to
-   * @returns OutreachReport
-   * @throws ApiError
-   */
-  public getUserOutreachReport(
-    id: string,
-    from?: string,
-    to?: string
-  ): CancelablePromise<OutreachReport> {
-    return this.httpRequest.request({
-      method: "GET",
-      url: "/user/{id}/outreach",
-      path: {
-        id: id,
-      },
-      query: {
-        from: from,
-        to: to,
-      },
     });
   }
 

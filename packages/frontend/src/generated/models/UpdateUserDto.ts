@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -8,9 +9,9 @@ export type UpdateUserDto = {
 
 export namespace UpdateUserDto {
   export enum defaultStatus {
+    LATE = "LATE",
+    MAYBE = "MAYBE",
     YES = "YES",
     NO = "NO",
-    MAYBE = "MAYBE",
-    LATE = "LATE",
   }
 }
