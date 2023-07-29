@@ -1,12 +1,17 @@
 import { AuthenticatorService } from '@/authenticator/authenticator.service';
 import rsvpReminderMessage from '@/bot/utils/rsvpReminderMessage';
 import { ROLES } from '@/constants';
+import {
+  DRIZZLE_TOKEN,
+  type DrizzleDatabase,
+  Event,
+  NewEvent,
+  Rsvp,
+} from '@/drizzle/drizzle.module';
 import { GcalService } from '@/gcal/gcal.service';
-import { PrismaService } from '@/prisma/prisma.service';
-import { Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Cron } from '@nestjs/schedule';
-import { Event, EventTypes, RSVP } from '@prisma/client';
 import {
   BaseMessageOptions,
   bold,
@@ -14,13 +19,15 @@ import {
   Client,
   roleMention,
 } from 'discord.js';
+import { asc, between, gte, inArray, lte, sql } from 'drizzle-orm';
 import { DateTime } from 'luxon';
+import { event, rsvp } from '../../drizzle/schema';
 
 @Injectable()
 export class TaskService {
   constructor(
     private readonly gcal: GcalService,
-    private readonly db: PrismaService,
+    @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
     private readonly authenticatorService: AuthenticatorService,
     private readonly config: ConfigService,
     private readonly discordClient: Client,
@@ -35,18 +42,26 @@ export class TaskService {
     const events = await this.gcal.events();
 
     /** Existing events in the next month */
-    const currentSyncedEventIds = await this.db.event.findMany({
-      where: {
-        startDate: {
-          gte: DateTime.now().toJSDate(),
-        },
-        endDate: {
-          lte: DateTime.now().plus({ month: 1 }).toJSDate(),
-        },
-        isSyncedEvent: {
-          equals: true,
-        },
-      },
+    // const currentSyncedEventIds = await this.db.query.event.findMany({
+    //   where: {
+    //     startDate: {
+    //       gte: DateTime.now().toJSDate(),
+    //     },
+    //     endDate: {
+    //       lte: DateTime.now().plus({ month: 1 }).toJSDate(),
+    //     },
+    //     isSyncedEvent: {
+    //       equals: true,
+    //     },
+    //   },
+    // });
+    const currentSyncedEventIds = await this.db.query.event.findMany({
+      where: (event, { and, eq }) =>
+        and(
+          gte(event.startDate, DateTime.now().toJSDate()),
+          lte(event.endDate, DateTime.now().plus({ month: 1 }).toJSDate()),
+          eq(event.isSyncedEvent, true),
+        ),
     });
 
     /** Deleted Events */
@@ -56,63 +71,71 @@ export class TaskService {
       })
       .map((event) => event.id);
 
-    const deletedEvents = await this.db.event.deleteMany({
-      where: {
-        id: {
-          in: deletedEventIds,
-        },
-      },
-    });
+    const deletedEvents = await this.db
+      .delete(event)
+      .where(inArray(event.id, deletedEventIds))
+      .returning({
+        count: sql<number>`COUNT(*)`.mapWith(Number),
+      });
 
-    this.logger.debug(`Deleted ${deletedEvents.count} events`);
+    const deletedEventCount = deletedEvents.at(0).count ?? 0;
+
+    this.logger.debug(`Deleted ${deletedEventCount} events`);
 
     const databaseEvents = await Promise.all(
-      events.items.map((event) => {
+      events.items.map((gcalEvent) => {
         const secret = this.authenticatorService.generateSecret();
 
         // const valueBetweenSquareBrackets = eventTitle.match(/\[(.*?)\]/); // Maybe switch to this later
 
-        const isMentorEvent = event.summary.toLowerCase().includes('mentor');
+        const isMentorEvent = gcalEvent.summary
+          .toLowerCase()
+          .includes('mentor');
 
-        const isOutreachEvent = event.summary
+        const isOutreachEvent = gcalEvent.summary
           .toLowerCase()
           .includes('outreach');
 
-        return this.db.event.upsert({
-          where: {
-            id: event.id,
-          },
-          update: {
-            title: event.summary,
-            allDay: !event.start.dateTime && !event.end.dateTime,
-            roles: isMentorEvent ? [ROLES.MENTOR] : [],
-            startDate:
-              event.start.dateTime ??
-              DateTime.fromISO(event.start.date).startOf('day').toJSDate(),
-            endDate:
-              event.end.dateTime ??
-              DateTime.fromISO(event.end.date).endOf('day').toJSDate(),
-            description: event.description,
-            type: isOutreachEvent ? EventTypes.Outreach : undefined,
-            isSyncedEvent: true,
-          },
-          create: {
-            id: event.id,
-            title: event.summary,
-            roles: isMentorEvent ? [ROLES.MENTOR] : [],
-            allDay: !event.start.dateTime && !event.end.dateTime,
-            startDate:
-              event.start.dateTime ??
-              DateTime.fromISO(event.start.date).startOf('day').toJSDate(),
-            endDate:
-              event.end.dateTime ??
-              DateTime.fromISO(event.end.date).endOf('day').toJSDate(),
-            description: event.description,
-            type: isOutreachEvent ? EventTypes.Outreach : undefined,
-            secret,
-            isSyncedEvent: true,
-          },
-        });
+        const newEvent = {
+          id: gcalEvent.id,
+          title: gcalEvent.summary,
+          allDay: !gcalEvent.start.dateTime && !gcalEvent.end.dateTime,
+          roles: isMentorEvent ? [ROLES.MENTOR] : [],
+          startDate: gcalEvent.start.dateTime
+            ? DateTime.fromISO(gcalEvent.start.dateTime).toJSDate()
+            : DateTime.fromISO(gcalEvent.start.date).startOf('day').toJSDate(),
+          endDate: gcalEvent.end.dateTime
+            ? DateTime.fromISO(gcalEvent.end.dateTime).toJSDate()
+            : DateTime.fromISO(gcalEvent.end.date).endOf('day').toJSDate(),
+          description: gcalEvent.description,
+          type: isOutreachEvent ? 'Outreach' : undefined,
+          isSyncedEvent: true,
+          secret,
+        } satisfies NewEvent;
+
+        const updatedEvent = {
+          title: gcalEvent.summary,
+          allDay: !gcalEvent.start.dateTime && !gcalEvent.end.dateTime,
+          roles: isMentorEvent ? [ROLES.MENTOR] : [],
+          startDate: gcalEvent.start.dateTime
+            ? DateTime.fromISO(gcalEvent.start.dateTime).toJSDate()
+            : DateTime.fromISO(gcalEvent.start.date).startOf('day').toJSDate(),
+          endDate: gcalEvent.end.dateTime
+            ? DateTime.fromISO(gcalEvent.end.dateTime).toJSDate()
+            : DateTime.fromISO(gcalEvent.end.date).endOf('day').toJSDate(),
+          description: gcalEvent.description,
+          type: isOutreachEvent ? ('Outreach' as const) : undefined,
+          isSyncedEvent: true,
+        };
+
+        return this.db
+          .insert(event)
+          .values(newEvent)
+          .onConflictDoUpdate({
+            set: updatedEvent,
+            target: [event.id],
+          })
+          .returning();
       }),
     );
     this.logger.log(`${databaseEvents.length} events updated/created`);
@@ -127,27 +150,48 @@ export class TaskService {
 
     const endNextDay = startNextDay.endOf('day');
 
-    const nextEvents = await this.db.event.findMany({
-      where: {
-        AND: [
-          {
-            startDate: { gte: startNextDay.toJSDate() },
-          },
-          {
-            startDate: {
-              lte: endNextDay.toJSDate(),
-            },
-          },
-        ],
-      },
-      include: {
-        RSVP: {
-          orderBy: {
-            updatedAt: 'asc',
-          },
-          include: {
+    // const nextEvents = await this.db.event.findMany({
+    //   where: {
+    //     AND: [
+    //       {
+    //         startDate: { gte: startNextDay.toJSDate() },
+    //       },
+    //       {
+    //         startDate: {
+    //           lte: endNextDay.toJSDate(),
+    //         },
+    //       },
+    //     ],
+    //   },
+    //   include: {
+    //     RSVP: {
+    //       orderBy: {
+    //         updatedAt: 'asc',
+    //       },
+    //       include: {
+    //         user: {
+    //           select: {
+    //             username: true,
+    //             roles: true,
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    // });
+    const nextEvents = await this.db.query.event.findMany({
+      where: (event) =>
+        between(
+          event.startDate,
+          startNextDay.toJSDate(),
+          endNextDay.toJSDate(),
+        ),
+      with: {
+        rsvps: {
+          orderBy: [asc(rsvp.updatedAt)],
+          with: {
             user: {
-              select: {
+              columns: {
                 username: true,
                 roles: true,
               },
@@ -177,7 +221,7 @@ export class TaskService {
     type MessageEvent = [
       message: BaseMessageOptions,
       event: Event & {
-        RSVP: (RSVP & {
+        rsvps: (Rsvp & {
           user: {
             username: string;
             roles: string[];
@@ -187,15 +231,15 @@ export class TaskService {
     ];
 
     const messages = nextEvents.map(
-      (event) =>
+      (nextEvent) =>
         [
           rsvpReminderMessage(
-            event,
-            event.RSVP,
+            nextEvent,
+            nextEvent.rsvps,
             this.config.get('FRONTEND_URL'),
             fetchedChannel.guild.roles.everyone.id,
           ),
-          event,
+          nextEvent,
         ] satisfies MessageEvent,
     );
 

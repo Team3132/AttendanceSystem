@@ -10,9 +10,10 @@ import { TextInputStyle } from 'discord.js';
 import { Ctx, Modal, ModalContext, ModalParam } from 'necord';
 import { z, ZodError } from 'zod';
 import rsvpReminderMessage from '../utils/rsvpReminderMessage';
-import { DRIZZLE_TOKEN, DrizzleDatabase } from '@/drizzle/drizzle.module';
+import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 import { rsvp } from '../../../drizzle/schema';
 import { and, asc, eq, isNotNull } from 'drizzle-orm';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class DelayModal {
@@ -38,6 +39,7 @@ export class DelayModal {
       const updatedRsvp = await this.db
         .insert(rsvp)
         .values({
+          id: uuid(),
           eventId,
           userId,
           delay,

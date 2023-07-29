@@ -8,13 +8,14 @@ import { AuthenticatorService } from '@authenticator/authenticator.service';
 import { RsvpService } from '@rsvp/rsvp.service';
 import {
   DRIZZLE_TOKEN,
-  DrizzleDatabase,
+  type DrizzleDatabase,
   Event,
   NewEvent,
 } from '@/drizzle/drizzle.module';
 import { event, rsvp, user } from '../../drizzle/schema';
 import { eq } from 'drizzle-orm';
 import { RsvpUser } from './dto/rsvp-user.dto';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class EventService {
@@ -81,6 +82,7 @@ export class EventService {
     const upsertedRsvp = await this.db
       .insert(rsvp)
       .values({
+        id: uuid(),
         eventId,
         userId,
         attended: true,

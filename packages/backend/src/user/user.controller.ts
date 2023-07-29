@@ -11,6 +11,8 @@ import {
   BadRequestException,
   Query,
   ForbiddenException,
+  Inject,
+  NotFoundException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -27,12 +29,12 @@ import { Roles } from '@auth/decorators/DiscordRoleDecorator.decorator';
 import { User } from './entities/user.entity';
 import { RsvpService } from '@rsvp/rsvp.service';
 import { Rsvp } from '@rsvp/entities/rsvp.entity';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/index.js';
-import { OutreachReport } from './dto/outreach-report.dto';
-import { GetOutreachReport } from './dto/outreach-report-get.dto';
 import { Scancode } from '@scancode/entities/scancode.entity';
 import { ScancodeService } from '@scancode/scancode.service';
 import { CreateScancodeDto } from '@scancode/dto/create-scancode.dto';
+import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
+import { user } from '../../drizzle/schema';
+import { eq } from 'drizzle-orm';
 
 /** The user controller for controlling the user status */
 @ApiTags('User')
@@ -44,6 +46,7 @@ export class UserController {
     private readonly userService: UserService,
     private readonly rsvpService: RsvpService,
     private readonly scancodeService: ScancodeService,
+    @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
   ) {}
 
   /**
@@ -56,8 +59,11 @@ export class UserController {
   })
   @ApiOkResponse({ type: User })
   @Get('me')
-  me(@GetUser('id') id: Express.User['id']) {
-    return this.userService.user({ id });
+  async me(@GetUser('id') id: Express.User['id']) {
+    const currentUser = await this.db.query.user.findFirst({
+      where: (user, { eq }) => eq(user.id, id),
+    });
+    return currentUser;
   }
 
   /**
@@ -72,8 +78,11 @@ export class UserController {
   @ApiOkResponse({ type: User })
   @Roles(['MENTOR'])
   @Get(':id')
-  user(@Param('id') userId: string) {
-    return this.userService.user({ id: userId });
+  async user(@Param('id') userId: string) {
+    const selectedUser = await this.db.query.user.findFirst({
+      where: (user, { eq }) => eq(user.id, userId),
+    });
+    return selectedUser;
   }
 
   /**
@@ -117,8 +126,12 @@ export class UserController {
   })
   @ApiOkResponse({ type: [Rsvp] })
   @Get('me/rsvp')
-  meRSVP(@GetUser('id') id: Express.User['id']) {
-    return this.rsvpService.rsvps({ where: { userId: id } });
+  async meRSVP(@GetUser('id') id: Express.User['id']) {
+    const myRsvps = await this.db.query.rsvp.findMany({
+      where: (rsvp, { eq }) => eq(rsvp.userId, id),
+    });
+
+    return myRsvps;
   }
 
   /**
@@ -132,12 +145,12 @@ export class UserController {
   @ApiOkResponse({ type: [Rsvp] })
   @Roles(['MENTOR'])
   @Get(':id/rsvp')
-  userRSVPs(@Param('id') userId: string) {
-    return this.rsvpService.rsvps({
-      where: {
-        userId: userId,
-      },
+  async userRSVPs(@Param('id') userId: string) {
+    const targetUserRsvps = await this.db.query.rsvp.findMany({
+      where: (rsvp, { eq }) => eq(rsvp.userId, userId),
     });
+
+    return targetUserRsvps;
   }
 
   /**
@@ -151,26 +164,21 @@ export class UserController {
   })
   @ApiCreatedResponse({ type: User })
   @Patch('me')
-  update(
+  async update(
     @GetUser('id') id: Express.User['id'],
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    try {
-      return this.userService.updateUser({
-        where: { id },
-        data: updateUserDto,
-      });
-    } catch (error) {
-      if (error instanceof PrismaClientKnownRequestError) {
-        if (error.code === 'P2002') {
-          throw new BadRequestException('The email must be unique');
-        } else {
-          throw error;
-        }
-      } else {
-        throw error;
-      }
-    }
+    const updatedUser = await this.db
+      .update(user)
+      .set(updateUserDto)
+      .where(eq(user.id, id))
+      .returning();
+
+    const supposedlyUpdatedUser = updatedUser.at(0);
+
+    if (!supposedlyUpdatedUser) throw new NotFoundException('User not found');
+
+    return supposedlyUpdatedUser;
   }
 
   /**
@@ -185,52 +193,21 @@ export class UserController {
   @ApiCreatedResponse({ type: User })
   @Roles(['MENTOR'])
   @Patch(':id')
-  updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    try {
-      return this.userService.updateUser({
-        where: { id },
-        data: updateUserDto,
-      });
-    } catch (error) {
-      if (error instanceof PrismaClientKnownRequestError) {
-        if (error.code === 'P2002') {
-          throw new BadRequestException('The email must be unique');
-        } else {
-          throw error;
-        }
-      } else {
-        throw error;
-      }
-    }
-  }
+  async updateUser(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    const updatedUser = await this.db
+      .update(user)
+      .set(updateUserDto)
+      .where(eq(user.id, id))
+      .returning();
 
-  /**
-   * Regenerates the calendar token of the signed in user.
-   * @returns {User}
-   */
-  @ApiOperation({
-    description: 'Regenerates the calendar token of the signed in user.',
-    operationId: 'regenerateMeCalendarToken',
-  })
-  @ApiCreatedResponse({ type: User })
-  @Post('me/regenerateToken')
-  regenerateToken(@GetUser('id') id: Express.User['id']) {
-    return this.userService.regenerateCalendarSecret({ id });
-  }
+    const supposedlyUpdatedUser = updatedUser.at(0);
 
-  /**
-   * Regenerates the calendar token of the specified user.
-   * @returns {User}
-   */
-  @ApiOperation({
-    description: 'Regenerates the calendar token of the specified user.',
-    operationId: 'regenerateUserCalendarToken',
-  })
-  @ApiCreatedResponse({ type: User })
-  @Roles(['MENTOR'])
-  @Post(':id/regenerateToken')
-  regenerateUserToken(@Param('id') id: string) {
-    return this.userService.regenerateCalendarSecret({ id });
+    if (!supposedlyUpdatedUser) throw new NotFoundException('User not found');
+
+    return supposedlyUpdatedUser;
   }
 
   /**
@@ -259,7 +236,7 @@ export class UserController {
 
     await destroySession;
 
-    return this.userService.deleteUser({ id });
+    return this.userService.deleteUser(id);
   }
 
   /**
@@ -274,7 +251,7 @@ export class UserController {
   @Roles(['MENTOR'])
   @Delete(':id')
   removeUser(@Param('id') id: string) {
-    return this.userService.deleteUser({ id });
+    return this.userService.deleteUser(id);
   }
 
   /**
@@ -288,45 +265,9 @@ export class UserController {
   @ApiOkResponse({ type: [User] })
   @Roles(['MENTOR'])
   @Get()
-  users() {
-    return this.userService.users({});
-  }
-
-  /**
-   * Get an outreach report of the logged in user.
-   * @returns {OutreachReport}
-   */
-  @ApiOperation({
-    description: 'Get an outreach report of the logged in user.',
-    operationId: 'getMeOutreachReport',
-  })
-  @ApiOkResponse({ type: OutreachReport })
-  @Get('me/outreach')
-  async myOutreachReport(
-    @Query() params: GetOutreachReport,
-    @GetUser('id') id: Express.User['id'],
-  ) {
-    const { from, to } = params;
-    return this.userService.outreachReport(id, from, to);
-  }
-
-  /**
-   * Get an outreach report of the specified user.
-   * @returns {OutreachReport}
-   */
-  @ApiOperation({
-    description: 'Get an outreach report of the specified user.',
-    operationId: 'getUserOutreachReport',
-  })
-  @ApiOkResponse({ type: OutreachReport })
-  @Roles(['MENTOR'])
-  @Get(':id/outreach')
-  async outreachReport(
-    @Param('id') userId: string,
-    @Query() params: GetOutreachReport,
-  ) {
-    const { from, to } = params;
-    return this.userService.outreachReport(userId, from, to);
+  async users() {
+    const allUsersList = await this.db.select().from(user);
+    return allUsersList;
   }
 
   /**
@@ -340,11 +281,11 @@ export class UserController {
   @ApiOkResponse({ type: [Scancode] })
   @Get('me/scancodes')
   async scancodes(@GetUser('id') id: Express.User['id']) {
-    return this.scancodeService.scancodes({
-      where: {
-        userId: id,
-      },
+    const myScancodes = await this.db.query.scancode.findMany({
+      where: (scancode, { eq }) => eq(scancode.userId, id),
     });
+
+    return myScancodes;
   }
 
   /**
@@ -359,11 +300,11 @@ export class UserController {
   @Roles(['MENTOR'])
   @Get(':id/scancodes')
   async userScancodes(@Param('id') id: string) {
-    return this.scancodeService.scancodes({
-      where: {
-        userId: id,
-      },
+    const targetUserScancodes = await this.db.query.scancode.findMany({
+      where: (scancode, { eq }) => eq(scancode.userId, id),
     });
+
+    return targetUserScancodes;
   }
 
   /**
@@ -377,16 +318,12 @@ export class UserController {
   @ApiCreatedResponse({ type: Scancode })
   @Post('me/scancodes')
   async createScancode(
-    @GetUser('id') id: Express.User['id'],
+    @GetUser('id') userId: Express.User['id'],
     @Body() body: CreateScancodeDto,
   ) {
     return this.scancodeService.createScancode({
       ...body,
-      user: {
-        connect: {
-          id,
-        },
-      },
+      userId,
     });
   }
 
@@ -402,16 +339,12 @@ export class UserController {
   @Roles(['MENTOR'])
   @Post(':id/scancodes')
   async createUserScancode(
-    @Param('id') id: string,
+    @Param('id') userId: string,
     @Body() body: CreateScancodeDto,
   ) {
     return this.scancodeService.createScancode({
       ...body,
-      user: {
-        connect: {
-          id,
-        },
-      },
+      userId,
     });
   }
 
@@ -426,20 +359,18 @@ export class UserController {
   @ApiOkResponse({ type: Scancode })
   @Delete('me/scancodes/:scancodeId')
   async deleteScancode(
-    @GetUser('id') id: Express.User['id'],
+    @GetUser('id') userId: Express.User['id'],
     @Param('scancodeId') scancodeId: string,
   ) {
-    const scancode = await this.scancodeService.scancode({
-      code: scancodeId,
+    const scancode = await this.db.query.scancode.findFirst({
+      where: (scancode, { eq }) => eq(scancode.code, scancodeId),
     });
 
-    if (scancode.userId !== id) {
+    if (scancode.userId !== userId) {
       throw new ForbiddenException();
     }
 
-    return this.scancodeService.deleteScancode({
-      code: scancodeId,
-    });
+    return this.scancodeService.deleteScancode(scancodeId);
   }
 
   /**
@@ -454,19 +385,21 @@ export class UserController {
   @Roles(['MENTOR'])
   @Delete(':id/scancodes/:scancodeId')
   async deleteUserScancode(
-    @Param('id') id: string,
+    @Param('id') userId: string,
     @Param('scancodeId') scancodeId: string,
   ) {
-    const scancode = await this.scancodeService.scancode({
-      code: scancodeId,
+    const scancode = await this.db.query.scancode.findFirst({
+      where: (scancode, { eq }) => eq(scancode.code, scancodeId),
     });
 
-    if (scancode.userId !== id) {
+    if (scancode.userId !== userId) {
       throw new ForbiddenException();
     }
 
-    return this.scancodeService.deleteScancode({
-      code: scancodeId,
-    });
+    const deletedScancode = await this.scancodeService.deleteScancode(
+      scancodeId,
+    );
+
+    return deletedScancode;
   }
 }

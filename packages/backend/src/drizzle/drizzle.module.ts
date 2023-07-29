@@ -1,9 +1,9 @@
 import { Global, Logger, Module } from '@nestjs/common';
-import { NodePgDatabase, drizzle } from 'drizzle-orm/node-postgres';
-import { migrate } from 'drizzle-orm/node-postgres/migrator';
+import { drizzle } from 'drizzle-orm/postgres-js';
+import postgres from 'postgres';
+import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import * as schema from '../../drizzle/schema';
 import { ConfigService } from '@nestjs/config';
-import { Client } from 'pg';
 import { InferModel } from 'drizzle-orm';
 
 export const DRIZZLE_TOKEN = Symbol('PG_CONNECTION');
@@ -21,18 +21,22 @@ export const DRIZZLE_TOKEN = Symbol('PG_CONNECTION');
         const host = configService.getOrThrow('POSTGRES_HOST');
         const database = configService.getOrThrow('POSTGRES_DB');
 
-        const client = new Client({
-          user: username,
-          password,
-          host,
-          database,
-        });
+        const migrationPgClient = postgres(
+          `postgres://${username}:${password}@${host}/${database}`,
+          { max: 1 },
+        );
 
-        await client.connect();
         logger.log('Connected to database');
-        const db = drizzle(client, { schema });
-        await migrate(db, { migrationsFolder: './drizzle' });
+        const migrationClient = drizzle(migrationPgClient, { schema });
+        await migrate(migrationClient, { migrationsFolder: './drizzle' });
         logger.log('Migrated database');
+
+        const queryPgClient = postgres(
+          `postgres://${username}:${password}@${host}/${database}`,
+        );
+
+        const db = drizzle(queryPgClient, { schema });
+
         return db;
       },
     },

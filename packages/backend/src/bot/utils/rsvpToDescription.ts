@@ -1,4 +1,4 @@
-import { RSVPStatus } from '@prisma/client';
+import { RSVPStatus } from '@/drizzle/drizzle.module';
 
 export default function rsvpToDescription(
   rsvp: {
@@ -10,9 +10,9 @@ export default function rsvpToDescription(
   first = false,
 ) {
   return `${rsvp.user.username ?? ''} - ${
-    rsvp.status === RSVPStatus.LATE && rsvp.delay !== null
+    rsvp.status === 'LATE' && rsvp.delay !== null
       ? `:clock3: ${rsvp.delay} minutes late`
-      : rsvp.status === RSVPStatus.LATE
+      : rsvp.status === 'LATE'
       ? `:clock3:`
       : rsvp.status === 'YES'
       ? `:white_check_mark:`

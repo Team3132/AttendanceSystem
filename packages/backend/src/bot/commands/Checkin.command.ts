@@ -11,8 +11,9 @@ import { ConfigService } from '@nestjs/config';
 import { SlashCommand, Context, SlashCommandContext, Options } from 'necord';
 import { CheckinDto } from '../dto/checkin.dto';
 import { EventAutocompleteInterceptor } from '../interceptors/event.interceptor';
-import { DRIZZLE_TOKEN, DrizzleDatabase } from '@/drizzle/drizzle.module';
+import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 import { rsvp } from '../../../drizzle/schema';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class CheckinCommand {
@@ -102,6 +103,7 @@ export class CheckinCommand {
     const newRSVP = await this.db
       .insert(rsvp)
       .values({
+        id: uuid(),
         eventId,
         attended: true,
         userId,

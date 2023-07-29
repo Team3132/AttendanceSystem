@@ -4,8 +4,9 @@ import { SlashCommand, Context, SlashCommandContext, Options } from 'necord';
 import { RsvpDto } from '../dto/rsvp.dto';
 import { EventAutocompleteInterceptor } from '../interceptors/event.interceptor';
 import rsvpToDescription from '../utils/rsvpToDescription';
-import { DRIZZLE_TOKEN, DrizzleDatabase } from '@/drizzle/drizzle.module';
+import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 import { rsvp } from '../../../drizzle/schema';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class RsvpCommand {
@@ -90,6 +91,7 @@ export class RsvpCommand {
     await this.db
       .insert(rsvp)
       .values({
+        id: uuid(),
         eventId: meeting,
         userId,
         status,

@@ -6,7 +6,7 @@ import { SlashCommandContext, Options, Context, SlashCommand } from 'necord';
 import { AttendanceDto } from '../dto/attendance.dto';
 import { EventAutocompleteInterceptor } from '../interceptors/event.interceptor';
 import attendanceToDescription from '../utils/attendanceToDescription';
-import { DRIZZLE_TOKEN, DrizzleDatabase } from '@/drizzle/drizzle.module';
+import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 import { and, eq, sql } from 'drizzle-orm';
 import { rsvp, user } from '../../../drizzle/schema';
 
@@ -73,7 +73,7 @@ export class AttendanceCommand {
 
     const attendanceEmbed = new EmbedBuilder()
       .setTitle(
-        `Attendance for ${fetchedMeeting.title} at ${DateTime.fromISO(
+        `Attendance for ${fetchedMeeting.title} at ${DateTime.fromJSDate(
           fetchedMeeting.startDate,
         ).toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}`,
       )

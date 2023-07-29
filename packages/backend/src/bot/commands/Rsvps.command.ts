@@ -6,7 +6,7 @@ import { SlashCommand, Context, SlashCommandContext, Options } from 'necord';
 import { AttendanceDto } from '../dto/attendance.dto';
 import { EventAutocompleteInterceptor } from '../interceptors/event.interceptor';
 import rsvpToDescription from '../utils/rsvpToDescription';
-import { DRIZZLE_TOKEN, DrizzleDatabase } from '@/drizzle/drizzle.module';
+import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 import { rsvp, user } from '../../../drizzle/schema';
 import { and, eq, isNotNull } from 'drizzle-orm';
 

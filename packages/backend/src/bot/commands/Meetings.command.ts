@@ -1,6 +1,6 @@
 import {
   DRIZZLE_TOKEN,
-  DrizzleDatabase,
+  type DrizzleDatabase,
   Event,
 } from '@/drizzle/drizzle.module';
 import { Inject, Injectable } from '@nestjs/common';
@@ -39,11 +39,7 @@ export class MeetingsCommand {
     // });
 
     const nextFive = await this.db.query.event.findMany({
-      where: (event) =>
-        and(
-          gte(event.startDate, DateTime.local().toISO()),
-          gte(event.endDate, DateTime.local().toISO()),
-        ),
+      where: (event) => gte(event.startDate, DateTime.local().toJSDate()),
       orderBy: (event) => asc(event.startDate),
       limit: 5,
     });

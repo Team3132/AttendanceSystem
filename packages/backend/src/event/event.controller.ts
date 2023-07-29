@@ -45,10 +45,11 @@ import { ConfigService } from '@nestjs/config';
 import TokenCheckinDto from './dto/checkin-dto';
 import { RsvpUser } from './dto/rsvp-user.dto';
 import { Request, Response } from 'express';
-import { DRIZZLE_TOKEN, DrizzleDatabase } from '@/drizzle/drizzle.module';
+import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 import { asc, between, eq } from 'drizzle-orm';
 import { DateTime } from 'luxon';
-import { event } from '../../drizzle/schema';
+import { event, rsvp } from '../../drizzle/schema';
+import { v4 as uuid } from 'uuid';
 
 @ApiTags('Event')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -110,7 +111,10 @@ export class EventController {
   @Roles(['MENTOR'])
   @Post()
   async create(@Body() createEventDto: CreateEventDto) {
-    const event = await this.eventService.createEvent(createEventDto);
+    const event = await this.eventService.createEvent({
+      id: uuid(),
+      ...createEventDto,
+    });
     return new EventResponse(event);
   }
 
@@ -275,16 +279,15 @@ export class EventController {
   })
   @ApiOkResponse({ type: Rsvp })
   @Get(':eventId/rsvp')
-  getEventRsvp(
+  async getEventRsvp(
     @Param('eventId') eventId: string,
     @GetUser('id') userId: Express.User['id'],
   ) {
-    return this.rsvpService.rsvp({
-      eventId_userId: {
-        eventId,
-        userId,
-      },
+    const eventRsvp = await this.db.query.rsvp.findFirst({
+      where: (rsvp, { and }) =>
+        and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
     });
+    return eventRsvp;
   }
 
   /**
@@ -305,32 +308,48 @@ export class EventController {
     @GetUser('id') userId: Express.User['id'],
     @Body() { status }: UpdateOrCreateRSVP,
   ) {
-    return this.rsvpService.upsertRSVP({
-      where: {
-        eventId_userId: {
-          eventId,
-          userId,
-        },
-      },
-      create: {
-        event: {
-          connect: { id: eventId },
-        },
-        user: {
-          connect: { id: userId },
-        },
+    // return this.rsvpService.upsertRSVP({
+    //   where: {
+    //     eventId_userId: {
+    //       eventId,
+    //       userId,
+    //     },
+    //   },
+    //   create: {
+    //     event: {
+    //       connect: { id: eventId },
+    //     },
+    //     user: {
+    //       connect: { id: userId },
+    //     },
+    //     status,
+    //   },
+    //   update: {
+    //     event: {
+    //       connect: { id: eventId },
+    //     },
+    //     user: {
+    //       connect: { id: userId },
+    //     },
+    //     status,
+    //   },
+    // });
+    const newOrUpdatedRsvp = await this.db
+      .insert(rsvp)
+      .values({
+        id: uuid(),
+        eventId,
+        userId,
         status,
-      },
-      update: {
-        event: {
-          connect: { id: eventId },
+      })
+      .onConflictDoUpdate({
+        set: {
+          status,
         },
-        user: {
-          connect: { id: userId },
-        },
-        status,
-      },
-    });
+        target: [rsvp.eventId, rsvp.userId],
+      });
+
+    return newOrUpdatedRsvp;
   }
 
   /**

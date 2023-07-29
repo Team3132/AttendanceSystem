@@ -1,10 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Event as PrismaEvent, EventTypes } from '@prisma/client';
+import {
+  Event as DrizzleEvent,
+  type EventTypes,
+} from '../../drizzle/drizzle.module';
 
 /**
  * The event object.
  */
-export class Event implements PrismaEvent {
+export class Event implements DrizzleEvent {
   @ApiProperty()
   id: string;
   @ApiProperty()
@@ -17,7 +20,7 @@ export class Event implements PrismaEvent {
   endDate: Date;
   @ApiProperty()
   allDay: boolean;
-  @ApiProperty({ enum: EventTypes })
+  @ApiProperty({ enum: ['Social', 'Regular', 'Outreach'] })
   type: EventTypes;
   @ApiProperty()
   secret: string;

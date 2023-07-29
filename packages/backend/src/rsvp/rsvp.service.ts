@@ -1,6 +1,6 @@
 import {
   DRIZZLE_TOKEN,
-  DrizzleDatabase,
+  type DrizzleDatabase,
   NewRsvp,
 } from '@/drizzle/drizzle.module';
 import {
@@ -9,9 +9,9 @@ import {
   Injectable,
   Logger,
 } from '@nestjs/common';
-import { Prisma, RSVPStatus } from '@prisma/client';
 import { rsvp } from '../../drizzle/schema';
 import { eq } from 'drizzle-orm';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class RsvpService {
@@ -60,6 +60,7 @@ export class RsvpService {
     const updatedRsvp = await this.db
       .insert(rsvp)
       .values({
+        id: uuid(),
         eventId,
         userId,
         attended: true,

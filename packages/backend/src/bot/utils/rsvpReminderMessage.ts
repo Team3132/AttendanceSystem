@@ -69,12 +69,12 @@ export default function rsvpReminderMessage(
       { name: 'All Day', value: event.allDay ? 'Yes' : 'No', inline: true },
       {
         name: 'Start Time',
-        value: time(DateTime.fromISO(event.startDate).toJSDate()),
+        value: time(event.startDate),
         inline: true,
       },
       {
         name: 'End Time',
-        value: time(DateTime.fromISO(event.endDate).toJSDate()),
+        value: time(event.endDate),
         inline: true,
       },
     )

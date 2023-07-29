@@ -1,11 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { RSVPStatus } from '@prisma/client';
 import { GuildMember } from 'discord.js';
 import { Button, Context, ButtonContext, ComponentParam } from 'necord';
 import { DelayModalBuilder } from '../modals/Delay.modal';
 import rsvpReminderMessage from '../utils/rsvpReminderMessage';
-import { DRIZZLE_TOKEN, DrizzleDatabase } from '@/drizzle/drizzle.module';
+import { v4 as uuid } from 'uuid';
+import {
+  DRIZZLE_TOKEN,
+  type RSVPStatus,
+  type DrizzleDatabase,
+} from '@/drizzle/drizzle.module';
 import { rsvp, user } from '../../../drizzle/schema';
 
 @Injectable()
@@ -81,6 +85,7 @@ export class RsvpsButton {
     await this.db
       .insert(rsvp)
       .values({
+        id: uuid(),
         eventId,
         userId,
         status: rsvpStatus,
@@ -111,7 +116,7 @@ export class RsvpsButton {
 
     const frontendUrl = this.config.getOrThrow('FRONTEND_URL');
 
-    if (rsvpStatus === RSVPStatus.LATE) {
+    if (rsvpStatus === 'LATE') {
       // return interaction.deferUpdate();
       return interaction.showModal(DelayModalBuilder(eventDB.id));
     } else {

@@ -8,6 +8,9 @@ import {
   UseGuards,
   ForbiddenException,
   ConflictException,
+  Inject,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { ScancodeService } from './scancode.service';
 import { CreateScancodeDto } from './dto/create-scancode.dto';
@@ -21,15 +24,19 @@ import {
 } from '@nestjs/swagger';
 import { SessionGuard } from '@auth/guard/session.guard';
 import { Scancode } from './entities/scancode.entity';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/index.js';
 import { ROLES } from '../constants';
+import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 
 @ApiTags('Scancode')
 @UseGuards(SessionGuard)
+@UseInterceptors(ClassSerializerInterceptor)
 @ApiCookieAuth()
 @Controller('scancode')
 export class ScancodeController {
-  constructor(private readonly scancodeService: ScancodeService) {}
+  constructor(
+    private readonly scancodeService: ScancodeService,
+    @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
+  ) {}
 
   /**
    * Create Scancode
@@ -45,27 +52,11 @@ export class ScancodeController {
     @GetUser('id') userId: Express.User['id'],
     @Body() createScancodeDto: CreateScancodeDto,
   ) {
-    try {
-      const response = await this.scancodeService.createScancode({
-        ...createScancodeDto,
-        user: {
-          connect: {
-            id: userId,
-          },
-        },
-      });
-      return response;
-    } catch (error) {
-      if (error instanceof PrismaClientKnownRequestError) {
-        if (error.code === 'P2002') {
-          throw new ConflictException('Scancode already exists');
-        } else {
-          throw error;
-        }
-      } else {
-        throw error;
-      }
-    }
+    const response = await this.scancodeService.createScancode({
+      ...createScancodeDto,
+      userId,
+    });
+    return new Scancode(response);
   }
 
   /**
@@ -78,12 +69,11 @@ export class ScancodeController {
     operationId: 'getScancodes',
   })
   @Get()
-  findAll(@GetUser('id') userId: Express.User['id']) {
-    return this.scancodeService.scancodes({
-      where: {
-        userId,
-      },
+  async findAll(@GetUser('id') userId: Express.User['id']) {
+    const scancodes = await this.db.query.scancode.findMany({
+      where: (scancode, { eq }) => eq(scancode.userId, userId),
     });
+    return scancodes.map((scancode) => new Scancode(scancode));
   }
 
   /**
@@ -97,10 +87,12 @@ export class ScancodeController {
   })
   @Delete(':id')
   async remove(@Param('id') id: string, @GetUser() user: Express.User) {
-    const scancode = await this.scancodeService.scancode({ code: id });
+    const scancode = await this.db.query.scancode.findFirst({
+      where: (scancode, { eq }) => eq(scancode.code, id),
+    });
     if (scancode.userId !== user.id && !user.roles.includes(ROLES.MENTOR)) {
       throw new ForbiddenException();
     }
-    return this.scancodeService.deleteScancode({ code: id });
+    return this.scancodeService.deleteScancode(id);
   }
 }

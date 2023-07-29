@@ -4,7 +4,7 @@ import { EmbedBuilder } from 'discord.js';
 import { DateTime } from 'luxon';
 import { Button, Context, ButtonContext, ComponentParam } from 'necord';
 import rsvpToDescription from '../utils/rsvpToDescription';
-import { DRIZZLE_TOKEN, DrizzleDatabase } from '@/drizzle/drizzle.module';
+import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 import { and, asc, eq, ne } from 'drizzle-orm';
 
 @Injectable()
@@ -74,7 +74,7 @@ export class RsvpButton {
 
     const rsvpEmbed = new EmbedBuilder()
       .setTitle(
-        `RSVPs for ${rsvpEvent.title} at ${DateTime.fromISO(
+        `RSVPs for ${rsvpEvent.title} at ${DateTime.fromJSDate(
           rsvpEvent.startDate,
         ).toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}`,
       )

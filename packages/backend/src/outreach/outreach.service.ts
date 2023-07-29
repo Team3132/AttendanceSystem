@@ -1,4 +1,4 @@
-import { DRIZZLE_TOKEN, DrizzleDatabase } from '@/drizzle/drizzle.module';
+import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 import { Inject, Injectable } from '@nestjs/common';
 import { event, rsvp, user } from '../../drizzle/schema';
 import { eq, sql } from 'drizzle-orm';

@@ -24,9 +24,10 @@ import { SessionGuard } from '@auth/guard/session.guard';
 import { GetUser } from '@auth/decorators/GetUserDecorator.decorator';
 import { Rsvp } from './entities/rsvp.entity';
 import { Roles } from '@auth/decorators/DiscordRoleDecorator.decorator';
-import { DRIZZLE_TOKEN, DrizzleDatabase } from '@/drizzle/drizzle.module';
+import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 import { rsvp } from '../../drizzle/schema';
 import { eq } from 'drizzle-orm';
+import { v4 as uuid } from 'uuid';
 
 @ApiTags('RSVP')
 @ApiCookieAuth()
@@ -55,6 +56,7 @@ export class RsvpController {
     @GetUser('id') userId: Express.User['id'],
   ) {
     return this.rsvpService.createRSVP({
+      id: uuid(),
       eventId: createRsvpDto.eventId,
       userId,
       status: createRsvpDto.status,

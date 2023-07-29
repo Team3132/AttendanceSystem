@@ -1,6 +1,9 @@
-import { DRIZZLE_TOKEN, DrizzleDatabase } from '@/drizzle/drizzle.module';
+import {
+  DRIZZLE_TOKEN,
+  Event,
+  type DrizzleDatabase,
+} from '@/drizzle/drizzle.module';
 import { Inject, Injectable } from '@nestjs/common';
-import { Event } from '@prisma/client';
 import { AutocompleteInteraction, CacheType } from 'discord.js';
 import { and, asc, gte, ilike } from 'drizzle-orm';
 import { DateTime } from 'luxon';

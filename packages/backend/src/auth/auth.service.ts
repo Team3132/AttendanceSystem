@@ -7,7 +7,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { Profile as DiscordProfile } from 'passport-discord';
 import { BotService } from '@/bot/bot.service';
-import { DRIZZLE_TOKEN, DrizzleDatabase } from '@/drizzle/drizzle.module';
+import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 import { user } from '../../drizzle/schema';
 @Injectable()
 export class AuthService {

@@ -54,6 +54,7 @@
     "passport": "^0.6.0",
     "passport-discord": "^0.1.4",
     "pg": "^8.11.1",
+    "postgres": "^3.3.5",
     "prom-client": "^14.0.1",
     "qrcode": "^1.5.1",
     "redis": "^4.6.4",

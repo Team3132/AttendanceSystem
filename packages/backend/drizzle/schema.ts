@@ -1,4 +1,4 @@
-import { relations } from 'drizzle-orm';
+import { relations, sql } from 'drizzle-orm';
 import {
   pgTable,
   pgEnum,
@@ -7,7 +7,6 @@ import {
   integer,
   uniqueIndex,
   boolean,
-  uuid,
 } from 'drizzle-orm/pg-core';
 
 export const eventTypes = pgEnum('EventTypes', [
@@ -17,29 +16,18 @@ export const eventTypes = pgEnum('EventTypes', [
 ]);
 export const rsvpStatus = pgEnum('RSVPStatus', ['LATE', 'MAYBE', 'NO', 'YES']);
 
-export const user = pgTable(
-  'User',
-  {
-    username: text('username').notNull(),
-    createdAt: timestamp('createdAt', { precision: 3, mode: 'string' })
-      .defaultNow()
-      .notNull(),
-    updatedAt: timestamp('updatedAt', { precision: 3, mode: 'string' })
-      .defaultNow()
-      .notNull(),
-    id: text('id').primaryKey().notNull(),
-    calendarSecret: uuid('calendarSecret').defaultRandom().notNull(),
-    roles: text('roles').array(),
-    defaultStatus: rsvpStatus('defaultStatus'),
-  },
-  (table) => {
-    return {
-      calendarSecretKey: uniqueIndex('User_calendarSecret_key').on(
-        table.calendarSecret,
-      ),
-    };
-  },
-);
+export const user = pgTable('User', {
+  username: text('username').notNull(),
+  createdAt: timestamp('createdAt', { precision: 3, mode: 'date' })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp('updatedAt', { precision: 3, mode: 'date' })
+    .defaultNow()
+    .notNull(),
+  id: text('id').primaryKey().notNull(),
+  roles: text('roles').array(),
+  defaultStatus: rsvpStatus('defaultStatus'),
+});
 
 export const userRelations = relations(user, ({ many }) => ({
   rsvps: many(rsvp),
@@ -49,7 +37,7 @@ export const userRelations = relations(user, ({ many }) => ({
 export const rsvp = pgTable(
   'RSVP',
   {
-    id: uuid('id').defaultRandom().primaryKey().notNull(),
+    id: text('id').primaryKey().notNull(),
     eventId: text('eventId')
       .notNull()
       .references(() => event.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
@@ -84,7 +72,7 @@ export const rsvpRelations = relations(rsvp, ({ one }) => ({
 export const event = pgTable(
   'Event',
   {
-    id: uuid('id').defaultRandom().primaryKey().notNull(),
+    id: text('id').primaryKey().notNull(),
     description: text('description').default('').notNull(),
     title: text('title').notNull(),
     startDate: timestamp('startDate', {

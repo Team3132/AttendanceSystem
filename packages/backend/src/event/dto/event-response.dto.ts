@@ -1,8 +1,7 @@
-import { Event, EventTypes } from '@/drizzle/drizzle.module';
+import { type Event, type EventTypes } from '@/drizzle/drizzle.module';
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import { eventTypes } from '../../../drizzle/schema';
-// import { Event } from '../entities/event.entity';
 
 export class EventResponse implements Event {
   @ApiProperty()

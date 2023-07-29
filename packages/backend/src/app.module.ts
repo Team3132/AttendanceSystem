@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
-import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { EventModule } from './event/event.module';
@@ -27,7 +26,6 @@ import { DrizzleModule } from './drizzle/drizzle.module';
 @Module({
   imports: [
     AuthModule,
-    PrismaModule,
     ConfigModule.forRoot({ isGlobal: true, cache: true }),
     DrizzleModule,
     NecordModule.forRootAsync({
@@ -55,7 +53,6 @@ import { DrizzleModule } from './drizzle/drizzle.module';
       },
       inject: [ConfigService],
     }),
-    PrismaModule,
     UserModule,
     EventModule,
     RsvpModule,

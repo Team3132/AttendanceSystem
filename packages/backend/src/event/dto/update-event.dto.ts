@@ -7,7 +7,7 @@ import {
   IsEnum,
 } from 'class-validator';
 import { eventTypes } from '../../../drizzle/schema';
-import { EventTypes } from '@/drizzle/drizzle.module';
+import { type EventTypes } from '@/drizzle/drizzle.module';
 
 /**
  * The data used to update an event

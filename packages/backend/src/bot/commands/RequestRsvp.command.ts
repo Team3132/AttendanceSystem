@@ -5,7 +5,7 @@ import { SlashCommand, Context, SlashCommandContext, Options } from 'necord';
 import { RequestRSVPDto } from '../dto/requestRSVP.dto';
 import { EventAutocompleteInterceptor } from '../interceptors/event.interceptor';
 import rsvpReminderMessage from '../utils/rsvpReminderMessage';
-import { DRIZZLE_TOKEN, DrizzleDatabase } from '@/drizzle/drizzle.module';
+import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 
 @Injectable()
 export class RequestRsvpCommand {

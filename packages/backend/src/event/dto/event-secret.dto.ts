@@ -1,5 +1,5 @@
+import { type Event } from '@/drizzle/drizzle.module';
 import { ApiProperty } from '@nestjs/swagger';
-import { Event } from '@prisma/client';
 import { Exclude, Expose } from 'class-transformer';
 
 @Exclude()

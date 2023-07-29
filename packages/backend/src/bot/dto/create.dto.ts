@@ -1,4 +1,3 @@
-import { EventTypes } from '@prisma/client';
 import { Role } from 'discord.js';
 import { BooleanOption, RoleOption, StringOption } from 'necord';
 
@@ -9,9 +8,9 @@ export class CreateDto {
   })
   eventName: string;
   @StringOption({
-    choices: Object.entries(EventTypes).map(([name, value]) => ({
-      name,
-      value,
+    choices: ['Outreach', 'Regular', 'Social'].map((type) => ({
+      name: type,
+      value: type,
     })),
     name: 'eventtype',
     description: 'Choose the type of event',

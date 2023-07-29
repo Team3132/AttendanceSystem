@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Scancode as PrismaScan } from '@prisma/client';
+import { Scancode as DrizzleScancode } from '@/drizzle/drizzle.module';
 
-export class Scancode implements PrismaScan {
+export class Scancode implements DrizzleScancode {
   @ApiProperty()
   code: string;
   @ApiProperty()
@@ -10,4 +10,8 @@ export class Scancode implements PrismaScan {
   updatedAt: Date;
   @ApiProperty()
   userId: string;
+
+  constructor(scancode: DrizzleScancode) {
+    Object.assign(this, scancode);
+  }
 }
