@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { EventTypes } from '@prisma/client';
 import {
   IsString,
   IsDateString,
@@ -7,11 +6,13 @@ import {
   IsBoolean,
   IsEnum,
 } from 'class-validator';
+import { eventTypes } from '../../../drizzle/schema';
+import { EventTypes } from '@/drizzle/drizzle.module';
 
 /**
  * The data used to update an event
  */
-export class UpdateEventDto {
+export class UpdateEventDto implements Partial<Event> {
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()
@@ -33,8 +34,8 @@ export class UpdateEventDto {
   @IsOptional()
   allDay?: boolean;
   @IsOptional()
-  @IsEnum(EventTypes)
-  @ApiProperty({ enum: EventTypes })
+  @IsEnum(eventTypes.enumValues)
+  @ApiProperty({ enum: eventTypes.enumValues })
   type?: EventTypes;
   @IsOptional()
   @IsString({ each: true })

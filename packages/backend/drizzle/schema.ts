@@ -56,10 +56,10 @@ export const rsvp = pgTable(
     userId: text('userId')
       .notNull()
       .references(() => user.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
-    createdAt: timestamp('createdAt', { precision: 3, mode: 'string' })
+    createdAt: timestamp('createdAt', { precision: 3, mode: 'date' })
       .defaultNow()
       .notNull(),
-    updatedAt: timestamp('updatedAt', { precision: 3, mode: 'string' })
+    updatedAt: timestamp('updatedAt', { precision: 3, mode: 'date' })
       .defaultNow()
       .notNull(),
     status: rsvpStatus('status'),
@@ -89,9 +89,9 @@ export const event = pgTable(
     title: text('title').notNull(),
     startDate: timestamp('startDate', {
       precision: 3,
-      mode: 'string',
+      mode: 'date',
     }).notNull(),
-    endDate: timestamp('endDate', { precision: 3, mode: 'string' }).notNull(),
+    endDate: timestamp('endDate', { precision: 3, mode: 'date' }).notNull(),
     allDay: boolean('allDay').default(false).notNull(),
     type: eventTypes('type').default('Regular').notNull(),
     secret: text('secret').notNull(),
@@ -111,10 +111,10 @@ export const eventRelations = relations(event, ({ many }) => ({
 
 export const scancode = pgTable('Scancode', {
   code: text('code').primaryKey().notNull(),
-  createdAt: timestamp('createdAt', { precision: 3, mode: 'string' })
+  createdAt: timestamp('createdAt', { precision: 3, mode: 'date' })
     .defaultNow()
     .notNull(),
-  updatedAt: timestamp('updatedAt', { precision: 3, mode: 'string' })
+  updatedAt: timestamp('updatedAt', { precision: 3, mode: 'date' })
     .defaultNow()
     .notNull(),
   userId: text('userId')

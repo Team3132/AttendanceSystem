@@ -1,76 +1,43 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { Event, Prisma } from '@prisma/client';
 import { AuthenticatorService } from '@authenticator/authenticator.service';
 import { RsvpService } from '@rsvp/rsvp.service';
 import { PrismaService } from '../prisma/prisma.service';
+import {
+  DRIZZLE_TOKEN,
+  DrizzleDatabase,
+  Event,
+  NewEvent,
+} from '@/drizzle/drizzle.module';
+import { event, rsvp, user } from '../../drizzle/schema';
+import { eq } from 'drizzle-orm';
+import { RsvpUser } from './dto/rsvp-user.dto';
 
 @Injectable()
 export class EventService {
   constructor(
+    @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
     private readonly prismaService: PrismaService,
     private readonly authenticatorService: AuthenticatorService,
     private readonly rsvpService: RsvpService,
   ) {}
   private readonly logger = new Logger(EventService.name);
 
-  createEvent(data: Prisma.EventCreateInput) {
+  async createEvent(data: Omit<NewEvent, 'secret'>) {
     const secret = this.authenticatorService.generateSecret();
-    return this.prismaService.event.create({
-      data: {
+    const newEvent = await this.db
+      .insert(event)
+      .values({
         ...data,
         secret,
-      },
-    });
-  }
-
-  events(params: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.EventWhereUniqueInput;
-    where?: Prisma.EventWhereInput;
-    orderBy?: Prisma.EventOrderByWithRelationInput;
-    include?: Prisma.EventInclude;
-    select?: Prisma.EventSelect;
-  }) {
-    const { skip, take, cursor, where, orderBy } = params;
-    return this.prismaService.event.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
-    });
-  }
-
-  event(eventWhereUniqueInput: Prisma.EventWhereUniqueInput): Promise<Event> {
-    return this.prismaService.event.findUnique({
-      where: eventWhereUniqueInput,
-    });
-  }
-
-  eventSecret(eventWhereUniqueInput: Prisma.EventWhereUniqueInput) {
-    return this.prismaService.event.findUnique({
-      where: eventWhereUniqueInput,
-      select: {
-        secret: true,
-      },
-    });
-  }
-
-  updateEvent(params: {
-    where: Prisma.EventWhereUniqueInput;
-    data: Prisma.EventUpdateInput;
-  }) {
-    const { data, where } = params;
-    return this.prismaService.event.update({
-      data,
-      where,
-    });
+      })
+      .returning();
+    return newEvent.at(0);
   }
 
   deleteEvent(id: Event['id']) {
@@ -78,7 +45,9 @@ export class EventService {
   }
 
   async verifyUserEventToken(eventId: string, userId: string, token: string) {
-    const event = await this.event({ id: eventId });
+    const event = await this.db.query.event.findFirst({
+      where: (event, { eq }) => eq(event.id, eventId),
+    });
     if (!event) throw new NotFoundException('No event found');
 
     const isValid = this.authenticatorService.verifyToken(event.secret, token);
@@ -110,5 +79,30 @@ export class EventService {
     });
 
     return rsvp;
+  }
+
+  async getEventUserRsvps(eventId: string): Promise<RsvpUser[]> {
+    const res = await this.db
+      .select({
+        id: rsvp.id,
+        status: rsvp.status,
+        delay: rsvp.delay,
+        userId: rsvp.userId,
+        user: {
+          username: user.username,
+          id: user.id,
+          roles: user.roles,
+        },
+        eventId: rsvp.eventId,
+        createdAt: rsvp.createdAt,
+        updatedAt: rsvp.updatedAt,
+        attended: rsvp.attended,
+      })
+      .from(rsvp)
+      .where(eq(rsvp.eventId, eventId))
+      .leftJoin(user, eq(rsvp.userId, user.id))
+      .orderBy(rsvp.status, rsvp.updatedAt);
+
+    return res;
   }
 }

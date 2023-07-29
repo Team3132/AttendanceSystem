@@ -1,11 +1,9 @@
-import { PrismaService } from '@/prisma/prisma.service';
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { RSVPStatus } from '@prisma/client';
 import { GuildMember } from 'discord.js';
 import { Button, Context, ButtonContext, ComponentParam } from 'necord';
 import { DelayModalBuilder } from '../modals/Delay.modal';
-import connectOrCreateGuildMember from '../utils/connectOrCreateGuildMember';
 import rsvpReminderMessage from '../utils/rsvpReminderMessage';
 import { DRIZZLE_TOKEN, DrizzleDatabase } from '@/drizzle/drizzle.module';
 import { rsvp, user } from '../../../drizzle/schema';
@@ -80,7 +78,7 @@ export class RsvpsButton {
         content: "You don't have permission to reply to this event",
       });
 
-    const newRSVP = await this.db
+    await this.db
       .insert(rsvp)
       .values({
         eventId,

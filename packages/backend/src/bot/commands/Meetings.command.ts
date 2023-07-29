@@ -1,14 +1,19 @@
-import { PrismaService } from '@/prisma/prisma.service';
-import { Injectable } from '@nestjs/common';
+import {
+  DRIZZLE_TOKEN,
+  DrizzleDatabase,
+  Event,
+} from '@/drizzle/drizzle.module';
+import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Event } from '@prisma/client';
 import { EmbedBuilder } from 'discord.js';
+import { and, asc, gte } from 'drizzle-orm';
+import { DateTime } from 'luxon';
 import { SlashCommand, Context, SlashCommandContext } from 'necord';
 
 @Injectable()
 export class MeetingsCommand {
   constructor(
-    private readonly db: PrismaService,
+    @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
     private readonly config: ConfigService,
   ) {}
 
@@ -18,26 +23,36 @@ export class MeetingsCommand {
     guilds: [process.env['GUILD_ID']],
   })
   public async onMeetings(@Context() [interaction]: SlashCommandContext) {
-    const nextFive = await this.db.event.findMany({
-      where: {
-        startDate: {
-          gte: new Date(),
-        },
-        endDate: {
-          gte: new Date(),
-        },
-      },
-      orderBy: {
-        startDate: 'asc',
-      },
-      take: 5,
+    // const nextFive = await this.db.event.findMany({
+    //   where: {
+    //     startDate: {
+    //       gte: new Date(),
+    //     },
+    //     endDate: {
+    //       gte: new Date(),
+    //     },
+    //   },
+    //   orderBy: {
+    //     startDate: 'asc',
+    //   },
+    //   take: 5,
+    // });
+
+    const nextFive = await this.db.query.event.findMany({
+      where: (event) =>
+        and(
+          gte(event.startDate, DateTime.local().toISO()),
+          gte(event.endDate, DateTime.local().toISO()),
+        ),
+      orderBy: (event) => asc(event.startDate),
+      limit: 5,
     });
 
     const eventEmbed = (event: Event) =>
       new EmbedBuilder({
         description: event.description,
         title: event.title,
-        timestamp: event.startDate.toISOString(),
+        timestamp: event.startDate,
         url: `${this.config.get('FRONTEND_URL')}/event/${event.id}`,
       });
 

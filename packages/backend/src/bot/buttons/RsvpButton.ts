@@ -1,4 +1,3 @@
-import { PrismaService } from '@/prisma/prisma.service';
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EmbedBuilder } from 'discord.js';

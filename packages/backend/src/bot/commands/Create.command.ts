@@ -1,5 +1,4 @@
 import { AuthenticatorService } from '@/authenticator/authenticator.service';
-import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable, Logger, UseInterceptors } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EmbedBuilder, hideLinkEmbed, PermissionFlagsBits } from 'discord.js';
@@ -13,7 +12,6 @@ export class CreateCommand {
   private readonly logger = new Logger(CreateCommand.name);
 
   constructor(
-    private readonly db: PrismaService,
     private readonly config: ConfigService,
     private readonly authenticator: AuthenticatorService,
   ) {}

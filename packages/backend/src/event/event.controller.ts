@@ -14,6 +14,7 @@ import {
   BadRequestException,
   Req,
   Res,
+  Inject,
 } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
@@ -47,6 +48,10 @@ import TokenCheckinDto from './dto/checkin-dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import { RsvpUser } from './dto/rsvp-user.dto';
 import { Request, Response } from 'express';
+import { DRIZZLE_TOKEN, DrizzleDatabase } from '@/drizzle/drizzle.module';
+import { asc, between } from 'drizzle-orm';
+import { DateTime } from 'luxon';
+import { event } from '../../drizzle/schema';
 
 @ApiTags('Event')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -58,7 +63,7 @@ export class EventController {
     private readonly scancodeService: ScancodeService,
     private readonly authenticatorService: AuthenticatorService,
     private readonly configService: ConfigService,
-    private readonly db: PrismaService,
+    @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
   ) {}
 
   /**
@@ -72,40 +77,22 @@ export class EventController {
   @Get()
   async findAll(@Query() eventsGet: GetEventsDto) {
     const { from, to, take } = eventsGet;
-    const events = await this.eventService.events({
-      take,
-      where: {
-        AND: [
-          {
-            OR: [
-              {
-                startDate: {
-                  lte: to,
-                },
-              },
-              {
-                endDate: {
-                  lte: to,
-                },
-              },
-            ],
-          },
-          {
-            OR: [
-              {
-                startDate: {
-                  gte: from,
-                },
-              },
-              {
-                endDate: {
-                  gte: from,
-                },
-              },
-            ],
-          },
-        ],
-      },
+    const events = await this.db.query.event.findMany({
+      where: (event, { or }) =>
+        or(
+          between(
+            event.startDate,
+            DateTime.fromISO(from).toJSDate(),
+            DateTime.fromISO(to).toJSDate(),
+          ),
+          between(
+            event.endDate,
+            DateTime.fromISO(from).toJSDate(),
+            DateTime.fromISO(to).toJSDate(),
+          ),
+        ),
+      limit: take,
+      orderBy: (event) => [asc(event.startDate)],
     });
 
     return events.map((event) => new EventResponse(event));
@@ -144,7 +131,9 @@ export class EventController {
   @ApiOkResponse({ type: EventResponseType })
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    const event = await this.eventService.event({ id });
+    const event = await this.db.query.event.findFirst({
+      where: (event, { eq }) => eq(event.id, id),
+    });
     if (!event) {
       throw new NotFoundException('Event not found');
     }
@@ -166,7 +155,9 @@ export class EventController {
   @ApiNotFoundResponse({ type: ApiResponseTypeNotFound })
   @Get(':eventId/token')
   async getEventSecret(@Param('eventId') eventId: string) {
-    const event = await this.eventService.event({ id: eventId });
+    const event = await this.db.query.event.findFirst({
+      where: (event, { eq }) => eq(event.id, eventId),
+    });
     if (!event) {
       throw new NotFoundException('Event not found');
     }
@@ -243,11 +234,20 @@ export class EventController {
     @Param('id') id: string,
     @Body() updateEventDto: UpdateEventDto,
   ) {
-    const event = await this.eventService.updateEvent({
-      data: updateEventDto,
-      where: { id },
-    });
-    return new EventResponse(event);
+    // const event = await this.eventService.updateEvent({
+    //   data: updateEventDto,
+    //   where: { id },
+    // });
+    const updatedEvent = await this.db
+      .update(event)
+      .set(updateEventDto)
+      .returning();
+
+    const firstReturned = updatedEvent.at(0);
+
+    if (!firstReturned) throw new NotFoundException('Event not found');
+
+    return new EventResponse(firstReturned);
   }
 
   /**
@@ -336,64 +336,6 @@ export class EventController {
   }
 
   /**
-   * Update RSVP Status of Events in range
-   * @returns {Rsvp[]}
-   */
-  @ApiCookieAuth()
-  @UseGuards(SessionGuard)
-  @ApiOperation({
-    description: 'Update RSVP Status of Events in range',
-    operationId: 'updateEventRsvpRange',
-  })
-  @ApiCreatedResponse({ type: [Rsvp] })
-  @Post('rsvps')
-  async setEventsRsvp(
-    @Body() updateRangeRSVP: UpdateRangeRSVP,
-    @GetUser('id') userId: Express.User['id'],
-  ) {
-    const { from, to, status } = updateRangeRSVP;
-    const events = await this.eventService.events({
-      where: {
-        AND: [
-          {
-            OR: [
-              {
-                startDate: {
-                  lte: to,
-                },
-              },
-              {
-                endDate: {
-                  lte: to,
-                },
-              },
-            ],
-          },
-          {
-            OR: [
-              {
-                startDate: {
-                  gte: from,
-                },
-              },
-              {
-                endDate: {
-                  gte: from,
-                },
-              },
-            ],
-          },
-        ],
-      },
-    });
-    return this.rsvpService.upsertManyRSVP(
-      userId,
-      events.map((event) => event.id),
-      status,
-    );
-  }
-
-  /**
    * Get an event's asociated RSVPs
    * @returns {Rsvp[]}
    */
@@ -405,21 +347,10 @@ export class EventController {
   })
   @ApiOkResponse({ type: [RsvpUser] })
   @Get(':eventId/rsvps')
-  getEventRsvps(@Param('eventId') eventId: string) {
-    return this.db.rSVP.findMany({
-      where: {
-        eventId,
-      },
-      include: {
-        user: {
-          select: {
-            username: true,
-            id: true,
-            roles: true,
-          },
-        },
-      },
-    });
+  async getEventRsvps(@Param('eventId') eventId: string) {
+    const eventUserRsvps = await this.eventService.getEventUserRsvps(eventId);
+
+    return eventUserRsvps.map((rsvp) => new RsvpUser(rsvp));
   }
 
   /**

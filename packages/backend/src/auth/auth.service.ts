@@ -1,19 +1,25 @@
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  Logger,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Profile as DiscordProfile } from 'passport-discord';
-import { PrismaService } from '../prisma/prisma.service';
 import { BotService } from '@/bot/bot.service';
+import { DRIZZLE_TOKEN, DrizzleDatabase } from '@/drizzle/drizzle.module';
+import { user } from '../../drizzle/schema';
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly prismaService: PrismaService,
+    @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
     private readonly configService: ConfigService,
     private readonly botService: BotService,
   ) {}
   private readonly logger = new Logger(AuthService.name);
 
-  async validateDiscordUser(access_token: string, user: DiscordProfile) {
-    const { guilds } = user;
+  async validateDiscordUser(access_token: string, discordUser: DiscordProfile) {
+    const { guilds } = discordUser;
     if (
       !guilds
         .map((guild) => guild.id)
@@ -21,22 +27,35 @@ export class AuthService {
     )
       throw new UnauthorizedException('You are not in the TDU Discord Server');
 
-    this.logger.debug(`${user.username}#${user.discriminator} logged in!`);
-    const discordUser = await this.botService.getGuildMember(user.id);
+    this.logger.debug(
+      `${discordUser.username}#${discordUser.discriminator} logged in!`,
+    );
+    const discordGuildMember = await this.botService.getGuildMember(
+      discordUser.id,
+    );
 
-    return this.prismaService.user.upsert({
-      where: {
-        id: user.id,
-      },
-      create: {
-        id: user.id,
-        username: discordUser.nickname ?? discordUser.user.username,
-        roles: [...discordUser.roles.cache.mapValues((v) => v.id).values()],
-      },
-      update: {
-        username: discordUser.nickname ?? discordUser.user.username,
-        roles: [...discordUser.roles.cache.mapValues((v) => v.id).values()],
-      },
-    });
+    const updatedUser = await this.db
+      .insert(user)
+      .values({
+        id: discordGuildMember.id,
+        username:
+          discordGuildMember.nickname ?? discordGuildMember.user.username,
+        roles: [
+          ...discordGuildMember.roles.cache.mapValues((v) => v.id).values(),
+        ],
+      })
+      .onConflictDoUpdate({
+        target: user.id,
+        set: {
+          username:
+            discordGuildMember.nickname ?? discordGuildMember.user.username,
+          roles: [
+            ...discordGuildMember.roles.cache.mapValues((v) => v.id).values(),
+          ],
+        },
+      })
+      .returning();
+
+    return updatedUser;
   }
 }

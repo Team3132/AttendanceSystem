@@ -1,17 +1,13 @@
-import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable, Logger } from '@nestjs/common';
 import { Context, ContextOf, On } from 'necord';
 import { Client } from 'discord.js';
 import { ConfigService } from '@nestjs/config';
-import { AuthenticatorService } from '@/authenticator/authenticator.service';
 
 @Injectable()
 export class BotService {
   constructor(
-    private readonly db: PrismaService,
     private readonly client: Client,
     private readonly config: ConfigService,
-    private readonly authenticatorService: AuthenticatorService,
   ) {}
 
   private readonly logger = new Logger(BotService.name);

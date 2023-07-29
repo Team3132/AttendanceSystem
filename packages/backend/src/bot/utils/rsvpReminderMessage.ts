@@ -27,8 +27,8 @@ export default function rsvpReminderMessage(
 
   const sortedByCreated = clonedRsvp.sort(
     (rsvpA, rsvpB) =>
-      DateTime.fromISO(rsvpB.createdAt).toMillis() -
-      DateTime.fromISO(rsvpA.createdAt).toMillis(),
+      DateTime.fromJSDate(rsvpB.createdAt).toMillis() -
+      DateTime.fromJSDate(rsvpA.createdAt).toMillis(),
   );
 
   const firstId = sortedByCreated.at(-1)?.id;

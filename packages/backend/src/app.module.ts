@@ -9,7 +9,6 @@ import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './auth/guard/role.guard';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CalendarModule } from './calendar/calendar.module';
 import { ScancodeModule } from './scancode/scancode.module';
 import { AuthenticatorModule } from './authenticator/authenticator.module';
 import { GatewayIntentBits } from 'discord.js';
@@ -60,7 +59,6 @@ import { DrizzleModule } from './drizzle/drizzle.module';
     UserModule,
     EventModule,
     RsvpModule,
-    CalendarModule,
     ScancodeModule,
     AuthenticatorModule,
     BotModule,
