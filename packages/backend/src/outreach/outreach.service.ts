@@ -21,7 +21,7 @@ export class OutreachService {
         outreachHours: sql<number>`SUM(ROUND(EXTRACT(EPOCH FROM (${event.endDate} - ${event.startDate}) ) / 3600, 2)) as outreachHours`,
         userId: user.id,
         username: user.username,
-        rank: sql<number>`RANK() OVER (ORDER BY SUM(ROUND(EXTRACT(EPOCH FROM (${event.endDate} - ${event.startDate}) ) / 3600, 2)) DESC)`,
+        rank: sql<number>`ROW_NUMBER() OVER (ORDER BY SUM(ROUND(EXTRACT(EPOCH FROM (${event.endDate} - ${event.startDate}) ) / 3600, 2)) DESC) as index`,
       })
       .from(rsvp)
       .leftJoin(event, eq(rsvp.eventId, event.id))
