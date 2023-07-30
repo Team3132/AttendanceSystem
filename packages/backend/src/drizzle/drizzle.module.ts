@@ -4,18 +4,10 @@ import postgres from 'postgres';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import * as schema from './schema';
 import { ConfigService } from '@nestjs/config';
-import { InferModel, type Logger as DrizzleLogger } from 'drizzle-orm';
+import { InferModel } from 'drizzle-orm';
 import path from 'path';
 
 export const DRIZZLE_TOKEN = Symbol('PG_CONNECTION');
-
-class MyLogger implements DrizzleLogger {
-  logQuery(query: string, params: unknown[]): void {
-    console.log(query);
-    console.log(''.padEnd(80, '-'));
-    if (params.length > 0) params.map((p, i) => `$${i + 1}: ${p}`);
-  }
-}
 
 @Global()
 @Module({
@@ -32,7 +24,6 @@ class MyLogger implements DrizzleLogger {
 
         // const rootFilePath = fileURLToPath(import.meta.url);
         const migrationsFolder = path.join(__dirname, '../drizzle');
-        console.log(migrationsFolder);
 
         const migrationPgClient = postgres(
           `postgres://${username}:${password}@${host}/${database}`,
@@ -44,7 +35,6 @@ class MyLogger implements DrizzleLogger {
         logger.log('Connected to database');
         const migrationClient = drizzle(migrationPgClient, {
           schema,
-          logger: new MyLogger(),
         });
         await migrate(migrationClient, { migrationsFolder });
         logger.log('Migrated database');
