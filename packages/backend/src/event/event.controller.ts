@@ -34,22 +34,20 @@ import { RsvpService } from '@rsvp/rsvp.service';
 import { Rsvp } from '@rsvp/entities/rsvp.entity';
 import { GetUser } from '@auth/decorators/GetUserDecorator.decorator';
 import { UpdateOrCreateRSVP } from './dto/update-rsvp.dto';
-import { ScancodeService } from '@scancode/scancode.service';
 import { ScaninDto } from './dto/scanin.dto';
 import { GetEventsDto } from './dto/get-events.dto';
 import { EventResponse, EventResponseType } from './dto/event-response.dto';
 import { EventSecret } from './dto/event-secret.dto';
 import { ApiResponseTypeNotFound } from '@/standard-error.entity';
-import { AuthenticatorService } from '@authenticator/authenticator.service';
 import { ConfigService } from '@nestjs/config';
 import TokenCheckinDto from './dto/checkin-dto';
 import { RsvpUser } from './dto/rsvp-user.dto';
 import { Request, Response } from 'express';
 import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 import { asc, between, eq } from 'drizzle-orm';
-import { DateTime } from 'luxon';
 import { event, rsvp } from '../drizzle/schema';
 import { v4 as uuid } from 'uuid';
+import { DateTime } from 'luxon';
 
 @ApiTags('Event')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -58,8 +56,6 @@ export class EventController {
   constructor(
     private readonly eventService: EventService,
     private readonly rsvpService: RsvpService,
-    private readonly scancodeService: ScancodeService,
-    private readonly authenticatorService: AuthenticatorService,
     private readonly configService: ConfigService,
     @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
   ) {}
@@ -305,6 +301,15 @@ export class EventController {
     @GetUser('id') userId: Express.User['id'],
     @Body() { status }: UpdateOrCreateRSVP,
   ): Promise<Rsvp> {
+    const fetchedEvent = await this.db.query.event.findFirst({
+      where: (event, { eq }) => eq(event.id, eventId),
+    });
+
+    if (!fetchedEvent) throw new NotFoundException('Event not found');
+
+    if (DateTime.fromISO(fetchedEvent.endDate).toMillis() < Date.now())
+      throw new BadRequestException('Event has already ended');
+
     const newOrUpdatedRsvp = await this.db
       .insert(rsvp)
       .values({
