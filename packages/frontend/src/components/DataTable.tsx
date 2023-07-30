@@ -94,29 +94,6 @@ export function DataTable<Data extends object>({
           </Tr>
         ))}
       </Tbody>
-      <Tfoot>
-        {table.getFooterGroups().map((footerGroup) => (
-          <Tr key={footerGroup.id}>
-            {footerGroup.headers.map((footer) => {
-              // see https://tanstack.com/table/v8/docs/api/core/column-def#meta to type this correctly
-              const meta: any = footer.column.columnDef.meta;
-              return (
-                <Th
-                  key={footer.id}
-                  onClick={footer.column.getToggleSortingHandler()}
-                  isNumeric={meta?.isNumeric}
-                  colSpan={footer.colSpan}
-                >
-                  {flexRender(
-                    footer.column.columnDef.header,
-                    footer.getContext()
-                  )}
-                </Th>
-              );
-            })}
-          </Tr>
-        ))}
-      </Tfoot>
     </Table>
   );
 }
