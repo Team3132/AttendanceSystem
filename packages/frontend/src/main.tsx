@@ -87,6 +87,10 @@ const router = createBrowserRouter([
             path: "profile",
             element: <ProfilePage />,
           },
+          {
+            path: "outreach",
+            lazy: () => import("@/features/outreach/pages/Leaderboard"),
+          },
         ],
       },
       {
