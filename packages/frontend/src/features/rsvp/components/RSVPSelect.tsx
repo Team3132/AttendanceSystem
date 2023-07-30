@@ -19,7 +19,8 @@ export const RSVPSelect: React.FC<
     if (
       currentValue === statusEnum.MAYBE ||
       currentValue === statusEnum.NO ||
-      currentValue === statusEnum.YES || currentValue === statusEnum.LATE
+      currentValue === statusEnum.YES ||
+      currentValue === statusEnum.LATE
     ) {
       mutateEventRSVP({
         eventId,

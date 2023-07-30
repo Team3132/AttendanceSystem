@@ -1,7 +1,7 @@
+import { type Event, type EventTypes } from '@/drizzle/drizzle.module';
 import { ApiProperty } from '@nestjs/swagger';
-import { Event, EventTypes } from '@prisma/client';
 import { Exclude } from 'class-transformer';
-// import { Event } from '../entities/event.entity';
+import { eventTypes } from '../../drizzle/schema';
 
 export class EventResponse implements Event {
   @ApiProperty()
@@ -11,12 +11,12 @@ export class EventResponse implements Event {
   @ApiProperty()
   title: string;
   @ApiProperty()
-  startDate: Date;
+  startDate: string;
   @ApiProperty()
-  endDate: Date;
+  endDate: string;
   @ApiProperty()
   allDay: boolean;
-  @ApiProperty({ enum: EventTypes })
+  @ApiProperty({ enum: eventTypes.enumValues })
   type: EventTypes;
   @ApiProperty()
   roles: string[];
@@ -40,12 +40,12 @@ export class EventResponseType implements Partial<Event> {
   @ApiProperty()
   title: string;
   @ApiProperty()
-  startDate: Date;
+  startDate: string;
   @ApiProperty()
-  endDate: Date;
+  endDate: string;
   @ApiProperty()
   allDay: boolean;
-  @ApiProperty({ enum: EventTypes })
+  @ApiProperty({ enum: eventTypes.enumValues })
   type: EventTypes;
   @ApiProperty()
   roles: string[];

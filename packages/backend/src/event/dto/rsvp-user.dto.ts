@@ -13,4 +13,9 @@ class MinimalUser {
 export class RsvpUser extends Rsvp {
   @ApiProperty({ type: MinimalUser })
   user: MinimalUser;
+
+  constructor(rsvp: Rsvp & { user: MinimalUser }) {
+    super(rsvp);
+    this.user = rsvp.user;
+  }
 }

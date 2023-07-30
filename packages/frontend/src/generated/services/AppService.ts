@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -15,7 +16,7 @@ export class AppService {
   public helloWorld(): CancelablePromise<string> {
     return this.httpRequest.request({
       method: "GET",
-      url: "/",
+      url: "/api",
     });
   }
 }

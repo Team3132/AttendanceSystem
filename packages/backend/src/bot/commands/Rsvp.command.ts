@@ -1,15 +1,16 @@
-import { PrismaService } from '@/prisma/prisma.service';
-import { Injectable, UseInterceptors } from '@nestjs/common';
+import { Inject, Injectable, UseInterceptors } from '@nestjs/common';
 import { GuildMember, EmbedBuilder } from 'discord.js';
 import { SlashCommand, Context, SlashCommandContext, Options } from 'necord';
 import { RsvpDto } from '../dto/rsvp.dto';
 import { EventAutocompleteInterceptor } from '../interceptors/event.interceptor';
-import connectOrCreateGuildMember from '../utils/connectOrCreateGuildMember';
 import rsvpToDescription from '../utils/rsvpToDescription';
+import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
+import { rsvp } from '../../drizzle/schema';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class RsvpCommand {
-  constructor(private readonly db: PrismaService) {}
+  constructor(@Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase) {}
 
   @UseInterceptors(EventAutocompleteInterceptor)
   @SlashCommand({
@@ -21,10 +22,8 @@ export class RsvpCommand {
     @Context() [interaction]: SlashCommandContext,
     @Options() { meeting, status }: RsvpDto,
   ) {
-    const fetchedEvent = await this.db.event.findUnique({
-      where: {
-        id: meeting,
-      },
+    const fetchedEvent = await this.db.query.event.findFirst({
+      where: (event, { eq }) => eq(event.id, meeting),
     });
 
     if (!fetchedEvent)
@@ -55,34 +54,61 @@ export class RsvpCommand {
 
     const userId = user.id;
 
-    const rsvp = await this.db.rSVP.upsert({
-      where: {
-        eventId_userId: {
-          eventId: meeting,
-          userId,
-        },
-      },
-      create: {
-        event: {
-          connect: { id: meeting },
-        },
-        user: {
-          connectOrCreate: connectOrCreateGuildMember(user),
-        },
+    // const rsvp = await this.db.rSVP.upsert({
+    //   where: {
+    //     eventId_userId: {
+    //       eventId: meeting,
+    //       userId,
+    //     },
+    //   },
+    //   create: {
+    //     event: {
+    //       connect: { id: meeting },
+    //     },
+    //     user: {
+    //       connectOrCreate: connectOrCreateGuildMember(user),
+    //     },
+    //     status,
+    //   },
+    //   update: {
+    //     event: {
+    //       connect: { id: meeting },
+    //     },
+    //     user: {
+    //       connectOrCreate: connectOrCreateGuildMember(user),
+    //     },
+    //     status,
+    //   },
+    //   include: {
+    //     user: {
+    //       select: {
+    //         username: true,
+    //       },
+    //     },
+    //   },
+    // });
+
+    await this.db
+      .insert(rsvp)
+      .values({
+        id: uuid(),
+        eventId: meeting,
+        userId,
         status,
-      },
-      update: {
-        event: {
-          connect: { id: meeting },
+      })
+      .onConflictDoUpdate({
+        target: [rsvp.eventId, rsvp.userId],
+        set: {
+          status,
         },
+      })
+      .returning();
+
+    const newRSVP = await this.db.query.rsvp.findFirst({
+      where: (rsvp, { eq }) => eq(rsvp.eventId, meeting),
+      with: {
         user: {
-          connectOrCreate: connectOrCreateGuildMember(user),
-        },
-        status,
-      },
-      include: {
-        user: {
-          select: {
+          columns: {
             username: true,
           },
         },
@@ -90,7 +116,7 @@ export class RsvpCommand {
     });
 
     const embed = new EmbedBuilder()
-      .setDescription(rsvpToDescription(rsvp))
+      .setDescription(rsvpToDescription(newRSVP))
       .setTitle('Successfully Updated')
       .setColor([0, 255, 0]);
     // interaction.channel.send()

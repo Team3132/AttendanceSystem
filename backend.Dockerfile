@@ -1,32 +1,33 @@
-FROM node:20-alpine as builder
+FROM node:20-alpine as basebackend
+WORKDIR /app
+COPY package.json yarn.lock tsconfig.json ./
+COPY packages/backend/package.json packages/backend/tsconfig.json packages/backend/tsup.config.ts ./packages/backend/
 
-ENV NODE_ENV build
+FROM node:20-alpine as basefrontend
+WORKDIR /app
+COPY package.json yarn.lock tsconfig.json ./
+COPY packages/frontend/package.json packages/frontend/tsconfig.json packages/frontend/tsconfig.node.json packages/frontend/vite.config.ts packages/frontend/index.html ./packages/frontend/
 
-USER node
-WORKDIR /home/node
 
-COPY --chown=node:node ./packages/backend .
-COPY --chown=node:node yarn.lock .
+FROM basefrontend as buildfrontend
+WORKDIR /app
+RUN yarn front install --frozen-lockfile
+COPY packages/frontend/src ./packages/frontend/src
+RUN yarn front build
 
-RUN yarn install --frozen-lockfile
-RUN npx prisma generate
+FROM basebackend as buildbackend
+WORKDIR /app
+RUN yarn back install --frozen-lockfile
+COPY packages/backend/src ./packages/backend/src
+COPY packages/backend/drizzle ./packages/backend/drizzle
+COPY --from=buildfrontend /app/packages/frontend/dist ./packages/backend/public/frontend
+RUN yarn back build
 
-RUN yarn build
-RUN yarn install --production --frozen-lockfile
-
-# ---
-
-FROM node:20-alpine
-
+FROM basebackend as runner
+WORKDIR /app
 ENV NODE_ENV production
+RUN yarn back install --frozen-lockfile --production
+COPY --from=buildbackend /app/packages/backend/dist /app/packages/backend/dist
 
-USER node
-WORKDIR /home/node
-
-COPY --from=builder --chown=node:node /home/node/prisma/ /home/node/prisma/
-COPY --from=builder --chown=node:node /home/node/package*.json ./
-COPY --from=builder --chown=node:node /home/node/node_modules/ ./node_modules/
-COPY --from=builder --chown=node:node /home/node/dist/ ./dist/
-COPY --from=builder --chown=node:node /home/node/security/ ./security/
-
-CMD npx prisma migrate deploy && node dist/main.js --enable-source-maps
+EXPOSE 3000
+CMD yarn back start

@@ -11,9 +11,13 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       injectRegister: "auto",
+      workbox: {
+        navigateFallbackDenylist: [/^\/api/],
+      },
       manifest: {
         name: "TDU Attendance",
         short_name: "TDU",
+
         theme_color: "#1C3B1E",
         icons: [
           {
@@ -35,9 +39,9 @@ export default defineConfig({
         ],
       },
     }),
-    visualizer({
-      template: "treemap", // "sunburst" | "treemap" | "network"
-    }),
+    // visualizer({
+    //   template: "treemap", // "sunburst" | "treemap" | "network"
+    // }) as Plugin,
   ],
   server: {
     port: 4000,
@@ -49,7 +53,6 @@ export default defineConfig({
       "/api": {
         target: "http://localhost:3000",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },
   },

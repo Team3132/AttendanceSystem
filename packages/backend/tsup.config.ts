@@ -1,7 +1,7 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig(({ watch }) => ({
-  entryPoints: ['src/main.ts'],
+  entry: ['src/main.ts', 'drizzle'],
   splitting: true,
   format: ['cjs'],
   dts: false,
@@ -11,6 +11,11 @@ export default defineConfig(({ watch }) => ({
   minify: !watch,
   // target: 'esnext',
   onSuccess: watch
-    ? 'node --enable-source-maps dist/main.js --inspect'
+    ? 'node --enable-source-maps dist/src/main.js --inspect'
     : undefined,
+  loader: {
+    '.sql': 'copy',
+    '.json': 'copy',
+  },
+  publicDir: 'public',
 }));

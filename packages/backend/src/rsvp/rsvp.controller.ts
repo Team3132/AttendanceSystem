@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   UseGuards,
+  Inject,
+  NotFoundException,
 } from '@nestjs/common';
 import { RsvpService } from './rsvp.service';
 import { CreateRsvpDto } from './dto/create-rsvp.dto';
@@ -22,13 +24,20 @@ import { SessionGuard } from '@auth/guard/session.guard';
 import { GetUser } from '@auth/decorators/GetUserDecorator.decorator';
 import { Rsvp } from './entities/rsvp.entity';
 import { Roles } from '@auth/decorators/DiscordRoleDecorator.decorator';
+import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
+import { rsvp } from '../drizzle/schema';
+import { eq } from 'drizzle-orm';
+import { v4 as uuid } from 'uuid';
 
 @ApiTags('RSVP')
 @ApiCookieAuth()
 @UseGuards(SessionGuard)
 @Controller('rsvp')
 export class RsvpController {
-  constructor(private readonly rsvpService: RsvpService) {}
+  constructor(
+    private readonly rsvpService: RsvpService,
+    @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
+  ) {}
 
   /**
    * Create an RSVP
@@ -47,29 +56,11 @@ export class RsvpController {
     @GetUser('id') userId: Express.User['id'],
   ) {
     return this.rsvpService.createRSVP({
-      event: {
-        connect: { id: createRsvpDto.eventId },
-      },
-      user: {
-        connect: { id: userId },
-      },
+      id: uuid(),
+      eventId: createRsvpDto.eventId,
+      userId,
       status: createRsvpDto.status,
     });
-  }
-
-  /**
-   * Get all RSVPs
-   * @returns {Rsvp[]}
-   */
-  @ApiOperation({
-    description: 'Get all RSVPs',
-    operationId: 'getRSVPs',
-  })
-  @Roles(['MENTOR'])
-  @ApiOkResponse({ type: [Rsvp] })
-  @Get()
-  findAll() {
-    return this.rsvpService.rsvps({ where: {} });
   }
 
   /**
@@ -83,8 +74,14 @@ export class RsvpController {
   @Roles(['MENTOR'])
   @ApiOkResponse({ type: Rsvp })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.rsvpService.rsvp({ id });
+  async findOne(@Param('id') id: string) {
+    const singleRsvp = await this.db.query.rsvp.findFirst({
+      where: (rsvp, { eq }) => eq(rsvp.id, id),
+    });
+
+    if (!singleRsvp) throw new NotFoundException('RSVP not found');
+
+    return singleRsvp;
   }
 
   /**
@@ -99,8 +96,17 @@ export class RsvpController {
   @Roles(['MENTOR'])
   @ApiCreatedResponse({ type: Rsvp })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRsvpDto: UpdateRsvpDto) {
-    return this.rsvpService.updateRSVP({ where: { id }, data: updateRsvpDto });
+  async update(
+    @Param('id') id: string,
+    @Body() updateRsvpDto: UpdateRsvpDto,
+  ): Promise<Rsvp> {
+    const updatedRSVP = await this.db
+      .update(rsvp)
+      .set(updateRsvpDto)
+      .where(eq(rsvp.id, id))
+      .returning();
+
+    return new Rsvp(updatedRSVP.at(0));
   }
 
   /**
@@ -115,6 +121,6 @@ export class RsvpController {
   @ApiOkResponse({ type: Rsvp })
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.rsvpService.deleteRSVP({ id });
+    return this.db.delete(rsvp).where(eq(rsvp.id, id));
   }
 }

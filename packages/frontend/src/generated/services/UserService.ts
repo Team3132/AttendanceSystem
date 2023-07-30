@@ -1,8 +1,8 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateScancodeDto } from "../models/CreateScancodeDto";
-import type { OutreachReport } from "../models/OutreachReport";
 import type { Rsvp } from "../models/Rsvp";
 import type { Scancode } from "../models/Scancode";
 import type { UpdateUserDto } from "../models/UpdateUserDto";
@@ -22,7 +22,7 @@ export class UserService {
   public getMe(): CancelablePromise<User> {
     return this.httpRequest.request({
       method: "GET",
-      url: "/user/me",
+      url: "/api/user/me",
     });
   }
 
@@ -35,7 +35,7 @@ export class UserService {
   public editMe(requestBody: UpdateUserDto): CancelablePromise<User> {
     return this.httpRequest.request({
       method: "PATCH",
-      url: "/user/me",
+      url: "/api/user/me",
       body: requestBody,
       mediaType: "application/json",
     });
@@ -49,7 +49,7 @@ export class UserService {
   public deleteMe(): CancelablePromise<User> {
     return this.httpRequest.request({
       method: "DELETE",
-      url: "/user/me",
+      url: "/api/user/me",
     });
   }
 
@@ -62,7 +62,7 @@ export class UserService {
   public getUser(id: string): CancelablePromise<User> {
     return this.httpRequest.request({
       method: "GET",
-      url: "/user/{id}",
+      url: "/api/user/{id}",
       path: {
         id: id,
       },
@@ -82,7 +82,7 @@ export class UserService {
   ): CancelablePromise<User> {
     return this.httpRequest.request({
       method: "PATCH",
-      url: "/user/{id}",
+      url: "/api/user/{id}",
       path: {
         id: id,
       },
@@ -100,7 +100,7 @@ export class UserService {
   public deleteUser(id: string): CancelablePromise<User> {
     return this.httpRequest.request({
       method: "DELETE",
-      url: "/user/{id}",
+      url: "/api/user/{id}",
       path: {
         id: id,
       },
@@ -115,7 +115,7 @@ export class UserService {
   public getMeAvatar(): CancelablePromise<string> {
     return this.httpRequest.request({
       method: "GET",
-      url: "/user/me/avatar",
+      url: "/api/user/me/avatar",
     });
   }
 
@@ -128,7 +128,7 @@ export class UserService {
   public getUserAvatar(id: string): CancelablePromise<string> {
     return this.httpRequest.request({
       method: "GET",
-      url: "/user/{id}/avatar",
+      url: "/api/user/{id}/avatar",
       path: {
         id: id,
       },
@@ -143,7 +143,7 @@ export class UserService {
   public getMeRsvPs(): CancelablePromise<Array<Rsvp>> {
     return this.httpRequest.request({
       method: "GET",
-      url: "/user/me/rsvp",
+      url: "/api/user/me/rsvp",
     });
   }
 
@@ -156,35 +156,7 @@ export class UserService {
   public getUserRsvPs(id: string): CancelablePromise<Array<Rsvp>> {
     return this.httpRequest.request({
       method: "GET",
-      url: "/user/{id}/rsvp",
-      path: {
-        id: id,
-      },
-    });
-  }
-
-  /**
-   * Regenerates the calendar token of the signed in user.
-   * @returns User
-   * @throws ApiError
-   */
-  public regenerateMeCalendarToken(): CancelablePromise<User> {
-    return this.httpRequest.request({
-      method: "POST",
-      url: "/user/me/regenerateToken",
-    });
-  }
-
-  /**
-   * Regenerates the calendar token of the specified user.
-   * @param id
-   * @returns User
-   * @throws ApiError
-   */
-  public regenerateUserCalendarToken(id: string): CancelablePromise<User> {
-    return this.httpRequest.request({
-      method: "POST",
-      url: "/user/{id}/regenerateToken",
+      url: "/api/user/{id}/rsvp",
       path: {
         id: id,
       },
@@ -199,54 +171,7 @@ export class UserService {
   public getUsers(): CancelablePromise<Array<User>> {
     return this.httpRequest.request({
       method: "GET",
-      url: "/user",
-    });
-  }
-
-  /**
-   * Get an outreach report of the logged in user.
-   * @param from
-   * @param to
-   * @returns OutreachReport
-   * @throws ApiError
-   */
-  public getMeOutreachReport(
-    from?: string,
-    to?: string
-  ): CancelablePromise<OutreachReport> {
-    return this.httpRequest.request({
-      method: "GET",
-      url: "/user/me/outreach",
-      query: {
-        from: from,
-        to: to,
-      },
-    });
-  }
-
-  /**
-   * Get an outreach report of the specified user.
-   * @param id
-   * @param from
-   * @param to
-   * @returns OutreachReport
-   * @throws ApiError
-   */
-  public getUserOutreachReport(
-    id: string,
-    from?: string,
-    to?: string
-  ): CancelablePromise<OutreachReport> {
-    return this.httpRequest.request({
-      method: "GET",
-      url: "/user/{id}/outreach",
-      path: {
-        id: id,
-      },
-      query: {
-        from: from,
-        to: to,
-      },
+      url: "/api/user",
     });
   }
 
@@ -258,7 +183,7 @@ export class UserService {
   public getMeScancodes(): CancelablePromise<Array<Scancode>> {
     return this.httpRequest.request({
       method: "GET",
-      url: "/user/me/scancodes",
+      url: "/api/user/me/scancodes",
     });
   }
 
@@ -273,7 +198,7 @@ export class UserService {
   ): CancelablePromise<Scancode> {
     return this.httpRequest.request({
       method: "POST",
-      url: "/user/me/scancodes",
+      url: "/api/user/me/scancodes",
       body: requestBody,
       mediaType: "application/json",
     });
@@ -288,7 +213,7 @@ export class UserService {
   public getUserScancodes(id: string): CancelablePromise<Array<Scancode>> {
     return this.httpRequest.request({
       method: "GET",
-      url: "/user/{id}/scancodes",
+      url: "/api/user/{id}/scancodes",
       path: {
         id: id,
       },
@@ -308,7 +233,7 @@ export class UserService {
   ): CancelablePromise<Scancode> {
     return this.httpRequest.request({
       method: "POST",
-      url: "/user/{id}/scancodes",
+      url: "/api/user/{id}/scancodes",
       path: {
         id: id,
       },
@@ -326,7 +251,7 @@ export class UserService {
   public deleteMeScancode(scancodeId: string): CancelablePromise<Scancode> {
     return this.httpRequest.request({
       method: "DELETE",
-      url: "/user/me/scancodes/{scancodeId}",
+      url: "/api/user/me/scancodes/{scancodeId}",
       path: {
         scancodeId: scancodeId,
       },
@@ -346,7 +271,7 @@ export class UserService {
   ): CancelablePromise<Scancode> {
     return this.httpRequest.request({
       method: "DELETE",
-      url: "/user/{id}/scancodes/{scancodeId}",
+      url: "/api/user/{id}/scancodes/{scancodeId}",
       path: {
         id: id,
         scancodeId: scancodeId,

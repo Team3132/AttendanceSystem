@@ -14,6 +14,7 @@ import {
   BadRequestException,
   Req,
   Res,
+  Inject,
 } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
@@ -36,16 +37,19 @@ import { UpdateOrCreateRSVP } from './dto/update-rsvp.dto';
 import { ScancodeService } from '@scancode/scancode.service';
 import { ScaninDto } from './dto/scanin.dto';
 import { GetEventsDto } from './dto/get-events.dto';
-import { UpdateRangeRSVP } from './dto/update-rsvp-range';
 import { EventResponse, EventResponseType } from './dto/event-response.dto';
 import { EventSecret } from './dto/event-secret.dto';
 import { ApiResponseTypeNotFound } from '@/standard-error.entity';
 import { AuthenticatorService } from '@authenticator/authenticator.service';
 import { ConfigService } from '@nestjs/config';
 import TokenCheckinDto from './dto/checkin-dto';
-import { PrismaService } from '@/prisma/prisma.service';
 import { RsvpUser } from './dto/rsvp-user.dto';
 import { Request, Response } from 'express';
+import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
+import { asc, between, eq } from 'drizzle-orm';
+import { DateTime } from 'luxon';
+import { event, rsvp } from '../drizzle/schema';
+import { v4 as uuid } from 'uuid';
 
 @ApiTags('Event')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -57,7 +61,7 @@ export class EventController {
     private readonly scancodeService: ScancodeService,
     private readonly authenticatorService: AuthenticatorService,
     private readonly configService: ConfigService,
-    private readonly db: PrismaService,
+    @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
   ) {}
 
   /**
@@ -69,42 +73,21 @@ export class EventController {
   @ApiOkResponse({ type: [EventResponseType] })
   @ApiOperation({ description: 'Get all events', operationId: 'getEvents' })
   @Get()
-  async findAll(@Query() eventsGet: GetEventsDto) {
+  async findAll(
+    @Query() eventsGet: GetEventsDto,
+  ): Promise<EventResponseType[]> {
     const { from, to, take } = eventsGet;
-    const events = await this.eventService.events({
-      take,
-      where: {
-        AND: [
-          {
-            OR: [
-              {
-                startDate: {
-                  lte: to,
-                },
-              },
-              {
-                endDate: {
-                  lte: to,
-                },
-              },
-            ],
-          },
-          {
-            OR: [
-              {
-                startDate: {
-                  gte: from,
-                },
-              },
-              {
-                endDate: {
-                  gte: from,
-                },
-              },
-            ],
-          },
-        ],
-      },
+    const events = await this.db.query.event.findMany({
+      where:
+        from && to
+          ? (event, { or }) =>
+              or(
+                between(event.startDate, from, to),
+                between(event.endDate, from, to),
+              )
+          : undefined,
+      limit: take,
+      orderBy: (event) => [asc(event.startDate)],
     });
 
     return events.map((event) => new EventResponse(event));
@@ -124,8 +107,13 @@ export class EventController {
   @ApiCreatedResponse({ type: EventResponseType })
   @Roles(['MENTOR'])
   @Post()
-  async create(@Body() createEventDto: CreateEventDto) {
-    const event = await this.eventService.createEvent(createEventDto);
+  async create(
+    @Body() createEventDto: CreateEventDto,
+  ): Promise<EventResponseType> {
+    const event = await this.eventService.createEvent({
+      id: uuid(),
+      ...createEventDto,
+    });
     return new EventResponse(event);
   }
 
@@ -142,8 +130,10 @@ export class EventController {
   @ApiNotFoundResponse({ type: ApiResponseTypeNotFound })
   @ApiOkResponse({ type: EventResponseType })
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    const event = await this.eventService.event({ id });
+  async findOne(@Param('id') id: string): Promise<EventResponseType> {
+    const event = await this.db.query.event.findFirst({
+      where: (event, { eq }) => eq(event.id, id),
+    });
     if (!event) {
       throw new NotFoundException('Event not found');
     }
@@ -164,8 +154,12 @@ export class EventController {
   @ApiOkResponse({ type: EventSecret })
   @ApiNotFoundResponse({ type: ApiResponseTypeNotFound })
   @Get(':eventId/token')
-  async getEventSecret(@Param('eventId') eventId: string) {
-    const event = await this.eventService.event({ id: eventId });
+  async getEventSecret(
+    @Param('eventId') eventId: string,
+  ): Promise<EventSecret> {
+    const event = await this.db.query.event.findFirst({
+      where: (event, { eq }) => eq(event.id, eventId),
+    });
     if (!event) {
       throw new NotFoundException('Event not found');
     }
@@ -217,7 +211,7 @@ export class EventController {
     @Body() body: TokenCheckinDto,
     @Param('eventId') eventId: string,
     @GetUser('id') userId: string,
-  ) {
+  ): Promise<Rsvp[]> {
     const { code } = body;
     const rsvp = await this.eventService.verifyUserEventToken(
       eventId,
@@ -241,12 +235,18 @@ export class EventController {
   async update(
     @Param('id') id: string,
     @Body() updateEventDto: UpdateEventDto,
-  ) {
-    const event = await this.eventService.updateEvent({
-      data: updateEventDto,
-      where: { id },
-    });
-    return new EventResponse(event);
+  ): Promise<EventResponseType> {
+    const updatedEvent = await this.db
+      .update(event)
+      .set(updateEventDto)
+      .where(eq(event.id, id))
+      .returning();
+
+    const firstReturned = updatedEvent.at(0);
+
+    if (!firstReturned) throw new NotFoundException('Event not found');
+
+    return new EventResponse(firstReturned);
   }
 
   /**
@@ -259,7 +259,7 @@ export class EventController {
   @ApiOkResponse({ type: EventResponseType })
   @Roles(['MENTOR'])
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string): Promise<EventResponse> {
     const event = await this.eventService.deleteEvent(id);
     return new EventResponse(event);
   }
@@ -276,16 +276,15 @@ export class EventController {
   })
   @ApiOkResponse({ type: Rsvp })
   @Get(':eventId/rsvp')
-  getEventRsvp(
+  async getEventRsvp(
     @Param('eventId') eventId: string,
     @GetUser('id') userId: Express.User['id'],
-  ) {
-    return this.rsvpService.rsvp({
-      eventId_userId: {
-        eventId,
-        userId,
-      },
+  ): Promise<Rsvp> {
+    const eventRsvp = await this.db.query.rsvp.findFirst({
+      where: (rsvp, { and }) =>
+        and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
     });
+    return new Rsvp(eventRsvp);
   }
 
   /**
@@ -305,91 +304,27 @@ export class EventController {
     @Param('eventId') eventId: string,
     @GetUser('id') userId: Express.User['id'],
     @Body() { status }: UpdateOrCreateRSVP,
-  ) {
-    return this.rsvpService.upsertRSVP({
-      where: {
-        eventId_userId: {
-          eventId,
-          userId,
-        },
-      },
-      create: {
-        event: {
-          connect: { id: eventId },
-        },
-        user: {
-          connect: { id: userId },
-        },
+  ): Promise<Rsvp> {
+    const newOrUpdatedRsvp = await this.db
+      .insert(rsvp)
+      .values({
+        id: uuid(),
+        eventId,
+        userId,
         status,
-      },
-      update: {
-        event: {
-          connect: { id: eventId },
+      })
+      .onConflictDoUpdate({
+        set: {
+          status,
         },
-        user: {
-          connect: { id: userId },
-        },
-        status,
-      },
-    });
-  }
+        target: [rsvp.eventId, rsvp.userId],
+      })
+      .returning();
 
-  /**
-   * Update RSVP Status of Events in range
-   * @returns {Rsvp[]}
-   */
-  @ApiCookieAuth()
-  @UseGuards(SessionGuard)
-  @ApiOperation({
-    description: 'Update RSVP Status of Events in range',
-    operationId: 'updateEventRsvpRange',
-  })
-  @ApiCreatedResponse({ type: [Rsvp] })
-  @Post('rsvps')
-  async setEventsRsvp(
-    @Body() updateRangeRSVP: UpdateRangeRSVP,
-    @GetUser('id') userId: Express.User['id'],
-  ) {
-    const { from, to, status } = updateRangeRSVP;
-    const events = await this.eventService.events({
-      where: {
-        AND: [
-          {
-            OR: [
-              {
-                startDate: {
-                  lte: to,
-                },
-              },
-              {
-                endDate: {
-                  lte: to,
-                },
-              },
-            ],
-          },
-          {
-            OR: [
-              {
-                startDate: {
-                  gte: from,
-                },
-              },
-              {
-                endDate: {
-                  gte: from,
-                },
-              },
-            ],
-          },
-        ],
-      },
-    });
-    return this.rsvpService.upsertManyRSVP(
-      userId,
-      events.map((event) => event.id),
-      status,
-    );
+    if (newOrUpdatedRsvp.length === 0)
+      throw new BadRequestException('Invalid status');
+
+    return new Rsvp(newOrUpdatedRsvp.at(0));
   }
 
   /**
@@ -404,21 +339,10 @@ export class EventController {
   })
   @ApiOkResponse({ type: [RsvpUser] })
   @Get(':eventId/rsvps')
-  getEventRsvps(@Param('eventId') eventId: string) {
-    return this.db.rSVP.findMany({
-      where: {
-        eventId,
-      },
-      include: {
-        user: {
-          select: {
-            username: true,
-            id: true,
-            roles: true,
-          },
-        },
-      },
-    });
+  async getEventRsvps(@Param('eventId') eventId: string): Promise<RsvpUser[]> {
+    const eventUserRsvps = await this.eventService.getEventUserRsvps(eventId);
+
+    return eventUserRsvps.map((rsvp) => new RsvpUser(rsvp));
   }
 
   /**
@@ -436,8 +360,12 @@ export class EventController {
   @ApiCreatedResponse({ type: Rsvp })
   @ApiBadRequestResponse({ description: 'Invalid Scancode' })
   @Post(':eventId/scanin')
-  scanin(@Param('eventId') eventId: string, @Body() scanin: ScaninDto) {
+  async scanin(@Param('eventId') eventId: string, @Body() scanin: ScaninDto) {
     const { code } = scanin;
-    return this.rsvpService.scanin({ eventId, code });
+    const scaninResult = await this.rsvpService.scanin({ eventId, code });
+
+    if (!scaninResult) throw new BadRequestException('Invalid Scancode');
+
+    return new Rsvp(scaninResult);
   }
 }

@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -15,8 +16,8 @@ export type EventResponseType = {
 
 export namespace EventResponseType {
   export enum type {
-    OUTREACH = "Outreach",
-    REGULAR = "Regular",
     SOCIAL = "Social",
+    REGULAR = "Regular",
+    OUTREACH = "Outreach",
   }
 }

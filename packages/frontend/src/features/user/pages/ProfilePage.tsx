@@ -25,10 +25,6 @@ import UserAvatar from "../components/UserAvatar";
 import useUpdateUser from "../hooks/useUpdateUser";
 import useUser from "../hooks/useUser";
 
-const OutreachReportLoadable = loadable(
-  () => import("../components/OutreachReport")
-);
-
 interface OnSubmitData {
   defaultStatus?: UpdateUserDto.defaultStatus | "";
 }
@@ -64,11 +60,6 @@ export const ProfileScreen: React.FC = () => {
     });
   };
 
-  const calendarUrl = `https://api.team3132.com/calendar?secret=${
-    user?.calendarSecret ?? ""
-  }`;
-
-  const { hasCopied, onCopy } = useClipboard(calendarUrl);
   return (
     <Container>
       <Center>
@@ -83,10 +74,6 @@ export const ProfileScreen: React.FC = () => {
           </RoleTag>
         ))}
       </Wrap>
-
-      <Divider my={6} />
-
-      <OutreachReportLoadable userId={userId} />
       <Divider my={6} />
 
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -107,24 +94,6 @@ export const ProfileScreen: React.FC = () => {
             </FormControl>
           </HStack>
 
-          <FormControl>
-            <FormLabel htmlFor="calendar">Calendar Link</FormLabel>
-            <Flex mb={2}>
-              <Input
-                value={calendarUrl}
-                isReadOnly
-                id="calendar"
-                variant={"filled"}
-              />
-              <Button onClick={onCopy} ml={2}>
-                {hasCopied ? "Copied" : "Copy"}
-              </Button>
-            </Flex>
-            <FormHelperText>
-              If you give this link to Google Calendar etc. it should show all
-              the events.
-            </FormHelperText>
-          </FormControl>
           <Button type="submit" isLoading={isSubmitting} disabled={!isDirty}>
             Save
           </Button>

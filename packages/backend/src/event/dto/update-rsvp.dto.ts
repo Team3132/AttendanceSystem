@@ -1,5 +1,5 @@
+import { type RSVPStatus } from '@/drizzle/drizzle.module';
 import { ApiProperty } from '@nestjs/swagger';
-import { RSVPStatus } from '@prisma/client';
 import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 /**
@@ -8,7 +8,7 @@ import { IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 export class UpdateOrCreateRSVP {
   // @IsEnum(RSVPStatus)
   @IsNotEmpty()
-  @ApiProperty({ enum: RSVPStatus })
+  @ApiProperty({ enum: ['LATE', 'MAYBE', 'NO', 'YES'] })
   status: RSVPStatus;
   @IsOptional()
   @IsNumber()

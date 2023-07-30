@@ -1,5 +1,4 @@
-import { PrismaService } from '@/prisma/prisma.service';
-import { Injectable, UseInterceptors } from '@nestjs/common';
+import { Inject, Injectable, UseInterceptors } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EmbedBuilder } from 'discord.js';
 import { DateTime } from 'luxon';
@@ -7,11 +6,14 @@ import { SlashCommand, Context, SlashCommandContext, Options } from 'necord';
 import { AttendanceDto } from '../dto/attendance.dto';
 import { EventAutocompleteInterceptor } from '../interceptors/event.interceptor';
 import rsvpToDescription from '../utils/rsvpToDescription';
+import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
+import { rsvp, user } from '../../drizzle/schema';
+import { and, eq, isNotNull } from 'drizzle-orm';
 
 @Injectable()
 export class RsvpsCommand {
   constructor(
-    private readonly db: PrismaService,
+    @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
     private readonly config: ConfigService,
   ) {}
 
@@ -25,46 +27,53 @@ export class RsvpsCommand {
     @Context() [interaction]: SlashCommandContext,
     @Options() { meeting, role }: AttendanceDto,
   ) {
-    const fetchedMeeting = await this.db.event.findUnique({
-      where: {
-        id: meeting,
-      },
+    const fetchedMeeting = await this.db.query.event.findFirst({
+      where: (event, { eq }) => eq(event.id, meeting),
     });
 
     if (!fetchedMeeting)
       return interaction.reply({ content: 'Unknown event', ephemeral: true });
 
-    const fetchedRSVPs = await this.db.rSVP.findMany({
-      where: {
-        eventId: meeting,
+    // const fetchedRSVPs = await this.db.rSVP.findMany({
+    //   where: {
+    //     eventId: meeting,
+    //     user: {
+    //       roles: {
+    //         has: role?.id,
+    //       },
+    //     },
+    //     status: {
+    //       not: null,
+    //     },
+    //   },
+    //   include: {
+    //     user: {
+    //       select: {
+    //         username: true,
+    //       },
+    //     },
+    //   },
+    // });
+
+    const fetchedRSVPs = await this.db
+      .select({
+        id: rsvp.id,
+        status: rsvp.status,
+        delay: rsvp.delay,
+        userId: rsvp.userId,
         user: {
-          roles: {
-            has: role?.id,
-          },
+          username: user.username,
         },
-        status: {
-          not: null,
-        },
-      },
-      include: {
-        user: {
-          select: {
-            username: true,
-          },
-        },
-      },
-    });
+      })
+      .from(rsvp)
+      .leftJoin(user, eq(rsvp.userId, user.id))
+      .where(and(eq(rsvp.eventId, meeting), isNotNull(rsvp.status)))
+      .orderBy(rsvp.status, rsvp.createdAt);
 
     if (!fetchedRSVPs.length)
       return interaction.reply({ content: 'No RSVPs', ephemeral: true });
 
-    const clonedRsvp = [...fetchedRSVPs];
-
-    const sortedByCreated = clonedRsvp.sort(
-      (rsvpA, rsvpB) => rsvpB.createdAt.getTime() - rsvpA.createdAt.getTime(),
-    );
-
-    const firstId = sortedByCreated.at(-1)?.id;
+    const firstId = fetchedRSVPs.at(0).id;
 
     const description = fetchedRSVPs
       .map((rsvp) => rsvpToDescription(rsvp, rsvp.id === firstId))
@@ -72,7 +81,7 @@ export class RsvpsCommand {
 
     const rsvpEmbed = new EmbedBuilder()
       .setTitle(
-        `RSVPs for ${fetchedMeeting.title} at ${DateTime.fromJSDate(
+        `RSVPs for ${fetchedMeeting.title} at ${DateTime.fromISO(
           fetchedMeeting.startDate,
         ).toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}`,
       )

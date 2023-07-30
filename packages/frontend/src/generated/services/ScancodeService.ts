@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -21,7 +22,7 @@ export class ScancodeService {
   ): CancelablePromise<Scancode> {
     return this.httpRequest.request({
       method: "POST",
-      url: "/scancode",
+      url: "/api/scancode",
       body: requestBody,
       mediaType: "application/json",
     });
@@ -35,7 +36,7 @@ export class ScancodeService {
   public getScancodes(): CancelablePromise<Array<Scancode>> {
     return this.httpRequest.request({
       method: "GET",
-      url: "/scancode",
+      url: "/api/scancode",
     });
   }
 
@@ -48,7 +49,7 @@ export class ScancodeService {
   public deleteScancode(id: string): CancelablePromise<Scancode> {
     return this.httpRequest.request({
       method: "DELETE",
-      url: "/scancode/{id}",
+      url: "/api/scancode/{id}",
       path: {
         id: id,
       },

@@ -1,0 +1,27 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1690526092629,
+      "tag": "0000_dazzling_legion",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1690631899878,
+      "tag": "0001_sleepy_madame_masque",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1690679086193,
+      "tag": "0002_faithful_cargill",
+      "breakpoints": true
+    }
+  ]
+}

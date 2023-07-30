@@ -1,24 +1,29 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { RSVP as PrismaRSVP, RSVPStatus } from '@prisma/client';
+import { Rsvp as DrizzleRsvp, RSVPStatus } from '../../drizzle/drizzle.module';
+import { rsvpStatus } from '../../drizzle/schema';
 
 /**
  * The RSVP object.
  */
-export class Rsvp implements PrismaRSVP {
+export class Rsvp implements DrizzleRsvp {
   @ApiProperty()
   id: string;
   @ApiProperty()
   eventId: string;
   @ApiProperty()
   userId: string;
-  @ApiProperty({ enum: RSVPStatus, nullable: true })
+  @ApiProperty({ enum: rsvpStatus.enumValues, nullable: true })
   status: RSVPStatus | null;
   @ApiProperty({ nullable: true })
   delay: number | null;
   @ApiProperty()
-  createdAt: Date;
+  createdAt: string;
   @ApiProperty()
-  updatedAt: Date;
+  updatedAt: string;
   @ApiProperty()
   attended: boolean;
+
+  constructor(rsvp: DrizzleRsvp) {
+    Object.assign(this, rsvp);
+  }
 }

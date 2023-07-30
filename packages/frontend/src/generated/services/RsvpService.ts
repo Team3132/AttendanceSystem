@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -20,21 +21,9 @@ export class RsvpService {
   public createRsvp(requestBody: CreateRsvpDto): CancelablePromise<Rsvp> {
     return this.httpRequest.request({
       method: "POST",
-      url: "/rsvp",
+      url: "/api/rsvp",
       body: requestBody,
       mediaType: "application/json",
-    });
-  }
-
-  /**
-   * Get all RSVPs
-   * @returns Rsvp
-   * @throws ApiError
-   */
-  public getRsvPs(): CancelablePromise<Array<Rsvp>> {
-    return this.httpRequest.request({
-      method: "GET",
-      url: "/rsvp",
     });
   }
 
@@ -47,7 +36,7 @@ export class RsvpService {
   public getRsvp(id: string): CancelablePromise<Rsvp> {
     return this.httpRequest.request({
       method: "GET",
-      url: "/rsvp/{id}",
+      url: "/api/rsvp/{id}",
       path: {
         id: id,
       },
@@ -67,7 +56,7 @@ export class RsvpService {
   ): CancelablePromise<Rsvp> {
     return this.httpRequest.request({
       method: "PATCH",
-      url: "/rsvp/{id}",
+      url: "/api/rsvp/{id}",
       path: {
         id: id,
       },
@@ -85,7 +74,7 @@ export class RsvpService {
   public deleteRsvp(id: string): CancelablePromise<Rsvp> {
     return this.httpRequest.request({
       method: "DELETE",
-      url: "/rsvp/{id}",
+      url: "/api/rsvp/{id}",
       path: {
         id: id,
       },

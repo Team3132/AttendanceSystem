@@ -1,5 +1,5 @@
+import { RSVPStatus } from '@/drizzle/drizzle.module';
 import { ApiProperty } from '@nestjs/swagger';
-import { RSVPStatus } from '@prisma/client';
 import { IsDateString, IsEnum } from 'class-validator';
 
 export class UpdateRangeRSVP {
@@ -9,7 +9,7 @@ export class UpdateRangeRSVP {
   @ApiProperty()
   @IsDateString()
   to: string;
-  @IsEnum(RSVPStatus)
-  @ApiProperty({ enum: RSVPStatus })
+  @IsEnum(['LATE', 'MAYBE', 'YES', 'NO'])
+  @ApiProperty({ enum: ['LATE', 'MAYBE', 'YES', 'NO'] })
   status: RSVPStatus;
 }

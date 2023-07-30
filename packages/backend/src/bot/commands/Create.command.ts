@@ -1,5 +1,4 @@
 import { AuthenticatorService } from '@/authenticator/authenticator.service';
-import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable, Logger, UseInterceptors } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EmbedBuilder, hideLinkEmbed, PermissionFlagsBits } from 'discord.js';
@@ -7,13 +6,13 @@ import { SlashCommand, Context, SlashCommandContext, Options } from 'necord';
 import { URLSearchParams } from 'url';
 import { CreateDto } from '../dto/create.dto';
 import { EventAutocompleteInterceptor } from '../interceptors/event.interceptor';
+import { DateTime } from 'luxon';
 
 @Injectable()
 export class CreateCommand {
   private readonly logger = new Logger(CreateCommand.name);
 
   constructor(
-    private readonly db: PrismaService,
     private readonly config: ConfigService,
     private readonly authenticator: AuthenticatorService,
   ) {}
@@ -33,7 +32,7 @@ export class CreateCommand {
 
     const startDate = interaction.createdAt.toISOString();
 
-    const endDate = new Date(startDate);
+    const endDate = DateTime.fromISO(startDate).toJSDate();
 
     endDate.setHours(interaction.createdAt.getHours() + 3);
 

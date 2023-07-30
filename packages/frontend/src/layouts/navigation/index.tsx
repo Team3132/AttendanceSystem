@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import loadable from "@loadable/component";
 import { ReactElement, useEffect } from "react";
-import { MdCalendarToday, MdHome, MdLock } from "react-icons/md";
+import { MdCalendarToday, MdHome, MdLock, MdPeople } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 export interface NavItem {
@@ -40,6 +40,11 @@ const navItems = (isAuthenticated?: boolean, isAdmin?: boolean): NavItem[] => [
           label: "Calendar",
           icon: <Icon as={MdCalendarToday} />,
           url: "/calendar",
+        },
+        {
+          label: "Outreach",
+          icon: <Icon as={MdPeople} />,
+          url: "/outreach",
         },
       ]
     : []),

@@ -23,8 +23,6 @@ services:
     ports:
       - 6379:6379
 
-<<<<<<< Updated upstream
-=======
   backend:
     build:
       context: .
@@ -35,7 +33,6 @@ services:
     env_file:
       - packages/backend/.env
 
->>>>>>> Stashed changes
 volumes:
   postgres-data:
   redis-data:

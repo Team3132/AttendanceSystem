@@ -1,17 +1,21 @@
-import { PrismaService } from '@/prisma/prisma.service';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { RSVPStatus } from '@prisma/client';
 import { GuildMember } from 'discord.js';
 import { Button, Context, ButtonContext, ComponentParam } from 'necord';
 import { DelayModalBuilder } from '../modals/Delay.modal';
-import connectOrCreateGuildMember from '../utils/connectOrCreateGuildMember';
 import rsvpReminderMessage from '../utils/rsvpReminderMessage';
+import { v4 as uuid } from 'uuid';
+import {
+  DRIZZLE_TOKEN,
+  type RSVPStatus,
+  type DrizzleDatabase,
+} from '@/drizzle/drizzle.module';
+import { rsvp, user } from '../../drizzle/schema';
 
 @Injectable()
 export class RsvpsButton {
   constructor(
-    private readonly db: PrismaService,
+    @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
     private readonly config: ConfigService,
   ) {}
 
@@ -21,10 +25,8 @@ export class RsvpsButton {
     @ComponentParam('eventId') eventId: string,
     @ComponentParam('rsvpStatus') rsvpStatus: RSVPStatus,
   ) {
-    const fetchedEvent = await this.db.event.findUnique({
-      where: {
-        id: eventId,
-      },
+    const fetchedEvent = await this.db.query.event.findFirst({
+      where: (event, { eq }) => eq(event.id, eventId),
     });
 
     if (!fetchedEvent)
@@ -35,90 +37,94 @@ export class RsvpsButton {
 
     const userId = interaction.user.id;
 
-    const user = interaction.member;
+    const interactionUser = interaction.member;
 
-    if (!(user instanceof GuildMember)) {
+    if (!(interactionUser instanceof GuildMember)) {
       return interaction.reply('Not a guild member');
     }
 
-    const roles = fetchedEvent.roles.length
-      ? fetchedEvent.roles
-      : [interaction.guild.roles.everyone.id];
+    const roles =
+      fetchedEvent.roles && fetchedEvent.roles.length
+        ? fetchedEvent.roles
+        : [interaction.guild.roles.everyone.id];
 
-    const connectedOrCreatedGuildMember = connectOrCreateGuildMember(user);
+    await this.db
+      .insert(user)
+      .values({
+        id: userId,
+        username: interactionUser.nickname ?? interactionUser.user.username,
+        roles: [
+          ...interactionUser.roles.cache.mapValues((role) => role.id).values(),
+        ],
+      })
+      .onConflictDoUpdate({
+        target: user.id,
+        set: {
+          username: interactionUser.nickname ?? interactionUser.user.username,
+          roles: [
+            ...interactionUser.roles.cache
+              .mapValues((role) => role.id)
+              .values(),
+          ],
+        },
+      });
 
-    await this.db.user.upsert({
-      ...connectedOrCreatedGuildMember,
-      update: {
-        username: connectedOrCreatedGuildMember.create.username,
-        roles: connectedOrCreatedGuildMember.create.roles,
-      },
-    });
+    // await this.db.user.upsert({
+    //   ...connectedOrCreatedGuildMember,
+    //   update: {
+    //     username: connectedOrCreatedGuildMember.create.username,
+    //     roles: connectedOrCreatedGuildMember.create.roles,
+    //   },
+    // });
 
-    if (!user.roles.cache.some((role) => roles.includes(role.id)))
+    if (!interactionUser.roles.cache.some((role) => roles.includes(role.id)))
       return interaction.reply({
         ephemeral: true,
         content: "You don't have permission to reply to this event",
       });
 
-    const rsvp = await this.db.rSVP.upsert({
-      where: {
-        eventId_userId: {
-          eventId,
-          userId,
-        },
-      },
-      create: {
-        event: {
-          connect: { id: eventId },
-        },
-        user: {
-          connectOrCreate: connectOrCreateGuildMember(user),
-        },
+    await this.db
+      .insert(rsvp)
+      .values({
+        id: uuid(),
+        eventId,
+        userId,
         status: rsvpStatus,
-      },
-      update: {
-        event: {
-          connect: { id: eventId },
+      })
+      .onConflictDoUpdate({
+        target: [rsvp.eventId, rsvp.userId],
+        set: {
+          status: rsvpStatus,
         },
+      });
+
+    const newRSVPs = await this.db.query.rsvp.findMany({
+      where: (rsvp, { eq }) => eq(rsvp.eventId, eventId),
+      orderBy: (rsvp) => [rsvp.status, rsvp.updatedAt],
+      with: {
         user: {
-          connectOrCreate: connectOrCreateGuildMember(user),
-        },
-        status: rsvpStatus,
-      },
-      include: {
-        event: {
-          include: {
-            RSVP: {
-              orderBy: {
-                updatedAt: 'asc',
-              },
-              include: {
-                user: {
-                  select: {
-                    username: true,
-                    roles: true,
-                  },
-                },
-              },
-            },
+          columns: {
+            username: true,
+            roles: true,
           },
         },
       },
     });
 
-    const event = rsvp.event;
-    const rsvps = event.RSVP;
+    const eventDB = await this.db.query.event.findFirst({
+      where: (event, { eq }) => eq(event.id, eventId),
+    });
+
     const frontendUrl = this.config.getOrThrow('FRONTEND_URL');
 
-    if (rsvpStatus === RSVPStatus.LATE) {
+    if (rsvpStatus === 'LATE') {
       // return interaction.deferUpdate();
-      return interaction.showModal(DelayModalBuilder(event.id));
+      return interaction.showModal(DelayModalBuilder(eventDB.id));
     } else {
       return interaction.update({
         ...rsvpReminderMessage(
-          rsvp.event,
-          rsvps,
+          eventDB,
+          newRSVPs,
           frontendUrl,
           interaction.guild.roles.everyone.id,
         ),
