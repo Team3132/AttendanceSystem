@@ -1,4 +1,3 @@
-import { AuthenticatorService } from '@/authenticator/authenticator.service';
 import rsvpReminderMessage from '@/bot/utils/rsvpReminderMessage';
 import { ROLES } from '@/constants';
 import {
@@ -22,13 +21,13 @@ import {
 import { between, gte, inArray, lte, sql } from 'drizzle-orm';
 import { DateTime } from 'luxon';
 import { event, rsvp } from '../drizzle/schema';
+import { v4 } from 'uuid';
 
 @Injectable()
 export class TaskService {
   constructor(
     private readonly gcal: GcalService,
     @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
-    private readonly authenticatorService: AuthenticatorService,
     private readonly config: ConfigService,
     private readonly discordClient: Client,
   ) {
@@ -88,7 +87,7 @@ export class TaskService {
 
     const databaseEvents = await Promise.all(
       events.items.map((gcalEvent) => {
-        const secret = this.authenticatorService.generateSecret();
+        const secret = v4();
 
         // const valueBetweenSquareBrackets = eventTitle.match(/\[(.*?)\]/); // Maybe switch to this later
 

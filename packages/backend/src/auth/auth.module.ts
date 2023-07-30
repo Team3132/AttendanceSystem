@@ -6,7 +6,6 @@ import { SessionSerializer } from './session.serializer';
 import { DiscordStrategy } from './strategy/discord.strategy';
 import { BotModule } from '@/bot/bot.module';
 import { BotService } from '@/bot/bot.service';
-import { AuthenticatorModule } from '@/authenticator/authenticator.module';
 
 @Module({
   imports: [
@@ -14,7 +13,6 @@ import { AuthenticatorModule } from '@/authenticator/authenticator.module';
       session: true,
     }),
     BotModule,
-    AuthenticatorModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, DiscordStrategy, SessionSerializer, BotService],

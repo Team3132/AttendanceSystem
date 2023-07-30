@@ -28,9 +28,6 @@ export default function AdminCheckin(props: AdminCheckinProps) {
       <Heading size="lg" textAlign={"center"}>
         {event.title}
       </Heading>
-      <StatGroup p={5} textAlign="center">
-        <EventTotpStat eventId={event.id} />
-      </StatGroup>
       {eventToken.isSuccess && (
         <Flex>
           <Spacer />

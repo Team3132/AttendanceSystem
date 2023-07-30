@@ -5,13 +5,11 @@ import { RsvpService } from '@rsvp/rsvp.service';
 import { RsvpModule } from '@rsvp/rsvp.module';
 import { ScancodeService } from '@scancode/scancode.service';
 import { ScancodeModule } from '@scancode/scancode.module';
-import { AuthenticatorService } from '@authenticator/authenticator.service';
-import { AuthenticatorModule } from '@authenticator/authenticator.module';
 
 @Module({
   controllers: [EventController],
-  providers: [EventService, RsvpService, ScancodeService, AuthenticatorService],
+  providers: [EventService, RsvpService, ScancodeService],
   exports: [EventService],
-  imports: [RsvpModule, ScancodeModule, AuthenticatorModule],
+  imports: [RsvpModule, ScancodeModule],
 })
 export class EventModule {}

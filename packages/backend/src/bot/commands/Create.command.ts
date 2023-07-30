@@ -1,4 +1,3 @@
-import { AuthenticatorService } from '@/authenticator/authenticator.service';
 import { Injectable, Logger, UseInterceptors } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EmbedBuilder, hideLinkEmbed, PermissionFlagsBits } from 'discord.js';
@@ -12,10 +11,7 @@ import { DateTime } from 'luxon';
 export class CreateCommand {
   private readonly logger = new Logger(CreateCommand.name);
 
-  constructor(
-    private readonly config: ConfigService,
-    private readonly authenticator: AuthenticatorService,
-  ) {}
+  constructor(private readonly config: ConfigService) {}
 
   @UseInterceptors(EventAutocompleteInterceptor)
   @SlashCommand({

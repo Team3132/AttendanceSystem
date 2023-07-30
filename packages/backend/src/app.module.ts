@@ -9,7 +9,6 @@ import { RolesGuard } from './auth/guard/role.guard';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ScancodeModule } from './scancode/scancode.module';
-import { AuthenticatorModule } from './authenticator/authenticator.module';
 import { GatewayIntentBits } from 'discord.js';
 import { BotModule } from './bot/bot.module';
 import { ScheduleModule } from '@nestjs/schedule';
@@ -63,7 +62,6 @@ import { join } from 'path';
     EventModule,
     RsvpModule,
     ScancodeModule,
-    AuthenticatorModule,
     BotModule,
     TaskModule,
     GcalModule,

@@ -4,8 +4,6 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { AuthenticatorService } from '@authenticator/authenticator.service';
-import { RsvpService } from '@rsvp/rsvp.service';
 import {
   DRIZZLE_TOKEN,
   type DrizzleDatabase,
@@ -19,14 +17,10 @@ import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class EventService {
-  constructor(
-    @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
-    private readonly authenticatorService: AuthenticatorService,
-    private readonly rsvpService: RsvpService,
-  ) {}
+  constructor(@Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase) {}
 
   async createEvent(data: Omit<NewEvent, 'secret'>) {
-    const secret = this.authenticatorService.generateSecret();
+    const secret = uuid();
     const newEvent = await this.db
       .insert(event)
       .values({
@@ -46,12 +40,12 @@ export class EventService {
   }
 
   async verifyUserEventToken(eventId: string, userId: string, token: string) {
-    const event = await this.db.query.event.findFirst({
+    const fetchedEvent = await this.db.query.event.findFirst({
       where: (event, { eq }) => eq(event.id, eventId),
     });
     if (!event) throw new NotFoundException('No event found');
 
-    const isValid = this.authenticatorService.verifyToken(event.secret, token);
+    const isValid = fetchedEvent.secret === token;
     if (!isValid) throw new BadRequestException('Code not valid');
 
     // const rsvp = this.rsvpService.upsertRSVP({

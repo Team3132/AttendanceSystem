@@ -1,4 +1,3 @@
-import { AuthenticatorService } from '@/authenticator/authenticator.service';
 import {
   BadRequestException,
   Inject,
@@ -7,7 +6,6 @@ import {
   NotFoundException,
   UseInterceptors,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { SlashCommand, Context, SlashCommandContext, Options } from 'necord';
 import { CheckinDto } from '../dto/checkin.dto';
 import { EventAutocompleteInterceptor } from '../interceptors/event.interceptor';
@@ -19,11 +17,7 @@ import { v4 as uuid } from 'uuid';
 export class CheckinCommand {
   private readonly logger = new Logger(CheckinCommand.name);
 
-  constructor(
-    @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
-    private readonly config: ConfigService,
-    private readonly authenticator: AuthenticatorService,
-  ) {}
+  constructor(@Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase) {}
 
   @UseInterceptors(EventAutocompleteInterceptor)
   @SlashCommand({
@@ -72,7 +66,7 @@ export class CheckinCommand {
     });
     if (!fetchedEvent) throw new NotFoundException('No event found');
 
-    const isValid = this.authenticator.verifyToken(fetchedEvent.secret, token);
+    const isValid = token === fetchedEvent.secret;
     if (!isValid) throw new BadRequestException('Code not valid');
 
     // const rsvp = this.db.rSVP.upsert({

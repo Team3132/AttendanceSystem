@@ -8,16 +8,9 @@ import { ScancodeModule } from '@scancode/scancode.module';
 import { ScancodeService } from '@scancode/scancode.service';
 import { BotModule } from '@/bot/bot.module';
 import { BotService } from '@/bot/bot.service';
-import { AuthenticatorModule } from '@/authenticator/authenticator.module';
 
 @Module({
-  imports: [
-    RsvpModule,
-    AuthModule,
-    ScancodeModule,
-    BotModule,
-    AuthenticatorModule,
-  ],
+  imports: [RsvpModule, AuthModule, ScancodeModule, BotModule],
   controllers: [UserController],
   providers: [UserService, AuthService, ScancodeService, BotService],
 })
