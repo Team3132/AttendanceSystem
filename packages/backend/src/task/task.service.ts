@@ -82,7 +82,7 @@ export class TaskService {
           })
       : [];
 
-    const deletedEventCount = deletedEvents.at(0).count ?? 0;
+    const deletedEventCount = deletedEvents.at(0)?.count ?? 0;
 
     this.logger.debug(`Deleted ${deletedEventCount} events`);
 
