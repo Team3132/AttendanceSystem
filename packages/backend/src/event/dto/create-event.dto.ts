@@ -7,7 +7,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { eventTypes } from '../../../drizzle/schema';
+import { eventTypes } from '../../drizzle/schema';
 import { type EventTypes } from '@/drizzle/drizzle.module';
 
 /**

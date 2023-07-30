@@ -12,7 +12,7 @@ import {
   Event,
   NewEvent,
 } from '@/drizzle/drizzle.module';
-import { event, rsvp, user } from '../../drizzle/schema';
+import { event, rsvp, user } from '../drizzle/schema';
 import { eq } from 'drizzle-orm';
 import { RsvpUser } from './dto/rsvp-user.dto';
 import { v4 as uuid } from 'uuid';

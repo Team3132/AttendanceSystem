@@ -48,7 +48,7 @@ import { Request, Response } from 'express';
 import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 import { asc, between, eq } from 'drizzle-orm';
 import { DateTime } from 'luxon';
-import { event, rsvp } from '../../drizzle/schema';
+import { event, rsvp } from '../drizzle/schema';
 import { v4 as uuid } from 'uuid';
 
 @ApiTags('Event')

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Rsvp as DrizzleRsvp, RSVPStatus } from '../../drizzle/drizzle.module';
-import { rsvpStatus } from '../../../drizzle/schema';
+import { rsvpStatus } from '../../drizzle/schema';
 
 /**
  * The RSVP object.

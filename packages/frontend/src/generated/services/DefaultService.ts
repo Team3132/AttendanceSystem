@@ -17,7 +17,7 @@ export class DefaultService {
   public tbaControllerGetNextEvent(): CancelablePromise<TBAEventDto> {
     return this.httpRequest.request({
       method: "GET",
-      url: "/tba/events/next",
+      url: "/api/tba/events/next",
     });
   }
 }

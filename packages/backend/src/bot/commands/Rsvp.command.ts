@@ -5,7 +5,7 @@ import { RsvpDto } from '../dto/rsvp.dto';
 import { EventAutocompleteInterceptor } from '../interceptors/event.interceptor';
 import rsvpToDescription from '../utils/rsvpToDescription';
 import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
-import { rsvp } from '../../../drizzle/schema';
+import { rsvp } from '../../drizzle/schema';
 import { v4 as uuid } from 'uuid';
 
 @Injectable()

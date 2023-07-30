@@ -8,7 +8,7 @@ import { EventAutocompleteInterceptor } from '../interceptors/event.interceptor'
 import attendanceToDescription from '../utils/attendanceToDescription';
 import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 import { and, eq, sql } from 'drizzle-orm';
-import { rsvp, user } from '../../../drizzle/schema';
+import { rsvp, user } from '../../drizzle/schema';
 
 @Injectable()
 export class AttendanceCommand {

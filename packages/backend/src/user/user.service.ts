@@ -1,7 +1,7 @@
 import { BotService } from '../bot/bot.service';
 import { Inject, Injectable } from '@nestjs/common';
 import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
-import { user } from '../../drizzle/schema';
+import { user } from '../drizzle/schema';
 import { eq } from 'drizzle-orm';
 
 @Injectable()

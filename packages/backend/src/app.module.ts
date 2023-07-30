@@ -22,9 +22,15 @@ import { TbaModule } from './tba/tba.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { OutreachModule } from './outreach/outreach.module';
 import { DrizzleModule } from './drizzle/drizzle.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../frontend'),
+      exclude: ['/api*'],
+    }),
     AuthModule,
     ConfigModule.forRoot({ isGlobal: true, cache: true }),
     DrizzleModule,

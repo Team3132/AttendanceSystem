@@ -1,6 +1,6 @@
 import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 import { Inject, Injectable } from '@nestjs/common';
-import { event, rsvp, user } from '../../drizzle/schema';
+import { event, rsvp, user } from '../drizzle/schema';
 import { and, desc, eq, gte, lte, sql } from 'drizzle-orm';
 import { LeaderboardDto } from './dto/LeaderboardDto';
 import { DateTime } from 'luxon';

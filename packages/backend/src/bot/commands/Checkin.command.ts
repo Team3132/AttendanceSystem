@@ -12,7 +12,7 @@ import { SlashCommand, Context, SlashCommandContext, Options } from 'necord';
 import { CheckinDto } from '../dto/checkin.dto';
 import { EventAutocompleteInterceptor } from '../interceptors/event.interceptor';
 import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
-import { rsvp } from '../../../drizzle/schema';
+import { rsvp } from '../../drizzle/schema';
 import { v4 as uuid } from 'uuid';
 
 @Injectable()

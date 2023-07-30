@@ -10,7 +10,7 @@ import {
   type RSVPStatus,
   type DrizzleDatabase,
 } from '@/drizzle/drizzle.module';
-import { rsvp, user } from '../../../drizzle/schema';
+import { rsvp, user } from '../../drizzle/schema';
 
 @Injectable()
 export class RsvpsButton {

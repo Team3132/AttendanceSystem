@@ -9,7 +9,7 @@ import {
   Injectable,
   Logger,
 } from '@nestjs/common';
-import { rsvp } from '../../drizzle/schema';
+import { rsvp } from '../drizzle/schema';
 import { eq } from 'drizzle-orm';
 import { v4 as uuid } from 'uuid';
 

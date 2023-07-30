@@ -4,7 +4,7 @@ import {
   NewScancode,
 } from '@/drizzle/drizzle.module';
 import { Inject, Injectable } from '@nestjs/common';
-import { scancode } from '../../drizzle/schema';
+import { scancode } from '../drizzle/schema';
 import { eq } from 'drizzle-orm';
 
 @Injectable()

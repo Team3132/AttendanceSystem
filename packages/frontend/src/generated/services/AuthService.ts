@@ -18,7 +18,7 @@ export class AuthService {
   public authStatus(): CancelablePromise<AuthStatusDto> {
     return this.httpRequest.request({
       method: "GET",
-      url: "/auth/status",
+      url: "/api/auth/status",
     });
   }
 
@@ -30,7 +30,7 @@ export class AuthService {
   public discordSignin(): CancelablePromise<any> {
     return this.httpRequest.request({
       method: "GET",
-      url: "/auth/discord",
+      url: "/api/auth/discord",
     });
   }
 
@@ -42,7 +42,7 @@ export class AuthService {
   public discordSigninCallback(): CancelablePromise<any> {
     return this.httpRequest.request({
       method: "GET",
-      url: "/auth/discord/callback",
+      url: "/api/auth/discord/callback",
     });
   }
 
@@ -54,7 +54,7 @@ export class AuthService {
   public signout(): CancelablePromise<any> {
     return this.httpRequest.request({
       method: "GET",
-      url: "/auth/logout",
+      url: "/api/auth/logout",
     });
   }
 }

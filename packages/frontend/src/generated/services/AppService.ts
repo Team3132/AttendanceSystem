@@ -16,7 +16,7 @@ export class AppService {
   public helloWorld(): CancelablePromise<string> {
     return this.httpRequest.request({
       method: "GET",
-      url: "/",
+      url: "/api",
     });
   }
 }

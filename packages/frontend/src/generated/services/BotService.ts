@@ -18,7 +18,7 @@ export class BotService {
   public getStatus(): CancelablePromise<boolean> {
     return this.httpRequest.request({
       method: "GET",
-      url: "/bot/status",
+      url: "/api/bot/status",
     });
   }
 
@@ -30,7 +30,7 @@ export class BotService {
   public getRoles(): CancelablePromise<Array<DiscordRole>> {
     return this.httpRequest.request({
       method: "GET",
-      url: "/bot/roles",
+      url: "/api/bot/roles",
     });
   }
 }

@@ -33,7 +33,7 @@ import { Scancode } from '@scancode/entities/scancode.entity';
 import { ScancodeService } from '@scancode/scancode.service';
 import { CreateScancodeDto } from '@scancode/dto/create-scancode.dto';
 import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
-import { user } from '../../drizzle/schema';
+import { user } from '../drizzle/schema';
 import { eq } from 'drizzle-orm';
 
 /** The user controller for controlling the user status */

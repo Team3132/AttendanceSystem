@@ -2,11 +2,20 @@ import { Global, Logger, Module } from '@nestjs/common';
 import { PostgresJsDatabase, drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
-import * as schema from '../../drizzle/schema';
+import * as schema from './schema';
 import { ConfigService } from '@nestjs/config';
-import { InferModel } from 'drizzle-orm';
+import { InferModel, type Logger as DrizzleLogger } from 'drizzle-orm';
+import path from 'path';
 
 export const DRIZZLE_TOKEN = Symbol('PG_CONNECTION');
+
+class MyLogger implements DrizzleLogger {
+  logQuery(query: string, params: unknown[]): void {
+    console.log(query);
+    console.log(''.padEnd(80, '-'));
+    if (params.length > 0) params.map((p, i) => `$${i + 1}: ${p}`);
+  }
+}
 
 @Global()
 @Module({
@@ -21,14 +30,23 @@ export const DRIZZLE_TOKEN = Symbol('PG_CONNECTION');
         const host = configService.getOrThrow('POSTGRES_HOST');
         const database = configService.getOrThrow('POSTGRES_DB');
 
+        // const rootFilePath = fileURLToPath(import.meta.url);
+        const migrationsFolder = path.join(__dirname, '../drizzle');
+        console.log(migrationsFolder);
+
         const migrationPgClient = postgres(
           `postgres://${username}:${password}@${host}/${database}`,
-          { max: 1 },
+          {
+            max: 1,
+          },
         );
 
         logger.log('Connected to database');
-        const migrationClient = drizzle(migrationPgClient, { schema });
-        await migrate(migrationClient, { migrationsFolder: './drizzle' });
+        const migrationClient = drizzle(migrationPgClient, {
+          schema,
+          logger: new MyLogger(),
+        });
+        await migrate(migrationClient, { migrationsFolder });
         logger.log('Migrated database');
 
         const queryPgClient = postgres(

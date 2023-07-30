@@ -11,7 +11,7 @@ import { Ctx, Modal, ModalContext, ModalParam } from 'necord';
 import { z, ZodError } from 'zod';
 import rsvpReminderMessage from '../utils/rsvpReminderMessage';
 import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
-import { rsvp } from '../../../drizzle/schema';
+import { rsvp } from '../../drizzle/schema';
 import { and, asc, eq, isNotNull } from 'drizzle-orm';
 import { v4 as uuid } from 'uuid';
 

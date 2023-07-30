@@ -21,7 +21,7 @@ import {
 } from 'discord.js';
 import { asc, between, gte, inArray, lte, sql } from 'drizzle-orm';
 import { DateTime } from 'luxon';
-import { event, rsvp } from '../../drizzle/schema';
+import { event, rsvp } from '../drizzle/schema';
 
 @Injectable()
 export class TaskService {

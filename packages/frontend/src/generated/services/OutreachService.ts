@@ -19,7 +19,7 @@ export class OutreachService {
   > {
     return this.httpRequest.request({
       method: "GET",
-      url: "/outreach/leaderboard",
+      url: "/api/outreach/leaderboard",
     });
   }
 }
