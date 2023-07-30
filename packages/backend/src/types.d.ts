@@ -1,10 +1,10 @@
 // Override express user
 
-import { User as PrismaUser } from '@prisma/client';
+import { User as DrizzleUser } from '@/drizzle/drizzle.module';
 
 declare global {
   namespace Express {
-    interface User extends PrismaUser {
+    interface User extends DrizzleUser {
       id: string;
       username: string | null;
       createdAt: Date;

@@ -29,7 +29,6 @@
     "@nestjs/serve-static": "^4.0.0",
     "@nestjs/swagger": "^7.0.0",
     "@nestjs/websockets": "^10.0.0",
-    "@prisma/client": "^4.8.0",
     "axios": "^1.4.0",
     "cache-manager": "^5.1.4",
     "cache-manager-ioredis-yet": "^1.1.0",

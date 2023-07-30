@@ -38,9 +38,6 @@
       "@event/*": [
         "event/*"
       ],
-      "@prisma/*": [
-        "prisma/*"
-      ],
       "@rsvp/*": [
         "rsvp/*"
       ],
