@@ -1,5 +1,5 @@
+import { RSVPStatus } from '@/drizzle/drizzle.module';
 import { ApiProperty } from '@nestjs/swagger';
-import { RSVPStatus } from '@prisma/client';
 import { IsEnum, IsOptional } from 'class-validator';
 
 /**
@@ -7,7 +7,11 @@ import { IsEnum, IsOptional } from 'class-validator';
  */
 export class UpdateUserDto {
   @IsOptional()
-  @IsEnum({ ...RSVPStatus, unknown: null })
-  @ApiProperty({ required: false, enum: RSVPStatus, nullable: true })
+  @IsEnum({ ...['LATE', 'MAYBE', 'YES', 'NO'], unknown: null })
+  @ApiProperty({
+    required: false,
+    enum: ['LATE', 'MAYBE', 'YES', 'NO'],
+    nullable: true,
+  })
   defaultStatus?: RSVPStatus | null;
 }

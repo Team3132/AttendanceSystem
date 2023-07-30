@@ -1,4 +1,4 @@
-import { RSVPStatus } from '@prisma/client';
+import { type RSVPStatus } from '@/drizzle/drizzle.module';
 import { StringOption } from 'necord';
 
 export class RsvpDto {
@@ -16,15 +16,15 @@ export class RsvpDto {
     choices: [
       {
         name: 'Coming',
-        value: RSVPStatus.YES,
+        value: 'YES',
       },
       {
         name: 'Maybe',
-        value: RSVPStatus.MAYBE,
+        value: 'MAYBE',
       },
       {
         name: 'Not Coming',
-        value: RSVPStatus.NO,
+        value: 'NO',
       },
     ],
   })

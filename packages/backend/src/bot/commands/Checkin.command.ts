@@ -1,7 +1,7 @@
 import { AuthenticatorService } from '@/authenticator/authenticator.service';
-import { PrismaService } from '@/prisma/prisma.service';
 import {
   BadRequestException,
+  Inject,
   Injectable,
   Logger,
   NotFoundException,
@@ -11,13 +11,16 @@ import { ConfigService } from '@nestjs/config';
 import { SlashCommand, Context, SlashCommandContext, Options } from 'necord';
 import { CheckinDto } from '../dto/checkin.dto';
 import { EventAutocompleteInterceptor } from '../interceptors/event.interceptor';
+import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
+import { rsvp } from '../../drizzle/schema';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class CheckinCommand {
   private readonly logger = new Logger(CheckinCommand.name);
 
   constructor(
-    private readonly db: PrismaService,
+    @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
     private readonly config: ConfigService,
     private readonly authenticator: AuthenticatorService,
   ) {}
@@ -64,37 +67,54 @@ export class CheckinCommand {
     userId: string,
     token: string,
   ) {
-    const event = await this.db.event.findUnique({ where: { id: eventId } });
-    if (!event) throw new NotFoundException('No event found');
+    const fetchedEvent = await this.db.query.event.findFirst({
+      where: (event, { eq }) => eq(event.id, eventId),
+    });
+    if (!fetchedEvent) throw new NotFoundException('No event found');
 
-    const isValid = this.authenticator.verifyToken(event.secret, token);
+    const isValid = this.authenticator.verifyToken(fetchedEvent.secret, token);
     if (!isValid) throw new BadRequestException('Code not valid');
 
-    const rsvp = this.db.rSVP.upsert({
-      where: {
-        eventId_userId: {
-          eventId,
-          userId,
-        },
-      },
-      update: {
-        attended: true,
-      },
-      create: {
-        attended: true,
-        event: {
-          connect: {
-            id: eventId,
-          },
-        },
-        user: {
-          connect: {
-            id: userId,
-          },
-        },
-      },
-    });
+    // const rsvp = this.db.rSVP.upsert({
+    //   where: {
+    //     eventId_userId: {
+    //       eventId,
+    //       userId,
+    //     },
+    //   },
+    //   update: {
+    //     attended: true,
+    //   },
+    //   create: {
+    //     attended: true,
+    //     event: {
+    //       connect: {
+    //         id: eventId,
+    //       },
+    //     },
+    //     user: {
+    //       connect: {
+    //         id: userId,
+    //       },
+    //     },
+    //   },
+    // });
 
-    return rsvp;
+    const newRSVP = await this.db
+      .insert(rsvp)
+      .values({
+        id: uuid(),
+        eventId,
+        attended: true,
+        userId,
+      })
+      .onConflictDoUpdate({
+        set: {
+          attended: true,
+        },
+        target: [rsvp.eventId, rsvp.userId],
+      });
+
+    return newRSVP;
   }
 }

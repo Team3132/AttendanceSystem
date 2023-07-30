@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -9,9 +10,9 @@ export type CreateRsvpDto = {
 
 export namespace CreateRsvpDto {
   export enum status {
-    YES = "YES",
-    NO = "NO",
-    MAYBE = "MAYBE",
     LATE = "LATE",
+    MAYBE = "MAYBE",
+    NO = "NO",
+    YES = "YES",
   }
 }

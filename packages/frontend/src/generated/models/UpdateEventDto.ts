@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -14,8 +15,8 @@ export type UpdateEventDto = {
 
 export namespace UpdateEventDto {
   export enum type {
-    OUTREACH = "Outreach",
-    REGULAR = "Regular",
     SOCIAL = "Social",
+    REGULAR = "Regular",
+    OUTREACH = "Outreach",
   }
 }

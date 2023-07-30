@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
-import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { EventModule } from './event/event.module';
@@ -9,7 +8,6 @@ import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './auth/guard/role.guard';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CalendarModule } from './calendar/calendar.module';
 import { ScancodeModule } from './scancode/scancode.module';
 import { AuthenticatorModule } from './authenticator/authenticator.module';
 import { GatewayIntentBits } from 'discord.js';
@@ -22,12 +20,20 @@ import { BotService } from './bot/bot.service';
 import { redisStore } from 'cache-manager-ioredis-yet';
 import { TbaModule } from './tba/tba.module';
 import { CacheModule } from '@nestjs/cache-manager';
+import { OutreachModule } from './outreach/outreach.module';
+import { DrizzleModule } from './drizzle/drizzle.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../frontend'),
+      exclude: ['/api*'],
+    }),
     AuthModule,
-    PrismaModule,
     ConfigModule.forRoot({ isGlobal: true, cache: true }),
+    DrizzleModule,
     NecordModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
         token: configService.getOrThrow('DISCORD_TOKEN'),
@@ -53,17 +59,16 @@ import { CacheModule } from '@nestjs/cache-manager';
       },
       inject: [ConfigService],
     }),
-    PrismaModule,
     UserModule,
     EventModule,
     RsvpModule,
-    CalendarModule,
     ScancodeModule,
     AuthenticatorModule,
     BotModule,
     TaskModule,
     GcalModule,
     TbaModule,
+    OutreachModule,
   ],
   controllers: [AppController],
   providers: [

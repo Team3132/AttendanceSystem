@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -7,7 +8,7 @@ export type Rsvp = {
   eventId: string;
   userId: string;
   status: Rsvp.status | null;
-  delay: any;
+  delay: Record<string, any> | null;
   createdAt: string;
   updatedAt: string;
   attended: boolean;
@@ -15,9 +16,9 @@ export type Rsvp = {
 
 export namespace Rsvp {
   export enum status {
-    YES = "YES",
-    NO = "NO",
-    MAYBE = "MAYBE",
     LATE = "LATE",
+    MAYBE = "MAYBE",
+    NO = "NO",
+    YES = "YES",
   }
 }

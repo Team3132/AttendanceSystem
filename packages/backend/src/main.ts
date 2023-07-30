@@ -21,6 +21,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = app.get(ConfigService);
 
+  app.setGlobalPrefix('api');
+
   app.enableCors({
     origin: [config.getOrThrow('FRONTEND_URL')],
     allowedHeaders: 'X-Requested-With,Content-Type',
@@ -83,7 +85,7 @@ async function bootstrap() {
     }),
   );
   // app.useWebSocketAdapter(new WsAdapter(app));
-  SwaggerModule.setup('api', app, document, {});
+  SwaggerModule.setup('api/docs', app, document, {});
 
   // await app.init();
   await app.listen(3000);

@@ -1,21 +1,24 @@
-import { PrismaService } from '@/prisma/prisma.service';
 import {
   ActionRowBuilder,
   ModalActionRowComponentBuilder,
   ModalBuilder,
   TextInputBuilder,
 } from '@discordjs/builders';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TextInputStyle } from 'discord.js';
 import { Ctx, Modal, ModalContext, ModalParam } from 'necord';
 import { z, ZodError } from 'zod';
 import rsvpReminderMessage from '../utils/rsvpReminderMessage';
+import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
+import { rsvp } from '../../drizzle/schema';
+import { and, asc, eq, isNotNull } from 'drizzle-orm';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class DelayModal {
   constructor(
-    private readonly db: PrismaService,
+    @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
     private readonly config: ConfigService,
   ) {}
 
@@ -33,70 +36,61 @@ export class DelayModal {
     try {
       const delay = await value;
 
-      this.db.rSVP
-        .update({
-          where: {
-            eventId_userId: {
-              eventId,
-              userId,
-            },
-          },
-          data: {
+      const updatedRsvp = await this.db
+        .insert(rsvp)
+        .values({
+          id: uuid(),
+          eventId,
+          userId,
+          delay,
+        })
+        .onConflictDoUpdate({
+          target: [rsvp.eventId, rsvp.userId],
+          set: {
             delay,
           },
-          include: {
-            event: {
-              include: {
-                RSVP: {
-                  orderBy: {
-                    updatedAt: 'asc',
-                  },
-                  include: {
-                    user: {
-                      select: {
-                        username: true,
-                        roles: true,
-                      },
-                    },
-                  },
-                },
-              },
+        })
+        .returning();
+
+      const otherEventRsvps = await this.db.query.rsvp.findMany({
+        where: (rsvp) => eq(rsvp.eventId, eventId),
+        orderBy: (rsvp) => [rsvp.status, rsvp.updatedAt],
+        with: {
+          user: {
+            columns: {
+              username: true,
+              roles: true,
             },
           },
-        })
-        .then((res) => {
-          const event = res.event;
-          const rsvps = event.RSVP;
-          const frontendUrl = this.config.getOrThrow('FRONTEND_URL');
+        },
+      });
 
-          if (interaction.isFromMessage()) {
-            return interaction.update({
-              ...rsvpReminderMessage(
-                event,
-                rsvps,
-                frontendUrl,
-                interaction.guild.roles.everyone.id,
-              ),
-            });
-          } else {
-            return interaction.reply({
-              ephemeral: true,
-              ...rsvpReminderMessage(
-                event,
-                rsvps,
-                frontendUrl,
-                interaction.guild.roles.everyone.id,
-              ),
-            });
-          }
-        })
+      const relatedEvent = await this.db.query.event.findFirst({
+        where: (event) => eq(event.id, eventId),
+      });
 
-        .catch(() => {
-          return interaction.reply({
-            content: 'Error setting delay',
-            ephemeral: true,
-          });
+      const frontendUrl = this.config.getOrThrow('FRONTEND_URL');
+
+      if (interaction.isFromMessage()) {
+        return interaction.update({
+          ...rsvpReminderMessage(
+            relatedEvent,
+            otherEventRsvps,
+            frontendUrl,
+            interaction.guild.roles.everyone.id,
+          ),
         });
+      } else {
+        return interaction.reply({
+          ephemeral: true,
+          ...rsvpReminderMessage(
+            relatedEvent,
+            otherEventRsvps,
+            frontendUrl,
+            interaction.guild.roles.everyone.id,
+          ),
+        });
+      }
     } catch (err) {
       const error = err as ZodError;
       return interaction.reply({

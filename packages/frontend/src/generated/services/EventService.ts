@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -10,7 +11,6 @@ import type { ScaninDto } from "../models/ScaninDto";
 import type { TokenCheckinDto } from "../models/TokenCheckinDto";
 import type { UpdateEventDto } from "../models/UpdateEventDto";
 import type { UpdateOrCreateRSVP } from "../models/UpdateOrCreateRSVP";
-import type { UpdateRangeRSVP } from "../models/UpdateRangeRSVP";
 
 import type { CancelablePromise } from "../core/CancelablePromise";
 import type { BaseHttpRequest } from "../core/BaseHttpRequest";
@@ -33,7 +33,7 @@ export class EventService {
   ): CancelablePromise<Array<EventResponseType>> {
     return this.httpRequest.request({
       method: "GET",
-      url: "/event",
+      url: "/api/event",
       query: {
         from: from,
         to: to,
@@ -53,7 +53,7 @@ export class EventService {
   ): CancelablePromise<EventResponseType> {
     return this.httpRequest.request({
       method: "POST",
-      url: "/event",
+      url: "/api/event",
       body: requestBody,
       mediaType: "application/json",
     });
@@ -68,7 +68,7 @@ export class EventService {
   public getEvent(id: string): CancelablePromise<EventResponseType> {
     return this.httpRequest.request({
       method: "GET",
-      url: "/event/{id}",
+      url: "/api/event/{id}",
       path: {
         id: id,
       },
@@ -88,7 +88,7 @@ export class EventService {
   ): CancelablePromise<EventResponseType> {
     return this.httpRequest.request({
       method: "PATCH",
-      url: "/event/{id}",
+      url: "/api/event/{id}",
       path: {
         id: id,
       },
@@ -106,7 +106,7 @@ export class EventService {
   public deleteEvent(id: string): CancelablePromise<EventResponseType> {
     return this.httpRequest.request({
       method: "DELETE",
-      url: "/event/{id}",
+      url: "/api/event/{id}",
       path: {
         id: id,
       },
@@ -122,7 +122,7 @@ export class EventService {
   public getEventSecret(eventId: string): CancelablePromise<EventSecret> {
     return this.httpRequest.request({
       method: "GET",
-      url: "/event/{eventId}/token",
+      url: "/api/event/{eventId}/token",
       path: {
         eventId: eventId,
       },
@@ -142,7 +142,7 @@ export class EventService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: "GET",
-      url: "/event/{eventId}/token/callback",
+      url: "/api/event/{eventId}/token/callback",
       path: {
         eventId: eventId,
       },
@@ -165,7 +165,7 @@ export class EventService {
   ): CancelablePromise<Rsvp> {
     return this.httpRequest.request({
       method: "POST",
-      url: "/event/{eventId}/token/callback",
+      url: "/api/event/{eventId}/token/callback",
       path: {
         eventId: eventId,
       },
@@ -183,7 +183,7 @@ export class EventService {
   public getEventRsvp(eventId: string): CancelablePromise<Rsvp> {
     return this.httpRequest.request({
       method: "GET",
-      url: "/event/{eventId}/rsvp",
+      url: "/api/event/{eventId}/rsvp",
       path: {
         eventId: eventId,
       },
@@ -203,27 +203,10 @@ export class EventService {
   ): CancelablePromise<Rsvp> {
     return this.httpRequest.request({
       method: "POST",
-      url: "/event/{eventId}/rsvp",
+      url: "/api/event/{eventId}/rsvp",
       path: {
         eventId: eventId,
       },
-      body: requestBody,
-      mediaType: "application/json",
-    });
-  }
-
-  /**
-   * Update RSVP Status of Events in range
-   * @param requestBody
-   * @returns Rsvp
-   * @throws ApiError
-   */
-  public updateEventRsvpRange(
-    requestBody: UpdateRangeRSVP
-  ): CancelablePromise<Array<Rsvp>> {
-    return this.httpRequest.request({
-      method: "POST",
-      url: "/event/rsvps",
       body: requestBody,
       mediaType: "application/json",
     });
@@ -238,7 +221,7 @@ export class EventService {
   public getEventRsvps(eventId: string): CancelablePromise<Array<RsvpUser>> {
     return this.httpRequest.request({
       method: "GET",
-      url: "/event/{eventId}/rsvps",
+      url: "/api/event/{eventId}/rsvps",
       path: {
         eventId: eventId,
       },
@@ -258,7 +241,7 @@ export class EventService {
   ): CancelablePromise<Rsvp> {
     return this.httpRequest.request({
       method: "POST",
-      url: "/event/{eventId}/scanin",
+      url: "/api/event/{eventId}/scanin",
       path: {
         eventId: eventId,
       },

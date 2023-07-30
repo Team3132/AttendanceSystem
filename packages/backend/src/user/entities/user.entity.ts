@@ -1,24 +1,25 @@
+import { RSVPStatus } from '@/drizzle/drizzle.module';
 import { ApiProperty } from '@nestjs/swagger';
-import { RSVPStatus, User as PrismaUser } from '@prisma/client';
-import { Exclude } from 'class-transformer';
+import { User as DrizzleUser } from '../../drizzle/drizzle.module';
 
 /**
  * The user object.
  */
-export class User implements Partial<PrismaUser> {
+export class User implements Partial<DrizzleUser> {
   @ApiProperty()
   id: string;
   @ApiProperty()
-  username?: string | null;
+  username?: string;
   @ApiProperty()
-  createdAt: Date;
+  createdAt: string;
   @ApiProperty()
-  updatedAt: Date;
-  @ApiProperty({ enum: RSVPStatus, required: true, nullable: true })
+  updatedAt: string;
+  @ApiProperty({
+    enum: ['LATE', 'MAYBE', 'NO', 'YES'],
+    required: true,
+    nullable: true,
+  })
   defaultStatus: RSVPStatus | null;
-  @ApiProperty()
-  @Exclude()
-  calendarSecret: string;
   @ApiProperty()
   roles: string[];
 }
