@@ -59,16 +59,9 @@
       "problemMatcher": []
     },
     {
-      "label": "Generate Prisma",
-      "type": "npm",
-      "script": "generate:prisma",
-      "problemMatcher": []
-    },
-    {
       "label": "Watch TSC:Frontend",
       "type": "npm",
       "script": "typecheck:frontend:watch",
-    
       "presentation": {
         "echo": true,
         "reveal": "always",
@@ -78,9 +71,10 @@
         "clear": false,
         "group": "tsc"
       },
-      "problemMatcher": ["$tsc-watch"],
+      "problemMatcher": [
+        "$tsc-watch"
+      ],
       "isBackground": true
-
     },
     {
       "label": "Watch TSC:Backend",
@@ -95,7 +89,9 @@
         "clear": false,
         "group": "tsc"
       },
-      "problemMatcher": ["$tsc-watch"],
+      "problemMatcher": [
+        "$tsc-watch"
+      ],
       "isBackground": true,
     },
     {
