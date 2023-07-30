@@ -25,7 +25,7 @@ export class RsvpsCommand {
   })
   public async onRSVPs(
     @Context() [interaction]: SlashCommandContext,
-    @Options() { meeting, role }: AttendanceDto,
+    @Options() { meeting }: AttendanceDto,
   ) {
     const fetchedMeeting = await this.db.query.event.findFirst({
       where: (event, { eq }) => eq(event.id, meeting),

@@ -8,11 +8,11 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TextInputStyle } from 'discord.js';
 import { Ctx, Modal, ModalContext, ModalParam } from 'necord';
-import { z, ZodError } from 'zod';
+import { z } from 'zod';
 import rsvpReminderMessage from '../utils/rsvpReminderMessage';
 import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 import { rsvp } from '../../drizzle/schema';
-import { and, asc, eq, isNotNull } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { v4 as uuid } from 'uuid';
 
 @Injectable()
@@ -36,7 +36,7 @@ export class DelayModal {
     try {
       const delay = await value;
 
-      const updatedRsvp = await this.db
+      await this.db
         .insert(rsvp)
         .values({
           id: uuid(),
@@ -92,7 +92,7 @@ export class DelayModal {
         });
       }
     } catch (err) {
-      const error = err as ZodError;
+      // const error = err as ZodError;
       return interaction.reply({
         content: 'Please enter a valid number (no decimals)',
         ephemeral: true,

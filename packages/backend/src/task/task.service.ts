@@ -19,7 +19,7 @@ import {
   Client,
   roleMention,
 } from 'discord.js';
-import { asc, between, gte, inArray, lte, sql } from 'drizzle-orm';
+import { between, gte, inArray, lte, sql } from 'drizzle-orm';
 import { DateTime } from 'luxon';
 import { event, rsvp } from '../drizzle/schema';
 

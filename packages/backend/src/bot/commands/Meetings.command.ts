@@ -6,7 +6,7 @@ import {
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EmbedBuilder } from 'discord.js';
-import { and, asc, gte } from 'drizzle-orm';
+import { asc, gte } from 'drizzle-orm';
 import { DateTime } from 'luxon';
 import { SlashCommand, Context, SlashCommandContext } from 'necord';
 

@@ -11,7 +11,10 @@ import { Request } from 'express';
 
 @Injectable()
 export class DiscordStrategy extends PassportStrategy(Strategy, 'discord') {
-  constructor(private authService: AuthService, config: ConfigService) {
+  constructor(
+    private authService: AuthService,
+    config: ConfigService,
+  ) {
     const options: StrategyOptionsWithRequest = {
       passReqToCallback: true,
       clientID: config.get('DISCORD_CLIENT_ID'),

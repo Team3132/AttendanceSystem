@@ -4,11 +4,7 @@ import {
   NotFoundException,
   UseInterceptors,
 } from '@nestjs/common';
-import {
-  ApiNoContentResponse,
-  ApiNotFoundResponse,
-  ApiOkResponse,
-} from '@nestjs/swagger';
+import { ApiNotFoundResponse, ApiOkResponse } from '@nestjs/swagger';
 import { TBAEventDto } from './dto/TBAEvent.dto';
 import { TbaService } from './tba.service';
 import { CacheInterceptor } from '@nestjs/cache-manager';

@@ -5,7 +5,7 @@ import {
 } from '@/drizzle/drizzle.module';
 import { Inject, Injectable } from '@nestjs/common';
 import { AutocompleteInteraction, CacheType } from 'discord.js';
-import { and, asc, gte, ilike } from 'drizzle-orm';
+import { asc, gte } from 'drizzle-orm';
 import { DateTime } from 'luxon';
 import { AutocompleteInterceptor } from 'necord';
 
@@ -18,7 +18,7 @@ export class EventAutocompleteInterceptor extends AutocompleteInterceptor {
   public async transformOptions(
     interaction: AutocompleteInteraction<CacheType>,
   ) {
-    const focused = interaction.options.getFocused(true);
+    // const focused = interaction.options.getFocused(true);
 
     // const options = await this.db.event.findMany({
     //   where: {
