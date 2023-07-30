@@ -31,7 +31,9 @@ export class TaskService {
     private readonly authenticatorService: AuthenticatorService,
     private readonly config: ConfigService,
     private readonly discordClient: Client,
-  ) {}
+  ) {
+    this.handleCron(); // Run once on startup
+  }
 
   private readonly logger = new Logger(TaskService.name);
 
