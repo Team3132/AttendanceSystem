@@ -60,9 +60,10 @@ export default function rsvpReminderMessage(
     .addFields(
       {
         name: 'Roles',
-        value: event.roles.length
-          ? event.roles.map((role) => roleMention(role)).join()
-          : roleMention(everyoneRole),
+        value:
+          event.roles !== null && event.roles.length
+            ? event.roles.map((role) => roleMention(role)).join()
+            : roleMention(everyoneRole),
         inline: true,
       },
       { name: 'Type', value: event.type, inline: true },

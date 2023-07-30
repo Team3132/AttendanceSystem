@@ -54,7 +54,7 @@ export class DelayModal {
 
       const otherEventRsvps = await this.db.query.rsvp.findMany({
         where: (rsvp) => eq(rsvp.eventId, eventId),
-        orderBy: (rsvp) => [asc(rsvp.updatedAt)],
+        orderBy: (rsvp) => [rsvp.status, rsvp.updatedAt],
         with: {
           user: {
             columns: {

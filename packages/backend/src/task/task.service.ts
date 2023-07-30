@@ -184,7 +184,7 @@ export class TaskService {
         between(event.startDate, startNextDay.toISO(), endNextDay.toISO()),
       with: {
         rsvps: {
-          orderBy: [asc(rsvp.updatedAt)],
+          orderBy: [rsvp.status, rsvp.updatedAt],
           with: {
             user: {
               columns: {

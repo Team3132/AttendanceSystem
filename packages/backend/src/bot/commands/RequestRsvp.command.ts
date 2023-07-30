@@ -62,7 +62,7 @@ export class RequestRsvpCommand {
       },
     });
 
-    if (!event)
+    if (!fetchedEvent)
       return interaction.reply({
         ephemeral: true,
         content: 'No meeting with that Id',

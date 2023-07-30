@@ -37,11 +37,8 @@ export class EventAutocompleteInterceptor extends AutocompleteInterceptor {
     // });
 
     const options = await this.db.query.event.findMany({
-      where: (event) =>
-        and(
-          ilike(event.title, focused.value.toString()),
-          gte(event.endDate, DateTime.local().toISO()),
-        ),
+      where: (event) => gte(event.endDate, DateTime.local().toISO()),
+
       orderBy: (event) => [asc(event.startDate)],
       limit: 10,
     });

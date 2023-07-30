@@ -1,8 +1,9 @@
 import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 import { Inject, Injectable } from '@nestjs/common';
 import { event, rsvp, user } from '../../drizzle/schema';
-import { and, desc, eq, gte, sql } from 'drizzle-orm';
+import { and, desc, eq, gte, lte, sql } from 'drizzle-orm';
 import { LeaderboardDto } from './dto/LeaderboardDto';
+import { DateTime } from 'luxon';
 
 @Injectable()
 export class OutreachService {
@@ -27,7 +28,10 @@ export class OutreachService {
       .where(
         and(
           and(eq(event.type, 'Outreach'), eq(rsvp.status, 'YES')),
-          gte(event.endDate, lastApril25OfThisYear),
+          and(
+            gte(event.endDate, lastApril25OfThisYear),
+            lte(event.endDate, DateTime.local().toISO()),
+          ),
         ),
       )
       .leftJoin(user, eq(rsvp.userId, user.id))

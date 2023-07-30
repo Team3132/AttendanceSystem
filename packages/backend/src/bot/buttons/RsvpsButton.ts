@@ -43,9 +43,10 @@ export class RsvpsButton {
       return interaction.reply('Not a guild member');
     }
 
-    const roles = fetchedEvent.roles.length
-      ? fetchedEvent.roles
-      : [interaction.guild.roles.everyone.id];
+    const roles =
+      fetchedEvent.roles && fetchedEvent.roles.length
+        ? fetchedEvent.roles
+        : [interaction.guild.roles.everyone.id];
 
     await this.db
       .insert(user)
