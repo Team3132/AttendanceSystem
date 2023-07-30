@@ -11,10 +11,13 @@ import { RequestRsvpCommand } from './commands/RequestRsvp.command';
 import { RsvpCommand } from './commands/Rsvp.command';
 import { RsvpsCommand } from './commands/Rsvps.command';
 import { DelayModal } from './modals/Delay.modal';
+import { LeaderBoardCommand } from './commands/Leaderboard.command';
+import { OutreachModule } from '@/outreach/outreach.module';
+import { OutreachService } from '@/outreach/outreach.service';
 
 @Module({
   controllers: [BotController],
-  imports: [],
+  imports: [OutreachModule],
   providers: [
     BotService,
     RsvpButton,
@@ -26,7 +29,9 @@ import { DelayModal } from './modals/Delay.modal';
     RsvpCommand,
     RsvpsCommand,
     CreateCommand,
+    LeaderBoardCommand,
     DelayModal,
+    OutreachService,
   ],
   exports: [BotService],
 })
