@@ -64,7 +64,7 @@ jobs:
         with:
           push: true
           context: .
-          file: backend.Dockerfile
+          file: Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
   build-deploy-frontend:
