@@ -73,12 +73,14 @@ export class TaskService {
       })
       .map((event) => event.id);
 
-    const deletedEvents = await this.db
-      .delete(event)
-      .where(inArray(event.id, deletedEventIds))
-      .returning({
-        count: sql<number>`COUNT(*)`.mapWith(Number),
-      });
+    const deletedEvents = deletedEventIds.length
+      ? await this.db
+          .delete(event)
+          .where(inArray(event.id, deletedEventIds))
+          .returning({
+            count: sql<number>`COUNT(*)`.mapWith(Number),
+          })
+      : [];
 
     const deletedEventCount = deletedEvents.at(0).count ?? 0;
 
