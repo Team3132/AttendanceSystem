@@ -43,10 +43,6 @@ export default defineConfig({
     //   template: "treemap", // "sunburst" | "treemap" | "network"
     // }) as Plugin,
   ],
-  build: {
-    outDir: "../backend/public/frontend",
-    emptyOutDir: true,
-  },
   server: {
     port: 4000,
     // https: {
