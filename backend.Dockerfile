@@ -5,6 +5,7 @@ COPY packages/backend/package.json packages/backend/tsconfig.json packages/backe
 
 FROM node:20-alpine as basefrontend
 WORKDIR /app
+COPY package.json yarn.lock tsconfig.json ./
 COPY packages/frontend/package.json packages/frontend/tsconfig.json packages/frontend/tsconfig.node.json packages/frontend/vite.config.ts packages/frontend/index.html ./packages/frontend/
 
 
