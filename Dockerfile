@@ -13,6 +13,7 @@ FROM basefrontend as buildfrontend
 WORKDIR /app
 RUN yarn front install --frozen-lockfile
 COPY packages/frontend/src ./packages/frontend/src
+ENV VITE_BACKEND_URL https://attendance.team3132.com/api
 RUN yarn front build
 
 FROM basebackend as buildbackend

@@ -187,7 +187,7 @@ export class EventController {
       return res
         .status(302)
         .cookie('redirectTo', req.originalUrl)
-        .redirect(`/auth/discord`);
+        .redirect(`/api/auth/discord`);
     } else {
       await this.eventService.verifyUserEventToken(eventId, userId, code);
 
