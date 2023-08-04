@@ -58,7 +58,12 @@ export class EventService {
 
     const currentDate = new Date();
 
-    const checkinTime = currentDate.toISOString();
+    const eventStartTime = new Date(fetchedEvent.startDate).getTime();
+
+    const checkinTime =
+      currentDate.getTime() <= eventStartTime
+        ? fetchedEvent.startDate
+        : currentDate.toISOString();
 
     const eventEndTime = new Date(fetchedEvent.endDate).getTime();
 
