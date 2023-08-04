@@ -64,6 +64,15 @@ export class EventService {
 
     const delay = eventEndTime - currentDate.getTime();
 
+    const existingRsvp = await this.db.query.rsvp.findFirst({
+      where: (rsvp, { and, eq }) =>
+        and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
+    });
+
+    if (existingRsvp.checkinTime !== null) {
+      throw new BadRequestException('User already checked in');
+    }
+
     const upsertedRsvp = await this.db
       .insert(rsvp)
       .values({
