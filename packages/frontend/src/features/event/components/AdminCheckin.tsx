@@ -7,7 +7,11 @@ import {
   IconButton,
   Spacer,
   Stack,
+  Stat,
   StatGroup,
+  StatHelpText,
+  StatLabel,
+  StatNumber,
 } from "@chakra-ui/react";
 import { useRef } from "react";
 import { MdFullscreen } from "react-icons/md";
@@ -31,6 +35,13 @@ export default function AdminCheckin(props: AdminCheckinProps) {
       {eventToken.isSuccess && (
         <Flex>
           <Spacer />
+          <Stat>
+            <StatLabel>Event Code</StatLabel>
+            <StatNumber>{eventToken.data.secret}</StatNumber>
+            <StatHelpText>
+              Enter this code on the website underneath event user checkin tab
+            </StatHelpText>
+          </Stat>
           <TotpQR eventId={event.id} secret={eventToken.data.secret} />
           <Spacer />
         </Flex>

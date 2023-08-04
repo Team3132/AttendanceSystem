@@ -14,13 +14,14 @@ import { event, rsvp, user } from '../drizzle/schema';
 import { eq } from 'drizzle-orm';
 import { RsvpUser } from './dto/rsvp-user.dto';
 import { v4 as uuid } from 'uuid';
+import randomStr from '@/utils/randomStr';
 
 @Injectable()
 export class EventService {
   constructor(@Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase) {}
 
   async createEvent(data: Omit<NewEvent, 'secret'>) {
-    const secret = uuid();
+    const secret = randomStr(8);
     const newEvent = await this.db
       .insert(event)
       .values({
