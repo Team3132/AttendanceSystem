@@ -45,32 +45,32 @@ function RSVPCell(rsvp: RsvpUser) {
   );
 }
 
-function AttendedCell(rsvp: RsvpUser) {
-  const editRsvp = useEditUserRSVP();
-  const rsvpStatus = useQuery<RsvpUser[], ApiError, RsvpUser | undefined>({
-    queryFn: () => api.event.getEventRsvps(rsvp.eventId),
-    queryKey: rsvpKeys.event(rsvp.eventId),
-    select: (data) => data.find((r) => r.id === rsvp.id),
-  });
+// function AttendedCell(rsvp: RsvpUser) {
+//   const editRsvp = useEditUserRSVP();
+//   const rsvpStatus = useQuery<RsvpUser[], ApiError, RsvpUser | undefined>({
+//     queryFn: () => api.event.getEventRsvps(rsvp.eventId),
+//     queryKey: rsvpKeys.event(rsvp.eventId),
+//     select: (data) => data.find((r) => r.id === rsvp.id),
+//   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.checked;
-    editRsvp.mutate({
-      rsvpId: rsvp.id,
-      rsvp: {
-        attended: value,
-      },
-    });
-  };
+//   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     const value = e.target.checked;
+//     editRsvp.mutate({
+//       rsvpId: rsvp.id,
+//       rsvp: {
+//         attended: value,
+//       },
+//     });
+//   };
 
-  return (
-    <Checkbox
-      onChange={handleChange}
-      isChecked={rsvpStatus.data?.attended ?? false}
-      disabled={editRsvp.isLoading}
-    />
-  );
-}
+//   return (
+//     <Checkbox
+//       onChange={handleChange}
+//       isChecked={rsvpStatus.data?.attended ?? false}
+//       disabled={editRsvp.isLoading}
+//     />
+//   );
+// }
 
 const columnHelper = createColumnHelper<RsvpUser>();
 
@@ -90,12 +90,12 @@ const columns = [
         // footer: "RSVP Status",
         cell: (props) => <RSVPCell {...props.row.original} />,
       }),
-      columnHelper.accessor("attended", {
-        id: "attended",
-        header: "Attended",
-        // footer: "Attended",
-        cell: (props) => <AttendedCell {...props.row.original} />,
-      }),
+      // columnHelper.accessor("attended", {
+      //   id: "attended",
+      //   header: "Attended",
+      //   // footer: "Attended",
+      //   cell: (props) => <AttendedCell {...props.row.original} />,
+      // }),
     ],
   }),
   columnHelper.group({
@@ -107,7 +107,7 @@ const columns = [
         // footer: "Updated At",
         cell: (props) =>
           DateTime.fromISO(props.getValue()).toLocaleString(
-            DateTime.DATETIME_MED
+            DateTime.DATETIME_MED,
           ),
       }),
       columnHelper.accessor("createdAt", {
@@ -116,7 +116,7 @@ const columns = [
         // footer: "Created At",
         cell: (props) =>
           DateTime.fromISO(props.getValue()).toLocaleString(
-            DateTime.DATETIME_MED
+            DateTime.DATETIME_MED,
           ),
       }),
     ],
@@ -177,7 +177,7 @@ export const RSVPList: React.FC<RSVPListProps> = ({ eventId }) => {
     if (!selected.length) return rsvps;
 
     return rsvps.filter((rsvp) =>
-      selected.every((v) => rsvp.user.roles.includes(v.value))
+      selected.every((v) => rsvp.user.roles.includes(v.value)),
     );
   }, [selected, rsvps]);
 

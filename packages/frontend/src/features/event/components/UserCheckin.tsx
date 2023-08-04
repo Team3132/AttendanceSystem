@@ -35,7 +35,7 @@ export default function UserCheckin(props: UserCheckinProps) {
 
   const onSubmit: SubmitHandler<FormFields> = async ({ token }) => {
     const checkinRes = await tokenCheckin.mutateAsync({ token });
-    if (checkinRes.attended) {
+    if (checkinRes.checkinTime) {
       toast({ status: "success", description: "Signed In!" });
     } else {
       toast({ status: "error", description: "Failed to mark attendance." });

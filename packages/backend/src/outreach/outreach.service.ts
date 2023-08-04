@@ -24,10 +24,10 @@ export class OutreachService {
      */
     const rsvps = await this.db
       .select({
-        userId: rsvp.userId,
         outreachHours: sql<number>`sum(extract(epoch from (${rsvp.checkoutTime} - ${rsvp.checkinTime})) / 3600)`,
         rank: sql<number>`rank() over (order by sum(extract(epoch from (${rsvp.checkoutTime} - ${rsvp.checkinTime})) / 3600) desc)`,
         username: user.username,
+        userId: user.id,
       })
       .from(rsvp)
       .where(
@@ -36,9 +36,9 @@ export class OutreachService {
           gte(rsvp.checkoutTime, sql`${lastApril25}`),
         ),
       )
-      .groupBy(rsvp.userId)
       .having(sql`count(*) > 0`)
-      .leftJoin(user, eq(rsvp.userId, user.id));
+      .leftJoin(user, eq(rsvp.userId, user.id))
+      .groupBy(user.id);
 
     return rsvps.map((singleData) => new LeaderboardDto(singleData));
   }

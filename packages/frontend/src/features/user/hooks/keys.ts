@@ -6,4 +6,6 @@ export const userKeys = {
   avatar: (id: string) => [...userKeys.avatars(), id] as const,
   outreachReports: () => [...userKeys.all, "outreachReports"] as const,
   outreachReport: (id: string) => [...userKeys.outreachReports(), id] as const,
+  pendingEvents: (userId: string) =>
+    [...userKeys.user(userId), "pendingEvents"] as const,
 };

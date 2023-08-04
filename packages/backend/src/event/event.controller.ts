@@ -185,7 +185,7 @@ export class EventController {
         .cookie('redirectTo', req.originalUrl)
         .redirect(`/api/auth/discord`);
     } else {
-      await this.eventService.verifyUserEventToken(eventId, userId, code);
+      await this.eventService.checkinUser(eventId, userId, code);
 
       return res
         .status(302)
@@ -209,12 +209,27 @@ export class EventController {
     @GetUser('id') userId: string,
   ): Promise<Rsvp[]> {
     const { code } = body;
-    const rsvp = await this.eventService.verifyUserEventToken(
+    const rsvp = await this.eventService.checkinUser(eventId, userId, code);
+    return rsvp;
+  }
+
+  @ApiCookieAuth()
+  @UseGuards(SessionGuard)
+  @ApiOperation({
+    description: "Checkout a user's RSVP",
+    operationId: 'checkoutUser',
+  })
+  @ApiCreatedResponse({ type: Rsvp })
+  @Post(':eventId/checkout')
+  async checkoutUser(
+    @Param('eventId') eventId: string,
+    @GetUser('id') userId: string,
+  ): Promise<Rsvp> {
+    const checkedOutRsvp = await this.eventService.checkoutUser(
       eventId,
       userId,
-      code,
     );
-    return rsvp;
+    return new Rsvp(checkedOutRsvp);
   }
 
   /**

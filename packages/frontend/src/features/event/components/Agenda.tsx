@@ -37,16 +37,16 @@ export const Agenda: React.FC<AgendaProps> = ({
   initialStartRange,
 }) => {
   const [startRange, setStartRange] = useState<DateTime>(
-    initialStartRange ?? DateTime.now()
+    initialStartRange ?? DateTime.now(),
   );
   const [endRange, setEndRange] = useState<DateTime>(
-    initialEndRange ?? DateTime.now().plus({ days: 7 })
+    initialEndRange ?? DateTime.now().plus({ days: 7 }),
   );
 
   const { data: events, isLoading } = useEvents(
     undefined,
     startRange,
-    endRange
+    endRange,
   );
 
   return (
@@ -111,7 +111,7 @@ export const Agenda: React.FC<AgendaProps> = ({
                   ?.sort(
                     (a, b) =>
                       DateTime.fromISO(a.startDate).toSeconds() -
-                      DateTime.fromISO(b.startDate).toSeconds()
+                      DateTime.fromISO(b.startDate).toSeconds(),
                   )
                   .map((event) => (
                     <LinkBox

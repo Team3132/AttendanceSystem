@@ -1,10 +1,10 @@
-import { Process, Processor } from '@nestjs/bull';
+import { OnQueueActive, Process, Processor } from '@nestjs/bull';
 import { Inject, Logger } from '@nestjs/common';
 import { Job } from 'bull';
 import { CheckoutActiveData } from './types/CheckoutActive';
-import { DRIZZLE_TOKEN, DrizzleDatabase } from '@/drizzle/drizzle.module';
+import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 import { rsvp } from '@/drizzle/schema';
-import { eq } from 'drizzle-orm';
+import { and, eq, isNull } from 'drizzle-orm';
 
 @Processor('event')
 export class EventProcessor {
@@ -30,6 +30,11 @@ export class EventProcessor {
       .set({
         checkoutTime,
       })
-      .where(eq(rsvp.id, rsvpId));
+      .where(and(eq(rsvp.id, rsvpId), isNull(rsvp.checkoutTime)));
+  }
+
+  @OnQueueActive()
+  onActive(job: Job<CheckoutActiveData>) {
+    this.logger.log(`Processing job ${job.id}`);
   }
 }

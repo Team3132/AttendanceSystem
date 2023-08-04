@@ -3,7 +3,6 @@ import { BotController } from './bot.controller';
 import { BotService } from './bot.service';
 import { RsvpButton } from './buttons/RsvpButton';
 import { RsvpsButton } from './buttons/RsvpsButton';
-import { CheckinCommand } from './commands/Checkin.command';
 import { CreateCommand } from './commands/Create.command';
 import { MeetingsCommand } from './commands/Meetings.command';
 import { RequestRsvpCommand } from './commands/RequestRsvp.command';
@@ -21,7 +20,6 @@ import { OutreachService } from '@/outreach/outreach.service';
     BotService,
     RsvpButton,
     RsvpsButton,
-    CheckinCommand,
     MeetingsCommand,
     RequestRsvpCommand,
     RsvpCommand,

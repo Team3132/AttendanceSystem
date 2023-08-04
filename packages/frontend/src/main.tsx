@@ -88,6 +88,10 @@ const router = createBrowserRouter([
             element: <ProfilePage />,
           },
           {
+            path: "active-events",
+            lazy: () => import("./features/user/pages/ActiveEventsPage"),
+          },
+          {
             path: "outreach",
             lazy: () => import("@/features/outreach/pages/Leaderboard"),
           },
@@ -120,6 +124,10 @@ const router = createBrowserRouter([
             path: "codes/:userId",
             element: <ScancodePage />,
           },
+          {
+            path: "active-events/:userId",
+            lazy: () => import("./features/user/pages/ActiveEventsPage"),
+          },
         ],
       },
     ],
@@ -135,6 +143,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <ReactQueryDevtools />
       </QueryClientProvider>
     </ErrorBoundary>
-  </ChakraProvider>
+  </ChakraProvider>,
   // </React.StrictMode>
 );

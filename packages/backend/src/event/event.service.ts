@@ -47,7 +47,7 @@ export class EventService {
     return deletedEvents.at(0);
   }
 
-  async verifyUserEventToken(eventId: string, userId: string, token: string) {
+  async checkinUser(eventId: string, userId: string, token: string) {
     const fetchedEvent = await this.db.query.event.findFirst({
       where: (event, { eq }) => eq(event.id, eventId),
     });
@@ -99,6 +99,37 @@ export class EventService {
     }
 
     return upsertedRsvp;
+  }
+
+  async checkoutUser(eventId: string, userId: string) {
+    const currentDate = new Date();
+
+    const checkoutTime = currentDate.toISOString();
+
+    const checkedInRsvp = await this.db.query.rsvp.findFirst({
+      where: (rsvp, { and, eq }) =>
+        and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
+    });
+
+    if (!checkedInRsvp) throw new NotFoundException('No RSVP found');
+
+    if (checkedInRsvp.checkoutTime) {
+      throw new BadRequestException('User already checked out');
+    }
+
+    const updatedRsvp = await this.db
+      .update(rsvp)
+      .set({
+        checkoutTime,
+      })
+      .where(eq(rsvp.id, checkedInRsvp.id))
+      .returning();
+
+    const firstUpdated = updatedRsvp.at(0);
+
+    if (!firstUpdated) throw new NotFoundException('No RSVP found');
+
+    return firstUpdated;
   }
 
   async getEventUserRsvps(eventId: string): Promise<RsvpUser[]> {

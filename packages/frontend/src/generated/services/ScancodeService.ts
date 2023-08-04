@@ -18,7 +18,7 @@ export class ScancodeService {
    * @throws ApiError
    */
   public getScancode(
-    requestBody: CreateScancodeDto
+    requestBody: CreateScancodeDto,
   ): CancelablePromise<Scancode> {
     return this.httpRequest.request({
       method: "POST",

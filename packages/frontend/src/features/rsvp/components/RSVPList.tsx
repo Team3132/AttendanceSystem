@@ -28,12 +28,12 @@ const columns = [
           return readableStatus(getValue<RsvpUser.status>());
         },
       }),
-      columnHelper.accessor("attended", {
-        id: "attended",
-        header: "Attended",
-        // footer: "Attended",
-        cell: (props) => (props.getValue() ? "Yes" : "No"),
-      }),
+      // columnHelper.accessor("attended", {
+      //   id: "attended",
+      //   header: "Attended",
+      //   // footer: "Attended",
+      //   cell: (props) => (props.getValue() ? "Yes" : "No"),
+      // }),
     ],
   }),
   columnHelper.group({
@@ -45,7 +45,7 @@ const columns = [
         // footer: "Updated At",
         cell: (props) =>
           DateTime.fromISO(props.getValue()).toLocaleString(
-            DateTime.DATETIME_MED
+            DateTime.DATETIME_MED,
           ),
       }),
       columnHelper.accessor("createdAt", {
@@ -54,7 +54,7 @@ const columns = [
         // footer: "Created At",
         cell: (props) =>
           DateTime.fromISO(props.getValue()).toLocaleString(
-            DateTime.DATETIME_MED
+            DateTime.DATETIME_MED,
           ),
       }),
     ],
@@ -115,7 +115,7 @@ export const RSVPList: React.FC<RSVPListProps> = ({ eventId }) => {
     if (!selected.length) return rsvps;
 
     return rsvps.filter((rsvp) =>
-      selected.every((v) => rsvp.user.roles.includes(v.value))
+      selected.every((v) => rsvp.user.roles.includes(v.value)),
     );
   }, [selected, rsvps]);
 

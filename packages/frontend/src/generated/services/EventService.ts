@@ -29,7 +29,7 @@ export class EventService {
   public getEvents(
     from?: string,
     to?: string,
-    take?: number
+    take?: number,
   ): CancelablePromise<Array<EventResponseType>> {
     return this.httpRequest.request({
       method: "GET",
@@ -49,7 +49,7 @@ export class EventService {
    * @throws ApiError
    */
   public createEvent(
-    requestBody: CreateEventDto
+    requestBody: CreateEventDto,
   ): CancelablePromise<EventResponseType> {
     return this.httpRequest.request({
       method: "POST",
@@ -84,7 +84,7 @@ export class EventService {
    */
   public updateEvent(
     id: string,
-    requestBody: UpdateEventDto
+    requestBody: UpdateEventDto,
   ): CancelablePromise<EventResponseType> {
     return this.httpRequest.request({
       method: "PATCH",
@@ -138,7 +138,7 @@ export class EventService {
    */
   public getEventSecretCallback(
     code: string,
-    eventId: string
+    eventId: string,
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: "GET",
@@ -161,7 +161,7 @@ export class EventService {
    */
   public scanintoEvent(
     eventId: string,
-    requestBody: TokenCheckinDto
+    requestBody: TokenCheckinDto,
   ): CancelablePromise<Rsvp> {
     return this.httpRequest.request({
       method: "POST",
@@ -171,6 +171,22 @@ export class EventService {
       },
       body: requestBody,
       mediaType: "application/json",
+    });
+  }
+
+  /**
+   * Checkout a user's RSVP
+   * @param eventId
+   * @returns Rsvp
+   * @throws ApiError
+   */
+  public checkoutUser(eventId: string): CancelablePromise<Rsvp> {
+    return this.httpRequest.request({
+      method: "POST",
+      url: "/api/event/{eventId}/checkout",
+      path: {
+        eventId: eventId,
+      },
     });
   }
 
@@ -199,7 +215,7 @@ export class EventService {
    */
   public setEventRsvp(
     eventId: string,
-    requestBody: UpdateOrCreateRSVP
+    requestBody: UpdateOrCreateRSVP,
   ): CancelablePromise<Rsvp> {
     return this.httpRequest.request({
       method: "POST",
@@ -237,7 +253,7 @@ export class EventService {
    */
   public scaninEvent(
     eventId: string,
-    requestBody: ScaninDto
+    requestBody: ScaninDto,
   ): CancelablePromise<Rsvp> {
     return this.httpRequest.request({
       method: "POST",

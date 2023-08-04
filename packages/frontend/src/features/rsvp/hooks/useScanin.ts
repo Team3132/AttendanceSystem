@@ -11,6 +11,6 @@ export default function useScanin() {
       onSuccess: (data, { eventId }) => {
         queryClient.invalidateQueries(rsvpKeys.event(eventId));
       },
-    }
+    },
   );
 }

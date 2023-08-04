@@ -75,7 +75,7 @@ export default function EventDetails() {
                       month: "short",
                       day: "numeric",
                     }
-                  : DateTime.DATETIME_MED
+                  : DateTime.DATETIME_MED,
               )}
             </StatNumber>
           </Stat>
@@ -90,7 +90,7 @@ export default function EventDetails() {
                       month: "short",
                       day: "numeric",
                     }
-                  : DateTime.DATETIME_MED
+                  : DateTime.DATETIME_MED,
               )}
             </StatNumber>
           </Stat>
