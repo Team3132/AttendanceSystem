@@ -3616,11 +3616,11 @@
     ws "8.13.0"
 
 "@nestjs/schedule@^3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@nestjs/schedule/-/schedule-3.0.1.tgz#a736e982bf935ca12e07aebe2a3aaafd611639da"
-  integrity sha512-4CAFu4rE/QPYnz/icRg3GiuLmY1bXopG8bWTJ9d7bXzaHBaPKIjGvZ20wsK8P+MncrVCkmK0iYhQrNj0cwX9+A==
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@nestjs/schedule/-/schedule-3.0.2.tgz#0be6ff93adfedf081b216a2c69a70ea69a6acf78"
+  integrity sha512-INhpzkyquosLbVrXx4v+rfAnomwBTgKQvs7e9BZ2LSZdWQOqCQD2PmvWDiu8c4wdJIH6wcWQh98w5KxIcKuVBA==
   dependencies:
-    cron "2.3.1"
+    cron "2.4.0"
     uuid "9.0.0"
 
 "@nestjs/schematics@^10.0.0", "@nestjs/schematics@^10.0.1":
@@ -4034,47 +4034,47 @@
   dependencies:
     remove-accents "0.4.2"
 
-"@tanstack/query-core@4.32.1":
-  version "4.32.1"
-  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-4.32.1.tgz#6e364c33433b61f4dcef003725d4208e42b23860"
-  integrity sha512-VEAGHboOFWN/bvf/7cCoeLQfld0AA8n0V/kfc77W+FvxnnSwJufEh6gfjqpX5bRE/DEYfYDYdNtuL3KM+lIs8Q==
+"@tanstack/query-core@4.32.5":
+  version "4.32.5"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-4.32.5.tgz#1c9da404ba4906c35b3998ba03ea4ab44019750c"
+  integrity sha512-UOxiDYmzYWD21ASIUnW3w+Nq3LcW1BPFFfIyZOor6UsRl76KGLlvUhJ402/dof1JxcQFPK7nZ5iUGPVqLiT8zg==
 
-"@tanstack/query-persist-client-core@4.32.1":
-  version "4.32.1"
-  resolved "https://registry.yarnpkg.com/@tanstack/query-persist-client-core/-/query-persist-client-core-4.32.1.tgz#b202c8ae1cb30a0fbaa72c418ca4b9df416029f6"
-  integrity sha512-KgnkNigmOMi2aikxdhCRe0MaAh1Dq94/nNjmcSxfflj9L3v4F9tEQAig/F7m2+jethP1AiIYBax5nN4aqm7NFg==
+"@tanstack/query-persist-client-core@4.32.5":
+  version "4.32.5"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-persist-client-core/-/query-persist-client-core-4.32.5.tgz#a1dfe90e2246a326c2f83a0736e2569f7de63ad2"
+  integrity sha512-+fxI9QcR8SbWoBjdnbB6M+Xbv381w0ygm4kKRLz/QKfNVMm8uTcAVz9lbnKyDO9AJ0rB8h7ps5IKGvdH0szzHA==
   dependencies:
-    "@tanstack/query-core" "4.32.1"
+    "@tanstack/query-core" "4.32.5"
 
 "@tanstack/query-sync-storage-persister@^4.22.0":
-  version "4.32.1"
-  resolved "https://registry.yarnpkg.com/@tanstack/query-sync-storage-persister/-/query-sync-storage-persister-4.32.1.tgz#75162052823910d80398318c3a84d718416c0e92"
-  integrity sha512-kqE+L0uSzVMuPpY8iKtnyZexsZ5IxsJbgiI4s+m+FB8Dzn+5go3snpZIYMQu36S+sWy0N90P2xNR57EOaFMlsg==
+  version "4.32.5"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-sync-storage-persister/-/query-sync-storage-persister-4.32.5.tgz#145289db6ac88123232126dcc71021c4b013d969"
+  integrity sha512-dNCMJP3YFq/K+CiHkf3jviTEuhuUA3LKjYDlyW9Eb5ozEE++Wt4tGVsAuWnG/s3GuTutnlNVdjCXHUI1G9Tbow==
   dependencies:
-    "@tanstack/query-persist-client-core" "4.32.1"
+    "@tanstack/query-persist-client-core" "4.32.5"
 
 "@tanstack/react-query-devtools@^4.27.0":
-  version "4.32.1"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-query-devtools/-/react-query-devtools-4.32.1.tgz#99ab4448fd9397b40e88ed07dcfc48ff899ca7de"
-  integrity sha512-/ZgxCfGXLIXUvaIRzrNCP+C4iv1bIleNzXCjGKFZ4qKEifnv5A/SpWE2dG4SBjqXVlIkMAP82lesfoHcsOm+zg==
+  version "4.32.5"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query-devtools/-/react-query-devtools-4.32.5.tgz#c859c3a812f52f32b6750fcaf921919746083de4"
+  integrity sha512-4JJjf8M2Q3X0fs5GTzq3DvVemeyEw1ASiFdAyVxuMCh8D4m45aqNMuYGsRTNVN2JMNnuLaBKctSB8t0iTNIEZQ==
   dependencies:
     "@tanstack/match-sorter-utils" "^8.7.0"
     superjson "^1.10.0"
     use-sync-external-store "^1.2.0"
 
 "@tanstack/react-query-persist-client@^4.23.0":
-  version "4.32.1"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-query-persist-client/-/react-query-persist-client-4.32.1.tgz#d6a3e9399a494a1aca9270d953c14d9239e19291"
-  integrity sha512-HtfhSOyMSjdASpPXWBWv9JquUk5b8HjOwbFVmtA8xIDFQm9qS35PikXO2YbBXhuz/LEknRhct/M3PMI/XkRQSg==
+  version "4.32.5"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query-persist-client/-/react-query-persist-client-4.32.5.tgz#9af6ed70e4c7c28450ca57b50afa1a070e3b700d"
+  integrity sha512-vq5onulghFAl5G0MXJUkeK7SRkUN/QSdJYpJYCemGYayFlmZxQOo6fF3fyn9xnZowvUdufCsCoXWgQf5duIW1A==
   dependencies:
-    "@tanstack/query-persist-client-core" "4.32.1"
+    "@tanstack/query-persist-client-core" "4.32.5"
 
 "@tanstack/react-query@^4.26.0":
-  version "4.32.1"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-4.32.1.tgz#8ba6ab4e0ee4513a0fe06f4452f1b400eb4f91fb"
-  integrity sha512-lPTfOq6bR6DorPaS018gTMd3zs8r06tlERiVY6BRP9SnDkkl4ckqeANava/jPLWrSZP+EA15loQUTmvZs6k2GA==
+  version "4.32.5"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-4.32.5.tgz#666abcf6cbeb8475e44f91a4279302f69b2f4ee9"
+  integrity sha512-4tR0GxyyKhLpYvbglOGpWVqHS+t3bs7yy89DuTgJvnKLnaS5UW2sbfAzlV9JtwL7s5Z8eW2q2EDMcAtutb0lAw==
   dependencies:
-    "@tanstack/query-core" "4.32.1"
+    "@tanstack/query-core" "4.32.5"
     use-sync-external-store "^1.2.0"
 
 "@tanstack/react-table@^8.7.6":
@@ -5963,6 +5963,7 @@ create-require@^1.1.0:
   resolved "https://registry.yarnpkg.com/create-require/-/create-require-1.1.1.tgz#c1d7e8f1e5f6cfc9ff65f9cd352d37348756c333"
   integrity sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==
 
+<<<<<<< HEAD
 cron-parser@^4.2.1:
   version "4.8.1"
   resolved "https://registry.yarnpkg.com/cron-parser/-/cron-parser-4.8.1.tgz#47062ea63d21d78c10ddedb08ea4c5b6fc2750fb"
@@ -5974,6 +5975,12 @@ cron@2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/cron/-/cron-2.3.1.tgz#71caa566ffef60ada9183b8677df4afa9a214ad7"
   integrity sha512-1eRRlIT0UfIqauwbG9pkg3J6CX9A6My2ytJWqAXoK0T9oJnUZTzGBNPxao0zjodIbPgf8UQWjE62BMb9eVllSQ==
+=======
+cron@2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/cron/-/cron-2.4.0.tgz#bdb2fcf896c072ba9dbc2f932ccd6daf3ad243b5"
+  integrity sha512-Cx77ic1TyIAtUggr0oAhtS8MLzPBUqGNIvdDM7jE3oFIxfe8LXWI9q3iQN/H2CebAiMir53LQKWOhEKnzkJTAQ==
+>>>>>>> 5eac72b (Update all non-major dependencies)
   dependencies:
     luxon "^3.2.1"
 
@@ -11920,9 +11927,9 @@ v8-to-istanbul@^9.0.1:
     convert-source-map "^1.6.0"
 
 validator@^13.7.0, validator@^13.9.0:
-  version "13.9.0"
-  resolved "https://registry.yarnpkg.com/validator/-/validator-13.9.0.tgz#33e7b85b604f3bbce9bb1a05d5c3e22e1c2ff855"
-  integrity sha512-B+dGG8U3fdtM0/aNK4/X8CXq/EcxU2WPrPEkJGslb47qyHsxmbggTWK0yEA4qnYVNF+nxNlN88o14hIcPmSIEA==
+  version "13.11.0"
+  resolved "https://registry.yarnpkg.com/validator/-/validator-13.11.0.tgz#23ab3fd59290c61248364eabf4067f04955fbb1b"
+  integrity sha512-Ii+sehpSfZy+At5nPdnyMhx78fEoPDkR2XW/zimHEL3MyGJQOCQ7WeP20jPYRz7ZCpcKLB21NxuXHF3bxjStBQ==
 
 vary@^1, vary@~1.1.2:
   version "1.1.2"
