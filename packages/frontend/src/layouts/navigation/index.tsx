@@ -111,6 +111,9 @@ export default function Navigation({ isAuthenticated, isAdmin }: NavProps) {
               <MenuItem as={Link} to="/codes">
                 Codes
               </MenuItem>
+              <MenuItem as={Link} to="/active-events">
+                Active Events
+              </MenuItem>
               <MenuItem
                 as="a"
                 href={`${import.meta.env.VITE_BACKEND_URL}/auth/logout`}
