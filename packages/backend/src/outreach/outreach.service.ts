@@ -1,7 +1,7 @@
 import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 import { Inject, Injectable } from '@nestjs/common';
-import { event, rsvp, user } from '../drizzle/schema';
-import { and, desc, eq, gte, lte, sql } from 'drizzle-orm';
+import { rsvp, user } from '../drizzle/schema';
+import { and, eq, gte, isNotNull, sql } from 'drizzle-orm';
 import { LeaderboardDto } from './dto/LeaderboardDto';
 import { DateTime } from 'luxon';
 
@@ -14,33 +14,53 @@ export class OutreachService {
    * @returns A list of student outreach leaders and their respective outreach points
    */
   public async getOutreachLeaderBoard() {
-    const lastApril25OfThisYear = `'${new Date().getFullYear()}-04-25'`;
+    /**
+     * Get the last april 25, either this year or last year
+     */
+    const lastApril25 = getLastApril25().toISODate();
 
+    /**
+     * Get all rsvps that are checked in and checked out (query)
+     */
     const rsvps = await this.db
       .select({
-        outreachHours: sql<number>`SUM(ROUND(EXTRACT(EPOCH FROM (${event.endDate} - ${event.startDate}) ) / 3600, 2)) as outreachHours`,
-        userId: user.id,
+        userId: rsvp.userId,
+        outreachHours: sql<number>`sum(extract(epoch from (${rsvp.checkoutTime} - ${rsvp.checkinTime})) / 3600)`,
+        rank: sql<number>`rank() over (order by sum(extract(epoch from (${rsvp.checkoutTime} - ${rsvp.checkinTime})) / 3600) desc)`,
         username: user.username,
-        rank: sql<number>`ROW_NUMBER() OVER (ORDER BY SUM(ROUND(EXTRACT(EPOCH FROM (${event.endDate} - ${event.startDate}) ) / 3600, 2)) DESC) as index`,
       })
       .from(rsvp)
-      .leftJoin(event, eq(rsvp.eventId, event.id))
       .where(
         and(
-          and(eq(event.type, 'Outreach'), eq(rsvp.status, 'YES')),
-          and(
-            gte(event.endDate, lastApril25OfThisYear),
-            lte(event.endDate, DateTime.local().toISO()),
-          ),
+          and(isNotNull(rsvp.checkinTime), isNotNull(rsvp.checkoutTime)),
+          gte(rsvp.checkoutTime, sql`${lastApril25}`),
         ),
       )
-      .leftJoin(user, eq(rsvp.userId, user.id))
-      .groupBy(user.id)
-      .orderBy(desc(sql`outreachHours`))
-      .having(
-        sql`SUM(ROUND(EXTRACT(EPOCH FROM (${event.endDate} - ${event.startDate}) ) / 3600, 2)) > 0`,
-      );
+      .groupBy(rsvp.userId)
+      .having(sql`count(*) > 0`)
+      .leftJoin(user, eq(rsvp.userId, user.id));
 
     return rsvps.map((singleData) => new LeaderboardDto(singleData));
   }
+}
+
+function getLastApril25() {
+  const today = DateTime.local();
+  const thisYear = today.year;
+  const lastYear = thisYear - 1;
+
+  // Loop from the current year to the previous year
+  for (let year = thisYear; year >= lastYear; year--) {
+    // Create a DateTime object for April 25th of the current year in the loop
+    const dateToCheck = DateTime.fromObject({ year, month: 4, day: 25 });
+
+    // If the date is in the future, skip to the next year
+    if (dateToCheck > today) {
+      continue;
+    }
+
+    return dateToCheck;
+  }
+
+  return null; // Return null if no valid date is found in the given range
 }
