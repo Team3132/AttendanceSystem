@@ -400,4 +400,29 @@ export class UserController {
 
     return deletedScancode;
   }
+
+  @ApiOperation({
+    description: 'Get the currently pending RSVPs of the logged in user.',
+    operationId: 'getMePendingRSVPs',
+  })
+  @ApiOkResponse({ type: [Rsvp] })
+  @Get('me/rsvp/pending')
+  async mePendingRSVP(@GetUser('id') id: Express.User['id']) {
+    const pendingRsvps = await this.userService.activeRsvps(id);
+
+    return pendingRsvps.map((rsvp) => new Rsvp(rsvp));
+  }
+
+  @ApiOperation({
+    description: 'Get the currently pending RSVPs of the specified user.',
+    operationId: 'getUserPendingRSVPs',
+  })
+  @ApiOkResponse({ type: [Rsvp] })
+  @Roles(['MENTOR'])
+  @Get(':id/rsvp/pending')
+  async userPendingRSVPs(@Param('id') userId: string) {
+    const pendingRsvps = await this.userService.activeRsvps(userId);
+
+    return pendingRsvps.map((rsvp) => new Rsvp(rsvp));
+  }
 }
