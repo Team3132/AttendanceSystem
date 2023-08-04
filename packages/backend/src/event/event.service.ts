@@ -49,30 +49,7 @@ export class EventService {
     const isValid = fetchedEvent.secret === token;
     if (!isValid) throw new BadRequestException('Code not valid');
 
-    // const rsvp = this.rsvpService.upsertRSVP({
-    //   where: {
-    //     eventId_userId: {
-    //       eventId,
-    //       userId,
-    //     },
-    //   },
-    //   update: {
-    //     attended: true,
-    //   },
-    //   create: {
-    //     attended: true,
-    //     event: {
-    //       connect: {
-    //         id: eventId,
-    //       },
-    //     },
-    //     user: {
-    //       connect: {
-    //         id: userId,
-    //       },
-    //     },
-    //   },
-    // });
+    const checkinTime = new Date().toISOString();
 
     const upsertedRsvp = await this.db
       .insert(rsvp)
@@ -80,12 +57,12 @@ export class EventService {
         id: uuid(),
         eventId,
         userId,
-        attended: true,
+        checkinTime,
       })
       .onConflictDoUpdate({
         target: [rsvp.eventId, rsvp.userId],
         set: {
-          attended: true,
+          checkinTime,
         },
       })
       .returning();
@@ -108,7 +85,8 @@ export class EventService {
         eventId: rsvp.eventId,
         createdAt: rsvp.createdAt,
         updatedAt: rsvp.updatedAt,
-        attended: rsvp.attended,
+        checkinTime: rsvp.checkinTime,
+        checkoutTime: rsvp.checkoutTime,
       })
       .from(rsvp)
       .where(eq(rsvp.eventId, eventId))

@@ -69,42 +69,19 @@ export class CheckinCommand {
     const isValid = token === fetchedEvent.secret;
     if (!isValid) throw new BadRequestException('Code not valid');
 
-    // const rsvp = this.db.rSVP.upsert({
-    //   where: {
-    //     eventId_userId: {
-    //       eventId,
-    //       userId,
-    //     },
-    //   },
-    //   update: {
-    //     attended: true,
-    //   },
-    //   create: {
-    //     attended: true,
-    //     event: {
-    //       connect: {
-    //         id: eventId,
-    //       },
-    //     },
-    //     user: {
-    //       connect: {
-    //         id: userId,
-    //       },
-    //     },
-    //   },
-    // });
+    const checkinTime = new Date().toISOString();
 
     const newRSVP = await this.db
       .insert(rsvp)
       .values({
         id: uuid(),
         eventId,
-        attended: true,
+        checkinTime,
         userId,
       })
       .onConflictDoUpdate({
         set: {
-          attended: true,
+          checkinTime,
         },
         target: [rsvp.eventId, rsvp.userId],
       });

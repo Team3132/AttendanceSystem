@@ -40,22 +40,7 @@ export class RsvpService {
 
     const { userId } = scancode;
 
-    // const rsvp = this.prismaService.rSVP.upsert({
-    //   where: {
-    //     eventId_userId: {
-    //       eventId,
-    //       userId,
-    //     },
-    //   },
-    //   update: {
-    //     attended: true,
-    //   },
-    //   create: {
-    //     attended: true,
-    //     eventId,
-    //     userId,
-    //   },
-    // });
+    const checkinTime = new Date().toISOString();
 
     const updatedRsvp = await this.db
       .insert(rsvp)
@@ -63,11 +48,11 @@ export class RsvpService {
         id: uuid(),
         eventId,
         userId,
-        attended: true,
+        checkinTime,
       })
       .onConflictDoUpdate({
         set: {
-          attended: true,
+          checkinTime,
         },
         target: [rsvp.eventId, rsvp.userId],
       })

@@ -52,6 +52,7 @@ export const rsvp = pgTable(
     userId: text('userId')
       .notNull()
       .references(() => user.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
+    delay: integer('delay'),
     createdAt: timestamp('createdAt', {
       precision: 3,
       mode: 'string',
@@ -67,8 +68,22 @@ export const rsvp = pgTable(
       .defaultNow()
       .notNull(),
     status: rsvpStatus('status'),
-    attended: boolean('attended').default(false).notNull(),
-    delay: integer('delay'),
+    /**
+     * The time that the user checks into the event
+     */
+    checkinTime: timestamp('checkinTime', {
+      precision: 3,
+      mode: 'string',
+      withTimezone: true,
+    }),
+    /**
+     * The time that the user checks out of the event
+     */
+    checkoutTime: timestamp('checkoutTime', {
+      precision: 3,
+      mode: 'string',
+      withTimezone: true,
+    }),
   },
   (table) => {
     return {

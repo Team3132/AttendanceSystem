@@ -21,7 +21,9 @@ export class Rsvp implements DrizzleRsvp {
   @ApiProperty()
   updatedAt: string;
   @ApiProperty()
-  attended: boolean;
+  checkinTime: string | null;
+  @ApiProperty()
+  checkoutTime: string | null;
 
   constructor(rsvp: DrizzleRsvp) {
     Object.assign(this, rsvp);
