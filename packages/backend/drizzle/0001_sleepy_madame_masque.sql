@@ -4,7 +4,7 @@ ALTER TABLE "RSVP" DROP CONSTRAINT "RSVP_eventId_fkey";
 --> statement-breakpoint
 ALTER TABLE "Scancode" DROP CONSTRAINT "Scancode_userId_fkey";
 --> statement-breakpoint
-DROP TABLE "_prisma_migrations";--> statement-breakpoint
+DROP TABLE IF EXISTS "_prisma_migrations" ;--> statement-breakpoint
 DROP INDEX IF EXISTS "User_calendarSecret_key";--> statement-breakpoint
 ALTER TABLE "User" ALTER COLUMN "createdAt" SET DATA TYPE timestamp (3);--> statement-breakpoint
 ALTER TABLE "User" ALTER COLUMN "createdAt" SET DEFAULT now();--> statement-breakpoint
