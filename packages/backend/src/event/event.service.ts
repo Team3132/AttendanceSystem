@@ -15,10 +15,17 @@ import { eq } from 'drizzle-orm';
 import { RsvpUser } from './dto/rsvp-user.dto';
 import { v4 as uuid } from 'uuid';
 import randomStr from '@/utils/randomStr';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
+import { CheckoutActiveData } from './types/CheckoutActive';
 
 @Injectable()
 export class EventService {
-  constructor(@Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase) {}
+  constructor(
+    @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
+    @InjectQueue('event')
+    private readonly eventQueue: Queue<CheckoutActiveData>,
+  ) {}
 
   async createEvent(data: Omit<NewEvent, 'secret'>) {
     const secret = randomStr(8);
@@ -49,7 +56,13 @@ export class EventService {
     const isValid = fetchedEvent.secret === token;
     if (!isValid) throw new BadRequestException('Code not valid');
 
-    const checkinTime = new Date().toISOString();
+    const currentDate = new Date();
+
+    const checkinTime = currentDate.toISOString();
+
+    const eventEndTime = new Date(fetchedEvent.endDate).getTime();
+
+    const delay = eventEndTime - currentDate.getTime();
 
     const upsertedRsvp = await this.db
       .insert(rsvp)
@@ -66,6 +79,24 @@ export class EventService {
         },
       })
       .returning();
+
+    const firstResult = upsertedRsvp.at(0);
+
+    if (firstResult) {
+      await this.eventQueue.add(
+        'checkoutActive',
+        {
+          eventId,
+          rsvpId: firstResult.id,
+        },
+        {
+          delay,
+          jobId: firstResult.id,
+          removeOnComplete: true,
+          removeOnFail: true,
+        },
+      );
+    }
 
     return upsertedRsvp;
   }
