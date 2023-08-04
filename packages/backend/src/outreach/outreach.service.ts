@@ -38,7 +38,10 @@ export class OutreachService {
       )
       .having(sql`count(*) > 0`)
       .leftJoin(user, eq(rsvp.userId, user.id))
-      .groupBy(user.id);
+      .groupBy(user.id)
+      .orderBy(
+        sql`sum(extract(epoch from (${rsvp.checkoutTime} - ${rsvp.checkinTime})) / 3600) desc`,
+      );
 
     return rsvps.map((singleData) => new LeaderboardDto(singleData));
   }
