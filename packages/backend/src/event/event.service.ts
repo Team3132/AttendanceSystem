@@ -74,6 +74,40 @@ export class EventService {
         and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
     });
 
+    if (!existingRsvp) {
+      const newRsvp = await this.db
+        .insert(rsvp)
+        .values({
+          id: uuid(),
+          userId,
+          eventId,
+          checkinTime,
+        })
+        .returning();
+
+      const firstNewRsvp = newRsvp.at(0);
+
+      if (!firstNewRsvp) {
+        throw new BadRequestException('Error creating RSVP');
+      }
+
+      await this.eventQueue.add(
+        'checkoutActive',
+        {
+          eventId,
+          rsvpId: firstNewRsvp.id,
+        },
+        {
+          delay,
+          jobId: firstNewRsvp.id,
+          removeOnComplete: true,
+          removeOnFail: true,
+        },
+      );
+
+      return firstNewRsvp;
+    }
+
     if (existingRsvp.checkinTime !== null) {
       throw new BadRequestException('User already checked in');
     }
