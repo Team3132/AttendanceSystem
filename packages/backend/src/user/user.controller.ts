@@ -410,7 +410,7 @@ export class UserController {
   async mePendingRSVP(@GetUser('id') id: Express.User['id']) {
     const pendingRsvps = await this.userService.activeRsvps(id);
 
-    return pendingRsvps.map((rsvp) => new Rsvp(rsvp));
+    return pendingRsvps.map((rsvp) => new Rsvp(rsvp.RSVP));
   }
 
   @ApiOperation({
@@ -423,6 +423,6 @@ export class UserController {
   async userPendingRSVPs(@Param('id') userId: string) {
     const pendingRsvps = await this.userService.activeRsvps(userId);
 
-    return pendingRsvps.map((rsvp) => new Rsvp(rsvp));
+    return pendingRsvps.map((rsvp) => new Rsvp(rsvp.RSVP));
   }
 }
