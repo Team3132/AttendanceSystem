@@ -18,13 +18,15 @@ interface TotpQR extends BoxProps {
 
 export default function TotpQR({ secret, eventId, ...rest }: TotpQR) {
   return (
-    <Flex p={2} bgColor="white" borderRadius={"lg"} justifyContent={"center"}>
-      <QRCode
-        value={`${
-          import.meta.env.VITE_BACKEND_URL
-        }/event/${eventId}/token/callback?code=${secret}`}
-        level="Q"
-      />
+    <Flex justifyContent={"center"}>
+      <Box p={2} bgColor="white" borderRadius={"lg"}>
+        <QRCode
+          value={`${
+            import.meta.env.VITE_BACKEND_URL
+          }/event/${eventId}/token/callback?code=${secret}`}
+          level="Q"
+        />
+      </Box>
     </Flex>
   );
 }
