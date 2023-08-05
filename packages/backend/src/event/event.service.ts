@@ -146,7 +146,7 @@ export class EventService {
       );
     }
 
-    return upsertedRsvp;
+    return firstResult;
   }
 
   async checkoutUser(eventId: string, userId: string) {

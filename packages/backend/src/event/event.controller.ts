@@ -207,10 +207,10 @@ export class EventController {
     @Body() body: TokenCheckinDto,
     @Param('eventId') eventId: string,
     @GetUser('id') userId: string,
-  ): Promise<Rsvp[]> {
+  ): Promise<Rsvp> {
     const { code } = body;
     const rsvp = await this.eventService.checkinUser(eventId, userId, code);
-    return rsvp;
+    return new Rsvp(rsvp);
   }
 
   @ApiCookieAuth()
