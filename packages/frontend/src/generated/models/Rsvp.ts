@@ -8,10 +8,11 @@ export type Rsvp = {
   eventId: string;
   userId: string;
   status: Rsvp.status | null;
-  delay: Record<string, any> | null;
+  delay: number | null;
   createdAt: string;
   updatedAt: string;
-  attended: boolean;
+  checkinTime: string | null;
+  checkoutTime: string | null;
 };
 
 export namespace Rsvp {

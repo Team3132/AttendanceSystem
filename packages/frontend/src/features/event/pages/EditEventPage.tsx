@@ -71,7 +71,7 @@ export function Component() {
       const existingEventData = {
         ...event,
         startDate: DateTime.fromISO(event.startDate).toFormat(
-          dateTimeLocalFormat
+          dateTimeLocalFormat,
         ),
         endDate: DateTime.fromISO(event.endDate).toFormat(dateTimeLocalFormat),
       } satisfies UpdateEventDtoForm;

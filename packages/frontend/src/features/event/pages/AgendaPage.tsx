@@ -28,13 +28,13 @@ import useEvents from "../hooks/useEvents";
 export default function AgendaPage() {
   const [startRange, setStartRange] = useState<DateTime>(DateTime.now());
   const [endRange, setEndRange] = useState<DateTime>(
-    DateTime.now().plus({ days: 7 })
+    DateTime.now().plus({ days: 7 }),
   );
 
   const { data: events, isLoading } = useEvents(
     undefined,
     startRange,
-    endRange
+    endRange,
   );
 
   return (
@@ -99,7 +99,7 @@ export default function AgendaPage() {
                   ?.sort(
                     (a, b) =>
                       DateTime.fromISO(a.startDate).toSeconds() -
-                      DateTime.fromISO(b.startDate).toSeconds()
+                      DateTime.fromISO(b.startDate).toSeconds(),
                   )
                   .map((event) => (
                     <LinkBox

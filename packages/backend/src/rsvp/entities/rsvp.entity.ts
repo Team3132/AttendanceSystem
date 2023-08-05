@@ -14,14 +14,16 @@ export class Rsvp implements DrizzleRsvp {
   userId: string;
   @ApiProperty({ enum: rsvpStatus.enumValues, nullable: true })
   status: RSVPStatus | null;
-  @ApiProperty({ nullable: true })
+  @ApiProperty({ nullable: true, type: Number })
   delay: number | null;
   @ApiProperty()
   createdAt: string;
   @ApiProperty()
   updatedAt: string;
-  @ApiProperty()
-  attended: boolean;
+  @ApiProperty({ nullable: true, format: 'date-time', type: String })
+  checkinTime: string | null;
+  @ApiProperty({ nullable: true, format: 'date-time', type: String })
+  checkoutTime: string | null;
 
   constructor(rsvp: DrizzleRsvp) {
     Object.assign(this, rsvp);

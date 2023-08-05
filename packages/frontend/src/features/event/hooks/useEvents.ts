@@ -7,14 +7,14 @@ import { eventKeys } from "./keys";
 export default function useEvents(
   take?: number,
   from?: DateTime,
-  to?: DateTime
+  to?: DateTime,
 ) {
   return useQuery({
     queryFn: () =>
       api.event.getEvents(
         from?.toISO() ?? undefined,
         to?.toISO() ?? undefined,
-        take
+        take,
       ),
     queryKey: eventKeys.range(take, from, to),
   });

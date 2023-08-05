@@ -78,7 +78,7 @@ export class UserService {
    */
   public editUser(
     id: string,
-    requestBody: UpdateUserDto
+    requestBody: UpdateUserDto,
   ): CancelablePromise<User> {
     return this.httpRequest.request({
       method: "PATCH",
@@ -194,7 +194,7 @@ export class UserService {
    * @throws ApiError
    */
   public createMeScancode(
-    requestBody: CreateScancodeDto
+    requestBody: CreateScancodeDto,
   ): CancelablePromise<Scancode> {
     return this.httpRequest.request({
       method: "POST",
@@ -229,7 +229,7 @@ export class UserService {
    */
   public createUserScancode(
     id: string,
-    requestBody: CreateScancodeDto
+    requestBody: CreateScancodeDto,
   ): CancelablePromise<Scancode> {
     return this.httpRequest.request({
       method: "POST",
@@ -267,7 +267,7 @@ export class UserService {
    */
   public deleteUserScancode(
     id: string,
-    scancodeId: string
+    scancodeId: string,
   ): CancelablePromise<Scancode> {
     return this.httpRequest.request({
       method: "DELETE",
@@ -275,6 +275,34 @@ export class UserService {
       path: {
         id: id,
         scancodeId: scancodeId,
+      },
+    });
+  }
+
+  /**
+   * Get the currently pending RSVPs of the logged in user.
+   * @returns Rsvp
+   * @throws ApiError
+   */
+  public getMePendingRsvPs(): CancelablePromise<Array<Rsvp>> {
+    return this.httpRequest.request({
+      method: "GET",
+      url: "/api/user/me/rsvp/pending",
+    });
+  }
+
+  /**
+   * Get the currently pending RSVPs of the specified user.
+   * @param id
+   * @returns Rsvp
+   * @throws ApiError
+   */
+  public getUserPendingRsvPs(id: string): CancelablePromise<Array<Rsvp>> {
+    return this.httpRequest.request({
+      method: "GET",
+      url: "/api/user/{id}/rsvp/pending",
+      path: {
+        id: id,
       },
     });
   }

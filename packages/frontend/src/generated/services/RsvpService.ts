@@ -52,7 +52,7 @@ export class RsvpService {
    */
   public editRsvp(
     id: string,
-    requestBody: UpdateRsvpDto
+    requestBody: UpdateRsvpDto,
   ): CancelablePromise<Rsvp> {
     return this.httpRequest.request({
       method: "PATCH",

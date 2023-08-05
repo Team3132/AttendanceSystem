@@ -37,7 +37,7 @@ export default function Calendar() {
 
   const selectSlotHandler = (slotInfo: SlotInfo) =>
     navigate(
-      `/event/create?startDate=${slotInfo.start.toISOString()}&endDate=${slotInfo.end.toISOString()}`
+      `/event/create?startDate=${slotInfo.start.toISOString()}&endDate=${slotInfo.end.toISOString()}`,
     );
 
   const events = useMemo(() => {
@@ -76,7 +76,7 @@ export default function Calendar() {
         selectable={isAdmin}
         select={(sel) => {
           navigate(
-            `/event/create?startDate=${sel.startStr}&endDate=${sel.endStr}`
+            `/event/create?startDate=${sel.startStr}&endDate=${sel.endStr}`,
           );
         }}
         events={events}

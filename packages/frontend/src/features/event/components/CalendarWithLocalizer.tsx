@@ -10,7 +10,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 export const CalendarWithLocalizer = (
   props: JSX.IntrinsicAttributes &
     JSX.IntrinsicClassAttributes<Calendar<Event, object>> &
-    Readonly<Omit<CalendarProps<Event, object>, "localizer">>
+    Readonly<Omit<CalendarProps<Event, object>, "localizer">>,
 ) => {
   const localizer = luxonLocalizer(DateTime);
 

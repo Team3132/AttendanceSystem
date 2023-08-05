@@ -21,7 +21,7 @@ import {
 import { between, gte, inArray, lte, sql } from 'drizzle-orm';
 import { DateTime } from 'luxon';
 import { event, rsvp } from '../drizzle/schema';
-import { v4 } from 'uuid';
+import randomStr from '@/utils/randomStr';
 
 @Injectable()
 export class TaskService {
@@ -87,7 +87,7 @@ export class TaskService {
 
     const databaseEvents = await Promise.all(
       events.items.map((gcalEvent) => {
-        const secret = v4();
+        const secret = randomStr(8);
 
         // const valueBetweenSquareBrackets = eventTitle.match(/\[(.*?)\]/); // Maybe switch to this later
 

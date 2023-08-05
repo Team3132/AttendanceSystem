@@ -40,6 +40,19 @@ const columns = [
       />
     ),
   }),
+  columnHelper.accessor((row) => `${row.username}-active-events`, {
+    id: "active-events",
+    header: "Active Events",
+    footer: "Active Events",
+    cell: ({ row: { original: row } }) => (
+      <IconButton
+        aria-label={`${row.username} active events`}
+        as={Link}
+        to={`/active-events/${row.id}`}
+        icon={<FaCode />}
+      />
+    ),
+  }),
 ];
 
 export default function UserList() {

@@ -33,7 +33,7 @@ export class ApiClient {
 
   constructor(
     config?: Partial<OpenAPIConfig>,
-    HttpRequest: HttpRequestConstructor = FetchHttpRequest
+    HttpRequest: HttpRequestConstructor = FetchHttpRequest,
   ) {
     this.request = new HttpRequest({
       BASE: config?.BASE ?? "",

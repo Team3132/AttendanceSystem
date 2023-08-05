@@ -61,7 +61,7 @@ export function DataTable<Data extends object>({
                 >
                   {flexRender(
                     header.column.columnDef.header,
-                    header.getContext()
+                    header.getContext(),
                   )}
 
                   <chakra.span pl="4">

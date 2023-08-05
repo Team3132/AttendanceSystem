@@ -10,10 +10,11 @@ export type RsvpUser = {
   eventId: string;
   userId: string;
   status: RsvpUser.status | null;
-  delay: Record<string, any> | null;
+  delay: number | null;
   createdAt: string;
   updatedAt: string;
-  attended: boolean;
+  checkinTime: string | null;
+  checkoutTime: string | null;
   user: MinimalUser;
 };
 

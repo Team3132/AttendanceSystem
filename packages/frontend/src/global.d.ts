@@ -12,7 +12,7 @@ declare module "virtual:pwa-register/react" {
     onNeedRefresh?: () => void;
     onOfflineReady?: () => void;
     onRegistered?: (
-      registration: ServiceWorkerRegistration | undefined
+      registration: ServiceWorkerRegistration | undefined,
     ) => void;
     onRegisterError?: (error: any) => void;
   }
@@ -71,7 +71,7 @@ declare class NDEFReader extends EventTarget {
   scan: (options?: NDEFScanOptions) => Promise<void>;
   write: (
     message: NDEFMessageSource,
-    options?: NDEFWriteOptions
+    options?: NDEFWriteOptions,
   ) => Promise<void>;
   makeReadOnly: (options?: NDEFMakeReadOnlyOptions) => Promise<void>;
 }

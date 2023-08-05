@@ -23,6 +23,7 @@ import { OutreachModule } from './outreach/outreach.module';
 import { DrizzleModule } from './drizzle/drizzle.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports: [
@@ -56,6 +57,16 @@ import { join } from 'path';
           store,
         };
       },
+      inject: [ConfigService],
+    }),
+    BullModule.forRootAsync({
+      useFactory: async (config: ConfigService) => ({
+        redis: {
+          host: config.getOrThrow('REDIS_HOST'),
+          port: config.getOrThrow('REDIS_PORT'),
+          db: 2,
+        },
+      }),
       inject: [ConfigService],
     }),
     UserModule,
