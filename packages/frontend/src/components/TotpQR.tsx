@@ -2,6 +2,7 @@ import useTotp from "@/hooks/useTotp";
 import {
   Box,
   BoxProps,
+  Flex,
   Stat,
   StatHelpText,
   StatLabel,
@@ -17,13 +18,13 @@ interface TotpQR extends BoxProps {
 
 export default function TotpQR({ secret, eventId, ...rest }: TotpQR) {
   return (
-    <Box p={2} bgColor="white" borderRadius={"lg"}>
+    <Flex p={2} bgColor="white" borderRadius={"lg"} justifyContent={"center"}>
       <QRCode
         value={`${
           import.meta.env.VITE_BACKEND_URL
         }/event/${eventId}/token/callback?code=${secret}`}
         level="Q"
       />
-    </Box>
+    </Flex>
   );
 }

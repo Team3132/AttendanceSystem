@@ -28,14 +28,18 @@ export default function AdminCheckin(props: AdminCheckinProps) {
   const eventToken = useEventToken(event.id);
 
   return (
-    <Stack alignContent={"center"} bgColor={"chakra-body-bg"} p={5}>
+    <Stack
+      alignContent={"center"}
+      bgColor={"chakra-body-bg"}
+      p={5}
+      justifyContent={"center"}
+    >
       <Heading size="lg" textAlign={"center"}>
         {event.title}
       </Heading>
       {eventToken.isSuccess && (
-        <Flex>
-          <Spacer />
-          <Stat>
+        <>
+          <Stat textAlign={"center"}>
             <StatLabel>Event Code</StatLabel>
             <StatNumber>{eventToken.data.secret}</StatNumber>
             <StatHelpText>
@@ -43,8 +47,7 @@ export default function AdminCheckin(props: AdminCheckinProps) {
             </StatHelpText>
           </Stat>
           <TotpQR eventId={event.id} secret={eventToken.data.secret} />
-          <Spacer />
-        </Flex>
+        </>
       )}
       <ScancodeInput eventId={event.id} />
 
