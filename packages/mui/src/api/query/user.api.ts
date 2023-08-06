@@ -19,6 +19,8 @@ interface DeleteScancodeData {
 export const userKeys = {
   root: ["user" as const] as const,
   user: (userId: string = "me") => ["user", userId] as const,
+  details: (userId: string = "me") =>
+    [...userKeys.user(userId), "details"] as const,
   userAvatar: (userId: string = "me") =>
     [...userKeys.user(userId), "avatar"] as const,
   userScancodes: (userId: string = "me") =>
@@ -30,7 +32,7 @@ export const userKeys = {
 const userApi = {
   getUser: (userId: string = "me") =>
     queryOptions({
-      queryKey: userKeys.user(userId),
+      queryKey: userKeys.details(userId),
       queryFn: ({ signal }) =>
         cancelableQuery(api.user.getUser(userId), signal),
     }),

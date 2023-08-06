@@ -45,7 +45,31 @@ const router = createBrowserRouter([
       },
       {
         path: "/profile",
-        Component: null,
+        lazy: () => import("./features/user/pages/ProfilePage"),
+        children: [
+          {
+            index: true,
+            Component: null,
+          },
+          {
+            path: "scancodes",
+            lazy: () => import("./features/user/pages/ScancodePage"),
+          },
+        ],
+      },
+      {
+        path: "/user/:userId",
+        lazy: () => import("./features/user/pages/ProfilePage"),
+        children: [
+          {
+            index: true,
+            Component: null,
+          },
+          {
+            path: "scancodes",
+            lazy: () => import("./features/user/pages/ScancodePage"),
+          },
+        ],
       },
       {
         path: "/admin",
