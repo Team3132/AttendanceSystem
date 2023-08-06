@@ -65,7 +65,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/admin",
-        Component: null,
+        lazy: () => import("./features/admin/pages/AdminHome"),
       },
     ],
   },
