@@ -3,11 +3,12 @@ import eventApi from "../../../api/query/event.api";
 import queryClient from "../../../queryClient";
 import ensureAuth from "../../auth/utils/ensureAuth";
 import { useQuery } from "@tanstack/react-query";
-import { Container, Grid, Paper, Stack, Typography } from "@mui/material";
+import { Container, Grid, Paper, Typography } from "@mui/material";
 import { z } from "zod";
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { DateTime } from "luxon";
 import RoleText from "../../../components/RoleText";
+import RsvpList from "../components/RSVPList";
+import MyRsvpStatus from "../components/MyRsvpStatus";
 
 const EventParamsSchema = z.object({
   eventId: z.string(),
@@ -112,6 +113,10 @@ export function Component() {
             </Paper>
           </Grid>
         ) : null}
+
+        <Grid item xs={12}>
+          <RsvpList eventId={initialEventData.id} />
+        </Grid>
       </Grid>
     </Container>
   );
