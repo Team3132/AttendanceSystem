@@ -1,14 +1,5 @@
-import {
-  AppBar,
-  Container,
-  IconButton,
-  Paper,
-  Stack,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import { Container, Paper, Stack, Typography } from "@mui/material";
 import ensureAuth from "../features/auth/utils/ensureAuth";
-import { FaCircleUser } from "react-icons/fa6";
 import DefaultAppBar from "../components/DefaultAppBar";
 
 export async function loader() {
@@ -27,14 +18,16 @@ export function Component() {
       >
         <Stack gap={2}>
           <Paper sx={{ p: 2, textAlign: "center" }}>
-            <Typography variant="h4">
-              Welcome to the Attendance System
-            </Typography>
-            <Typography variant="body1">
-              This is the attendance system for the FRC team 3132 Thunder Down
-              Under. This system is used to track attendance for team members at
-              events and outreach activities.
-            </Typography>
+            <Stack gap={2}>
+              <Typography variant="h4">
+                Welcome to the Attendance System
+              </Typography>
+              <Typography variant="body1">
+                This is the attendance system for the FRC team 3132 Thunder Down
+                Under. This system is used to track attendance for team members
+                at events and outreach activities.
+              </Typography>
+            </Stack>
           </Paper>
         </Stack>
       </Container>

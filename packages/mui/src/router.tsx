@@ -14,7 +14,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/outreach",
-        Component: null,
+        lazy: () => import("./features/outreach/pages/OutreachHome"),
       },
       {
         path: "/events",

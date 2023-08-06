@@ -6,7 +6,6 @@ import { BottomNavigation, BottomNavigationAction, Box } from "@mui/material";
 import useRouteMatch from "../utils/useRouteMatch";
 import LinkBehavior from "../utils/LinkBehavior";
 import {
-  FaCircleUser,
   FaHouse,
   FaHouseLock,
   FaPeopleGroup,
