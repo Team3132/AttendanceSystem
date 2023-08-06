@@ -11,14 +11,12 @@ on:
         description: The version to publish
 
 jobs:
-  type-check:
-    uses: ./.github/workflows/job-tscheck.yml
-  lint:
-    uses: ./.github/workflows/job-eslint.yml
+  check:
+    uses: ./.github/workflows/job-check.yml
   build-backend:
     name: Build
     runs-on: ubuntu-latest
-    needs: [type-check, lint]
+    needs: [check]
     permissions:
       packages: write
       contents: read

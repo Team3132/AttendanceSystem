@@ -4,14 +4,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  type-check:
-    uses: ./.github/workflows/job-tscheck.yml
-  lint:
-    uses: ./.github/workflows/job-eslint.yml
+  check:
+    uses: ./.github/workflows/job-check.yml
   build-deploy-frontend:
     runs-on: ubuntu-latest
     name: Deploy
-    needs: [type-check, lint]
+    needs: [check]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3

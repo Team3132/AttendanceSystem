@@ -6,7 +6,5 @@ on:
       - master
 
 jobs:
-  type-check:
+  check:
     uses: ./.github/workflows/job-tscheck.yml
-  lint:
-    uses: ./.github/workflows/job-eslint.yml
