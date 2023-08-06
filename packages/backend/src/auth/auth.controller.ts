@@ -67,7 +67,7 @@ export class AuthController {
   discordSigninCallback(@Req() req: Request, @Res() res: Response) {
     const url =
       req.cookies['redirectTo'] ??
-      `${this.configService.getOrThrow('FRONTEND_URL')}/calendar`;
+      `${this.configService.getOrThrow('FRONTEND_URL')}`;
     return res.status(302).clearCookie('redirectTo').redirect(url);
     // res.redirect('back');
   }
