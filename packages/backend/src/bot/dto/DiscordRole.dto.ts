@@ -11,6 +11,10 @@ export class DiscordRole {
   @Expose()
   id: string;
 
+  @ApiProperty()
+  @Expose()
+  color: number;
+
   constructor(role: Role) {
     Object.assign(this, role);
   }

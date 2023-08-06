@@ -26,7 +26,8 @@
     "typecheck": "yarn typecheck:frontend && yarn typecheck:backend",
     "generate:openapi": "yarn workspace frontend generate",
     "back": "yarn workspace backend",
-    "front": "yarn workspace frontend"
+    "front": "yarn workspace frontend",
+    "mui": "yarn workspace mui"
   },
   "devDependencies": {
     "concurrently": "^8.0.0",

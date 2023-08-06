@@ -6,5 +6,8 @@
         {
             "path": "./packages/frontend/tsconfig.json"
         },
+        {
+            "path": "./packages/mui/tsconfig.json"
+        }
     ]
 }

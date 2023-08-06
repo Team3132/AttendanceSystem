@@ -42,6 +42,14 @@ export class RsvpService {
 
     const checkinTime = new Date().toISOString();
 
+    const existingRsvp = await this.db.query.rsvp.findFirst({
+      where: (rsvp, { and, eq }) =>
+        and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
+    });
+
+    if (existingRsvp.checkinTime)
+      throw new BadRequestException('Already checked in');
+
     const updatedRsvp = await this.db
       .insert(rsvp)
       .values({

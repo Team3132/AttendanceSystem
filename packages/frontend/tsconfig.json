@@ -1,37 +1,25 @@
 {
   "compilerOptions": {
-    "composite": true,
-    "target": "ESNext",
+    "target": "ES2020",
     "useDefineForClassFields": true,
-    "lib": ["DOM", "DOM.Iterable", "ESNext", "WebWorker"],
-    "allowJs": false,
-    "skipLibCheck": true,
-    "esModuleInterop": false,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
     "noEmit": true,
-    "baseUrl": ".",
-    "types": ["vite-plugin-pwa/client", "vite/client"],
-    "paths": {
-      "@/*": ["./src/*"],
-      "@components/*": ["./src/components/*"],
-      "@components": ["./src/components"],
-      "@hooks/*": ["./src/hooks/*"],
-      "@hooks": ["./src/hooks"],
-      "@screens/*": ["./src/screens/*"],
-      "@screens": ["./src/screens"],
-      "@utils/*": ["./src/utils/*"],
-      "@utils": ["./src/utils"],
-      "@generated/*": ["./src/generated/*"],
-      "@generated": ["./src/generated"]
-    }
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

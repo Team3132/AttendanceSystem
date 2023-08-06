@@ -1,5 +1,12 @@
+import type { EventTypes } from '@/drizzle/drizzle.module';
+import { eventTypes } from '@/drizzle/schema';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDateString, IsNumber, IsOptional } from 'class-validator';
+import {
+  IsDateString,
+  IsEnum,
+  IsNumberString,
+  IsOptional,
+} from 'class-validator';
 
 export class GetEventsDto {
   @ApiProperty({ required: false })
@@ -12,6 +19,10 @@ export class GetEventsDto {
   to?: string;
   @ApiProperty({ required: false })
   @IsOptional()
-  @IsNumber()
+  @IsNumberString()
   take?: number;
+  @IsOptional()
+  @IsEnum(eventTypes.enumValues)
+  @ApiProperty({ enum: eventTypes.enumValues, required: false })
+  type?: EventTypes;
 }
