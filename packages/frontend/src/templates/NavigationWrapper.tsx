@@ -50,6 +50,7 @@ export function Component() {
         flexDirection: "column",
         height: "100%",
         position: "relative",
+        overflowY: "auto",
       }}
     >
       <Outlet />
