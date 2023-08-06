@@ -39,7 +39,12 @@ export function Component() {
   });
 
   return (
-    <Container>
+    <Container
+      sx={{
+        overflow: "auto",
+        my: 2,
+      }}
+    >
       <Grid container spacing={2} py={2}>
         {eventQuery.data.description ? (
           <Grid item xs={12}>

@@ -48,7 +48,12 @@ export function Component() {
 
   if (eventSecretQuery.data) {
     return (
-      <Container>
+      <Container
+        sx={{
+          overflow: "auto",
+          my: 2,
+        }}
+      >
         <Stack
           sx={{
             py: 2,

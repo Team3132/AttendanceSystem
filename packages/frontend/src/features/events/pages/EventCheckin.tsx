@@ -88,6 +88,7 @@ export function Component() {
     <Container
       sx={{
         my: 2,
+        overflow: "auto",
       }}
     >
       <Stack gap={2}>

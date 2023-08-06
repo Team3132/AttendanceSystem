@@ -46,7 +46,11 @@ export function Component() {
   });
 
   return (
-    <Container>
+    <Container
+      sx={{
+        overflow: "auto",
+      }}
+    >
       <Stack py={2} gap={2}>
         <Paper sx={{ p: 2 }}>
           <Stack gap={2}>

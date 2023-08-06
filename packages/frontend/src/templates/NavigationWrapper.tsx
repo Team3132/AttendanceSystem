@@ -48,7 +48,7 @@ export function Component() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        height: "100%",
+        height: "100vh",
         position: "relative",
         overflowY: "auto",
       }}

@@ -29,6 +29,7 @@ export function Component() {
         alignContent: "center",
         justifyContent: "center",
         height: "100%",
+        overflow: "auto",
       }}
     >
       <Paper
