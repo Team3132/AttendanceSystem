@@ -87,7 +87,7 @@ export class RsvpsCommand {
       )
       .setDescription(description)
       .setTimestamp(new Date())
-      .setURL(`${this.config.get('FRONTEND_URL')}/event/${fetchedMeeting.id}`);
+      .setURL(`${this.config.get('FRONTEND_URL')}/events/${fetchedMeeting.id}`);
 
     return interaction.reply({
       embeds: [rsvpEmbed],

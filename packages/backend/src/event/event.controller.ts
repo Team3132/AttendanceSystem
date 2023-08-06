@@ -205,7 +205,7 @@ export class EventController {
       return res
         .status(302)
         .redirect(
-          `${this.configService.getOrThrow('FRONTEND_URL')}/event/${eventId}`,
+          `${this.configService.getOrThrow('FRONTEND_URL')}/events/${eventId}`,
         );
     }
   }

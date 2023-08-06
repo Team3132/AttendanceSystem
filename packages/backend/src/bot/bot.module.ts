@@ -3,10 +3,7 @@ import { BotController } from './bot.controller';
 import { BotService } from './bot.service';
 import { RsvpButton } from './buttons/RsvpButton';
 import { RsvpsButton } from './buttons/RsvpsButton';
-import { CreateCommand } from './commands/Create.command';
-import { MeetingsCommand } from './commands/Meetings.command';
 import { RequestRsvpCommand } from './commands/RequestRsvp.command';
-import { RsvpCommand } from './commands/Rsvp.command';
 import { RsvpsCommand } from './commands/Rsvps.command';
 import { DelayModal } from './modals/Delay.modal';
 import { LeaderBoardCommand } from './commands/Leaderboard.command';
@@ -20,11 +17,8 @@ import { OutreachService } from '@/outreach/outreach.service';
     BotService,
     RsvpButton,
     RsvpsButton,
-    MeetingsCommand,
     RequestRsvpCommand,
-    RsvpCommand,
     RsvpsCommand,
-    CreateCommand,
     LeaderBoardCommand,
     DelayModal,
     OutreachService,

@@ -79,7 +79,7 @@ export default function rsvpReminderMessage(
         inline: true,
       },
     )
-    .setURL(`${frontendUrl}/event/${event.id}`)
+    .setURL(`${frontendUrl}/events/${event.id}`)
     .setColor('Blue');
 
   const comingMentorCount = mentorRSVPs.filter(
