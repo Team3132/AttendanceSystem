@@ -49,10 +49,6 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            Component: null,
-          },
-          {
-            path: "scancodes",
             lazy: () => import("./features/user/pages/ScancodePage"),
           },
         ],
@@ -63,10 +59,6 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            Component: null,
-          },
-          {
-            path: "scancodes",
             lazy: () => import("./features/user/pages/ScancodePage"),
           },
         ],

@@ -53,22 +53,14 @@ export function Component() {
       !loaderData.userId
         ? [
             {
-              label: "General",
-              path: "/profile",
-            },
-            {
               label: "Scancodes",
-              path: "/profile/scancodes",
+              path: "/profile",
             },
           ]
         : [
             {
-              label: "General",
-              path: `/user/${loaderData.userId}`,
-            },
-            {
               label: "Scancodes",
-              path: `/user/${loaderData.userId}/scancodes`,
+              path: `/user/${loaderData.userId}`,
             },
           ],
     [loaderData],

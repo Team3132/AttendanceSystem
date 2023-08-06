@@ -8,6 +8,7 @@ import ErrorCard from "../../../components/ErrorCard";
 import { Box, Container, Paper, Stack, Typography } from "@mui/material";
 import QRCode from "react-qr-code";
 import { useMemo } from "react";
+import ScaninCard from "../components/ScaninCard";
 
 const EventUrlParamsSchema = z.object({
   eventId: z.string(),
@@ -97,6 +98,7 @@ export function Component() {
               </Box>
             </Stack>
           </Paper>
+          <ScaninCard eventId={loaderData.eventId} />
         </Stack>
       </Container>
     );
