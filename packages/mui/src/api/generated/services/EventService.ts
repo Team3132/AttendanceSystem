@@ -24,6 +24,7 @@ export class EventService {
      * @param from 
      * @param to 
      * @param take 
+     * @param type 
      * @returns EventResponseType 
      * @throws ApiError
      */
@@ -31,6 +32,7 @@ export class EventService {
 from?: string,
 to?: string,
 take?: number,
+type?: 'Social' | 'Regular' | 'Outreach',
 ): CancelablePromise<Array<EventResponseType>> {
         return this.httpRequest.request({
             method: 'GET',
@@ -39,6 +41,7 @@ take?: number,
                 'from': from,
                 'to': to,
                 'take': take,
+                'type': type,
             },
         });
     }

@@ -297,10 +297,10 @@ scancodeId: string,
 
     /**
      * Get the currently pending RSVPs of the logged in user.
-     * @returns Rsvp 
+     * @returns RsvpEvent 
      * @throws ApiError
      */
-    public getMePendingRsvPs(): CancelablePromise<Array<Rsvp>> {
+    public getMePendingRsvPs(): CancelablePromise<Array<RsvpEvent>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api/user/me/rsvp/pending',

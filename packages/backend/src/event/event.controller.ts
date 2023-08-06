@@ -44,7 +44,7 @@ import TokenCheckinDto from './dto/checkin-dto';
 import { RsvpUser } from './dto/rsvp-user.dto';
 import { Request, Response } from 'express';
 import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
-import { asc, between, eq } from 'drizzle-orm';
+import { asc, between, eq, gte, lte, or } from 'drizzle-orm';
 import { event, rsvp } from '../drizzle/schema';
 import { v4 as uuid } from 'uuid';
 import { DateTime } from 'luxon';
@@ -72,16 +72,31 @@ export class EventController {
   async findAll(
     @Query() eventsGet: GetEventsDto,
   ): Promise<EventResponseType[]> {
-    const { from, to, take } = eventsGet;
+    const { from, to, take, type } = eventsGet;
     const events = await this.db.query.event.findMany({
-      where:
-        from && to
-          ? (event, { or }) =>
-              or(
-                between(event.startDate, from, to),
-                between(event.endDate, from, to),
-              )
-          : undefined,
+      where: (event, { and }) => {
+        const conditions = [];
+        if (from && to) {
+          conditions.push(between(event.startDate, from, to));
+        } else {
+          if (from) {
+            conditions.push(
+              or(gte(event.startDate, from), gte(event.endDate, from)),
+            );
+          }
+          if (to) {
+            conditions.push(
+              or(lte(event.startDate, to), lte(event.endDate, to)),
+            );
+          }
+        }
+
+        if (type) {
+          conditions.push(eq(event.type, type));
+        }
+
+        return and(...conditions);
+      },
       limit: take,
       orderBy: (event) => [asc(event.startDate)],
     });

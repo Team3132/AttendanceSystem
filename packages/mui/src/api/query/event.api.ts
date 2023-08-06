@@ -3,7 +3,6 @@ import api from "..";
 import { cancelableQuery, mutationOptions } from "./utils";
 import {
   CreateEventDto,
-  ScaninDto,
   TokenCheckinDto,
   UpdateEventDto,
   UpdateOrCreateRSVP,
@@ -13,6 +12,7 @@ interface GetEventParams {
   from?: string;
   to?: string;
   take?: number;
+  type?: CreateEventDto.type;
 }
 
 interface EditEventData extends UpdateEventDto {
@@ -46,7 +46,7 @@ const eventApi = {
       queryKey: eventKeys.events(params),
       queryFn: ({ signal }) =>
         cancelableQuery(
-          api.event.getEvents(params.from, params.to, params.take),
+          api.event.getEvents(params.from, params.to, params.take, params.type),
           signal,
         ),
     }),
