@@ -12,9 +12,6 @@ const authApi = {
     queryKey: authKeys.status(),
     queryFn: ({ signal }) => cancelableQuery(api.auth.authStatus(), signal),
   }),
-  loginWithDiscord: mutationOptions({
-    mutationFn: () => api.auth.discordSignin(),
-  }),
   logout: mutationOptions({
     mutationFn: () => api.auth.signout(),
   }),
