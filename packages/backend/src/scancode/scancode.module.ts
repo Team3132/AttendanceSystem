@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ScancodeService } from './scancode.service';
-import { ScancodeController } from './scancode.controller';
 
 @Module({
-  controllers: [ScancodeController],
+  controllers: [],
   providers: [ScancodeService],
   exports: [ScancodeService],
 })

@@ -12,8 +12,6 @@ import { BotService } from './services/BotService';
 import { DefaultService } from './services/DefaultService';
 import { EventService } from './services/EventService';
 import { OutreachService } from './services/OutreachService';
-import { RsvpService } from './services/RsvpService';
-import { ScancodeService } from './services/ScancodeService';
 import { UserService } from './services/UserService';
 
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
@@ -26,8 +24,6 @@ export class ApiClient {
     public readonly default: DefaultService;
     public readonly event: EventService;
     public readonly outreach: OutreachService;
-    public readonly rsvp: RsvpService;
-    public readonly scancode: ScancodeService;
     public readonly user: UserService;
 
     public readonly request: BaseHttpRequest;
@@ -51,8 +47,6 @@ export class ApiClient {
         this.default = new DefaultService(this.request);
         this.event = new EventService(this.request);
         this.outreach = new OutreachService(this.request);
-        this.rsvp = new RsvpService(this.request);
-        this.scancode = new ScancodeService(this.request);
         this.user = new UserService(this.request);
     }
 }
