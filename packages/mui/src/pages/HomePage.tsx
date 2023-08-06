@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import ensureAuth from "../features/auth/utils/ensureAuth";
 import { FaCircleUser } from "react-icons/fa6";
+import DefaultAppBar from "../components/DefaultAppBar";
 
 export async function loader() {
   await ensureAuth();
@@ -18,24 +19,7 @@ export async function loader() {
 export function Component() {
   return (
     <>
-      <AppBar
-        position="absolute"
-        sx={{
-          top: 0,
-          left: 0,
-          right: 0,
-        }}
-      >
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Home
-          </Typography>
-          <IconButton>
-            <FaCircleUser />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <Toolbar />
+      <DefaultAppBar title="Home" />
       <Container
         sx={{
           my: 2,
