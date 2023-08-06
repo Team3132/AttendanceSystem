@@ -3,24 +3,27 @@ import { z } from "zod";
 import useZodForm from "../../../hooks/useZodForm";
 import { LoadingButton } from "@mui/lab";
 import useScanin from "../hooks/useScanin";
-import { ApiError } from "../../../api/generated";
+import { useAlert } from "react-alert";
 
 interface ScaninCardProps {
   eventId: string;
 }
 
 const ScaninSchema = z.object({
-  code: z.string(),
+  code: z
+    .string()
+    .nonempty()
+    .regex(/^[a-zA-Z0-9]+$/),
 });
 
 export default function ScaninCard(props: ScaninCardProps) {
   const { eventId } = props;
+  const alert = useAlert();
 
   const {
     register,
     formState: { errors, isSubmitting },
     handleSubmit,
-    setError,
     reset,
   } = useZodForm({
     schema: ScaninSchema,
@@ -40,21 +43,23 @@ export default function ScaninCard(props: ScaninCardProps) {
       reset({
         code: "",
       });
+      alert.success("Scan in successful");
     } catch (error) {
-      if (error instanceof ApiError) {
-        setError("code", {
-          message: error.body.message,
-        });
-      }
+      // if (error instanceof ApiError) {
+      //   setError("code", {
+      //     message: error.body.message,
+      //   });
+      // }
       reset({
         code: "",
       });
+      alert.error("Scan in failed");
     }
   });
 
   return (
     <Paper sx={{ p: 2 }}>
-      <Stack gap={2}>
+      <Stack gap={2} component={"form"} onSubmit={onSubmit}>
         <Typography variant="h5" textAlign={"center"}>
           Scan In
         </Typography>
@@ -64,8 +69,6 @@ export default function ScaninCard(props: ScaninCardProps) {
             flexDirection: "row",
             justifyContent: "center",
           }}
-          component={"form"}
-          onSubmit={onSubmit}
         >
           <TextField
             {...register("code")}
@@ -74,6 +77,7 @@ export default function ScaninCard(props: ScaninCardProps) {
             disabled={isSubmitting}
             error={!!errors.code}
             helperText={errors.code?.message}
+            autoFocus
           />
           <LoadingButton
             type="submit"
