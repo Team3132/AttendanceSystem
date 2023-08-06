@@ -64,6 +64,7 @@ export default function RSVPListItem({ rsvp }: RSVPListItemProps) {
         sx={{
           display: "flex",
           flexWrap: "wrap",
+          justifyContent: "flex-end",
           gap: 0.5,
         }}
       >
