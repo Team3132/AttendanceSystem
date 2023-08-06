@@ -3,8 +3,8 @@ import outreachApi from "../../../api/query/outreach.api";
 import { Paper, Stack, Typography } from "@mui/material";
 import { createColumnHelper } from "@tanstack/react-table";
 import { LeaderboardDto } from "../../../api/generated";
-import Datatable from "../../../components/Datatable";
 import ErrorCard from "../../../components/ErrorCard";
+import Datatable from "../../../components/DataTable";
 
 const columnHelper = createColumnHelper<LeaderboardDto>();
 
