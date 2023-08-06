@@ -17,7 +17,18 @@ export default function RSVPListItem({ rsvp }: RSVPListItemProps) {
     <ListItem>
       <Tooltip title={rsvp.status ?? "No response"}>
         <ListItemAvatar>
-          <Avatar>
+          <Avatar
+            sx={{
+              bgcolor:
+                rsvp.status === "YES"
+                  ? "success.main"
+                  : rsvp.status === "NO"
+                  ? "error.main"
+                  : rsvp.status === "LATE"
+                  ? "warning.main"
+                  : undefined,
+            }}
+          >
             {rsvp.status === null ? (
               ""
             ) : rsvp.status === "YES" ? (
