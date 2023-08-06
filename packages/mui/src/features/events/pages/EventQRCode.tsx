@@ -59,6 +59,24 @@ export function Component() {
               p: 2,
             }}
           >
+            <Stack gap={2}>
+              <Typography variant="h5" textAlign={"center"}>
+                Event Code
+              </Typography>
+              <Typography
+                variant="body1"
+                textAlign={"center"}
+                fontFamily={"monospace"}
+              >
+                {eventSecretQuery.data.secret}
+              </Typography>
+            </Stack>
+          </Paper>
+          <Paper
+            sx={{
+              p: 2,
+            }}
+          >
             <Stack
               gap={2}
               sx={{
@@ -77,24 +95,6 @@ export function Component() {
               >
                 <QRCode value={url} />
               </Box>
-            </Stack>
-          </Paper>
-          <Paper
-            sx={{
-              p: 2,
-            }}
-          >
-            <Stack gap={2}>
-              <Typography variant="h5" textAlign={"center"}>
-                Event Code
-              </Typography>
-              <Typography
-                variant="body1"
-                textAlign={"center"}
-                fontFamily={"monospace"}
-              >
-                {eventSecretQuery.data.secret}
-              </Typography>
             </Stack>
           </Paper>
         </Stack>
