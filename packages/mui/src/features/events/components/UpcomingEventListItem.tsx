@@ -2,6 +2,7 @@ import { ListItemButton, ListItemText, Typography } from "@mui/material";
 import { EventResponseType } from "../../../api/generated";
 import EventDateText from "./EventDateTypography";
 import { DateTime } from "luxon";
+import LinkBehavior from "../../../utils/LinkBehavior";
 
 interface UpcomingEventListItemProps {
   event: EventResponseType;
@@ -12,7 +13,7 @@ export default function UpcomingEventListItem(
 ) {
   const { event } = props;
   return (
-    <ListItemButton>
+    <ListItemButton LinkComponent={LinkBehavior} href={`/events/${event.id}`}>
       <ListItemText
         primary={event.title}
         secondary={
