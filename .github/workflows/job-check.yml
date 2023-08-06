@@ -36,3 +36,9 @@ jobs:
         run: echo "::add-matcher::.github/problem-matchers/eslint-stylish.json"
       - name: Lint
         run: yarn lint:backend
+  end:
+    runs-on: ubuntu-latest
+    needs: [typecheck, backend-lint]
+    steps:
+      - name: End
+        run: echo "End"
