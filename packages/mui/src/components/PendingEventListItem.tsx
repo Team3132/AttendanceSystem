@@ -2,6 +2,7 @@ import { ListItem, ListItemText } from "@mui/material";
 import { RsvpEvent } from "../api/generated";
 import { LoadingButton } from "@mui/lab";
 import useCheckout from "../hooks/useCheckout";
+import { DateTime } from "luxon";
 
 interface PendingEventListItemProps {
   rsvp: RsvpEvent;
@@ -18,7 +19,16 @@ export default function PendingEventListItem(props: PendingEventListItemProps) {
 
   return (
     <ListItem>
-      <ListItemText primary={rsvp.event.title} />
+      <ListItemText
+        primary={rsvp.event.title}
+        secondary={`Checked In: ${
+          rsvp.checkinTime
+            ? DateTime.fromISO(rsvp.checkinTime).toLocaleString(
+                DateTime.DATETIME_MED,
+              )
+            : "Unknown"
+        }`}
+      />
       <LoadingButton
         variant="contained"
         color="primary"

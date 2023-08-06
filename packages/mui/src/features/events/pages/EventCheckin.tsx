@@ -1,4 +1,8 @@
-import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
+import {
+  LoaderFunctionArgs,
+  useLoaderData,
+  useNavigate,
+} from "react-router-dom";
 import { z } from "zod";
 import ensureAuth from "../../auth/utils/ensureAuth";
 import queryClient from "../../../queryClient";
@@ -8,6 +12,7 @@ import useZodForm from "../../../hooks/useZodForm";
 import { LoadingButton } from "@mui/lab";
 import useCheckin from "../hooks/useCheckin";
 import { ApiError } from "../../../api/generated";
+import { useAlert } from "react-alert";
 
 const EventParamsSchema = z.object({
   eventId: z.string(),
@@ -57,12 +62,19 @@ export function Component() {
 
   const checkinMutation = useCheckin();
 
+  const navigate = useNavigate();
+  const alert = useAlert();
+
   const onSubmit = handleSubmit(async (data) => {
     try {
       await checkinMutation.mutateAsync({
         code: data.eventCode,
         eventId: loaderData.initialEventData.id,
       });
+
+      alert.success("Successfully checked in!", { timeout: 2000 });
+
+      navigate(`/`);
     } catch (e) {
       if (e instanceof ApiError) {
         setError("eventCode", {
