@@ -5,7 +5,7 @@ import ensureAuth from "../../auth/utils/ensureAuth";
 import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 import ErrorCard from "../../../components/ErrorCard";
-import { Box, Container, Link, Paper, Stack, Typography } from "@mui/material";
+import { Box, Container, Paper, Stack, Typography } from "@mui/material";
 import QRCode from "react-qr-code";
 import { useMemo } from "react";
 

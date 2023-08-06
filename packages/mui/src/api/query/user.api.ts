@@ -1,7 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 import { cancelableQuery, mutationOptions } from "./utils";
 import api from "..";
-import { CreateScancodeDto, UpdateUserDto } from "../generated";
+import { CreateScancodeDto, RsvpEvent, UpdateUserDto } from "../generated";
 
 interface UserEditData extends UpdateUserDto {
   userId?: string;
@@ -47,7 +47,7 @@ const userApi = {
         cancelableQuery(api.user.getUserScancodes(userId), signal),
     }),
   getPendingRsvps: (userId: string = "me") =>
-    queryOptions({
+    queryOptions<RsvpEvent[]>({
       queryKey: userKeys.pendingRsvps(userId),
       queryFn: ({ signal }) =>
         cancelableQuery(api.user.getUserPendingRsvPs(userId), signal),

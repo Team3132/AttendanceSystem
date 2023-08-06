@@ -7,6 +7,7 @@ import { Container, Paper, Stack, TextField, Typography } from "@mui/material";
 import useZodForm from "../../../hooks/useZodForm";
 import { LoadingButton } from "@mui/lab";
 import useCheckin from "../hooks/useCheckin";
+import { ApiError } from "../../../api/generated";
 
 const EventParamsSchema = z.object({
   eventId: z.string(),
@@ -45,6 +46,7 @@ export function Component() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useZodForm({
     schema: EventCheckinSchema,
@@ -56,11 +58,18 @@ export function Component() {
   const checkinMutation = useCheckin();
 
   const onSubmit = handleSubmit(async (data) => {
-    await checkinMutation.mutateAsync({
-      code: data.eventCode,
-      eventId: loaderData.initialEventData.id,
-    });
-    return;
+    try {
+      await checkinMutation.mutateAsync({
+        code: data.eventCode,
+        eventId: loaderData.initialEventData.id,
+      });
+    } catch (e) {
+      if (e instanceof ApiError) {
+        setError("eventCode", {
+          message: e.body.message,
+        });
+      }
+    }
   });
 
   return (

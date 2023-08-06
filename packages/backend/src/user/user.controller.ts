@@ -33,6 +33,7 @@ import { CreateScancodeDto } from '@scancode/dto/create-scancode.dto';
 import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 import { user } from '../drizzle/schema';
 import { eq } from 'drizzle-orm';
+import { RsvpEvent } from '@/rsvp/dto/event-rsvp.dto';
 
 /** The user controller for controlling the user status */
 @ApiTags('User')
@@ -417,12 +418,12 @@ export class UserController {
     description: 'Get the currently pending RSVPs of the specified user.',
     operationId: 'getUserPendingRSVPs',
   })
-  @ApiOkResponse({ type: [Rsvp] })
+  @ApiOkResponse({ type: [RsvpEvent] })
   @Roles(['MENTOR'])
   @Get(':id/rsvp/pending')
   async userPendingRSVPs(@Param('id') userId: string) {
     const pendingRsvps = await this.userService.activeRsvps(userId);
 
-    return pendingRsvps.map((rsvp) => new Rsvp(rsvp.RSVP));
+    return pendingRsvps.map((rsvp) => new RsvpEvent(rsvp.RSVP, rsvp.Event));
   }
 }

@@ -4,6 +4,7 @@ import { cancelableQuery, mutationOptions } from "./utils";
 import {
   CreateEventDto,
   ScaninDto,
+  TokenCheckinDto,
   UpdateEventDto,
   UpdateOrCreateRSVP,
 } from "../generated";
@@ -22,7 +23,7 @@ interface RsvpToEventData extends UpdateOrCreateRSVP {
   eventId: string;
 }
 
-interface ScanIntoEventData extends ScaninDto {
+interface ScanIntoEventData extends TokenCheckinDto {
   eventId: string;
 }
 
@@ -90,7 +91,10 @@ const eventApi = {
   }),
   scanInToEvent: mutationOptions({
     mutationFn: ({ eventId, ...data }: ScanIntoEventData) =>
-      api.event.scaninEvent(eventId, data),
+      api.event.scanintoEvent(eventId, data),
+  }),
+  checkoutFromEvent: mutationOptions({
+    mutationFn: (eventId: string) => api.event.checkoutUser(eventId),
   }),
 };
 

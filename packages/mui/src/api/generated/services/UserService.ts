@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { CreateScancodeDto } from '../models/CreateScancodeDto';
 import type { Rsvp } from '../models/Rsvp';
+import type { RsvpEvent } from '../models/RsvpEvent';
 import type { Scancode } from '../models/Scancode';
 import type { UpdateUserDto } from '../models/UpdateUserDto';
 import type { User } from '../models/User';
@@ -309,12 +310,12 @@ scancodeId: string,
     /**
      * Get the currently pending RSVPs of the specified user.
      * @param id 
-     * @returns Rsvp 
+     * @returns RsvpEvent 
      * @throws ApiError
      */
     public getUserPendingRsvPs(
 id: string,
-): CancelablePromise<Array<Rsvp>> {
+): CancelablePromise<Array<RsvpEvent>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api/user/{id}/rsvp/pending',
