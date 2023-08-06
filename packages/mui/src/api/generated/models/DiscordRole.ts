@@ -6,4 +6,5 @@
 export type DiscordRole = {
     name: string;
     id: string;
+    color: number;
 };

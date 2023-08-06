@@ -36,14 +36,14 @@ export default function MyRsvpStatus(props: MyRsvpStatusProps) {
         disabled={updateRsvpMutation.isPending}
         error={updateRsvpMutation.isError}
       >
-        <InputLabel id="select-rsvp-status-label">Status</InputLabel>
+        <InputLabel id="select-rsvp-status-label">My Status</InputLabel>
         <Select
           labelId="select-rsvp-status-label"
           id="select-rsvp-status"
           //   value={age}
           value={myRsvpStatusQuery.data.status ?? ""}
           onChange={handleChange}
-          label="Status"
+          label="My Status"
           displayEmpty={false}
         >
           <MenuItem value={Rsvp["status"].YES}>Coming</MenuItem>
@@ -63,7 +63,7 @@ export default function MyRsvpStatus(props: MyRsvpStatusProps) {
   if (myRsvpStatusQuery.isError) {
     return (
       <TextField
-        label={"Status"}
+        label={"My Status"}
         disabled
         error
         helperText={myRsvpStatusQuery.error.message}
