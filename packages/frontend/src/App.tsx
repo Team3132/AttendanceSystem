@@ -11,6 +11,8 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import queryClient from "./queryClient";
 import { Provider } from "react-alert";
 import MuiAlert from "./components/MuiAlert";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 
 /**
  * The root component of the application.
@@ -31,11 +33,13 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Provider template={MuiAlert} position="bottom center">
-        <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
-        </QueryClientProvider>
-      </Provider>
+      <LocalizationProvider dateAdapter={AdapterLuxon}>
+        <Provider template={MuiAlert} position="bottom center">
+          <QueryClientProvider client={queryClient}>
+            <RouterProvider router={router} />
+          </QueryClientProvider>
+        </Provider>
+      </LocalizationProvider>
     </ThemeProvider>
   );
 }
