@@ -1,14 +1,15 @@
-import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import {
-  chakra,
+  Paper,
   Table,
-  Tbody,
-  Td,
-  Tfoot,
-  Th,
-  Thead,
-  Tr,
-} from "@chakra-ui/react";
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableContainerProps,
+  TableHead,
+  TableProps,
+  TableRow,
+} from "@mui/material";
+import { RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
 import {
   ColumnDef,
   flexRender,
@@ -16,84 +17,231 @@ import {
   getSortedRowModel,
   SortingState,
   useReactTable,
+  Row,
+  VisibilityState,
+  FilterFn,
+  getFilteredRowModel,
+  RowSelectionState,
+  OnChangeFn,
 } from "@tanstack/react-table";
-import * as React from "react";
+import React, { useMemo, useRef, useState } from "react";
+import { FaArrowDown, FaArrowUp } from "react-icons/fa6";
+import { useVirtual } from "react-virtual";
 
-export type DataTableProps<Data extends object> = {
+export interface DatatableProps<Data extends object>
+  extends TableContainerProps {
   data: Data[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   columns: ColumnDef<Data, any>[];
+  globalFilter?: string;
+  setGlobalFilter?: (filter: string) => void;
+  size?: TableProps["size"];
+  enableRowSelection?: "single" | "multiple";
+  rowSelection?: RowSelectionState;
+  onRowSelectionChange?: OnChangeFn<RowSelectionState>;
+  fetchNextPage?: () => void;
+  isFetching?: boolean;
+  totalDBRowCount?: number;
+  fixedHeight?: number;
+  onRowSelect?: (row: Row<Data>) => void;
+}
+
+declare module "@tanstack/table-core" {
+  interface FilterFns {
+    fuzzy: FilterFn<unknown>;
+  }
+  interface FilterMeta {
+    itemRank: RankingInfo;
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
+  // Rank the item
+  const itemRank = rankItem(row.getValue(columnId), value);
+
+  // Store the itemRank info
+  addMeta({
+    itemRank,
+  });
+
+  // Return if the item should be filtered in/out
+  return itemRank.passed;
 };
 
-export function DataTable<Data extends object>({
+export default function Datatable<Data extends object>({
   data,
   columns,
-}: DataTableProps<Data>) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnVisibility, setColumnVisibility] = React.useState({});
+  globalFilter,
+  setGlobalFilter,
+  size,
+  rowSelection,
+  onRowSelectionChange,
+  enableRowSelection,
+  fetchNextPage,
+  fixedHeight,
+  isFetching,
+  totalDBRowCount,
+  ...tableContainerProps
+}: DatatableProps<Data>) {
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+
+  const estimateRowSize = useMemo(() => {
+    if (fixedHeight === undefined) {
+      return undefined;
+    }
+
+    return () => fixedHeight;
+  }, [fixedHeight]);
+
   const table = useReactTable({
     columns,
     data,
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     onSortingChange: setSorting,
     onColumnVisibilityChange: setColumnVisibility,
     getSortedRowModel: getSortedRowModel(),
-
+    onGlobalFilterChange: setGlobalFilter,
+    onRowSelectionChange,
+    enableRowSelection: enableRowSelection === "multiple",
+    enableMultiRowSelection: enableRowSelection === "multiple",
+    enableGlobalFilter: true,
+    filterFns: {
+      fuzzy: fuzzyFilter,
+    },
+    globalFilterFn: fuzzyFilter,
     state: {
       sorting,
       columnVisibility,
+      globalFilter,
+      rowSelection,
     },
   });
 
-  return (
-    <Table>
-      <Thead>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <Tr key={headerGroup.id}>
-            {headerGroup.headers.map((header) => {
-              // see https://tanstack.com/table/v8/docs/api/core/column-def#meta to type this correctly
-              const meta: any = header.column.columnDef.meta;
-              return (
-                <Th
-                  key={header.id}
-                  onClick={header.column.getToggleSortingHandler()}
-                  isNumeric={meta?.isNumeric}
-                  colSpan={header.colSpan}
-                >
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext(),
-                  )}
+  const tableContainerRef = useRef<HTMLDivElement>(null);
 
-                  <chakra.span pl="4">
-                    {header.column.getIsSorted() ? (
-                      header.column.getIsSorted() === "desc" ? (
-                        <TriangleDownIcon aria-label="sorted descending" />
-                      ) : (
-                        <TriangleUpIcon aria-label="sorted ascending" />
-                      )
-                    ) : null}
-                  </chakra.span>
-                </Th>
-              );
-            })}
-          </Tr>
-        ))}
-      </Thead>
-      <Tbody>
-        {table.getRowModel().rows.map((row) => (
-          <Tr key={row.id}>
-            {row.getVisibleCells().map((cell) => {
-              // see https://tanstack.com/table/v8/docs/api/core/column-def#meta to type this correctly
-              const meta: any = cell.column.columnDef.meta;
-              return (
-                <Td key={cell.id} isNumeric={meta?.isNumeric}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </Td>
-              );
-            })}
-          </Tr>
-        ))}
-      </Tbody>
-    </Table>
+  const { rows } = table.getRowModel();
+  const rowVirtualizer = useVirtual({
+    parentRef: tableContainerRef,
+    size: rows.length,
+    estimateSize: estimateRowSize,
+    overscan: 10,
+  });
+  const { virtualItems: virtualRows, totalSize } = rowVirtualizer;
+
+  const paddingTop = virtualRows.length > 0 ? virtualRows?.[0]?.start || 0 : 0;
+  const paddingBottom =
+    virtualRows.length > 0
+      ? totalSize - (virtualRows?.[virtualRows.length - 1]?.end || 0)
+      : 0;
+
+  const totalFetched = useMemo(() => {
+    return rows.length;
+  }, [rows]);
+
+  const fetchMoreOnBottomReached = React.useCallback(
+    (containerRefElement?: HTMLDivElement | null) => {
+      if (
+        containerRefElement &&
+        fetchNextPage &&
+        totalDBRowCount !== undefined
+      ) {
+        const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
+        //once the user has scrolled within 300px of the bottom of the table, fetch more data if there is any
+        if (
+          scrollHeight - scrollTop - clientHeight < 300 &&
+          !isFetching &&
+          totalFetched < totalDBRowCount
+        ) {
+          fetchNextPage();
+        }
+      }
+    },
+    [fetchNextPage, isFetching, totalFetched, totalDBRowCount],
+  );
+
+  React.useEffect(() => {
+    fetchMoreOnBottomReached(tableContainerRef.current);
+  }, [fetchMoreOnBottomReached]);
+
+  return (
+    <TableContainer
+      component={Paper}
+      ref={tableContainerRef}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      onScroll={(e: any) =>
+        fetchMoreOnBottomReached(e.target as HTMLDivElement)
+      }
+      {...tableContainerProps}
+    >
+      <Table stickyHeader size={size}>
+        <TableHead>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <TableCell
+                  component={"th"}
+                  key={header.id}
+                  colSpan={header.colSpan}
+                  style={{ width: header.getSize() }}
+                >
+                  {header.isPlaceholder ? null : (
+                    <div onClick={header.column.getToggleSortingHandler()}>
+                      <b>
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                        {{
+                          asc: <FaArrowUp fontSize={"small"} />,
+                          desc: <FaArrowDown fontSize={"small"} />,
+                        }[header.column.getIsSorted() as string] ?? null}
+                      </b>
+                    </div>
+                  )}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableHead>
+
+        <TableBody>
+          {paddingTop > 0 && (
+            <tr>
+              <td style={{ height: `${paddingTop}px` }} />
+            </tr>
+          )}
+          {virtualRows.map((virtualRow) => {
+            const row = rows[virtualRow.index] as Row<Data>;
+            return (
+              <TableRow
+                key={row.id}
+                component="tr"
+                sx={{ height: fixedHeight }}
+              >
+                {row.getVisibleCells().map((cell) => {
+                  //   const meta: any = cell.column.columnDef.meta;
+                  return (
+                    <TableCell key={cell.id} component="td">
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            );
+          })}
+          {paddingBottom > 0 && (
+            <tr>
+              <td style={{ height: `${paddingBottom}px` }} />
+            </tr>
+          )}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }

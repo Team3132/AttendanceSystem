@@ -1,106 +1,95 @@
-import { RoleTag } from "@/features/bot";
-import {
-  Button,
-  Center,
-  Container,
-  Divider,
-  Flex,
-  FormControl,
-  FormHelperText,
-  FormLabel,
-  Heading,
-  HStack,
-  Input,
-  Select,
-  Stack,
-  useClipboard,
-  Wrap,
-} from "@chakra-ui/react";
-import { UpdateUserDto } from "@generated";
-import loadable from "@loadable/component";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
-import UserAvatar from "../components/UserAvatar";
-import useUpdateUser from "../hooks/useUpdateUser";
-import useUser from "../hooks/useUser";
+import { LoaderFunctionArgs, Outlet, useLoaderData } from "react-router-dom";
+import { z } from "zod";
+import ensureAuth from "../../auth/utils/ensureAuth";
+import queryClient from "../../../queryClient";
+import userApi from "../../../api/query/user.api";
+import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
+import useRouteMatch from "../../../utils/useRouteMatch";
+import DefaultAppBar from "../../../components/DefaultAppBar";
+import { Tab, Tabs } from "@mui/material";
+import LinkBehavior from "../../../utils/LinkBehavior";
 
-interface OnSubmitData {
-  defaultStatus?: UpdateUserDto.defaultStatus | "";
+const ProfileParamsSchema = z.object({
+  userId: z.string().optional(),
+});
+
+interface TabItem {
+  label: string;
+  icon?: React.ReactElement | string;
+  path: string;
 }
 
-export const ProfileScreen: React.FC = () => {
-  const { userId } = useParams();
-  const { data: user } = useUser(userId);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting, isDirty },
-    reset,
-  } = useForm<OnSubmitData>();
+export async function loader({ params }: LoaderFunctionArgs) {
+  const { userId } = ProfileParamsSchema.parse(params);
 
-  useEffect(() => {
-    if (user) {
-      reset({
-        defaultStatus: user.defaultStatus === null ? "" : user.defaultStatus,
-      });
-    }
-  }, [user]);
+  if (userId) {
+    await ensureAuth(true);
+  }
 
-  const { mutateAsync: mutateUser } = useUpdateUser();
+  const initialAuthStatus = await ensureAuth();
 
-  const onSubmit = (data: OnSubmitData) => {
-    const userIdent = userId ?? "me";
-    return mutateUser({
-      id: userIdent,
-      user: {
-        ...data,
-        defaultStatus: data.defaultStatus === "" ? null : data.defaultStatus,
-      },
-    });
+  const initialUser = await queryClient.ensureQueryData(
+    userApi.getUser(userId),
+  );
+
+  return {
+    userId,
+    initialUser,
+    initialAuthStatus,
   };
+}
+
+export function Component() {
+  const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+
+  const userQuery = useQuery({
+    ...userApi.getUser(loaderData.userId),
+    // initialData: loaderData.initialUser,
+  });
+
+  const tabs = useMemo<Array<TabItem>>(
+    () =>
+      !loaderData.userId
+        ? [
+            {
+              label: "Scancodes",
+              path: "/profile",
+            },
+          ]
+        : [
+            {
+              label: "Scancodes",
+              path: `/user/${loaderData.userId}`,
+            },
+          ],
+    [loaderData],
+  );
+
+  const routes = useMemo(() => tabs.map((tab) => tab.path), [tabs]);
+
+  const routeMatch = useRouteMatch(routes);
+
+  const currentTab = routeMatch?.pattern.path;
 
   return (
-    <Container>
-      <Center>
-        <UserAvatar size={"2xl"} userId={userId} />
-      </Center>
-
-      <Heading textAlign={"center"}>{user?.username}</Heading>
-      <Wrap justify={"center"} marginY={5}>
-        {user?.roles?.map((role) => (
-          <RoleTag key={role} roleId={role} colorScheme={"blue"}>
-            {role}
-          </RoleTag>
+    <>
+      <DefaultAppBar
+        title={`${userQuery.data?.username ?? "Loading"}'s Profile`}
+      />
+      <Tabs value={currentTab}>
+        {tabs.map((tab) => (
+          <Tab
+            key={tab.path}
+            label={tab.label}
+            icon={tab.icon}
+            value={tab.path}
+            href={tab.path.replace(":userId", loaderData.userId ?? "")}
+            LinkComponent={LinkBehavior}
+          />
         ))}
-      </Wrap>
-      <Divider my={6} />
-
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Stack>
-          <HStack>
-            <FormControl isInvalid={!!errors.defaultStatus}>
-              <FormLabel htmlFor="firstName">Default RSVP Status</FormLabel>
-              <Select
-                id="firstName"
-                {...register("defaultStatus")}
-                variant={"filled"}
-                placeholder="No option"
-              >
-                <option value={UpdateUserDto.defaultStatus.MAYBE}>Maybe</option>
-                <option value={UpdateUserDto.defaultStatus.YES}>Yes</option>
-                <option value={UpdateUserDto.defaultStatus.NO}>No</option>
-              </Select>
-            </FormControl>
-          </HStack>
-
-          <Button type="submit" isLoading={isSubmitting} disabled={!isDirty}>
-            Save
-          </Button>
-        </Stack>
-      </form>
-    </Container>
+      </Tabs>
+      <Outlet />
+    </>
   );
-};
-
-export default ProfileScreen;
+}

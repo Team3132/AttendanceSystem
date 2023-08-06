@@ -1,32 +1,27 @@
-# TDU Attendance Frontend
+# React + TypeScript + Vite
 
-## Links
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-- [Production](https://attendance.team3132.com)
-- [Backend Repository](https://github.com/Team3132/AttendanceBackend)
+Currently, two official plugins are available:
 
-## Description
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-A project started to better coordinate both student and mentor attendance.
+## Expanding the ESLint configuration
 
-## Stack
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-- [ReactJS](https://reactjs.org) - A popular web framework for stateful apps.
-- [React Router](https://reactrouter.com) - The most popular routing solution for react apps.
-- [Chakra-UI](https://chakra-ui.com) - A UI component framework that works well on desktop and mobile screen sizes.
-- [SWR](https://swr.vercel.app) - A flexible data fetching library to avoid duplication of requests and manage state. `isLoading`,`isError` etc.
-- [Vite](https://vitejs.dev) - The compiler for the project. Very fast and reasonably easy to configure.
-- [Storybook](https://storybook.js.org/) - Framework for prototyping and testing UI components.
+- Configure the top-level `parserOptions` property like this:
 
-## Getting started
+```js
+   parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: ['./tsconfig.json', './tsconfig.node.json'],
+    tsconfigRootDir: __dirname,
+   },
+```
 
-If you want to edit this project then I would recommend knowing a little bit about ReactJS.
-
-Prerequisites: [NodeJS](https://nodejs.org), [Yarn](https://yarnpkg.com)
-
-1. Install dependancies with `yarn install`
-2. Start the project with `yarn dev`
-
-## Deployment
-
-Using Github actions the site is deployed to Cloudflare pages whenever there's a push to the `master` branch.
+- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
+- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
