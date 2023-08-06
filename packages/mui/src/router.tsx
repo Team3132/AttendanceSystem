@@ -29,7 +29,7 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                Component: null,
+                lazy: () => import("./features/events/pages/EventDetails"),
               },
               {
                 path: "check-in",
