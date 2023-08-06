@@ -19,6 +19,7 @@ interface DeleteScancodeData {
 export const userKeys = {
   root: ["user" as const] as const,
   user: (userId: string = "me") => ["user", userId] as const,
+  users: ["users" as const] as const,
   details: (userId: string = "me") =>
     [...userKeys.user(userId), "details"] as const,
   userAvatar: (userId: string = "me") =>
@@ -54,6 +55,11 @@ const userApi = {
       queryFn: ({ signal }) =>
         cancelableQuery(api.user.getUserPendingRsvPs(userId), signal),
     }),
+  getUsers: queryOptions({
+    queryKey: userKeys.users,
+    queryFn: ({ signal }) => cancelableQuery(api.user.getUsers(), signal),
+  }),
+
   editUser: mutationOptions({
     mutationFn: ({ userId = "me", ...data }: UserEditData) =>
       api.user.editUser(userId, data),

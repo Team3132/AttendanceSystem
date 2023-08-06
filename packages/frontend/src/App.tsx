@@ -33,7 +33,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <LocalizationProvider dateAdapter={AdapterLuxon}>
+      <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale="en-au">
         <Provider template={MuiAlert} position="bottom center">
           <QueryClientProvider client={queryClient}>
             <RouterProvider router={router} />
