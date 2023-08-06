@@ -152,7 +152,7 @@ export class EventService {
   async checkoutUser(eventId: string, userId: string) {
     const currentDate = new Date();
 
-    const checkoutTime = currentDate.toISOString();
+    const newCheckoutTime = currentDate.toISOString();
 
     const checkedInRsvp = await this.db.query.rsvp.findFirst({
       where: (rsvp, { and, eq }) =>
@@ -165,10 +165,14 @@ export class EventService {
       throw new BadRequestException('User already checked out');
     }
 
+    if (currentDate.getTime() < new Date(checkedInRsvp.checkinTime).getTime()) {
+      throw new BadRequestException('You cannot check out before checking in');
+    }
+
     const updatedRsvp = await this.db
       .update(rsvp)
       .set({
-        checkoutTime,
+        checkoutTime: newCheckoutTime,
       })
       .where(eq(rsvp.id, checkedInRsvp.id))
       .returning();

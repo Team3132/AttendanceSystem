@@ -9,6 +9,7 @@ import {
 import { RsvpUser } from "../../../api/generated";
 import { FaCheck, FaClock, FaXmark, FaQuestion } from "react-icons/fa6";
 import RoleChip from "../../../components/RoleText";
+import { DateTime } from "luxon";
 
 interface RSVPListItemProps {
   rsvp: RsvpUser;
@@ -49,9 +50,13 @@ export default function RSVPListItem({ rsvp }: RSVPListItemProps) {
         primary={rsvp.user.username}
         secondary={
           rsvp.checkinTime && rsvp.checkoutTime
-            ? "Attended"
+            ? `Checked out at ${DateTime.fromISO(
+                rsvp.checkoutTime,
+              ).toLocaleString(DateTime.TIME_SIMPLE)}`
             : rsvp.checkinTime
-            ? "Checked in"
+            ? `Checked in at ${DateTime.fromISO(
+                rsvp.checkinTime,
+              ).toLocaleString(DateTime.TIME_SIMPLE)}`
             : "No check-in"
         }
       />
