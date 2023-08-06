@@ -48,19 +48,24 @@ export default function RSVPListItem({ rsvp }: RSVPListItemProps) {
       <ListItemText
         primary={rsvp.user.username}
         secondary={
-          <Box
-            sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 0.5,
-            }}
-          >
-            {rsvp.user.roles.map((roleId) => (
-              <RoleChip roleId={roleId} key={roleId} />
-            ))}
-          </Box>
+          rsvp.checkinTime && rsvp.checkoutTime
+            ? "Attended"
+            : rsvp.checkinTime
+            ? "Checked in"
+            : "No check-in"
         }
       />
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 0.5,
+        }}
+      >
+        {rsvp.user.roles.map((roleId) => (
+          <RoleChip roleId={roleId} key={roleId} />
+        ))}
+      </Box>
     </ListItem>
   );
 }
