@@ -45,6 +45,8 @@ export default function UpcomingEventsCard() {
           <Box
             sx={{
               display: "flex",
+              alignContent: "center",
+              justifyContent: "space-between",
             }}
           >
             <Typography
