@@ -75,8 +75,8 @@ export function Component() {
               path: "/events/:eventId/check-in",
             },
             {
-              label: "Admin",
-              path: "/events/:eventId/admin",
+              label: "QR Code",
+              path: "/events/:eventId/qr-code",
             },
           ],
     [authStatusQuery.data.isAdmin],
@@ -95,12 +95,7 @@ export function Component() {
           DateTime.DATE_SHORT,
         )} - ${eventQuery.data.title}`}
       />
-      <Tabs
-        value={currentTab}
-        variant="scrollable"
-        scrollButtons="auto"
-        centered
-      >
+      <Tabs value={currentTab} variant="scrollable" scrollButtons="auto">
         {tabs.map((tab) => (
           <Tab
             key={tab.path}

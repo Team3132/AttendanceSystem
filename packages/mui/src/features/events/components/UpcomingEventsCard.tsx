@@ -27,7 +27,7 @@ export default function UpcomingEventsCard() {
           <Typography variant="h4">Upcoming Events</Typography>
           <List>
             {eventsQuery.data.map((event) => (
-              <UpcomingEventListItem event={event} />
+              <UpcomingEventListItem event={event} key={event.id} />
             ))}
           </List>
         </Stack>

@@ -33,11 +33,11 @@ const router = createBrowserRouter([
               },
               {
                 path: "check-in",
-                Component: null,
+                lazy: () => import("./features/events/pages/EventCheckin"),
               },
               {
-                path: "admin",
-                Component: null,
+                path: "qr-code",
+                lazy: () => import("./features/events/pages/EventQRCode"),
               },
             ],
           },
