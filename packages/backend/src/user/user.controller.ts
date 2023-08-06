@@ -406,12 +406,12 @@ export class UserController {
     description: 'Get the currently pending RSVPs of the logged in user.',
     operationId: 'getMePendingRSVPs',
   })
-  @ApiOkResponse({ type: [Rsvp] })
+  @ApiOkResponse({ type: [RsvpEvent] })
   @Get('me/rsvp/pending')
   async mePendingRSVP(@GetUser('id') id: Express.User['id']) {
     const pendingRsvps = await this.userService.activeRsvps(id);
 
-    return pendingRsvps.map((rsvp) => new Rsvp(rsvp.RSVP));
+    return pendingRsvps.map((rsvp) => new RsvpEvent(rsvp.RSVP, rsvp.Event));
   }
 
   @ApiOperation({
