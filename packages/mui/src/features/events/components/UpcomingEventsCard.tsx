@@ -7,9 +7,9 @@ import { DateTime } from "luxon";
 import { useState } from "react";
 
 export default function UpcomingEventsCard() {
-  const [fromDate] = useState(DateTime.local().toISO() ?? undefined);
+  const [fromDate] = useState(DateTime.local().toISODate() ?? undefined);
   const [toDate] = useState(
-    DateTime.local().plus({ month: 1 }).toISO() ?? undefined,
+    DateTime.local().plus({ month: 1 }).toISODate() ?? undefined,
   );
 
   const eventsQuery = useQuery(

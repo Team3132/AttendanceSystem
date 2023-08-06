@@ -18,7 +18,30 @@ const router = createBrowserRouter([
       },
       {
         path: "/events",
-        lazy: () => import("./features/events/pages/EventsHome"),
+        children: [
+          {
+            index: true,
+            lazy: () => import("./features/events/pages/EventsHome"),
+          },
+          {
+            path: ":eventId",
+            lazy: () => import("./features/events/pages/EventPage"),
+            children: [
+              {
+                index: true,
+                Component: null,
+              },
+              {
+                path: "check-in",
+                Component: null,
+              },
+              {
+                path: "admin",
+                Component: null,
+              },
+            ],
+          },
+        ],
       },
       {
         path: "/profile",
