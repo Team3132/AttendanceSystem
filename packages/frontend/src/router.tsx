@@ -24,6 +24,10 @@ const router = createBrowserRouter([
             lazy: () => import("./features/events/pages/EventsHome"),
           },
           {
+            path: "create",
+            lazy: () => import("./features/events/pages/EventCreate"),
+          },
+          {
             path: ":eventId",
             lazy: () => import("./features/events/pages/EventPage"),
             children: [

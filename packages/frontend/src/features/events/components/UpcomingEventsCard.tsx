@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import eventApi from "../../../api/query/event.api";
 import {
   Box,
+  Button,
   FormControl,
   InputLabel,
   List,
@@ -18,8 +19,12 @@ import { DateTime } from "luxon";
 import { useState } from "react";
 import { CreateEventDto } from "../../../api/generated";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import authApi from "../../../api/query/auth.api";
+import LinkBehavior from "../../../utils/LinkBehavior";
 
 export default function UpcomingEventsCard() {
+  const authStatusQuery = useQuery(authApi.getAuthStatus);
+
   const [fromDate, setFromDate] = useState(DateTime.now());
   const [toDate, setToDate] = useState(DateTime.now().plus({ month: 1 }));
 
@@ -106,6 +111,15 @@ export default function UpcomingEventsCard() {
               <UpcomingEventListItem event={event} key={event.id} />
             ))}
           </List>
+          {authStatusQuery.data?.isAdmin ? (
+            <Button
+              LinkComponent={LinkBehavior}
+              href="/events/create"
+              variant="contained"
+            >
+              Create Event
+            </Button>
+          ) : null}
         </Stack>
       </Paper>
     );

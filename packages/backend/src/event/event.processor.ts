@@ -14,7 +14,6 @@ export class EventProcessor {
 
   @Process('checkoutActive')
   async handleCheckoutActive(job: Job<CheckoutActiveData>) {
-    this.logger.log(`Processing job ${job.id}`);
     const { eventId, rsvpId } = job.data;
 
     const event = await this.db.query.event.findFirst({
