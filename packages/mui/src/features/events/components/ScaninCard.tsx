@@ -43,17 +43,16 @@ export default function ScaninCard(props: ScaninCardProps) {
       reset({
         code: "",
       });
-      alert.success("Scan in successful");
+      alert.success("Scan in successful", {
+        timeout: 2000,
+      });
     } catch (error) {
-      // if (error instanceof ApiError) {
-      //   setError("code", {
-      //     message: error.body.message,
-      //   });
-      // }
       reset({
         code: "",
       });
-      alert.error("Scan in failed");
+      alert.error("Scan in failed", {
+        timeout: 2000,
+      });
     }
   });
 
