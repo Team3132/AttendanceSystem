@@ -54,7 +54,9 @@ export function Component() {
       }}
     >
       <Outlet />
-      <BottomNavigation />
+      <BottomNavigation showLabels>
+        <BottomNavigationAction />
+      </BottomNavigation>
       <BottomNavigation
         showLabels
         value={currentTab}
