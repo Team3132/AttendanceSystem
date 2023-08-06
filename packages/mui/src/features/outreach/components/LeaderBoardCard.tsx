@@ -4,6 +4,7 @@ import { Paper, Stack, Typography } from "@mui/material";
 import { createColumnHelper } from "@tanstack/react-table";
 import { LeaderboardDto } from "../../../api/generated";
 import Datatable from "../../../components/Datatable";
+import ErrorCard from "../../../components/ErrorCard";
 
 const columnHelper = createColumnHelper<LeaderboardDto>();
 
@@ -34,16 +35,7 @@ export default function LeaderboardCard() {
   }
 
   if (leaderboardQuery.isError) {
-    return (
-      <Paper sx={{ p: 2, textAlign: "center" }}>
-        <Stack gap={2}>
-          <Typography variant="h4">Error</Typography>
-          <Typography variant="body1">
-            An error occurred while loading the leaderboard.
-          </Typography>
-        </Stack>
-      </Paper>
-    );
+    return <ErrorCard error={leaderboardQuery.error} />;
   }
 
   return (

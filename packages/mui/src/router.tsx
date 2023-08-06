@@ -18,7 +18,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/events",
-        Component: null,
+        lazy: () => import("./features/events/pages/EventsHome"),
       },
       {
         path: "/profile",
