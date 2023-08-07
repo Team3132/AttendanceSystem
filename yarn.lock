@@ -4460,10 +4460,10 @@ drizzle-kit@^0.19.12:
     minimatch "^7.4.3"
     zod "^3.20.2"
 
-drizzle-orm@^0.27.2:
-  version "0.27.2"
-  resolved "https://registry.yarnpkg.com/drizzle-orm/-/drizzle-orm-0.27.2.tgz#bff4b9bb3dc53aa9f12ad2804bc8229f4c757cf8"
-  integrity sha512-ZvBvceff+JlgP7FxHKe0zOU9CkZ4RcOtibumIrqfYzDGuOeF0YUY0F9iMqYpRM7pxnLRfC+oO7rWOUH3T5oFQA==
+drizzle-orm@^0.28.0:
+  version "0.28.1"
+  resolved "https://registry.yarnpkg.com/drizzle-orm/-/drizzle-orm-0.28.1.tgz#ccee180a9881bf47d929026a457221b9b18b42ab"
+  integrity sha512-6ms2pVxvkBJtuP1BZTUCzLLkr+iK/cNgd+tCw+I5/PoM8PB9kXaYoW9yNe/cnaXb0TLJ1gDEndDIyQdRX7zCdQ==
 
 eastasianwidth@^0.2.0:
   version "0.2.0"
