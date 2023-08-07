@@ -43,7 +43,7 @@
     "cookie-parser": "^1.4.6",
     "discord-api-types": "^0.37.20",
     "discord.js": "^14.7.1",
-    "drizzle-orm": "^0.27.2",
+    "drizzle-orm": "^0.28.0",
     "express-session": "^1.17.3",
     "googleapis": "123",
     "helmet": "^7.0.0",
