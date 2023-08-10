@@ -61,18 +61,27 @@ export default function ScaninCard(props: ScaninCardProps) {
             timeout: 2000,
           });
           setUnknownCode(data.code);
+          reset({
+            code: "",
+          });
           onOpen();
         } else {
           alert.error(error.body.message, {
             timeout: 2000,
           });
           setUnknownCode(undefined);
+          reset({
+            code: "",
+          });
         }
       } else {
         alert.error("An unknown error occurred", {
           timeout: 2000,
         });
         setUnknownCode(undefined);
+        reset({
+          code: "",
+        });
       }
     }
   });
