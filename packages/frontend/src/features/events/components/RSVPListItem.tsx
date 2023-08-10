@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Box,
   ListItem,
   ListItemAvatar,
   ListItemText,
@@ -8,7 +7,6 @@ import {
 } from "@mui/material";
 import { RsvpUser } from "../../../api/generated";
 import { FaCheck, FaClock, FaXmark, FaQuestion } from "react-icons/fa6";
-import RoleChip from "../../../components/RoleText";
 import { DateTime } from "luxon";
 
 interface RSVPListItemProps {
@@ -60,18 +58,6 @@ export default function RSVPListItem({ rsvp }: RSVPListItemProps) {
             : "No check-in"
         }
       />
-      <Box
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "flex-end",
-          gap: 0.5,
-        }}
-      >
-        {rsvp.user.roles.map((roleId) => (
-          <RoleChip roleId={roleId} key={roleId} />
-        ))}
-      </Box>
     </ListItem>
   );
 }
