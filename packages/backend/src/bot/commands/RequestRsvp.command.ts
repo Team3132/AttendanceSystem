@@ -73,7 +73,6 @@ export class RequestRsvpCommand {
         fetchedEvent,
         fetchedRSVPs,
         this.config.get('FRONTEND_URL'),
-        interaction.guild.roles.everyone.id,
       ),
     );
   }

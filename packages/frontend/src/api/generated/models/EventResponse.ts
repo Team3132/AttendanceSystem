@@ -21,6 +21,7 @@ export namespace EventResponse {
         SOCIAL = 'Social',
         REGULAR = 'Regular',
         OUTREACH = 'Outreach',
+        MENTOR = 'Mentor',
     }
 
 

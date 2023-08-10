@@ -13,6 +13,7 @@ export const eventTypes = pgEnum('EventTypes', [
   'Social',
   'Regular',
   'Outreach',
+  'Mentor',
 ]);
 export const rsvpStatus = pgEnum('RSVPStatus', ['LATE', 'MAYBE', 'NO', 'YES']);
 
@@ -119,7 +120,6 @@ export const event = pgTable(
     allDay: boolean('allDay').default(false).notNull(),
     type: eventTypes('type').default('Regular').notNull(),
     secret: text('secret').notNull(),
-    roles: text('roles').array(),
     isSyncedEvent: boolean('isSyncedEvent').default(false).notNull(),
   },
   (table) => {

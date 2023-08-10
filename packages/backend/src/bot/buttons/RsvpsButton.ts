@@ -11,6 +11,7 @@ import {
   type DrizzleDatabase,
 } from '@/drizzle/drizzle.module';
 import { rsvp, user } from '../../drizzle/schema';
+import { ROLES } from '@/constants';
 
 @Injectable()
 export class RsvpsButton {
@@ -43,45 +44,32 @@ export class RsvpsButton {
       return interaction.reply('Not a guild member');
     }
 
-    const roles =
-      fetchedEvent.roles && fetchedEvent.roles.length
-        ? fetchedEvent.roles
-        : [interaction.guild.roles.everyone.id];
+    const userRoles = [
+      ...interactionUser.roles.cache.mapValues((role) => role.id).values(),
+    ];
 
     await this.db
       .insert(user)
       .values({
         id: userId,
         username: interactionUser.nickname ?? interactionUser.user.username,
-        roles: [
-          ...interactionUser.roles.cache.mapValues((role) => role.id).values(),
-        ],
+        roles: userRoles,
       })
       .onConflictDoUpdate({
         target: user.id,
         set: {
           username: interactionUser.nickname ?? interactionUser.user.username,
-          roles: [
-            ...interactionUser.roles.cache
-              .mapValues((role) => role.id)
-              .values(),
-          ],
+          roles: userRoles,
         },
       });
 
-    // await this.db.user.upsert({
-    //   ...connectedOrCreatedGuildMember,
-    //   update: {
-    //     username: connectedOrCreatedGuildMember.create.username,
-    //     roles: connectedOrCreatedGuildMember.create.roles,
-    //   },
-    // });
-
-    if (!interactionUser.roles.cache.some((role) => roles.includes(role.id)))
-      return interaction.reply({
-        ephemeral: true,
-        content: "You don't have permission to reply to this event",
-      });
+    if (fetchedEvent.type === 'Mentor') {
+      if (!userRoles.includes(ROLES.MENTOR))
+        return interaction.reply({
+          ephemeral: true,
+          content: "You're not a mentor.",
+        });
+    }
 
     await this.db
       .insert(rsvp)
@@ -122,12 +110,7 @@ export class RsvpsButton {
       return interaction.showModal(DelayModalBuilder(eventDB.id));
     } else {
       return interaction.update({
-        ...rsvpReminderMessage(
-          eventDB,
-          newRSVPs,
-          frontendUrl,
-          interaction.guild.roles.everyone.id,
-        ),
+        ...rsvpReminderMessage(eventDB, newRSVPs, frontendUrl),
       });
     }
   }

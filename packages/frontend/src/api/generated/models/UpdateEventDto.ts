@@ -19,6 +19,7 @@ export namespace UpdateEventDto {
         SOCIAL = 'Social',
         REGULAR = 'Regular',
         OUTREACH = 'Outreach',
+        MENTOR = 'Mentor',
     }
 
 

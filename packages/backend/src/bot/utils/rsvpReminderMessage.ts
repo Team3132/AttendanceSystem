@@ -21,7 +21,6 @@ export default function rsvpReminderMessage(
     };
   })[],
   frontendUrl: string,
-  everyoneRole: string,
 ): BaseMessageOptions {
   const clonedRsvp = [...rsvp];
 
@@ -61,9 +60,13 @@ export default function rsvpReminderMessage(
       {
         name: 'Roles',
         value:
-          event.roles !== null && event.roles.length
-            ? event.roles.map((role) => roleMention(role)).join()
-            : roleMention(everyoneRole),
+          event.type === 'Outreach'
+            ? roleMention(ROLES.OUTREACH)
+            : event.type === 'Mentor'
+            ? roleMention(ROLES.MENTOR)
+            : event.type === 'Social'
+            ? roleMention(ROLES.SOCIAL)
+            : roleMention(ROLES.EVERYONE),
         inline: true,
       },
       { name: 'Type', value: event.type, inline: true },

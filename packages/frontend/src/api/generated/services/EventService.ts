@@ -32,7 +32,7 @@ export class EventService {
 from?: string,
 to?: string,
 take?: number,
-type?: 'Social' | 'Regular' | 'Outreach',
+type?: 'Social' | 'Regular' | 'Outreach' | 'Mentor',
 ): CancelablePromise<Array<EventResponseType>> {
         return this.httpRequest.request({
             method: 'GET',

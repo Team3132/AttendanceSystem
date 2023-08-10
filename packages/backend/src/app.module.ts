@@ -17,7 +17,6 @@ import { GcalModule } from './gcal/gcal.module';
 import { NecordModule } from 'necord';
 import { BotService } from './bot/bot.service';
 import { redisStore } from 'cache-manager-ioredis-yet';
-import { TbaModule } from './tba/tba.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { OutreachModule } from './outreach/outreach.module';
 import { DrizzleModule } from './drizzle/drizzle.module';
@@ -76,7 +75,6 @@ import { BullModule } from '@nestjs/bull';
     BotModule,
     TaskModule,
     GcalModule,
-    TbaModule,
     OutreachModule,
   ],
   controllers: [AppController],

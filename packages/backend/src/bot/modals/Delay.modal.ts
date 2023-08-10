@@ -73,22 +73,12 @@ export class DelayModal {
 
       if (interaction.isFromMessage()) {
         return interaction.update({
-          ...rsvpReminderMessage(
-            relatedEvent,
-            otherEventRsvps,
-            frontendUrl,
-            interaction.guild.roles.everyone.id,
-          ),
+          ...rsvpReminderMessage(relatedEvent, otherEventRsvps, frontendUrl),
         });
       } else {
         return interaction.reply({
           ephemeral: true,
-          ...rsvpReminderMessage(
-            relatedEvent,
-            otherEventRsvps,
-            frontendUrl,
-            interaction.guild.roles.everyone.id,
-          ),
+          ...rsvpReminderMessage(relatedEvent, otherEventRsvps, frontendUrl),
         });
       }
     } catch (err) {

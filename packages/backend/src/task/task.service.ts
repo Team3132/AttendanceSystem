@@ -89,8 +89,6 @@ export class TaskService {
       events.items.map((gcalEvent) => {
         const secret = randomStr(8);
 
-        // const valueBetweenSquareBrackets = eventTitle.match(/\[(.*?)\]/); // Maybe switch to this later
-
         const isMentorEvent = gcalEvent.summary
           .toLowerCase()
           .includes('mentor');
@@ -99,11 +97,22 @@ export class TaskService {
           .toLowerCase()
           .includes('outreach');
 
+        const isSocialEvent = gcalEvent.summary
+          .toLowerCase()
+          .includes('social');
+
+        const eventType = isOutreachEvent
+          ? 'Outreach'
+          : isMentorEvent
+          ? 'Mentor'
+          : isSocialEvent
+          ? 'Social'
+          : 'Regular';
+
         const newEvent = {
           id: gcalEvent.id,
           title: gcalEvent.summary,
           allDay: !gcalEvent.start.dateTime && !gcalEvent.end.dateTime,
-          roles: isMentorEvent ? [ROLES.MENTOR] : [],
           startDate: gcalEvent.start.dateTime
             ? gcalEvent.start.dateTime
             : DateTime.fromISO(gcalEvent.start.date).startOf('day').toISO(),
@@ -111,7 +120,7 @@ export class TaskService {
             ? gcalEvent.end.dateTime
             : DateTime.fromISO(gcalEvent.end.date).endOf('day').toISO(),
           description: gcalEvent.description,
-          type: isOutreachEvent ? 'Outreach' : undefined,
+          type: eventType,
           isSyncedEvent: true,
           secret,
         } satisfies NewEvent;
@@ -119,7 +128,6 @@ export class TaskService {
         const updatedEvent = {
           title: gcalEvent.summary,
           allDay: !gcalEvent.start.dateTime && !gcalEvent.end.dateTime,
-          roles: isMentorEvent ? [ROLES.MENTOR] : [],
           startDate: gcalEvent.start.dateTime
             ? gcalEvent.start.dateTime
             : DateTime.fromISO(gcalEvent.start.date).startOf('day').toISO(),
@@ -127,9 +135,9 @@ export class TaskService {
             ? gcalEvent.end.dateTime
             : DateTime.fromISO(gcalEvent.end.date).endOf('day').toISO(),
           description: gcalEvent.description,
-          type: isOutreachEvent ? ('Outreach' as const) : undefined,
+          type: eventType,
           isSyncedEvent: true,
-        };
+        } satisfies Partial<NewEvent>;
 
         return this.db
           .insert(event)
@@ -153,35 +161,6 @@ export class TaskService {
 
     const endNextDay = startNextDay.endOf('day');
 
-    // const nextEvents = await this.db.event.findMany({
-    //   where: {
-    //     AND: [
-    //       {
-    //         startDate: { gte: startNextDay.toJSDate() },
-    //       },
-    //       {
-    //         startDate: {
-    //           lte: endNextDay.toJSDate(),
-    //         },
-    //       },
-    //     ],
-    //   },
-    //   include: {
-    //     RSVP: {
-    //       orderBy: {
-    //         updatedAt: 'asc',
-    //       },
-    //       include: {
-    //         user: {
-    //           select: {
-    //             username: true,
-    //             roles: true,
-    //           },
-    //         },
-    //       },
-    //     },
-    //   },
-    // });
     const nextEvents = await this.db.query.event.findMany({
       where: (event) =>
         between(event.startDate, startNextDay.toISO(), endNextDay.toISO()),
@@ -236,7 +215,6 @@ export class TaskService {
             nextEvent,
             nextEvent.rsvps,
             this.config.get('FRONTEND_URL'),
-            fetchedChannel.guild.roles.everyone.id,
           ),
           nextEvent,
         ] satisfies MessageEvent,
@@ -246,9 +224,13 @@ export class TaskService {
       messages.map(([message, event]) =>
         fetchedChannel.send({
           content: `${
-            event.roles.length
-              ? event.roles.map(roleMention).join(', ')
-              : fetchedChannel.guild.roles.everyone.toString()
+            event.type === 'Outreach'
+              ? roleMention(ROLES.OUTREACH)
+              : event.type === 'Mentor'
+              ? roleMention(ROLES.MENTOR)
+              : event.type === 'Social'
+              ? roleMention(ROLES.SOCIAL)
+              : roleMention(ROLES.EVERYONE)
           } ${bold(
             `10pm reminder`,
           )}: This channel should be used to let us know any last minute attendance changes on the day of the meeting.`,
@@ -258,24 +240,5 @@ export class TaskService {
     );
 
     this.logger.debug(`${sentMessages.length} reminder messages sent`);
-
-    const threadsEnabled =
-      this.config.get<string>('ATTENDANCE_THREADS_ENABLED') === 'true'
-        ? true
-        : false;
-
-    if (threadsEnabled) {
-      const attendanceThreads = await Promise.all(
-        sentMessages.map(async (message, index) => {
-          const event = messages[index][1];
-          await message.startThread({
-            name: `Attendance ${event.title}`,
-            autoArchiveDuration: 1440,
-            reason: 'Attendance thread',
-          });
-        }),
-      );
-      this.logger.debug(`${attendanceThreads.length} threads created`);
-    }
   }
 }

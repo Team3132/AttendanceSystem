@@ -36,6 +36,20 @@
       "when": 1691158084466,
       "tag": "0004_next_penance",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1691626800134,
+      "tag": "0005_right_marvex",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1691626989612,
+      "tag": "0006_illegal_siren",
+      "breakpoints": true
     }
   ]
 }
