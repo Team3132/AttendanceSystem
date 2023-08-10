@@ -13,7 +13,7 @@ import useZodForm from "../../../hooks/useZodForm";
 import { z } from "zod";
 import { useQuery } from "@tanstack/react-query";
 import userApi from "../../../api/query/user.api";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Controller } from "react-hook-form";
 import { LoadingButton } from "@mui/lab";
 import useCreateScancode from "../../user/hooks/useCreateScancode";
@@ -64,6 +64,7 @@ export default function UnknownCodeModal(props: UnknownCodeModalProps) {
     formState: { isSubmitting, errors },
     handleSubmit,
     control,
+    reset,
     setError,
   } = useZodForm({
     schema: RegisterNewCodeFormSchema,
@@ -71,6 +72,12 @@ export default function UnknownCodeModal(props: UnknownCodeModalProps) {
       code,
     }),
   });
+
+  useEffect(() => {
+    reset({
+      code,
+    });
+  }, [code, reset]);
 
   const createScancodeMutation = useCreateScancode();
   const scaninMutation = useScanin();
