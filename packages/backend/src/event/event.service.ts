@@ -18,6 +18,7 @@ import randomStr from '@/utils/randomStr';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { CheckoutActiveData } from './types/CheckoutActive';
+import { ROLES } from '@/constants';
 
 @Injectable()
 export class EventService {
@@ -52,6 +53,16 @@ export class EventService {
       where: (event, { eq }) => eq(event.id, eventId),
     });
     if (!event) throw new NotFoundException('No event found');
+    const fetchedUser = await this.db.query.user.findFirst({
+      where: (user, { eq }) => eq(user.id, userId),
+    });
+    if (!fetchedUser) throw new NotFoundException('No user found');
+
+    if (fetchedEvent.type === 'Mentor') {
+      if (!fetchedUser.roles.includes(ROLES.MENTOR)) {
+        throw new BadRequestException('You are not a mentor');
+      }
+    }
 
     const isValid = fetchedEvent.secret === token;
     if (!isValid) throw new BadRequestException('Code not valid');

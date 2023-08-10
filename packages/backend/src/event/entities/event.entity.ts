@@ -25,7 +25,5 @@ export class Event implements DrizzleEvent {
   @ApiProperty()
   secret: string;
   @ApiProperty()
-  roles: string[];
-  @ApiProperty()
   isSyncedEvent: boolean;
 }

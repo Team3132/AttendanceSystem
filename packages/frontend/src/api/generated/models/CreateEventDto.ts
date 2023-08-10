@@ -10,7 +10,6 @@ export type CreateEventDto = {
     endDate: string;
     allDay?: boolean;
     type: CreateEventDto.type;
-    roles?: Array<string>;
 };
 
 export namespace CreateEventDto {
@@ -19,6 +18,7 @@ export namespace CreateEventDto {
         SOCIAL = 'Social',
         REGULAR = 'Regular',
         OUTREACH = 'Outreach',
+        MENTOR = 'Mentor',
     }
 
 

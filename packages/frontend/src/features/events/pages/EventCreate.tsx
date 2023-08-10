@@ -61,7 +61,9 @@ export function Component() {
     try {
       const parsed = EventCreateSchema.parse(data);
       await createEventMutation.mutateAsync(parsed);
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   });
 
   return (

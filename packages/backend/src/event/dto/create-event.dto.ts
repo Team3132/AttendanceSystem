@@ -32,12 +32,6 @@ export class CreateEventDto {
   allDay?: boolean;
   @IsOptional()
   @IsEnum(eventTypes.enumValues)
-  @ApiProperty({ enum: ['Social', 'Regular', 'Outreach'] })
+  @ApiProperty({ enum: eventTypes.enumValues })
   type?: EventTypes;
-  @IsOptional()
-  @ApiProperty({ required: false })
-  @IsString({
-    each: true,
-  })
-  roles?: string[];
 }

@@ -2,6 +2,7 @@ import { type Event, type EventTypes } from '@/drizzle/drizzle.module';
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import { eventTypes } from '../../drizzle/schema';
+import { IsEnum } from 'class-validator';
 
 export class EventResponse implements Event {
   @ApiProperty()
@@ -17,9 +18,8 @@ export class EventResponse implements Event {
   @ApiProperty()
   allDay: boolean;
   @ApiProperty({ enum: eventTypes.enumValues })
+  @IsEnum(eventTypes.enumValues)
   type: EventTypes;
-  @ApiProperty()
-  roles: string[];
 
   @Exclude()
   secret: string;
@@ -47,6 +47,4 @@ export class EventResponseType implements Partial<Event> {
   allDay: boolean;
   @ApiProperty({ enum: eventTypes.enumValues })
   type: EventTypes;
-  @ApiProperty()
-  roles: string[];
 }

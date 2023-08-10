@@ -82,6 +82,7 @@ export default function UpcomingEventsCard() {
                 </MenuItem>
                 <MenuItem value={CreateEventDto.type.REGULAR}>Regular</MenuItem>
                 <MenuItem value={CreateEventDto.type.SOCIAL}>Social</MenuItem>
+                <MenuItem value={CreateEventDto.type.MENTOR}>Mentor</MenuItem>
               </Select>
             </FormControl>
           </Box>

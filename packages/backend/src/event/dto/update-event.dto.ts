@@ -37,8 +37,4 @@ export class UpdateEventDto implements Partial<Event> {
   @IsEnum(eventTypes.enumValues)
   @ApiProperty({ enum: eventTypes.enumValues })
   type?: EventTypes;
-  @IsOptional()
-  @IsString({ each: true })
-  @ApiProperty()
-  roles?: string[];
 }

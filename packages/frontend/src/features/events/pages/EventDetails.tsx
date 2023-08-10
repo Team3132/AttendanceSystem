@@ -6,7 +6,6 @@ import { useQuery } from "@tanstack/react-query";
 import { Container, Grid, Paper, Typography } from "@mui/material";
 import { z } from "zod";
 import { DateTime } from "luxon";
-import RoleChip from "../../../components/RoleText";
 import RsvpList from "../components/RSVPList";
 
 const EventParamsSchema = z.object({
@@ -105,18 +104,6 @@ export function Component() {
             </Typography>
           </Paper>
         </Grid>
-        {eventQuery.data.roles.length ? (
-          <Grid item xs={12}>
-            <Paper sx={{ p: 2, textAlign: "center" }}>
-              <Typography variant="h5">Roles</Typography>
-              <Typography variant="body1">
-                {eventQuery.data.roles
-                  .map((role) => <RoleChip roleId={role} />)
-                  .join(", ")}
-              </Typography>
-            </Paper>
-          </Grid>
-        ) : null}
 
         <Grid item xs={12}>
           <RsvpList eventId={initialEventData.id} />

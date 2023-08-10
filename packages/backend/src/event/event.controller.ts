@@ -48,6 +48,7 @@ import { asc, between, eq, gte, lte, or } from 'drizzle-orm';
 import { event, rsvp } from '../drizzle/schema';
 import { v4 as uuid } from 'uuid';
 import { DateTime } from 'luxon';
+import { ROLES } from '@/constants';
 
 @ApiTags('Event')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -336,6 +337,17 @@ export class EventController {
     });
 
     if (!fetchedEvent) throw new NotFoundException('Event not found');
+
+    const fetchedUser = await this.db.query.user.findFirst({
+      where: (user, { eq }) => eq(user.id, userId),
+    });
+
+    if (!fetchedUser) throw new NotFoundException('User not found');
+
+    if (fetchedEvent.type === 'Mentor') {
+      if (!fetchedUser.roles.includes(ROLES.MENTOR))
+        throw new BadRequestException('You are not a mentor');
+    }
 
     if (DateTime.fromISO(fetchedEvent.endDate).toMillis() < Date.now())
       throw new BadRequestException('Event has already ended');

@@ -12,6 +12,7 @@ import {
 import { rsvp } from '../drizzle/schema';
 import { eq } from 'drizzle-orm';
 import { v4 as uuid } from 'uuid';
+import { ROLES } from '@/constants';
 
 @Injectable()
 export class RsvpService {
@@ -49,6 +50,24 @@ export class RsvpService {
 
     if (existingRsvp.checkinTime)
       throw new BadRequestException('Already checked in');
+
+    const fetchedUser = await this.db.query.user.findFirst({
+      where: (user, { eq }) => eq(user.id, userId),
+    });
+
+    if (!fetchedUser) throw new BadRequestException('No user found');
+
+    const fetchedEvent = await this.db.query.event.findFirst({
+      where: (event, { eq }) => eq(event.id, eventId),
+    });
+
+    if (!fetchedEvent) throw new BadRequestException('No event found');
+
+    if (fetchedEvent.type === 'Mentor') {
+      if (!fetchedUser.roles.includes(ROLES.MENTOR)) {
+        throw new BadRequestException('You are not a mentor');
+      }
+    }
 
     const updatedRsvp = await this.db
       .insert(rsvp)

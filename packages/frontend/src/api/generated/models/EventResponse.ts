@@ -11,7 +11,6 @@ export type EventResponse = {
     endDate: string;
     allDay: boolean;
     type: EventResponse.type;
-    roles: Array<string>;
     isSyncedEvent: boolean;
 };
 
