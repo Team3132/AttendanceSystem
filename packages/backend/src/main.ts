@@ -9,7 +9,6 @@ import RedisStore from 'connect-redis';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import helmet from 'helmet';
-import * as swStats from 'swagger-stats';
 import { Settings } from 'luxon';
 
 Settings.defaultLocale = 'en-au';
@@ -71,34 +70,9 @@ async function bootstrap() {
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
-  // console.log(document);
-  app.use(
-    swStats.getMiddleware({
-      swaggerSpec: document,
-      onAuthenticate(req, username, password) {
-        return (
-          username === config.getOrThrow('STATS_USERNAME') &&
-          password === config.getOrThrow('STATS_PASSWORD')
-        );
-      },
-      authentication: true,
-    }),
-  );
-  // app.useWebSocketAdapter(new WsAdapter(app));
+
   SwaggerModule.setup('api/docs', app, document, {});
 
-  // await app.init();
   await app.listen(3000);
-  // http.createServer(server).listen(3000);
-
-  // const httpsEnabled = config.get('HTTPS') === 'true';
-
-  // if (httpsEnabled) {
-  //   const httpsOptions = {
-  //     key: fs.readFileSync('./security/localhost.key'),
-  //     cert: fs.readFileSync('./security/localhost.crt'),
-  //   };
-  //   https.createServer(httpsOptions, server).listen(3443);
-  // }
 }
 bootstrap();
