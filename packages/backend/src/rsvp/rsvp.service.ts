@@ -8,6 +8,7 @@ import {
   Inject,
   Injectable,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { rsvp } from '../drizzle/schema';
 import { eq } from 'drizzle-orm';
@@ -37,7 +38,7 @@ export class RsvpService {
       },
     });
 
-    if (!scancode) throw new BadRequestException('Not a valid code');
+    if (!scancode) throw new NotFoundException('No scancode found');
 
     const { userId } = scancode;
 
