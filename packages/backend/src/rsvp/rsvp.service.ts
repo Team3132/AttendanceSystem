@@ -49,7 +49,7 @@ export class RsvpService {
         and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
     });
 
-    if (existingRsvp.checkinTime)
+    if (existingRsvp?.checkinTime)
       throw new BadRequestException('Already checked in');
 
     const fetchedUser = await this.db.query.user.findFirst({
