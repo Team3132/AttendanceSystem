@@ -22,6 +22,7 @@ import { between, gte, inArray, lte, sql } from 'drizzle-orm';
 import { DateTime } from 'luxon';
 import { event, rsvp } from '../drizzle/schema';
 import randomStr from '@/utils/randomStr';
+import mainLogger from '@/utils/logger';
 
 @Injectable()
 export class TaskService {
@@ -34,7 +35,7 @@ export class TaskService {
     this.handleCron(); // Run once on startup
   }
 
-  private readonly logger = new Logger(TaskService.name);
+  private readonly logger = mainLogger.scope(TaskService.name);
 
   // @Cron('45 * * * * *')
   @Cron('00 23 * * *')
