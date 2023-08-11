@@ -54,7 +54,7 @@ export class AuthController {
     // Operation handled by the discord auth guard
   }
 
-  /**pstr
+  /**
    * Sign in using discord (callback)
    * @returns close window script
    */

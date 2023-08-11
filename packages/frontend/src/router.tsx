@@ -1,75 +1,85 @@
 import { createBrowserRouter } from "react-router-dom";
+import RouterErrorPage from "./pages/RouterErrorPage";
 
 const router = createBrowserRouter([
   {
-    path: "/login",
-    lazy: () => import("./features/auth/pages/LoginPage"),
-  },
-  {
-    lazy: () => import("./templates/NavigationWrapper"),
+    errorElement: <RouterErrorPage />,
     children: [
       {
-        index: true,
-        lazy: () => import("./pages/HomePage"),
+        path: "/error",
+        lazy: () => import("./pages/QueryErrorPage"),
       },
       {
-        path: "/outreach",
-        lazy: () => import("./features/outreach/pages/OutreachHome"),
+        path: "/login",
+        lazy: () => import("./features/auth/pages/LoginPage"),
       },
       {
-        path: "/events",
+        lazy: () => import("./templates/NavigationWrapper"),
         children: [
           {
             index: true,
-            lazy: () => import("./features/events/pages/EventsHome"),
+            lazy: () => import("./pages/HomePage"),
           },
           {
-            path: "create",
-            lazy: () => import("./features/events/pages/EventCreate"),
+            path: "/outreach",
+            lazy: () => import("./features/outreach/pages/OutreachHome"),
           },
           {
-            path: ":eventId",
-            lazy: () => import("./features/events/pages/EventPage"),
+            path: "/events",
             children: [
               {
                 index: true,
-                lazy: () => import("./features/events/pages/EventDetails"),
+                lazy: () => import("./features/events/pages/EventsHome"),
               },
               {
-                path: "check-in",
-                lazy: () => import("./features/events/pages/EventCheckin"),
+                path: "create",
+                lazy: () => import("./features/events/pages/EventCreate"),
               },
               {
-                path: "qr-code",
-                lazy: () => import("./features/events/pages/EventQRCode"),
+                path: ":eventId",
+                lazy: () => import("./features/events/pages/EventPage"),
+                children: [
+                  {
+                    index: true,
+                    lazy: () => import("./features/events/pages/EventDetails"),
+                  },
+                  {
+                    path: "check-in",
+                    lazy: () => import("./features/events/pages/EventCheckin"),
+                  },
+                  {
+                    path: "qr-code",
+                    lazy: () => import("./features/events/pages/EventQRCode"),
+                  },
+                ],
               },
             ],
           },
-        ],
-      },
-      {
-        path: "/profile",
-        lazy: () => import("./features/user/pages/ProfilePage"),
-        children: [
           {
-            index: true,
-            lazy: () => import("./features/user/pages/ScancodePage"),
+            path: "/profile",
+            lazy: () => import("./features/user/pages/ProfilePage"),
+            children: [
+              {
+                index: true,
+                lazy: () => import("./features/user/pages/ScancodePage"),
+              },
+            ],
+          },
+          {
+            path: "/user/:userId",
+            lazy: () => import("./features/user/pages/ProfilePage"),
+            children: [
+              {
+                index: true,
+                lazy: () => import("./features/user/pages/ScancodePage"),
+              },
+            ],
+          },
+          {
+            path: "/admin",
+            lazy: () => import("./features/admin/pages/AdminHome"),
           },
         ],
-      },
-      {
-        path: "/user/:userId",
-        lazy: () => import("./features/user/pages/ProfilePage"),
-        children: [
-          {
-            index: true,
-            lazy: () => import("./features/user/pages/ScancodePage"),
-          },
-        ],
-      },
-      {
-        path: "/admin",
-        lazy: () => import("./features/admin/pages/AdminHome"),
       },
     ],
   },

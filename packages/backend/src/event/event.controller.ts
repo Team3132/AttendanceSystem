@@ -15,6 +15,8 @@ import {
   Req,
   Res,
   Inject,
+  HttpException,
+  Redirect,
 } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
@@ -187,6 +189,7 @@ export class EventController {
     operationId: 'getEventSecretCallback',
   })
   @Get(':eventId/token/callback')
+  @Redirect()
   async eventTokenCallback(
     @Req() req: Request,
     @Res() res: Response,
@@ -194,20 +197,42 @@ export class EventController {
     @Param('eventId') eventId: string,
     @GetUser('id') userId?: string,
   ) {
-    if (!code) throw new BadRequestException('Code is required');
-    if (!userId) {
-      return res
-        .status(302)
-        .cookie('redirectTo', req.originalUrl)
-        .redirect(`/api/auth/discord`);
-    } else {
-      await this.eventService.checkinUser(eventId, userId, code);
+    try {
+      if (!code) throw new BadRequestException('Code is required');
+      if (!userId) {
+        return res
+          .status(302)
+          .cookie('redirectTo', req.originalUrl)
+          .redirect(`/api/auth/discord`);
+      } else {
+        await this.eventService.checkinUser(eventId, userId, code);
 
-      return res
-        .status(302)
-        .redirect(
-          `${this.configService.getOrThrow('FRONTEND_URL')}/events/${eventId}`,
-        );
+        return {
+          url: this.configService.get('FRONTEND_URL'),
+        };
+      }
+    } catch (error) {
+      if (error instanceof HttpException) {
+        return {
+          url: `${this.configService.get(
+            'FRONTEND_URL',
+          )}/error?status=${error.getStatus()}&message=${
+            error.message
+          }&statusText=${error.name}`,
+        };
+      } else if (error instanceof Error) {
+        return {
+          url: `${this.configService.get(
+            'FRONTEND_URL',
+          )}/error?status=500&message=${error.message}`,
+        };
+      } else {
+        return {
+          url: `${this.configService.get(
+            'FRONTEND_URL',
+          )}/error?status=500&message=Unknown`,
+        };
+      }
     }
   }
 
