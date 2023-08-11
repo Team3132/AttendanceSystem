@@ -1,10 +1,14 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  Logger,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Profile as DiscordProfile } from 'passport-discord';
 import { BotService } from '@/bot/bot.service';
 import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 import { user } from '../drizzle/schema';
-import mainLogger from '@/utils/logger';
 @Injectable()
 export class AuthService {
   constructor(
@@ -12,7 +16,7 @@ export class AuthService {
     private readonly configService: ConfigService,
     private readonly botService: BotService,
   ) {}
-  private readonly logger = mainLogger.scope(AuthService.name);
+  private readonly logger = new Logger(AuthService.name);
 
   async validateDiscordUser(access_token: string, discordUser: DiscordProfile) {
     const { guilds } = discordUser;

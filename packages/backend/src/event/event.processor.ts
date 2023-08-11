@@ -5,11 +5,10 @@ import { CheckoutActiveData } from './types/CheckoutActive';
 import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 import { rsvp } from '@/drizzle/schema';
 import { and, eq, isNull } from 'drizzle-orm';
-import mainLogger from '@/utils/logger';
 
 @Processor('event')
 export class EventProcessor {
-  private readonly logger = mainLogger.scope(EventProcessor.name);
+  private readonly logger = new Logger(EventProcessor.name);
 
   constructor(@Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase) {}
 
