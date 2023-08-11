@@ -48,17 +48,21 @@ export class RsvpsButton {
       ...interactionUser.roles.cache.mapValues((role) => role.id).values(),
     ];
 
+    const username = interactionUser.nickname
+      ? (await interactionUser.fetch()).nickname
+      : interactionUser.user.username;
+
     await this.db
       .insert(user)
       .values({
         id: userId,
-        username: interactionUser.nickname ?? interactionUser.user.username,
+        username,
         roles: userRoles,
       })
       .onConflictDoUpdate({
         target: user.id,
         set: {
-          username: interactionUser.nickname ?? interactionUser.user.username,
+          username,
           roles: userRoles,
         },
       });
