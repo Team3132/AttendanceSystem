@@ -1,18 +1,14 @@
-import {
-  Injectable,
-  CanActivate,
-  ExecutionContext,
-  Logger,
-} from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ROLE, ROLES } from '@/constants';
+import mainLogger from '@/utils/logger';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const logger = new Logger('RoleGuard');
+    const logger = mainLogger.scope(RolesGuard.name);
     try {
       const apiRoles = this.reflector
         .get<ROLE[]>('roles', context.getHandler())

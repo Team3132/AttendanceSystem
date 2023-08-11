@@ -1,7 +1,8 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Context, ContextOf, On } from 'necord';
 import { Client } from 'discord.js';
 import { ConfigService } from '@nestjs/config';
+import mainLogger from '@/utils/logger';
 
 @Injectable()
 export class BotService {
@@ -10,7 +11,7 @@ export class BotService {
     private readonly config: ConfigService,
   ) {}
 
-  private readonly logger = new Logger(BotService.name);
+  private readonly logger = mainLogger.scope(BotService.name);
 
   async getGuild() {
     const guildId = this.config.getOrThrow<string>('GUILD_ID');

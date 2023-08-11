@@ -1,4 +1,4 @@
-import { Global, Logger, Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { PostgresJsDatabase, drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
@@ -6,6 +6,7 @@ import * as schema from './schema';
 import { ConfigService } from '@nestjs/config';
 import { InferModel } from 'drizzle-orm';
 import path from 'path';
+import mainLogger from '@/utils/logger';
 
 export const DRIZZLE_TOKEN = Symbol('PG_CONNECTION');
 
@@ -16,7 +17,7 @@ export const DRIZZLE_TOKEN = Symbol('PG_CONNECTION');
       provide: DRIZZLE_TOKEN,
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
-        const logger = new Logger(DrizzleModule.name);
+        const logger = mainLogger.scope(DrizzleModule.name);
         const username = configService.getOrThrow('POSTGRES_USER');
         const password = configService.getOrThrow('POSTGRES_PASSWORD');
         const host = configService.getOrThrow('POSTGRES_HOST');

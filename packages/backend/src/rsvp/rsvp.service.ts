@@ -7,18 +7,18 @@ import {
   BadRequestException,
   Inject,
   Injectable,
-  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { rsvp } from '../drizzle/schema';
 import { eq } from 'drizzle-orm';
 import { v4 as uuid } from 'uuid';
 import { ROLES } from '@/constants';
+import mainLogger from '@/utils/logger';
 
 @Injectable()
 export class RsvpService {
   constructor(@Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase) {}
-  private readonly logger = new Logger(RsvpService.name);
+  private readonly logger = mainLogger.scope(RsvpService.name);
 
   createRSVP(data: NewRsvp) {
     return this.db.insert(rsvp).values(data).returning();
