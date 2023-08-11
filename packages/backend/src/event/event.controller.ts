@@ -80,7 +80,12 @@ export class EventController {
       where: (event, { and }) => {
         const conditions = [];
         if (from && to) {
-          conditions.push(between(event.startDate, from, to));
+          conditions.push(
+            or(
+              between(event.startDate, from, to),
+              between(event.endDate, from, to),
+            ),
+          );
         } else {
           if (from) {
             conditions.push(
