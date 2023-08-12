@@ -6,24 +6,3 @@ on:
 jobs:
   check:
     uses: ./.github/workflows/job-check.yml
-  build-deploy-frontend:
-    runs-on: ubuntu-latest
-    name: Deploy
-    needs: [check]
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: "yarn"
-
-      - name: Install Dependancies
-        run: yarn install
-      - name: Build
-        run: yarn build:frontend
-      - name: Deploy
-        uses: cloudflare/wrangler-action@3.0.1
-        with:
-          apiToken: ${{ secrets.CF_API_TOKEN }}
-          accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          command: pages publish packages/frontend/dist --project-name=attendancefrontend
