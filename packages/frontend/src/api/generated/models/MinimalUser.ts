@@ -8,3 +8,4 @@ export type MinimalUser = {
     username: string;
     roles: Array<string>;
 };
+

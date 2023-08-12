@@ -52,7 +52,7 @@ const eventApi = {
       queryFn: ({ signal }) =>
         cancelableQuery(
           api.event.getEvents(params.from, params.to, params.take, params.type),
-          signal,
+          signal
         ),
     }),
   getEvent: (eventId: string) =>
@@ -103,7 +103,13 @@ const eventApi = {
       api.event.scaninEvent(eventId, data),
   }),
   checkoutFromEvent: mutationOptions({
-    mutationFn: (eventId: string) => api.event.checkoutUser(eventId),
+    mutationFn: ({
+      eventId,
+      userId = "me",
+    }: {
+      eventId: string;
+      userId?: string;
+    }) => api.event.checkoutUser1(eventId, userId),
   }),
 };
 

@@ -13,7 +13,7 @@ export class BotService {
 
     /**
      * Get the status of the bot
-     * @returns boolean 
+     * @returns boolean
      * @throws ApiError
      */
     public getStatus(): CancelablePromise<boolean> {
@@ -25,7 +25,7 @@ export class BotService {
 
     /**
      * Get the roles in the guild
-     * @returns DiscordRole 
+     * @returns DiscordRole
      * @throws ApiError
      */
     public getRoles(): CancelablePromise<Array<DiscordRole>> {

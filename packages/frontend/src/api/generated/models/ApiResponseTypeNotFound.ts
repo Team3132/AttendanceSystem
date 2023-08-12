@@ -8,3 +8,4 @@ export type ApiResponseTypeNotFound = {
     message: string;
     error: string;
 };
+

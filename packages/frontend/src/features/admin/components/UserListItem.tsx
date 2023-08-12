@@ -15,7 +15,7 @@ export default function UserListItem({ user }: UserListItemProps) {
         LinkComponent={LinkBehavior}
         href={`/user/${user.id}`}
       >
-        Scancodes
+        Settings
       </Button>
     </ListItem>
   );

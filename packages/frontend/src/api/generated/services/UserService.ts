@@ -18,7 +18,7 @@ export class UserService {
 
     /**
      * Get the currently authenticated user.
-     * @returns User 
+     * @returns User
      * @throws ApiError
      */
     public getMe(): CancelablePromise<User> {
@@ -30,13 +30,13 @@ export class UserService {
 
     /**
      * Edit the signed-in user.
-     * @param requestBody 
-     * @returns User 
+     * @param requestBody
+     * @returns User
      * @throws ApiError
      */
     public editMe(
-requestBody: UpdateUserDto,
-): CancelablePromise<User> {
+        requestBody: UpdateUserDto,
+    ): CancelablePromise<User> {
         return this.httpRequest.request({
             method: 'PATCH',
             url: '/api/user/me',
@@ -47,7 +47,7 @@ requestBody: UpdateUserDto,
 
     /**
      * Delete the signed in user.
-     * @returns User 
+     * @returns User
      * @throws ApiError
      */
     public deleteMe(): CancelablePromise<User> {
@@ -59,13 +59,13 @@ requestBody: UpdateUserDto,
 
     /**
      * Get a specific user.
-     * @param id 
-     * @returns User 
+     * @param id
+     * @returns User
      * @throws ApiError
      */
     public getUser(
-id: string,
-): CancelablePromise<User> {
+        id: string,
+    ): CancelablePromise<User> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api/user/{id}',
@@ -77,15 +77,15 @@ id: string,
 
     /**
      * Edit a user.
-     * @param id 
-     * @param requestBody 
-     * @returns User 
+     * @param id
+     * @param requestBody
+     * @returns User
      * @throws ApiError
      */
     public editUser(
-id: string,
-requestBody: UpdateUserDto,
-): CancelablePromise<User> {
+        id: string,
+        requestBody: UpdateUserDto,
+    ): CancelablePromise<User> {
         return this.httpRequest.request({
             method: 'PATCH',
             url: '/api/user/{id}',
@@ -99,13 +99,13 @@ requestBody: UpdateUserDto,
 
     /**
      * Delete a user.
-     * @param id 
-     * @returns User 
+     * @param id
+     * @returns User
      * @throws ApiError
      */
     public deleteUser(
-id: string,
-): CancelablePromise<User> {
+        id: string,
+    ): CancelablePromise<User> {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/api/user/{id}',
@@ -117,7 +117,7 @@ id: string,
 
     /**
      * Get the currently authenticated user's avatar id
-     * @returns string 
+     * @returns string
      * @throws ApiError
      */
     public getMeAvatar(): CancelablePromise<string> {
@@ -129,13 +129,13 @@ id: string,
 
     /**
      * Get a user's discord avatar id
-     * @param id 
-     * @returns string 
+     * @param id
+     * @returns string
      * @throws ApiError
      */
     public getUserAvatar(
-id: string,
-): CancelablePromise<string> {
+        id: string,
+    ): CancelablePromise<string> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api/user/{id}/avatar',
@@ -147,7 +147,7 @@ id: string,
 
     /**
      * Get the RSVPs of the logged in user.
-     * @returns Rsvp 
+     * @returns Rsvp
      * @throws ApiError
      */
     public getMeRsvPs(): CancelablePromise<Array<Rsvp>> {
@@ -159,13 +159,13 @@ id: string,
 
     /**
      * Get a user's RSVPs
-     * @param id 
-     * @returns Rsvp 
+     * @param id
+     * @returns Rsvp
      * @throws ApiError
      */
     public getUserRsvPs(
-id: string,
-): CancelablePromise<Array<Rsvp>> {
+        id: string,
+    ): CancelablePromise<Array<Rsvp>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api/user/{id}/rsvp',
@@ -177,7 +177,7 @@ id: string,
 
     /**
      * Get a list of all users.
-     * @returns User 
+     * @returns User
      * @throws ApiError
      */
     public getUsers(): CancelablePromise<Array<User>> {
@@ -189,7 +189,7 @@ id: string,
 
     /**
      * Get a list of the logged in user's scancodes.
-     * @returns Scancode 
+     * @returns Scancode
      * @throws ApiError
      */
     public getMeScancodes(): CancelablePromise<Array<Scancode>> {
@@ -201,13 +201,13 @@ id: string,
 
     /**
      * Create a scancode for the logged in user.
-     * @param requestBody 
-     * @returns Scancode 
+     * @param requestBody
+     * @returns Scancode
      * @throws ApiError
      */
     public createMeScancode(
-requestBody: CreateScancodeDto,
-): CancelablePromise<Scancode> {
+        requestBody: CreateScancodeDto,
+    ): CancelablePromise<Scancode> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/api/user/me/scancodes',
@@ -218,13 +218,13 @@ requestBody: CreateScancodeDto,
 
     /**
      * Get a list of the specified user's scancodes.
-     * @param id 
-     * @returns Scancode 
+     * @param id
+     * @returns Scancode
      * @throws ApiError
      */
     public getUserScancodes(
-id: string,
-): CancelablePromise<Array<Scancode>> {
+        id: string,
+    ): CancelablePromise<Array<Scancode>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api/user/{id}/scancodes',
@@ -236,15 +236,15 @@ id: string,
 
     /**
      * Create a scancode for the specified user.
-     * @param id 
-     * @param requestBody 
-     * @returns Scancode 
+     * @param id
+     * @param requestBody
+     * @returns Scancode
      * @throws ApiError
      */
     public createUserScancode(
-id: string,
-requestBody: CreateScancodeDto,
-): CancelablePromise<Scancode> {
+        id: string,
+        requestBody: CreateScancodeDto,
+    ): CancelablePromise<Scancode> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/api/user/{id}/scancodes',
@@ -258,13 +258,13 @@ requestBody: CreateScancodeDto,
 
     /**
      * Delete a scancode for the logged in user.
-     * @param scancodeId 
-     * @returns Scancode 
+     * @param scancodeId
+     * @returns Scancode
      * @throws ApiError
      */
     public deleteMeScancode(
-scancodeId: string,
-): CancelablePromise<Scancode> {
+        scancodeId: string,
+    ): CancelablePromise<Scancode> {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/api/user/me/scancodes/{scancodeId}',
@@ -276,15 +276,15 @@ scancodeId: string,
 
     /**
      * Delete a scancode for the specified user.
-     * @param id 
-     * @param scancodeId 
-     * @returns Scancode 
+     * @param id
+     * @param scancodeId
+     * @returns Scancode
      * @throws ApiError
      */
     public deleteUserScancode(
-id: string,
-scancodeId: string,
-): CancelablePromise<Scancode> {
+        id: string,
+        scancodeId: string,
+    ): CancelablePromise<Scancode> {
         return this.httpRequest.request({
             method: 'DELETE',
             url: '/api/user/{id}/scancodes/{scancodeId}',
@@ -297,7 +297,7 @@ scancodeId: string,
 
     /**
      * Get the currently pending RSVPs of the logged in user.
-     * @returns RsvpEvent 
+     * @returns RsvpEvent
      * @throws ApiError
      */
     public getMePendingRsvPs(): CancelablePromise<Array<RsvpEvent>> {
@@ -309,13 +309,13 @@ scancodeId: string,
 
     /**
      * Get the currently pending RSVPs of the specified user.
-     * @param id 
-     * @returns RsvpEvent 
+     * @param id
+     * @returns RsvpEvent
      * @throws ApiError
      */
     public getUserPendingRsvPs(
-id: string,
-): CancelablePromise<Array<RsvpEvent>> {
+        id: string,
+    ): CancelablePromise<Array<RsvpEvent>> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api/user/{id}/rsvp/pending',

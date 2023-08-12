@@ -12,7 +12,7 @@ export class OutreachService {
     constructor(public readonly httpRequest: BaseHttpRequest) {}
 
     /**
-     * @returns LeaderboardDto 
+     * @returns LeaderboardDto
      * @throws ApiError
      */
     public outreachControllerGetOutreachLeaderboard(): CancelablePromise<Array<LeaderboardDto>> {

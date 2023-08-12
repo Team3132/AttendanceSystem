@@ -6,15 +6,16 @@ import { DateTime } from "luxon";
 
 interface PendingEventListItemProps {
   rsvp: RsvpEvent;
+  userId?: string;
 }
 
 export default function PendingEventListItem(props: PendingEventListItemProps) {
-  const { rsvp } = props;
+  const { rsvp, userId = "me" } = props;
 
   const checkoutMutation = useCheckout();
 
   const handleClick = () => {
-    checkoutMutation.mutate(rsvp.eventId);
+    checkoutMutation.mutate({ eventId: rsvp.eventId, userId });
   };
 
   return (
@@ -24,7 +25,7 @@ export default function PendingEventListItem(props: PendingEventListItemProps) {
         secondary={`Checked In: ${
           rsvp.checkinTime
             ? DateTime.fromISO(rsvp.checkinTime).toLocaleString(
-                DateTime.DATETIME_MED,
+                DateTime.DATETIME_MED
               )
             : "Unknown"
         }`}

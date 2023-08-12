@@ -6,3 +6,4 @@
 export type CreateScancodeDto = {
     code: string;
 };
+

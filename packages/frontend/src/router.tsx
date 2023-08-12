@@ -63,6 +63,10 @@ const router = createBrowserRouter([
                 index: true,
                 lazy: () => import("./features/user/pages/ScancodePage"),
               },
+              {
+                path: "pending",
+                lazy: () => import("./features/user/pages/PendingEventsPage"),
+              }
             ],
           },
           {
@@ -73,6 +77,10 @@ const router = createBrowserRouter([
                 index: true,
                 lazy: () => import("./features/user/pages/ScancodePage"),
               },
+              {
+                path: "pending",
+                lazy: () => import("./features/user/pages/PendingEventsPage"),
+              }
             ],
           },
           {

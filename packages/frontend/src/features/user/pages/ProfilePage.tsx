@@ -56,12 +56,20 @@ export function Component() {
               label: "Scancodes",
               path: "/profile",
             },
+            {
+              label: "Pending",
+              path: "/profile/pending",
+            }
           ]
         : [
             {
               label: "Scancodes",
               path: `/user/${loaderData.userId}`,
             },
+            {
+              label: "Pending",
+              path: `/user/${loaderData.userId}/pending`,
+            }
           ],
     [loaderData],
   );
