@@ -267,21 +267,17 @@ export class EventController {
     description: "Checkout a user's RSVP",
     operationId: 'checkoutUser',
   })
-  @ApiCreatedResponse({ type: Rsvp })
   @Post(':eventId/me/checkout')
   async checkoutMe(
     @Param('eventId') eventId: string,
     @GetUser('id') userId: string,
-  ): Promise<Rsvp> {
-    const checkedOutRsvp = await this.eventService.checkoutUser(
-      eventId,
-      userId,
-    );
-    return new Rsvp(checkedOutRsvp);
+  ) {
+    await this.eventService.checkoutUser(eventId, userId);
+    return;
   }
 
   /**
-   * Checkout a user's RSVP
+   *
    * @param eventId The event ID
    * @param userId The user ID
    * @returns {Rsvp}
@@ -299,11 +295,8 @@ export class EventController {
     @Param('eventId') eventId: string,
     @Param('userId') userId: string,
   ): Promise<Rsvp> {
-    const checkedOutRsvp = await this.eventService.checkoutUser(
-      eventId,
-      userId,
-    );
-    return new Rsvp(checkedOutRsvp);
+    await this.eventService.checkoutUser(eventId, userId);
+    return;
   }
 
   /**
