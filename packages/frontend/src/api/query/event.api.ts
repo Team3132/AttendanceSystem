@@ -52,7 +52,7 @@ const eventApi = {
       queryFn: ({ signal }) =>
         cancelableQuery(
           api.event.getEvents(params.from, params.to, params.take, params.type),
-          signal
+          signal,
         ),
     }),
   getEvent: (eventId: string) =>

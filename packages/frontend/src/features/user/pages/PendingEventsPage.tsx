@@ -21,7 +21,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
   const validatedParams = PendingEventsPageParamsSchema.parse(params);
   const userId = validatedParams.userId;
   const pendingEvents = await queryClient.ensureQueryData(
-    userApi.getPendingRsvps(userId)
+    userApi.getPendingRsvps(userId),
   );
   return {
     userId: validatedParams.userId,

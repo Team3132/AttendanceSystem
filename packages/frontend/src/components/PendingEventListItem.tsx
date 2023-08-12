@@ -25,7 +25,7 @@ export default function PendingEventListItem(props: PendingEventListItemProps) {
         secondary={`Checked In: ${
           rsvp.checkinTime
             ? DateTime.fromISO(rsvp.checkinTime).toLocaleString(
-                DateTime.DATETIME_MED
+                DateTime.DATETIME_MED,
               )
             : "Unknown"
         }`}

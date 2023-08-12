@@ -224,38 +224,30 @@ export class EventService {
    * @returns RSVP
    */
   async checkoutUser(eventId: string, userId: string) {
-    const currentDate = new Date();
-
-    const newCheckoutTime = currentDate.toISOString();
-
-    const checkedInRsvp = await this.db.query.rsvp.findFirst({
+    const fetchedRsvp = await this.db.query.rsvp.findFirst({
       where: (rsvp, { and, eq }) =>
         and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
     });
 
-    if (!checkedInRsvp) throw new NotFoundException('No RSVP found');
+    if (!fetchedRsvp) throw new NotFoundException('No RSVP found');
 
-    if (checkedInRsvp.checkoutTime) {
+    if (fetchedRsvp.checkoutTime !== null) {
       throw new BadRequestException('User already checked out');
     }
 
-    if (currentDate.getTime() < new Date(checkedInRsvp.checkinTime).getTime()) {
-      throw new BadRequestException('You cannot check out before checking in');
-    }
-
-    const updatedRsvp = await this.db
-      .update(rsvp)
-      .set({
-        checkoutTime: newCheckoutTime,
-      })
-      .where(eq(rsvp.id, checkedInRsvp.id))
-      .returning();
-
-    const firstUpdated = updatedRsvp.at(0);
-
-    if (!firstUpdated) throw new NotFoundException('No RSVP found');
-
-    return firstUpdated;
+    await this.eventQueue.add(
+      'checkoutActive',
+      {
+        eventId: eventId,
+        rsvpId: fetchedRsvp.id,
+      },
+      {
+        delay: 0,
+        jobId: fetchedRsvp.id,
+        removeOnComplete: true,
+        removeOnFail: true,
+      },
+    );
   }
 
   async getEventUserRsvps(eventId: string): Promise<RsvpUser[]> {

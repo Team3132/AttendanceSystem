@@ -66,7 +66,7 @@ const router = createBrowserRouter([
               {
                 path: "pending",
                 lazy: () => import("./features/user/pages/PendingEventsPage"),
-              }
+              },
             ],
           },
           {
@@ -80,7 +80,7 @@ const router = createBrowserRouter([
               {
                 path: "pending",
                 lazy: () => import("./features/user/pages/PendingEventsPage"),
-              }
+              },
             ],
           },
           {

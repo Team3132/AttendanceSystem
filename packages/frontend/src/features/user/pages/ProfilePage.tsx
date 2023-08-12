@@ -59,7 +59,7 @@ export function Component() {
             {
               label: "Pending",
               path: "/profile/pending",
-            }
+            },
           ]
         : [
             {
@@ -69,7 +69,7 @@ export function Component() {
             {
               label: "Pending",
               path: `/user/${loaderData.userId}/pending`,
-            }
+            },
           ],
     [loaderData],
   );
