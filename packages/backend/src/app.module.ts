@@ -3,7 +3,6 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { EventModule } from './event/event.module';
-import { RsvpModule } from './rsvp/rsvp.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './auth/guard/role.guard';
 import { AppController } from './app.controller';
@@ -70,7 +69,6 @@ import { BullModule } from '@nestjs/bull';
     }),
     UserModule,
     EventModule,
-    RsvpModule,
     ScancodeModule,
     BotModule,
     TaskModule,

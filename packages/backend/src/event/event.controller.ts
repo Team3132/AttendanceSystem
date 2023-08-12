@@ -32,7 +32,6 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { RsvpService } from '@rsvp/rsvp.service';
 import { Rsvp } from '@rsvp/entities/rsvp.entity';
 import { GetUser } from '@auth/decorators/GetUserDecorator.decorator';
 import { UpdateOrCreateRSVP } from './dto/update-rsvp.dto';
@@ -58,7 +57,6 @@ import { ROLES } from '@/constants';
 export class EventController {
   constructor(
     private readonly eventService: EventService,
-    private readonly rsvpService: RsvpService,
     private readonly configService: ConfigService,
     @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
   ) {}
@@ -210,7 +208,7 @@ export class EventController {
           .cookie('redirectTo', req.originalUrl)
           .redirect(`/api/auth/discord`);
       } else {
-        await this.eventService.checkinUser(eventId, userId, code);
+        await this.eventService.checkinUserWithToken(userId, eventId, code);
 
         return {
           url: this.configService.get('FRONTEND_URL'),
@@ -255,7 +253,11 @@ export class EventController {
     @GetUser('id') userId: string,
   ): Promise<Rsvp> {
     const { code } = body;
-    const rsvp = await this.eventService.checkinUser(eventId, userId, code);
+    const rsvp = await this.eventService.checkinUserWithToken(
+      eventId,
+      userId,
+      code,
+    );
     return new Rsvp(rsvp);
   }
 
@@ -266,10 +268,36 @@ export class EventController {
     operationId: 'checkoutUser',
   })
   @ApiCreatedResponse({ type: Rsvp })
-  @Post(':eventId/checkout')
-  async checkoutUser(
+  @Post(':eventId/me/checkout')
+  async checkoutMe(
     @Param('eventId') eventId: string,
     @GetUser('id') userId: string,
+  ): Promise<Rsvp> {
+    const checkedOutRsvp = await this.eventService.checkoutUser(
+      eventId,
+      userId,
+    );
+    return new Rsvp(checkedOutRsvp);
+  }
+
+  /**
+   * Checkout a user's RSVP
+   * @param eventId The event ID
+   * @param userId The user ID
+   * @returns {Rsvp}
+   */
+  @ApiCookieAuth()
+  @UseGuards(SessionGuard)
+  @ApiOperation({
+    description: "Checkout a user's RSVP",
+    operationId: 'checkoutUser',
+  })
+  @ApiCreatedResponse({ type: Rsvp })
+  @Post(':eventId/:userId/checkout')
+  @Roles(['MENTOR'])
+  async checkoutUser(
+    @Param('eventId') eventId: string,
+    @Param('userId') userId: string,
   ): Promise<Rsvp> {
     const checkedOutRsvp = await this.eventService.checkoutUser(
       eventId,
@@ -439,7 +467,10 @@ export class EventController {
   @Post(':eventId/scanin')
   async scanin(@Param('eventId') eventId: string, @Body() scanin: ScaninDto) {
     const { code } = scanin;
-    const scaninResult = await this.rsvpService.scanin({ eventId, code });
+    const scaninResult = await this.eventService.checkinUserWithScancode(
+      eventId,
+      code,
+    );
 
     if (!scaninResult) throw new BadRequestException('Invalid Scancode');
 

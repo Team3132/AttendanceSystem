@@ -25,7 +25,6 @@ import {
 } from '@nestjs/swagger';
 import { Roles } from '@auth/decorators/DiscordRoleDecorator.decorator';
 import { User } from './entities/user.entity';
-import { RsvpService } from '@rsvp/rsvp.service';
 import { Rsvp } from '@rsvp/entities/rsvp.entity';
 import { Scancode } from '@scancode/entities/scancode.entity';
 import { ScancodeService } from '@scancode/scancode.service';
@@ -43,7 +42,6 @@ import { RsvpEvent } from '@/rsvp/dto/event-rsvp.dto';
 export class UserController {
   constructor(
     private readonly userService: UserService,
-    private readonly rsvpService: RsvpService,
     private readonly scancodeService: ScancodeService,
     @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
   ) {}

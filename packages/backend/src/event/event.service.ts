@@ -9,6 +9,7 @@ import {
   type DrizzleDatabase,
   Event,
   NewEvent,
+  User,
 } from '@/drizzle/drizzle.module';
 import { event, rsvp, user } from '../drizzle/schema';
 import { eq } from 'drizzle-orm';
@@ -48,7 +49,14 @@ export class EventService {
     return deletedEvents.at(0);
   }
 
-  async checkinUser(eventId: string, userId: string, token: string) {
+  /**
+   * Check in a user to an event optionally using a secret token
+   * @param eventId The event id
+   * @param userId The user id
+   * @param token The secret token to verify if using a secret
+   * @returns RSVP
+   */
+  async checkinUserWithToken(eventId: string, userId: string, token: string) {
     const fetchedEvent = await this.db.query.event.findFirst({
       where: (event, { eq }) => eq(event.id, eventId),
     });
@@ -67,6 +75,53 @@ export class EventService {
     const isValid = fetchedEvent.secret === token;
     if (!isValid) throw new BadRequestException('Code not valid');
 
+    const checkedIn = await this.checkin(fetchedUser, fetchedEvent);
+
+    return checkedIn;
+  }
+
+  /**
+   *
+   * @param eventId The event id
+   * @param userId The user id
+   * @param scancode The scancode used to identify the user to checkin
+   */
+  async checkinUserWithScancode(eventId: string, scancodeInput: string) {
+    const fetchedScancode = await this.db.query.scancode.findFirst({
+      where: (scancode, { eq }) => eq(scancode.code, scancodeInput),
+    });
+
+    if (!fetchedScancode) throw new NotFoundException('No scancode found');
+
+    const { userId } = fetchedScancode;
+
+    const fetchedEvent = await this.db.query.event.findFirst({
+      where: (event, { eq }) => eq(event.id, eventId),
+    });
+    if (!event) throw new NotFoundException('No event found');
+    const fetchedUser = await this.db.query.user.findFirst({
+      where: (user, { eq }) => eq(user.id, userId),
+    });
+    if (!fetchedUser) throw new NotFoundException('No user found');
+
+    if (fetchedEvent.type === 'Mentor') {
+      if (!fetchedUser.roles.includes(ROLES.MENTOR)) {
+        throw new BadRequestException('You are not a mentor');
+      }
+    }
+
+    const checkedIn = await this.checkin(fetchedUser, fetchedEvent);
+
+    return checkedIn;
+  }
+
+  /**
+   * Check in a user to an event
+   * @param fetchedUser The user to check in
+   * @param fetchedEvent The event to check in to
+   * @returns RSVP
+   */
+  private async checkin(fetchedUser: User, fetchedEvent: Event) {
     const currentDate = new Date();
 
     const eventStartTime = new Date(fetchedEvent.startDate).getTime();
@@ -78,11 +133,13 @@ export class EventService {
 
     const eventEndTime = new Date(fetchedEvent.endDate).getTime();
 
-    const delay = eventEndTime - currentDate.getTime();
+    const timeDiff = eventEndTime - currentDate.getTime();
+
+    const delay = timeDiff > 0 ? timeDiff : 0;
 
     const existingRsvp = await this.db.query.rsvp.findFirst({
       where: (rsvp, { and, eq }) =>
-        and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
+        and(eq(rsvp.eventId, fetchedEvent.id), eq(rsvp.userId, fetchedUser.id)),
     });
 
     if (!existingRsvp) {
@@ -90,8 +147,8 @@ export class EventService {
         .insert(rsvp)
         .values({
           id: uuid(),
-          userId,
-          eventId,
+          userId: fetchedUser.id,
+          eventId: fetchedEvent.id,
           checkinTime,
         })
         .returning();
@@ -105,7 +162,7 @@ export class EventService {
       await this.eventQueue.add(
         'checkoutActive',
         {
-          eventId,
+          eventId: fetchedEvent.id,
           rsvpId: firstNewRsvp.id,
         },
         {
@@ -127,8 +184,8 @@ export class EventService {
       .insert(rsvp)
       .values({
         id: uuid(),
-        eventId,
-        userId,
+        eventId: fetchedEvent.id,
+        userId: fetchedUser.id,
         checkinTime,
       })
       .onConflictDoUpdate({
@@ -145,7 +202,7 @@ export class EventService {
       await this.eventQueue.add(
         'checkoutActive',
         {
-          eventId,
+          eventId: fetchedEvent.id,
           rsvpId: firstResult.id,
         },
         {
@@ -160,6 +217,12 @@ export class EventService {
     return firstResult;
   }
 
+  /**
+   * Check out a user from an event
+   * @param eventId The event id
+   * @param userId The user id
+   * @returns RSVP
+   */
   async checkoutUser(eventId: string, userId: string) {
     const currentDate = new Date();
 
