@@ -28,6 +28,7 @@ export type { ScaninDto } from './models/ScaninDto';
 export type { TokenCheckinDto } from './models/TokenCheckinDto';
 export { UpdateEventDto } from './models/UpdateEventDto';
 export { UpdateOrCreateRSVP } from './models/UpdateOrCreateRSVP';
+export { UpdateRsvpDto } from './models/UpdateRsvpDto';
 export { UpdateUserDto } from './models/UpdateUserDto';
 export { User } from './models/User';
 

@@ -11,6 +11,7 @@ import type { ScaninDto } from '../models/ScaninDto';
 import type { TokenCheckinDto } from '../models/TokenCheckinDto';
 import type { UpdateEventDto } from '../models/UpdateEventDto';
 import type { UpdateOrCreateRSVP } from '../models/UpdateOrCreateRSVP';
+import type { UpdateRsvpDto } from '../models/UpdateRsvpDto';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -187,12 +188,12 @@ export class EventService {
     /**
      * Checkout a user's RSVP
      * @param eventId
-     * @returns Rsvp
+     * @returns any
      * @throws ApiError
      */
     public checkoutUser(
         eventId: string,
-    ): CancelablePromise<Rsvp> {
+    ): CancelablePromise<any> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/api/event/{eventId}/me/checkout',
@@ -303,6 +304,31 @@ export class EventService {
             errors: {
                 400: `Invalid Scancode`,
             },
+        });
+    }
+
+    /**
+     * Edit an rsvp by event id and rsvp id
+     * @param eventId
+     * @param rsvpId
+     * @param requestBody
+     * @returns Rsvp
+     * @throws ApiError
+     */
+    public editUserRsvp(
+        eventId: string,
+        rsvpId: string,
+        requestBody: UpdateRsvpDto,
+    ): CancelablePromise<Rsvp> {
+        return this.httpRequest.request({
+            method: 'PATCH',
+            url: '/api/event/{eventId}/rsvps/{rsvpId}',
+            path: {
+                'eventId': eventId,
+                'rsvpId': rsvpId,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
 

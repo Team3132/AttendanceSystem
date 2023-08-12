@@ -4,12 +4,14 @@ import { List, Paper, Stack, Typography } from "@mui/material";
 import ErrorCard from "../../../components/ErrorCard";
 import RSVPListItem from "./RSVPListItem";
 import MyRsvpStatus from "./MyRsvpStatus";
+import AdminRSVPListItem from "./AdminRsvpListItem";
 
 interface RsvpListProps {
   eventId: string;
+  admin?: boolean;
 }
 
-export default function RsvpList({ eventId }: RsvpListProps) {
+export default function RsvpList({ eventId, admin = false }: RsvpListProps) {
   const rsvpsQuery = useQuery(eventApi.getEventRsvps(eventId));
 
   if (rsvpsQuery.data) {
@@ -23,8 +25,10 @@ export default function RsvpList({ eventId }: RsvpListProps) {
           <Typography variant="h5">RSVPs ({rsvpsQuery.data.length})</Typography>
           <MyRsvpStatus eventId={eventId} />
           <List>
-            {rsvpsQuery.data.map((rsvp) => (
+            {!admin ? rsvpsQuery.data.map((rsvp) => (
               <RSVPListItem rsvp={rsvp} key={rsvp.id} />
+            )) : rsvpsQuery.data.map((rsvp) => (
+              <AdminRSVPListItem rsvp={rsvp} key={rsvp.id} />
             ))}
           </List>
         </Stack>

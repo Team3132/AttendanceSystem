@@ -20,6 +20,7 @@ import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { CheckoutActiveData } from './types/CheckoutActive';
 import { ROLES } from '@/constants';
+import { UpdateRsvpDto } from '@/rsvp/dto/update-rsvp.dto';
 
 @Injectable()
 export class EventService {
@@ -274,5 +275,19 @@ export class EventService {
       .orderBy(rsvp.status, rsvp.updatedAt);
 
     return res;
+  }
+
+  async updateRsvp(eventId: string, rsvpId: string, data: UpdateRsvpDto) {
+    const updatedRsvp = await this.db
+      .update(rsvp)
+      .set(data)
+      .where(eq(rsvp.id, rsvpId))
+      .returning();
+
+    const firstResult = updatedRsvp.at(0);
+
+    if (!firstResult) throw new NotFoundException('No RSVP found');
+
+    return firstResult;
   }
 }

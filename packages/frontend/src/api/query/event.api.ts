@@ -7,6 +7,7 @@ import {
   TokenCheckinDto,
   UpdateEventDto,
   UpdateOrCreateRSVP,
+  UpdateRsvpDto,
 } from "../generated";
 
 interface GetEventParams {
@@ -30,6 +31,11 @@ interface ScanIntoEventData extends TokenCheckinDto {
 
 interface ScanInData extends ScaninDto {
   eventId: string;
+}
+
+interface UpdateRsvpData extends UpdateRsvpDto {
+  eventId: string;
+  rsvpId: string;
 }
 
 export const eventKeys = {
@@ -110,6 +116,10 @@ const eventApi = {
       eventId: string;
       userId?: string;
     }) => api.event.checkoutUser1(eventId, userId),
+  }),
+  updateUserEventRsvp: mutationOptions({
+    mutationFn: ({ eventId, rsvpId, ...data }: UpdateRsvpData) =>
+      api.event.editUserRsvp(eventId, rsvpId, data),
   }),
 };
 

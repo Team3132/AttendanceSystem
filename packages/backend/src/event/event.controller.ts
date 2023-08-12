@@ -50,6 +50,7 @@ import { event, rsvp } from '../drizzle/schema';
 import { v4 as uuid } from 'uuid';
 import { DateTime } from 'luxon';
 import { ROLES } from '@/constants';
+import { UpdateRsvpDto } from '@/rsvp/dto/update-rsvp.dto';
 
 @ApiTags('Event')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -468,5 +469,28 @@ export class EventController {
     if (!scaninResult) throw new BadRequestException('Invalid Scancode');
 
     return new Rsvp(scaninResult);
+  }
+
+  @ApiOkResponse({ type: Rsvp })
+  @ApiCookieAuth()
+  @UseGuards(SessionGuard)
+  @ApiOperation({
+    description: 'Edit an rsvp by event id and rsvp id',
+    operationId: 'editUserRsvp',
+  })
+  @Patch(':eventId/rsvps/:rsvpId')
+  @Roles(['MENTOR'])
+  async editUserRsvp(
+    @Param('eventId') eventId: string,
+    @Param('rsvpId') rsvpId: string,
+    @Body() updateRsvpDto: UpdateRsvpDto,
+  ): Promise<Rsvp> {
+    const updatedRsvp = await this.eventService.updateRsvp(
+      eventId,
+      rsvpId,
+      updateRsvpDto,
+    );
+
+    return new Rsvp(updatedRsvp);
   }
 }

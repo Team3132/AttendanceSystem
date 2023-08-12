@@ -7,6 +7,7 @@ import { Container, Grid, Paper, Typography } from "@mui/material";
 import { z } from "zod";
 import { DateTime } from "luxon";
 import RsvpList from "../components/RSVPList";
+import authApi from "../../../api/query/auth.api";
 
 const EventParamsSchema = z.object({
   eventId: z.string(),
@@ -28,13 +29,18 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 export function Component() {
-  const { initialEventData } = useLoaderData() as Awaited<
+  const { initialEventData, initialAuthStatus } = useLoaderData() as Awaited<
     ReturnType<typeof loader>
   >;
 
   const eventQuery = useQuery({
     ...eventApi.getEvent(initialEventData.id),
     initialData: initialEventData,
+  });
+
+  const authStatusQuery = useQuery({
+    ...authApi.getAuthStatus,
+    initialData: initialAuthStatus,
   });
 
   return (
@@ -106,7 +112,10 @@ export function Component() {
         </Grid>
 
         <Grid item xs={12}>
-          <RsvpList eventId={initialEventData.id} />
+          <RsvpList
+            eventId={initialEventData.id}
+            admin={authStatusQuery.data.isAdmin}
+          />
         </Grid>
       </Grid>
     </Container>
