@@ -6,13 +6,14 @@ import {
   Stack,
   Button,
   DialogActions,
+  Typography,
 } from "@mui/material";
 import useZodForm from "../../../hooks/useZodForm";
 import { z } from "zod";
 import { Rsvp, UpdateRsvpDto } from "../../../api/generated";
 import useUpdateUserRsvp from "../hooks/useUpdateUserRsvp";
 import { LoadingButton } from "@mui/lab";
-import { DatePicker, DateTimePicker } from "@mui/x-date-pickers";
+import { DateTimePicker } from "@mui/x-date-pickers";
 import { Controller } from "react-hook-form";
 import { DateTime } from "luxon";
 
@@ -25,8 +26,8 @@ interface RSVPEditDialogProps {
 
 const UpdateRsvpSchema = z.object({
   status: z.nativeEnum(UpdateRsvpDto.status).optional(),
-  checkinTime: z.string().datetime().optional(),
-  checkoutTime: z.string().datetime().optional(),
+  checkinTime: z.string().nullable().optional(),
+  checkoutTime: z.string().nullable().optional(),
 });
 
 export default function RSVPEditDialog(props: RSVPEditDialogProps) {
@@ -35,7 +36,7 @@ export default function RSVPEditDialog(props: RSVPEditDialogProps) {
   const {
     handleSubmit,
     control,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
   } = useZodForm({
     schema: UpdateRsvpSchema,
     defaultValues: {
@@ -52,9 +53,12 @@ export default function RSVPEditDialog(props: RSVPEditDialogProps) {
       await updateUserRsvpMutation.mutateAsync({
         eventId: rsvp.eventId,
         rsvpId: rsvp.id,
-        ...data,
+        checkinTime: data.checkinTime ?? undefined,
+        checkoutTime: data.checkoutTime ?? undefined,
       });
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   });
 
   return (
@@ -78,7 +82,7 @@ export default function RSVPEditDialog(props: RSVPEditDialogProps) {
             name="checkinTime"
             render={({ field: { value, onChange, ...rest } }) => (
               <DateTimePicker
-                value={value ? DateTime.fromISO(value) : DateTime.local()}
+                value={value ? DateTime.fromISO(value) : null}
                 label="Checkin Time"
                 onChange={(date) => {
                   if (date) {
@@ -94,7 +98,7 @@ export default function RSVPEditDialog(props: RSVPEditDialogProps) {
             name="checkoutTime"
             render={({ field: { value, onChange, ...rest } }) => (
               <DateTimePicker
-                value={value ? DateTime.fromISO(value) : DateTime.local()}
+                value={value ? DateTime.fromISO(value) : null}
                 label="Checkout Time"
                 onChange={(date) => {
                   if (date) {
@@ -105,6 +109,10 @@ export default function RSVPEditDialog(props: RSVPEditDialogProps) {
               />
             )}
           />
+          <Typography>
+            {errors.checkinTime?.message}
+            {errors.checkoutTime?.message}
+          </Typography>
         </Stack>
       </DialogContent>
       <DialogActions>
