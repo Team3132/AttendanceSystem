@@ -4,7 +4,6 @@ import queryClient from "../../../queryClient";
 import userApi from "../../../api/query/user.api";
 import ensureAuth from "../../auth/utils/ensureAuth";
 import { useQuery } from "@tanstack/react-query";
-import authApi from "../../../api/query/auth.api";
 import { Container, Stack, Paper, Typography, List } from "@mui/material";
 import PendingEventListItem from "../../../components/PendingEventListItem";
 
@@ -33,11 +32,6 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 export function Component() {
   const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
-
-  const authStatusQuery = useQuery({
-    ...authApi.getAuthStatus,
-    initialData: loaderData.initialAuthStatus,
-  });
 
   const pendingEventsQuery = useQuery({
     ...userApi.getPendingRsvps(loaderData.userId),
