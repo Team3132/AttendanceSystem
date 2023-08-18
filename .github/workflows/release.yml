@@ -55,6 +55,8 @@ jobs:
         run: yarn front install --frozen-lockfile
       - name: Build
         run: yarn front build
+        env:
+          VITE_APP_VERSION: ${{ needs.release.outputs.version }}
       - name: Upload Build
         uses: actions/upload-artifact@v3
         with:
