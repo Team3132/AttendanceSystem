@@ -1,4 +1,4 @@
-FROM basebackend as runner
+FROM node:20-alpine
 WORKDIR /app
 ENV NODE_ENV production
 RUN yarn back install --frozen-lockfile --production
