@@ -165,7 +165,7 @@ jobs:
         id: docker_build
         with:
           context: .
-          file: ./partial.Dockerfile
+          file: ./Dockerfile.partial
           target: 'runner'
           build-args: |
             VERSION=${{ needs.release.outputs.version }}
