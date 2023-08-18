@@ -1,0 +1,10 @@
+FROM basebackend as runner
+WORKDIR /app
+ENV NODE_ENV production
+RUN yarn back install --frozen-lockfile --production
+COPY package.json yarn.lock ./
+COPY packages/backend/package.json ./packages/backend/
+COPY packages/backend/dist packages/backend/dist
+
+EXPOSE 3000
+CMD yarn back start
