@@ -61,7 +61,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: frontend-build
-          path: dist
+          path: packages/frontend/dist
   build-backend:
     name: Build Backend
     if: needs.release.outputs.published == 'true'
@@ -126,7 +126,7 @@ jobs:
       - name: Restore Backend Dist
         uses: actions/download-artifact@v3
         with:
-          name: build
+          name: backend-build
           path: packages/backend/dist
       - name: Restore Frontend Dist
         uses: actions/download-artifact@v3
