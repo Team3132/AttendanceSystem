@@ -28,6 +28,7 @@ export default function ScaninCard(props: ScaninCardProps) {
 
   const {
     register,
+    setFocus,
     formState: { errors, isSubmitting },
     handleSubmit,
     reset,
@@ -53,6 +54,7 @@ export default function ScaninCard(props: ScaninCardProps) {
         timeout: 2000,
       });
       setUnknownCode(undefined);
+      setFocus("code");
     } catch (error) {
       if (error instanceof ApiError) {
         if (error.status === 404) {
@@ -73,6 +75,7 @@ export default function ScaninCard(props: ScaninCardProps) {
           reset({
             code: "",
           });
+          setFocus("code");
         }
       } else {
         alert.error("An unknown error occurred", {
@@ -82,6 +85,7 @@ export default function ScaninCard(props: ScaninCardProps) {
         reset({
           code: "",
         });
+        setFocus("code");
       }
     }
   });
