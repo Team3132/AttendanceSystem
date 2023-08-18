@@ -7,6 +7,7 @@ import {
   Button,
   DialogActions,
   Typography,
+  IconButton,
 } from "@mui/material";
 import useZodForm from "../../../hooks/useZodForm";
 import { z } from "zod";
@@ -16,6 +17,7 @@ import { LoadingButton } from "@mui/lab";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { Controller } from "react-hook-form";
 import { DateTime } from "luxon";
+import { FaRecycle } from "react-icons/fa6";
 
 interface RSVPEditDialogProps {
   onOpen: () => void;
@@ -37,6 +39,7 @@ export default function RSVPEditDialog(props: RSVPEditDialogProps) {
     handleSubmit,
     control,
     formState: { isSubmitting, errors },
+    reset,
   } = useZodForm({
     schema: UpdateRsvpSchema,
     defaultValues: {
@@ -56,6 +59,7 @@ export default function RSVPEditDialog(props: RSVPEditDialogProps) {
         checkinTime: data.checkinTime ?? undefined,
         checkoutTime: data.checkoutTime ?? undefined,
       });
+      onClose();
     } catch (error) {
       console.error(error);
     }
@@ -77,38 +81,61 @@ export default function RSVPEditDialog(props: RSVPEditDialogProps) {
             mt: 2,
           }}
         >
-          <Controller
-            control={control}
-            name="checkinTime"
-            render={({ field: { value, onChange, ...rest } }) => (
-              <DateTimePicker
-                value={value ? DateTime.fromISO(value) : null}
-                label="Checkin Time"
-                onChange={(date) => {
-                  if (date) {
-                    onChange(date.toISO());
-                  }
-                }}
-                {...rest}
-              />
-            )}
-          />
-          <Controller
-            control={control}
-            name="checkoutTime"
-            render={({ field: { value, onChange, ...rest } }) => (
-              <DateTimePicker
-                value={value ? DateTime.fromISO(value) : null}
-                label="Checkout Time"
-                onChange={(date) => {
-                  if (date) {
-                    onChange(date.toISO());
-                  }
-                }}
-                {...rest}
-              />
-            )}
-          />
+          <Stack direction="row" gap={2}>
+            <Controller
+              control={control}
+              name="checkinTime"
+              render={({ field: { value, onChange, ...rest } }) => (
+                <DateTimePicker
+                  value={value ? DateTime.fromISO(value) : null}
+                  label="Checkin Time"
+                  onChange={(date) => {
+                    if (date) {
+                      onChange(date.toISO());
+                    }
+                  }}
+                  {...rest}
+                />
+              )}
+            />
+            <IconButton
+              onClick={() => {
+                reset({
+                  checkinTime: null,
+                });
+              }}
+            >
+              <FaRecycle />
+            </IconButton>
+          </Stack>
+
+          <Stack direction="row" gap={2}>
+            <Controller
+              control={control}
+              name="checkoutTime"
+              render={({ field: { value, onChange, ...rest } }) => (
+                <DateTimePicker
+                  value={value ? DateTime.fromISO(value) : null}
+                  label="Checkout Time"
+                  onChange={(date) => {
+                    if (date) {
+                      onChange(date.toISO());
+                    }
+                  }}
+                  {...rest}
+                />
+              )}
+            />
+            <IconButton
+              onClick={() => {
+                reset({
+                  checkoutTime: null,
+                });
+              }}
+            >
+              <FaRecycle />
+            </IconButton>
+          </Stack>
           <Typography>
             {errors.checkinTime?.message}
             {errors.checkoutTime?.message}
