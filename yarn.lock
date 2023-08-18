@@ -3942,9 +3942,9 @@ dreamopt@~0.8.0:
     wordwrap ">=0.0.2"
 
 drizzle-kit@^0.19.12:
-  version "0.19.12"
-  resolved "https://registry.yarnpkg.com/drizzle-kit/-/drizzle-kit-0.19.12.tgz#11fde54444dffda2215fa778443f5b8f224859a7"
-  integrity sha512-rcsmh5gUIkvuD0WrbEc+aLpqY2q2J8ltynRcJiJo2l01hhsYvPnX0sgxWlFXlfAIa5ZXNw2nJZhYlslI6tG3MA==
+  version "0.19.13"
+  resolved "https://registry.yarnpkg.com/drizzle-kit/-/drizzle-kit-0.19.13.tgz#f459be8233e8f893aad48fe803abb644e71dbc61"
+  integrity sha512-Rba5VW1O2JfJlwVBeZ8Zwt2E2us5oZ08PQBDiVSGlug53TOc8hzXjblZFuF+dnll9/RQEHrkzBmJFgqTvn5Rxg==
   dependencies:
     "@drizzle-team/studio" "^0.0.5"
     "@esbuild-kit/esm-loader" "^2.5.5"
