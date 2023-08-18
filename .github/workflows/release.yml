@@ -166,7 +166,6 @@ jobs:
         with:
           context: .
           file: ./Dockerfile.partial
-          target: 'runner'
           build-args: |
             VERSION=${{ needs.release.outputs.version }}
           tags: ${{ steps.meta.outputs.tags }}
