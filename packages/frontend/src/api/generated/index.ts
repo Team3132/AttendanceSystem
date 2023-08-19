@@ -15,6 +15,7 @@ export type { AuthStatusDto } from './models/AuthStatusDto';
 export { CreateEventDto } from './models/CreateEventDto';
 export type { CreateScancodeDto } from './models/CreateScancodeDto';
 export type { DiscordRole } from './models/DiscordRole';
+export type { EditOutreachHoursDto } from './models/EditOutreachHoursDto';
 export { EventResponse } from './models/EventResponse';
 export { EventResponseType } from './models/EventResponseType';
 export type { EventSecret } from './models/EventSecret';

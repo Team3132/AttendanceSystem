@@ -33,4 +33,26 @@ export class UserService {
 
     return pendingRsvps;
   }
+
+  async editAdditionalOutreach(
+    userId: string,
+    additionalOutreachHours: number,
+  ) {
+    const updatedUser = await this.db
+      .update(user)
+      .set({ additionalOutreachHours })
+      .where(eq(user.id, userId))
+      .returning();
+    return updatedUser.at(0);
+  }
+
+  async getAdditionalOutreach(userId: string) {
+    const fetchedUser = await this.db
+      .select({
+        additionalOutreachHours: user.additionalOutreachHours,
+      })
+      .from(user)
+      .where(eq(user.id, userId));
+    return fetchedUser.at(0)?.additionalOutreachHours;
+  }
 }

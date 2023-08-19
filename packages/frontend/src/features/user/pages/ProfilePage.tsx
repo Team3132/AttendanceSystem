@@ -9,6 +9,8 @@ import useRouteMatch from "../../../utils/useRouteMatch";
 import DefaultAppBar from "../../../components/DefaultAppBar";
 import { Tab, Tabs } from "@mui/material";
 import LinkBehavior from "../../../utils/LinkBehavior";
+import authApi from "../../../api/query/auth.api";
+import OutreachFab from "../components/OutreachFab";
 
 const ProfileParamsSchema = z.object({
   userId: z.string().optional(),
@@ -48,6 +50,11 @@ export function Component() {
     // initialData: loaderData.initialUser,
   });
 
+  const authQuery = useQuery({
+    ...authApi.getAuthStatus,
+    initialData: loaderData.initialAuthStatus,
+  });
+
   const tabs = useMemo<Array<TabItem>>(
     () =>
       !loaderData.userId
@@ -71,7 +78,7 @@ export function Component() {
               path: `/user/${loaderData.userId}/pending`,
             },
           ],
-    [loaderData],
+    [loaderData.userId],
   );
 
   const routes = useMemo(() => tabs.map((tab) => tab.path), [tabs]);
@@ -98,6 +105,9 @@ export function Component() {
         ))}
       </Tabs>
       <Outlet />
+      {authQuery.data.isAdmin && loaderData.userId ? (
+        <OutreachFab userId={loaderData.userId} />
+      ) : null}
     </>
   );
 }

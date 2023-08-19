@@ -1,10 +1,19 @@
 import { queryOptions } from "@tanstack/react-query";
 import { cancelableQuery, mutationOptions } from "./utils";
 import api from "..";
-import { CreateScancodeDto, RsvpEvent, UpdateUserDto } from "../generated";
+import {
+  CreateScancodeDto,
+  EditOutreachHoursDto,
+  RsvpEvent,
+  UpdateUserDto,
+} from "../generated";
 
 interface UserEditData extends UpdateUserDto {
   userId?: string;
+}
+
+interface EditUserOutreach extends EditOutreachHoursDto {
+  userId: string;
 }
 
 interface CreateScancodeData extends CreateScancodeDto {
@@ -28,6 +37,8 @@ export const userKeys = {
     [...userKeys.user(userId), "scancodes"] as const,
   pendingRsvps: (userId: string = "me") =>
     [...userKeys.user(userId), "pendingRsvps"] as const,
+  additionalOutreachHours: (userId: string) =>
+    [...userKeys.user(userId), "additionalOutreachHours"] as const,
 };
 
 const userApi = {
@@ -55,6 +66,16 @@ const userApi = {
       queryFn: ({ signal }) =>
         cancelableQuery(api.user.getUserPendingRsvPs(userId), signal),
     }),
+  getAdditionalOutreachHours: (userId: string) =>
+    queryOptions({
+      queryKey: userKeys.additionalOutreachHours(userId),
+      queryFn: ({ signal }) =>
+        cancelableQuery(
+          api.user.getUserAdditionalOutreachHours(userId),
+          signal,
+        ),
+    }),
+
   getUsers: queryOptions({
     queryKey: userKeys.users,
     queryFn: ({ signal }) => cancelableQuery(api.user.getUsers(), signal),
@@ -74,6 +95,10 @@ const userApi = {
   deleteUserScancode: mutationOptions({
     mutationFn: ({ userId = "me", scancodeId }: DeleteScancodeData) =>
       api.user.deleteUserScancode(userId, scancodeId),
+  }),
+  editAdditionalOutreach: mutationOptions({
+    mutationFn: ({ userId, ...data }: EditUserOutreach) =>
+      api.user.editUserOutreachHours(userId, data),
   }),
 };
 

@@ -4,6 +4,7 @@ import { event, rsvp, user } from '../drizzle/schema';
 import { and, eq, gte, isNotNull, sql } from 'drizzle-orm';
 import { LeaderboardDto } from './dto/LeaderboardDto';
 import { DateTime } from 'luxon';
+import { ROLES } from '@/constants';
 
 @Injectable()
 export class OutreachService {
@@ -24,7 +25,7 @@ export class OutreachService {
      */
     const rsvps = await this.db
       .select({
-        outreachHours: sql<number>`round(sum(extract(epoch from (${rsvp.checkoutTime} - ${rsvp.checkinTime})) / 3600), 2)`,
+        outreachHours: sql<number>`round(sum(extract(epoch from (${rsvp.checkoutTime} - ${rsvp.checkinTime})) / 3600) + ${user.additionalOutreachHours}, 2)`,
         rank: sql<number>`rank() over (order by sum(extract(epoch from (${rsvp.checkoutTime} - ${rsvp.checkinTime})) / 3600) desc)`,
         username: user.username,
         userId: user.id,
@@ -33,11 +34,11 @@ export class OutreachService {
       .leftJoin(event, eq(rsvp.eventId, event.id))
       .where(
         and(
-          and(isNotNull(rsvp.checkinTime), isNotNull(rsvp.checkoutTime)),
-          and(
-            gte(rsvp.checkoutTime, sql`${lastApril25}`),
-            eq(event.type, 'Outreach'),
-          ),
+          isNotNull(rsvp.checkinTime),
+          isNotNull(rsvp.checkoutTime),
+          gte(rsvp.checkoutTime, sql`${lastApril25}`),
+          eq(event.type, 'Outreach'),
+          sql`${ROLES.STUDENT} = ANY(${user.roles})`,
         ),
       )
       .having(sql`count(*) > 0`)

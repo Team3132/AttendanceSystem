@@ -11,6 +11,8 @@ import {
   ForbiddenException,
   Inject,
   NotFoundException,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -33,11 +35,13 @@ import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 import { user } from '../drizzle/schema';
 import { eq } from 'drizzle-orm';
 import { RsvpEvent } from '@/rsvp/dto/event-rsvp.dto';
+import { EditOutreachHoursDto } from './dto/EditOutreachHours.dto';
 
 /** The user controller for controlling the user status */
 @ApiTags('User')
 @ApiCookieAuth()
 @UseGuards(SessionGuard)
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')
 export class UserController {
   constructor(
@@ -393,9 +397,8 @@ export class UserController {
       throw new ForbiddenException();
     }
 
-    const deletedScancode = await this.scancodeService.deleteScancode(
-      scancodeId,
-    );
+    const deletedScancode =
+      await this.scancodeService.deleteScancode(scancodeId);
 
     return deletedScancode;
   }
@@ -423,5 +426,51 @@ export class UserController {
     const pendingRsvps = await this.userService.activeRsvps(userId);
 
     return pendingRsvps.map((rsvp) => new RsvpEvent(rsvp.RSVP, rsvp.Event));
+  }
+
+  @ApiOperation({
+    description: 'Get the additional outreach hours of the specified user.',
+    operationId: 'getUserAdditionalOutreachHours',
+  })
+  @ApiOkResponse({ type: EditOutreachHoursDto })
+  @Roles(['MENTOR'])
+  @Get(':id/extra-outreach-hours')
+  async userAdditionalOutreachHours(@Param('id') userId: string) {
+    const outreachHours = await this.userService.getAdditionalOutreach(userId);
+
+    if (outreachHours === undefined || outreachHours === null)
+      throw new NotFoundException(
+        `No additional outreach hours found for user with id ${userId}`,
+      );
+
+    return new EditOutreachHoursDto({
+      hours: outreachHours,
+    });
+  }
+
+  @ApiOperation({
+    description: "Edit the outreach hours of the specified user's.",
+    operationId: 'editUserOutreachHours',
+  })
+  @ApiOkResponse({ type: EditOutreachHoursDto })
+  @Roles(['MENTOR'])
+  @Patch(':id/extra-outreach-hours')
+  async editUserOutreachHours(
+    @Param('id') userId: string,
+    @Body() body: EditOutreachHoursDto,
+  ) {
+    const outreachHours = await this.userService.editAdditionalOutreach(
+      userId,
+      body.hours,
+    );
+
+    if (!outreachHours)
+      throw new NotFoundException(
+        `No additional outreach hours found for user with id ${userId}`,
+      );
+
+    return new EditOutreachHoursDto({
+      hours: outreachHours.additionalOutreachHours,
+    });
   }
 }

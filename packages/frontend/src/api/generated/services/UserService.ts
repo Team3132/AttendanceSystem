@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { CreateScancodeDto } from '../models/CreateScancodeDto';
+import type { EditOutreachHoursDto } from '../models/EditOutreachHoursDto';
 import type { Rsvp } from '../models/Rsvp';
 import type { RsvpEvent } from '../models/RsvpEvent';
 import type { Scancode } from '../models/Scancode';
@@ -322,6 +323,46 @@ id: string,
             path: {
                 'id': id,
             },
+        });
+    }
+
+    /**
+     * Get the additional outreach hours of the specified user.
+     * @param id 
+     * @returns EditOutreachHoursDto 
+     * @throws ApiError
+     */
+    public getUserAdditionalOutreachHours(
+id: string,
+): CancelablePromise<EditOutreachHoursDto> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/api/user/{id}/extra-outreach-hours',
+            path: {
+                'id': id,
+            },
+        });
+    }
+
+    /**
+     * Edit the outreach hours of the specified user's.
+     * @param id 
+     * @param requestBody 
+     * @returns EditOutreachHoursDto 
+     * @throws ApiError
+     */
+    public editUserOutreachHours(
+id: string,
+requestBody: EditOutreachHoursDto,
+): CancelablePromise<EditOutreachHoursDto> {
+        return this.httpRequest.request({
+            method: 'PATCH',
+            url: '/api/user/{id}/extra-outreach-hours',
+            path: {
+                'id': id,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
 

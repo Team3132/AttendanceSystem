@@ -36,6 +36,9 @@ export const user = pgTable('User', {
   id: text('id').primaryKey().notNull(),
   roles: text('roles').array(),
   defaultStatus: rsvpStatus('defaultStatus'),
+  additionalOutreachHours: integer('additionalOutreachHours')
+    .default(0)
+    .notNull(),
 });
 
 export const userRelations = relations(user, ({ many }) => ({
