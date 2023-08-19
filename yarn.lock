@@ -2455,9 +2455,9 @@
   integrity sha512-NaL5qp1K5IhnDD5wEegYpXB0OMPsb+QZNcGR5hWQaDS+30Ga8+zKpfjDn7wHlCKPO2mHCTRqUbQnLWIlt5FKoQ==
 
 "@tanstack/react-query@^5.0.0-beta.15":
-  version "5.0.0-beta.16"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.0.0-beta.16.tgz#09ead3a239ec55e380e14389b6e3d3b2e2e3f604"
-  integrity sha512-60/jq4W4A4kG4Yk18SjpXa3BnzIFCP3kt12u54Vtc/ul7ZIcs18Hvj02UVddfEWAw3rL3er8ez92pqaNYSVeBw==
+  version "5.0.0-beta.17"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.0.0-beta.17.tgz#67d87b5094844d49f69f91540be8a11f45391154"
+  integrity sha512-bKelP4uRXsmoSKSzIllUC8L5AkZ0uW2numoyutnjjA3kiNQwFvJE2AjKZ/Av5mVMvG4YLoDWVtECZ26eZQlX/g==
   dependencies:
     "@tanstack/query-core" "5.0.0-beta.15"
     client-only "0.0.1"
