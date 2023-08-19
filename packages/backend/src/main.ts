@@ -6,7 +6,7 @@ import session from 'express-session';
 import passport from 'passport';
 import Redis from 'ioredis';
 import RedisStore from 'connect-redis';
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import helmet from 'helmet';
 import { Settings } from 'luxon';
@@ -17,7 +17,8 @@ Settings.defaultLocale = 'en-au';
 Settings.defaultZone = 'Australia/Sydney';
 
 async function bootstrap() {
-  console.log('Node Env:', process.env.NODE_ENV);
+  const logger = new Logger('Main');
+  logger.log('Node Env:', process.env.NODE_ENV);
 
   const app = await NestFactory.create(AppModule);
   const config = app.get(ConfigService);
@@ -33,6 +34,8 @@ async function bootstrap() {
 
     const { httpAdapter } = app.get(HttpAdapterHost);
     app.useGlobalFilters(new SentryFilter(httpAdapter));
+
+    logger.log('Sentry enabled');
   }
 
   app.setGlobalPrefix('api');

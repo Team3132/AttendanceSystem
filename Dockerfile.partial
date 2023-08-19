@@ -1,6 +1,8 @@
 FROM node:20-alpine
 WORKDIR /app
 ENV NODE_ENV production
+ARG VERSION
+ENV VERSION=$VERSION
 COPY package.json yarn.lock ./
 COPY packages/backend/package.json ./packages/backend/
 COPY packages/backend/dist packages/backend/dist
