@@ -26,7 +26,7 @@ export class OutreachService {
     const rsvps = await this.db
       .select({
         outreachHours: sql<number>`round(sum(extract(epoch from (${rsvp.checkoutTime} - ${rsvp.checkinTime})) / 3600) + ${user.additionalOutreachHours}, 2)`,
-        rank: sql<number>`rank() over (order by sum(extract(epoch from (${rsvp.checkoutTime} - ${rsvp.checkinTime})) / 3600) desc)`,
+        rank: sql<number>`rank() over (order by sum(extract(epoch from (${rsvp.checkoutTime} - ${rsvp.checkinTime})) / 3600) + ${user.additionalOutreachHours} desc)`,
         username: user.username,
         userId: user.id,
       })
