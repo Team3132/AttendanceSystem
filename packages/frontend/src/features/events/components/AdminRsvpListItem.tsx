@@ -11,6 +11,9 @@ import { FaCheck, FaClock, FaXmark, FaQuestion, FaGear } from "react-icons/fa6";
 import { DateTime } from "luxon";
 import RSVPEditDialog from "./RSVPEditDialog";
 import { useDisclosure } from "../../../hooks/useDisclosure";
+import useCheckoutUser from "../hooks/useCheckoutUser";
+import useCheckinUser from "../hooks/useCheckinUser";
+import { useAlert } from "react-alert";
 
 interface AdminRSVPListItemProps {
   rsvp: RsvpUser;
@@ -18,12 +21,47 @@ interface AdminRSVPListItemProps {
 
 export default function AdminRSVPListItem({ rsvp }: AdminRSVPListItemProps) {
   const { getButtonProps, getDisclosureProps } = useDisclosure();
+  const checkoutMutation = useCheckoutUser();
+  const checkinMutation = useCheckinUser();
+  const alert = useAlert();
+
+  const handleCheckIn = () =>
+    checkinMutation.mutate({
+      eventId: rsvp.eventId,
+      userId: rsvp.userId,
+    });
+
+  const handleCheckOut = () =>
+    checkoutMutation.mutate({
+      eventId: rsvp.eventId,
+      userId: rsvp.userId,
+    });
+
+  const handleCheckInOut = () => {
+    if (!rsvp.checkinTime) {
+      handleCheckIn();
+    } else if (!rsvp.checkoutTime) {
+      handleCheckOut();
+    } else {
+      alert.error("User already checked out");
+    }
+  };
 
   return (
     <>
       <ListItem
         secondaryAction={
           <>
+            <Tooltip title="Check in/out">
+              <IconButton
+                onClick={handleCheckInOut}
+                disabled={
+                  checkinMutation.isPending || checkoutMutation.isPending
+                }
+              >
+                <FaClock />
+              </IconButton>
+            </Tooltip>
             <Tooltip title="Edit">
               <IconButton {...getButtonProps()}>
                 <FaGear />

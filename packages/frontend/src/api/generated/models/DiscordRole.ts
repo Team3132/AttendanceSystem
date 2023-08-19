@@ -8,4 +8,3 @@ export type DiscordRole = {
     id: string;
     color: number;
 };
-

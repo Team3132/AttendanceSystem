@@ -7,4 +7,3 @@ export type AuthStatusDto = {
     isAuthenticated: boolean;
     isAdmin: boolean;
 };
-

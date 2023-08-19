@@ -6,4 +6,3 @@
 export type EventSecret = {
     secret: string;
 };
-

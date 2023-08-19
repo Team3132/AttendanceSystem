@@ -9,4 +9,3 @@ export type LeaderboardDto = {
     username: string;
     rank: number;
 };
-

@@ -493,4 +493,22 @@ export class EventController {
 
     return new Rsvp(updatedRsvp);
   }
+
+  @ApiOkResponse({ type: Rsvp })
+  @ApiCookieAuth()
+  @UseGuards(SessionGuard)
+  @ApiOperation({
+    description: 'Checkin a user by event id and rsvp id',
+    operationId: 'checkinUser',
+  })
+  @Post(':eventId/:userId/checkin')
+  @Roles(['MENTOR'])
+  async checkinUser(
+    @Param('eventId') eventId: string,
+    @Param('userId') userId: string,
+  ): Promise<Rsvp> {
+    const updatedRsvp = await this.eventService.checkinUser(eventId, userId);
+
+    return new Rsvp(updatedRsvp);
+  }
 }

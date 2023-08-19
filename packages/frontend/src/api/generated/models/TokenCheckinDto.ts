@@ -6,4 +6,3 @@
 export type TokenCheckinDto = {
     code: string;
 };
-

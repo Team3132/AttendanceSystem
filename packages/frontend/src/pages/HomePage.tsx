@@ -18,6 +18,8 @@ export async function loader() {
   };
 }
 
+const appVersion = import.meta.env.VITE_APP_VERSION as string | undefined;
+
 export function Component() {
   const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
 
@@ -50,13 +52,11 @@ export function Component() {
               />
             </Stack>
           </Paper>
-          {import.meta.env.VITE_APP_VERSION ? (
+          {appVersion ? (
             <Paper sx={{ p: 2, textAlign: "center" }}>
               <Stack gap={2}>
                 <Typography variant="h4">Version</Typography>
-                <Typography variant="body1">
-                  {import.meta.env.VITE_APP_VERSION}
-                </Typography>
+                <Typography variant="body1">{appVersion}</Typography>
               </Stack>
             </Paper>
           ) : null}

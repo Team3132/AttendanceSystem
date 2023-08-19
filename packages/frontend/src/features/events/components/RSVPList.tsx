@@ -25,11 +25,13 @@ export default function RsvpList({ eventId, admin = false }: RsvpListProps) {
           <Typography variant="h5">RSVPs ({rsvpsQuery.data.length})</Typography>
           <MyRsvpStatus eventId={eventId} />
           <List>
-            {!admin ? rsvpsQuery.data.map((rsvp) => (
-              <RSVPListItem rsvp={rsvp} key={rsvp.id} />
-            )) : rsvpsQuery.data.map((rsvp) => (
-              <AdminRSVPListItem rsvp={rsvp} key={rsvp.id} />
-            ))}
+            {!admin
+              ? rsvpsQuery.data.map((rsvp) => (
+                  <RSVPListItem rsvp={rsvp} key={rsvp.id} />
+                ))
+              : rsvpsQuery.data.map((rsvp) => (
+                  <AdminRSVPListItem rsvp={rsvp} key={rsvp.id} />
+                ))}
           </List>
         </Stack>
       </Paper>

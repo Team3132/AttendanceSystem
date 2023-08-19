@@ -121,6 +121,10 @@ const eventApi = {
     mutationFn: ({ eventId, rsvpId, ...data }: UpdateRsvpData) =>
       api.event.editUserRsvp(eventId, rsvpId, data),
   }),
+  checkinUser: mutationOptions({
+    mutationFn: ({ eventId, userId }: { eventId: string; userId: string }) =>
+      api.event.checkinUser(eventId, userId),
+  }),
 };
 
 export default eventApi;

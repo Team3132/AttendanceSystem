@@ -251,6 +251,40 @@ export class EventService {
     );
   }
 
+  async checkinRsvp(eventId: string, rsvpId: string) {
+    const fetchedEvent = await this.db.query.event.findFirst({
+      where: (event, { eq }) => eq(event.id, eventId),
+    });
+    if (!fetchedEvent) throw new NotFoundException('No event found');
+    const fetchedRsvp = await this.db.query.rsvp.findFirst({
+      where: (rsvp, { eq }) => eq(rsvp.id, rsvpId),
+    });
+    if (!fetchedRsvp) throw new NotFoundException('No rsvp found');
+    const fetchedUser = await this.db.query.user.findFirst({
+      where: (user, { eq }) => eq(user.id, fetchedRsvp.userId),
+    });
+    if (!fetchedUser) throw new NotFoundException('No user found');
+
+    const checkedIn = await this.checkin(fetchedUser, fetchedEvent);
+
+    return checkedIn;
+  }
+
+  async checkinUser(eventId: string, userId: string) {
+    const fetchedEvent = await this.db.query.event.findFirst({
+      where: (event, { eq }) => eq(event.id, eventId),
+    });
+    if (!fetchedEvent) throw new NotFoundException('No event found');
+    const fetchedUser = await this.db.query.user.findFirst({
+      where: (user, { eq }) => eq(user.id, userId),
+    });
+    if (!fetchedUser) throw new NotFoundException('No user found');
+
+    const checkedIn = await this.checkin(fetchedUser, fetchedEvent);
+
+    return checkedIn;
+  }
+
   async getEventUserRsvps(eventId: string): Promise<RsvpUser[]> {
     const res = await this.db
       .select({

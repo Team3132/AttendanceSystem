@@ -11,13 +11,25 @@ export class AppService {
 
     /**
      * A simple hello world just for you.
-     * @returns string
+     * @returns string 
      * @throws ApiError
      */
     public helloWorld(): CancelablePromise<string> {
         return this.httpRequest.request({
             method: 'GET',
             url: '/api',
+        });
+    }
+
+    /**
+     * Get the version of the API.
+     * @returns string 
+     * @throws ApiError
+     */
+    public version(): CancelablePromise<string> {
+        return this.httpRequest.request({
+            method: 'GET',
+            url: '/api/version',
         });
     }
 
