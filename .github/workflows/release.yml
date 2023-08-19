@@ -36,6 +36,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish to step summary
+        run: |
+          echo "### Release" >> $GITHUB_STEP_SUMMARY
+          echo "Published: ${{ steps.semantic.outputs.new_release_published }}" >> $GITHUB_STEP_SUMMARY
+          echo "Version: ${{ steps.semantic.outputs.new_release_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "Major: ${{ steps.semantic.outputs.new_release_major_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "Minor: ${{ steps.semantic.outputs.new_release_minor_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "Patch: ${{ steps.semantic.outputs.new_release_patch_version }}" >> $GITHUB_STEP_SUMMARY
   build-frontend:
     if: needs.release.outputs.published == 'true'
     name: Build Frontend
