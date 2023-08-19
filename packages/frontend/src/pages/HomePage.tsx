@@ -50,6 +50,16 @@ export function Component() {
               />
             </Stack>
           </Paper>
+          {import.meta.env.VITE_APP_VERSION ? (
+            <Paper sx={{ p: 2, textAlign: "center" }}>
+              <Stack gap={2}>
+                <Typography variant="h4">Version</Typography>
+                <Typography variant="body1">
+                  {import.meta.env.VITE_APP_VERSION}
+                </Typography>
+              </Stack>
+            </Paper>
+          ) : null}
         </Stack>
       </Container>
     </>
