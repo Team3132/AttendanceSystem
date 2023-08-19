@@ -10,7 +10,6 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import helmet from 'helmet';
 import { Settings } from 'luxon';
-import * as Sentry from '@sentry/node';
 import { SentryFilter } from './filters/SentryFilter';
 
 Settings.defaultLocale = 'en-au';
@@ -27,6 +26,7 @@ async function bootstrap() {
   const release = config.get<string>('VERSION');
 
   if (dsn && release) {
+    const Sentry = await import('@sentry/node');
     Sentry.init({
       dsn,
       release,
