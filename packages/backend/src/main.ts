@@ -1,4 +1,4 @@
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import cookieParser from 'cookie-parser';
@@ -10,6 +10,8 @@ import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import helmet from 'helmet';
 import { Settings } from 'luxon';
+import * as Sentry from '@sentry/node';
+import { SentryFilter } from './filters/SentryFilter';
 
 Settings.defaultLocale = 'en-au';
 Settings.defaultZone = 'Australia/Sydney';
@@ -19,6 +21,19 @@ async function bootstrap() {
 
   const app = await NestFactory.create(AppModule);
   const config = app.get(ConfigService);
+
+  const dsn = config.get<string>('SENTRY_DSN');
+  const release = config.get<string>('VERSION');
+
+  if (dsn && release) {
+    Sentry.init({
+      dsn,
+      release,
+    });
+
+    const { httpAdapter } = app.get(HttpAdapterHost);
+    app.useGlobalFilters(new SentryFilter(httpAdapter));
+  }
 
   app.setGlobalPrefix('api');
 
