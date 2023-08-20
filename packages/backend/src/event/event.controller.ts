@@ -17,6 +17,7 @@ import {
   Inject,
   HttpException,
   Redirect,
+  Logger,
 } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
@@ -61,6 +62,8 @@ export class EventController {
     private readonly configService: ConfigService,
     @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
   ) {}
+
+  private readonly logger = new Logger(EventController.name);
 
   /**
    * Get all events
@@ -419,6 +422,10 @@ export class EventController {
         target: [rsvp.eventId, rsvp.userId],
       })
       .returning();
+
+    this.logger.debug(
+      `${fetchedUser.username} has RSVP'd to ${fetchedEvent.title}`,
+    );
 
     if (newOrUpdatedRsvp.length === 0)
       throw new BadRequestException('Invalid status');

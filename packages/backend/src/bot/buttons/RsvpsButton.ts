@@ -1,8 +1,7 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GuildMember } from 'discord.js';
 import { Button, Context, ButtonContext, ComponentParam } from 'necord';
-import { DelayModalBuilder } from '../modals/Delay.modal';
 import rsvpReminderMessage from '../utils/rsvpReminderMessage';
 import { v4 as uuid } from 'uuid';
 import {
@@ -12,6 +11,7 @@ import {
 } from '@/drizzle/drizzle.module';
 import { rsvp, user } from '../../drizzle/schema';
 import { ROLES } from '@/constants';
+import { DelayModal } from '../modals/Delay.modal';
 
 @Injectable()
 export class RsvpsButton {
@@ -19,6 +19,8 @@ export class RsvpsButton {
     @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
     private readonly config: ConfigService,
   ) {}
+
+  private readonly logger = new Logger(RsvpsButton.name);
 
   @Button('event/:eventId/rsvp/:rsvpStatus')
   public async onRsvpButton(
@@ -52,7 +54,7 @@ export class RsvpsButton {
       ? (await interactionUser.fetch()).nickname
       : interactionUser.user.username;
 
-    await this.db
+    const fetchedUsers = await this.db
       .insert(user)
       .values({
         id: userId,
@@ -65,7 +67,10 @@ export class RsvpsButton {
           username,
           roles: userRoles,
         },
-      });
+      })
+      .returning();
+
+    const fetchedUser = fetchedUsers.at(0);
 
     if (fetchedEvent.type === 'Mentor') {
       if (!userRoles.includes(ROLES.MENTOR))
@@ -90,6 +95,10 @@ export class RsvpsButton {
         },
       });
 
+    this.logger.debug(
+      `${fetchedUser.username} RSVP'd ${rsvpStatus} to ${eventId}`,
+    );
+
     const newRSVPs = await this.db.query.rsvp.findMany({
       where: (rsvp, { eq }) => eq(rsvp.eventId, eventId),
       orderBy: (rsvp) => [rsvp.status, rsvp.updatedAt],
@@ -111,7 +120,7 @@ export class RsvpsButton {
 
     if (rsvpStatus === 'LATE') {
       // return interaction.deferUpdate();
-      return interaction.showModal(DelayModalBuilder(eventDB.id));
+      return interaction.showModal(DelayModal.build(eventDB.id));
     } else {
       return interaction.update({
         ...rsvpReminderMessage(eventDB, newRSVPs, frontendUrl),

@@ -1,4 +1,4 @@
-import { Injectable, UseInterceptors } from '@nestjs/common';
+import { Injectable, Logger, UseInterceptors } from '@nestjs/common';
 import { SlashCommand, Context, SlashCommandContext } from 'necord';
 
 import { EventAutocompleteInterceptor } from '../interceptors/event.interceptor';
@@ -12,6 +12,8 @@ const leaderboardLine = (data: LeaderboardDto) =>
 @Injectable()
 export class LeaderBoardCommand {
   constructor(private readonly outreachService: OutreachService) {}
+
+  private readonly logger = new Logger(LeaderBoardCommand.name);
 
   @UseInterceptors(EventAutocompleteInterceptor)
   @SlashCommand({

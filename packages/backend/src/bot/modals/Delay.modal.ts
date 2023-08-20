@@ -89,18 +89,19 @@ export class DelayModal {
       });
     }
   }
-}
 
-export const DelayModalBuilder = (eventId: string) =>
-  new ModalBuilder()
-    .setTitle('Delay')
-    .setCustomId(`event/${eventId}/delay`)
-    .setComponents([
-      new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents([
-        new TextInputBuilder()
-          .setCustomId('delay')
-          .setPlaceholder('Delay')
-          .setLabel('Delay (in minutes)')
-          .setStyle(TextInputStyle.Short),
-      ]),
-    ]);
+  public static build(eventId: string) {
+    return new ModalBuilder()
+      .setTitle('Delay')
+      .setCustomId(`event/${eventId}/delay`)
+      .setComponents([
+        new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents([
+          new TextInputBuilder()
+            .setCustomId('delay')
+            .setPlaceholder('Delay')
+            .setLabel('Delay (in minutes)')
+            .setStyle(TextInputStyle.Short),
+        ]),
+      ]);
+  }
+}

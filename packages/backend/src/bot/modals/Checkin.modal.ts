@@ -4,7 +4,7 @@ import {
   ModalBuilder,
   TextInputBuilder,
 } from '@discordjs/builders';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GuildMember, TextInputStyle } from 'discord.js';
 import { Ctx, Modal, ModalContext, ModalParam } from 'necord';
@@ -24,6 +24,8 @@ export class CheckinModal {
     @InjectQueue('event')
     private readonly eventQueue: Queue<CheckoutActiveData>,
   ) {}
+
+  private readonly logger = new Logger(CheckinModal.name);
 
   @Modal(`event/:eventId/checkin`)
   public async onCheckinModal(
@@ -138,6 +140,10 @@ export class CheckinModal {
         },
       );
 
+      this.logger.debug(
+        `Created new RSVP for ${fetchedUser.username} for ${fetchedEvent.title}`,
+      );
+
       return interaction.reply({
         ephemeral: true,
         content: 'You have checked in',
@@ -184,6 +190,10 @@ export class CheckinModal {
         },
       );
     }
+
+    this.logger.debug(
+      `Updated RSVP for ${fetchedUser.username} for ${fetchedEvent.title}`,
+    );
 
     return interaction.reply({
       ephemeral: true,

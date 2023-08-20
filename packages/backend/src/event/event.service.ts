@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Inject,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import {
@@ -29,6 +30,8 @@ export class EventService {
     @InjectQueue('event')
     private readonly eventQueue: Queue<CheckoutActiveData>,
   ) {}
+
+  private readonly logger = new Logger(EventService.name);
 
   async createEvent(data: Omit<NewEvent, 'secret'>) {
     const secret = randomStr(8);
@@ -78,6 +81,10 @@ export class EventService {
 
     const checkedIn = await this.checkin(fetchedUser, fetchedEvent);
 
+    this.logger.debug(
+      `Checked in ${fetchedUser.username} to ${fetchedEvent.title} using token`,
+    );
+
     return checkedIn;
   }
 
@@ -112,6 +119,10 @@ export class EventService {
     }
 
     const checkedIn = await this.checkin(fetchedUser, fetchedEvent);
+
+    this.logger.debug(
+      `Checked in ${fetchedUser.username} to ${fetchedEvent.title} using scancode`,
+    );
 
     return checkedIn;
   }
@@ -248,6 +259,10 @@ export class EventService {
         removeOnComplete: true,
         removeOnFail: true,
       },
+    );
+
+    this.logger.debug(
+      `Checked out ${fetchedRsvp.userId} from ${fetchedRsvp.eventId}`,
     );
   }
 
