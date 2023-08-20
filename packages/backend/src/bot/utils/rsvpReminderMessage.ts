@@ -124,6 +124,10 @@ export default function rsvpReminderMessage(
       .setCustomId(`event/${event.id}/rsvp/${'LATE'}`)
       .setStyle(ButtonStyle.Primary)
       .setLabel('Late'),
+    new ButtonBuilder()
+      .setCustomId(`event/${event.id}/checkin`)
+      .setStyle(ButtonStyle.Primary)
+      .setLabel('Check In'),
   );
 
   const embeds: Array<EmbedBuilder> = [meetingInfo];

@@ -67,6 +67,7 @@ import { BullModule } from '@nestjs/bull';
       }),
       inject: [ConfigService],
     }),
+
     UserModule,
     EventModule,
     ScancodeModule,

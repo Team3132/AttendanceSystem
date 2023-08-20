@@ -3,8 +3,8 @@ import { EventService } from './event.service';
 import { EventController } from './event.controller';
 import { ScancodeService } from '@scancode/scancode.service';
 import { ScancodeModule } from '@scancode/scancode.module';
-import { BullModule } from '@nestjs/bull';
 import { EventProcessor } from './event.processor';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
   controllers: [EventController],
