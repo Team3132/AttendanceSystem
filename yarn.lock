@@ -2493,9 +2493,9 @@
     "@swc/core-win32-x64-msvc" "1.3.84"
 
 "@swc/plugin-emotion@^2.5.70":
-  version "2.5.80"
-  resolved "https://registry.yarnpkg.com/@swc/plugin-emotion/-/plugin-emotion-2.5.80.tgz#c46950426bb8433a65aa50db9d6efce0c6c95064"
-  integrity sha512-2ByXsp3Bw1Vd7rt+kvhby/EikYN9Ye5jgYhptova3v2r8DZ3dOqNJ0sfvDaGg7cdFyWe0nRKFhTk+YSbb7mZug==
+  version "2.5.81"
+  resolved "https://registry.yarnpkg.com/@swc/plugin-emotion/-/plugin-emotion-2.5.81.tgz#f13a3502003524d8641708c87deaf43cd840d253"
+  integrity sha512-osCM7AS5iuulLGX0UQkJuSL8E91Ybe3vMYchKNMOb6ZLGcQEXZrpgivvBtvWU4kPCwF3AAOjbpX97tzE/KHJVg==
 
 "@swc/types@^0.1.4":
   version "0.1.4"
