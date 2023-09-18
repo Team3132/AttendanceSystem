@@ -11,6 +11,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import helmet from 'helmet';
 import { Settings } from 'luxon';
 import { SentryFilter } from './filters/SentryFilter';
+import { DiscordExceptionFilter } from './filters/DiscordFilter';
 
 Settings.defaultLocale = 'en-au';
 Settings.defaultZone = 'Australia/Sydney';
@@ -33,7 +34,10 @@ async function bootstrap() {
     });
 
     const { httpAdapter } = app.get(HttpAdapterHost);
-    app.useGlobalFilters(new SentryFilter(httpAdapter));
+    app.useGlobalFilters(
+      new SentryFilter(httpAdapter),
+      new DiscordExceptionFilter(),
+    );
 
     logger.log('Sentry enabled');
   }
