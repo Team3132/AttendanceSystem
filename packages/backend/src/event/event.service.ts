@@ -336,4 +336,12 @@ export class EventService {
 
     return firstResult;
   }
+
+  async getEventSecret(eventId: string) {
+    const fetchedEvent = await this.db.query.event.findFirst({
+      where: (event, { eq }) => eq(event.id, eventId),
+    });
+    if (!fetchedEvent) throw new NotFoundException('No event found');
+    return fetchedEvent.secret;
+  }
 }

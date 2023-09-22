@@ -12,10 +12,17 @@ import { OutreachService } from '@/outreach/outreach.service';
 import { BullModule } from '@nestjs/bull';
 import { CheckinButton } from './buttons/CheckinButton';
 import { CheckinModal } from './modals/Checkin.modal';
+import { EventModule } from '@/event/event.module';
+import { EventService } from '@/event/event.service';
+import { QRCodeCommand } from './commands/QRCode.command';
 
 @Module({
   controllers: [BotController],
-  imports: [OutreachModule, BullModule.registerQueue({ name: 'event' })],
+  imports: [
+    OutreachModule,
+    BullModule.registerQueue({ name: 'event' }),
+    EventModule,
+  ],
   providers: [
     BotService,
     RsvpButton,
@@ -27,6 +34,8 @@ import { CheckinModal } from './modals/Checkin.modal';
     DelayModal,
     OutreachService,
     CheckinModal,
+    EventService,
+    QRCodeCommand,
   ],
   exports: [BotService],
 })
