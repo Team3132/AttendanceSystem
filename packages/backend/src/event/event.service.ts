@@ -158,7 +158,6 @@ export class EventService {
       const newRsvp = await this.db
         .insert(rsvp)
         .values({
-          id: uuid(),
           userId: fetchedUser.id,
           eventId: fetchedEvent.id,
           checkinTime,
@@ -195,7 +194,6 @@ export class EventService {
     const upsertedRsvp = await this.db
       .insert(rsvp)
       .values({
-        id: uuid(),
         eventId: fetchedEvent.id,
         userId: fetchedUser.id,
         checkinTime,

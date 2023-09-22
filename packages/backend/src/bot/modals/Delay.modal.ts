@@ -13,7 +13,6 @@ import rsvpReminderMessage from '../utils/rsvpReminderMessage';
 import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 import { rsvp } from '../../drizzle/schema';
 import { eq } from 'drizzle-orm';
-import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class DelayModal {
@@ -39,7 +38,6 @@ export class DelayModal {
       await this.db
         .insert(rsvp)
         .values({
-          id: uuid(),
           eventId,
           userId,
           delay,

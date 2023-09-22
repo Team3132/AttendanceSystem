@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config';
 import { GuildMember } from 'discord.js';
 import { Button, Context, ButtonContext, ComponentParam } from 'necord';
 import rsvpReminderMessage from '../utils/rsvpReminderMessage';
-import { v4 as uuid } from 'uuid';
 import {
   DRIZZLE_TOKEN,
   type RSVPStatus,
@@ -72,18 +71,16 @@ export class RsvpsButton {
 
     const fetchedUser = fetchedUsers.at(0);
 
-    if (fetchedEvent.type === 'Mentor') {
-      if (!userRoles.includes(ROLES.MENTOR))
-        return interaction.reply({
-          ephemeral: true,
-          content: "You're not a mentor.",
-        });
+    if (fetchedEvent.type === 'Mentor' && !userRoles.includes(ROLES.MENTOR)) {
+      return interaction.reply({
+        ephemeral: true,
+        content: "You're not a mentor.",
+      });
     }
 
     await this.db
       .insert(rsvp)
       .values({
-        id: uuid(),
         eventId,
         userId,
         status: rsvpStatus,

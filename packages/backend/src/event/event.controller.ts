@@ -131,10 +131,7 @@ export class EventController {
   async create(
     @Body() createEventDto: CreateEventDto,
   ): Promise<EventResponseType> {
-    const event = await this.eventService.createEvent({
-      id: uuid(),
-      ...createEventDto,
-    });
+    const event = await this.eventService.createEvent(createEventDto);
     return new EventResponse(event);
   }
 
@@ -410,7 +407,6 @@ export class EventController {
     const newOrUpdatedRsvp = await this.db
       .insert(rsvp)
       .values({
-        id: uuid(),
         eventId,
         userId,
         status,

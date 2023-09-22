@@ -8,6 +8,7 @@ import {
   uniqueIndex,
   boolean,
 } from 'drizzle-orm/pg-core';
+import { v4 } from 'uuid';
 
 export const eventTypes = pgEnum('EventTypes', [
   'Social',
@@ -49,7 +50,10 @@ export const userRelations = relations(user, ({ many }) => ({
 export const rsvp = pgTable(
   'RSVP',
   {
-    id: text('id').primaryKey().notNull(),
+    id: text('id')
+      .primaryKey()
+      .notNull()
+      .$default(() => v4()),
     eventId: text('eventId')
       .notNull()
       .references(() => event.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
@@ -107,7 +111,10 @@ export const rsvpRelations = relations(rsvp, ({ one }) => ({
 export const event = pgTable(
   'Event',
   {
-    id: text('id').primaryKey().notNull(),
+    id: text('id')
+      .primaryKey()
+      .notNull()
+      .$defaultFn(() => v4()),
     description: text('description').default('').notNull(),
     title: text('title').notNull(),
     startDate: timestamp('startDate', {
