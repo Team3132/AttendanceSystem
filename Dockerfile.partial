@@ -1,19 +1,13 @@
-FROM node:20-alpine AS deps
-WORKDIR /app
-RUN apk add --no-cache build-base g++ python3 cairo-dev jpeg-dev pango-dev giflib-dev
-COPY package.json yarn.lock ./
-COPY packages/backend/package.json ./packages/backend/
-RUN yarn back install --frozen-lockfile --production
-
 FROM node:20-alpine
 WORKDIR /app
 ENV NODE_ENV production
 ARG VERSION
 ENV VERSION=$VERSION
 COPY package.json yarn.lock ./
-COPY --from=deps /app/node_modules ./node_modules
 COPY packages/backend/dist packages/backend/dist
 COPY packages/backend/package.json ./packages/backend/
+RUN apk add --no-cache build-base g++ python3 cairo-dev jpeg-dev pango-dev giflib-dev
+RUN yarn back install --frozen-lockfile --production
 
 EXPOSE 3000
 CMD yarn back start
