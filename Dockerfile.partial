@@ -3,7 +3,7 @@ WORKDIR /app
 ENV NODE_ENV production
 ARG VERSION
 ENV VERSION=$VERSION
-RUN apk add --no-cache python3 make g++ git
+RUN apk add --no-cache python3 make g++ git pkgconfig
 COPY package.json yarn.lock ./
 COPY packages/backend/package.json ./packages/backend/
 COPY packages/backend/dist packages/backend/dist
