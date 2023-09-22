@@ -11,7 +11,6 @@ import { Ctx, Modal, ModalContext, ModalParam } from 'necord';
 import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 import { event, rsvp, user } from '../../drizzle/schema';
 import { eq } from 'drizzle-orm';
-import { v4 as uuid } from 'uuid';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { CheckoutActiveData } from '@/event/types/CheckoutActive';

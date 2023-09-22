@@ -48,7 +48,6 @@ import { Request, Response } from 'express';
 import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
 import { asc, between, eq, gte, lte, or } from 'drizzle-orm';
 import { event, rsvp } from '../drizzle/schema';
-import { v4 as uuid } from 'uuid';
 import { DateTime } from 'luxon';
 import { ROLES } from '@/constants';
 import { UpdateRsvpDto } from '@/rsvp/dto/update-rsvp.dto';
