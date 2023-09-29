@@ -2450,9 +2450,9 @@
   integrity sha512-6jzPCwvEHS+Y3QCildpOlIrqJXXJ+v2EvbtCnbKUi6FpOrrfoSPacVB3nr0cjSBG/rCXnTB0aaevx9T8iT9CrQ==
 
 "@tanstack/react-query@^5.0.0-beta.15":
-  version "5.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.0.0-rc.1.tgz#617689a3cf991cc87ddd95ceecb680529f4e2756"
-  integrity sha512-hFz2j/pp+faqwaBbp0KV8kgn01GfErfA1BtcwHVE/E+GJINU2ZOAiVJ43LR05JCWnIu4b9pAnOBMHv55GshMZQ==
+  version "5.0.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.0.0-rc.2.tgz#a976d1c3e92fe28d017743801f50e03c2480d014"
+  integrity sha512-5NVAiJD+HlHHvA2WSTxQObgMCfNW2xNXUu+8Yx/mp3e/uip/41ejqwnpPB5V/LDG43A719JnOaQWC5wfFwjgIQ==
   dependencies:
     "@tanstack/query-core" "5.0.0-rc.1"
     client-only "0.0.1"
