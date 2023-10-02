@@ -2431,9 +2431,9 @@
     defer-to-connect "^2.0.0"
 
 "@tanstack/eslint-plugin-query@^5.0.0-beta.14":
-  version "5.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@tanstack/eslint-plugin-query/-/eslint-plugin-query-5.0.0-rc.1.tgz#f77e96a5e6d7bf3a03f92cde5b13302fa88089ef"
-  integrity sha512-wEciwonvMMyLwEGBEtas4W+fCAeXO9EpnhzZ3h+iGxMLxtvUVmGTlLDX1dtoLDTMa58Hthm6gYERBlvSMbMEgg==
+  version "5.0.0-rc.4"
+  resolved "https://registry.yarnpkg.com/@tanstack/eslint-plugin-query/-/eslint-plugin-query-5.0.0-rc.4.tgz#604605c0cbb96a4cc21e71a15e427d481a71bf98"
+  integrity sha512-/SlWaoF2AKhhAlqPNsT5UiWZXwdg0ZGv2TrvtjPIcdUr13BFWaPepxjs/+/PjkOvWdW6yx88Z5Wmwk2IARyJJg==
   dependencies:
     "@typescript-eslint/utils" "^5.54.0"
 
@@ -2444,17 +2444,17 @@
   dependencies:
     remove-accents "0.4.2"
 
-"@tanstack/query-core@5.0.0-rc.1":
-  version "5.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.0.0-rc.1.tgz#f3635fa86283c2a4eb7071abc90a7eceda9e3802"
-  integrity sha512-6jzPCwvEHS+Y3QCildpOlIrqJXXJ+v2EvbtCnbKUi6FpOrrfoSPacVB3nr0cjSBG/rCXnTB0aaevx9T8iT9CrQ==
+"@tanstack/query-core@5.0.0-rc.4":
+  version "5.0.0-rc.4"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.0.0-rc.4.tgz#073d755c9d98d938efce64ca4d461c3b1088e8e5"
+  integrity sha512-d5QHSpR+kmutkJfXmyaiNvchVQctuY3d3vWBbAS4M3JTEQuOt+Gg2v7oghnDG05Ks7M0pq7ofNFuAJZ3s7p1yg==
 
 "@tanstack/react-query@^5.0.0-beta.15":
-  version "5.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.0.0-rc.2.tgz#a976d1c3e92fe28d017743801f50e03c2480d014"
-  integrity sha512-5NVAiJD+HlHHvA2WSTxQObgMCfNW2xNXUu+8Yx/mp3e/uip/41ejqwnpPB5V/LDG43A719JnOaQWC5wfFwjgIQ==
+  version "5.0.0-rc.4"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.0.0-rc.4.tgz#d9a2207bc80b1e9014e16d8c08e9f408c21e6054"
+  integrity sha512-nN88B6SFvLneav7ZWegjHRhjv46SSAgGnjE/m1aeG9IcfjBGLTP32YkimoDw71F3tRFYzJyrtQ1y6FwB+UymGA==
   dependencies:
-    "@tanstack/query-core" "5.0.0-rc.1"
+    "@tanstack/query-core" "5.0.0-rc.4"
     client-only "0.0.1"
 
 "@tanstack/react-table@^8.9.3":
