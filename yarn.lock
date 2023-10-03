@@ -2890,9 +2890,9 @@
     "@types/superagent" "*"
 
 "@types/swagger-stats@^0.95.5":
-  version "0.95.8"
-  resolved "https://registry.yarnpkg.com/@types/swagger-stats/-/swagger-stats-0.95.8.tgz#6b6b16fdb9c2e35651a3f03266f1df0972b19487"
-  integrity sha512-h60F3uAs0lkp7qTOiNfPrPExLcBsCfXOO/t1+ACTocAssMvObGZbHEnz5fUJLiDqzchvIZ2RIXB0obnFhideAA==
+  version "0.95.9"
+  resolved "https://registry.yarnpkg.com/@types/swagger-stats/-/swagger-stats-0.95.9.tgz#1df6c7a96fd7dee8da599f77ffebc46c11cb4c26"
+  integrity sha512-u61LUh2sv34Bvv3n2yNM7BHCJPOOITMHL+dK9aOUdeIHJYdL142iknrPbnidnOAYGhoEesTZcKT+GIZnrm46JA==
   dependencies:
     "@hapi/hapi" "21.1.0"
     "@types/express" "*"
