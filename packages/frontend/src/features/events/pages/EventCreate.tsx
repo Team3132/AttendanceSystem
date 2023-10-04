@@ -19,6 +19,8 @@ import { DateTimePicker } from "@mui/x-date-pickers";
 import { Controller } from "react-hook-form";
 import { LoadingButton } from "@mui/lab";
 import useCreateEvent from "../hooks/useCreateEvent";
+import { useNavigate } from "react-router-dom";
+import { useAlert } from "react-alert";
 
 export async function loader() {
   const initialAuthData = await ensureAuth(true);
@@ -55,12 +57,17 @@ export function Component() {
     },
   });
 
+  const navigate = useNavigate();
+  const alert = useAlert();
+
   const createEventMutation = useCreateEvent();
 
   const onSubmit = handleSubmit(async (data) => {
     try {
       const parsed = EventCreateSchema.parse(data);
-      await createEventMutation.mutateAsync(parsed);
+      const createdEvent = await createEventMutation.mutateAsync(parsed);
+      alert.success("Event created");
+      navigate(`/events/${createdEvent.id}`);
     } catch (error) {
       console.error(error);
     }
