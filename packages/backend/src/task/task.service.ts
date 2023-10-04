@@ -18,7 +18,7 @@ import {
   Client,
   roleMention,
 } from 'discord.js';
-import { between, gte, inArray, lte, sql } from 'drizzle-orm';
+import { between, gte, inArray, lte } from 'drizzle-orm';
 import { DateTime } from 'luxon';
 import { event, rsvp } from '../drizzle/schema';
 import randomStr from '@/utils/randomStr';
@@ -79,7 +79,7 @@ export class TaskService {
           .returning()
       : [];
 
-      const deletedEventsCount = deletedEvents.length;
+    const deletedEventsCount = deletedEvents.length;
 
     const deletedEventCount = deletedEventsCount ?? 0;
 
