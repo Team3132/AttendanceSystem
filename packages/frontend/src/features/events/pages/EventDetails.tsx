@@ -3,11 +3,12 @@ import eventApi from "../../../api/query/event.api";
 import queryClient from "../../../queryClient";
 import ensureAuth from "../../auth/utils/ensureAuth";
 import { useQuery } from "@tanstack/react-query";
-import { Container, Grid, Paper, Typography } from "@mui/material";
+import { Container, Grid, Paper, Stack, Typography } from "@mui/material";
 import { z } from "zod";
 import { DateTime } from "luxon";
 import RsvpList from "../components/RSVPList";
 import authApi from "../../../api/query/auth.api";
+import DeleteEventButton from "../components/DeleteEventButton";
 
 const EventParamsSchema = z.object({
   eventId: z.string(),
@@ -110,12 +111,20 @@ export function Component() {
             </Typography>
           </Paper>
         </Grid>
+        {authStatusQuery.data.isAdmin ? (
+          <Grid item xs={12}>
+            <Stack spacing={2} direction="row">
+              <DeleteEventButton eventId={initialEventData.id} />
+            </Stack>
+          </Grid>
+        ) : null}
 
         <Grid item xs={12}>
           <RsvpList
             eventId={initialEventData.id}
             admin={authStatusQuery.data.isAdmin}
           />
+          G
         </Grid>
       </Grid>
     </Container>
