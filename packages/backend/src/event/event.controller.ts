@@ -51,6 +51,7 @@ import { event, rsvp } from '../drizzle/schema';
 import { DateTime } from 'luxon';
 import { ROLES } from '@/constants';
 import { UpdateRsvpDto } from '@/rsvp/dto/update-rsvp.dto';
+import { AddEventRsvpDto } from './dto/add-event-rsvp-dto';
 
 @ApiTags('Event')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -426,6 +427,29 @@ export class EventController {
       throw new BadRequestException('Invalid status');
 
     return new Rsvp(newOrUpdatedRsvp.at(0));
+  }
+
+  /**
+   * Add an rsvp to an event (admin)
+   * @param eventId The event id
+   * @param userId The user id
+   * @param data The rsvp data, e.g. start/end
+   */
+  @ApiCookieAuth()
+  @UseGuards(SessionGuard)
+  @ApiOperation({
+    description: 'Add an rsvp to an event (admin)',
+    operationId: 'addUserRsvp',
+  })
+  @ApiCreatedResponse({ type: Rsvp })
+  @Post(':eventId/rsvps')
+  @Roles(['MENTOR'])
+  async addUserRsvp(
+    @Param('eventId') eventId: string,
+    @Body() { userId }: AddEventRsvpDto,
+  ): Promise<Rsvp> {
+    const rsvp = await this.eventService.addUserAttendance(eventId, userId);
+    return new Rsvp(rsvp);
   }
 
   /**

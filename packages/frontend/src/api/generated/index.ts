@@ -10,6 +10,7 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
+export type { AddEventRsvpDto } from './models/AddEventRsvpDto';
 export type { ApiResponseTypeNotFound } from './models/ApiResponseTypeNotFound';
 export type { AuthStatusDto } from './models/AuthStatusDto';
 export { CreateEventDto } from './models/CreateEventDto';

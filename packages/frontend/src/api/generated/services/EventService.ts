@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { AddEventRsvpDto } from '../models/AddEventRsvpDto';
 import type { CreateEventDto } from '../models/CreateEventDto';
 import type { EventResponseType } from '../models/EventResponseType';
 import type { EventSecret } from '../models/EventSecret';
@@ -256,6 +257,28 @@ requestBody: UpdateOrCreateRSVP,
         return this.httpRequest.request({
             method: 'POST',
             url: '/api/event/{eventId}/rsvp',
+            path: {
+                'eventId': eventId,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+
+    /**
+     * Add an rsvp to an event (admin)
+     * @param eventId 
+     * @param requestBody 
+     * @returns Rsvp 
+     * @throws ApiError
+     */
+    public addUserRsvp(
+eventId: string,
+requestBody: AddEventRsvpDto,
+): CancelablePromise<Rsvp> {
+        return this.httpRequest.request({
+            method: 'POST',
+            url: '/api/event/{eventId}/rsvps',
             path: {
                 'eventId': eventId,
             },

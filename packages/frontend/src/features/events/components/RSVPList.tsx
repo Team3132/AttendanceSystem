@@ -1,10 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import eventApi from "../../../api/query/event.api";
-import { List, Paper, Stack, Typography } from "@mui/material";
+import { Button, List, Paper, Stack, Typography } from "@mui/material";
 import ErrorCard from "../../../components/ErrorCard";
 import RSVPListItem from "./RSVPListItem";
 import MyRsvpStatus from "./MyRsvpStatus";
 import AdminRSVPListItem from "./AdminRsvpListItem";
+import { useDisclosure } from "../../../hooks/useDisclosure";
+import RSVPAddDialog from "./RSVPAddDialog";
 
 interface RsvpListProps {
   eventId: string;
@@ -13,6 +15,7 @@ interface RsvpListProps {
 
 export default function RsvpList({ eventId, admin = false }: RsvpListProps) {
   const rsvpsQuery = useQuery(eventApi.getEventRsvps(eventId));
+  const { getButtonProps, getDisclosureProps, isOpen } = useDisclosure();
 
   if (rsvpsQuery.data) {
     return (
@@ -33,6 +36,14 @@ export default function RsvpList({ eventId, admin = false }: RsvpListProps) {
                   <AdminRSVPListItem rsvp={rsvp} key={rsvp.id} />
                 ))}
           </List>
+          {admin ? (
+            <Button {...getButtonProps()} variant="contained">
+              Add Empty RSVP
+            </Button>
+          ) : null}
+          {admin && isOpen ? (
+            <RSVPAddDialog eventId={eventId} {...getDisclosureProps()} />
+          ) : null}
         </Stack>
       </Paper>
     );

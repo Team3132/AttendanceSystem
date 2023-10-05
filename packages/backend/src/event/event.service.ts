@@ -11,6 +11,7 @@ import {
   Event,
   NewEvent,
   User,
+  NewRsvp,
 } from '@/drizzle/drizzle.module';
 import { event, rsvp, user } from '../drizzle/schema';
 import { eq } from 'drizzle-orm';
@@ -343,5 +344,49 @@ export class EventService {
     });
     if (!fetchedEvent) throw new NotFoundException('No event found');
     return fetchedEvent.secret;
+  }
+
+  async addUserAttendance(eventId: string, userId: string) {
+    const fetchedEvent = await this.db.query.event.findFirst({
+      where: (event, { eq }) => eq(event.id, eventId),
+    });
+
+    if (!fetchedEvent) throw new NotFoundException('No event found');
+
+    const fetchedUser = await this.db.query.user.findFirst({
+      where: (user, { eq }) => eq(user.id, userId),
+    });
+
+    if (!fetchedUser) throw new NotFoundException('No user found');
+
+    const existingRsvp = await this.db.query.rsvp.findFirst({
+      where: (rsvp, { and, eq }) =>
+        and(eq(rsvp.eventId, fetchedEvent.id), eq(rsvp.userId, fetchedUser.id)),
+    });
+
+    if (existingRsvp) {
+      throw new BadRequestException('RSVP already exists');
+    }
+
+    const values: NewRsvp = {
+      userId: fetchedUser.id,
+      eventId: fetchedEvent.id,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      checkinTime: fetchedEvent.endDate,
+      checkoutTime: fetchedEvent.endDate,
+      status: 'YES',
+      delay: 0,
+    };
+
+    // this.logger.debug(values);
+
+    const [newRsvp] = await this.db.insert(rsvp).values(values).returning();
+
+    if (!newRsvp) {
+      throw new BadRequestException('Error creating RSVP');
+    }
+
+    return newRsvp;
   }
 }
