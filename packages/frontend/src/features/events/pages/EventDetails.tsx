@@ -124,7 +124,6 @@ export function Component() {
             eventId={initialEventData.id}
             admin={authStatusQuery.data.isAdmin}
           />
-          G
         </Grid>
       </Grid>
     </Container>
