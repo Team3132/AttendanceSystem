@@ -128,6 +128,10 @@ export default function rsvpReminderMessage(
       .setCustomId(`event/${event.id}/checkin`)
       .setStyle(ButtonStyle.Primary)
       .setLabel('Check In'),
+    new ButtonBuilder()
+      .setCustomId(`event/${event.id}/checkout`)
+      .setStyle(ButtonStyle.Primary)
+      .setLabel('Check Out'),
   );
 
   const embeds: Array<EmbedBuilder> = [meetingInfo];

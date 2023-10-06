@@ -15,6 +15,7 @@ import { CheckinModal } from './modals/Checkin.modal';
 import { EventModule } from '@/event/event.module';
 import { EventService } from '@/event/event.service';
 import { QRCodeCommand } from './commands/QRCode.command';
+import { CheckoutButton } from './buttons/CheckoutButton';
 
 @Module({
   controllers: [BotController],
@@ -36,6 +37,7 @@ import { QRCodeCommand } from './commands/QRCode.command';
     CheckinModal,
     EventService,
     QRCodeCommand,
+    CheckoutButton,
   ],
   exports: [BotService],
 })
