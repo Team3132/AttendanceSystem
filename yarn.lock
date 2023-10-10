@@ -2771,9 +2771,9 @@
     "@types/express" "*"
 
 "@types/pg@^8.10.2":
-  version "8.10.4"
-  resolved "https://registry.yarnpkg.com/@types/pg/-/pg-8.10.4.tgz#1d65bc7cb4a069b529d33ab0657feab81776a6fc"
-  integrity sha512-6cxJPHzhlJxqAMkWl2w3KubTEM0UjGC0UrtIToa9J/CEuRFJ2bquKt+g9MhYBN9n1+U6UZZ8CW6Z4oLx/Tvh/w==
+  version "8.10.5"
+  resolved "https://registry.yarnpkg.com/@types/pg/-/pg-8.10.5.tgz#a578f856373f71e2b601d599b306f382e6378a26"
+  integrity sha512-GS3ebGcSJQqKSnq4/WnSH1XQvx0vTDLEmqLENk7onKvTnry9BWPsZiZeUMJlEPw+5bCQDzfxZFhxlUztpNCKgQ==
   dependencies:
     "@types/node" "*"
     pg-protocol "*"
