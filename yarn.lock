@@ -2433,12 +2433,11 @@
   integrity sha512-gEgRIkFMjxhu+rbomSxAYTA+aPaPrLffJwFCpfd/AqJ8PTlnredJnFfFskCbR6oZo/1XEuDORFW9c6b4gOnEKQ==
 
 "@tanstack/react-query@^5.0.0-beta.15":
-  version "5.0.0-rc.12"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.0.0-rc.12.tgz#26c61cff5c33c1be1033795de56f57eb7bb8d19a"
-  integrity sha512-pUb6xkHs2YFb9N6/34ZMut4LG0yO+uqjDaoWmxOsmIZVwPYCNrsRjI8kaF/6F+5gyxJp6hzFHH4Jlukbx/tReA==
+  version "5.0.0-rc.16"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.0.0-rc.16.tgz#0f92f918e33652249955ae8d7878bc065affdd03"
+  integrity sha512-6KA2UINzseZYqMxBaKHAj4/JOGUWqKsZEQ8eRgIo7iwWfk1wp8Pmr2Iq7xoQt5VXdjb3VFO7ox4utDIqb3uAGw==
   dependencies:
     "@tanstack/query-core" "5.0.0-rc.12"
-    client-only "0.0.1"
 
 "@tanstack/react-table@^8.9.3":
   version "8.10.7"
@@ -4132,11 +4131,6 @@ cli-width@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/cli-width/-/cli-width-3.0.0.tgz#a2f48437a2caa9a22436e794bf071ec9e61cedf6"
   integrity sha512-FxqpkPPwu1HjuN93Omfm4h8uIanXofW0RxVEW3k5RKx+mJJYSthzNhp32Kzxxy3YAEZ/Dc/EWN1vZRY0+kOhbw==
-
-client-only@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/client-only/-/client-only-0.0.1.tgz#38bba5d403c41ab150bff64a95c85013cf73bca1"
-  integrity sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==
 
 cliui@^6.0.0:
   version "6.0.0"
