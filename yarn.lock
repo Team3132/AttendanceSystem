@@ -2397,9 +2397,9 @@
   integrity sha512-9F4ys4C74eSTEUNndnER3VJ15oru2NumfQxS8geE+f3eB5xvfxpWyqE5XlVnxb/R14uoXi6SLbBwwiDSkv+XEw==
 
 "@swc/plugin-emotion@^2.5.70":
-  version "2.5.87"
-  resolved "https://registry.yarnpkg.com/@swc/plugin-emotion/-/plugin-emotion-2.5.87.tgz#eb9908e4a54122b8bd8b9d1ac71f53aa49d1bd21"
-  integrity sha512-CCgzR4j1fvgsrch416fxUxHHdIXskBdSSDPiITB9EBJ2e431Vya33O2i/CF60kQmf1ykpWQZTF5bnH6e+O3cdw==
+  version "2.5.92"
+  resolved "https://registry.yarnpkg.com/@swc/plugin-emotion/-/plugin-emotion-2.5.92.tgz#d180dc9469ac01a2f115e102bf6158ed5004c223"
+  integrity sha512-mt7HUtENIT8zimQEiNxX+VCAWNxf9H14X4gVrD6XgaSQpqGEe+i7CCgQrbCxPP1s065wgS/6/j6O1WTznZk6Aw==
 
 "@swc/types@^0.1.5":
   version "0.1.5"
