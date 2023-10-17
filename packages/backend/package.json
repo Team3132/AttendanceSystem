@@ -46,7 +46,7 @@
     "discord.js": "^14.7.1",
     "drizzle-orm": "^0.28.0",
     "express-session": "^1.17.3",
-    "googleapis": "126",
+    "googleapis": "127",
     "helmet": "^7.0.0",
     "ical-generator": "^5.0.0",
     "ioredis": "^5.1.0",
