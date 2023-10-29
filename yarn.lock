@@ -9046,9 +9046,9 @@ postgres-range@^1.1.1:
   integrity sha512-VdlZoocy5lCP0c/t66xAfclglEapXPCIVhqqJRncYpvbCgImF0w67aPKfbqUMr72tO2k5q0TdTZwCLjPTI6C9g==
 
 postgres@^3.3.5:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/postgres/-/postgres-3.4.1.tgz#f1446241cd6d6ce158b5104e62b39eea02b2b9ad"
-  integrity sha512-Wasjv6WEzrZXbwKByR2RGD7MBfj7VBqco3hYWz8ifzSAp6tb2L6MlmcKFzkmgV1jT7/vKlcSa+lxXZeTdeVMzQ==
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/postgres/-/postgres-3.4.2.tgz#979d2758459c9348bdca79b397ace45d9ebda47d"
+  integrity sha512-0UcCGvDBSaAzLeWwiq+QVmiGfOPTosFb+sxJUUtd+7Pi/ByFPuz6Gq05LbS0sM1ghMWC5atuks3pfl34g0qmFw==
 
 prelude-ls@^1.2.1:
   version "1.2.1"
