@@ -2205,52 +2205,52 @@
     lodash-es "^4.17.21"
     read-pkg-up "^10.0.0"
 
-"@sentry-internal/tracing@7.75.0":
-  version "7.75.0"
-  resolved "https://registry.yarnpkg.com/@sentry-internal/tracing/-/tracing-7.75.0.tgz#0d6cb4d3ff4ea6dd456f64455b2d505d7eb27656"
-  integrity sha512-/j4opF/jB9j8qnSiQK75/lFLtkfqXS5/MoOKc2KWK/pOaf15W+6uJzGQ8jRBHLYd9dDg6AyqsF48Wqy561/mNg==
+"@sentry-internal/tracing@7.77.0":
+  version "7.77.0"
+  resolved "https://registry.yarnpkg.com/@sentry-internal/tracing/-/tracing-7.77.0.tgz#f3d82486f8934a955b3dd2aa54c8d29586e42a37"
+  integrity sha512-8HRF1rdqWwtINqGEdx8Iqs9UOP/n8E0vXUu3Nmbqj4p5sQPA7vvCfq+4Y4rTqZFc7sNdFpDsRION5iQEh8zfZw==
   dependencies:
-    "@sentry/core" "7.75.0"
-    "@sentry/types" "7.75.0"
-    "@sentry/utils" "7.75.0"
+    "@sentry/core" "7.77.0"
+    "@sentry/types" "7.77.0"
+    "@sentry/utils" "7.77.0"
 
-"@sentry/core@7.75.0":
-  version "7.75.0"
-  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-7.75.0.tgz#d5477faf9afdfbf45b4ff46b809729f14d4e1b80"
-  integrity sha512-vXg3cdJgwzP24oTS9zFCgLW4MgTkMZqXx+ESRq7gTD9qJTpcmAmYT+Ckmvebg8K6DBThV6+0v61r50na2+XdrA==
+"@sentry/core@7.77.0":
+  version "7.77.0"
+  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-7.77.0.tgz#21100843132beeeff42296c8370cdcc7aa1d8510"
+  integrity sha512-Tj8oTYFZ/ZD+xW8IGIsU6gcFXD/gfE+FUxUaeSosd9KHwBQNOLhZSsYo/tTVf/rnQI/dQnsd4onPZLiL+27aTg==
   dependencies:
-    "@sentry/types" "7.75.0"
-    "@sentry/utils" "7.75.0"
+    "@sentry/types" "7.77.0"
+    "@sentry/utils" "7.77.0"
 
 "@sentry/node@^7.64.0":
-  version "7.75.0"
-  resolved "https://registry.yarnpkg.com/@sentry/node/-/node-7.75.0.tgz#49f851d49e1c5cdaca64933ca5a9214edeed5e82"
-  integrity sha512-z5Xanf9QeTd4YrEuZiJfvtAy2C874Zg4KpurEo3okJ8uYjnbXMsQ3EwVHbKEoYSwE3ExTrqOggPfk2NNSJIECA==
+  version "7.77.0"
+  resolved "https://registry.yarnpkg.com/@sentry/node/-/node-7.77.0.tgz#a247452779a5bcb55724457707286e3e4a29dbbe"
+  integrity sha512-Ob5tgaJOj0OYMwnocc6G/CDLWC7hXfVvKX/ofkF98+BbN/tQa5poL+OwgFn9BA8ud8xKzyGPxGU6LdZ8Oh3z/g==
   dependencies:
-    "@sentry-internal/tracing" "7.75.0"
-    "@sentry/core" "7.75.0"
-    "@sentry/types" "7.75.0"
-    "@sentry/utils" "7.75.0"
+    "@sentry-internal/tracing" "7.77.0"
+    "@sentry/core" "7.77.0"
+    "@sentry/types" "7.77.0"
+    "@sentry/utils" "7.77.0"
     https-proxy-agent "^5.0.0"
 
 "@sentry/tracing@^7.64.0":
-  version "7.75.0"
-  resolved "https://registry.yarnpkg.com/@sentry/tracing/-/tracing-7.75.0.tgz#217d616a0b383ac1a4fa6a076c926ef3ef36c2f1"
-  integrity sha512-EHvkQZdZApESVCwbZoUepjF79LQm2IYC/axj7k2bY5ImTAabS323I5YPwifPAWbtqvjqxakgbKUNjaTMGeSGNg==
+  version "7.77.0"
+  resolved "https://registry.yarnpkg.com/@sentry/tracing/-/tracing-7.77.0.tgz#39d7c30834f503fe9eb20ce1c8c8bd28f7d7c9ce"
+  integrity sha512-zr6eSCW3NJ124uj4Fy/6hh77cziy43dpYE1WpgvO/yhl1+kdrY2XVJ0bXGqwHU0KBm/eSgHD7yecUxmZUXiabA==
   dependencies:
-    "@sentry-internal/tracing" "7.75.0"
+    "@sentry-internal/tracing" "7.77.0"
 
-"@sentry/types@7.75.0":
-  version "7.75.0"
-  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-7.75.0.tgz#e171f1680785a155cb828942af890ad4ee657ca3"
-  integrity sha512-xG8OLADxG7HpGhMxrF4v4tKq/v/gqmLsTZ858R51pz0xCWM8SK6ZSWOKudkAGBIpRjI6RUHMnkBtRAN2aKDOkQ==
+"@sentry/types@7.77.0":
+  version "7.77.0"
+  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-7.77.0.tgz#c5d00fe547b89ccde59cdea59143bf145cee3144"
+  integrity sha512-nfb00XRJVi0QpDHg+JkqrmEBHsqBnxJu191Ded+Cs1OJ5oPXEW6F59LVcBScGvMqe+WEk1a73eH8XezwfgrTsA==
 
-"@sentry/utils@7.75.0":
-  version "7.75.0"
-  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-7.75.0.tgz#7a638c4c027ca2018518ee8d2eead1397cb97d66"
-  integrity sha512-UHWKeevhUNRp+mAWDbMVFOMgseoq8t/xFgdUywO/2PC14qZKRBH+0k1BKoNkp5sOzDT06ETj2w6wYoYhy6i+dA==
+"@sentry/utils@7.77.0":
+  version "7.77.0"
+  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-7.77.0.tgz#1f88501f0b8777de31b371cf859d13c82ebe1379"
+  integrity sha512-NmM2kDOqVchrey3N5WSzdQoCsyDkQkiRxExPaNI2oKQ/jMWHs9yt0tSy7otPBcXs0AP59ihl75Bvm1tDRcsp5g==
   dependencies:
-    "@sentry/types" "7.75.0"
+    "@sentry/types" "7.77.0"
 
 "@sideway/address@^4.1.3":
   version "4.1.4"
