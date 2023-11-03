@@ -1388,7 +1388,7 @@
   resolved "https://registry.yarnpkg.com/@msgpackr-extract/msgpackr-extract-win32-x64/-/msgpackr-extract-win32-x64-3.0.2.tgz#0f164b726869f71da3c594171df5ebc1c4b0a407"
   integrity sha512-O+6Gs8UeDbyFpbSh2CPEz/UOrrdWPTBYNblZK5CxxLisYt4kGX3Sc+czffFonyjiGSq3jWLwJS/CCJc7tBr4sQ==
 
-"@mui/base@5.0.0-beta.22", "@mui/base@^5.0.0-beta.20":
+"@mui/base@5.0.0-beta.22", "@mui/base@^5.0.0-beta.22":
   version "5.0.0-beta.22"
   resolved "https://registry.yarnpkg.com/@mui/base/-/base-5.0.0-beta.22.tgz#9ea6be6c8bfc4d8f825660da36d228f5315d4706"
   integrity sha512-l4asGID5tmyerx9emJfXOKLyXzaBtdXNIFE3M+IrSZaFtGFvaQKHhc3+nxxSxPf1+G44psjczM0ekRQCdXx9HA==
@@ -1476,7 +1476,7 @@
   resolved "https://registry.yarnpkg.com/@mui/types/-/types-7.2.8.tgz#2ed4402f104d65fcd4f460ca358654c8935e2285"
   integrity sha512-9u0ji+xspl96WPqvrYJF/iO+1tQ1L5GTaDOeG3vCR893yy7VcWwRNiVMmPdPNpMDqx0WV1wtEW9OMwK9acWJzQ==
 
-"@mui/utils@^5.14.14", "@mui/utils@^5.14.16", "@mui/utils@^5.14.3":
+"@mui/utils@^5.14.16", "@mui/utils@^5.14.3":
   version "5.14.16"
   resolved "https://registry.yarnpkg.com/@mui/utils/-/utils-5.14.16.tgz#09a15fd45530cadc642c5c08eb6cc660ea230506"
   integrity sha512-3xV31GposHkwRbQzwJJuooWpK2ybWdEdeUPtRjv/6vjomyi97F3+68l+QVj9tPTvmfSbr2sx5c/NuvDulrdRmA==
@@ -1487,13 +1487,13 @@
     react-is "^18.2.0"
 
 "@mui/x-date-pickers@^6.11.0":
-  version "6.17.0"
-  resolved "https://registry.yarnpkg.com/@mui/x-date-pickers/-/x-date-pickers-6.17.0.tgz#984ee91d05600630661f40a26c749596e60673c0"
-  integrity sha512-rBKiw6GL1bTJpfSuD0KnOgxrERhoSip7eyqXzHbh0GODmp9f5bonE9gRZ74XmlyMQT7tcSzXdzk0c1X0HhmP1A==
+  version "6.18.0"
+  resolved "https://registry.yarnpkg.com/@mui/x-date-pickers/-/x-date-pickers-6.18.0.tgz#3bc439d246315e957858f08a8c4a3a8fbe95adfd"
+  integrity sha512-y4UlkHQXiNRfb6FWQ/GWir0sZ+9kL+GEEZssG+XWP3KJ+d3lONRteusl4AJkYJBdIAOh+5LnMV9RAQKq9Sl7yw==
   dependencies:
     "@babel/runtime" "^7.23.2"
-    "@mui/base" "^5.0.0-beta.20"
-    "@mui/utils" "^5.14.14"
+    "@mui/base" "^5.0.0-beta.22"
+    "@mui/utils" "^5.14.16"
     "@types/react-transition-group" "^4.4.8"
     clsx "^2.0.0"
     prop-types "^15.8.1"
