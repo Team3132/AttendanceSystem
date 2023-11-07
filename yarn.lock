@@ -2712,9 +2712,9 @@
   integrity sha512-3YmXzzPAdOTVljVMkTMBdBEvlOLg2cDQaDhnnhT3nT9uDbnJzjWhKlzb+desT12Y7tGqaN6d+AbozcKzyL36Ng==
 
 "@types/passport-discord@^0.1.5":
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/@types/passport-discord/-/passport-discord-0.1.10.tgz#bfd8d2cd4885e5f902f75ee60480bbc4f934e36b"
-  integrity sha512-0rprGuuFIQceZ6RgfqInmbcSBMG52hajOoohPUA2Xjhy279rIjxG1uOaypTQ5LbM19iKWqoQJ53AFwXnRziTTQ==
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/@types/passport-discord/-/passport-discord-0.1.11.tgz#81c56e49ab582882c21028538fa94ef6c4e3898a"
+  integrity sha512-RK2nQlC16Utve5lmY3U+SRFg32de8IK4E22KZUWpME6KbfVq35vUXcHGA8OI+FumCeAGjiQIM5cAj38gspEOjQ==
   dependencies:
     "@types/express" "*"
     "@types/passport" "*"
