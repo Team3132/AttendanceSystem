@@ -2852,9 +2852,9 @@
     "@types/superagent" "*"
 
 "@types/swagger-stats@^0.95.5":
-  version "0.95.10"
-  resolved "https://registry.yarnpkg.com/@types/swagger-stats/-/swagger-stats-0.95.10.tgz#9bd64744cf54200e11b2c0f5039d5353f4660683"
-  integrity sha512-uy9S8A0kzGH7pIg45q7JxL2M8xFZGbbE8NLB1FQweqK/JhE+t30eriqgNpGMU++DBR+zQCf4tFBEcsfwJhCLxA==
+  version "0.95.11"
+  resolved "https://registry.yarnpkg.com/@types/swagger-stats/-/swagger-stats-0.95.11.tgz#1f6ef896c9b778818b7d3ec8f849b92446265621"
+  integrity sha512-npTTS5lv0FmkgKeChxUrp9nTqiFdFP5XRlewfGP7JVeFwV7u1yE0SOUh8eXMrgVLE/mJNJuhGoAoVClHc+rsGA==
   dependencies:
     "@hapi/hapi" "21.1.0"
     "@types/express" "*"
