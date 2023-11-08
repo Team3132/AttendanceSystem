@@ -2768,9 +2768,9 @@
   integrity sha512-+0autS93xyXizIYiyL02FCY8N+KkKPhILhcUSA276HxzreZ16kl+cmwvV2qAM/PuCCwPXzOXOWhiPcw20uSFcA==
 
 "@types/react-alert@^7.0.2":
-  version "7.0.4"
-  resolved "https://registry.yarnpkg.com/@types/react-alert/-/react-alert-7.0.4.tgz#dcf02a20a69ad5fca134deb80535b3daada06d14"
-  integrity sha512-esiZBcPzgLkI8X1ACFEodY9Kbd5npKNaFjFtZuiDLXJmmydi2we5HSsK+++Ya6kzKipmfqCKt+NJccic/6UOog==
+  version "7.0.5"
+  resolved "https://registry.yarnpkg.com/@types/react-alert/-/react-alert-7.0.5.tgz#edc7155c1f1d7097b5b40af393ab4d1f8c244f9c"
+  integrity sha512-nnAg89W1NBFTl0xPNLBOA4G5iyYQr7DUGg4/E9SqykNfaamqDZDfSKhWByxwPRDI+GkB4on8y36W3zzveHzXAg==
   dependencies:
     "@types/react" "*"
 
