@@ -22,6 +22,7 @@ COPY --from=build-back /app/packages/backend/dist /app/packages/backend/dist
 FROM base
 ARG VERSION
 ENV VERSION=$VERSION
+ENV NODE_ENV=production
 COPY --from=prod-deps-back /app/node_modules /app/node_modules
 COPY --from=prod-deps-back /app/packages/backend/node_modules /app/packages/backend/node_modules
 COPY --from=build-back /app/packages/backend/dist /app/packages/backend/dist
