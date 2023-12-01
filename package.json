@@ -10,24 +10,8 @@
     "packages/*"
   ],
   "scripts": {
-    "build:frontend": "yarn workspace frontend build",
-    "build:backend": "yarn workspace backend build",
-    "build": "concurrently \"npm:build:*\"",
-    "dev:frontend": "yarn workspace frontend dev",
-    "dev:backend": "yarn workspace backend dev",
-    "dev": "concurrently \"npm:dev:*\"",
-    "lint:frontend": "yarn workspace frontend lint",
-    "lint:backend": "yarn workspace backend lint",
-    "lint": "yarn lint:frontend && yarn lint:backend",
-    "typecheck:frontend": "yarn workspace frontend tsc --noEmit",
-    "typecheck:backend": "yarn workspace backend tsc --noEmit",
-    "typecheck:frontend:watch": "yarn workspace frontend tsc --noEmit --watch",
-    "typecheck:backend:watch": "yarn workspace backend tsc --noEmit --watch",
-    "typecheck": "yarn typecheck:frontend && yarn typecheck:backend",
-    "generate:openapi": "yarn workspace frontend generate",
-    "back": "yarn workspace backend",
-    "front": "yarn workspace frontend",
-    "mui": "yarn workspace mui"
+    "back": "pnpm run --filter backend",
+    "front": "pnpm run --filter frontend"
   },
   "devDependencies": {
     "concurrently": "^8.0.0",

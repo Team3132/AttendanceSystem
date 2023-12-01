@@ -1,34 +1,30 @@
-FROM node:20-alpine as basebackend
+FROM node:20-slim AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+COPY . /app
 WORKDIR /app
-COPY package.json yarn.lock tsconfig.json ./
-COPY packages/backend/package.json packages/backend/tsconfig.json packages/backend/tsup.config.ts ./packages/backend/
 
-FROM node:20-alpine as basefrontend
-WORKDIR /app
-COPY package.json yarn.lock tsconfig.json ./
-COPY packages/frontend/package.json packages/frontend/tsconfig.json packages/frontend/tsconfig.node.json packages/frontend/vite.config.ts packages/frontend/index.html ./packages/frontend/
+FROM base AS front
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --filter frontend
+RUN pnpm front build
 
+FROM base AS prod-deps-back
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile --filter backend
 
-FROM basefrontend as buildfrontend
-WORKDIR /app
-RUN yarn front install --frozen-lockfile
-COPY packages/frontend/src ./packages/frontend/src
-ENV VITE_BACKEND_URL https://attendance.team3132.com/api
-RUN yarn front build
+FROM base AS build-back
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --filter backend
+RUN pnpm back build
 
-FROM basebackend as buildbackend
-WORKDIR /app
-RUN yarn back install --frozen-lockfile
-COPY packages/backend/src ./packages/backend/src
-COPY packages/backend/drizzle ./packages/backend/drizzle
-COPY --from=buildfrontend /app/packages/frontend/dist ./packages/backend/public/frontend
-RUN yarn back build
+FROM scratch AS back-out
+COPY --from=build-back /app/packages/backend/dist /app/packages/backend/dist
 
-FROM basebackend as runner
-WORKDIR /app
-ENV NODE_ENV production
-RUN yarn back install --frozen-lockfile --production
-COPY --from=buildbackend /app/packages/backend/dist /app/packages/backend/dist
-
+FROM base
+ARG VERSION
+ENV VERSION=$VERSION
+COPY --from=prod-deps-back /app/node_modules /app/node_modules
+COPY --from=prod-deps-back /app/packages/backend/node_modules /app/packages/backend/node_modules
+COPY --from=build-back /app/packages/backend/dist /app/packages/backend/dist
+COPY --from=front /app/packages/frontend/dist /app/packages/backend/dist/frontend
 EXPOSE 3000
-CMD yarn back start
+CMD [ "pnpm", "back", "start" ]

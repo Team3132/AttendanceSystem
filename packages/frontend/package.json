@@ -21,6 +21,7 @@
     "@tanstack/match-sorter-utils": "^8.8.4",
     "@tanstack/react-query": "^5.0.0-beta.15",
     "@tanstack/react-table": "^8.9.3",
+    "@tanstack/table-core": "^8.10.7",
     "luxon": "^3.3.0",
     "react": "^18.2.0",
     "react-alert": "^7.0.3",

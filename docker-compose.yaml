@@ -23,15 +23,17 @@ services:
     ports:
       - 6379:6379
 
-  # backend:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #     target: runner
-  #   ports:
-  #     - 3000:3000
-  #   env_file:
-  #     - packages/backend/.env
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    env_file:
+      - packages/backend/.env
+    links:
+      - postgres
+      - redis
 
 volumes:
   postgres-data:
