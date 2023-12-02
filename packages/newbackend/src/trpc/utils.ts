@@ -1,6 +1,5 @@
 import { TRPCError } from "@trpc/server";
 import { t } from ".";
-import fastifyPassport from "@fastify/passport";
 import env from "../env";
 
 /**
@@ -26,7 +25,7 @@ const enforceSession = t.middleware(({ ctx, next }) => {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 
-  return next({ ctx: { user: ctxUser, db: ctx.db } });
+  return next({ ctx: { user: ctxUser } });
 });
 
 /**
@@ -41,7 +40,7 @@ export const sessionProcedure = t.procedure.use(enforceSession);
  * API Authenticated procedure (for the bot)
  */
 const enforceApiToken = t.middleware(({ ctx, next }) => {
-  const { headers, db } = ctx;
+  const { headers } = ctx;
 
   if (!headers.authorization) {
     throw new TRPCError({ code: "UNAUTHORIZED", message: "API Token not set" });
@@ -58,7 +57,7 @@ const enforceApiToken = t.middleware(({ ctx, next }) => {
     throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid API Token" });
   }
 
-  return next({ ctx: { db } });
+  return next();
 });
 
 /**
