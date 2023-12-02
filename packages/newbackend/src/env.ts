@@ -21,6 +21,7 @@ const EnvSchema = z.object({
      */
     DISCORD_CLIENT_ID: z.string(),
     DISCORD_CLIENT_SECRET: z.string(),
+    DISCORD_CALLBACK_URL: z.string().default('http://localhost:3000/api/auth/discord/callback'),
     /**
      * Misc
      */
@@ -35,6 +36,10 @@ const EnvSchema = z.object({
     GOOGLE_PRIVATE_KEY: z.string(),
     GOOGLE_PROJECT_NUMBER: z.string(),
     GOOGLE_CALENDAR_ID: z.string(),
+    /**
+     * API Token
+     */
+    API_TOKEN: z.string().optional(),
 })
 
 export type Env = z.infer<typeof EnvSchema>

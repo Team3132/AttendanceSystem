@@ -39,6 +39,6 @@ const pgClient = postgres(connectionUrl, {
   },
 });
 
-const db = drizzle(pgClient, { schema });
+export const db = drizzle(pgClient, { schema });
 
 export default db;
