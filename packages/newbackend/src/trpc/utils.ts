@@ -22,7 +22,7 @@ const enforceSession = t.middleware(({ ctx, next }) => {
 
   if (!ctxUser) {
     // Redirect to login page?
-    throw new TRPCError({ code: "UNAUTHORIZED" });
+    throw new TRPCError({ code: "UNAUTHORIZED", message: "No session" });
   }
 
   return next({ ctx: { user: ctxUser } });
@@ -36,6 +36,27 @@ const enforceSession = t.middleware(({ ctx, next }) => {
  */
 export const sessionProcedure = t.procedure.use(enforceSession);
 
+const enforceMentorSession = t.middleware(({ ctx, next }) => {
+  const ctxUser = ctx.user;
+
+  if (!ctxUser) {
+    // Redirect to login page?
+    throw new TRPCError({ code: "UNAUTHORIZED", message: "No session" });
+  }
+
+  if (!ctxUser.roles) {
+    throw new TRPCError({ code: "UNAUTHORIZED", message: "No roles" });
+  }
+
+  if (!ctxUser.roles.includes(env.MENTOR_ROLE_ID)) {
+    throw new TRPCError({ code: "UNAUTHORIZED", message: "Not a mentor" });
+  }
+
+  return next({ ctx: { user: ctxUser } });
+});
+
+export const mentorSessionProcedure = t.procedure.use(enforceMentorSession);
+
 /**
  * API Authenticated procedure (for the bot)
  */
@@ -46,14 +67,16 @@ const enforceApiToken = t.middleware(({ ctx, next }) => {
     throw new TRPCError({ code: "UNAUTHORIZED", message: "API Token not set" });
   }
 
-  if (!env.API_TOKEN) {
+  const envApiToken = env.API_TOKEN;
+
+  if (!envApiToken) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
       message: "API Token not set in config",
     });
   }
 
-  if (headers.authorization !== `Bearer ${env.API_TOKEN}`) {
+  if (headers.authorization !== `Bearer ${envApiToken}`) {
     throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid API Token" });
   }
 

@@ -40,6 +40,10 @@ const EnvSchema = z.object({
      * API Token
      */
     API_TOKEN: z.string().optional(),
+    /**
+     * Roles
+     */
+    MENTOR_ROLE_ID: z.string(),
 })
 
 export type Env = z.infer<typeof EnvSchema>
