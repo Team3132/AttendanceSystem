@@ -1,0 +1,38 @@
+{
+  "name": "newbackend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsup --watch",
+    "build": "tsup"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@dynamicabot/signales": "^2.1.1",
+    "@fastify/cookie": "^9.2.0",
+    "@fastify/passport": "^2.4.0",
+    "@fastify/secure-session": "^7.1.0",
+    "@fastify/sensible": "^5.5.0",
+    "@fastify/static": "^6.12.0",
+    "@trpc/server": "^10.44.1",
+    "dotenv": "^16.3.1",
+    "drizzle-orm": "^0.29.0",
+    "fastify": "^4.24.3",
+    "postgres": "^3.3.5",
+    "superjson": "^2.2.1",
+    "uuid": "^9.0.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/uuid": "^9.0.0",
+    "drizzle-kit": "^0.20.0",
+    "eslint": "^8.55.0",
+    "prettier": "^3.1.0",
+    "tsup": "^7.0.0"
+  }
+}
