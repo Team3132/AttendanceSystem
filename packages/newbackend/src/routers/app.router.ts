@@ -7,6 +7,9 @@ import { eventRouter } from "./event.router";
 import { outreachRouter } from "./outreach.router";
 import { userRouter } from "./user.router";
 
+/**
+ * The main router for the backend, contains all other routers
+ */
 const appRouter = t.router({
   test: publicProcedure.input(z.void()).query(() => {
     return "Hello world!";

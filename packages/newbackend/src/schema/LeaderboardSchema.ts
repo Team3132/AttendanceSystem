@@ -8,5 +8,3 @@ const LeaderBoardUser = z.object({
 })
 
 export const LeaderBoardSchema = z.array(LeaderBoardUser);
-
-export default LeaderBoardSchema;
