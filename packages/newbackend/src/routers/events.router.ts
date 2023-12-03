@@ -28,6 +28,8 @@ import {
   userScanin,
 } from "../services/events.service";
 import { SecretOutputSchema } from "../schema/SecretOutputSchema";
+import { UserCheckinSchema } from "../schema/UserCheckinSchema";
+import { UserCheckoutSchema } from "../schema/UserCheckoutSchema";
 
 export const eventRouter = t.router({
   getEvents: sessionProcedure
@@ -84,6 +86,16 @@ export const eventRouter = t.router({
     .input(z.string().describe("The event ID"))
     .output(RSVPSchema)
     .mutation(({ ctx, input: eventId }) => userCheckout(ctx.user.id, eventId)),
+  userCheckin: mentorSessionProcedure
+    .input(UserCheckinSchema)
+    .output(RSVPSchema)
+    .mutation(({ input: { userId, ...input } }) => userCheckin(userId, input)),
+  userCheckout: mentorSessionProcedure
+    .input(UserCheckoutSchema)
+    .output(RSVPSchema)
+    .mutation(({ input: { userId, eventId } }) =>
+      userCheckout(userId, eventId)
+    ),
   editUserAttendance: mentorSessionProcedure
     .input(EditUserAttendanceSchema)
     .output(RSVPSchema)

@@ -67,11 +67,12 @@ await server.register(fastifyTRPCPlugin, {
 });
 
 await server.all("/panel", (_, res) => {
-  res.header(
-    "Content-Type",
-    "text/html; charset=utf-8"
-  ).send(renderTrpcPanel(appRouter, { url: "/api/trpc", transformer: "superjson" }))
-})
+  res
+    .header("Content-Type", "text/html; charset=utf-8")
+    .send(
+      renderTrpcPanel(appRouter, { url: "/api/trpc", transformer: "superjson" })
+    );
+});
 
 await server.get("/api/auth/discord", {
   preValidation: fastifyPassport.authenticate("discord", { authInfo: false }),
@@ -97,3 +98,4 @@ await server.listen({ port: env.PORT, host: "0.0.0.0" }).catch((err) => {
 });
 
 export { type AppRouter };
+export * as Schema from "./schema";

@@ -13,6 +13,8 @@ import { Provider } from "react-alert";
 import MuiAlert from "./components/MuiAlert";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
+import { trpcClient } from "./trpcClient";
+import { trpc } from "./utils/trpc";
 
 /**
  * The root component of the application.
@@ -27,7 +29,7 @@ function App() {
           mode: prefersDarkMode ? "dark" : "light",
         },
       }),
-    [prefersDarkMode],
+    [prefersDarkMode]
   );
 
   return (
@@ -35,9 +37,11 @@ function App() {
       <CssBaseline />
       <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale="en-au">
         <Provider template={MuiAlert} position="bottom center">
-          <QueryClientProvider client={queryClient}>
-            <RouterProvider router={router} />
-          </QueryClientProvider>
+          <trpc.Provider client={trpcClient} queryClient={queryClient}>
+            <QueryClientProvider client={queryClient}>
+              <RouterProvider router={router} />
+            </QueryClientProvider>
+          </trpc.Provider>
         </Provider>
       </LocalizationProvider>
     </ThemeProvider>
