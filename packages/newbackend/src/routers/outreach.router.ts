@@ -8,9 +8,5 @@ export const outreachRouter = t.router({
   leaderboard: sessionProcedure
     .input(z.void())
     .output(LeaderBoardSchema)
-    .query(async () => {
-      const outreachTime = await getOutreachTime();
-      console.log(outreachTime);
-      return outreachTime;
-    }),
+    .query(() => getOutreachTime()),
 });
