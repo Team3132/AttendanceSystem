@@ -3,9 +3,9 @@ import { t } from "../trpc";
 import { botRouter } from "./bot.router";
 import { authRouter } from "./auth.router";
 import { publicProcedure } from "../trpc/utils";
-import { eventRouter } from "./event.router";
+import { eventRouter as eventsRouter } from "./events.router";
 import { outreachRouter } from "./outreach.router";
-import { userRouter } from "./user.router";
+import { userRouter as usersRouter } from "./users.router";
 
 /**
  * The main router for the backend, contains all other routers
@@ -16,9 +16,9 @@ const appRouter = t.router({
   }),
   bot: botRouter,
   auth: authRouter,
-  events: eventRouter,
+  events: eventsRouter,
   outreach: outreachRouter,
-  users: userRouter,
+  users: usersRouter,
 });
 
 export type AppRouter = typeof appRouter;
