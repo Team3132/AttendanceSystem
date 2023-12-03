@@ -1,7 +1,7 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig(({ watch }) => ({
-  entry: ["src/main.ts", "src/drizzle/migrations", "src/schema"],
+  entry: ["src/main.ts", "src/drizzle/migrations", "src/schema/index.ts"],
   splitting: true,
   format: ["esm"],
   dts: true,
