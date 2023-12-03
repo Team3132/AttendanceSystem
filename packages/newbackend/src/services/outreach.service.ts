@@ -28,7 +28,7 @@ export function getOutreachTime() {
     throw new Error("Could not find a valid date for last April 25th");
   }
 
-  const aprilIsoDate = lastApril25.toISODate();
+  const aprilIsoDate = lastApril25.toISODate()
 
   if (!aprilIsoDate) {
     throw new Error("Could not convert last April 25th to ISO date");
@@ -46,7 +46,7 @@ export function getOutreachTime() {
         /** Duration (in ISO8601 format) */
         duration: sql<string>`sum(${rsvp.checkoutTime} - ${rsvp.checkinTime})`,
         /** Rank */
-        rank: sql<number>`rank() over (order by sum(${rsvp.checkoutTime} - ${rsvp.checkinTime}) desc)`,
+        rank: sql<string>`rank() over (order by sum(${rsvp.checkoutTime} - ${rsvp.checkinTime}) desc)`,
       })
       .from(rsvp)
       .groupBy(user.id)

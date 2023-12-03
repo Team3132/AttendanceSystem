@@ -7,7 +7,7 @@ import LeaderBoardSchema from "../schema/LeaderboardSchema";
 /**
  * A router than the bot uses to communicate with the backend
  */
-const botRouter = t.router({
+export const botRouter = t.router({
     online: tokenProcedure.input(z.void()).query(() => {
         return "OK" as const;
     }),
@@ -15,5 +15,3 @@ const botRouter = t.router({
         return getOutreachTime(); 
     }),
 })
-
-export default botRouter;

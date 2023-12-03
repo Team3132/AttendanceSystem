@@ -13,6 +13,7 @@ import fastifyPassport from "@fastify/passport";
 import discordStrategy from "./auth/Discord.strategy";
 import { user } from "./drizzle/schema";
 import { eq } from "drizzle-orm";
+import { renderTrpcPanel } from "trpc-panel";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 
@@ -64,6 +65,13 @@ await server.register(fastifyTRPCPlugin, {
   prefix: "/api/trpc",
   trpcOptions: { router: appRouter, createContext },
 });
+
+await server.all("/panel", (_, res) => {
+  res.header(
+    "Content-Type",
+    "text/html; charset=utf-8"
+  ).send(renderTrpcPanel(appRouter, { url: "/api/trpc", transformer: "superjson" }))
+})
 
 await server.get("/api/auth/discord", {
   preValidation: fastifyPassport.authenticate("discord", { authInfo: false }),
