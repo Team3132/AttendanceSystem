@@ -14,6 +14,10 @@ import discordStrategy from "./auth/Discord.strategy";
 import { user } from "./drizzle/schema";
 import { eq } from "drizzle-orm";
 import { renderTrpcPanel } from "trpc-panel";
+import { Settings } from "luxon";
+
+Settings.defaultLocale = "en-au";
+Settings.defaultZone = "Australia/Sydney";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 
