@@ -1,10 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
-import userApi from "../../../api/query/user.api";
 import { List, Typography } from "@mui/material";
 import UserListItem from "./UserListItem";
+import { trpc } from "../../../utils/trpc";
 
 export default function UserList() {
-  const usersQuery = useQuery(userApi.getUsers);
+  const usersQuery = trpc.users.getUserList.useQuery();
 
   if (usersQuery.data) {
     return (

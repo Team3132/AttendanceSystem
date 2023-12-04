@@ -1,18 +1,15 @@
 import { z } from "zod";
 import { t } from "../trpc";
 import { mentorSessionProcedure, sessionProcedure } from "../trpc/utils";
-import db from "../drizzle/db";
-import { and, eq, isNotNull, isNull } from "drizzle-orm";
-import { user } from "../drizzle/schema";
 import UserSchema from "../schema/UserSchema";
 import { ScancodeSchema } from "../schema/ScancodeSchema";
-import { TRPCError } from "@trpc/server";
-import { RSVPSchema } from "../schema/RSVPSchema";
 import {
   getPendingUserRsvps,
   getUser,
+  getUserList,
   getUserScancodes,
 } from "../services/user.service";
+import { RSVPEventSchema } from "../schema/RSVPEventSchema";
 
 export const userRouter = t.router({
   getSelf: sessionProcedure
@@ -33,10 +30,14 @@ export const userRouter = t.router({
     .query(({ input }) => getUserScancodes(input)),
   getSelfPendingRsvps: sessionProcedure
     .input(z.void())
-    .output(z.array(RSVPSchema))
+    .output(z.array(RSVPEventSchema))
     .query(({ ctx }) => getPendingUserRsvps(ctx.user.id)),
   getUserPendingRsvps: mentorSessionProcedure
     .input(z.string())
-    .output(z.array(RSVPSchema))
+    .output(z.array(RSVPEventSchema))
     .query(({ input }) => getPendingUserRsvps(input)),
+  getUserList: mentorSessionProcedure
+    .input(z.void())
+    .output(z.array(UserSchema))
+    .query(() => getUserList()),
 });

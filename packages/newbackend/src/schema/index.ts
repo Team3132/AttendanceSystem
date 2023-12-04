@@ -16,3 +16,4 @@ export * from "./SecretOutputSchema";
 export * from "./UserCheckinSchema";
 export * from "./UserCheckoutSchema";
 export * from "./UserSchema";
+export * from "./RSVPEventSchema";

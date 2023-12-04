@@ -1,20 +1,22 @@
-import { useQuery } from "@tanstack/react-query";
-import { RsvpEvent } from "../api/generated";
-import userApi from "../api/query/user.api";
 import { List, Typography } from "@mui/material";
 import PendingEventListItem from "./PendingEventListItem";
+import { RSVPEventSchema } from "newbackend/schema";
+import { z } from "zod";
+import { trpc } from "../utils/trpc";
 
 interface ActiveEventsListProps {
-  initialPendingEvents: RsvpEvent[];
+  initialPendingEvents: z.infer<typeof RSVPEventSchema>[];
 }
 
 export default function ActiveEventsList(props: ActiveEventsListProps) {
   const { initialPendingEvents } = props;
 
-  const pendingEventsQuery = useQuery({
-    ...userApi.getPendingRsvps(),
-    initialData: initialPendingEvents,
-  });
+  const pendingEventsQuery = trpc.users.getSelfPendingRsvps.useQuery(
+    undefined,
+    {
+      initialData: initialPendingEvents,
+    }
+  );
 
   if (pendingEventsQuery.data) {
     if (pendingEventsQuery.data.length === 0)

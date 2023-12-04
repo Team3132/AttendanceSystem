@@ -1,21 +1,28 @@
 import { ListItem, ListItemText } from "@mui/material";
-import { RsvpEvent } from "../api/generated";
 import { LoadingButton } from "@mui/lab";
-import useCheckout from "../hooks/useCheckout";
+import useSelfCheckout from "../hooks/useSelfCheckout";
+import useUserCheckout from "../hooks/useUserCheckout";
 import { DateTime } from "luxon";
+import { z } from "zod";
+import { RSVPEventSchema } from "newbackend/schema";
 
 interface PendingEventListItemProps {
-  rsvp: RsvpEvent;
+  rsvp: z.infer<typeof RSVPEventSchema>;
   userId?: string;
 }
 
 export default function PendingEventListItem(props: PendingEventListItemProps) {
   const { rsvp, userId = "me" } = props;
 
-  const checkoutMutation = useCheckout();
+  const selfCheckoutMutation = useSelfCheckout();
+  const userCheckoutMutation = useUserCheckout();
 
   const handleClick = () => {
-    checkoutMutation.mutate({ eventId: rsvp.eventId, userId });
+    if (userId === "me") {
+      selfCheckoutMutation.mutate(rsvp.id);
+    } else {
+      userCheckoutMutation.mutate({ eventId: rsvp.event.id, userId });
+    }
   };
 
   return (
@@ -25,7 +32,7 @@ export default function PendingEventListItem(props: PendingEventListItemProps) {
         secondary={`Checked In: ${
           rsvp.checkinTime
             ? DateTime.fromISO(rsvp.checkinTime).toLocaleString(
-                DateTime.DATETIME_MED,
+                DateTime.DATETIME_MED
               )
             : "Unknown"
         }`}
@@ -33,7 +40,9 @@ export default function PendingEventListItem(props: PendingEventListItemProps) {
       <LoadingButton
         variant="contained"
         color="primary"
-        loading={checkoutMutation.isPending}
+        loading={
+          selfCheckoutMutation.isLoading || userCheckoutMutation.isLoading
+        }
         onClick={handleClick}
       >
         Checkout

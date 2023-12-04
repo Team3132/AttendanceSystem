@@ -46,7 +46,28 @@ export async function getPendingUserRsvps(userId: string) {
         isNotNull(rsvp.checkinTime),
         isNull(rsvp.checkoutTime)
       ),
+    with: {
+      event: {
+        columns: {
+          allDay: true,
+          description: true,
+          endDate: true,
+          id: true,
+          isSyncedEvent: true,
+          secret: false,
+          startDate: true,
+          title: true,
+          type: true,
+        },
+      },
+    },
   });
 
   return rsvps;
+}
+
+export async function getUserList() {
+  const users = await db.query.user.findMany();
+
+  return users;
 }

@@ -10,6 +10,7 @@ declare module "@tanstack/react-query" {
 
 interface ImportMetaEnv {
   readonly VITE_APP_VERSION?: string;
+  readonly VITE_BACKEND_URL?: string;
   // more env variables...
 }
 
