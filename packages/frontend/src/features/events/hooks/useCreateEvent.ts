@@ -1,14 +1,10 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import eventApi, { eventKeys } from "../../../api/query/event.api";
+import { trpc } from "../../../utils/trpc";
 
 export default function useCreateEvent() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    ...eventApi.createEvent,
+  const utils = trpc.useUtils();
+  return trpc.events.createEvent.useMutation({
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: eventKeys.events(),
-      });
+      utils.events.getEvents.invalidate();
     },
   });
 }

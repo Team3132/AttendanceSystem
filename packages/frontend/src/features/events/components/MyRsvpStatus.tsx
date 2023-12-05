@@ -1,5 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
-import eventApi from "../../../api/query/event.api";
 import {
   FormControl,
   FormHelperText,
@@ -9,23 +7,27 @@ import {
   SelectChangeEvent,
   TextField,
 } from "@mui/material";
-import { Rsvp } from "../../../api/generated";
 import useUpdateRsvp from "../hooks/useUpdateRsvp";
+import { trpc } from "../../../utils/trpc";
+import { z } from "zod";
+import { RSVPSchema } from "newbackend/schema";
 
 interface MyRsvpStatusProps {
   eventId: string;
 }
 
+type RSVPStatus = NonNullable<z.infer<typeof RSVPSchema>["status"]>;
+
 export default function MyRsvpStatus(props: MyRsvpStatusProps) {
   const { eventId } = props;
 
-  const myRsvpStatusQuery = useQuery(eventApi.getEventRsvp(eventId));
+  const myRsvpStatusQuery = trpc.events.getSelfEventRsvp.useQuery(eventId);
   const updateRsvpMutation = useUpdateRsvp();
 
-  const handleChange = (event: SelectChangeEvent<Rsvp.status>) => {
+  const handleChange = (event: SelectChangeEvent<RSVPStatus>) => {
     updateRsvpMutation.mutate({
       eventId,
-      status: event.target.value as Rsvp.status,
+      status: event.target.value as RSVPStatus,
       delay: 0,
     });
   };
@@ -33,7 +35,7 @@ export default function MyRsvpStatus(props: MyRsvpStatusProps) {
   if (myRsvpStatusQuery.data) {
     return (
       <FormControl
-        disabled={updateRsvpMutation.isPending}
+        disabled={updateRsvpMutation.isLoading}
         error={updateRsvpMutation.isError}
       >
         <InputLabel id="select-rsvp-status-label">My Status</InputLabel>
@@ -46,10 +48,10 @@ export default function MyRsvpStatus(props: MyRsvpStatusProps) {
           label="My Status"
           displayEmpty={false}
         >
-          <MenuItem value={Rsvp["status"].YES}>Coming</MenuItem>
-          <MenuItem value={Rsvp["status"].NO}>Not Coming</MenuItem>
-          <MenuItem value={Rsvp["status"].MAYBE}>Maybe</MenuItem>
-          <MenuItem value={Rsvp["status"].LATE}>Late</MenuItem>
+          <MenuItem value={"YES"}>Coming</MenuItem>
+          <MenuItem value={"NO"}>Not Coming</MenuItem>
+          <MenuItem value={"MAYBE"}>Maybe</MenuItem>
+          <MenuItem value={"LATE"}>Late</MenuItem>
         </Select>
         {updateRsvpMutation.isError ? (
           <FormHelperText error>

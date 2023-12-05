@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const UserCheckinSchema = z.object({
+export const CreateBlankUserRsvpSchema = z.object({
   userId: z.string(),
   eventId: z.string(),
 });

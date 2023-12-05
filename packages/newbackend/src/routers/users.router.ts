@@ -4,12 +4,14 @@ import { mentorSessionProcedure, sessionProcedure } from "../trpc/utils";
 import UserSchema from "../schema/UserSchema";
 import { ScancodeSchema } from "../schema/ScancodeSchema";
 import {
+  createUserScancode,
   getPendingUserRsvps,
   getUser,
   getUserList,
   getUserScancodes,
 } from "../services/user.service";
 import { RSVPEventSchema } from "../schema/RSVPEventSchema";
+import { AddUserScancodeParams } from "../schema";
 
 export const userRouter = t.router({
   getSelf: sessionProcedure
@@ -40,4 +42,12 @@ export const userRouter = t.router({
     .input(z.void())
     .output(z.array(UserSchema))
     .query(() => getUserList()),
+  addSelfScancode: sessionProcedure
+    .input(z.string())
+    .output(ScancodeSchema)
+    .mutation(({ input, ctx }) => createUserScancode(ctx.user.id, input)),
+  addUserScanCode: mentorSessionProcedure
+    .input(AddUserScancodeParams)
+    .output(ScancodeSchema)
+    .mutation(({ input }) => createUserScancode(input.userId, input.scancode)),
 });

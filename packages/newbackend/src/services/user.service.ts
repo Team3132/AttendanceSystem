@@ -1,6 +1,7 @@
 import { and, eq, isNotNull, isNull } from "drizzle-orm";
 import db from "../drizzle/db";
 import { TRPCError } from "@trpc/server";
+import { scancode, user } from "../drizzle/schema";
 
 /**
  * Gets a user from the database
@@ -70,4 +71,33 @@ export async function getUserList() {
   const users = await db.query.user.findMany();
 
   return users;
+}
+
+export async function createUserScancode(userId: string, scancodeCode: string) {
+  const [dbScancode] = await db
+    .insert(scancode)
+    .values({
+      code: scancodeCode,
+      userId,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    })
+    .onConflictDoNothing()
+    .returning();
+
+  if (!dbScancode) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "Scancode already exists",
+    });
+  }
+
+  if (userId === dbScancode.userId) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "Scancode already exists",
+    });
+  }
+
+  return dbScancode;
 }

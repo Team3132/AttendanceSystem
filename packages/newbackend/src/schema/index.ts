@@ -1,4 +1,3 @@
-export * from "./CheckinSchema";
 export * from "./CreateEventSchema";
 export * from "./EditEventSchema";
 export * from "./EditRSVPSelfSchema";
@@ -17,3 +16,8 @@ export * from "./UserCheckinSchema";
 export * from "./UserCheckoutSchema";
 export * from "./UserSchema";
 export * from "./RSVPEventSchema";
+export * from "./SelfCheckinSchema";
+export * from "./UserSchema";
+export * from "./RSVPStatusSchema";
+export * from "./AddUserScancodeParams";
+export * from "./EventTypeSchema";

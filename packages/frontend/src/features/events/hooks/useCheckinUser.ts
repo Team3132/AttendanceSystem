@@ -1,14 +1,11 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import eventApi, { eventKeys } from "../../../api/query/event.api";
+import { trpc } from "../../../utils/trpc";
 
 export default function useCheckinUser() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    ...eventApi.checkinUser,
+  const utils = trpc.useUtils();
+
+  return trpc.events.userCheckin.useMutation({
     onSuccess: (data) => {
-      queryClient.invalidateQueries({
-        queryKey: eventKeys.eventRsvps(data.eventId),
-      });
+      utils.events.getEventRsvps.invalidate(data.eventId);
     },
   });
 }

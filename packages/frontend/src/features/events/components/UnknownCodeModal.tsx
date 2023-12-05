@@ -11,14 +11,14 @@ import {
 } from "@mui/material";
 import useZodForm from "../../../hooks/useZodForm";
 import { z } from "zod";
-import { useQuery } from "@tanstack/react-query";
-import userApi from "../../../api/query/user.api";
 import { useEffect, useMemo } from "react";
 import { Controller } from "react-hook-form";
 import { LoadingButton } from "@mui/lab";
-import useCreateScancode from "../../user/hooks/useCreateScancode";
-import { ApiError } from "../../../api/generated";
 import useScanin from "../hooks/useScanin";
+import { trpc } from "../../../utils/trpc";
+import { useDisclosure } from "../../../hooks/useDisclosure";
+import useCreateUserScancode from "../../user/hooks/useCreateUserScancode";
+import { TRPCClientError } from "@trpc/client";
 
 interface UnknownCodeModalProps {
   code: string;
@@ -48,7 +48,13 @@ const RegisterNewCodeFormSchema = z.object({
 
 export default function UnknownCodeModal(props: UnknownCodeModalProps) {
   const { code, open, onClose, eventId } = props;
-  const usersQuery = useQuery(userApi.getUsers);
+  const {
+    getDisclosureProps: getAutocompleteDisclosureProps,
+    isOpen: isAutocompleteOpen,
+  } = useDisclosure();
+  const usersQuery = trpc.users.getUserList.useQuery(undefined, {
+    enabled: isAutocompleteOpen,
+  });
 
   const userOption = useMemo(
     () =>
@@ -56,7 +62,7 @@ export default function UnknownCodeModal(props: UnknownCodeModalProps) {
         label: user.username,
         value: user.id,
       })) || [],
-    [usersQuery.data],
+    [usersQuery.data]
   );
 
   const {
@@ -79,25 +85,33 @@ export default function UnknownCodeModal(props: UnknownCodeModalProps) {
     });
   }, [code, reset]);
 
-  const createScancodeMutation = useCreateScancode();
+  const createScancodeMutation = useCreateUserScancode();
   const scaninMutation = useScanin();
 
   const onSubmit = handleSubmit(async (data) => {
+    if (!data.userOption) {
+      setError("userOption", {
+        message: "Please select a user",
+        type: "required",
+      });
+      return;
+    }
+
     try {
       await createScancodeMutation.mutateAsync({
-        code: data.code,
+        scancode: data.code,
         userId: data.userOption?.value,
       });
       scaninMutation.mutate({
         eventId,
-        code: data.code,
+        scancode: data.code,
       });
 
       onClose();
     } catch (error) {
-      if (error instanceof ApiError) {
+      if (error instanceof TRPCClientError) {
         setError("code", {
-          message: error.body.message,
+          message: error.message,
         });
       } else {
         setError("code", {
@@ -153,6 +167,7 @@ export default function UnknownCodeModal(props: UnknownCodeModalProps) {
                 isOptionEqualToValue={(option, value) =>
                   option.value === value.value
                 }
+                {...getAutocompleteDisclosureProps()}
                 {...rest}
               />
             )}

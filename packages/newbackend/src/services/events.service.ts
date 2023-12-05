@@ -11,9 +11,11 @@ import randomStr from "../utils/randomStr";
 import { EditEventSchema } from "../schema/EditEventSchema";
 import { EditRSVPSelfSchema } from "../schema/EditRSVPSelfSchema";
 import { RSVPSchema } from "../schema/RSVPSchema";
-import { CheckinSchema } from "../schema/CheckinSchema";
 import { ScaninSchema } from "../schema/ScaninSchema";
 import { EditUserAttendanceSchema } from "../schema/EditUserAttendanceSchema";
+import { SelfCheckinSchema } from "../schema/SelfCheckinSchema";
+import { UserCheckinSchema } from "../schema";
+import { CreateBlankUserRsvpSchema } from "../schema/CreateBlankUserRsvpSchema";
 
 /**
  * Get upcoming events in the next 24 hours for the daily bot announcement
@@ -284,16 +286,13 @@ export async function editUserRsvpStatus(
 }
 
 /**
- * Check in a user
+ * Check in a user, mentor only
  * @param userId The id of the user to check in
  * @param params The checkin parameters
  * @returns The updated rsvp
  */
-export async function userCheckin(
-  userId: string,
-  params: z.infer<typeof CheckinSchema>
-) {
-  const { eventId, secret } = params;
+export async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
+  const { eventId, userId } = params;
   const dbEvent = await db.query.event.findFirst({
     where: eq(event.id, eventId),
   });
@@ -302,13 +301,6 @@ export async function userCheckin(
     throw new TRPCError({
       code: "NOT_FOUND",
       message: "Event not found",
-    });
-  }
-
-  if (dbEvent.secret !== secret) {
-    throw new TRPCError({
-      code: "UNAUTHORIZED",
-      message: "Invalid secret",
     });
   }
 
@@ -344,15 +336,12 @@ export async function userCheckin(
 }
 
 /**
- * Scan in a user using a scancode
+ * Scan in a user using a scancode, mentor only
  * @param userId The id of the user to check in
  * @param params The scanin parameters (code)
  * @returns The updated rsvp
  */
-export async function userScanin(
-  userId: string,
-  params: z.infer<typeof ScaninSchema>
-) {
+export async function userScanin(params: z.infer<typeof ScaninSchema>) {
   const { eventId, scancode: code } = params;
 
   // find scancode
@@ -378,6 +367,8 @@ export async function userScanin(
       message: "Event not found",
     });
   }
+
+  const { userId } = dbScancode;
 
   // find rsvp
   const [updatedRsvp] = await db
@@ -512,4 +503,87 @@ export async function editUserAttendance(
   // TODO: Schedule a job to check out the user after the delay
 
   return updatedRsvp;
+}
+
+export async function selfCheckin(
+  userId: string,
+  params: z.infer<typeof SelfCheckinSchema>
+) {
+  const { eventId, secret } = params;
+  const dbEvent = await db.query.event.findFirst({
+    where: eq(event.id, eventId),
+  });
+
+  if (!dbEvent) {
+    throw new TRPCError({
+      code: "NOT_FOUND",
+      message: "Event not found",
+    });
+  }
+
+  if (dbEvent.secret !== secret) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "Invalid secret",
+    });
+  }
+
+  const [updatedRsvp] = await db
+    .insert(rsvp)
+    .values({
+      userId,
+      eventId,
+      checkinTime: DateTime.local().toISO(),
+      updatedAt: DateTime.local().toISO(),
+      createdAt: DateTime.local().toISO(),
+    })
+    .onConflictDoUpdate({
+      set: {
+        userId,
+        eventId,
+        checkinTime: DateTime.local().toISO(),
+        updatedAt: DateTime.local().toISO(),
+      },
+      target: [rsvp.eventId, rsvp.userId],
+    });
+
+  if (!updatedRsvp) {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to check in",
+    });
+  }
+
+  return updatedRsvp;
+}
+
+export async function createBlankUserRsvp(
+  params: z.infer<typeof CreateBlankUserRsvpSchema>
+) {
+  const { userId, eventId } = params;
+  const [createdRsvp] = await db
+    .insert(rsvp)
+    .values({
+      userId,
+      eventId,
+      createdAt: DateTime.local().toISO(),
+      updatedAt: DateTime.local().toISO(),
+    })
+    .onConflictDoUpdate({
+      set: {
+        userId,
+        eventId,
+        updatedAt: DateTime.local().toISO(),
+      },
+      target: [rsvp.eventId, rsvp.userId],
+    });
+
+  if (!createdRsvp) {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to create RSVP",
+    });
+  }
+
+  return createdRsvp;
 }

@@ -6,12 +6,10 @@ import {
 import { z } from "zod";
 import ensureAuth from "../../auth/utils/ensureAuth";
 import queryClient from "../../../queryClient";
-import eventApi from "../../../api/query/event.api";
 import { Container, Paper, Stack, TextField, Typography } from "@mui/material";
 import useZodForm from "../../../hooks/useZodForm";
 import { LoadingButton } from "@mui/lab";
-import useCheckin from "../hooks/useCheckin";
-import { ApiError } from "../../../api/generated";
+import useSelfCheckin from "../hooks/useSelfCheckin";
 import { useAlert } from "react-alert";
 
 const EventParamsSchema = z.object({
@@ -23,7 +21,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   const { eventId } = EventParamsSchema.parse(params);
   const initialEventData = await queryClient.ensureQueryData(
-    eventApi.getEvent(eventId),
+    eventApi.getEvent(eventId)
   );
 
   return {
@@ -60,7 +58,7 @@ export function Component() {
     },
   });
 
-  const checkinMutation = useCheckin();
+  const checkinMutation = useSelfCheckin();
 
   const navigate = useNavigate();
   const alert = useAlert();

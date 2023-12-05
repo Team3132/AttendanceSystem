@@ -9,10 +9,10 @@ import { CreateEventSchema } from "../schema/CreateEventSchema";
 import { EditEventSchema } from "../schema/EditEventSchema";
 import { EditRSVPSelfSchema } from "../schema/EditRSVPSelfSchema";
 import { EditRSVPUserSchema } from "../schema/EditRSVPUserSchema";
-import { CheckinSchema } from "../schema/CheckinSchema";
 import { ScaninSchema } from "../schema/ScaninSchema";
 import { EditUserAttendanceSchema } from "../schema/EditUserAttendanceSchema";
 import {
+  createBlankUserRsvp,
   createEvent,
   deleteEvent,
   editUserAttendance,
@@ -22,6 +22,7 @@ import {
   getEventRsvps,
   getEventSecret,
   getEvents,
+  selfCheckin,
   updateEvent,
   userCheckin,
   userCheckout,
@@ -30,6 +31,8 @@ import {
 import { SecretOutputSchema } from "../schema/SecretOutputSchema";
 import { UserCheckinSchema } from "../schema/UserCheckinSchema";
 import { UserCheckoutSchema } from "../schema/UserCheckoutSchema";
+import { SelfCheckinSchema } from "../schema/SelfCheckinSchema";
+import { CreateBlankUserRsvpSchema } from "../schema/CreateBlankUserRsvpSchema";
 
 export const eventRouter = t.router({
   getEvents: sessionProcedure
@@ -75,13 +78,13 @@ export const eventRouter = t.router({
       editUserRsvpStatus(userId, data)
     ),
   selfCheckin: sessionProcedure
-    .input(CheckinSchema)
+    .input(SelfCheckinSchema)
     .output(RSVPSchema)
-    .mutation(({ ctx, input }) => userCheckin(ctx.user.id, input)),
-  selfScanin: sessionProcedure
+    .mutation(({ ctx, input }) => selfCheckin(ctx.user.id, input)),
+  scanin: mentorSessionProcedure
     .input(ScaninSchema)
     .output(RSVPSchema)
-    .mutation(({ ctx, input }) => userScanin(ctx.user.id, input)),
+    .mutation(({ input }) => userScanin(input)),
   selfCheckout: sessionProcedure
     .input(z.string().describe("The event ID"))
     .output(RSVPSchema)
@@ -89,7 +92,7 @@ export const eventRouter = t.router({
   userCheckin: mentorSessionProcedure
     .input(UserCheckinSchema)
     .output(RSVPSchema)
-    .mutation(({ input: { userId, ...input } }) => userCheckin(userId, input)),
+    .mutation(({ input }) => userCheckin(input)),
   userCheckout: mentorSessionProcedure
     .input(UserCheckoutSchema)
     .output(RSVPSchema)
@@ -100,4 +103,8 @@ export const eventRouter = t.router({
     .input(EditUserAttendanceSchema)
     .output(RSVPSchema)
     .mutation(({ input }) => editUserAttendance(input)),
+  createBlankUserRsvp: mentorSessionProcedure
+    .input(CreateBlankUserRsvpSchema)
+    .output(RSVPSchema)
+    .mutation(({ input }) => createBlankUserRsvp(input)),
 });

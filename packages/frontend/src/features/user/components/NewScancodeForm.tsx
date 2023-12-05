@@ -2,8 +2,9 @@ import { z } from "zod";
 import useZodForm from "../../../hooks/useZodForm";
 import { ListItem, TextField } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import useCreateScancode from "../hooks/useCreateScancode";
-import { ApiError } from "../../../api/generated";
+import useCreateUserScancode from "../hooks/useCreateUserScancode";
+import useCreateSelfScancode from "../hooks/useCreateSelfScancode";
+import { TRPCClientError } from "@trpc/client";
 
 const NewScancodeSchema = z.object({
   code: z
@@ -37,21 +38,26 @@ export default function NewScancodeListItem(props: NewScancodeListItemProps) {
     },
   });
 
-  const createScancodeMutation = useCreateScancode();
+  const createUserScancodeMutation = useCreateUserScancode();
+  const createSelfScancodeMutation = useCreateSelfScancode();
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await createScancodeMutation.mutateAsync({
-        code: data.code,
-        userId,
-      });
+      if (userId) {
+        await createUserScancodeMutation.mutateAsync({
+          userId,
+          scancode: data.code,
+        });
+      } else {
+        await createSelfScancodeMutation.mutateAsync(data.code);
+      }
       reset({
         code: "",
       });
     } catch (error) {
-      if (error instanceof ApiError) {
+      if (error instanceof TRPCClientError) {
         setError("code", {
-          message: error.body.message,
+          message: error.message,
         });
       }
     }

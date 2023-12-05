@@ -13,9 +13,11 @@ import { useDisclosure } from "../../../hooks/useDisclosure";
 import useCheckoutUser from "../hooks/useCheckoutUser";
 import useCheckinUser from "../hooks/useCheckinUser";
 import { useAlert } from "react-alert";
+import { z } from "zod";
+import { RSVPUserSchema } from "newbackend/schema";
 
 interface AdminRSVPListItemProps {
-  rsvp: RsvpUser;
+  rsvp: z.infer<typeof RSVPUserSchema>;
 }
 
 export default function AdminRSVPListItem({ rsvp }: AdminRSVPListItemProps) {
@@ -55,7 +57,7 @@ export default function AdminRSVPListItem({ rsvp }: AdminRSVPListItemProps) {
               <IconButton
                 onClick={handleCheckInOut}
                 disabled={
-                  checkinMutation.isPending || checkoutMutation.isPending
+                  checkinMutation.isLoading || checkoutMutation.isLoading
                 }
               >
                 <FaClock />

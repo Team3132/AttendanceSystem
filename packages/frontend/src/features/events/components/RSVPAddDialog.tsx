@@ -1,6 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
-import userApi from "../../../api/query/user.api";
 import { useMemo } from "react";
 import useZodForm, { ZodSubmitHandler } from "../../../hooks/useZodForm";
 import { LoadingButton } from "@mui/lab";
@@ -16,8 +14,9 @@ import {
   Button,
 } from "@mui/material";
 import { Controller } from "react-hook-form";
-import { ApiError } from "../../../api/generated";
 import useAddUserRsvp from "../hooks/useAddRsvp";
+import { trpc } from "../../../utils/trpc";
+import { TRPCClientError } from "@trpc/client";
 
 interface RSVPAddDialogProps {
   onOpen: () => void;
@@ -37,7 +36,7 @@ const AddUserRsvpSchema = z.object({
 
 export default function RSVPAddDialog(props: RSVPAddDialogProps) {
   const { onClose, open, eventId } = props;
-  const usersQuery = useQuery(userApi.getUsers);
+  const usersQuery = trpc.users.getUserList.useQuery();
 
   const userOption = useMemo(
     () =>
@@ -45,7 +44,7 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
         label: user.username,
         value: user.id,
       })) || [],
-    [usersQuery.data],
+    [usersQuery.data]
   );
 
   const {
@@ -81,9 +80,9 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
       reset();
       onClose();
     } catch (error) {
-      if (error instanceof ApiError) {
+      if (error instanceof TRPCClientError) {
         setError("userOption", {
-          message: error.body.message,
+          message: error.message,
         });
       } else {
         setError("userOption", {
