@@ -1,12 +1,14 @@
-import { useQuery } from "@tanstack/react-query";
-import outreachApi from "../../../api/query/outreach.api";
 import { Paper, Stack, Typography } from "@mui/material";
 import { createColumnHelper } from "@tanstack/react-table";
-import { LeaderboardDto } from "../../../api/generated";
-import ErrorCard from "../../../components/ErrorCard";
 import Datatable from "../../../components/DataTable";
+import { z } from "zod";
+import { LeaderBoardUser as LeaderboardUserSchema } from "newbackend/schema";
+import { trpc } from "@/utils/trpc";
+import { Duration } from "luxon";
 
-const columnHelper = createColumnHelper<LeaderboardDto>();
+type LeaderboardUser = z.infer<typeof LeaderboardUserSchema>;
+
+const columnHelper = createColumnHelper<LeaderboardUser>();
 
 const columns = [
   columnHelper.accessor("rank", {
@@ -16,26 +18,25 @@ const columns = [
   columnHelper.accessor("username", {
     header: "Username",
   }),
-  columnHelper.accessor("outreachHours", {
+  columnHelper.accessor("duration", {
     header: "Outreach Hours",
+    cell: (props) => {
+      return Duration.fromISO(props.getValue()).toHuman();
+    },
   }),
 ];
 export default function LeaderboardCard() {
-  const leaderboardQuery = useQuery(outreachApi.getLeaderboard);
+  const leaderboardQuery = trpc.outreach.leaderboard.useQuery();
 
   if (leaderboardQuery.data) {
     return (
       <Paper sx={{ p: 2, textAlign: "center" }}>
         <Stack gap={2}>
           <Typography variant="h4">Leaderboard</Typography>
-          <Datatable columns={columns} data={leaderboardQuery.data} />
+          <Datatable columns={columns ?? []} data={leaderboardQuery.data} />
         </Stack>
       </Paper>
     );
-  }
-
-  if (leaderboardQuery.isError) {
-    return <ErrorCard error={leaderboardQuery.error} />;
   }
 
   return (
