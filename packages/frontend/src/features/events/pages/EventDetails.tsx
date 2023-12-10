@@ -1,14 +1,14 @@
 import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
-import eventApi from "../../../api/query/event.api";
 import queryClient from "../../../queryClient";
 import ensureAuth from "../../auth/utils/ensureAuth";
-import { useQuery } from "@tanstack/react-query";
 import { Container, Grid, Paper, Stack, Typography } from "@mui/material";
 import { z } from "zod";
 import { DateTime } from "luxon";
 import RsvpList from "../components/RSVPList";
-import authApi from "../../../api/query/auth.api";
 import DeleteEventButton from "../components/DeleteEventButton";
+import { getQueryKey } from "@trpc/react-query";
+import { trpcProxyClient } from "@/trpcClient";
+import { trpc } from "@/utils/trpc";
 
 const EventParamsSchema = z.object({
   eventId: z.string(),
@@ -19,9 +19,10 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   const { eventId } = EventParamsSchema.parse(params);
 
-  const initialEventData = await queryClient.ensureQueryData(
-    eventApi.getEvent(eventId),
-  );
+  const initialEventData = await queryClient.ensureQueryData({
+    queryKey: getQueryKey(trpc.events.getEvent, eventId),
+    queryFn: () => trpcProxyClient.events.getEvent.query(eventId),
+  });
 
   return {
     initialAuthStatus,
@@ -34,13 +35,11 @@ export function Component() {
     ReturnType<typeof loader>
   >;
 
-  const eventQuery = useQuery({
-    ...eventApi.getEvent(initialEventData.id),
+  const eventQuery = trpc.events.getEvent.useQuery(initialEventData.id, {
     initialData: initialEventData,
   });
 
-  const authStatusQuery = useQuery({
-    ...authApi.getAuthStatus,
+  const authStatusQuery = trpc.auth.status.useQuery(undefined, {
     initialData: initialAuthStatus,
   });
 
@@ -69,7 +68,7 @@ export function Component() {
             <Typography variant="h5">Start</Typography>
             <Typography variant="body1">
               {DateTime.fromISO(eventQuery.data.startDate).toLocaleString(
-                DateTime.DATETIME_MED_WITH_WEEKDAY,
+                DateTime.DATETIME_MED_WITH_WEEKDAY
               )}
             </Typography>
           </Paper>
@@ -92,7 +91,7 @@ export function Component() {
             <Typography variant="h5">End</Typography>
             <Typography variant="body1">
               {DateTime.fromISO(eventQuery.data.endDate).toLocaleString(
-                DateTime.DATETIME_MED_WITH_WEEKDAY,
+                DateTime.DATETIME_MED_WITH_WEEKDAY
               )}
             </Typography>
           </Paper>

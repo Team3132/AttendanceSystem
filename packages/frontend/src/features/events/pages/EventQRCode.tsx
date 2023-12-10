@@ -1,14 +1,14 @@
 import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
-import eventApi from "../../../api/query/event.api";
 import queryClient from "../../../queryClient";
 import ensureAuth from "../../auth/utils/ensureAuth";
-import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
-import ErrorCard from "../../../components/ErrorCard";
 import { Box, Container, Paper, Stack, Typography } from "@mui/material";
 import QRCode from "react-qr-code";
 import { useMemo } from "react";
 import ScaninCard from "../components/ScaninCard";
+import { getQueryKey } from "@trpc/react-query";
+import { trpc } from "@/utils/trpc";
+import { trpcProxyClient } from "@/trpcClient";
 
 const EventUrlParamsSchema = z.object({
   eventId: z.string(),
@@ -19,9 +19,10 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   const { eventId } = EventUrlParamsSchema.parse(params);
 
-  const initialEventSecret = await queryClient.ensureQueryData(
-    eventApi.getEventSecret(eventId),
-  );
+  const initialEventSecret = await queryClient.ensureQueryData({
+    queryKey: getQueryKey(trpc.events.getEventSecret, eventId),
+    queryFn: () => trpcProxyClient.events.getEventSecret.query(eventId),
+  });
 
   return {
     initialAuthStatus,
@@ -33,17 +34,19 @@ export async function loader({ params }: LoaderFunctionArgs) {
 export function Component() {
   const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
 
-  const eventSecretQuery = useQuery({
-    ...eventApi.getEventSecret(loaderData.eventId),
-    initialData: loaderData.initialEventSecret,
-  });
+  const eventSecretQuery = trpc.events.getEventSecret.useQuery(
+    loaderData.eventId,
+    {
+      initialData: loaderData.initialEventSecret,
+    }
+  );
 
   const url = useMemo(
     () =>
       `${import.meta.env.VITE_BACKEND_URL}/event/${
         loaderData.eventId
       }/token/callback?code=${eventSecretQuery.data.secret}`,
-    [eventSecretQuery.data.secret, loaderData.eventId],
+    [eventSecretQuery.data.secret, loaderData.eventId]
   );
 
   if (eventSecretQuery.data) {
@@ -109,7 +112,20 @@ export function Component() {
     );
   }
 
-  if (eventSecretQuery.isError) {
-    return <ErrorCard error={eventSecretQuery.error} />;
-  }
+  return (
+    <Container
+      sx={{
+        my: 2,
+        overflow: "auto",
+      }}
+    >
+      <Stack gap={2}>
+        <Paper sx={{ p: 2 }}>
+          <Typography variant="h4" textAlign={"center"}>
+            Loading...
+          </Typography>
+        </Paper>
+      </Stack>
+    </Container>
+  );
 }
