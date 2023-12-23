@@ -25,6 +25,7 @@ export type BackendClient = { client: CreateTRPCClient<AppRouter> };
           'BACKEND_SECRET_TOKEN',
         );
 
+        /** The tRPC Client that connects to the backend */
         const client = createTRPCClient<AppRouter>({
           transformer: SuperJSON,
           links: [
@@ -44,7 +45,7 @@ export type BackendClient = { client: CreateTRPCClient<AppRouter> };
           ],
         });
         return {
-          client,
+          client, // In an object so that nest doesn't try to run onModuleInit on it
         };
       },
     },
