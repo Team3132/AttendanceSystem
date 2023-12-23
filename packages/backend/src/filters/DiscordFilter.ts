@@ -13,7 +13,6 @@ export class DiscordExceptionFilter implements ExceptionFilter {
 
     if (!Array.isArray(necordArguments)) throw exception;
 
-    console.log({ necordArguments });
     const [interaction] = necordArguments;
 
     if (!interaction) return;

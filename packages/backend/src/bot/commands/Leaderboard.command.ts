@@ -27,7 +27,6 @@ export class LeaderBoardCommand {
     guilds: guildId ? [guildId] : undefined,
   })
   public async onLeaderboard(@Context() [interaction]: SlashCommandContext) {
-    console.log(this.backendClient);
     const currentLeaderboard =
       await this.backendClient.client.bot.leaderboard.query();
 
