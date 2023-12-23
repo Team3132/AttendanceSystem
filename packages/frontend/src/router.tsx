@@ -47,6 +47,10 @@ const router = createBrowserRouter([
                     path: "check-in",
                     lazy: () => import("./features/events/pages/EventCheckin"),
                   },
+                  {
+                    path: "qr-code",
+                    lazy: () => import("./features/events/pages/EventQRCode"),
+                  },
                 ],
               },
             ],

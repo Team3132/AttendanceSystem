@@ -1,4 +1,4 @@
-import { httpBatchLink } from "@trpc/client";
+import { createWSClient, httpBatchLink, splitLink, wsLink } from "@trpc/client";
 import SuperJSON from "superjson";
 import { createTRPCQueryUtils, createTRPCReact } from "@trpc/react-query";
 import { AppRouter } from "newbackend";
@@ -6,18 +6,28 @@ import { QueryClient } from "@tanstack/react-query";
 
 export const trpc = createTRPCReact<AppRouter>();
 
+const wsClient = createWSClient({
+  url: `${import.meta.env["VITE_BACKEND_URL"]}/trpc`,
+});
+
 export const trpcClient = trpc.createClient({
   transformer: SuperJSON,
   links: [
-    httpBatchLink({
-      url: `${import.meta.env["VITE_BACKEND_URL"]}/trpc`,
-      fetch(url, options) {
-        return fetch(url, {
-          ...options,
-          credentials: "include",
-        });
-      },
-      // You can pass any HTTP headers you wish here
+    splitLink({
+      condition: (op) => op.type === "subscription",
+      true: wsLink({
+        client: wsClient,
+      }),
+      false: httpBatchLink({
+        url: `${import.meta.env["VITE_BACKEND_URL"]}/trpc`,
+        fetch(url, options) {
+          return fetch(url, {
+            ...options,
+            credentials: "include",
+          });
+        },
+        // You can pass any HTTP headers you wish here
+      }),
     }),
   ],
 });

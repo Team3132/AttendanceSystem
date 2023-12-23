@@ -1,9 +1,7 @@
 import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
 import ensureAuth from "../../auth/utils/ensureAuth";
 import { z } from "zod";
-import { Box, Container, Paper, Stack, Typography } from "@mui/material";
-import QRCode from "react-qr-code";
-import { useMemo } from "react";
+import { Container, Paper, Stack, Typography } from "@mui/material";
 import ScaninCard from "../components/ScaninCard";
 import { trpc } from "@/trpcClient";
 import { queryUtils } from "@/trpcClient";
@@ -37,14 +35,6 @@ export function Component() {
     }
   );
 
-  const url = useMemo(
-    () =>
-      `${import.meta.env["VITE_BACKEND_URL"]}/event/${
-        loaderData.eventId
-      }/token/callback?code=${eventSecretQuery.data.secret}`,
-    [eventSecretQuery.data.secret, loaderData.eventId]
-  );
-
   if (eventSecretQuery.data) {
     return (
       <Container
@@ -75,31 +65,6 @@ export function Component() {
               >
                 {eventSecretQuery.data.secret}
               </Typography>
-            </Stack>
-          </Paper>
-          <Paper
-            sx={{
-              p: 2,
-            }}
-          >
-            <Stack
-              gap={2}
-              sx={{
-                alignItems: "center",
-              }}
-            >
-              <Typography variant="h5" textAlign={"center"}>
-                Event QR
-              </Typography>
-              <Box
-                sx={{
-                  p: 2,
-                  bgcolor: "white",
-                  borderRadius: 4,
-                }}
-              >
-                <QRCode value={url} />
-              </Box>
             </Stack>
           </Paper>
           <ScaninCard eventId={loaderData.eventId} />

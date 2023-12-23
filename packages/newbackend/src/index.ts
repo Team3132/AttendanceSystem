@@ -15,6 +15,7 @@ import { user } from "./drizzle/schema";
 import { eq } from "drizzle-orm";
 import { Settings } from "luxon";
 import mainLogger from "./logger";
+import ws from "@fastify/websocket";
 
 Settings.defaultLocale = "en-au";
 Settings.defaultZone = "Australia/Sydney";
@@ -38,6 +39,15 @@ await server.register(fastifySecureSession, {
     secure: isProd,
     httpOnly: true,
   },
+});
+
+await server.register(ws);
+
+server.websocketServer.on("connection", (socket) => {
+  console.log(`➕➕ Connection (${server.websocketServer.clients.size})`);
+  socket.once("close", () => {
+    console.log(`➖➖ Connection (${server.websocketServer.clients.size})`);
+  });
 });
 
 await server.register(fastifyPassport.initialize());
@@ -71,6 +81,7 @@ await server.register(fastifyStatic, {
 
 await server.register(fastifyTRPCPlugin, {
   prefix: "/api/trpc",
+  useWSS: true,
   trpcOptions: { router: appRouter, createContext },
 });
 

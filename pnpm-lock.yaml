@@ -448,6 +448,9 @@ importers:
       '@fastify/static':
         specifier: ^6.12.0
         version: 6.12.0
+      '@fastify/websocket':
+        specifier: ^8.3.0
+        version: 8.3.0
       discord-api-types:
         specifier: ^0.37.20
         version: 0.37.62
@@ -2014,6 +2017,16 @@ packages:
       fastify-plugin: 4.5.1
       glob: 8.1.0
       p-limit: 3.1.0
+    dev: false
+
+  /@fastify/websocket@8.3.0:
+    resolution: {integrity: sha512-i9lVHk6nKKQUMETdX5IDVrSxODJxy2mYU7CJ9BLWVtUZVuvB2a69CTuFyoapNWzLDuv0Z0DpAa2QyaTGPCIHZA==}
+    dependencies:
+      fastify-plugin: 4.5.1
+      ws: 8.14.2
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
     dev: false
 
   /@floating-ui/core@1.5.0:
