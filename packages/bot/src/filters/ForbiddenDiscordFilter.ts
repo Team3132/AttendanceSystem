@@ -39,6 +39,16 @@ export class ForbiddenDiscordFilter implements ExceptionFilter {
           ephemeral: true,
         });
       }
+    } else if (interaction.type === InteractionType.MessageComponent) {
+      await interaction.reply({
+        embeds: [errorEmbed],
+        ephemeral: true,
+      });
+    } else if (interaction.type === InteractionType.ModalSubmit) {
+      await interaction.reply({
+        embeds: [errorEmbed],
+        ephemeral: true,
+      });
     }
   }
 }
