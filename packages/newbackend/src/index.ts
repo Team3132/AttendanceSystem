@@ -16,6 +16,7 @@ import { eq } from "drizzle-orm";
 import { Settings } from "luxon";
 import mainLogger from "./logger";
 import ws from "@fastify/websocket";
+import { registerCron } from "./registerCron";
 
 Settings.defaultLocale = "en-au";
 Settings.defaultZone = "Australia/Sydney";
@@ -126,6 +127,8 @@ server.listen(
     mainLogger.info(address);
   }
 );
+
+registerCron();
 
 export { type AppRouter };
 export * as Schema from "./schema";
