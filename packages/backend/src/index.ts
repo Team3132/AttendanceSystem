@@ -75,24 +75,11 @@ fastifyPassport.registerUserDeserializer(async (id: string) => {
   return dbUser;
 });
 
-await server.register(fastifyStatic, {
-  root: path.join(root, "public"),
-  wildcard: false,
-});
-
 await server.register(fastifyTRPCPlugin, {
   prefix: "/api/trpc",
   useWSS: true,
   trpcOptions: { router: appRouter, createContext },
 });
-
-// await server.all("/panel", (_, res) => {
-//   res
-//     .header("Content-Type", "text/html; charset=utf-8")
-//     .send(
-//       renderTrpcPanel(appRouter, { url: "/api/trpc", transformer: "superjson" })
-//     );
-// });
 
 await server.get("/api/auth/discord", {
   preValidation: fastifyPassport.authenticate("discord", { authInfo: false }),
@@ -110,6 +97,17 @@ await server.get("/api/auth/discord/callback", {
   handler: async (_req, res) => {
     return res.redirect(env.FRONTEND_URL);
   },
+});
+
+console.log(path.join(root, "frontend"));
+
+await server.register(fastifyStatic, {
+  root: path.join(root, "frontend"),
+  wildcard: true,
+});
+
+await server.setNotFoundHandler((_req, res) => {
+  res.sendFile("index.html");
 });
 
 server.listen(
