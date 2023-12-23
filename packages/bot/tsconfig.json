@@ -27,7 +27,6 @@
       "@/*": ["src/*"],
       "backend": ["../backend/src"],
       "backend/*": ["../backend/src/*"]
-    },
-    "types": ["@types/express-session"]
+    }
   }
 }

@@ -27,6 +27,7 @@ export class RequestRsvpCommand {
     description: 'Send a message for people to RSVP to a specific event.',
     defaultMemberPermissions: PermissionFlagsBits.ManageRoles,
     guilds: guildId ? [guildId] : undefined,
+    dmPermission: false,
   })
   public async onRequestRSVP(
     @Context() [interaction]: SlashCommandContext,

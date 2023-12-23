@@ -27,6 +27,7 @@ export class RsvpsCommand {
     name: 'rsvps',
     description: 'Get the rsvps for a meeting.',
     guilds: guildId ? [guildId] : undefined,
+    dmPermission: false,
   })
   public async onRSVPs(
     @Context() [interaction]: SlashCommandContext,

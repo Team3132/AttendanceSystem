@@ -25,6 +25,7 @@ export class LeaderBoardCommand {
     name: 'leaderboard',
     description: 'Get the leaderboard for outreach hours',
     guilds: guildId ? [guildId] : undefined,
+    dmPermission: false,
   })
   public async onLeaderboard(@Context() [interaction]: SlashCommandContext) {
     const currentLeaderboard =
