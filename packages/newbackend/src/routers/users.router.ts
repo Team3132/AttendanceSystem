@@ -9,6 +9,7 @@ import {
   getUser,
   getUserList,
   getUserScancodes,
+  removeScancode,
 } from "../services/user.service";
 import { RSVPEventSchema } from "../schema/RSVPEventSchema";
 import { AddUserScancodeParams } from "../schema";
@@ -50,4 +51,12 @@ export const userRouter = t.router({
     .input(AddUserScancodeParams)
     .output(ScancodeSchema)
     .mutation(({ input }) => createUserScancode(input.userId, input.scancode)),
+  removeUserScancode: mentorSessionProcedure
+    .input(AddUserScancodeParams)
+    .output(ScancodeSchema)
+    .mutation(({ input }) => removeScancode(input.userId, input.scancode)),
+  removeSelfScancode: sessionProcedure
+    .input(z.string())
+    .output(ScancodeSchema)
+    .mutation(({ input, ctx }) => removeScancode(ctx.user.id, input)),
 });

@@ -1,4 +1,3 @@
-import { z } from "zod";
 import { event } from "../drizzle/schema";
 import { createSelectSchema } from "drizzle-zod";
 

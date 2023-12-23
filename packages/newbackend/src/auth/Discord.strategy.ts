@@ -12,7 +12,7 @@ const discordStrategy = new Strategy(
     callbackURL: env.DISCORD_CALLBACK_URL,
     scope: ["identify", "guilds", "guilds.members.read"],
   },
-  async (accessToken, refreshToken, profile, cb) => {
+  async (accessToken, _refreshToken, profile, cb) => {
     if (!profile.guilds) {
       return cb(new Error("No guilds found"), undefined);
     }
@@ -34,7 +34,7 @@ const discordStrategy = new Strategy(
     const api = new API(rest);
 
     // Get the guild member from the discord api
-    const guildMember = await api.users.getGuildMember(env.GUILD_ID)
+    const guildMember = await api.users.getGuildMember(env.GUILD_ID);
 
     // Read the user's nickname from the guild member or fallback to their username
     const nick = guildMember.nick || profile.username;

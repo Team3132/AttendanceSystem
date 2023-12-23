@@ -57,7 +57,7 @@ const router = createBrowserRouter([
           },
           {
             path: "/profile",
-            lazy: () => import("./features/user/pages/ProfilePage"),
+            lazy: () => import("./features/user/pages/AdminProfilePage"),
             children: [
               {
                 index: true,
@@ -71,7 +71,7 @@ const router = createBrowserRouter([
           },
           {
             path: "/user/:userId",
-            lazy: () => import("./features/user/pages/ProfilePage"),
+            lazy: () => import("./features/user/pages/AdminProfilePage"),
             children: [
               {
                 index: true,

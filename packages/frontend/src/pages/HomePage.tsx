@@ -1,24 +1,22 @@
 import { Container, Paper, Stack, Typography } from "@mui/material";
 import ensureAuth from "../features/auth/utils/ensureAuth";
 import DefaultAppBar from "../components/DefaultAppBar";
-import queryClient from "../queryClient";
-import userApi from "../api/query/user.api";
 import ActiveEventsList from "../components/ActiveEventsList";
 import { useLoaderData } from "react-router-dom";
+import queryUtils from "@/utils/queryUtils";
 
 export async function loader() {
   await ensureAuth();
 
-  const initialActiveEvents = await queryClient.ensureQueryData(
-    userApi.getPendingRsvps(),
-  );
+  const initialActiveEvents =
+    await queryUtils.users.getSelfPendingRsvps.ensureData();
 
   return {
     initialActiveEvents,
   };
 }
 
-const appVersion = import.meta.env.VITE_APP_VERSION as string | undefined;
+const appVersion = import.meta.env["VITE_APP_VERSION"] as string | undefined;
 
 export function Component() {
   const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;

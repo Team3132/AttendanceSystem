@@ -45,11 +45,15 @@ await fastifyPassport.use("discord", discordStrategy);
 
 type User = typeof user.$inferSelect;
 
+declare module "fastify" {
+  interface PassportUser extends User {}
+}
+
 // register a serializer that stores the user object's id in the session ...
-fastifyPassport.registerUserSerializer(async (user: User, request) => user.id);
+fastifyPassport.registerUserSerializer(async (user: User) => user.id);
 
 // ... and then a deserializer that will fetch that user from the database when a request with an id in the session arrives
-fastifyPassport.registerUserDeserializer(async (id: string, request) => {
+fastifyPassport.registerUserDeserializer(async (id: string) => {
   const [dbUser] = await db.select().from(user).where(eq(user.id, id)).limit(1);
 
   if (!dbUser) {
@@ -79,7 +83,7 @@ await server.register(fastifyTRPCPlugin, {
 
 await server.get("/api/auth/discord", {
   preValidation: fastifyPassport.authenticate("discord", { authInfo: false }),
-  handler: async (req, res) => {
+  handler: async (_req, res) => {
     return res.redirect("/");
   },
 });
@@ -90,7 +94,7 @@ await server.get("/api/auth/discord/callback", {
     failureRedirect: "/login",
     successRedirect: "/",
   }),
-  handler: async (req, res) => {
+  handler: async (_req, res) => {
     return res.redirect("/");
   },
 });

@@ -1,15 +1,24 @@
-import { useLoaderData } from "react-router-dom";
+import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
+import { z } from "zod";
 import ensureAuth from "../../auth/utils/ensureAuth";
 import { Container, Stack, Paper, Typography, List } from "@mui/material";
-import PendingEventListItem from "../../../components/PendingEventListItem";
-import queryUtils from "@/utils/queryUtils";
+import PendingEventListItem from "../../../components/AdminPendingEventListItem";
 import { trpc } from "@/utils/trpc";
+import queryUtils from "@/utils/queryUtils";
 
-export async function loader() {
-  const initialAuthStatus = await ensureAuth();
+const PendingEventsPageParamsSchema = z.object({
+  userId: z.string(),
+});
 
-  const pendingEvents = await queryUtils.users.getSelfPendingRsvps.ensureData();
+export async function loader({ params }: LoaderFunctionArgs) {
+  const initialAuthStatus = await ensureAuth(true);
+
+  const validatedParams = PendingEventsPageParamsSchema.parse(params);
+  const userId = validatedParams.userId;
+  const pendingEvents =
+    await queryUtils.users.getUserPendingRsvps.ensureData(userId);
   return {
+    userId: validatedParams.userId,
     pendingEvents,
     initialAuthStatus,
   };
@@ -18,8 +27,8 @@ export async function loader() {
 export function Component() {
   const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
 
-  const pendingEventsQuery = trpc.users.getSelfPendingRsvps.useQuery(
-    undefined,
+  const pendingEventsQuery = trpc.users.getUserPendingRsvps.useQuery(
+    loaderData.userId,
     {
       initialData: loaderData.pendingEvents,
     }
@@ -40,7 +49,7 @@ export function Component() {
             </Typography>
             <List>
               {pendingEventsQuery.data.map((rsvp) => (
-                <PendingEventListItem rsvp={rsvp} />
+                <PendingEventListItem rsvp={rsvp} userId={loaderData.userId} />
               ))}
             </List>
           </Stack>

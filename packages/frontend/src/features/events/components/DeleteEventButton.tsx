@@ -15,7 +15,7 @@ export default function DeleteEventButton(props: DeleteEventButtonProps) {
   return (
     <LoadingButton
       onClick={handleDelete}
-      loading={deleteEventMutation.isLoading}
+      loading={deleteEventMutation.isPending}
     >
       Delete Event
     </LoadingButton>

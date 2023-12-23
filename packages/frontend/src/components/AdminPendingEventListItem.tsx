@@ -1,21 +1,22 @@
 import { ListItem, ListItemText } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import useSelfCheckout from "../hooks/useSelfCheckout";
+import useUserCheckout from "../hooks/useUserCheckout";
 import { DateTime } from "luxon";
 import { z } from "zod";
 import { RSVPEventSchema } from "newbackend/schema";
 
 interface PendingEventListItemProps {
   rsvp: z.infer<typeof RSVPEventSchema>;
+  userId: string;
 }
 
 export default function PendingEventListItem(props: PendingEventListItemProps) {
-  const { rsvp } = props;
+  const { rsvp, userId } = props;
 
-  const selfCheckoutMutation = useSelfCheckout();
+  const userCheckoutMutation = useUserCheckout();
 
   const handleClick = () => {
-    selfCheckoutMutation.mutate(rsvp.id);
+    userCheckoutMutation.mutate({ eventId: rsvp.event.id, userId });
   };
 
   return (
@@ -33,7 +34,7 @@ export default function PendingEventListItem(props: PendingEventListItemProps) {
       <LoadingButton
         variant="contained"
         color="primary"
-        loading={selfCheckoutMutation.isPending}
+        loading={userCheckoutMutation.isPending}
         onClick={handleClick}
       >
         Checkout

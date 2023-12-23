@@ -35,7 +35,7 @@ export default function MyRsvpStatus(props: MyRsvpStatusProps) {
   if (myRsvpStatusQuery.data) {
     return (
       <FormControl
-        disabled={updateRsvpMutation.isLoading}
+        disabled={updateRsvpMutation.isPending}
         error={updateRsvpMutation.isError}
       >
         <InputLabel id="select-rsvp-status-label">My Status</InputLabel>

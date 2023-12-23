@@ -57,7 +57,7 @@ export default function AdminRSVPListItem({ rsvp }: AdminRSVPListItemProps) {
               <IconButton
                 onClick={handleCheckInOut}
                 disabled={
-                  checkinMutation.isLoading || checkoutMutation.isLoading
+                  checkinMutation.isPending || checkoutMutation.isPending
                 }
               >
                 <FaClock />

@@ -10,7 +10,6 @@ import { CreateEventSchema } from "../schema/CreateEventSchema";
 import randomStr from "../utils/randomStr";
 import { EditEventSchema } from "../schema/EditEventSchema";
 import { EditRSVPSelfSchema } from "../schema/EditRSVPSelfSchema";
-import { RSVPSchema } from "../schema/RSVPSchema";
 import { ScaninSchema } from "../schema/ScaninSchema";
 import { EditUserAttendanceSchema } from "../schema/EditUserAttendanceSchema";
 import { SelfCheckinSchema } from "../schema/SelfCheckinSchema";

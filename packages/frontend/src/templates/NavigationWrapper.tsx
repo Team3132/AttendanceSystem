@@ -1,6 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
 import ensureAuth from "../features/auth/utils/ensureAuth";
-import authApi from "../api/query/auth.api";
 import { Outlet, useLoaderData } from "react-router-dom";
 import { BottomNavigation, BottomNavigationAction, Box } from "@mui/material";
 import useRouteMatch from "../utils/useRouteMatch";
@@ -12,6 +10,7 @@ import {
   FaRegCalendar,
 } from "react-icons/fa6";
 import { useMemo } from "react";
+import { trpc } from "@/utils/trpc";
 
 export async function loader() {
   const initialAuthStatus = await ensureAuth();
@@ -26,8 +25,7 @@ export function Component() {
     ReturnType<typeof loader>
   >;
 
-  const authStatusQuery = useQuery({
-    ...authApi.getAuthStatus,
+  const authStatusQuery = trpc.auth.status.useQuery(undefined, {
     initialData: initialAuthStatus,
   });
 
@@ -36,7 +34,7 @@ export function Component() {
       !authStatusQuery.data.isAdmin
         ? ["/", "/outreach", "/events"]
         : ["/", "/outreach", "/events", "/admin"],
-    [authStatusQuery.data.isAdmin],
+    [authStatusQuery.data.isAdmin]
   );
 
   const routeMatch = useRouteMatch(routes);

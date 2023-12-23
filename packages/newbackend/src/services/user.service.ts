@@ -1,7 +1,7 @@
 import { and, eq, isNotNull, isNull } from "drizzle-orm";
 import db from "../drizzle/db";
 import { TRPCError } from "@trpc/server";
-import { scancode, user } from "../drizzle/schema";
+import { scancode } from "../drizzle/schema";
 
 /**
  * Gets a user from the database
@@ -100,4 +100,32 @@ export async function createUserScancode(userId: string, scancodeCode: string) {
   }
 
   return dbScancode;
+}
+
+export async function removeScancode(userId: string, code: string) {
+  const [dbScancode] = await db
+    .delete(scancode)
+    .where(and(eq(scancode.userId, userId), eq(scancode.code, code)))
+    .returning();
+
+  if (!dbScancode) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "Scancode does not exist",
+    });
+  }
+
+  const [deletedScancode] = await db
+    .delete(scancode)
+    .where(and(eq(scancode.userId, userId), eq(scancode.code, code)))
+    .returning();
+
+  if (!deletedScancode) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "Scancode does not exist",
+    });
+  }
+
+  return deletedScancode;
 }

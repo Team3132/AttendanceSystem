@@ -1,18 +1,7 @@
-import {
-  SQL,
-  and,
-  arrayContains,
-  arrayOverlaps,
-  eq,
-  gte,
-  isNotNull,
-  lte,
-  not,
-  sql,
-} from "drizzle-orm";
+import { and, eq, gte, isNotNull, sql } from "drizzle-orm";
 import db from "../drizzle/db";
 import { event, rsvp, user } from "../drizzle/schema";
-import { DateTime, Duration } from "luxon";
+import { DateTime } from "luxon";
 
 /**
  * Get the sum of the difference between the start and end dates of all
@@ -22,13 +11,13 @@ import { DateTime, Duration } from "luxon";
  * and every event before the last 25th of the last april, all in sql
  */
 export function getOutreachTime() {
-  const lastApril25 = getLastApril25()
+  const lastApril25 = getLastApril25();
 
   if (!lastApril25) {
     throw new Error("Could not find a valid date for last April 25th");
   }
 
-  const aprilIsoDate = lastApril25.toISODate()
+  const aprilIsoDate = lastApril25.toISODate();
 
   if (!aprilIsoDate) {
     throw new Error("Could not convert last April 25th to ISO date");
@@ -64,25 +53,23 @@ export function getOutreachTime() {
   });
 }
 
-
 function getLastApril25() {
-    const today = DateTime.local();
-    const thisYear = today.year;
-    const lastYear = thisYear - 1;
-  
-    // Loop from the current year to the previous year
-    for (let year = thisYear; year >= lastYear; year--) {
-      // Create a DateTime object for April 25th of the current year in the loop
-      const dateToCheck = DateTime.fromObject({ year, month: 4, day: 25 });
-  
-      // If the date is in the future, skip to the next year
-      if (dateToCheck > today) {
-        continue;
-      }
-  
-      return dateToCheck;
+  const today = DateTime.local();
+  const thisYear = today.year;
+  const lastYear = thisYear - 1;
+
+  // Loop from the current year to the previous year
+  for (let year = thisYear; year >= lastYear; year--) {
+    // Create a DateTime object for April 25th of the current year in the loop
+    const dateToCheck = DateTime.fromObject({ year, month: 4, day: 25 });
+
+    // If the date is in the future, skip to the next year
+    if (dateToCheck > today) {
+      continue;
     }
-  
-    return null; // Return null if no valid date is found in the given range
+
+    return dateToCheck;
   }
-  
+
+  return null; // Return null if no valid date is found in the given range
+}
