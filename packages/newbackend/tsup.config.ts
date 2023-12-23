@@ -1,7 +1,7 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig(({ watch }) => ({
-  entry: ["src/main.ts", "src/drizzle/migrations", "src/schema/index.ts"],
+  entry: ["src/index.ts", "src/drizzle/migrations", "src/schema/index.ts"],
   splitting: true,
   format: ["esm"],
   dts: true,
@@ -10,7 +10,7 @@ export default defineConfig(({ watch }) => ({
   sourcemap: true,
   // target: 'esnext',
   onSuccess: watch
-    ? "node --enable-source-maps dist/main.js --inspect"
+    ? "node --enable-source-maps dist/index.js --inspect"
     : undefined,
   loader: {
     ".sql": "copy",

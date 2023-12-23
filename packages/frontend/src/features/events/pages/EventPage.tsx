@@ -4,13 +4,11 @@ import { useMemo } from "react";
 import useRouteMatch from "../../../utils/useRouteMatch";
 import { Tab, Tabs } from "@mui/material";
 import DefaultAppBar from "../../../components/DefaultAppBar";
-import queryClient from "../../../queryClient";
 import { z } from "zod";
 import { DateTime } from "luxon";
 import LinkBehavior from "../../../utils/LinkBehavior";
 import { trpc } from "@/utils/trpc";
-import { getQueryKey } from "@trpc/react-query";
-import { trpcProxyClient } from "@/trpcClient";
+import queryUtils from "@/utils/queryUtils";
 
 const EventParamsSchema = z.object({
   eventId: z.string(),
@@ -21,10 +19,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   const initialAuthStatus = await ensureAuth();
 
-  const initialEventData = await queryClient.ensureQueryData({
-    queryKey: getQueryKey(trpc.events.getEvent, eventId),
-    queryFn: () => trpcProxyClient.events.getEvent.query(eventId),
-  });
+  const initialEventData = await queryUtils.events.getEvent.ensureData(eventId);
 
   return {
     initialAuthStatus,

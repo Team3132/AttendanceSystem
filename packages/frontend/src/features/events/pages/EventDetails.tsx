@@ -1,14 +1,12 @@
 import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
-import queryClient from "../../../queryClient";
 import ensureAuth from "../../auth/utils/ensureAuth";
 import { Container, Grid, Paper, Stack, Typography } from "@mui/material";
 import { z } from "zod";
 import { DateTime } from "luxon";
 import RsvpList from "../components/RSVPList";
 import DeleteEventButton from "../components/DeleteEventButton";
-import { getQueryKey } from "@trpc/react-query";
-import { trpcProxyClient } from "@/trpcClient";
 import { trpc } from "@/utils/trpc";
+import queryUtils from "@/utils/queryUtils";
 
 const EventParamsSchema = z.object({
   eventId: z.string(),
@@ -19,10 +17,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   const { eventId } = EventParamsSchema.parse(params);
 
-  const initialEventData = await queryClient.ensureQueryData({
-    queryKey: getQueryKey(trpc.events.getEvent, eventId),
-    queryFn: () => trpcProxyClient.events.getEvent.query(eventId),
-  });
+  const initialEventData = await queryUtils.events.getEvent.ensureData(eventId);
 
   return {
     initialAuthStatus,

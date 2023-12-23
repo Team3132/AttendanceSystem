@@ -1,14 +1,12 @@
 import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
-import queryClient from "../../../queryClient";
 import ensureAuth from "../../auth/utils/ensureAuth";
 import { z } from "zod";
 import { Box, Container, Paper, Stack, Typography } from "@mui/material";
 import QRCode from "react-qr-code";
 import { useMemo } from "react";
 import ScaninCard from "../components/ScaninCard";
-import { getQueryKey } from "@trpc/react-query";
 import { trpc } from "@/utils/trpc";
-import { trpcProxyClient } from "@/trpcClient";
+import queryUtils from "@/utils/queryUtils";
 
 const EventUrlParamsSchema = z.object({
   eventId: z.string(),
@@ -19,10 +17,8 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   const { eventId } = EventUrlParamsSchema.parse(params);
 
-  const initialEventSecret = await queryClient.ensureQueryData({
-    queryKey: getQueryKey(trpc.events.getEventSecret, eventId),
-    queryFn: () => trpcProxyClient.events.getEventSecret.query(eventId),
-  });
+  const initialEventSecret =
+    await queryUtils.events.getEventSecret.ensureData(eventId);
 
   return {
     initialAuthStatus,
@@ -43,7 +39,7 @@ export function Component() {
 
   const url = useMemo(
     () =>
-      `${import.meta.env.VITE_BACKEND_URL}/event/${
+      `${import.meta.env["VITE_BACKEND_URL"]}/event/${
         loaderData.eventId
       }/token/callback?code=${eventSecretQuery.data.secret}`,
     [eventSecretQuery.data.secret, loaderData.eventId]

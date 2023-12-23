@@ -1,13 +1,13 @@
 {
-    "references": [
-        {
-            "path": "./packages/backend/tsconfig.json",
-        },
-        {
-            "path": "./packages/frontend/tsconfig.json"
-        },
-        {
-            "path": "./packages/mui/tsconfig.json"
-        }
-    ]
+  "references": [
+    {
+      "path": "./packages/backend/tsconfig.json"
+    },
+    {
+      "path": "./packages/newbackend/tsconfig.json"
+    },
+    {
+      "path": "./packages/frontend/tsconfig.json"
+    }
+  ]
 }

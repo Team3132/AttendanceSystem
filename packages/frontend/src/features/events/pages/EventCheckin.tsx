@@ -5,17 +5,15 @@ import {
 } from "react-router-dom";
 import { z } from "zod";
 import ensureAuth from "../../auth/utils/ensureAuth";
-import queryClient from "../../../queryClient";
 import { Container, Paper, Stack, Typography } from "@mui/material";
 import useZodForm from "../../../hooks/useZodForm";
 import { LoadingButton } from "@mui/lab";
 import useSelfCheckin from "../hooks/useSelfCheckin";
 import { useAlert } from "react-alert";
-import { getQueryKey } from "@trpc/react-query";
-import { isTRPCClientError, trpc } from "@/utils/trpc";
-import { trpcProxyClient } from "@/trpcClient";
+import { isTRPCClientError } from "@/utils/trpc";
 import { SelfCheckinSchema } from "newbackend/schema";
 import ControlledTextField from "@/components/ControlledTextField";
+import queryUtils from "@/utils/queryUtils";
 
 const EventParamsSchema = z.object({
   eventId: z.string(),
@@ -26,10 +24,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   const { eventId } = EventParamsSchema.parse(params);
 
-  const initialEventData = await queryClient.ensureQueryData({
-    queryKey: getQueryKey(trpc.events.getEvent, eventId),
-    queryFn: () => trpcProxyClient.events.getEvent.query(eventId),
-  });
+  const initialEventData = await queryUtils.events.getEvent.ensureData(eventId);
 
   return {
     initialAuthStatus,
