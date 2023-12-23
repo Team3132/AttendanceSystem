@@ -44,7 +44,7 @@ const EnvSchema = z.object({
   /**
    * API Token
    */
-  API_TOKEN: z.string().optional(),
+  BACKEND_TRPC_URL: z.string().optional(),
   /**
    * Roles
    */

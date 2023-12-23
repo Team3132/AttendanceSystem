@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
+    "target": "ES2023",
     "useDefineForClassFields": true,
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "experimentalDecorators": true,
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
 
@@ -24,11 +25,10 @@
     /* Paths */
     "baseUrl": ".",
     "paths": {
+      "newbackend": ["../newbackend/src"],
       "@/*": ["src/*"],
-      "@": ["src"],
-      "newbackend": ["../newbackend/src"]
+      "@": ["src"]
     }
   },
-  "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

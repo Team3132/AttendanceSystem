@@ -1,58 +1,32 @@
 {
   "compilerOptions": {
-    "composite": true,
-    "module": "commonjs",
-    "removeComments": true,
+    "target": "ESNext",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "ESNext",
-    "sourceMap": true,
-    "baseUrl": "./src",
-    "skipLibCheck": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": false,
     "useDefineForClassFields": true,
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "*"
-      ],
-      "@auth/*": [
-        "auth/*"
-      ],
-      "@authenticator/*": [
-        "authenticator/*"
-      ],
-      "@bot/*": [
-        "bot/*"
-      ],
-      "@calendar/*": [
-        "calendar/*"
-      ],
-      "@discord/*": [
-        "discord/*"
-      ],
-      "@event/*": [
-        "event/*"
-      ],
-      "@rsvp/*": [
-        "rsvp/*"
-      ],
-      "@scancode/*": [
-        "scancode/*"
-      ],
-      "@user/*": [
-        "user/*"
-      ]
+      "@/*": ["src/*"],
+      "newbackend": ["../newbackend/src"],
+      "newbackend/*": ["../newbackend/src/*"]
     },
-    "types": [
-      "@types/express-session"
-    ]
-  },
-  "exclude": [
-    "**/node_modules"
-  ]
+    "types": ["@types/express-session"]
+  }
 }

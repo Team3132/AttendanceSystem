@@ -42,7 +42,12 @@ export async function getNextEvents() {
     },
   });
 
-  return nextEvents;
+  const nextEventsWithoutSecret = nextEvents.map((event) => {
+    const { secret, ...rest } = event;
+    return rest;
+  });
+
+  return nextEventsWithoutSecret;
 }
 
 const EventsArraySchema = z.array(EventSchema);
@@ -429,6 +434,13 @@ export async function userCheckout(userId: string, eventId: string) {
     throw new TRPCError({
       code: "BAD_REQUEST",
       message: "User is not checked in",
+    });
+  }
+
+  if (existingRsvp.checkoutTime) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "User is already checked out",
     });
   }
 

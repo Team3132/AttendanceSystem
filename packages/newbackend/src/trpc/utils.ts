@@ -30,7 +30,7 @@ const enforceSession = t.middleware(({ ctx, next }) => {
 
 /**
  * Passport Authenticated procedure
- * 
+ *
  * This is the base piece you use to build new queries and mutations on your tRPC API. It guarantees
  * that a user querying is authorized, and you can access user session data.
  */
@@ -67,7 +67,7 @@ const enforceApiToken = t.middleware(({ ctx, next }) => {
     throw new TRPCError({ code: "UNAUTHORIZED", message: "API Token not set" });
   }
 
-  const envApiToken = env.API_TOKEN;
+  const envApiToken = env.BACKEND_TRPC_URL;
 
   if (!envApiToken) {
     throw new TRPCError({

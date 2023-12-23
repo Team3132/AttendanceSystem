@@ -77,6 +77,9 @@ importers:
       '@sentry/tracing':
         specifier: ^7.64.0
         version: 7.80.1
+      '@trpc/client':
+        specifier: 11.0.0-alpha-next-2023-12-22-15-40-21.129
+        version: 11.0.0-alpha-next-2023-12-22-15-40-21.129(@trpc/server@11.0.0-alpha-next-2023-12-22-15-40-21.129)
       axios:
         specifier: ^1.4.0
         version: 1.6.2
@@ -137,6 +140,9 @@ importers:
       necord:
         specifier: ^6.0.0
         version: 6.4.2(@nestjs/common@10.2.8)(@nestjs/core@10.2.8)(discord.js@14.14.1)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      newbackend:
+        specifier: workspace:*
+        version: link:../newbackend
       passport:
         specifier: ^0.7.0
         version: 0.7.0
@@ -164,6 +170,9 @@ importers:
       rxjs:
         specifier: ^7.6.0
         version: 7.8.1
+      superjson:
+        specifier: ^2.2.1
+        version: 2.2.1
       swagger-ui-express:
         specifier: ^5.0.0
         version: 5.0.0(express@4.18.2)
@@ -4199,7 +4208,6 @@ packages:
       '@trpc/server': 11.0.0-alpha-next-2023-12-22-15-40-21.129+c7b0eb86d
     dependencies:
       '@trpc/server': 11.0.0-alpha-next-2023-12-22-15-40-21.129
-    dev: true
 
   /@trpc/next@11.0.0-alpha-next-2023-12-22-15-40-21.129(@tanstack/react-query@5.14.2)(@trpc/client@11.0.0-alpha-next-2023-12-22-15-40-21.129)(@trpc/react-query@11.0.0-alpha-next-2023-12-22-15-40-21.129)(@trpc/server@11.0.0-alpha-next-2023-12-22-15-40-21.129)(next@14.0.4)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-slIGX27CZcwcOk7oFbQp6nX0VZAdWPKHy8AtmSK4jlGhUisgSOxj5nTcTxWl++XjyY3Z1hP63E/MGkDsn9gEIA==}
@@ -4239,7 +4247,6 @@ packages:
 
   /@trpc/server@11.0.0-alpha-next-2023-12-22-15-40-21.129:
     resolution: {integrity: sha512-4xN+/NiV7Xkh9r8hjxGkAWfZ700m+qrL7H/6Rf4jLzknLl+oGTjIL4bXRoWlPNNT1NRaGNEs38InVzyMBktzEA==}
-    dev: true
 
   /@tsconfig/node10@1.0.9:
     resolution: {integrity: sha512-jNsYVVxU8v5g43Erja32laIDHXeoNvFEpX33OK4d6hljo3jDhCBDhx5dhCCTMWUojscpAagGiRkBKxpdl9fxqA==}

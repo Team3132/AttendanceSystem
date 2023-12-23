@@ -35,6 +35,7 @@
     "@nestjs/websockets": "^10.0.0",
     "@sentry/node": "^7.64.0",
     "@sentry/tracing": "^7.64.0",
+    "@trpc/client": "11.0.0-alpha-next-2023-12-22-15-40-21.129",
     "axios": "^1.4.0",
     "bull": "^4.10.4",
     "cache-manager": "^5.1.4",
@@ -55,6 +56,7 @@
     "ioredis": "^5.1.0",
     "luxon": "^3.0.1",
     "necord": "^6.0.0",
+    "newbackend": "workspace:*",
     "passport": "^0.7.0",
     "passport-discord": "^0.1.4",
     "pg": "^8.11.1",
@@ -64,6 +66,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^5.0.1",
     "rxjs": "^7.6.0",
+    "superjson": "^2.2.1",
     "swagger-ui-express": "^5.0.0",
     "uuid": "^9.0.0",
     "zod": "^3.20.6"
@@ -114,7 +117,6 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
