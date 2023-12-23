@@ -7,7 +7,7 @@ import { ROLES } from '@/constants';
 import { DelayModal } from '../modals/Delay.modal';
 import { BACKEND_TOKEN, type BackendClient } from '@/backend/backend.module';
 import { z } from 'zod';
-import { RSVPStatusSchema } from 'newbackend/schema';
+import { RSVPStatusSchema } from 'backend/schema';
 
 @Injectable()
 export class RsvpsButton {

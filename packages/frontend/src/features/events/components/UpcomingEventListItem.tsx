@@ -3,7 +3,7 @@ import EventDateText from "./EventDateTypography";
 import { DateTime } from "luxon";
 import LinkBehavior from "../../../utils/LinkBehavior";
 import { z } from "zod";
-import { EventSchema } from "newbackend/schema";
+import { EventSchema } from "backend/schema";
 
 interface UpcomingEventListItemProps {
   event: z.infer<typeof EventSchema>;

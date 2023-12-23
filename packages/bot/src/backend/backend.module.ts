@@ -6,7 +6,7 @@ import {
   createTRPCClient,
   httpBatchLink,
 } from '@trpc/client';
-import type { AppRouter } from 'newbackend';
+import type { AppRouter } from 'backend';
 import SuperJSON from 'superjson';
 
 export const BACKEND_TOKEN = Symbol('BACKEND_TOKEN');

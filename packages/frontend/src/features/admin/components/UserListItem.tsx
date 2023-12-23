@@ -1,7 +1,7 @@
 import { Button, ListItem, ListItemText } from "@mui/material";
 import LinkBehavior from "../../../utils/LinkBehavior";
 import { z } from "zod";
-import { UserSchema } from "newbackend/schema";
+import { UserSchema } from "backend/schema";
 
 interface UserListItemProps {
   user: z.infer<typeof UserSchema>;

@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { AutocompleteInteraction, CacheType } from 'discord.js';
 import { DateTime } from 'luxon';
 import { AutocompleteInterceptor } from 'necord';
-import { EventSchema } from 'newbackend/schema';
+import { EventSchema } from 'backend/schema';
 import { z } from 'zod';
 
 @Injectable()

@@ -14,7 +14,7 @@ import useCheckoutUser from "../hooks/useCheckoutUser";
 import useCheckinUser from "../hooks/useCheckinUser";
 import { useAlert } from "react-alert";
 import { z } from "zod";
-import { RSVPUserSchema } from "newbackend/schema";
+import { RSVPUserSchema } from "backend/schema";
 
 interface AdminRSVPListItemProps {
   rsvp: z.infer<typeof RSVPUserSchema>;
@@ -104,11 +104,11 @@ export default function AdminRSVPListItem({ rsvp }: AdminRSVPListItemProps) {
           secondary={
             rsvp.checkinTime && rsvp.checkoutTime
               ? `Checked out at ${DateTime.fromISO(
-                  rsvp.checkoutTime
+                  rsvp.checkoutTime,
                 ).toLocaleString(DateTime.TIME_SIMPLE)}`
               : rsvp.checkinTime
                 ? `Checked in at ${DateTime.fromISO(
-                    rsvp.checkinTime
+                    rsvp.checkinTime,
                   ).toLocaleString(DateTime.TIME_SIMPLE)}`
                 : "No check-in"
           }

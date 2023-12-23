@@ -23,7 +23,7 @@
     "@tanstack/react-table": "^8.9.3",
     "@tanstack/table-core": "^8.10.7",
     "luxon": "^3.3.0",
-    "newbackend": "workspace:*",
+    "backend": "workspace:*",
     "react": "^18.2.0",
     "react-alert": "^7.0.3",
     "react-dom": "^18.2.0",

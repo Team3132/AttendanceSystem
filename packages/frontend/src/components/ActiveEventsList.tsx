@@ -1,8 +1,8 @@
-import { List, Typography } from "@mui/material";
-import PendingEventListItem from "./PendingEventListItem";
-import { RSVPEventSchema } from "newbackend/schema";
-import { z } from "zod";
-import { trpc } from "@/trpcClient";
+import { List, Typography } from '@mui/material';
+import PendingEventListItem from './PendingEventListItem';
+import { RSVPEventSchema } from 'backend/schema';
+import { z } from 'zod';
+import { trpc } from '@/trpcClient';
 
 interface ActiveEventsListProps {
   initialPendingEvents: z.infer<typeof RSVPEventSchema>[];
@@ -15,12 +15,12 @@ export default function ActiveEventsList(props: ActiveEventsListProps) {
     undefined,
     {
       initialData: initialPendingEvents,
-    }
+    },
   );
 
   if (pendingEventsQuery.data) {
     if (pendingEventsQuery.data.length === 0)
-      return <Typography textAlign={"center"}>No pending events</Typography>;
+      return <Typography textAlign={'center'}>No pending events</Typography>;
 
     return (
       <List>

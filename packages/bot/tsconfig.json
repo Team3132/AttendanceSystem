@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
-    "target": "ES2023",
-    "useDefineForClassFields": true,
+    "target": "ESNext",
+    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "useDefineForClassFields": true,
     "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
@@ -13,7 +14,6 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
 
     /* Linting */
     "strict": true,
@@ -21,14 +21,13 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noPropertyAccessFromIndexSignature": true,
-
-    /* Paths */
+    "strictPropertyInitialization": false,
     "baseUrl": ".",
     "paths": {
-      "backend": ["../backend/src"],
       "@/*": ["src/*"],
-      "@": ["src"]
-    }
-  },
-  "references": [{ "path": "./tsconfig.node.json" }]
+      "backend": ["../backend/src"],
+      "backend/*": ["../backend/src/*"]
+    },
+    "types": ["@types/express-session"]
+  }
 }

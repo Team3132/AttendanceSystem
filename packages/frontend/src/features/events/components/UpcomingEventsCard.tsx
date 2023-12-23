@@ -18,7 +18,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import LinkBehavior from "../../../utils/LinkBehavior";
 import { trpc } from "@/trpcClient";
 import { z } from "zod";
-import { EventTypeSchema } from "newbackend/schema";
+import { EventTypeSchema } from "backend/schema";
 
 export default function UpcomingEventsCard() {
   const authStatusQuery = trpc.auth.status.useQuery();

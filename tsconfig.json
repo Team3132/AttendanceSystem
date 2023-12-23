@@ -4,7 +4,7 @@
       "path": "./packages/backend/tsconfig.json"
     },
     {
-      "path": "./packages/newbackend/tsconfig.json"
+      "path": "./packages/backend/tsconfig.json"
     },
     {
       "path": "./packages/frontend/tsconfig.json"

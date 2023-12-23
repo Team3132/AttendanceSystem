@@ -17,7 +17,7 @@ import { DateTimePicker } from "@mui/x-date-pickers";
 import { Controller } from "react-hook-form";
 import { DateTime } from "luxon";
 import { FaRecycle } from "react-icons/fa6";
-import { RSVPSchema, RSVPStatusSchema } from "newbackend/schema";
+import { RSVPSchema, RSVPStatusSchema } from "backend/schema";
 
 interface RSVPEditDialogProps {
   onOpen: () => void;

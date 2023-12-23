@@ -1,9 +1,9 @@
-import { ListItem, ListItemText } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
-import useUserCheckout from "../hooks/useUserCheckout";
-import { DateTime } from "luxon";
-import { z } from "zod";
-import { RSVPEventSchema } from "newbackend/schema";
+import { ListItem, ListItemText } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import useUserCheckout from '../hooks/useUserCheckout';
+import { DateTime } from 'luxon';
+import { z } from 'zod';
+import { RSVPEventSchema } from 'backend/schema';
 
 interface PendingEventListItemProps {
   rsvp: z.infer<typeof RSVPEventSchema>;
@@ -26,9 +26,9 @@ export default function PendingEventListItem(props: PendingEventListItemProps) {
         secondary={`Checked In: ${
           rsvp.checkinTime
             ? DateTime.fromISO(rsvp.checkinTime).toLocaleString(
-                DateTime.DATETIME_MED
+                DateTime.DATETIME_MED,
               )
-            : "Unknown"
+            : 'Unknown'
         }`}
       />
       <LoadingButton

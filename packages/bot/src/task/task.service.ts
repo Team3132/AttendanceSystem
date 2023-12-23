@@ -12,7 +12,7 @@ import {
   roleMention,
 } from 'discord.js';
 import { z } from 'zod';
-import { EventSchema } from 'newbackend/schema';
+import { EventSchema } from 'backend/schema';
 
 @Injectable()
 export class TaskService {
