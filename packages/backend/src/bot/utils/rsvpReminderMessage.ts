@@ -9,17 +9,13 @@ import {
 } from 'discord.js';
 import rsvpToDescription from './rsvpToDescription';
 import { ROLES } from '@/constants';
-import { Rsvp, Event } from '@/drizzle/drizzle.module';
 import { DateTime } from 'luxon';
+import { z } from 'zod';
+import { EventSchema, RSVPUserSchema } from 'newbackend/schema';
 
 export default function rsvpReminderMessage(
-  event: Event,
-  rsvp: (Rsvp & {
-    user: {
-      username?: string;
-      roles: string[];
-    };
-  })[],
+  event: z.infer<typeof EventSchema>,
+  rsvp: z.infer<typeof RSVPUserSchema>[],
   frontendUrl: string,
 ): BaseMessageOptions {
   const clonedRsvp = [...rsvp];
@@ -32,12 +28,12 @@ export default function rsvpReminderMessage(
 
   const firstId = sortedByCreated.at(-1)?.id;
 
-  const mentorRSVPs = rsvp.filter((rsvpUser) =>
-    rsvpUser.user.roles.includes(ROLES.MENTOR),
+  const mentorRSVPs = rsvp.filter(
+    (rsvpUser) => rsvpUser.user.roles?.includes(ROLES.MENTOR),
   );
 
   const otherRSVPs = rsvp.filter(
-    (rsvpUser) => !rsvpUser.user.roles.includes(ROLES.MENTOR),
+    (rsvpUser) => !rsvpUser.user.roles?.includes(ROLES.MENTOR),
   );
 
   const mentorDescription = mentorRSVPs.length
@@ -63,10 +59,10 @@ export default function rsvpReminderMessage(
           event.type === 'Outreach'
             ? roleMention(ROLES.OUTREACH)
             : event.type === 'Mentor'
-            ? roleMention(ROLES.MENTOR)
-            : event.type === 'Social'
-            ? roleMention(ROLES.SOCIAL)
-            : roleMention(ROLES.EVERYONE),
+              ? roleMention(ROLES.MENTOR)
+              : event.type === 'Social'
+                ? roleMention(ROLES.SOCIAL)
+                : roleMention(ROLES.EVERYONE),
         inline: true,
       },
       { name: 'Type', value: event.type, inline: true },

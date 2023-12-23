@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Context, ContextOf, On } from 'necord';
+import { Context, type ContextOf, On } from 'necord';
 import { Client } from 'discord.js';
 import { ConfigService } from '@nestjs/config';
 

@@ -1,7 +1,9 @@
 import { and, eq, isNotNull, isNull } from "drizzle-orm";
 import db from "../drizzle/db";
 import { TRPCError } from "@trpc/server";
-import { scancode } from "../drizzle/schema";
+import { scancode, user } from "../drizzle/schema";
+import { z } from "zod";
+import { UserCreateSchema } from "../schema";
 
 /**
  * Gets a user from the database
@@ -132,4 +134,31 @@ export async function removeScancode(userId: string, code: string) {
   // }
 
   return dbScancode;
+}
+
+export async function createUser(userdata: z.infer<typeof UserCreateSchema>) {
+  const [dbUser] = await db
+    .insert(user)
+    .values({
+      ...userdata,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    })
+    .onConflictDoUpdate({
+      target: [user.id],
+      set: {
+        ...userdata,
+        updatedAt: new Date().toISOString(),
+      },
+    })
+    .returning();
+
+  if (!dbUser) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "User does not exist",
+    });
+  }
+
+  return dbUser;
 }

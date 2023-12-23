@@ -1,5 +1,21 @@
-import { type RSVPStatus } from '@/drizzle/drizzle.module';
 import { StringOption } from 'necord';
+
+const statusChoices = [
+  {
+    name: 'Coming',
+    value: 'YES' as const,
+  },
+  {
+    name: 'Maybe',
+    value: 'MAYBE' as const,
+  },
+  {
+    name: 'Not Coming',
+    value: 'NO' as const,
+  },
+];
+
+type Status = (typeof statusChoices)[number]['value'];
 
 export class RsvpDto {
   @StringOption({
@@ -13,20 +29,7 @@ export class RsvpDto {
     name: 'status',
     description: 'The status you want to set.',
     required: true,
-    choices: [
-      {
-        name: 'Coming',
-        value: 'YES',
-      },
-      {
-        name: 'Maybe',
-        value: 'MAYBE',
-      },
-      {
-        name: 'Not Coming',
-        value: 'NO',
-      },
-    ],
+    choices: statusChoices,
   })
-  status: RSVPStatus;
+  status: Status;
 }

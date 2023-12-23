@@ -1,29 +1,33 @@
-import { Injectable, Logger, UseInterceptors } from '@nestjs/common';
-import { SlashCommand, Context, SlashCommandContext } from 'necord';
+import { Inject, Injectable, UseInterceptors } from '@nestjs/common';
+import { SlashCommand, Context, type SlashCommandContext } from 'necord';
 
 import { EventAutocompleteInterceptor } from '../interceptors/event.interceptor';
-import { DateTime } from 'luxon';
-import { OutreachService } from '@/outreach/outreach.service';
-import { LeaderboardDto } from '@/outreach/dto/LeaderboardDto';
+import { DateTime, Duration } from 'luxon';
+import { LeaderBoardUser } from 'newbackend/schema';
+import { z } from 'zod';
+import { BACKEND_TOKEN, type BackendClient } from '@/backend/backend.module';
 
-const leaderboardLine = (data: LeaderboardDto) =>
-  `${data.rank}. **${data.username}** - ${Number(data.outreachHours)} hours`;
+const leaderboardLine = (data: z.infer<typeof LeaderBoardUser>) =>
+  `${data.rank}. **${data.username}** - ${Duration.fromISO(
+    data.duration,
+  ).toHuman()}`;
+
+const guildId = process.env['GUILD_ID'];
 
 @Injectable()
 export class LeaderBoardCommand {
-  constructor(private readonly outreachService: OutreachService) {}
-
-  private readonly logger = new Logger(LeaderBoardCommand.name);
+  constructor(
+    @Inject(BACKEND_TOKEN) private readonly backendClient: BackendClient,
+  ) {}
 
   @UseInterceptors(EventAutocompleteInterceptor)
   @SlashCommand({
     name: 'leaderboard',
     description: 'Get the leaderboard for outreach hours',
-    guilds: [process.env['GUILD_ID']],
+    guilds: guildId ? [guildId] : undefined,
   })
   public async onLeaderboard(@Context() [interaction]: SlashCommandContext) {
-    const currentLeaderboard =
-      await this.outreachService.getOutreachLeaderBoard();
+    const currentLeaderboard = await this.backendClient.bot.leaderboard.query();
 
     const headerLine = `# Outreach Leaderboard`;
 

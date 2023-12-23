@@ -21,6 +21,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noPropertyAccessFromIndexSignature": true,
+    "strictPropertyInitialization": false,
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],

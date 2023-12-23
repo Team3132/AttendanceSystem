@@ -7,18 +7,16 @@ import {
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TextInputStyle } from 'discord.js';
-import { Ctx, Modal, ModalContext, ModalParam } from 'necord';
+import { Ctx, Modal, type ModalContext, ModalParam } from 'necord';
 import { z } from 'zod';
 import rsvpReminderMessage from '../utils/rsvpReminderMessage';
-import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
-import { rsvp } from '../../drizzle/schema';
-import { eq } from 'drizzle-orm';
+import { BACKEND_TOKEN, type BackendClient } from '@/backend/backend.module';
 
 @Injectable()
 export class DelayModal {
   constructor(
-    @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
     private readonly config: ConfigService,
+    @Inject(BACKEND_TOKEN) private readonly backendClient: BackendClient,
   ) {}
 
   @Modal(`event/:eventId/delay`)
@@ -28,62 +26,43 @@ export class DelayModal {
   ) {
     const delay = interaction.fields.getTextInputValue('delay');
 
-    const value = z.string().regex(/^\d+$/).transform(Number).parseAsync(delay);
+    const value = await z
+      .string()
+      .regex(/^\d+$/)
+      .transform(Number)
+      .safeParseAsync(delay);
+
+    if (!value.success) {
+      return interaction.reply({
+        content: 'Please enter a valid number in minutes (no decimals)',
+        ephemeral: true,
+      });
+    }
 
     const userId = interaction.user.id;
 
-    try {
-      const delay = await value;
+    await this.backendClient.bot.setEventRsvp.mutate({
+      eventId,
+      userId,
+      status: 'LATE',
+      delay: value.data,
+    });
 
-      await this.db
-        .insert(rsvp)
-        .values({
-          eventId,
-          userId,
-          delay,
-        })
-        .onConflictDoUpdate({
-          target: [rsvp.eventId, rsvp.userId],
-          set: {
-            delay,
-          },
-        })
-        .returning();
+    const fetchEvent =
+      await this.backendClient.bot.getEventDetails.query(eventId);
 
-      const otherEventRsvps = await this.db.query.rsvp.findMany({
-        where: (rsvp) => eq(rsvp.eventId, eventId),
-        orderBy: (rsvp) => [rsvp.status, rsvp.updatedAt],
-        with: {
-          user: {
-            columns: {
-              username: true,
-              roles: true,
-            },
-          },
-        },
+    const rsvps = await this.backendClient.bot.getEventRsvps.query(eventId);
+
+    const frontendUrl = this.config.getOrThrow('FRONTEND_URL');
+
+    if (interaction.isFromMessage()) {
+      return interaction.update({
+        ...rsvpReminderMessage(fetchEvent, rsvps, frontendUrl),
       });
-
-      const relatedEvent = await this.db.query.event.findFirst({
-        where: (event) => eq(event.id, eventId),
-      });
-
-      const frontendUrl = this.config.getOrThrow('FRONTEND_URL');
-
-      if (interaction.isFromMessage()) {
-        return interaction.update({
-          ...rsvpReminderMessage(relatedEvent, otherEventRsvps, frontendUrl),
-        });
-      } else {
-        return interaction.reply({
-          ephemeral: true,
-          ...rsvpReminderMessage(relatedEvent, otherEventRsvps, frontendUrl),
-        });
-      }
-    } catch (err) {
-      // const error = err as ZodError;
+    } else {
       return interaction.reply({
-        content: 'Please enter a valid number (no decimals)',
         ephemeral: true,
+        ...rsvpReminderMessage(fetchEvent, rsvps, frontendUrl),
       });
     }
   }

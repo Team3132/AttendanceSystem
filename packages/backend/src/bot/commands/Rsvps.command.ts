@@ -2,18 +2,23 @@ import { Inject, Injectable, UseInterceptors } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EmbedBuilder } from 'discord.js';
 import { DateTime } from 'luxon';
-import { SlashCommand, Context, SlashCommandContext, Options } from 'necord';
+import {
+  SlashCommand,
+  Context,
+  type SlashCommandContext,
+  Options,
+} from 'necord';
 import { AttendanceDto } from '../dto/attendance.dto';
 import { EventAutocompleteInterceptor } from '../interceptors/event.interceptor';
 import rsvpToDescription from '../utils/rsvpToDescription';
-import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
-import { rsvp, user } from '../../drizzle/schema';
-import { and, eq, isNotNull } from 'drizzle-orm';
+import { BACKEND_TOKEN, type BackendClient } from '@/backend/backend.module';
+
+const guildId = process.env['GUILD_ID'];
 
 @Injectable()
 export class RsvpsCommand {
   constructor(
-    @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
+    @Inject(BACKEND_TOKEN) private readonly backendClient: BackendClient,
     private readonly config: ConfigService,
   ) {}
 
@@ -21,59 +26,25 @@ export class RsvpsCommand {
   @SlashCommand({
     name: 'rsvps',
     description: 'Get the rsvps for a meeting.',
-    guilds: [process.env['GUILD_ID']],
+    guilds: guildId ? [guildId] : undefined,
   })
   public async onRSVPs(
     @Context() [interaction]: SlashCommandContext,
     @Options() { meeting }: AttendanceDto,
   ) {
-    const fetchedMeeting = await this.db.query.event.findFirst({
-      where: (event, { eq }) => eq(event.id, meeting),
-    });
+    const fetchedMeeting =
+      await this.backendClient.bot.getEventDetails.query(meeting);
 
     if (!fetchedMeeting)
       return interaction.reply({ content: 'Unknown event', ephemeral: true });
 
-    // const fetchedRSVPs = await this.db.rSVP.findMany({
-    //   where: {
-    //     eventId: meeting,
-    //     user: {
-    //       roles: {
-    //         has: role?.id,
-    //       },
-    //     },
-    //     status: {
-    //       not: null,
-    //     },
-    //   },
-    //   include: {
-    //     user: {
-    //       select: {
-    //         username: true,
-    //       },
-    //     },
-    //   },
-    // });
-
-    const fetchedRSVPs = await this.db
-      .select({
-        id: rsvp.id,
-        status: rsvp.status,
-        delay: rsvp.delay,
-        userId: rsvp.userId,
-        user: {
-          username: user.username,
-        },
-      })
-      .from(rsvp)
-      .leftJoin(user, eq(rsvp.userId, user.id))
-      .where(and(eq(rsvp.eventId, meeting), isNotNull(rsvp.status)))
-      .orderBy(rsvp.status, rsvp.createdAt);
+    const fetchedRSVPs =
+      await this.backendClient.bot.getEventRsvps.query(meeting);
 
     if (!fetchedRSVPs.length)
       return interaction.reply({ content: 'No RSVPs', ephemeral: true });
 
-    const firstId = fetchedRSVPs.at(0).id;
+    const firstId = fetchedRSVPs.at(0)?.id;
 
     const description = fetchedRSVPs
       .map((rsvp) => rsvpToDescription(rsvp, rsvp.id === firstId))

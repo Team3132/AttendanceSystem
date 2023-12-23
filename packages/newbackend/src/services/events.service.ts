@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 import db from "../drizzle/db";
-import { and, asc, between, eq, gte, lte, or } from "drizzle-orm";
+import { SQL, and, asc, between, eq, gte, ilike, lte, or } from "drizzle-orm";
 import { event, rsvp } from "../drizzle/schema";
 import { z } from "zod";
 import { GetEventParamsSchema } from "../schema/GetEventParamsSchema";
@@ -172,6 +172,7 @@ export async function getEventRsvps(
 ): Promise<Array<z.infer<typeof RSVPUserSchema>>> {
   const eventRsvps = await db.query.rsvp.findMany({
     where: (rsvp, { and }) => and(eq(rsvp.eventId, eventId)),
+    orderBy: (rsvp) => [asc(rsvp.updatedAt)],
     with: {
       user: true,
     },
@@ -546,6 +547,18 @@ export async function selfCheckin(
     });
   }
 
+  const currentRSVP = await db.query.rsvp.findFirst({
+    where: (rsvp, { and }) =>
+      and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
+  });
+
+  if (currentRSVP?.checkinTime) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "You are already checked in",
+    });
+  }
+
   const [updatedRsvp] = await db
     .insert(rsvp)
     .values({
@@ -572,6 +585,7 @@ export async function selfCheckin(
       message: "Failed to check in",
     });
   }
+  // TODO: Schedule a job to check out the user after the delay
 
   return updatedRsvp;
 }
@@ -606,4 +620,31 @@ export async function createBlankUserRsvp(
   }
 
   return createdRsvp;
+}
+
+export async function getAutocompleteEvents(like?: string) {
+  const events = await db.query.event.findMany({
+    where: (event) => {
+      const conditions: Array<SQL<unknown>> = [
+        gte(event.endDate, DateTime.local().toISO()),
+      ];
+
+      if (like) {
+        const condition = or(
+          ilike(event.title, `%${like}%`),
+          ilike(event.id, `%${like}%`)
+        );
+
+        if (condition) {
+          conditions.push(condition);
+        }
+      }
+
+      return and(...conditions);
+    },
+    orderBy: (event) => [asc(event.startDate)],
+    limit: 10,
+  });
+
+  return events;
 }

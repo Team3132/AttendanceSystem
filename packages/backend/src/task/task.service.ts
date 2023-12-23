@@ -1,4 +1,4 @@
-import { BACKEND_TOKEN, BackendClient } from '@/backend/backend.module';
+import { BACKEND_TOKEN, type BackendClient } from '@/backend/backend.module';
 import rsvpReminderMessage from '@/bot/utils/rsvpReminderMessage';
 import { ROLES } from '@/constants';
 import { Inject, Injectable, Logger } from '@nestjs/common';
@@ -12,7 +12,7 @@ import {
   roleMention,
 } from 'discord.js';
 import { z } from 'zod';
-import { RSVPSchema } from 'newbackend/schema';
+import { EventSchema } from 'newbackend/schema';
 
 @Injectable()
 export class TaskService {
@@ -38,6 +38,8 @@ export class TaskService {
     const fetchedChannel =
       await this.discordClient.channels.fetch(attendanceChannelId);
 
+    if (!fetchedChannel) throw new Error('Attendance channel does not exist.');
+
     if (!fetchedChannel.isTextBased())
       throw new Error('Attendance channel is not text based.');
 
@@ -49,26 +51,23 @@ export class TaskService {
 
     type MessageEvent = [
       message: BaseMessageOptions,
-      event: Event & {
-        rsvps: (z.infer<typeof RSVPSchema> & {
-          user: {
-            username: string;
-            roles: string[];
-          };
-        })[];
-      },
+      event: z.infer<typeof EventSchema>,
     ];
 
-    const messages = nextEvents.map(
-      (nextEvent) =>
-        [
+    const messages = await Promise.all(
+      nextEvents.map(async (nextEvent) => {
+        const nextEventRsvps = await this.backendClient.bot.getEventRsvps.query(
+          nextEvent.id,
+        );
+        return [
           rsvpReminderMessage(
             nextEvent,
-            nextEvent.rsvps,
-            this.config.get('FRONTEND_URL'),
+            nextEventRsvps,
+            this.config.getOrThrow('FRONTEND_URL'),
           ),
           nextEvent,
-        ] satisfies MessageEvent,
+        ] satisfies MessageEvent;
+      }),
     );
 
     const sentMessages = await Promise.all(

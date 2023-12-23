@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Button, Context, ButtonContext, ComponentParam } from 'necord';
+import { Button, Context, type ButtonContext, ComponentParam } from 'necord';
 import { CheckinModal } from '../modals/Checkin.modal';
 
 @Injectable()

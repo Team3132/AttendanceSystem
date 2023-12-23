@@ -1,16 +1,23 @@
 import { Inject, Injectable, UseInterceptors } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PermissionFlagsBits } from 'discord.js';
-import { SlashCommand, Context, SlashCommandContext, Options } from 'necord';
+import {
+  SlashCommand,
+  Context,
+  type SlashCommandContext,
+  Options,
+} from 'necord';
 import { RequestRSVPDto } from '../dto/requestRSVP.dto';
 import { EventAutocompleteInterceptor } from '../interceptors/event.interceptor';
 import rsvpReminderMessage from '../utils/rsvpReminderMessage';
-import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
+import { BACKEND_TOKEN, type BackendClient } from '@/backend/backend.module';
+
+const guildId = process.env['GUILD_ID'];
 
 @Injectable()
 export class RequestRsvpCommand {
   constructor(
-    @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
+    @Inject(BACKEND_TOKEN) private readonly backendClient: BackendClient,
     private readonly config: ConfigService,
   ) {}
 
@@ -19,60 +26,29 @@ export class RequestRsvpCommand {
     name: 'requestrsvp',
     description: 'Send a message for people to RSVP to a specific event.',
     defaultMemberPermissions: PermissionFlagsBits.ManageRoles,
-    guilds: [process.env['GUILD_ID']],
+    guilds: guildId ? [guildId] : undefined,
   })
   public async onRequestRSVP(
     @Context() [interaction]: SlashCommandContext,
     @Options() { meeting }: RequestRSVPDto,
   ) {
-    // const event = await this.db.event.findUnique({
-    //   where: {
-    //     id: meeting,
-    //   },
-    //   include: {
-    //     RSVP: {
-    //       orderBy: {
-    //         updatedAt: 'asc',
-    //       },
-    //       include: {
-    //         user: {
-    //           select: {
-    //             username: true,
-    //             roles: true,
-    //           },
-    //         },
-    //       },
-    //     },
-    //   },
-    // });
-    const fetchedEvent = await this.db.query.event.findFirst({
-      where: (event, { eq }) => eq(event.id, meeting),
-    });
+    const eventDetails =
+      await this.backendClient.bot.getEventDetails.query(meeting);
 
-    const fetchedRSVPs = await this.db.query.rsvp.findMany({
-      where: (rsvp, { eq }) => eq(rsvp.eventId, meeting),
-      orderBy: (rsvp) => [rsvp.status, rsvp.updatedAt],
-      with: {
-        user: {
-          columns: {
-            username: true,
-            roles: true,
-          },
-        },
-      },
-    });
-
-    if (!fetchedEvent)
+    if (!eventDetails)
       return interaction.reply({
         ephemeral: true,
         content: 'No meeting with that Id',
       });
 
+    const fetchedRSVPs =
+      await this.backendClient.bot.getEventRsvps.query(meeting);
+
     return interaction.reply(
       rsvpReminderMessage(
-        fetchedEvent,
+        eventDetails,
         fetchedRSVPs,
-        this.config.get('FRONTEND_URL'),
+        this.config.getOrThrow('FRONTEND_URL'),
       ),
     );
   }

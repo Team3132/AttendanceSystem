@@ -1,21 +1,18 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GuildMember } from 'discord.js';
-import { Button, Context, ButtonContext, ComponentParam } from 'necord';
+import { Button, Context, type ButtonContext, ComponentParam } from 'necord';
 import rsvpReminderMessage from '../utils/rsvpReminderMessage';
-import {
-  DRIZZLE_TOKEN,
-  type RSVPStatus,
-  type DrizzleDatabase,
-} from '@/drizzle/drizzle.module';
-import { rsvp, user } from '../../drizzle/schema';
 import { ROLES } from '@/constants';
 import { DelayModal } from '../modals/Delay.modal';
+import { BACKEND_TOKEN, type BackendClient } from '@/backend/backend.module';
+import { z } from 'zod';
+import { RSVPStatusSchema } from 'newbackend/schema';
 
 @Injectable()
 export class RsvpsButton {
   constructor(
-    @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
+    @Inject(BACKEND_TOKEN) private readonly backendClient: BackendClient,
     private readonly config: ConfigService,
   ) {}
 
@@ -25,11 +22,10 @@ export class RsvpsButton {
   public async onRsvpButton(
     @Context() [interaction]: ButtonContext,
     @ComponentParam('eventId') eventId: string,
-    @ComponentParam('rsvpStatus') rsvpStatus: RSVPStatus,
+    @ComponentParam('rsvpStatus') rsvpStatus: z.infer<typeof RSVPStatusSchema>,
   ) {
-    const fetchedEvent = await this.db.query.event.findFirst({
-      where: (event, { eq }) => eq(event.id, eventId),
-    });
+    const fetchedEvent =
+      await this.backendClient.bot.getEventDetails.query(eventId);
 
     if (!fetchedEvent)
       return interaction.reply({
@@ -49,27 +45,17 @@ export class RsvpsButton {
       ...interactionUser.roles.cache.mapValues((role) => role.id).values(),
     ];
 
-    const username = interactionUser.nickname
-      ? (await interactionUser.fetch()).nickname
-      : interactionUser.user.username;
+    const fetchedUser = await interactionUser.fetch();
 
-    const fetchedUsers = await this.db
-      .insert(user)
-      .values({
-        id: userId,
-        username,
-        roles: userRoles,
-      })
-      .onConflictDoUpdate({
-        target: user.id,
-        set: {
-          username,
-          roles: userRoles,
-        },
-      })
-      .returning();
+    const username = fetchedUser.nickname ?? fetchedUser.user.username;
 
-    const fetchedUser = fetchedUsers.at(0);
+    await this.backendClient.bot.findOrCreateUser.mutate({
+      id: userId,
+      username,
+      roles: userRoles,
+    });
+
+    // const fetchedUser = fetchedUsers.at(0);
 
     if (fetchedEvent.type === 'Mentor' && !userRoles.includes(ROLES.MENTOR)) {
       return interaction.reply({
@@ -78,50 +64,24 @@ export class RsvpsButton {
       });
     }
 
-    await this.db
-      .insert(rsvp)
-      .values({
-        eventId,
-        userId,
-        status: rsvpStatus,
-      })
-      .onConflictDoUpdate({
-        target: [rsvp.eventId, rsvp.userId],
-        set: {
-          status: rsvpStatus,
-        },
-      })
-      .returning();
-
-    this.logger.debug(
-      `${fetchedUser.username} RSVP'd ${rsvpStatus} to ${eventId}`,
-    );
-
-    const newRSVPs = await this.db.query.rsvp.findMany({
-      where: (rsvp, { eq }) => eq(rsvp.eventId, eventId),
-      orderBy: (rsvp) => [rsvp.status, rsvp.updatedAt],
-      with: {
-        user: {
-          columns: {
-            username: true,
-            roles: true,
-          },
-        },
-      },
+    await this.backendClient.bot.setEventRsvp.mutate({
+      eventId,
+      userId,
+      status: rsvpStatus,
     });
 
-    const eventDB = await this.db.query.event.findFirst({
-      where: (event, { eq }) => eq(event.id, eventId),
-    });
+    this.logger.debug(`${username} RSVP'd ${rsvpStatus} to ${eventId}`);
+
+    const newRSVPs = await this.backendClient.bot.getEventRsvps.query(eventId);
 
     const frontendUrl = this.config.getOrThrow('FRONTEND_URL');
 
     if (rsvpStatus === 'LATE') {
       // return interaction.deferUpdate();
-      return interaction.showModal(DelayModal.build(eventDB.id));
+      return interaction.showModal(DelayModal.build(eventId));
     } else {
       return interaction.update({
-        ...rsvpReminderMessage(eventDB, newRSVPs, frontendUrl),
+        ...rsvpReminderMessage(fetchedEvent, newRSVPs, frontendUrl),
       });
     }
   }

@@ -1,7 +1,7 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig(({ watch }) => ({
-  entry: ['src/main.ts', 'drizzle'],
+  entry: ['src/main.ts'],
   splitting: true,
   format: ['cjs'],
   dts: false,

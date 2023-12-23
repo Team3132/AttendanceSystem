@@ -1,24 +1,23 @@
-import {
-  DRIZZLE_TOKEN,
-  Event,
-  type DrizzleDatabase,
-} from '@/drizzle/drizzle.module';
+import { BACKEND_TOKEN, type BackendClient } from '@/backend/backend.module';
 import { Inject, Injectable } from '@nestjs/common';
 import { AutocompleteInteraction, CacheType } from 'discord.js';
-import { asc, gte } from 'drizzle-orm';
 import { DateTime } from 'luxon';
 import { AutocompleteInterceptor } from 'necord';
+import { EventSchema } from 'newbackend/schema';
+import { z } from 'zod';
 
 @Injectable()
 export class EventAutocompleteInterceptor extends AutocompleteInterceptor {
-  constructor(@Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase) {
+  constructor(
+    @Inject(BACKEND_TOKEN) private readonly backendClient: BackendClient,
+  ) {
     super();
   }
 
   public async transformOptions(
     interaction: AutocompleteInteraction<CacheType>,
   ) {
-    // const focused = interaction.options.getFocused(true);
+    const focused = interaction.options.getFocused(true);
 
     // const options = await this.db.event.findMany({
     //   where: {
@@ -36,14 +35,11 @@ export class EventAutocompleteInterceptor extends AutocompleteInterceptor {
     //   take: 10,
     // });
 
-    const options = await this.db.query.event.findMany({
-      where: (event) => gte(event.endDate, DateTime.local().toISO()),
+    const options = await this.backendClient.bot.getAutocompleteEvents.query(
+      focused.value,
+    );
 
-      orderBy: (event) => [asc(event.startDate)],
-      limit: 10,
-    });
-
-    const dateEvent = (event: Event) => ({
+    const dateEvent = (event: z.infer<typeof EventSchema>) => ({
       name: `${event.title} - ${DateTime.fromISO(
         event.startDate,
       ).toLocaleString(DateTime.DATETIME_SHORT)} - ${DateTime.fromISO(

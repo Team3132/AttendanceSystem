@@ -4,27 +4,16 @@ import {
   ModalBuilder,
   TextInputBuilder,
 } from '@discordjs/builders';
-import { Inject, Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Inject, Injectable } from '@nestjs/common';
 import { GuildMember, TextInputStyle } from 'discord.js';
-import { Ctx, Modal, ModalContext, ModalParam } from 'necord';
-import { DRIZZLE_TOKEN, type DrizzleDatabase } from '@/drizzle/drizzle.module';
-import { event, rsvp, user } from '../../drizzle/schema';
-import { eq } from 'drizzle-orm';
-import { InjectQueue } from '@nestjs/bull';
-import { Queue } from 'bull';
-import { CheckoutActiveData } from '@/event/types/CheckoutActive';
+import { Ctx, Modal, type ModalContext, ModalParam } from 'necord';
+import { BACKEND_TOKEN, type BackendClient } from '@/backend/backend.module';
 
 @Injectable()
 export class CheckinModal {
   constructor(
-    @Inject(DRIZZLE_TOKEN) private readonly db: DrizzleDatabase,
-    private readonly config: ConfigService,
-    @InjectQueue('event')
-    private readonly eventQueue: Queue<CheckoutActiveData>,
+    @Inject(BACKEND_TOKEN) private readonly backendClient: BackendClient,
   ) {}
-
-  private readonly logger = new Logger(CheckinModal.name);
 
   @Modal(`event/:eventId/checkin`)
   public async onCheckinModal(
@@ -35,9 +24,8 @@ export class CheckinModal {
 
     const userId = interaction.user.id;
 
-    const fetchedEvent = await this.db.query.event.findFirst({
-      where: eq(event.id, eventId),
-    });
+    const fetchedEvent =
+      await this.backendClient.bot.getEventDetails.query(eventId);
 
     if (!fetchedEvent) {
       return interaction.reply({
@@ -46,7 +34,10 @@ export class CheckinModal {
       });
     }
 
-    if (fetchedEvent.secret !== code) {
+    const { secret } =
+      await this.backendClient.bot.getEventSecret.query(eventId);
+
+    if (secret !== code) {
       return interaction.reply({
         ephemeral: true,
         content: 'Invalid code.',
@@ -63,134 +54,21 @@ export class CheckinModal {
       ...interactionUser.roles.cache.mapValues((role) => role.id).values(),
     ];
 
-    const username = interactionUser.nickname
-      ? (await interactionUser.fetch()).nickname
-      : interactionUser.user.username;
+    const fetchedUser = await interactionUser.fetch();
 
-    const fetchedUsers = await this.db
-      .insert(user)
-      .values({
-        id: userId,
-        username,
-        roles: userRoles,
-      })
-      .onConflictDoUpdate({
-        target: user.id,
-        set: {
-          username,
-          roles: userRoles,
-        },
-      })
-      .returning();
+    const username = fetchedUser.nickname ?? fetchedUser.user.username;
 
-    const fetchedUser = fetchedUsers.at(0);
-
-    const currentDate = new Date();
-
-    const eventStartTime = new Date(fetchedEvent.startDate).getTime();
-
-    const checkinTime =
-      currentDate.getTime() <= eventStartTime
-        ? fetchedEvent.startDate
-        : currentDate.toISOString();
-
-    const eventEndTime = new Date(fetchedEvent.endDate).getTime();
-
-    const timeDiff = eventEndTime - currentDate.getTime();
-
-    const delay = timeDiff > 0 ? timeDiff : 0;
-
-    const existingRsvp = await this.db.query.rsvp.findFirst({
-      where: (rsvp, { and, eq }) =>
-        and(eq(rsvp.eventId, fetchedEvent.id), eq(rsvp.userId, fetchedUser.id)),
+    await this.backendClient.bot.findOrCreateUser.mutate({
+      id: userId,
+      username,
+      roles: userRoles,
     });
 
-    if (!existingRsvp) {
-      const newRsvp = await this.db
-        .insert(rsvp)
-        .values({
-          userId: fetchedUser.id,
-          eventId: fetchedEvent.id,
-          checkinTime,
-        })
-        .returning();
-
-      const firstNewRsvp = newRsvp.at(0);
-
-      if (!firstNewRsvp) {
-        return interaction.reply({
-          ephemeral: true,
-          content: 'Something went wrong',
-        });
-      }
-
-      await this.eventQueue.add(
-        'checkoutActive',
-        {
-          eventId: fetchedEvent.id,
-          rsvpId: firstNewRsvp.id,
-        },
-        {
-          delay,
-          jobId: firstNewRsvp.id,
-          removeOnComplete: true,
-          removeOnFail: true,
-        },
-      );
-
-      this.logger.debug(
-        `Created new RSVP for ${fetchedUser.username} for ${fetchedEvent.title}`,
-      );
-
-      return interaction.reply({
-        ephemeral: true,
-        content: 'You have checked in',
-      });
-    }
-
-    if (existingRsvp.checkinTime !== null) {
-      return interaction.reply({
-        ephemeral: true,
-        content: 'You have already checked in',
-      });
-    }
-
-    const upsertedRsvp = await this.db
-      .insert(rsvp)
-      .values({
-        eventId: fetchedEvent.id,
-        userId: fetchedUser.id,
-        checkinTime,
-      })
-      .onConflictDoUpdate({
-        target: [rsvp.eventId, rsvp.userId],
-        set: {
-          checkinTime,
-        },
-      })
-      .returning();
-
-    const firstResult = upsertedRsvp.at(0);
-
-    if (firstResult) {
-      await this.eventQueue.add(
-        'checkoutActive',
-        {
-          eventId: fetchedEvent.id,
-          rsvpId: firstResult.id,
-        },
-        {
-          delay,
-          jobId: firstResult.id,
-          removeOnComplete: true,
-          removeOnFail: true,
-        },
-      );
-    }
-
-    this.logger.debug(
-      `Updated RSVP for ${fetchedUser.username} for ${fetchedEvent.title}`,
-    );
+    await this.backendClient.bot.selfCheckin.mutate({
+      eventId,
+      userId,
+      secret,
+    });
 
     return interaction.reply({
       ephemeral: true,

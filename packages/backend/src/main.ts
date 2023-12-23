@@ -1,13 +1,7 @@
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import cookieParser from 'cookie-parser';
-import session from 'express-session';
-import passport from 'passport';
-import Redis from 'ioredis';
-import RedisStore from 'connect-redis';
 import { Logger, ValidationPipe } from '@nestjs/common';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import helmet from 'helmet';
 import { Settings } from 'luxon';
 import { SentryFilter } from './filters/SentryFilter';
@@ -18,7 +12,7 @@ Settings.defaultZone = 'Australia/Sydney';
 
 async function bootstrap() {
   const logger = new Logger('Main');
-  logger.log('Node Env:', process.env.NODE_ENV);
+  logger.log('Node Env:', process.env['NODE_ENV']);
 
   const app = await NestFactory.create(AppModule);
   const config = app.get(ConfigService);
@@ -40,6 +34,9 @@ async function bootstrap() {
     );
 
     logger.log('Sentry enabled');
+  } else {
+    logger.warn('Sentry disabled');
+    app.useGlobalFilters(new DiscordExceptionFilter());
   }
 
   app.setGlobalPrefix('api');
@@ -52,31 +49,7 @@ async function bootstrap() {
   });
 
   app.use(helmet());
-  app.use(cookieParser(config.getOrThrow('COOKIE_SECRET')));
 
-  const redisClient = new Redis({
-    host: config.get('REDIS_HOST'),
-    port: parseInt(config.get('REDIS_PORT')),
-    db: 0,
-  });
-
-  const redisStore = new RedisStore({
-    client: redisClient,
-  });
-
-  app.use(
-    session({
-      secret: config.get('SESSION_SECRET'),
-      resave: false,
-      cookie: {
-        domain: config.get('COOKIE_DOMAIN') ?? 'team3132.com',
-      },
-      saveUninitialized: true,
-      store: redisStore,
-    }),
-  );
-  app.use(passport.initialize());
-  app.use(passport.session());
   // app.use(csurf());
   app.useGlobalPipes(
     new ValidationPipe({
@@ -85,15 +58,6 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  const swaggerConfig = new DocumentBuilder()
-    .setTitle('TDU Attendance API')
-    .setDescription('TDU Attendance API for attending TDU')
-    .addCookieAuth('connect.sid')
-    .setVersion('1.0')
-    .build();
-  const document = SwaggerModule.createDocument(app, swaggerConfig);
-
-  SwaggerModule.setup('api/docs', app, document, {});
 
   await app.listen(3000);
 }

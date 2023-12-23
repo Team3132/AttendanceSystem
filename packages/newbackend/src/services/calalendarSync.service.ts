@@ -23,7 +23,7 @@ const calendar = google.calendar({
 });
 
 export const getCalendarEvents = () =>
-  new Promise<calendar_v3.Schema$Events>((res, rej) => {
+  new Promise<calendar_v3.Schema$Events>((res) => {
     calendar.events.list(
       {
         calendarId: env.GOOGLE_CALENDAR_ID,
