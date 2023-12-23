@@ -14,6 +14,7 @@ import discordStrategy from "./auth/Discord.strategy";
 import { user } from "./drizzle/schema";
 import { eq } from "drizzle-orm";
 import { Settings } from "luxon";
+import mainLogger from "./logger";
 
 Settings.defaultLocale = "en-au";
 Settings.defaultZone = "Australia/Sydney";
@@ -84,7 +85,7 @@ await server.register(fastifyTRPCPlugin, {
 await server.get("/api/auth/discord", {
   preValidation: fastifyPassport.authenticate("discord", { authInfo: false }),
   handler: async (_req, res) => {
-    return res.redirect("/");
+    return res.redirect(env.FRONTEND_URL);
   },
 });
 
@@ -92,17 +93,28 @@ await server.get("/api/auth/discord/callback", {
   preValidation: fastifyPassport.authenticate("discord", {
     authInfo: false,
     failureRedirect: "/login",
-    successRedirect: "/",
+    successRedirect: env.FRONTEND_URL,
   }),
   handler: async (_req, res) => {
-    return res.redirect("/");
+    return res.redirect(env.FRONTEND_URL);
   },
 });
 
-await server.listen({ port: env.PORT, host: "0.0.0.0" }).catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+server.listen(
+  {
+    port: env.PORT,
+    host: "0.0.0.0",
+    listenTextResolver: (addr) => `Server is listening at ${addr}`,
+  },
+  (err, address) => {
+    if (err) {
+      mainLogger.error(err);
+      process.exit(1);
+    }
+
+    mainLogger.info(address);
+  }
+);
 
 export { type AppRouter };
 export * as Schema from "./schema";

@@ -272,7 +272,8 @@ export async function editUserRsvpStatus(
         delay,
       },
       target: [rsvp.eventId, rsvp.userId],
-    });
+    })
+    .returning();
 
   if (!updatedRsvp) {
     throw new TRPCError({
@@ -320,7 +321,8 @@ export async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
         updatedAt: DateTime.local().toISO(),
       },
       target: [rsvp.eventId, rsvp.userId],
-    });
+    })
+    .returning();
 
   if (!updatedRsvp) {
     throw new TRPCError({
@@ -387,7 +389,8 @@ export async function userScanin(params: z.infer<typeof ScaninSchema>) {
         updatedAt: DateTime.local().toISO(),
       },
       target: [rsvp.eventId, rsvp.userId],
-    });
+    })
+    .returning();
 
   if (!updatedRsvp) {
     throw new TRPCError({
@@ -444,7 +447,8 @@ export async function userCheckout(userId: string, eventId: string) {
         updatedAt: DateTime.local().toISO(),
       },
       target: [rsvp.eventId, rsvp.userId],
-    });
+    })
+    .returning();
 
   if (!updatedRsvp) {
     throw new TRPCError({
@@ -490,7 +494,8 @@ export async function editUserAttendance(
         updatedAt: DateTime.local().toISO(),
       },
       target: [rsvp.eventId, rsvp.userId],
-    });
+    })
+    .returning();
 
   if (!updatedRsvp) {
     throw new TRPCError({
@@ -544,7 +549,8 @@ export async function selfCheckin(
         updatedAt: DateTime.local().toISO(),
       },
       target: [rsvp.eventId, rsvp.userId],
-    });
+    })
+    .returning();
 
   if (!updatedRsvp) {
     throw new TRPCError({
@@ -575,7 +581,8 @@ export async function createBlankUserRsvp(
         updatedAt: DateTime.local().toISO(),
       },
       target: [rsvp.eventId, rsvp.userId],
-    });
+    })
+    .returning();
 
   if (!createdRsvp) {
     throw new TRPCError({

@@ -104,10 +104,10 @@ export class TaskService {
         const eventType = isOutreachEvent
           ? 'Outreach'
           : isMentorEvent
-          ? 'Mentor'
-          : isSocialEvent
-          ? 'Social'
-          : 'Regular';
+            ? 'Mentor'
+            : isSocialEvent
+              ? 'Social'
+              : 'Regular';
 
         const newEvent = {
           id: gcalEvent.id,
@@ -227,10 +227,10 @@ export class TaskService {
             event.type === 'Outreach'
               ? roleMention(ROLES.OUTREACH)
               : event.type === 'Mentor'
-              ? roleMention(ROLES.MENTOR)
-              : event.type === 'Social'
-              ? roleMention(ROLES.SOCIAL)
-              : roleMention(ROLES.EVERYONE)
+                ? roleMention(ROLES.MENTOR)
+                : event.type === 'Social'
+                  ? roleMention(ROLES.SOCIAL)
+                  : roleMention(ROLES.EVERYONE)
           } ${bold(
             `10pm reminder`,
           )}: This channel should be used to let us know any last minute attendance changes on the day of the meeting.`,

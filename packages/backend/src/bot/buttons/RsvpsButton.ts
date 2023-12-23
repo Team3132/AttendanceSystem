@@ -90,7 +90,8 @@ export class RsvpsButton {
         set: {
           status: rsvpStatus,
         },
-      });
+      })
+      .returning();
 
     this.logger.debug(
       `${fetchedUser.username} RSVP'd ${rsvpStatus} to ${eventId}`,
