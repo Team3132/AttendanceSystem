@@ -25,7 +25,7 @@ export class RsvpsButton {
     @ComponentParam('rsvpStatus') rsvpStatus: z.infer<typeof RSVPStatusSchema>,
   ) {
     const fetchedEvent =
-      await this.backendClient.bot.getEventDetails.query(eventId);
+      await this.backendClient.client.bot.getEventDetails.query(eventId);
 
     if (!fetchedEvent)
       return interaction.reply({
@@ -49,7 +49,7 @@ export class RsvpsButton {
 
     const username = fetchedUser.nickname ?? fetchedUser.user.username;
 
-    await this.backendClient.bot.findOrCreateUser.mutate({
+    await this.backendClient.client.bot.findOrCreateUser.mutate({
       id: userId,
       username,
       roles: userRoles,
@@ -64,7 +64,7 @@ export class RsvpsButton {
       });
     }
 
-    await this.backendClient.bot.setEventRsvp.mutate({
+    await this.backendClient.client.bot.setEventRsvp.mutate({
       eventId,
       userId,
       status: rsvpStatus,
@@ -72,7 +72,8 @@ export class RsvpsButton {
 
     this.logger.debug(`${username} RSVP'd ${rsvpStatus} to ${eventId}`);
 
-    const newRSVPs = await this.backendClient.bot.getEventRsvps.query(eventId);
+    const newRSVPs =
+      await this.backendClient.client.bot.getEventRsvps.query(eventId);
 
     const frontendUrl = this.config.getOrThrow('FRONTEND_URL');
 

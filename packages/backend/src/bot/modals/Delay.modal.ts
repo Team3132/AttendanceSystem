@@ -41,7 +41,7 @@ export class DelayModal {
 
     const userId = interaction.user.id;
 
-    await this.backendClient.bot.setEventRsvp.mutate({
+    await this.backendClient.client.bot.setEventRsvp.mutate({
       eventId,
       userId,
       status: 'LATE',
@@ -49,9 +49,10 @@ export class DelayModal {
     });
 
     const fetchEvent =
-      await this.backendClient.bot.getEventDetails.query(eventId);
+      await this.backendClient.client.bot.getEventDetails.query(eventId);
 
-    const rsvps = await this.backendClient.bot.getEventRsvps.query(eventId);
+    const rsvps =
+      await this.backendClient.client.bot.getEventRsvps.query(eventId);
 
     const frontendUrl = this.config.getOrThrow('FRONTEND_URL');
 

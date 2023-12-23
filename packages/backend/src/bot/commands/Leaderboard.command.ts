@@ -27,7 +27,9 @@ export class LeaderBoardCommand {
     guilds: guildId ? [guildId] : undefined,
   })
   public async onLeaderboard(@Context() [interaction]: SlashCommandContext) {
-    const currentLeaderboard = await this.backendClient.bot.leaderboard.query();
+    console.log(this.backendClient);
+    const currentLeaderboard =
+      await this.backendClient.client.bot.leaderboard.query();
 
     const headerLine = `# Outreach Leaderboard`;
 

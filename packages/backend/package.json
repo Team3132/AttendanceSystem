@@ -8,12 +8,13 @@
   "scripts": {
     "build": "tsup",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "node --enable-source-maps dist/src/main.js --inspect",
+    "start": "node --enable-source-maps dist/main.js --inspect",
     "dev": "tsup --watch",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "migrate": "drizzle-kit generate:pg",
     "typecheck": "tsc --noEmit"
   },
+  "type": "module",
   "main": "./dist/main.js",
   "dependencies": {
     "@discordjs/builders": "^1.7.0",
@@ -24,7 +25,6 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/schedule": "^4.0.0",
-    "@nestjs/serve-static": "^4.0.0",
     "@sentry/node": "^7.64.0",
     "@sentry/tracing": "^7.64.0",
     "@trpc/client": "11.0.0-alpha-next-2023-12-22-15-40-21.129",

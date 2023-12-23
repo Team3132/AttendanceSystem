@@ -24,10 +24,10 @@ export class RsvpButton {
   ) {
     try {
       const rsvpEvent =
-        await this.backendClient.bot.getEventDetails.query(eventId);
+        await this.backendClient.client.bot.getEventDetails.query(eventId);
 
       const eventRsvps =
-        await this.backendClient.bot.getEventRsvps.query(eventId);
+        await this.backendClient.client.bot.getEventRsvps.query(eventId);
 
       if (!eventRsvps.length)
         return interaction.reply({ content: 'No RSVPs', ephemeral: true });

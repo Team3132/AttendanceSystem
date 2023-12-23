@@ -25,7 +25,7 @@ export class CheckinModal {
     const userId = interaction.user.id;
 
     const fetchedEvent =
-      await this.backendClient.bot.getEventDetails.query(eventId);
+      await this.backendClient.client.bot.getEventDetails.query(eventId);
 
     if (!fetchedEvent) {
       return interaction.reply({
@@ -35,7 +35,7 @@ export class CheckinModal {
     }
 
     const { secret } =
-      await this.backendClient.bot.getEventSecret.query(eventId);
+      await this.backendClient.client.bot.getEventSecret.query(eventId);
 
     if (secret !== code) {
       return interaction.reply({
@@ -58,13 +58,13 @@ export class CheckinModal {
 
     const username = fetchedUser.nickname ?? fetchedUser.user.username;
 
-    await this.backendClient.bot.findOrCreateUser.mutate({
+    await this.backendClient.client.bot.findOrCreateUser.mutate({
       id: userId,
       username,
       roles: userRoles,
     });
 
-    await this.backendClient.bot.selfCheckin.mutate({
+    await this.backendClient.client.bot.selfCheckin.mutate({
       eventId,
       userId,
       secret,

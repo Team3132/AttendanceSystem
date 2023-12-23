@@ -31,7 +31,8 @@ export class TaskService {
     const enabled = this.config.get('REMINDER_ENABLED');
     if (!enabled) return;
 
-    const nextEvents = await this.backendClient.bot.getEventsInNextDay.query();
+    const nextEvents =
+      await this.backendClient.client.bot.getEventsInNextDay.query();
 
     const attendanceChannelId = this.config.getOrThrow('ATTENDANCE_CHANNEL');
 
@@ -56,9 +57,8 @@ export class TaskService {
 
     const messages = await Promise.all(
       nextEvents.map(async (nextEvent) => {
-        const nextEventRsvps = await this.backendClient.bot.getEventRsvps.query(
-          nextEvent.id,
-        );
+        const nextEventRsvps =
+          await this.backendClient.client.bot.getEventRsvps.query(nextEvent.id);
         return [
           rsvpReminderMessage(
             nextEvent,

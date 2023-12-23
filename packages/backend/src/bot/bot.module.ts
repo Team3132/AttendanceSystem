@@ -9,10 +9,11 @@ import { LeaderBoardCommand } from './commands/Leaderboard.command';
 import { CheckinButton } from './buttons/CheckinButton';
 import { CheckinModal } from './modals/Checkin.modal';
 import { CheckoutButton } from './buttons/CheckoutButton';
+import { BackendModule } from '@/backend/backend.module';
 
 @Module({
   controllers: [],
-  imports: [],
+  imports: [BackendModule],
   providers: [
     BotService,
     RsvpButton,

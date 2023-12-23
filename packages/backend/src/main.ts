@@ -39,26 +39,24 @@ async function bootstrap() {
     app.useGlobalFilters(new DiscordExceptionFilter());
   }
 
-  app.setGlobalPrefix('api');
+  // app.setGlobalPrefix('api');
 
-  app.enableCors({
-    origin: [config.getOrThrow('FRONTEND_URL')],
-    allowedHeaders: 'X-Requested-With,Content-Type',
-    credentials: true,
-    methods: 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
-  });
-
-  app.use(helmet());
+  // app.enableCors({
+  //   origin: [config.getOrThrow('FRONTEND_URL')],
+  //   allowedHeaders: 'X-Requested-With,Content-Type',
+  //   credentials: true,
+  //   methods: 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
+  // });
 
   // app.use(csurf());
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      stopAtFirstError: false,
-      transform: true,
-    }),
-  );
+  // app.useGlobalPipes(
+  //   new ValidationPipe({
+  //     whitelist: true,
+  //     stopAtFirstError: false,
+  //     transform: true,
+  //   }),
+  // );
 
-  await app.listen(3000);
+  await app.listen(3001);
 }
 bootstrap();

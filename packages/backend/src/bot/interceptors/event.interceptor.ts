@@ -35,9 +35,10 @@ export class EventAutocompleteInterceptor extends AutocompleteInterceptor {
     //   take: 10,
     // });
 
-    const options = await this.backendClient.bot.getAutocompleteEvents.query(
-      focused.value,
-    );
+    const options =
+      await this.backendClient.client.bot.getAutocompleteEvents.query(
+        focused.value,
+      );
 
     const dateEvent = (event: z.infer<typeof EventSchema>) => ({
       name: `${event.title} - ${DateTime.fromISO(

@@ -4,17 +4,14 @@ import {
   CreateTRPCClient,
   TRPCClientError,
   createTRPCClient,
-  createWSClient,
   httpBatchLink,
-  splitLink,
-  wsLink,
 } from '@trpc/client';
 import type { AppRouter } from 'newbackend';
 import SuperJSON from 'superjson';
 
 export const BACKEND_TOKEN = Symbol('BACKEND_TOKEN');
 
-export type BackendClient = CreateTRPCClient<AppRouter>;
+export type BackendClient = { client: CreateTRPCClient<AppRouter> };
 
 @Global()
 @Module({
@@ -28,39 +25,32 @@ export type BackendClient = CreateTRPCClient<AppRouter>;
           'BACKEND_SECRET_TOKEN',
         );
 
-        const wsClient = createWSClient({
-          url: backendTrpcUrl,
-        });
-
         const client = createTRPCClient<AppRouter>({
           transformer: SuperJSON,
           links: [
-            splitLink({
-              condition: (op) => op.type === 'subscription',
-              true: wsLink({
-                client: wsClient,
-              }),
-              false: httpBatchLink({
-                url: backendTrpcUrl,
-                fetch(url, options) {
-                  return fetch(url, {
-                    ...options,
-                    credentials: 'include',
-                    headers: {
-                      Authorization: `Bearer ${backendSecretToken}`,
-                    },
-                  });
-                },
-                // You can pass any HTTP headers you wish here
-              }),
+            httpBatchLink({
+              url: backendTrpcUrl,
+              fetch(url, options) {
+                return fetch(url, {
+                  ...options,
+                  credentials: 'include',
+                  headers: {
+                    Authorization: `Bearer ${backendSecretToken}`,
+                  },
+                });
+              },
+              // You can pass any HTTP headers you wish here
             }),
           ],
         });
-
-        return client;
+        return {
+          onModuleInit() {}, // OnModuleInit so that nestjs doesn't try and call a onModuleInit trpc method
+          client,
+        };
       },
     },
   ],
+  exports: [BACKEND_TOKEN],
 })
 export class BackendModule {}
 

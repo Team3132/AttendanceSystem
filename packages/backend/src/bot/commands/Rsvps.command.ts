@@ -33,13 +33,13 @@ export class RsvpsCommand {
     @Options() { meeting }: AttendanceDto,
   ) {
     const fetchedMeeting =
-      await this.backendClient.bot.getEventDetails.query(meeting);
+      await this.backendClient.client.bot.getEventDetails.query(meeting);
 
     if (!fetchedMeeting)
       return interaction.reply({ content: 'Unknown event', ephemeral: true });
 
     const fetchedRSVPs =
-      await this.backendClient.bot.getEventRsvps.query(meeting);
+      await this.backendClient.client.bot.getEventRsvps.query(meeting);
 
     if (!fetchedRSVPs.length)
       return interaction.reply({ content: 'No RSVPs', ephemeral: true });

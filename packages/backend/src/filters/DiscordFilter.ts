@@ -8,8 +8,15 @@ import { isTRPCClientError } from '@/backend/backend.module';
 export class DiscordExceptionFilter implements ExceptionFilter {
   public async catch(exception: Error, host: ArgumentsHost) {
     const logger = new Logger(DiscordExceptionFilter.name);
-    const [interaction] =
+    const necordArguments =
       NecordArgumentsHost.create(host).getContext<'interactionCreate'>();
+
+    if (!Array.isArray(necordArguments)) throw exception;
+
+    console.log({ necordArguments });
+    const [interaction] = necordArguments;
+
+    if (!interaction) return;
 
     const descriptionWithStack = exception.stack
       ? `${exception.message}\n\n${codeBlock(exception.stack)}`
@@ -28,10 +35,12 @@ export class DiscordExceptionFilter implements ExceptionFilter {
       } else if (interaction.replied) {
         await interaction.followUp({
           embeds: [errorEmbed],
+          ephemeral: true,
         });
       } else {
         await interaction.reply({
           embeds: [errorEmbed],
+          ephemeral: true,
         });
       }
     }

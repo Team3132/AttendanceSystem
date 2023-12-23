@@ -33,7 +33,7 @@ export class RequestRsvpCommand {
     @Options() { meeting }: RequestRSVPDto,
   ) {
     const eventDetails =
-      await this.backendClient.bot.getEventDetails.query(meeting);
+      await this.backendClient.client.bot.getEventDetails.query(meeting);
 
     if (!eventDetails)
       return interaction.reply({
@@ -42,7 +42,7 @@ export class RequestRsvpCommand {
       });
 
     const fetchedRSVPs =
-      await this.backendClient.bot.getEventRsvps.query(meeting);
+      await this.backendClient.client.bot.getEventRsvps.query(meeting);
 
     return interaction.reply(
       rsvpReminderMessage(

@@ -8,16 +8,12 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { TaskModule } from './task/task.module';
 import { NecordModule } from 'necord';
 import { BotService } from './bot/bot.service';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
+import { BackendModule } from './backend/backend.module';
 
 @Module({
   imports: [
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '../frontend'),
-      exclude: ['/api*'],
-    }),
     ConfigModule.forRoot({ isGlobal: true, cache: true }),
+    BackendModule,
     NecordModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
         token: configService.getOrThrow('DISCORD_TOKEN'),
