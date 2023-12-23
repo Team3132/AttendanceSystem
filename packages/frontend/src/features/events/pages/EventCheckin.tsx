@@ -13,7 +13,7 @@ import { useAlert } from "react-alert";
 import { isTRPCClientError } from "@/utils/trpc";
 import { SelfCheckinSchema } from "newbackend/schema";
 import ControlledTextField from "@/components/ControlledTextField";
-import queryUtils from "@/utils/queryUtils";
+import { queryUtils } from "@/trpcClient";
 
 const EventParamsSchema = z.object({
   eventId: z.string(),

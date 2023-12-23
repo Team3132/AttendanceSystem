@@ -5,8 +5,8 @@ import { Box, Container, Paper, Stack, Typography } from "@mui/material";
 import QRCode from "react-qr-code";
 import { useMemo } from "react";
 import ScaninCard from "../components/ScaninCard";
-import { trpc } from "@/utils/trpc";
-import queryUtils from "@/utils/queryUtils";
+import { trpc } from "@/trpcClient";
+import { queryUtils } from "@/trpcClient";
 
 const EventUrlParamsSchema = z.object({
   eventId: z.string(),

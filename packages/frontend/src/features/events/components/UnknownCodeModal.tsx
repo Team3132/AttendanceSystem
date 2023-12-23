@@ -15,7 +15,7 @@ import { useEffect, useMemo } from "react";
 import { Controller } from "react-hook-form";
 import { LoadingButton } from "@mui/lab";
 import useScanin from "../hooks/useScanin";
-import { trpc } from "../../../utils/trpc";
+import { trpc } from "@/trpcClient";
 import { useDisclosure } from "../../../hooks/useDisclosure";
 import useCreateUserScancode from "../../user/hooks/useCreateUserScancode";
 import { TRPCClientError } from "@trpc/client";

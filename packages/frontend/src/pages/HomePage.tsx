@@ -3,7 +3,7 @@ import ensureAuth from "../features/auth/utils/ensureAuth";
 import DefaultAppBar from "../components/DefaultAppBar";
 import ActiveEventsList from "../components/ActiveEventsList";
 import { useLoaderData } from "react-router-dom";
-import queryUtils from "@/utils/queryUtils";
+import { queryUtils } from "@/trpcClient";
 
 export async function loader() {
   await ensureAuth();

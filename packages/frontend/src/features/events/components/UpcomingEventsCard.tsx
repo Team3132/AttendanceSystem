@@ -16,7 +16,7 @@ import { DateTime } from "luxon";
 import { useState } from "react";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import LinkBehavior from "../../../utils/LinkBehavior";
-import { trpc } from "../../../utils/trpc";
+import { trpc } from "@/trpcClient";
 import { z } from "zod";
 import { EventTypeSchema } from "newbackend/schema";
 

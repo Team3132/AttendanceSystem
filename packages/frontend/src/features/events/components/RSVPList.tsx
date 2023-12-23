@@ -4,7 +4,7 @@ import MyRsvpStatus from "./MyRsvpStatus";
 import AdminRSVPListItem from "./AdminRsvpListItem";
 import { useDisclosure } from "../../../hooks/useDisclosure";
 import RSVPAddDialog from "./RSVPAddDialog";
-import { trpc } from "../../../utils/trpc";
+import { trpc } from "@/trpcClient";
 
 interface RsvpListProps {
   eventId: string;

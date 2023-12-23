@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { trpc } from "../../../utils/trpc";
+import { trpc } from "@/trpcClient";
 
 export default function useDeleteEvent() {
   const utils = trpc.useUtils();

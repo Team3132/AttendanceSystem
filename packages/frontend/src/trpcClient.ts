@@ -1,6 +1,10 @@
 import { httpBatchLink } from "@trpc/client";
-import { trpc } from "./utils/trpc";
 import SuperJSON from "superjson";
+import { createTRPCQueryUtils, createTRPCReact } from "@trpc/react-query";
+import { AppRouter } from "newbackend";
+import { QueryClient } from "@tanstack/react-query";
+
+export const trpc = createTRPCReact<AppRouter>();
 
 export const trpcClient = trpc.createClient({
   transformer: SuperJSON,
@@ -16,4 +20,11 @@ export const trpcClient = trpc.createClient({
       // You can pass any HTTP headers you wish here
     }),
   ],
+});
+
+export const queryClient = new QueryClient();
+
+export const queryUtils = createTRPCQueryUtils({
+  client: trpcClient,
+  queryClient: queryClient,
 });

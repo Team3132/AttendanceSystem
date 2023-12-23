@@ -5,8 +5,8 @@ import { z } from "zod";
 import { DateTime } from "luxon";
 import RsvpList from "../components/RSVPList";
 import DeleteEventButton from "../components/DeleteEventButton";
-import { trpc } from "@/utils/trpc";
-import queryUtils from "@/utils/queryUtils";
+import { trpc } from "@/trpcClient";
+import { queryUtils } from "@/trpcClient";
 
 const EventParamsSchema = z.object({
   eventId: z.string(),

@@ -3,8 +3,8 @@ import { z } from "zod";
 import ensureAuth from "../../auth/utils/ensureAuth";
 import { Container, Stack, Paper, Typography, List } from "@mui/material";
 import PendingEventListItem from "../../../components/AdminPendingEventListItem";
-import { trpc } from "@/utils/trpc";
-import queryUtils from "@/utils/queryUtils";
+import { trpc } from "@/trpcClient";
+import { queryUtils } from "@/trpcClient";
 
 const PendingEventsPageParamsSchema = z.object({
   userId: z.string(),

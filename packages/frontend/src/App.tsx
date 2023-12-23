@@ -8,13 +8,11 @@ import { useMemo } from "react";
 import { RouterProvider } from "react-router-dom";
 import router from "./router";
 import { QueryClientProvider } from "@tanstack/react-query";
-import queryClient from "./queryClient";
 import { Provider } from "react-alert";
 import MuiAlert from "./components/MuiAlert";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
-import { trpcClient } from "./trpcClient";
-import { trpc } from "./utils/trpc";
+import { queryClient, trpc, trpcClient } from "./trpcClient";
 
 /**
  * The root component of the application.

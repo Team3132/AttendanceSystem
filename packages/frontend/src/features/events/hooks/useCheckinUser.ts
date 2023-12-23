@@ -1,4 +1,4 @@
-import { trpc } from "../../../utils/trpc";
+import { trpc } from "@/trpcClient";
 
 export default function useCheckinUser() {
   const utils = trpc.useUtils();

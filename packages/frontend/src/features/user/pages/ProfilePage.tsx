@@ -4,8 +4,8 @@ import useRouteMatch from "../../../utils/useRouteMatch";
 import DefaultAppBar from "../../../components/DefaultAppBar";
 import { Tab, Tabs } from "@mui/material";
 import LinkBehavior from "../../../utils/LinkBehavior";
-import queryUtils from "@/utils/queryUtils";
-import { trpc } from "@/utils/trpc";
+import { queryUtils } from "@/trpcClient";
+import { trpc } from "@/trpcClient";
 
 interface TabItem {
   label: string;

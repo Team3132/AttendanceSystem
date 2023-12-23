@@ -1,6 +1,6 @@
 import { List, Typography } from "@mui/material";
 import UserListItem from "./UserListItem";
-import { trpc } from "../../../utils/trpc";
+import { trpc } from "@/trpcClient";
 
 export default function UserList() {
   const usersQuery = trpc.users.getUserList.useQuery();

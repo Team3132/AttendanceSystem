@@ -3,8 +3,8 @@ import { useLoaderData } from "react-router-dom";
 import { Container, List, Paper, Stack, Typography } from "@mui/material";
 import NewScancodeListItem from "../components/NewScancodeForm";
 import ScancodeListItem from "../components/ScancodeListItem";
-import queryUtils from "@/utils/queryUtils";
-import { trpc } from "@/utils/trpc";
+import { queryUtils } from "@/trpcClient";
+import { trpc } from "@/trpcClient";
 
 export async function loader() {
   await ensureAuth();

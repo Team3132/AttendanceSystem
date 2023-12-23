@@ -3,7 +3,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 import Datatable from "../../../components/DataTable";
 import { z } from "zod";
 import { LeaderBoardUser as LeaderboardUserSchema } from "newbackend/schema";
-import { trpc } from "@/utils/trpc";
+import { trpc } from "@/trpcClient";
 import { Duration } from "luxon";
 
 type LeaderboardUser = z.infer<typeof LeaderboardUserSchema>;

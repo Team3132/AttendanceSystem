@@ -2,7 +2,7 @@ import { List, Typography } from "@mui/material";
 import PendingEventListItem from "./PendingEventListItem";
 import { RSVPEventSchema } from "newbackend/schema";
 import { z } from "zod";
-import { trpc } from "../utils/trpc";
+import { trpc } from "@/trpcClient";
 
 interface ActiveEventsListProps {
   initialPendingEvents: z.infer<typeof RSVPEventSchema>[];

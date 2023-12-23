@@ -8,7 +8,7 @@ import {
   TextField,
 } from "@mui/material";
 import useUpdateRsvp from "../hooks/useUpdateRsvp";
-import { trpc } from "../../../utils/trpc";
+import { trpc } from "@/trpcClient";
 import { z } from "zod";
 import { RSVPSchema } from "newbackend/schema";
 

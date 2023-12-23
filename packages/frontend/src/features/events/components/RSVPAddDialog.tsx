@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { Controller } from "react-hook-form";
 import useAddUserRsvp from "../hooks/useAddRsvp";
-import { trpc } from "../../../utils/trpc";
+import { trpc } from "@/trpcClient";
 import { TRPCClientError } from "@trpc/client";
 
 interface RSVPAddDialogProps {

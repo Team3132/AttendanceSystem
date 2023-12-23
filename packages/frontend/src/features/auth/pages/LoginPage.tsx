@@ -1,7 +1,7 @@
 import { Button, Container, Paper, Stack, Typography } from "@mui/material";
 import { useLoaderData } from "react-router-dom";
 import ensureUnauth from "../utils/ensureUnauth";
-import { trpc } from "@/utils/trpc";
+import { trpc } from "@/trpcClient";
 
 export const loader = async () => {
   const initialAuthStatus = await ensureUnauth();

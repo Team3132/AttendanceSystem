@@ -1,5 +1,5 @@
+import { queryUtils } from "@/trpcClient";
 import { redirect } from "react-router-dom";
-import queryUtils from "@/utils/queryUtils";
 
 /**
  * Ensures that the user is authenticated. If not, it will redirect to the login page.

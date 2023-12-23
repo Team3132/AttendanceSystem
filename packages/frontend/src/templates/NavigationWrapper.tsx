@@ -10,7 +10,7 @@ import {
   FaRegCalendar,
 } from "react-icons/fa6";
 import { useMemo } from "react";
-import { trpc } from "@/utils/trpc";
+import { trpc } from "@/trpcClient";
 
 export async function loader() {
   const initialAuthStatus = await ensureAuth();

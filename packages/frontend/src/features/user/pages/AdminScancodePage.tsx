@@ -3,8 +3,8 @@ import ensureAuth from "../../auth/utils/ensureAuth";
 import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
 import { Container, List, Paper, Stack, Typography } from "@mui/material";
 import ScancodeListItem from "../components/AdminScancodeListItem";
-import queryUtils from "@/utils/queryUtils";
-import { trpc } from "@/utils/trpc";
+import { queryUtils } from "@/trpcClient";
+import { trpc } from "@/trpcClient";
 import NewAdminScancodeListItem from "../components/NewAdminScancodeForm";
 
 const UserParamsSchema = z.object({

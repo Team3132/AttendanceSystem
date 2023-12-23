@@ -47,17 +47,13 @@ const router = createBrowserRouter([
                     path: "check-in",
                     lazy: () => import("./features/events/pages/EventCheckin"),
                   },
-                  {
-                    path: "qr-code",
-                    lazy: () => import("./features/events/pages/EventQRCode"),
-                  },
                 ],
               },
             ],
           },
           {
             path: "/profile",
-            lazy: () => import("./features/user/pages/AdminProfilePage"),
+            lazy: () => import("./features/user/pages/ProfilePage"),
             children: [
               {
                 index: true,
@@ -75,11 +71,12 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                lazy: () => import("./features/user/pages/ScancodePage"),
+                lazy: () => import("./features/user/pages/AdminProfilePage"),
               },
               {
                 path: "pending",
-                lazy: () => import("./features/user/pages/PendingEventsPage"),
+                lazy: () =>
+                  import("./features/user/pages/AdminPendingEventsPage"),
               },
             ],
           },

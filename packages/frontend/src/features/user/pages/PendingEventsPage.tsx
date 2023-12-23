@@ -2,8 +2,8 @@ import { useLoaderData } from "react-router-dom";
 import ensureAuth from "../../auth/utils/ensureAuth";
 import { Container, Stack, Paper, Typography, List } from "@mui/material";
 import PendingEventListItem from "../../../components/PendingEventListItem";
-import queryUtils from "@/utils/queryUtils";
-import { trpc } from "@/utils/trpc";
+import { queryUtils } from "@/trpcClient";
+import { trpc } from "@/trpcClient";
 
 export async function loader() {
   const initialAuthStatus = await ensureAuth();

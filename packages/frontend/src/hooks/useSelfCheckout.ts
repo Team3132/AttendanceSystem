@@ -1,4 +1,4 @@
-import { trpc } from "../utils/trpc";
+import { trpc } from "@/trpcClient";
 
 export default function useSelfCheckout() {
   const utils = trpc.useUtils();
