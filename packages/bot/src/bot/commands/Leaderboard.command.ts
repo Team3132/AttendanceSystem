@@ -1,4 +1,4 @@
-import { Inject, Injectable, UseInterceptors } from '@nestjs/common';
+import { Inject, Injectable, UseGuards, UseInterceptors } from '@nestjs/common';
 import { SlashCommand, Context, type SlashCommandContext } from 'necord';
 
 import { EventAutocompleteInterceptor } from '../interceptors/event.interceptor';
@@ -6,6 +6,7 @@ import { DateTime, Duration } from 'luxon';
 import { LeaderBoardUser } from 'backend/schema';
 import { z } from 'zod';
 import { BACKEND_TOKEN, type BackendClient } from '@/backend/backend.module';
+import { GuildMemberGuard } from '../guards/GuildMemberGuard';
 
 const leaderboardLine = (data: z.infer<typeof LeaderBoardUser>) =>
   `${data.rank}. **${data.username}** - ${Duration.fromISO(
@@ -20,6 +21,7 @@ export class LeaderBoardCommand {
     @Inject(BACKEND_TOKEN) private readonly backendClient: BackendClient,
   ) {}
 
+  @UseGuards(GuildMemberGuard)
   @UseInterceptors(EventAutocompleteInterceptor)
   @SlashCommand({
     name: 'leaderboard',

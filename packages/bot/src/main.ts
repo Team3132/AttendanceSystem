@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import { Settings } from 'luxon';
 import { SentryFilter } from './filters/SentryFilter';
 import { DiscordExceptionFilter } from './filters/DiscordFilter';
+import { ForbiddenDiscordFilter } from './filters/ForbiddenDiscordFilter';
 
 Settings.defaultLocale = 'en-au';
 Settings.defaultZone = 'Australia/Sydney';
@@ -29,14 +30,18 @@ async function bootstrap() {
 
     const { httpAdapter } = app.get(HttpAdapterHost);
     app.useGlobalFilters(
-      new SentryFilter(httpAdapter),
       new DiscordExceptionFilter(),
+      new ForbiddenDiscordFilter(),
+      new SentryFilter(httpAdapter),
     );
 
     logger.log('Sentry enabled');
   } else {
     logger.warn('Sentry disabled');
-    app.useGlobalFilters(new DiscordExceptionFilter());
+    app.useGlobalFilters(
+      new DiscordExceptionFilter(),
+      new ForbiddenDiscordFilter(),
+    );
   }
 
   // app.setGlobalPrefix('api');

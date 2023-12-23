@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GuildMember } from 'discord.js';
 import { Button, Context, type ButtonContext, ComponentParam } from 'necord';
@@ -8,6 +8,7 @@ import { DelayModal } from '../modals/Delay.modal';
 import { BACKEND_TOKEN, type BackendClient } from '@/backend/backend.module';
 import { z } from 'zod';
 import { RSVPStatusSchema } from 'backend/schema';
+import { GuildMemberGuard } from '../guards/GuildMemberGuard';
 
 @Injectable()
 export class RsvpsButton {
@@ -18,6 +19,7 @@ export class RsvpsButton {
 
   private readonly logger = new Logger(RsvpsButton.name);
 
+  @UseGuards(GuildMemberGuard)
   @Button('event/:eventId/rsvp/:rsvpStatus')
   public async onRsvpButton(
     @Context() [interaction]: ButtonContext,

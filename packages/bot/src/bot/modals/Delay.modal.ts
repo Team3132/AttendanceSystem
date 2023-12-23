@@ -4,13 +4,14 @@ import {
   ModalBuilder,
   TextInputBuilder,
 } from '@discordjs/builders';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TextInputStyle } from 'discord.js';
 import { Ctx, Modal, type ModalContext, ModalParam } from 'necord';
 import { z } from 'zod';
 import rsvpReminderMessage from '../utils/rsvpReminderMessage';
 import { BACKEND_TOKEN, type BackendClient } from '@/backend/backend.module';
+import { GuildMemberGuard } from '../guards/GuildMemberGuard';
 
 @Injectable()
 export class DelayModal {
@@ -19,6 +20,7 @@ export class DelayModal {
     @Inject(BACKEND_TOKEN) private readonly backendClient: BackendClient,
   ) {}
 
+  @UseGuards(GuildMemberGuard)
   @Modal(`event/:eventId/delay`)
   public async onDelayModal(
     @Ctx() [interaction]: ModalContext,

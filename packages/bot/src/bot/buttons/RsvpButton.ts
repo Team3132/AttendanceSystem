@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EmbedBuilder } from 'discord.js';
 import { DateTime } from 'luxon';
@@ -9,6 +9,7 @@ import {
   isTRPCClientError,
   type BackendClient,
 } from '@/backend/backend.module';
+import { GuildMemberGuard } from '../guards/GuildMemberGuard';
 
 @Injectable()
 export class RsvpButton {
@@ -17,6 +18,7 @@ export class RsvpButton {
     @Inject(BACKEND_TOKEN) private readonly backendClient: BackendClient,
   ) {}
 
+  @UseGuards(GuildMemberGuard)
   @Button('event/:eventId/rsvps')
   public async onRsvpsButton(
     @Context() [interaction]: ButtonContext,

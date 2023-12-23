@@ -4,10 +4,11 @@ import {
   ModalBuilder,
   TextInputBuilder,
 } from '@discordjs/builders';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, UseGuards } from '@nestjs/common';
 import { GuildMember, TextInputStyle } from 'discord.js';
 import { Ctx, Modal, type ModalContext, ModalParam } from 'necord';
 import { BACKEND_TOKEN, type BackendClient } from '@/backend/backend.module';
+import { GuildMemberGuard } from '../guards/GuildMemberGuard';
 
 @Injectable()
 export class CheckinModal {
@@ -15,6 +16,7 @@ export class CheckinModal {
     @Inject(BACKEND_TOKEN) private readonly backendClient: BackendClient,
   ) {}
 
+  @UseGuards(GuildMemberGuard)
   @Modal(`event/:eventId/checkin`)
   public async onCheckinModal(
     @Ctx() [interaction]: ModalContext,

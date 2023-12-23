@@ -1,10 +1,11 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, UseGuards } from '@nestjs/common';
 import { Button, Context, type ButtonContext, ComponentParam } from 'necord';
 import {
   BACKEND_TOKEN,
   isTRPCClientError,
   type BackendClient,
 } from '@/backend/backend.module';
+import { GuildMemberGuard } from '../guards/GuildMemberGuard';
 
 @Injectable()
 export class CheckoutButton {
@@ -12,6 +13,7 @@ export class CheckoutButton {
     @Inject(BACKEND_TOKEN) private readonly backendClient: BackendClient,
   ) {}
 
+  @UseGuards(GuildMemberGuard)
   @Button('event/:eventId/checkout')
   public async onCheckout(
     @Context() [interaction]: ButtonContext,

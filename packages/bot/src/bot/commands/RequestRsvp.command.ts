@@ -1,4 +1,4 @@
-import { Inject, Injectable, UseInterceptors } from '@nestjs/common';
+import { Inject, Injectable, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PermissionFlagsBits } from 'discord.js';
 import {
@@ -11,6 +11,7 @@ import { RequestRSVPDto } from '../dto/requestRSVP.dto';
 import { EventAutocompleteInterceptor } from '../interceptors/event.interceptor';
 import rsvpReminderMessage from '../utils/rsvpReminderMessage';
 import { BACKEND_TOKEN, type BackendClient } from '@/backend/backend.module';
+import { GuildMemberGuard } from '../guards/GuildMemberGuard';
 
 const guildId = process.env['GUILD_ID'];
 
@@ -21,6 +22,7 @@ export class RequestRsvpCommand {
     private readonly config: ConfigService,
   ) {}
 
+  @UseGuards(GuildMemberGuard)
   @UseInterceptors(EventAutocompleteInterceptor)
   @SlashCommand({
     name: 'requestrsvp',
