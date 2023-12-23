@@ -174,6 +174,9 @@ importers:
       class-validator:
         specifier: ^0.14.0
         version: 0.14.0
+      cron:
+        specifier: ^3.1.6
+        version: 3.1.6
       discord-api-types:
         specifier: ^0.37.20
         version: 0.37.62
@@ -229,9 +232,6 @@ importers:
       '@types/cookie-parser':
         specifier: ^1.4.3
         version: 1.4.6
-      '@types/cron':
-        specifier: ^2.0.0
-        version: 2.4.0
       '@types/express':
         specifier: ^4.17.13
         version: 4.17.21
@@ -3933,13 +3933,6 @@ packages:
     resolution: {integrity: sha512-LZ8SD3LpNmLMDLkG2oCBjZg+ETnx6XdCjydUE0HwojDmnDfDUnhMKKbtth1TZh+hzcqb03azrYWoXLS8sMXdqg==}
     dev: true
 
-  /@types/cron@2.4.0:
-    resolution: {integrity: sha512-5bBaAkqvSFBX8JMi/xCofNzG5E594TNsApMz68dLd/sQYz/HGQqgcxGHTRjOvD4G3Y+YF1Oo3S7QdCvKt1KAJQ==}
-    deprecated: This is a stub types definition. cron provides its own type definitions, so you do not need this installed.
-    dependencies:
-      cron: 3.1.6
-    dev: true
-
   /@types/eslint-scope@3.7.6:
     resolution: {integrity: sha512-zfM4ipmxVKWdxtDaJ3MP3pBurDXOCoyjvlpE3u6Qzrmw4BPbfm4/ambIeTk/r/J0iq/+2/xp0Fmt+gFvXJY2PQ==}
     dependencies:
@@ -5718,6 +5711,7 @@ packages:
     dependencies:
       '@types/luxon': 3.3.6
       luxon: 3.4.4
+    dev: false
 
   /cross-spawn@5.1.0:
     resolution: {integrity: sha512-pTgQJ5KC0d2hcY8eyL1IzlBPYjTkyH72XRZPnLyKus2mBfNjQs3klqbJU2VILqZryAZUt9JOb3h/mWMy23/f5A==}
@@ -8673,6 +8667,7 @@ packages:
   /luxon@3.4.4:
     resolution: {integrity: sha512-zobTr7akeGHnv7eBOXcRgMeCP6+uyYsczwmeRCauvpvaAltgNyTbLH/+VaEAPUeWBT+1GuNmz4wC/6jtQzbbVA==}
     engines: {node: '>=12'}
+    dev: false
 
   /macos-release@2.5.1:
     resolution: {integrity: sha512-DXqXhEM7gW59OjZO8NIjBCz9AQ1BEMrfiOAl4AYByHCtVHRF4KoGNO8mqQeM8lRCtQe/UnJ4imO/d2HdkKsd+A==}

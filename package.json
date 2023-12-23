@@ -10,8 +10,9 @@
     "packages/*"
   ],
   "scripts": {
-    "back": "pnpm run --filter backend",
-    "front": "pnpm run --filter frontend"
+    "bot": "pnpm run --filter bot",
+    "backend": "pnpm run --filter backend",
+    "frontend": "pnpm run --filter frontend"
   },
   "devDependencies": {
     "concurrently": "^8.0.0",

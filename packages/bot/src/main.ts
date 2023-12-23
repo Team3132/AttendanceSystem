@@ -1,8 +1,7 @@
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import { Logger, ValidationPipe } from '@nestjs/common';
-import helmet from 'helmet';
+import { Logger } from '@nestjs/common';
 import { Settings } from 'luxon';
 import { SentryFilter } from './filters/SentryFilter';
 import { DiscordExceptionFilter } from './filters/DiscordFilter';

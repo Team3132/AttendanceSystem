@@ -15,6 +15,7 @@ import { EditUserAttendanceSchema } from "../schema/EditUserAttendanceSchema";
 import { SelfCheckinSchema } from "../schema/SelfCheckinSchema";
 import { RSVPUserSchema, UserCheckinSchema } from "../schema";
 import { CreateBlankUserRsvpSchema } from "../schema/CreateBlankUserRsvpSchema";
+import clampDateTime from "../utils/clampDateTime";
 
 /**
  * Get upcoming events in the next 24 hours for the daily bot announcement
@@ -312,12 +313,19 @@ export async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
     });
   }
 
+  const eventStartDateTime = DateTime.fromISO(dbEvent.startDate);
+  const eventEndDateTime = DateTime.fromISO(dbEvent.endDate);
+
   const [updatedRsvp] = await db
     .insert(rsvp)
     .values({
       userId,
       eventId,
-      checkinTime: DateTime.local().toISO(),
+      checkinTime: clampDateTime(
+        DateTime.local(),
+        eventStartDateTime,
+        eventEndDateTime
+      ).toISO(),
       updatedAt: DateTime.local().toISO(),
       createdAt: DateTime.local().toISO(),
     })
@@ -325,7 +333,11 @@ export async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
       set: {
         userId,
         eventId,
-        checkinTime: DateTime.local().toISO(),
+        checkinTime: clampDateTime(
+          DateTime.local(),
+          eventStartDateTime,
+          eventEndDateTime
+        ).toISO(),
         updatedAt: DateTime.local().toISO(),
       },
       target: [rsvp.eventId, rsvp.userId],
@@ -379,13 +391,20 @@ export async function userScanin(params: z.infer<typeof ScaninSchema>) {
 
   const { userId } = dbScancode;
 
+  const eventStartDateTime = DateTime.fromISO(dbEvent.startDate);
+  const eventEndDateTime = DateTime.fromISO(dbEvent.endDate);
+
   // find rsvp
   const [updatedRsvp] = await db
     .insert(rsvp)
     .values({
       userId,
       eventId,
-      checkinTime: DateTime.local().toISO(),
+      checkinTime: clampDateTime(
+        DateTime.local(),
+        eventStartDateTime,
+        eventEndDateTime
+      ).toISO(),
       updatedAt: DateTime.local().toISO(),
       createdAt: DateTime.local().toISO(),
     })
@@ -393,7 +412,11 @@ export async function userScanin(params: z.infer<typeof ScaninSchema>) {
       set: {
         userId,
         eventId,
-        checkinTime: DateTime.local().toISO(),
+        checkinTime: clampDateTime(
+          DateTime.local(),
+          eventStartDateTime,
+          eventEndDateTime
+        ).toISO(),
         updatedAt: DateTime.local().toISO(),
       },
       target: [rsvp.eventId, rsvp.userId],
@@ -424,10 +447,21 @@ export async function userCheckout(userId: string, eventId: string) {
       and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
   });
 
+  const existingEvent = await db.query.event.findFirst({
+    where: eq(event.id, eventId),
+  });
+
   if (!existingRsvp) {
     throw new TRPCError({
       code: "NOT_FOUND",
-      message: "RSVP not found",
+      message: "RSVP not found, please check in first",
+    });
+  }
+
+  if (!existingEvent) {
+    throw new TRPCError({
+      code: "NOT_FOUND",
+      message: "Event not found",
     });
   }
 
@@ -445,12 +479,19 @@ export async function userCheckout(userId: string, eventId: string) {
     });
   }
 
+  const existingRsvpCheckinTime = DateTime.fromISO(existingRsvp.checkinTime);
+  const eventEndDateTime = DateTime.fromISO(existingEvent.endDate);
+
   const [updatedRsvp] = await db
     .insert(rsvp)
     .values({
       userId,
       eventId,
-      checkoutTime: DateTime.local().toISO(),
+      checkoutTime: clampDateTime(
+        DateTime.local(),
+        existingRsvpCheckinTime,
+        eventEndDateTime
+      ).toISO(),
       createdAt: DateTime.local().toISO(),
       updatedAt: DateTime.local().toISO(),
     })
@@ -458,7 +499,11 @@ export async function userCheckout(userId: string, eventId: string) {
       set: {
         userId,
         eventId,
-        checkoutTime: DateTime.local().toISO(),
+        checkoutTime: clampDateTime(
+          DateTime.local(),
+          existingRsvpCheckinTime,
+          eventEndDateTime
+        ).toISO(),
         updatedAt: DateTime.local().toISO(),
       },
       target: [rsvp.eventId, rsvp.userId],
@@ -559,12 +604,19 @@ export async function selfCheckin(
     });
   }
 
+  const eventStartDateTime = DateTime.fromISO(dbEvent.startDate);
+  const eventEndDateTime = DateTime.fromISO(dbEvent.endDate);
+
   const [updatedRsvp] = await db
     .insert(rsvp)
     .values({
       userId,
       eventId,
-      checkinTime: DateTime.local().toISO(),
+      checkinTime: clampDateTime(
+        DateTime.local(),
+        eventStartDateTime,
+        eventEndDateTime
+      ).toISO(),
       updatedAt: DateTime.local().toISO(),
       createdAt: DateTime.local().toISO(),
     })
@@ -572,7 +624,11 @@ export async function selfCheckin(
       set: {
         userId,
         eventId,
-        checkinTime: DateTime.local().toISO(),
+        checkinTime: clampDateTime(
+          DateTime.local(),
+          eventStartDateTime,
+          eventEndDateTime
+        ).toISO(),
         updatedAt: DateTime.local().toISO(),
       },
       target: [rsvp.eventId, rsvp.userId],
