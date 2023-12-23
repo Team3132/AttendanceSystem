@@ -4,7 +4,7 @@ import {
   CreateTRPCClient,
   TRPCClientError,
   createTRPCClient,
-  httpBatchLink,
+  httpLink,
 } from '@trpc/client';
 import type { AppRouter } from 'backend';
 import SuperJSON from 'superjson';
@@ -28,7 +28,7 @@ export type BackendClient = { client: CreateTRPCClient<AppRouter> };
         const client = createTRPCClient<AppRouter>({
           transformer: SuperJSON,
           links: [
-            httpBatchLink({
+            httpLink({
               url: backendTrpcUrl,
               fetch(url, options) {
                 return fetch(url, {
@@ -44,7 +44,6 @@ export type BackendClient = { client: CreateTRPCClient<AppRouter> };
           ],
         });
         return {
-          onModuleInit() {}, // OnModuleInit so that nestjs doesn't try and call a onModuleInit trpc method
           client,
         };
       },
