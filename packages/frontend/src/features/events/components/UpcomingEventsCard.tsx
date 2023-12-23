@@ -23,8 +23,10 @@ import { EventTypeSchema } from "backend/schema";
 export default function UpcomingEventsCard() {
   const authStatusQuery = trpc.auth.status.useQuery();
 
-  const [fromDate, setFromDate] = useState(DateTime.now());
-  const [toDate, setToDate] = useState(DateTime.now().plus({ month: 1 }));
+  const [fromDate, setFromDate] = useState(DateTime.now().startOf("day"));
+  const [toDate, setToDate] = useState(
+    DateTime.now().plus({ month: 1 }).startOf("day")
+  );
 
   const [type, setType] = useState<
     z.infer<typeof EventTypeSchema> | undefined
