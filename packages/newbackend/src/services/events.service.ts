@@ -13,7 +13,7 @@ import { EditRSVPSelfSchema } from "../schema/EditRSVPSelfSchema";
 import { ScaninSchema } from "../schema/ScaninSchema";
 import { EditUserAttendanceSchema } from "../schema/EditUserAttendanceSchema";
 import { SelfCheckinSchema } from "../schema/SelfCheckinSchema";
-import { UserCheckinSchema } from "../schema";
+import { RSVPUserSchema, UserCheckinSchema } from "../schema";
 import { CreateBlankUserRsvpSchema } from "../schema/CreateBlankUserRsvpSchema";
 
 /**
@@ -155,14 +155,16 @@ export async function getEventRsvp(eventId: string, userId: string) {
       and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
   });
 
-  return eventRsvp;
+  return eventRsvp ?? null;
 }
 
 /**
  * Get the RSVPs of an event with the user's details
  * @param eventId The id of the event
  */
-export async function getEventRsvps(eventId: string) {
+export async function getEventRsvps(
+  eventId: string
+): Promise<Array<z.infer<typeof RSVPUserSchema>>> {
   const eventRsvps = await db.query.rsvp.findMany({
     where: (rsvp, { and }) => and(eq(rsvp.eventId, eventId)),
     with: {

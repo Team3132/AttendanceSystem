@@ -32,7 +32,7 @@ export default function MyRsvpStatus(props: MyRsvpStatusProps) {
     });
   };
 
-  if (myRsvpStatusQuery.data) {
+  if (myRsvpStatusQuery.data !== undefined) {
     return (
       <FormControl
         disabled={updateRsvpMutation.isPending}
@@ -43,10 +43,10 @@ export default function MyRsvpStatus(props: MyRsvpStatusProps) {
           labelId="select-rsvp-status-label"
           id="select-rsvp-status"
           //   value={age}
-          value={myRsvpStatusQuery.data.status ?? ""}
+          value={myRsvpStatusQuery.data?.status ?? ""}
           onChange={handleChange}
           label="My Status"
-          displayEmpty={false}
+          displayEmpty={true}
         >
           <MenuItem value={"YES"}>Coming</MenuItem>
           <MenuItem value={"NO"}>Not Coming</MenuItem>

@@ -20,15 +20,15 @@ export async function loader({ params }: LoaderFunctionArgs) {
   const initialEventData = await queryUtils.events.getEvent.ensureData(eventId);
 
   return {
+    eventId,
     initialAuthStatus,
     initialEventData,
   };
 }
 
 export function Component() {
-  const { initialEventData, initialAuthStatus } = useLoaderData() as Awaited<
-    ReturnType<typeof loader>
-  >;
+  const { initialEventData, initialAuthStatus, eventId } =
+    useLoaderData() as Awaited<ReturnType<typeof loader>>;
 
   const eventQuery = trpc.events.getEvent.useQuery(initialEventData.id, {
     initialData: initialEventData,
@@ -114,10 +114,7 @@ export function Component() {
         ) : null}
 
         <Grid item xs={12}>
-          <RsvpList
-            eventId={initialEventData.id}
-            admin={authStatusQuery.data.isAdmin}
-          />
+          <RsvpList eventId={eventId} admin={authStatusQuery.data.isAdmin} />
         </Grid>
       </Grid>
     </Container>

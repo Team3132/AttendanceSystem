@@ -49,7 +49,7 @@ export const eventRouter = t.router({
     .query(({ input }) => getEventSecret(input)),
   getSelfEventRsvp: sessionProcedure
     .input(z.string().describe("The event ID"))
-    .output(z.union([RSVPSchema, z.undefined()]))
+    .output(RSVPSchema.nullable())
     .query(({ input, ctx }) => getEventRsvp(input, ctx.user.id)),
   getEventRsvps: sessionProcedure
     .input(z.string().describe("The event ID"))

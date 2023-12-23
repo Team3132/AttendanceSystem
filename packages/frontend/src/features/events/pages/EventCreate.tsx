@@ -94,7 +94,6 @@ export function Component() {
           <ControlledSelect
             control={control}
             name="type"
-            multiple
             label="Type"
             displayEmpty={true}
             options={[
