@@ -71,7 +71,7 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                lazy: () => import("./features/user/pages/AdminProfilePage"),
+                lazy: () => import("./features/user/pages/AdminScancodePage"),
               },
               {
                 path: "pending",

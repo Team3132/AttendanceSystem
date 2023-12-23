@@ -75,38 +75,42 @@ export async function getUserList() {
 
 export async function createUserScancode(userId: string, scancodeCode: string) {
   const [dbScancode] = await db
+    .select()
+    .from(scancode)
+    .where(eq(scancode.code, scancodeCode))
+    .limit(1);
+
+  if (dbScancode) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "Scancode already exists",
+    });
+  }
+
+  const [createdScancode] = await db
     .insert(scancode)
     .values({
-      code: scancodeCode,
       userId,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      code: scancodeCode,
     })
-    .onConflictDoNothing()
     .returning();
 
-  if (!dbScancode) {
+  if (!createdScancode) {
     throw new TRPCError({
       code: "BAD_REQUEST",
-      message: "Scancode already exists",
+      message: "Scancode does not exist",
     });
   }
 
-  if (userId === dbScancode.userId) {
-    throw new TRPCError({
-      code: "BAD_REQUEST",
-      message: "Scancode already exists",
-    });
-  }
-
-  return dbScancode;
+  return createdScancode;
 }
 
 export async function removeScancode(userId: string, code: string) {
   const [dbScancode] = await db
-    .delete(scancode)
+    .select()
+    .from(scancode)
     .where(and(eq(scancode.userId, userId), eq(scancode.code, code)))
-    .returning();
+    .limit(1);
 
   if (!dbScancode) {
     throw new TRPCError({
@@ -115,17 +119,17 @@ export async function removeScancode(userId: string, code: string) {
     });
   }
 
-  const [deletedScancode] = await db
+  await db
     .delete(scancode)
     .where(and(eq(scancode.userId, userId), eq(scancode.code, code)))
     .returning();
 
-  if (!deletedScancode) {
-    throw new TRPCError({
-      code: "BAD_REQUEST",
-      message: "Scancode does not exist",
-    });
-  }
+  // if (!deletedScancode) {
+  //   throw new TRPCError({
+  //     code: "BAD_REQUEST",
+  //     message: "Scancode does not exist",
+  //   });
+  // }
 
-  return deletedScancode;
+  return dbScancode;
 }
