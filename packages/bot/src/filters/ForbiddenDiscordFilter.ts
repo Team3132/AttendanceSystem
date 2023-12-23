@@ -23,7 +23,11 @@ export class ForbiddenDiscordFilter implements ExceptionFilter {
       .setColor('Red')
       .setTitle("You don't have permission to do that.");
 
-    if (interaction.type === InteractionType.ApplicationCommand) {
+    if (
+      interaction.type === InteractionType.ApplicationCommand ||
+      interaction.type === InteractionType.MessageComponent ||
+      interaction.type === InteractionType.ModalSubmit
+    ) {
       if (interaction.deferred) {
         await interaction.editReply({
           embeds: [errorEmbed],
@@ -39,16 +43,10 @@ export class ForbiddenDiscordFilter implements ExceptionFilter {
           ephemeral: true,
         });
       }
-    } else if (interaction.type === InteractionType.MessageComponent) {
-      await interaction.reply({
-        embeds: [errorEmbed],
-        ephemeral: true,
-      });
-    } else if (interaction.type === InteractionType.ModalSubmit) {
-      await interaction.reply({
-        embeds: [errorEmbed],
-        ephemeral: true,
-      });
+    } else if (
+      interaction.type === InteractionType.ApplicationCommandAutocomplete
+    ) {
+      await interaction.respond([]);
     }
   }
 }

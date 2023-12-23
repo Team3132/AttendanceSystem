@@ -26,7 +26,11 @@ export class DiscordExceptionFilter implements ExceptionFilter {
       .setTitle('An error occurred')
       .setDescription(descriptionWithStack);
 
-    if (interaction.type === InteractionType.ApplicationCommand) {
+    if (
+      interaction.type === InteractionType.ApplicationCommand ||
+      interaction.type === InteractionType.MessageComponent ||
+      interaction.type === InteractionType.ModalSubmit
+    ) {
       if (interaction.deferred) {
         await interaction.editReply({
           embeds: [errorEmbed],
@@ -42,16 +46,10 @@ export class DiscordExceptionFilter implements ExceptionFilter {
           ephemeral: true,
         });
       }
-    } else if (interaction.type === InteractionType.MessageComponent) {
-      await interaction.reply({
-        embeds: [errorEmbed],
-        ephemeral: true,
-      });
-    } else if (interaction.type === InteractionType.ModalSubmit) {
-      await interaction.reply({
-        embeds: [errorEmbed],
-        ephemeral: true,
-      });
+    } else if (
+      interaction.type === InteractionType.ApplicationCommandAutocomplete
+    ) {
+      await interaction.respond([]);
     }
 
     if (!isTRPCClientError(exception)) {
