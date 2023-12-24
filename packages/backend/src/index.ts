@@ -126,6 +126,12 @@ server.listen(
   }
 );
 
+process.on("SIGINT", async () => {
+  await server.close();
+
+  process.exit(0);
+});
+
 registerCron();
 
 export { type AppRouter };

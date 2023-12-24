@@ -12,8 +12,13 @@ import { QueryClient } from "@tanstack/react-query";
 
 export const trpc = createTRPCReact<AppRouter>();
 
+const backendUrl = new URL(`${import.meta.env["VITE_BACKEND_URL"]}/trpc`);
+
+// change the protocol to ws
+const wsBackendUrl = new URL(backendUrl.toString().replace("http", "ws"));
+
 const wsClient = createWSClient({
-  url: `${import.meta.env["VITE_BACKEND_URL"]}/trpc`,
+  url: wsBackendUrl.toString(),
 });
 
 export const trpcClient = trpc.createClient({
@@ -25,7 +30,7 @@ export const trpcClient = trpc.createClient({
         client: wsClient,
       }),
       false: httpBatchLink({
-        url: `${import.meta.env["VITE_BACKEND_URL"]}/trpc`,
+        url: backendUrl.toString(),
         fetch(url, options) {
           return fetch(url, {
             ...options,
@@ -45,6 +50,7 @@ proxyclient.invalidator.subscribe(undefined, {
     queryClient.invalidateQueries({
       queryKey: key,
     });
+    console.log("invalidated", key);
   },
 });
 
