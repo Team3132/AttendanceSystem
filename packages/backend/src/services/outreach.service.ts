@@ -1,7 +1,8 @@
-import { and, eq, gte, isNotNull, sql } from "drizzle-orm";
+import { and, arrayOverlaps, eq, gte, isNotNull, not, sql } from "drizzle-orm";
 import db from "../drizzle/db";
 import { event, rsvp, user } from "../drizzle/schema";
 import { DateTime } from "luxon";
+import env from "../env";
 
 /**
  * Get the sum of the difference between the start and end dates of all
@@ -44,7 +45,7 @@ export function getOutreachTime() {
       .where(
         and(
           eq(event.type, "Outreach"),
-          // not(arrayOverlaps(user.roles, ["mentorId"]))
+          not(arrayOverlaps(user.roles, [env.MENTOR_ROLE_ID])),
           isNotNull(rsvp.checkinTime),
           isNotNull(rsvp.checkoutTime),
           gte(event.startDate, aprilIsoDate)
