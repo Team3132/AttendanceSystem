@@ -15,6 +15,34 @@ const leaderboardLine = (data: z.infer<typeof LeaderBoardUser>) =>
 
 const guildId = process.env['GUILD_ID'];
 
+function splitMessage(message: string): string[] {
+  const maxChars = 2000;
+  const chunks: string[] = [];
+
+  while (message.length > 0) {
+    // Find the next newline character or the end of the message
+    const newlineIndex = message.indexOf('\n');
+    const endIndex = newlineIndex !== -1 ? newlineIndex : message.length;
+
+    // Extract the chunk up to the newline or end of the message
+    const chunk = message.substring(0, endIndex);
+
+    // If the chunk is within the character limit, add it to the array
+    if (chunk.length <= maxChars) {
+      chunks.push(chunk);
+      // Remove the processed part from the message
+      message = message.substring(endIndex + 1);
+    } else {
+      // If the chunk exceeds the character limit, split it
+      chunks.push(chunk.substring(0, maxChars));
+      // Remove the processed part from the message
+      message = chunk.substring(maxChars);
+    }
+  }
+
+  return chunks;
+}
+
 @Injectable()
 export class LeaderBoardCommand {
   constructor(
@@ -43,8 +71,13 @@ export class LeaderBoardCommand {
 
     const joined = [headerLine, contentLines, footerLine].join('\n');
 
-    return interaction.reply({
-      content: joined,
-    });
+    const split = splitMessage(joined);
+
+    if (split.length > 1) {
+      await interaction.reply(split[0]);
+      for (const message of split.slice(1)) {
+        await interaction.followUp(message);
+      }
+    }
   }
 }
