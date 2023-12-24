@@ -25,8 +25,7 @@ const roundDuration = (duration: Duration) => {
   const rounded = Math.round(millis / 60000) * 60000;
   const hours = Math.floor(rounded / 3600000);
   const minutes = Math.floor((rounded % 3600000) / 60000);
-  const seconds = Math.floor((rounded % 60000) / 1000);
-  return Duration.fromObject({ hours, minutes, seconds });
+  return Duration.fromObject({ hours, minutes });
 };
 
 const leaderboardLine = (data: z.infer<typeof LeaderBoardUser>) =>
