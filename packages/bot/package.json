@@ -27,7 +27,7 @@
     "@nestjs/schedule": "^4.0.0",
     "@sentry/node": "^7.64.0",
     "@sentry/tracing": "^7.64.0",
-    "@trpc/client": "11.0.0-alpha-next-2023-12-22-15-40-21.129",
+    "@trpc/client": "11.0.0-next-alpha.132",
     "backend": "workspace:*",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",

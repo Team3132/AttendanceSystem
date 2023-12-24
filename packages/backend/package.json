@@ -57,8 +57,8 @@
   "devDependencies": {
     "@tanstack/react-query": "^5.14.2",
     "@tanstack/react-query-devtools": "^5.14.5",
-    "@trpc/next": "11.0.0-alpha-next-2023-12-22-15-40-21.129",
-    "@trpc/server": "11.0.0-alpha-next-2023-12-22-15-40-21.129",
+    "@trpc/next": "11.0.0-next-alpha.132",
+    "@trpc/server": "11.0.0-next-alpha.132",
     "@types/luxon": "^3.3.6",
     "@types/passport-discord": "^0.1.5",
     "@types/uuid": "^9.0.0",
