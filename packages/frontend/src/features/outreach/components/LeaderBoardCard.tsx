@@ -10,6 +10,13 @@ type LeaderboardUser = z.infer<typeof LeaderboardUserSchema>;
 
 const columnHelper = createColumnHelper<LeaderboardUser>();
 
+const roundDuration = (duration: Duration) => {
+  const millis = duration.toMillis();
+  // round to the nearest minute
+  const rounded = Math.round(millis / 60000) * 60000;
+  return Duration.fromMillis(rounded);
+};
+
 const columns = [
   columnHelper.accessor("rank", {
     header: "Rank",
@@ -21,7 +28,7 @@ const columns = [
   columnHelper.accessor("duration", {
     header: "Outreach Hours",
     cell: (props) => {
-      return Duration.fromISO(props.getValue()).toHuman();
+      return roundDuration(Duration.fromISO(props.getValue())).toHuman();
     },
   }),
 ];

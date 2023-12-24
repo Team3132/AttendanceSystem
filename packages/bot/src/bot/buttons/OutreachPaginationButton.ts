@@ -19,9 +19,16 @@ import {
 } from 'discord.js';
 import { z } from 'zod';
 
+const roundDuration = (duration: Duration) => {
+  const millis = duration.toMillis();
+  // round to the nearest minute
+  const rounded = Math.round(millis / 60000) * 60000;
+  return Duration.fromMillis(rounded);
+};
+
 const leaderboardLine = (data: z.infer<typeof LeaderBoardUser>) =>
-  `${data.rank}. **${data.username}** - ${Duration.fromISO(
-    data.duration,
+  `${data.rank}. **${data.username}** - ${roundDuration(
+    Duration.fromISO(data.duration),
   ).toHuman()}`;
 
 function randomStr(length: number = 8): string {
@@ -57,7 +64,7 @@ export class OutreachPaginationButton {
 
     const { embed, messageComponent } = await this.createMessage(to);
 
-    await interaction.editReply({
+    await interaction.update({
       embeds: [embed],
       components: [messageComponent],
     });

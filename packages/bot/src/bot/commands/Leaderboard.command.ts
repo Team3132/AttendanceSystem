@@ -8,9 +8,16 @@ import { z } from 'zod';
 import { BACKEND_TOKEN, type BackendClient } from '@/backend/backend.module';
 import { GuildMemberGuard } from '../guards/GuildMemberGuard';
 
+const roundDuration = (duration: Duration) => {
+  const millis = duration.toMillis();
+  // round to the nearest minute
+  const rounded = Math.round(millis / 60000) * 60000;
+  return Duration.fromMillis(rounded);
+};
+
 const leaderboardLine = (data: z.infer<typeof LeaderBoardUser>) =>
-  `${data.rank}. **${data.username}** - ${Duration.fromISO(
-    data.duration,
+  `${data.rank}. **${data.username}** - ${roundDuration(
+    Duration.fromISO(data.duration),
   ).toHuman()}`;
 
 const guildId = process.env['GUILD_ID'];
