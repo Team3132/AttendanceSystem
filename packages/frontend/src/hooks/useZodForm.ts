@@ -5,7 +5,7 @@ import { z } from "zod";
 export default function useZodForm<TSchema extends z.ZodType>(
   props: Omit<UseFormProps<TSchema["_input"]>, "resolver"> & {
     schema: TSchema;
-  },
+  }
 ) {
   const form = useForm<TSchema["_input"]>({
     ...props,
@@ -17,5 +17,5 @@ export default function useZodForm<TSchema extends z.ZodType>(
 
 export type ZodSubmitHandler<TSchema extends z.ZodType> = (
   data: TSchema["_input"],
-  event?: React.BaseSyntheticEvent,
+  event?: React.BaseSyntheticEvent
 ) => void | Promise<void>;

@@ -1,20 +1,20 @@
-import { defineConfig } from 'tsup';
+import { defineConfig } from "tsup";
 
 export default defineConfig(({ watch }) => ({
-  entry: ['src/main.ts', 'drizzle'],
+  entry: ["src/index.ts", "src/drizzle/migrations", "src/schema/index.ts"],
   splitting: true,
-  format: ['cjs'],
-  dts: false,
+  format: ["esm"],
+  dts: true,
   bundle: true,
   clean: true,
   sourcemap: true,
   // target: 'esnext',
   onSuccess: watch
-    ? 'node --enable-source-maps dist/src/main.js --inspect'
+    ? "node --enable-source-maps dist/index.js --inspect"
     : undefined,
   loader: {
-    '.sql': 'copy',
-    '.json': 'copy',
+    ".sql": "copy",
+    ".json": "copy",
   },
-  publicDir: 'public',
+  publicDir: "public",
 }));

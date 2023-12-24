@@ -3,7 +3,6 @@ version: "3.9"
 services:
   postgres:
     image: postgres:15
-    hostname: postgres
     environment:
       POSTGRES_PASSWORD: postgres
     restart: unless-stopped
@@ -15,25 +14,33 @@ services:
 
   redis:
     image: redis
-    hostname: redis
-
     restart: unless-stopped
     volumes:
       - redis-data:/data
     ports:
       - 6379:6379
 
-  # backend:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - 3000:3000
-  #   env_file:
-  #     - packages/backend/.env
-  #   links:
-  #     - postgres
-  #     - redis
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: backend-runner
+    ports:
+      - 3000:3000
+    env_file:
+      - packages/backend/.env
+    links:
+      - postgres
+      - redis
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: bot-runner
+    links:
+      - backend
+    env_file:
+      - packages/bot/.env
 
 volumes:
   postgres-data:

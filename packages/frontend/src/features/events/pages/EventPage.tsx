@@ -1,16 +1,14 @@
 import { LoaderFunctionArgs, Outlet, useLoaderData } from "react-router-dom";
 import ensureAuth from "../../auth/utils/ensureAuth";
-import authApi from "../../../api/query/auth.api";
-import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import useRouteMatch from "../../../utils/useRouteMatch";
 import { Tab, Tabs } from "@mui/material";
 import DefaultAppBar from "../../../components/DefaultAppBar";
-import queryClient from "../../../queryClient";
-import eventApi from "../../../api/query/event.api";
 import { z } from "zod";
 import { DateTime } from "luxon";
 import LinkBehavior from "../../../utils/LinkBehavior";
+import { trpc } from "@/trpcClient";
+import { queryUtils } from "@/trpcClient";
 
 const EventParamsSchema = z.object({
   eventId: z.string(),
@@ -21,9 +19,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   const initialAuthStatus = await ensureAuth();
 
-  const initialEventData = await queryClient.ensureQueryData(
-    eventApi.getEvent(eventId),
-  );
+  const initialEventData = await queryUtils.events.getEvent.ensureData(eventId);
 
   return {
     initialAuthStatus,
@@ -42,15 +38,16 @@ export function Component() {
 
   const { initialAuthStatus } = loaderData;
 
-  const authStatusQuery = useQuery({
-    ...authApi.getAuthStatus,
+  const authStatusQuery = trpc.auth.status.useQuery(undefined, {
     initialData: initialAuthStatus,
   });
 
-  const eventQuery = useQuery({
-    ...eventApi.getEvent(loaderData.initialEventData.id),
-    initialData: loaderData.initialEventData,
-  });
+  const eventQuery = trpc.events.getEvent.useQuery(
+    loaderData.initialEventData.id,
+    {
+      initialData: loaderData.initialEventData,
+    }
+  );
 
   const tabs = useMemo<Array<TabItem>>(
     () =>
@@ -79,7 +76,7 @@ export function Component() {
               path: "/events/:eventId/qr-code",
             },
           ],
-    [authStatusQuery.data.isAdmin],
+    [authStatusQuery.data.isAdmin]
   );
 
   const routes = useMemo(() => tabs.map((tab) => tab.path), [tabs]);
@@ -92,7 +89,7 @@ export function Component() {
     <>
       <DefaultAppBar
         title={`${DateTime.fromISO(eventQuery.data.startDate).toLocaleString(
-          DateTime.DATE_SHORT,
+          DateTime.DATE_SHORT
         )} - ${eventQuery.data.title}`}
       />
       <Tabs value={currentTab} variant="scrollable" scrollButtons="auto">

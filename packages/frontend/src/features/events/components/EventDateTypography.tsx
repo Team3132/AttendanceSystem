@@ -1,8 +1,9 @@
 import { DateTime } from "luxon";
-import { EventResponseType } from "../../../api/generated";
+import { EventSchema } from "backend/schema";
+import { z } from "zod";
 
 interface EventDateTypographyProps {
-  event: EventResponseType;
+  event: z.infer<typeof EventSchema>;
 }
 
 /**

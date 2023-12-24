@@ -1,21 +1,21 @@
-import { ListItem, ListItemText } from "@mui/material";
-import { RsvpEvent } from "../api/generated";
-import { LoadingButton } from "@mui/lab";
-import useCheckout from "../hooks/useCheckout";
-import { DateTime } from "luxon";
+import { ListItem, ListItemText } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import useSelfCheckout from '../hooks/useSelfCheckout';
+import { DateTime } from 'luxon';
+import { z } from 'zod';
+import { RSVPEventSchema } from 'backend/schema';
 
 interface PendingEventListItemProps {
-  rsvp: RsvpEvent;
-  userId?: string;
+  rsvp: z.infer<typeof RSVPEventSchema>;
 }
 
 export default function PendingEventListItem(props: PendingEventListItemProps) {
-  const { rsvp, userId = "me" } = props;
+  const { rsvp } = props;
 
-  const checkoutMutation = useCheckout();
+  const selfCheckoutMutation = useSelfCheckout();
 
   const handleClick = () => {
-    checkoutMutation.mutate({ eventId: rsvp.eventId, userId });
+    selfCheckoutMutation.mutate(rsvp.id);
   };
 
   return (
@@ -27,13 +27,13 @@ export default function PendingEventListItem(props: PendingEventListItemProps) {
             ? DateTime.fromISO(rsvp.checkinTime).toLocaleString(
                 DateTime.DATETIME_MED,
               )
-            : "Unknown"
+            : 'Unknown'
         }`}
       />
       <LoadingButton
         variant="contained"
         color="primary"
-        loading={checkoutMutation.isPending}
+        loading={selfCheckoutMutation.isPending}
         onClick={handleClick}
       >
         Checkout

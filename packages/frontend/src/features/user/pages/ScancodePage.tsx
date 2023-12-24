@@ -1,36 +1,21 @@
-import { z } from "zod";
 import ensureAuth from "../../auth/utils/ensureAuth";
-import userApi from "../../../api/query/user.api";
-import queryClient from "../../../queryClient";
-import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useLoaderData } from "react-router-dom";
 import { Container, List, Paper, Stack, Typography } from "@mui/material";
 import NewScancodeListItem from "../components/NewScancodeForm";
 import ScancodeListItem from "../components/ScancodeListItem";
+import { queryUtils } from "@/trpcClient";
+import { trpc } from "@/trpcClient";
 
-const UserParamsSchema = z.object({
-  userId: z.string().optional(),
-});
+export async function loader() {
+  await ensureAuth();
 
-export async function loader({ params }: LoaderFunctionArgs) {
-  const { userId } = UserParamsSchema.parse(params);
-
-  if (userId) {
-    await ensureAuth(true);
-  }
-
-  const initialUserData = await queryClient.ensureQueryData(
-    userApi.getUser(userId),
-  );
+  const initialUserData = await queryUtils.users.getSelf.ensureData();
 
   const initialAuthStatus = await ensureAuth();
 
-  const initialScancodes = await queryClient.ensureQueryData(
-    userApi.getUserScancodes(userId),
-  );
+  const initialScancodes = await queryUtils.users.getSelfScancodes.ensureData();
 
   return {
-    userId,
     initialUserData,
     initialAuthStatus,
     initialScancodes,
@@ -40,8 +25,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 export function Component() {
   const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
 
-  const scancodesQuery = useQuery({
-    ...userApi.getUserScancodes(loaderData.userId),
+  const scancodesQuery = trpc.users.getSelfScancodes.useQuery(undefined, {
     initialData: loaderData.initialScancodes,
   });
 
@@ -60,9 +44,9 @@ export function Component() {
               scancode at any time.
             </Typography>
             <List>
-              <NewScancodeListItem userId={loaderData.userId} />
+              <NewScancodeListItem />
               {scancodesQuery.data.map((scancode) => (
-                <ScancodeListItem scancode={scancode} key={scancode.code} />
+                <ScancodeListItem code={scancode.code} key={scancode.code} />
               ))}
             </List>
           </Stack>

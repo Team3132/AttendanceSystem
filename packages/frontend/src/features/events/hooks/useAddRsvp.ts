@@ -1,21 +1,10 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import api from "../../../api";
-import { eventKeys } from "../../../api/query/event.api";
-
-interface AddUserRsvp {
-  userId: string;
-  eventId: string;
-}
+import { trpc } from "@/trpcClient";
 
 export default function useAddUserRsvp() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: async ({ userId, eventId }: AddUserRsvp) =>
-      api.event.addUserRsvp(eventId, { userId }),
-    onSuccess: (_result, vars) => {
-      queryClient.invalidateQueries({
-        queryKey: eventKeys.eventRsvps(vars.eventId),
-      });
+  const utils = trpc.useUtils();
+  return trpc.events.createBlankUserRsvp.useMutation({
+    onSuccess: (data) => {
+      utils.events.getEventRsvps.invalidate(data.eventId);
     },
   });
 }

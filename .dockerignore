@@ -2,3 +2,9 @@ node_modules/
 .devcontainer/
 .github/
 .vscode/
+packages/backend/dist
+packages/backend/node_modules
+packages/frontend/dist
+packages/frontend/node_modules
+packages/bot/dist
+packages/bot/node_modules

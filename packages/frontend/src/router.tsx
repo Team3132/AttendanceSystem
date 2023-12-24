@@ -71,15 +71,16 @@ const router = createBrowserRouter([
           },
           {
             path: "/user/:userId",
-            lazy: () => import("./features/user/pages/ProfilePage"),
+            lazy: () => import("./features/user/pages/AdminProfilePage"),
             children: [
               {
                 index: true,
-                lazy: () => import("./features/user/pages/ScancodePage"),
+                lazy: () => import("./features/user/pages/AdminScancodePage"),
               },
               {
                 path: "pending",
-                lazy: () => import("./features/user/pages/PendingEventsPage"),
+                lazy: () =>
+                  import("./features/user/pages/AdminPendingEventsPage"),
               },
             ],
           },

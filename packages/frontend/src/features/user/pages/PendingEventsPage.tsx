@@ -1,30 +1,15 @@
-import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
-import { z } from "zod";
-import queryClient from "../../../queryClient";
-import userApi from "../../../api/query/user.api";
+import { useLoaderData } from "react-router-dom";
 import ensureAuth from "../../auth/utils/ensureAuth";
-import { useQuery } from "@tanstack/react-query";
 import { Container, Stack, Paper, Typography, List } from "@mui/material";
 import PendingEventListItem from "../../../components/PendingEventListItem";
+import { queryUtils } from "@/trpcClient";
+import { trpc } from "@/trpcClient";
 
-const PendingEventsPageParamsSchema = z.object({
-  userId: z.string().optional(),
-});
-
-export async function loader({ params }: LoaderFunctionArgs) {
-  if (params.userId !== undefined) {
-    await ensureAuth(true);
-  }
-
+export async function loader() {
   const initialAuthStatus = await ensureAuth();
 
-  const validatedParams = PendingEventsPageParamsSchema.parse(params);
-  const userId = validatedParams.userId;
-  const pendingEvents = await queryClient.ensureQueryData(
-    userApi.getPendingRsvps(userId),
-  );
+  const pendingEvents = await queryUtils.users.getSelfPendingRsvps.ensureData();
   return {
-    userId: validatedParams.userId,
     pendingEvents,
     initialAuthStatus,
   };
@@ -33,10 +18,12 @@ export async function loader({ params }: LoaderFunctionArgs) {
 export function Component() {
   const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
 
-  const pendingEventsQuery = useQuery({
-    ...userApi.getPendingRsvps(loaderData.userId),
-    initialData: loaderData.pendingEvents,
-  });
+  const pendingEventsQuery = trpc.users.getSelfPendingRsvps.useQuery(
+    undefined,
+    {
+      initialData: loaderData.pendingEvents,
+    }
+  );
 
   return (
     <Container
@@ -53,7 +40,7 @@ export function Component() {
             </Typography>
             <List>
               {pendingEventsQuery.data.map((rsvp) => (
-                <PendingEventListItem rsvp={rsvp} userId={loaderData.userId} />
+                <PendingEventListItem rsvp={rsvp} />
               ))}
             </List>
           </Stack>

@@ -1,24 +1,18 @@
 import { IconButton, ListItem, ListItemText } from "@mui/material";
-import { Scancode } from "../../../api/generated";
 import { FaTrash } from "react-icons/fa6";
-import useDeleteScancode from "../hooks/useDeleteScancode";
-import { useParams } from "react-router-dom";
+import useDeleteSelfScancode from "../hooks/useDeleteSelfScancode";
 
 interface ScancodeListItemProps {
-  scancode: Scancode;
+  code: string;
 }
 
 export default function ScancodeListItem(props: ScancodeListItemProps) {
-  const { scancode } = props;
-  const { userId } = useParams<{ userId: string }>();
+  const { code } = props;
 
-  const deleteScancodeMutation = useDeleteScancode();
+  const deleteScancodeMutation = useDeleteSelfScancode();
 
   const handleDeleteScancode = () => {
-    deleteScancodeMutation.mutate({
-      scancodeId: scancode.code,
-      userId,
-    });
+    deleteScancodeMutation.mutate(code);
   };
 
   return (
@@ -33,7 +27,7 @@ export default function ScancodeListItem(props: ScancodeListItemProps) {
         </IconButton>
       }
     >
-      <ListItemText primary={scancode.code} />
+      <ListItemText primary={code} />
     </ListItem>
   );
 }

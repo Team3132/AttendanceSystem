@@ -1,5 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
-import eventApi from "../../../api/query/event.api";
 import {
   Box,
   Button,
@@ -13,34 +11,49 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import ErrorCard from "../../../components/ErrorCard";
 import UpcomingEventListItem from "./UpcomingEventListItem";
 import { DateTime } from "luxon";
 import { useState } from "react";
-import { CreateEventDto } from "../../../api/generated";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import authApi from "../../../api/query/auth.api";
 import LinkBehavior from "../../../utils/LinkBehavior";
+import { trpc } from "@/trpcClient";
+import { z } from "zod";
+import { EventSchema, EventTypeSchema } from "backend/schema";
+import { AuthStatusSchema } from "node_modules/backend/src/schema";
 
-export default function UpcomingEventsCard() {
-  const authStatusQuery = useQuery(authApi.getAuthStatus);
+interface UpcomingEventsCardProps {
+  initialAuthStatus: z.infer<typeof AuthStatusSchema>;
+  initialEvents: z.infer<typeof EventSchema>[];
+}
 
-  const [fromDate, setFromDate] = useState(DateTime.now());
-  const [toDate, setToDate] = useState(DateTime.now().plus({ month: 1 }));
+export default function UpcomingEventsCard(props: UpcomingEventsCardProps) {
+  const authStatusQuery = trpc.auth.status.useQuery(undefined, {
+    initialData: props.initialAuthStatus,
+  });
 
-  const [type, setType] = useState<CreateEventDto.type | undefined>();
+  const [fromDate, setFromDate] = useState(DateTime.now().startOf("day"));
+  const [toDate, setToDate] = useState(
+    DateTime.now().plus({ month: 1 }).startOf("day")
+  );
 
-  const eventsQuery = useQuery(
-    eventApi.getEvents({
+  const [type, setType] = useState<
+    z.infer<typeof EventTypeSchema> | undefined
+  >();
+
+  const eventsQuery = trpc.events.getEvents.useQuery(
+    {
       take: 5,
       from: fromDate.toISO() ?? undefined,
       to: toDate.toISO() ?? undefined,
       type,
-    }),
+    },
+    {
+      initialData: props.initialEvents,
+    }
   );
 
   const handleChange = (event: SelectChangeEvent) => {
-    setType(event.target.value as CreateEventDto.type);
+    setType(event.target.value as z.infer<typeof EventTypeSchema>);
   };
 
   if (eventsQuery.data) {
@@ -77,12 +90,10 @@ export default function UpcomingEventsCard() {
                 label="Type"
               >
                 <MenuItem value={undefined}>All</MenuItem>
-                <MenuItem value={CreateEventDto.type.OUTREACH}>
-                  Outreach
-                </MenuItem>
-                <MenuItem value={CreateEventDto.type.REGULAR}>Regular</MenuItem>
-                <MenuItem value={CreateEventDto.type.SOCIAL}>Social</MenuItem>
-                <MenuItem value={CreateEventDto.type.MENTOR}>Mentor</MenuItem>
+                <MenuItem value={"Outreach"}>Outreach</MenuItem>
+                <MenuItem value={"Regular"}>Regular</MenuItem>
+                <MenuItem value={"Social"}>Social</MenuItem>
+                <MenuItem value={"Mentor"}>Mentor</MenuItem>
               </Select>
             </FormControl>
           </Box>
@@ -124,10 +135,6 @@ export default function UpcomingEventsCard() {
         </Stack>
       </Paper>
     );
-  }
-
-  if (eventsQuery.isError) {
-    return <ErrorCard error={eventsQuery.error} />;
   }
 
   return (

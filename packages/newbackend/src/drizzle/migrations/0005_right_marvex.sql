@@ -1,1 +1,0 @@
-ALTER TYPE "EventTypes" ADD VALUE 'Mentor';

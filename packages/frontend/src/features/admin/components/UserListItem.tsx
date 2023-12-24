@@ -1,9 +1,10 @@
 import { Button, ListItem, ListItemText } from "@mui/material";
-import { User } from "../../../api/generated";
 import LinkBehavior from "../../../utils/LinkBehavior";
+import { z } from "zod";
+import { UserSchema } from "backend/schema";
 
 interface UserListItemProps {
-  user: User;
+  user: z.infer<typeof UserSchema>;
 }
 
 export default function UserListItem({ user }: UserListItemProps) {

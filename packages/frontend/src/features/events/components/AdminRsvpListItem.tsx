@@ -6,7 +6,6 @@ import {
   ListItemText,
   Tooltip,
 } from "@mui/material";
-import { RsvpUser } from "../../../api/generated";
 import { FaCheck, FaClock, FaXmark, FaQuestion, FaGear } from "react-icons/fa6";
 import { DateTime } from "luxon";
 import RSVPEditDialog from "./RSVPEditDialog";
@@ -14,9 +13,11 @@ import { useDisclosure } from "../../../hooks/useDisclosure";
 import useCheckoutUser from "../hooks/useCheckoutUser";
 import useCheckinUser from "../hooks/useCheckinUser";
 import { useAlert } from "react-alert";
+import { z } from "zod";
+import { RSVPUserSchema } from "backend/schema";
 
 interface AdminRSVPListItemProps {
-  rsvp: RsvpUser;
+  rsvp: z.infer<typeof RSVPUserSchema>;
 }
 
 export default function AdminRSVPListItem({ rsvp }: AdminRSVPListItemProps) {
@@ -78,10 +79,10 @@ export default function AdminRSVPListItem({ rsvp }: AdminRSVPListItemProps) {
                   rsvp.status === "YES"
                     ? "success.main"
                     : rsvp.status === "NO"
-                    ? "error.main"
-                    : rsvp.status === "LATE"
-                    ? "warning.main"
-                    : undefined,
+                      ? "error.main"
+                      : rsvp.status === "LATE"
+                        ? "warning.main"
+                        : undefined,
               }}
             >
               {rsvp.status === null ? (
@@ -106,10 +107,10 @@ export default function AdminRSVPListItem({ rsvp }: AdminRSVPListItemProps) {
                   rsvp.checkoutTime,
                 ).toLocaleString(DateTime.TIME_SIMPLE)}`
               : rsvp.checkinTime
-              ? `Checked in at ${DateTime.fromISO(
-                  rsvp.checkinTime,
-                ).toLocaleString(DateTime.TIME_SIMPLE)}`
-              : "No check-in"
+                ? `Checked in at ${DateTime.fromISO(
+                    rsvp.checkinTime,
+                  ).toLocaleString(DateTime.TIME_SIMPLE)}`
+                : "No check-in"
           }
         />
       </ListItem>

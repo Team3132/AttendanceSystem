@@ -2,28 +2,19 @@ import { z } from "zod";
 import useZodForm from "../../../hooks/useZodForm";
 import { ListItem, TextField } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import useCreateScancode from "../hooks/useCreateScancode";
-import { ApiError } from "../../../api/generated";
+import useCreateSelfScancode from "../hooks/useCreateSelfScancode";
+import { TRPCClientError } from "@trpc/client";
 
 const NewScancodeSchema = z.object({
   code: z
     .string()
-    .nonempty({
-      message: "Event code cannot be empty",
-    })
+    .min(6)
     .regex(/^[a-zA-Z0-9]+$/, {
       message: "Event code must be alphanumeric",
-    })
-
-    .min(6),
+    }),
 });
 
-interface NewScancodeListItemProps {
-  userId?: string;
-}
-
-export default function NewScancodeListItem(props: NewScancodeListItemProps) {
-  const { userId } = props;
+export default function NewScancodeListItem() {
   const {
     register,
     handleSubmit,
@@ -37,21 +28,19 @@ export default function NewScancodeListItem(props: NewScancodeListItemProps) {
     },
   });
 
-  const createScancodeMutation = useCreateScancode();
+  const createSelfScancodeMutation = useCreateSelfScancode();
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await createScancodeMutation.mutateAsync({
-        code: data.code,
-        userId,
-      });
+      await createSelfScancodeMutation.mutateAsync(data.code);
+
       reset({
         code: "",
       });
     } catch (error) {
-      if (error instanceof ApiError) {
+      if (error instanceof TRPCClientError) {
         setError("code", {
-          message: error.body.message,
+          message: error.message,
         });
       }
     }

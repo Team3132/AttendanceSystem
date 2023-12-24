@@ -11,23 +11,23 @@ import {
 } from "@mui/material";
 import useZodForm from "../../../hooks/useZodForm";
 import { z } from "zod";
-import { Rsvp, UpdateRsvpDto } from "../../../api/generated";
 import useUpdateUserRsvp from "../hooks/useUpdateUserRsvp";
 import { LoadingButton } from "@mui/lab";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { Controller } from "react-hook-form";
 import { DateTime } from "luxon";
 import { FaRecycle } from "react-icons/fa6";
+import { RSVPSchema, RSVPStatusSchema } from "backend/schema";
 
 interface RSVPEditDialogProps {
   onOpen: () => void;
   onClose: () => void;
   open: boolean;
-  rsvp: Rsvp;
+  rsvp: z.infer<typeof RSVPSchema>;
 }
 
 const UpdateRsvpSchema = z.object({
-  status: z.nativeEnum(UpdateRsvpDto.status).optional(),
+  status: RSVPStatusSchema.optional(),
   checkinTime: z.string().nullable().optional(),
   checkoutTime: z.string().nullable().optional(),
 });
@@ -55,7 +55,7 @@ export default function RSVPEditDialog(props: RSVPEditDialogProps) {
     try {
       await updateUserRsvpMutation.mutateAsync({
         eventId: rsvp.eventId,
-        rsvpId: rsvp.id,
+        userId: rsvp.userId,
         checkinTime: data.checkinTime ?? undefined,
         checkoutTime: data.checkoutTime ?? undefined,
       });

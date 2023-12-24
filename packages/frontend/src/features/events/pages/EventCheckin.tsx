@@ -5,14 +5,15 @@ import {
 } from "react-router-dom";
 import { z } from "zod";
 import ensureAuth from "../../auth/utils/ensureAuth";
-import queryClient from "../../../queryClient";
-import eventApi from "../../../api/query/event.api";
-import { Container, Paper, Stack, TextField, Typography } from "@mui/material";
+import { Container, Paper, Stack, Typography } from "@mui/material";
 import useZodForm from "../../../hooks/useZodForm";
 import { LoadingButton } from "@mui/lab";
-import useCheckin from "../hooks/useCheckin";
-import { ApiError } from "../../../api/generated";
+import useSelfCheckin from "../hooks/useSelfCheckin";
 import { useAlert } from "react-alert";
+import { isTRPCClientError } from "@/utils/trpc";
+import { SelfCheckinSchema } from "backend/schema";
+import ControlledTextField from "@/components/ControlledTextField";
+import { queryUtils } from "@/trpcClient";
 
 const EventParamsSchema = z.object({
   eventId: z.string(),
@@ -22,9 +23,8 @@ export async function loader({ params }: LoaderFunctionArgs) {
   const initialAuthStatus = await ensureAuth();
 
   const { eventId } = EventParamsSchema.parse(params);
-  const initialEventData = await queryClient.ensureQueryData(
-    eventApi.getEvent(eventId),
-  );
+
+  const initialEventData = await queryUtils.events.getEvent.ensureData(eventId);
 
   return {
     initialAuthStatus,
@@ -32,35 +32,21 @@ export async function loader({ params }: LoaderFunctionArgs) {
   };
 }
 
-const EventCheckinSchema = z.object({
-  /**
-   * Alphanumeric code that is displayed at the event. a-z, A-Z, 0-9
-   */
-  eventCode: z
-    .string()
-    .length(8, {
-      message: "Event code must be 8 characters long",
-    })
-    .regex(/^[a-zA-Z0-9]+$/, {
-      message: "Event code must be alphanumeric",
-    }),
-});
-
 export function Component() {
   const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const {
-    register,
     handleSubmit,
-    setError,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
+    control,
   } = useZodForm({
-    schema: EventCheckinSchema,
+    schema: SelfCheckinSchema,
     defaultValues: {
-      eventCode: "",
+      secret: "",
+      eventId: loaderData.initialEventData.id,
     },
   });
 
-  const checkinMutation = useCheckin();
+  const checkinMutation = useSelfCheckin();
 
   const navigate = useNavigate();
   const alert = useAlert();
@@ -68,7 +54,7 @@ export function Component() {
   const onSubmit = handleSubmit(async (data) => {
     try {
       await checkinMutation.mutateAsync({
-        code: data.eventCode,
+        secret: data.secret,
         eventId: loaderData.initialEventData.id,
       });
 
@@ -76,10 +62,8 @@ export function Component() {
 
       navigate(`/`);
     } catch (e) {
-      if (e instanceof ApiError) {
-        setError("eventCode", {
-          message: e.body.message,
-        });
+      if (isTRPCClientError(e)) {
+        alert.error(e.message, { timeout: 2000 });
       }
     }
   });
@@ -102,13 +86,13 @@ export function Component() {
               entering it below. Or, use your phone's camera to scan the QR
               code.
             </Typography>
-            <TextField
+            <ControlledTextField
               label="Event Code"
               variant="outlined"
               fullWidth
-              {...register("eventCode", { required: true })}
-              error={!!errors.eventCode}
-              helperText={errors.eventCode?.message}
+              name="secret"
+              control={control}
+              rules={{ required: "This field is required" }}
               required
             />
             <LoadingButton

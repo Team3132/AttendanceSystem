@@ -1,0 +1,23 @@
+diff --git a/src/adapters/fastify/fastifyTRPCPlugin.ts b/src/adapters/fastify/fastifyTRPCPlugin.ts
+index 569b0d29f33ef3e371e6bc81d741bae77d65facf..7290a5bfc2914d895a2c85827e9ec38674551c22 100644
+--- a/src/adapters/fastify/fastifyTRPCPlugin.ts
++++ b/src/adapters/fastify/fastifyTRPCPlugin.ts
+@@ -45,12 +45,17 @@ export function fastifyTRPCPlugin<TRouter extends AnyRouter>(
+   });
+ 
+   if (opts.useWSS) {
+-    applyWSSHandler<TRouter>({
++    const { broadcastReconnectNotification } = applyWSSHandler<TRouter>({
+       ...(opts.trpcOptions as unknown as WSSHandlerOptions<TRouter>),
+       wss: fastify.websocketServer,
+     });
+     // eslint-disable-next-line @typescript-eslint/no-empty-function
+     fastify.get(prefix ?? '/', { websocket: true }, () => {});
++
++    process.on('SIGTERM', () => {
++      broadcastReconnectNotification();
++    })
++
+   }
+ 
+   done();

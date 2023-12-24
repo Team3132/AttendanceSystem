@@ -1,8 +1,7 @@
 import { Button, Container, Paper, Stack, Typography } from "@mui/material";
-import authApi from "../../../api/query/auth.api";
-import { useQuery } from "@tanstack/react-query";
 import { useLoaderData } from "react-router-dom";
 import ensureUnauth from "../utils/ensureUnauth";
+import { trpc } from "@/trpcClient";
 
 export const loader = async () => {
   const initialAuthStatus = await ensureUnauth();
@@ -16,8 +15,7 @@ export function Component() {
   const { initialAuthStatus } = useLoaderData() as Awaited<
     ReturnType<typeof loader>
   >;
-  const authStatusQuery = useQuery({
-    ...authApi.getAuthStatus,
+  const authStatusQuery = trpc.auth.status.useQuery(undefined, {
     initialData: initialAuthStatus,
   });
 

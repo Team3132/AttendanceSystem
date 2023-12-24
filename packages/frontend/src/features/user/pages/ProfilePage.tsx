@@ -1,20 +1,11 @@
-import { LoaderFunctionArgs, Outlet, useLoaderData } from "react-router-dom";
-import { z } from "zod";
+import { Outlet, useLoaderData } from "react-router-dom";
 import ensureAuth from "../../auth/utils/ensureAuth";
-import queryClient from "../../../queryClient";
-import userApi from "../../../api/query/user.api";
-import { useQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
 import useRouteMatch from "../../../utils/useRouteMatch";
 import DefaultAppBar from "../../../components/DefaultAppBar";
 import { Tab, Tabs } from "@mui/material";
 import LinkBehavior from "../../../utils/LinkBehavior";
-import authApi from "../../../api/query/auth.api";
-import OutreachFab from "../components/OutreachFab";
-
-const ProfileParamsSchema = z.object({
-  userId: z.string().optional(),
-});
+import { queryUtils } from "@/trpcClient";
+import { trpc } from "@/trpcClient";
 
 interface TabItem {
   label: string;
@@ -22,66 +13,36 @@ interface TabItem {
   path: string;
 }
 
-export async function loader({ params }: LoaderFunctionArgs) {
-  const { userId } = ProfileParamsSchema.parse(params);
-
-  if (userId) {
-    await ensureAuth(true);
-  }
-
+export async function loader() {
   const initialAuthStatus = await ensureAuth();
 
-  const initialUser = await queryClient.ensureQueryData(
-    userApi.getUser(userId),
-  );
+  const initialUser = await queryUtils.users.getSelf.ensureData();
 
   return {
-    userId,
     initialUser,
     initialAuthStatus,
   };
 }
 
+const tabs: Array<TabItem> = [
+  {
+    label: "Scancodes",
+    path: "/profile",
+  },
+  {
+    label: "Pending",
+    path: "/profile/pending",
+  },
+];
+
+const routes = tabs.map((tab) => tab.path);
+
 export function Component() {
   const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
 
-  const userQuery = useQuery({
-    ...userApi.getUser(loaderData.userId),
-    // initialData: loaderData.initialUser,
+  const userQuery = trpc.users.getSelf.useQuery(undefined, {
+    initialData: loaderData.initialUser,
   });
-
-  const authQuery = useQuery({
-    ...authApi.getAuthStatus,
-    initialData: loaderData.initialAuthStatus,
-  });
-
-  const tabs = useMemo<Array<TabItem>>(
-    () =>
-      !loaderData.userId
-        ? [
-            {
-              label: "Scancodes",
-              path: "/profile",
-            },
-            {
-              label: "Pending",
-              path: "/profile/pending",
-            },
-          ]
-        : [
-            {
-              label: "Scancodes",
-              path: `/user/${loaderData.userId}`,
-            },
-            {
-              label: "Pending",
-              path: `/user/${loaderData.userId}/pending`,
-            },
-          ],
-    [loaderData.userId],
-  );
-
-  const routes = useMemo(() => tabs.map((tab) => tab.path), [tabs]);
 
   const routeMatch = useRouteMatch(routes);
 
@@ -99,15 +60,12 @@ export function Component() {
             label={tab.label}
             icon={tab.icon}
             value={tab.path}
-            href={tab.path.replace(":userId", loaderData.userId ?? "")}
+            href={tab.path}
             LinkComponent={LinkBehavior}
           />
         ))}
       </Tabs>
       <Outlet />
-      {authQuery.data.isAdmin && loaderData.userId ? (
-        <OutreachFab userId={loaderData.userId} />
-      ) : null}
     </>
   );
 }

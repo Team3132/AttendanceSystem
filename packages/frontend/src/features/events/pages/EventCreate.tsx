@@ -1,26 +1,17 @@
-import {
-  Container,
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  Select,
-  Stack,
-  Switch,
-  TextField,
-} from "@mui/material";
-import DefaultAppBar from "../../../components/DefaultAppBar";
-import ensureAuth from "../../auth/utils/ensureAuth";
-import { z } from "zod";
-import { CreateEventDto } from "../../../api/generated";
-import useZodForm from "../../../hooks/useZodForm";
-import { DateTime } from "luxon";
-import { DateTimePicker } from "@mui/x-date-pickers";
-import { Controller } from "react-hook-form";
-import { LoadingButton } from "@mui/lab";
-import useCreateEvent from "../hooks/useCreateEvent";
-import { useNavigate } from "react-router-dom";
-import { useAlert } from "react-alert";
+import { Container, Stack, Switch } from '@mui/material';
+import DefaultAppBar from '../../../components/DefaultAppBar';
+import ensureAuth from '../../auth/utils/ensureAuth';
+import useZodForm from '../../../hooks/useZodForm';
+import { DateTime } from 'luxon';
+import { DateTimePicker } from '@mui/x-date-pickers';
+import { Controller } from 'react-hook-form';
+import { LoadingButton } from '@mui/lab';
+import useCreateEvent from '../hooks/useCreateEvent';
+import { useNavigate } from 'react-router-dom';
+import { useAlert } from 'react-alert';
+import ControlledTextField from '@/components/ControlledTextField';
+import ControlledSelect from '@/components/ControlledSelect';
+import { CreateEventSchema } from 'backend/schema';
 
 export async function loader() {
   const initialAuthData = await ensureAuth(true);
@@ -29,31 +20,21 @@ export async function loader() {
   };
 }
 
-const EventCreateSchema = z.object({
-  description: z.string().default(""),
-  title: z.string().default(""),
-  startDate: z.string(),
-  endDate: z.string(),
-  allDay: z.boolean().default(false),
-  type: z.nativeEnum(CreateEventDto.type).default(CreateEventDto.type.REGULAR),
-  roles: z.array(z.string()).default([]),
-});
-
 export function Component() {
   const {
     register,
     control,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
     handleSubmit,
   } = useZodForm({
-    schema: EventCreateSchema,
+    schema: CreateEventSchema,
     defaultValues: {
-      description: "",
-      title: "",
+      description: '',
+      title: '',
       startDate: DateTime.now().toISODate() ?? undefined,
       endDate: DateTime.now().toISODate() ?? undefined,
       allDay: false,
-      type: CreateEventDto.type.REGULAR,
+      type: 'Regular',
     },
   });
 
@@ -64,9 +45,8 @@ export function Component() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      const parsed = EventCreateSchema.parse(data);
-      const createdEvent = await createEventMutation.mutateAsync(parsed);
-      alert.success("Event created");
+      const createdEvent = await createEventMutation.mutateAsync(data);
+      alert.success('Event created');
       navigate(`/events/${createdEvent.id}`);
     } catch (error) {
       console.error(error);
@@ -76,16 +56,15 @@ export function Component() {
   return (
     <>
       <DefaultAppBar title="Create Event" />
-      <Container sx={{ overflow: "auto" }}>
-        <Stack gap={2} py={2} component={"form"} onSubmit={onSubmit}>
-          <TextField label="Title" {...register("title")} />
-          <TextField
+      <Container sx={{ overflow: 'auto' }}>
+        <Stack gap={2} py={2} component={'form'} onSubmit={onSubmit}>
+          <ControlledTextField control={control} name="title" label="Title" />
+          <ControlledTextField
+            control={control}
+            name="description"
             label="Description"
-            {...register("description")}
             multiline
             rows={3}
-            error={!!errors.description}
-            helperText={errors.description?.message}
           />
           <Controller
             control={control}
@@ -93,8 +72,8 @@ export function Component() {
             render={({ field: { onChange, value, ...rest } }) => (
               <DateTimePicker
                 label="Start Date"
-                value={DateTime.fromISO(value ?? "")}
-                onChange={(v) => onChange(v?.toISO() ?? "")}
+                value={DateTime.fromISO(value ?? '')}
+                onChange={(v) => onChange(v?.toISO() ?? '')}
                 {...rest}
               />
             )}
@@ -105,41 +84,24 @@ export function Component() {
             render={({ field: { onChange, value, ...rest } }) => (
               <DateTimePicker
                 label="End Date"
-                value={DateTime.fromISO(value ?? "")}
-                onChange={(v) => onChange(v?.toISO() ?? "")}
+                value={DateTime.fromISO(value ?? '')}
+                onChange={(v) => onChange(v?.toISO() ?? '')}
                 {...rest}
               />
             )}
           />
-          <Switch {...register("allDay")} />
-          <Controller
+          <Switch {...register('allDay')} />
+          <ControlledSelect
             control={control}
             name="type"
-            render={({ field: { onChange, value, ...rest } }) => (
-              <FormControl fullWidth error={!!errors.type}>
-                <InputLabel id="select-event-type-label">Type</InputLabel>
-                <Select
-                  labelId="select-event-type-label"
-                  id="select-event-type"
-                  value={value}
-                  onChange={onChange}
-                  displayEmpty={false}
-                  label="Type"
-                  {...rest}
-                >
-                  <MenuItem value={CreateEventDto.type.OUTREACH}>
-                    Outreach
-                  </MenuItem>
-                  <MenuItem value={CreateEventDto.type.REGULAR}>
-                    Regular
-                  </MenuItem>
-                  <MenuItem value={CreateEventDto.type.SOCIAL}>Social</MenuItem>
-                </Select>
-                {errors.type ? (
-                  <FormHelperText error>{errors.type.message}</FormHelperText>
-                ) : null}
-              </FormControl>
-            )}
+            label="Type"
+            displayEmpty={true}
+            options={[
+              { label: 'All', value: undefined },
+              { label: 'Outreach', value: 'Outreach' },
+              { label: 'Regular', value: 'Regular' },
+              { label: 'Social', value: 'Social' },
+            ]}
           />
           <LoadingButton loading={isSubmitting} type="submit">
             Create

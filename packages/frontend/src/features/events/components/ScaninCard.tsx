@@ -4,7 +4,6 @@ import useZodForm from "../../../hooks/useZodForm";
 import { LoadingButton } from "@mui/lab";
 import useScanin from "../hooks/useScanin";
 import { useAlert } from "react-alert";
-import { ApiError } from "../../../api/generated";
 import { useState } from "react";
 import UnknownCodeModal from "./UnknownCodeModal";
 import { useDisclosure } from "../../../hooks/useDisclosure";
@@ -24,7 +23,7 @@ export default function ScaninCard(props: ScaninCardProps) {
   const { eventId } = props;
   const alert = useAlert();
   const [unknownCode, setUnknownCode] = useState<string | undefined>(undefined);
-  const { getDisclosureProps, onOpen } = useDisclosure();
+  const { getDisclosureProps } = useDisclosure();
 
   const {
     register,
@@ -45,7 +44,7 @@ export default function ScaninCard(props: ScaninCardProps) {
     try {
       await scanInMutation.mutateAsync({
         eventId,
-        code: data.code,
+        scancode: data.code,
       });
       reset({
         code: "",
@@ -56,37 +55,7 @@ export default function ScaninCard(props: ScaninCardProps) {
       setUnknownCode(undefined);
       setFocus("code");
     } catch (error) {
-      if (error instanceof ApiError) {
-        if (error.status === 404) {
-          // TODO: Prompt to add a new scancode
-          alert.info("Scan code not found", {
-            timeout: 2000,
-          });
-          setUnknownCode(data.code);
-          reset({
-            code: "",
-          });
-          onOpen();
-        } else {
-          alert.error(error.body.message, {
-            timeout: 2000,
-          });
-          setUnknownCode(undefined);
-          reset({
-            code: "",
-          });
-          setFocus("code");
-        }
-      } else {
-        alert.error("An unknown error occurred", {
-          timeout: 2000,
-        });
-        setUnknownCode(undefined);
-        reset({
-          code: "",
-        });
-        setFocus("code");
-      }
+      // console.error(error);
     }
   });
 
@@ -108,8 +77,8 @@ export default function ScaninCard(props: ScaninCardProps) {
             label="Scan In Code"
             variant="outlined"
             disabled={isSubmitting}
-            error={!!errors.code}
-            helperText={errors.code?.message}
+            error={!!errors.code || scanInMutation.isError}
+            helperText={errors.code?.message ?? scanInMutation.error?.message}
             autoFocus
           />
           <LoadingButton

@@ -1,14 +1,12 @@
 import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
-import eventApi from "../../../api/query/event.api";
-import queryClient from "../../../queryClient";
 import ensureAuth from "../../auth/utils/ensureAuth";
-import { useQuery } from "@tanstack/react-query";
 import { Container, Grid, Paper, Stack, Typography } from "@mui/material";
 import { z } from "zod";
 import { DateTime } from "luxon";
 import RsvpList from "../components/RSVPList";
-import authApi from "../../../api/query/auth.api";
 import DeleteEventButton from "../components/DeleteEventButton";
+import { trpc } from "@/trpcClient";
+import { queryUtils } from "@/trpcClient";
 
 const EventParamsSchema = z.object({
   eventId: z.string(),
@@ -19,28 +17,24 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
   const { eventId } = EventParamsSchema.parse(params);
 
-  const initialEventData = await queryClient.ensureQueryData(
-    eventApi.getEvent(eventId),
-  );
+  const initialEventData = await queryUtils.events.getEvent.ensureData(eventId);
 
   return {
+    eventId,
     initialAuthStatus,
     initialEventData,
   };
 }
 
 export function Component() {
-  const { initialEventData, initialAuthStatus } = useLoaderData() as Awaited<
-    ReturnType<typeof loader>
-  >;
+  const { initialEventData, initialAuthStatus, eventId } =
+    useLoaderData() as Awaited<ReturnType<typeof loader>>;
 
-  const eventQuery = useQuery({
-    ...eventApi.getEvent(initialEventData.id),
+  const eventQuery = trpc.events.getEvent.useQuery(initialEventData.id, {
     initialData: initialEventData,
   });
 
-  const authStatusQuery = useQuery({
-    ...authApi.getAuthStatus,
+  const authStatusQuery = trpc.auth.status.useQuery(undefined, {
     initialData: initialAuthStatus,
   });
 
@@ -69,7 +63,7 @@ export function Component() {
             <Typography variant="h5">Start</Typography>
             <Typography variant="body1">
               {DateTime.fromISO(eventQuery.data.startDate).toLocaleString(
-                DateTime.DATETIME_MED_WITH_WEEKDAY,
+                DateTime.DATETIME_MED_WITH_WEEKDAY
               )}
             </Typography>
           </Paper>
@@ -92,7 +86,7 @@ export function Component() {
             <Typography variant="h5">End</Typography>
             <Typography variant="body1">
               {DateTime.fromISO(eventQuery.data.endDate).toLocaleString(
-                DateTime.DATETIME_MED_WITH_WEEKDAY,
+                DateTime.DATETIME_MED_WITH_WEEKDAY
               )}
             </Typography>
           </Paper>
@@ -120,10 +114,7 @@ export function Component() {
         ) : null}
 
         <Grid item xs={12}>
-          <RsvpList
-            eventId={initialEventData.id}
-            admin={authStatusQuery.data.isAdmin}
-          />
+          <RsvpList eventId={eventId} admin={authStatusQuery.data.isAdmin} />
         </Grid>
       </Grid>
     </Container>

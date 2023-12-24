@@ -1,15 +1,16 @@
 import { ListItemButton, ListItemText, Typography } from "@mui/material";
-import { EventResponseType } from "../../../api/generated";
 import EventDateText from "./EventDateTypography";
 import { DateTime } from "luxon";
 import LinkBehavior from "../../../utils/LinkBehavior";
+import { z } from "zod";
+import { EventSchema } from "backend/schema";
 
 interface UpcomingEventListItemProps {
-  event: EventResponseType;
+  event: z.infer<typeof EventSchema>;
 }
 
 export default function UpcomingEventListItem(
-  props: UpcomingEventListItemProps,
+  props: UpcomingEventListItemProps
 ) {
   const { event } = props;
   return (
