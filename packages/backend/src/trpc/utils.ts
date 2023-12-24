@@ -67,7 +67,7 @@ const enforceApiToken = t.middleware(({ ctx, next }) => {
     throw new TRPCError({ code: "UNAUTHORIZED", message: "API Token not set" });
   }
 
-  const envApiToken = env.BACKEND_TRPC_URL;
+  const envApiToken = env.BACKEND_SECRET_TOKEN;
 
   if (!envApiToken) {
     throw new TRPCError({
