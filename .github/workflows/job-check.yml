@@ -26,8 +26,12 @@ jobs:
         run: echo "::add-matcher::.github/problem-matchers/eslint-stylish.json"
 
       - name: Type Check Backend
-        run: yarn backend typecheck
+        run: pnpm backend typecheck
+
+      - name: Build Backend
+        run: pnpm backend build
+
       - name: Type Check Frontend
-        run: yarn frontend typecheck
+        run: pnpm frontend typecheck
       - name: Type Check Bot
-        run: yarn bot typecheck
+        run: pnpm bot typecheck
