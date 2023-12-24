@@ -137,13 +137,13 @@ jobs:
           outputs: type=local,dest=dist/bot
 
       - name: Upload Backend Dist
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: backend-dist
           path: dist/backend
 
       - name: Upload Bot Dist
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: bot-dist
           path: dist/bot
