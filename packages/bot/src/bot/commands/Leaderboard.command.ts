@@ -78,6 +78,8 @@ export class LeaderBoardCommand {
       for (const message of split.slice(1)) {
         await interaction.followUp(message);
       }
+    } else {
+      await interaction.reply(joined);
     }
   }
 }
