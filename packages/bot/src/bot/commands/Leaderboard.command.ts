@@ -17,27 +17,28 @@ const guildId = process.env['GUILD_ID'];
 
 function splitMessage(message: string): string[] {
   const maxChars = 2000;
-  const chunks: string[] = [];
+  let currentIndex = 0; // The current character index being checked
+  let lastSplitIndex = 0; // The last index the string was split at
+  let mostRecentNewLineIndex = 0; // The last index a newline was encountered
 
-  while (message.length > 0) {
-    // Find the next newline character or the end of the message
-    const newlineIndex = message.indexOf('\n');
-    const endIndex = newlineIndex !== -1 ? newlineIndex : message.length;
+  const chunks = [];
 
-    // Extract the chunk up to the newline or end of the message
-    const chunk = message.substring(0, endIndex);
-
-    // If the chunk is within the character limit, add it to the array
-    if (chunk.length <= maxChars) {
-      chunks.push(chunk);
-      // Remove the processed part from the message
-      message = message.substring(endIndex + 1);
-    } else {
-      // If the chunk exceeds the character limit, split it
-      chunks.push(chunk.substring(0, maxChars));
-      // Remove the processed part from the message
-      message = chunk.substring(maxChars);
+  while (currentIndex < message.length) {
+    if (message[currentIndex] === '\n') {
+      mostRecentNewLineIndex = currentIndex;
     }
+
+    if (currentIndex - lastSplitIndex >= maxChars) {
+      if (mostRecentNewLineIndex > lastSplitIndex) {
+        chunks.push(message.slice(lastSplitIndex, mostRecentNewLineIndex));
+        lastSplitIndex = mostRecentNewLineIndex + 1;
+      } else {
+        chunks.push(message.slice(lastSplitIndex, currentIndex));
+        lastSplitIndex = currentIndex;
+      }
+    }
+
+    currentIndex++;
   }
 
   return chunks;
