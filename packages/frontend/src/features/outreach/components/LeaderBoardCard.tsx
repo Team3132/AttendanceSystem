@@ -14,7 +14,7 @@ const roundDuration = (duration: Duration) => {
   const millis = duration.toMillis();
   // round to the nearest minute
   const rounded = Math.round(millis / 60000) * 60000;
-  return Duration.fromMillis(rounded);
+  return Duration.fromMillis(rounded).rescale();
 };
 
 const columns = [
