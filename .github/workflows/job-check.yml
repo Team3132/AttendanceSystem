@@ -13,10 +13,10 @@ jobs:
         name: Install PNPM
         with:
           version: 8
-      - name: Setup Yarn
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 21
           cache: "pnpm"
       - name: Install Dependancies
         run: pnpm install --frozen-lockfile
@@ -24,9 +24,10 @@ jobs:
         run: echo "::add-matcher::.github/problem-matchers/tsc.json"
       - name: Add Problem Matcher
         run: echo "::add-matcher::.github/problem-matchers/eslint-stylish.json"
+
       - name: Type Check Backend
-        run: yarn back typecheck
+        run: yarn backend typecheck
       - name: Type Check Frontend
-        run: yarn front typecheck
-      - name: Lint
-        run: yarn back lint
+        run: yarn frontend typecheck
+      - name: Type Check Bot
+        run: yarn bot typecheck
