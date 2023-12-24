@@ -1,6 +1,17 @@
 import { DateTime } from "luxon";
 import db from "../drizzle/db";
-import { SQL, and, asc, between, eq, gte, ilike, lte, or } from "drizzle-orm";
+import {
+  SQL,
+  and,
+  asc,
+  between,
+  eq,
+  gte,
+  ilike,
+  isNull,
+  lte,
+  or,
+} from "drizzle-orm";
 import { event, rsvp } from "../drizzle/schema";
 import { z } from "zod";
 import { GetEventParamsSchema } from "../schema/GetEventParamsSchema";
@@ -18,6 +29,53 @@ import { CreateBlankUserRsvpSchema } from "../schema/CreateBlankUserRsvpSchema";
 import clampDateTime from "../utils/clampDateTime";
 import { ee, rtrpc } from "../routers/app.router";
 import { getQueryKey } from "@trpc/react-query";
+import { Queue, Worker, Job } from "bullmq";
+import env from "../env";
+
+interface EventCheckinJobData {
+  eventId: string;
+  rsvpId: string;
+}
+
+const queueName = "event";
+
+export const checkoutQueue = new Queue<EventCheckinJobData>(queueName, {
+  connection: {
+    host: env.REDIS_HOST,
+    port: env.REDIS_PORT,
+    db: 2,
+  },
+});
+
+new Worker(
+  queueName,
+  async (job: Job<EventCheckinJobData>) => {
+    const { eventId, rsvpId } = job.data;
+
+    const currentTime = DateTime.local();
+
+    const fetchedEvent = await db.query.event.findFirst({
+      where: (event, { eq }) => eq(event.id, eventId),
+    });
+
+    if (!fetchedEvent) throw new Error("Event not found");
+
+    const eventEndTime = DateTime.fromISO(fetchedEvent.endDate);
+
+    const checkoutTime =
+      currentTime > eventEndTime ? eventEndTime : currentTime;
+
+    await db
+      .update(rsvp)
+      .set({
+        checkoutTime: checkoutTime.toISO(),
+      })
+      .where(and(eq(rsvp.id, rsvpId), isNull(rsvp.checkoutTime)));
+  },
+  {
+    connection: { host: env.REDIS_HOST, port: env.REDIS_PORT, db: 2 },
+  }
+);
 
 /**
  * Get upcoming events in the next 24 hours for the daily bot announcement
@@ -365,7 +423,14 @@ export async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
 
   ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
 
-  // TODO: Schedule a job to check out the user after the delay
+  const timeDiff = eventEndDateTime.toMillis() - DateTime.local().toMillis();
+  const delay = timeDiff > 0 ? timeDiff : 0;
+
+  await checkoutQueue.add(
+    "checkout",
+    { eventId, rsvpId: updatedRsvp.id },
+    { delay, jobId: updatedRsvp.id }
+  );
 
   return updatedRsvp;
 }
@@ -444,8 +509,16 @@ export async function userScanin(params: z.infer<typeof ScaninSchema>) {
     });
   }
 
-  // TODO: Schedule a job to check out the user after the delay
   ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
+
+  const timeDiff = eventEndDateTime.toMillis() - DateTime.local().toMillis();
+  const delay = timeDiff > 0 ? timeDiff : 0;
+
+  await checkoutQueue.add(
+    "checkout",
+    { eventId, rsvpId: updatedRsvp.id },
+    { delay, jobId: updatedRsvp.id }
+  );
 
   return updatedRsvp;
 }
@@ -663,7 +736,14 @@ export async function selfCheckin(
 
   ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
 
-  // TODO: Schedule a job to check out the user after the delay
+  const timeDiff = eventEndDateTime.toMillis() - DateTime.local().toMillis();
+  const delay = timeDiff > 0 ? timeDiff : 0;
+
+  await checkoutQueue.add(
+    "checkout",
+    { eventId, rsvpId: updatedRsvp.id },
+    { delay, jobId: updatedRsvp.id }
+  );
 
   return updatedRsvp;
 }

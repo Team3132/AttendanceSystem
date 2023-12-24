@@ -34,6 +34,9 @@
     "@fastify/sensible": "^5.5.0",
     "@fastify/static": "^6.12.0",
     "@fastify/websocket": "^8.3.0",
+    "@trpc/client": "11.0.0-next-alpha.132",
+    "@trpc/react-query": "11.0.0-next-alpha.132",
+    "bullmq": "^5.0.0",
     "cron": "^3.1.6",
     "discord-api-types": "^0.37.20",
     "dotenv": "^16.3.1",
@@ -48,9 +51,7 @@
     "superjson": "^2.2.1",
     "typescript": "^5.3.3",
     "uuid": "^9.0.0",
-    "zod": "^3.22.4",
-    "@trpc/client": "11.0.0-next-alpha.132",
-    "@trpc/react-query": "11.0.0-next-alpha.132"
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@tanstack/react-query": "^5.14.2",

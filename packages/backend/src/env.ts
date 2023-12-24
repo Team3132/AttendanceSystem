@@ -16,6 +16,11 @@ const EnvSchema = z.object({
     .url()
     .default("postgres://postgres:postgres@localhost:5432/postgres"),
   /**
+   * Redis
+   */
+  REDIS_HOST: z.string().default("localhost"),
+  REDIS_PORT: z.coerce.number().default(6379),
+  /**
    * Auth and cookies
    */
   TBA_TOKEN: z.string(),

@@ -3,7 +3,6 @@ version: "3.9"
 services:
   postgres:
     image: postgres:15
-    hostname: postgres
     environment:
       POSTGRES_PASSWORD: postgres
     restart: unless-stopped
@@ -12,6 +11,14 @@ services:
       - postgres-data:/var/lib/postgresql/data
     ports:
       - 5432:5432
+
+  redis:
+    image: redis
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    ports:
+      - 6379:6379
 
   backend:
     build:
@@ -24,6 +31,7 @@ services:
       - packages/backend/.env
     links:
       - postgres
+      - redis
   bot:
     build:
       context: .
@@ -36,3 +44,4 @@ services:
 
 volumes:
   postgres-data:
+  redis-data:
