@@ -5,11 +5,11 @@ import { RsvpsButton } from './buttons/RsvpsButton';
 import { RequestRsvpCommand } from './commands/RequestRsvp.command';
 import { RsvpsCommand } from './commands/Rsvps.command';
 import { DelayModal } from './modals/Delay.modal';
-import { LeaderBoardCommand } from './commands/Leaderboard.command';
 import { CheckinButton } from './buttons/CheckinButton';
 import { CheckinModal } from './modals/Checkin.modal';
 import { CheckoutButton } from './buttons/CheckoutButton';
 import { BackendModule } from '@/backend/backend.module';
+import { OutreachPaginationButton } from './buttons/OutreachPaginationButton';
 
 @Module({
   controllers: [],
@@ -21,10 +21,11 @@ import { BackendModule } from '@/backend/backend.module';
     RsvpsButton,
     RequestRsvpCommand,
     RsvpsCommand,
-    LeaderBoardCommand,
+    // LeaderBoardCommand,
     DelayModal,
     CheckinModal,
     CheckoutButton,
+    OutreachPaginationButton,
   ],
   exports: [BotService],
 })
