@@ -4,6 +4,8 @@ import { TRPCError } from "@trpc/server";
 import { scancode, user } from "../drizzle/schema";
 import { z } from "zod";
 import { UserCreateSchema } from "../schema";
+import { ee, rtrpc } from "../routers/app.router";
+import { getQueryKey } from "@trpc/react-query";
 
 /**
  * Gets a user from the database
@@ -104,6 +106,8 @@ export async function createUserScancode(userId: string, scancodeCode: string) {
     });
   }
 
+  ee.emit("invalidate", getQueryKey(rtrpc.users.getUserScancodes, userId));
+
   return createdScancode;
 }
 
@@ -132,6 +136,7 @@ export async function removeScancode(userId: string, code: string) {
   //     message: "Scancode does not exist",
   //   });
   // }
+  ee.emit("invalidate", getQueryKey(rtrpc.users.getUserScancodes, userId));
 
   return dbScancode;
 }
@@ -159,6 +164,8 @@ export async function createUser(userdata: z.infer<typeof UserCreateSchema>) {
       message: "User does not exist",
     });
   }
+
+  ee.emit("invalidate", getQueryKey(rtrpc.users.getUserList));
 
   return dbUser;
 }

@@ -1,9 +1,19 @@
 import { List, Typography } from "@mui/material";
 import UserListItem from "./UserListItem";
 import { trpc } from "@/trpcClient";
+import { z } from "zod";
+import { UserSchema } from "backend/schema";
 
-export default function UserList() {
-  const usersQuery = trpc.users.getUserList.useQuery();
+interface UserListProps {
+  initialUserList: Array<z.infer<typeof UserSchema>>;
+}
+
+export default function UserList(props: UserListProps) {
+  const { initialUserList } = props;
+
+  const usersQuery = trpc.users.getUserList.useQuery(undefined, {
+    initialData: initialUserList,
+  });
 
   if (usersQuery.data) {
     return (

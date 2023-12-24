@@ -18,10 +18,18 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import LinkBehavior from "../../../utils/LinkBehavior";
 import { trpc } from "@/trpcClient";
 import { z } from "zod";
-import { EventTypeSchema } from "backend/schema";
+import { EventSchema, EventTypeSchema } from "backend/schema";
+import { AuthStatusSchema } from "node_modules/backend/src/schema";
 
-export default function UpcomingEventsCard() {
-  const authStatusQuery = trpc.auth.status.useQuery();
+interface UpcomingEventsCardProps {
+  initialAuthStatus: z.infer<typeof AuthStatusSchema>;
+  initialEvents: z.infer<typeof EventSchema>[];
+}
+
+export default function UpcomingEventsCard(props: UpcomingEventsCardProps) {
+  const authStatusQuery = trpc.auth.status.useQuery(undefined, {
+    initialData: props.initialAuthStatus,
+  });
 
   const [fromDate, setFromDate] = useState(DateTime.now().startOf("day"));
   const [toDate, setToDate] = useState(
@@ -32,12 +40,17 @@ export default function UpcomingEventsCard() {
     z.infer<typeof EventTypeSchema> | undefined
   >();
 
-  const eventsQuery = trpc.events.getEvents.useQuery({
-    take: 5,
-    from: fromDate.toISO() ?? undefined,
-    to: toDate.toISO() ?? undefined,
-    type,
-  });
+  const eventsQuery = trpc.events.getEvents.useQuery(
+    {
+      take: 5,
+      from: fromDate.toISO() ?? undefined,
+      to: toDate.toISO() ?? undefined,
+      type,
+    },
+    {
+      initialData: props.initialEvents,
+    }
+  );
 
   const handleChange = (event: SelectChangeEvent) => {
     setType(event.target.value as z.infer<typeof EventTypeSchema>);

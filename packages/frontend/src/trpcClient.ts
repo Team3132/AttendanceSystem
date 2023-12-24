@@ -1,4 +1,10 @@
-import { createWSClient, httpBatchLink, splitLink, wsLink } from "@trpc/client";
+import {
+  createTRPCClientProxy,
+  createWSClient,
+  httpBatchLink,
+  splitLink,
+  wsLink,
+} from "@trpc/client";
 import SuperJSON from "superjson";
 import { createTRPCQueryUtils, createTRPCReact } from "@trpc/react-query";
 import { type AppRouter } from "backend";
@@ -30,6 +36,16 @@ export const trpcClient = trpc.createClient({
       }),
     }),
   ],
+});
+
+export const proxyclient = createTRPCClientProxy(trpcClient);
+
+proxyclient.invalidator.subscribe(undefined, {
+  onData: (key) => {
+    queryClient.invalidateQueries({
+      queryKey: key,
+    });
+  },
 });
 
 export const queryClient = new QueryClient();

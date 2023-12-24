@@ -39,6 +39,7 @@
     "dotenv": "^16.3.1",
     "drizzle-orm": "^0.29.0",
     "drizzle-zod": "^0.5.1",
+    "eventemitter3": "^5.0.1",
     "fastify": "^4.24.3",
     "googleapis": "105",
     "luxon": "^3.4.4",
@@ -47,14 +48,14 @@
     "superjson": "^2.2.1",
     "typescript": "^5.3.3",
     "uuid": "^9.0.0",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "@trpc/client": "11.0.0-next-alpha.132",
+    "@trpc/react-query": "11.0.0-next-alpha.132"
   },
   "devDependencies": {
     "@tanstack/react-query": "^5.14.2",
     "@tanstack/react-query-devtools": "^5.14.5",
-    "@trpc/client": "11.0.0-alpha-next-2023-12-22-15-40-21.129",
     "@trpc/next": "11.0.0-alpha-next-2023-12-22-15-40-21.129",
-    "@trpc/react-query": "11.0.0-alpha-next-2023-12-22-15-40-21.129",
     "@trpc/server": "11.0.0-alpha-next-2023-12-22-15-40-21.129",
     "@types/luxon": "^3.3.6",
     "@types/passport-discord": "^0.1.5",

@@ -24,3 +24,4 @@ export * from "./EventTypeSchema";
 export * from "./EventsArraySchema";
 export * from "./UserCreateSchema";
 export * from "./SelfCheckinWithUserId";
+export * from "./AuthStatusSchema";

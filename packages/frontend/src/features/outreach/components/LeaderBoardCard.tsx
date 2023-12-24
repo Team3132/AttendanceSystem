@@ -25,8 +25,15 @@ const columns = [
     },
   }),
 ];
-export default function LeaderboardCard() {
-  const leaderboardQuery = trpc.outreach.leaderboard.useQuery();
+
+interface LeaderboardCardProps {
+  initialLeaderboard: Array<LeaderboardUser>;
+}
+
+export default function LeaderboardCard(props: LeaderboardCardProps) {
+  const leaderboardQuery = trpc.outreach.leaderboard.useQuery(undefined, {
+    initialData: props.initialLeaderboard,
+  });
 
   if (leaderboardQuery.data) {
     return (

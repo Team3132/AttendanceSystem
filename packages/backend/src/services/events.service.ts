@@ -16,6 +16,8 @@ import { SelfCheckinSchema } from "../schema/SelfCheckinSchema";
 import { RSVPUserSchema, UserCheckinSchema } from "../schema";
 import { CreateBlankUserRsvpSchema } from "../schema/CreateBlankUserRsvpSchema";
 import clampDateTime from "../utils/clampDateTime";
+import { ee, rtrpc } from "../routers/app.router";
+import { getQueryKey } from "@trpc/react-query";
 
 /**
  * Get upcoming events in the next 24 hours for the daily bot announcement
@@ -205,6 +207,8 @@ export async function createEvent(params: z.infer<typeof CreateEventSchema>) {
 
   const { secret, ...data } = createdEvent;
 
+  ee.emit("invalidate", getQueryKey(rtrpc.events.getEvents));
+
   return data;
 }
 
@@ -230,6 +234,9 @@ export async function updateEvent(
     });
   }
 
+  ee.emit("invalidate", getQueryKey(rtrpc.events.getEvent));
+  ee.emit("invalidate", getQueryKey(rtrpc.events.getEvents));
+
   const { secret, ...rest } = updatedEvent;
 
   return rest;
@@ -251,6 +258,9 @@ export async function deleteEvent(id: string) {
       message: "Failed to delete event",
     });
   }
+
+  ee.emit("invalidate", getQueryKey(rtrpc.events.getEvent));
+  ee.emit("invalidate", getQueryKey(rtrpc.events.getEvents));
 
   const { secret, ...rest } = deletedEvent;
 
@@ -290,6 +300,8 @@ export async function editUserRsvpStatus(
       message: "Failed to update RSVP",
     });
   }
+
+  ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
 
   return updatedRsvp;
 }
@@ -350,6 +362,8 @@ export async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
       message: "Failed to check in",
     });
   }
+
+  ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
 
   // TODO: Schedule a job to check out the user after the delay
 
@@ -431,6 +445,7 @@ export async function userScanin(params: z.infer<typeof ScaninSchema>) {
   }
 
   // TODO: Schedule a job to check out the user after the delay
+  ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
 
   return updatedRsvp;
 }
@@ -517,6 +532,8 @@ export async function userCheckout(userId: string, eventId: string) {
     });
   }
 
+  ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
+
   return updatedRsvp;
 }
 
@@ -565,6 +582,8 @@ export async function editUserAttendance(
   }
 
   // TODO: Schedule a job to check out the user after the delay
+
+  ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
 
   return updatedRsvp;
 }
@@ -641,6 +660,9 @@ export async function selfCheckin(
       message: "Failed to check in",
     });
   }
+
+  ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
+
   // TODO: Schedule a job to check out the user after the delay
 
   return updatedRsvp;
@@ -674,6 +696,8 @@ export async function createBlankUserRsvp(
       message: "Failed to create RSVP",
     });
   }
+
+  ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
 
   return createdRsvp;
 }
