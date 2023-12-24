@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@trpc/server@11.0.0-alpha-next-2023-12-22-15-40-21.129':
+    hash: zinfo5de4yvfshunnovvjtmzqa
+    path: patches/@trpc__server@11.0.0-alpha-next-2023-12-22-15-40-21.129.patch
+
 importers:
 
   .:
@@ -110,7 +115,7 @@ importers:
         version: 11.0.0-alpha-next-2023-12-22-15-40-21.129(@tanstack/react-query@5.14.2)(@trpc/client@11.0.0-next-alpha.132)(@trpc/react-query@11.0.0-next-alpha.132)(@trpc/server@11.0.0-alpha-next-2023-12-22-15-40-21.129)(next@14.0.4)(react-dom@18.2.0)(react@18.2.0)
       '@trpc/server':
         specifier: 11.0.0-alpha-next-2023-12-22-15-40-21.129
-        version: 11.0.0-alpha-next-2023-12-22-15-40-21.129
+        version: 11.0.0-alpha-next-2023-12-22-15-40-21.129(patch_hash=zinfo5de4yvfshunnovvjtmzqa)
       '@types/luxon':
         specifier: ^3.3.6
         version: 3.3.6
@@ -412,7 +417,7 @@ importers:
         version: 11.0.0-alpha-next-2023-12-22-15-40-21.129(@tanstack/react-query@5.14.2)(@trpc/client@11.0.0-alpha-next-2023-12-22-15-40-21.129)(@trpc/server@11.0.0-alpha-next-2023-12-22-15-40-21.129)(react-dom@18.2.0)(react@18.2.0)
       '@trpc/server':
         specifier: 11.0.0-alpha-next-2023-12-22-15-40-21.129
-        version: 11.0.0-alpha-next-2023-12-22-15-40-21.129
+        version: 11.0.0-alpha-next-2023-12-22-15-40-21.129(patch_hash=zinfo5de4yvfshunnovvjtmzqa)
       '@types/luxon':
         specifier: ^3.3.1
         version: 3.3.4
@@ -3816,14 +3821,14 @@ packages:
     peerDependencies:
       '@trpc/server': 11.0.0-alpha-next-2023-12-22-15-40-21.129+c7b0eb86d
     dependencies:
-      '@trpc/server': 11.0.0-alpha-next-2023-12-22-15-40-21.129
+      '@trpc/server': 11.0.0-alpha-next-2023-12-22-15-40-21.129(patch_hash=zinfo5de4yvfshunnovvjtmzqa)
 
   /@trpc/client@11.0.0-next-alpha.132(@trpc/server@11.0.0-alpha-next-2023-12-22-15-40-21.129):
     resolution: {integrity: sha512-oLvWTs6gSeyYr4LQ/i3oATrsSspXfUFpzMIoR3XzX9go6YrqqPhr6Met4htW8tLz7Reqz86WWmYlIkutBViw+g==}
     peerDependencies:
       '@trpc/server': 11.0.0-next-alpha.132+72dd72110
     dependencies:
-      '@trpc/server': 11.0.0-alpha-next-2023-12-22-15-40-21.129
+      '@trpc/server': 11.0.0-alpha-next-2023-12-22-15-40-21.129(patch_hash=zinfo5de4yvfshunnovvjtmzqa)
 
   /@trpc/next@11.0.0-alpha-next-2023-12-22-15-40-21.129(@tanstack/react-query@5.14.2)(@trpc/client@11.0.0-alpha-next-2023-12-22-15-40-21.129)(@trpc/react-query@11.0.0-alpha-next-2023-12-22-15-40-21.129)(@trpc/server@11.0.0-alpha-next-2023-12-22-15-40-21.129)(next@14.0.4)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-slIGX27CZcwcOk7oFbQp6nX0VZAdWPKHy8AtmSK4jlGhUisgSOxj5nTcTxWl++XjyY3Z1hP63E/MGkDsn9gEIA==}
@@ -3839,7 +3844,7 @@ packages:
       '@tanstack/react-query': 5.14.2(react@18.2.0)
       '@trpc/client': 11.0.0-alpha-next-2023-12-22-15-40-21.129(@trpc/server@11.0.0-alpha-next-2023-12-22-15-40-21.129)
       '@trpc/react-query': 11.0.0-alpha-next-2023-12-22-15-40-21.129(@tanstack/react-query@5.14.2)(@trpc/client@11.0.0-alpha-next-2023-12-22-15-40-21.129)(@trpc/server@11.0.0-alpha-next-2023-12-22-15-40-21.129)(react-dom@18.2.0)(react@18.2.0)
-      '@trpc/server': 11.0.0-alpha-next-2023-12-22-15-40-21.129
+      '@trpc/server': 11.0.0-alpha-next-2023-12-22-15-40-21.129(patch_hash=zinfo5de4yvfshunnovvjtmzqa)
       next: 14.0.4(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -3859,7 +3864,7 @@ packages:
       '@tanstack/react-query': 5.14.2(react@18.2.0)
       '@trpc/client': 11.0.0-next-alpha.132(@trpc/server@11.0.0-alpha-next-2023-12-22-15-40-21.129)
       '@trpc/react-query': 11.0.0-next-alpha.132(@tanstack/react-query@5.14.2)(@trpc/client@11.0.0-next-alpha.132)(@trpc/server@11.0.0-alpha-next-2023-12-22-15-40-21.129)(react-dom@18.2.0)(react@18.2.0)
-      '@trpc/server': 11.0.0-alpha-next-2023-12-22-15-40-21.129
+      '@trpc/server': 11.0.0-alpha-next-2023-12-22-15-40-21.129(patch_hash=zinfo5de4yvfshunnovvjtmzqa)
       next: 14.0.4(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -3876,7 +3881,7 @@ packages:
     dependencies:
       '@tanstack/react-query': 5.14.2(react@18.2.0)
       '@trpc/client': 11.0.0-alpha-next-2023-12-22-15-40-21.129(@trpc/server@11.0.0-alpha-next-2023-12-22-15-40-21.129)
-      '@trpc/server': 11.0.0-alpha-next-2023-12-22-15-40-21.129
+      '@trpc/server': 11.0.0-alpha-next-2023-12-22-15-40-21.129(patch_hash=zinfo5de4yvfshunnovvjtmzqa)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: true
@@ -3892,12 +3897,13 @@ packages:
     dependencies:
       '@tanstack/react-query': 5.14.2(react@18.2.0)
       '@trpc/client': 11.0.0-next-alpha.132(@trpc/server@11.0.0-alpha-next-2023-12-22-15-40-21.129)
-      '@trpc/server': 11.0.0-alpha-next-2023-12-22-15-40-21.129
+      '@trpc/server': 11.0.0-alpha-next-2023-12-22-15-40-21.129(patch_hash=zinfo5de4yvfshunnovvjtmzqa)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
-  /@trpc/server@11.0.0-alpha-next-2023-12-22-15-40-21.129:
+  /@trpc/server@11.0.0-alpha-next-2023-12-22-15-40-21.129(patch_hash=zinfo5de4yvfshunnovvjtmzqa):
     resolution: {integrity: sha512-4xN+/NiV7Xkh9r8hjxGkAWfZ700m+qrL7H/6Rf4jLzknLl+oGTjIL4bXRoWlPNNT1NRaGNEs38InVzyMBktzEA==}
+    patched: true
 
   /@tsconfig/node10@1.0.9:
     resolution: {integrity: sha512-jNsYVVxU8v5g43Erja32laIDHXeoNvFEpX33OK4d6hljo3jDhCBDhx5dhCCTMWUojscpAagGiRkBKxpdl9fxqA==}
