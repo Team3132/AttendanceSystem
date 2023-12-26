@@ -1,5 +1,11 @@
 # @team3132/attendance-backend
 
+## 3.0.2
+
+### Patch Changes
+
+- a915009: make packages public
+
 ## 3.0.1
 
 ### Patch Changes
