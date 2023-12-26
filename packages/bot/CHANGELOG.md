@@ -1,5 +1,13 @@
 # @team3132/attendance-bot
 
+## 3.0.3
+
+### Patch Changes
+
+- 36c17a2: fix packages
+- Updated dependencies [36c17a2]
+  - @team3132/attendance-backend@3.0.3
+
 ## 3.0.2
 
 ### Patch Changes

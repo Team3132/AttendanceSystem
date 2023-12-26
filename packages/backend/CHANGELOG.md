@@ -1,5 +1,11 @@
 # @team3132/attendance-backend
 
+## 3.0.3
+
+### Patch Changes
+
+- 36c17a2: fix packages
+
 ## 3.0.2
 
 ### Patch Changes
