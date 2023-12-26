@@ -1,5 +1,11 @@
 # @team3132/attendance-bot
 
+## 3.0.1
+
+### Patch Changes
+
+- 3dc049b: add build step
+
 ## 3.0.0
 
 ### Major Changes
