@@ -1,5 +1,5 @@
 import { TRPCClientError } from "@trpc/react-query";
-import type { AppRouter } from "backend";
+import type { AppRouter } from "@team3132/attendance-backend";
 
 export function isTRPCClientError(
   cause: unknown

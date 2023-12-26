@@ -7,7 +7,7 @@ import {
 } from "@trpc/client";
 import SuperJSON from "superjson";
 import { createTRPCQueryUtils, createTRPCReact } from "@trpc/react-query";
-import { type AppRouter } from "backend";
+import { type AppRouter } from "@team3132/attendance-backend";
 import { QueryClient } from "@tanstack/react-query";
 
 export const trpc = createTRPCReact<AppRouter>();
