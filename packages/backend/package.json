@@ -1,6 +1,6 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
+  "name": "@team3132/attendance-backend",
+  "version": "2.10.9",
   "description": "",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -19,10 +19,14 @@
     "dev": "tsup --watch",
     "start": "node --enable-source-maps dist/index.js",
     "build": "tsup",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "release": "pnpm build"
   },
   "type": "module",
   "keywords": [],
+  "files": [
+    "dist"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {

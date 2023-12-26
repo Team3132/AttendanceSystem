@@ -1,6 +1,6 @@
 {
   "name": "AttendanceSystem",
-  "version": "1.0.0",
+  "version": "2.10.9",
   "main": "index.js",
   "repository": "git@github.com:Team3132/AttendanceSystem.git",
   "author": "Sebastian Pietschner <sebastian.pietschner@gmail.com>",
@@ -12,9 +12,11 @@
   "scripts": {
     "bot": "pnpm run --filter bot",
     "backend": "pnpm run --filter backend",
-    "frontend": "pnpm run --filter frontend"
+    "frontend": "pnpm run --filter frontend",
+    "release": "pnpm -r release"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.27.1",
     "concurrently": "^8.0.0",
     "semantic-release": "^22.0.0",
     "typescript": "^5.3.3"
