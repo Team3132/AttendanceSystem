@@ -105,9 +105,9 @@ export class OutreachPaginationButton {
 
     const page = leaderBoardData.slice(start, end);
 
-    const embed = new EmbedBuilder().setTitle(
-      `Outreach Leaderboard ${to}/${maxPage}`,
-    );
+    const embed = new EmbedBuilder()
+      .setTitle(`Outreach Leaderboard ${to}/${maxPage}`)
+      .setTimestamp(new Date());
 
     const lines = page.map(leaderboardLine).join('\n');
 
