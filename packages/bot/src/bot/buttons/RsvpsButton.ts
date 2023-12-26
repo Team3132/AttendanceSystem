@@ -7,7 +7,7 @@ import { ROLES } from '@/constants';
 import { DelayModal } from '../modals/Delay.modal';
 import { BACKEND_TOKEN, type BackendClient } from '@/backend/backend.module';
 import { z } from 'zod';
-import { RSVPStatusSchema } from 'backend/schema';
+import { RSVPStatusSchema } from '@team3132/attendance-backend/schema';
 import { GuildMemberGuard } from '../guards/GuildMemberGuard';
 
 @Injectable()

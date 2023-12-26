@@ -25,8 +25,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "backend": ["../backend/src"],
-      "backend/*": ["../backend/src/*"]
+      "@team3132/attendance-backend": ["../backend/src"],
+      "@team3132/attendance-backend/*": ["../backend/src/*"]
     }
   }
 }

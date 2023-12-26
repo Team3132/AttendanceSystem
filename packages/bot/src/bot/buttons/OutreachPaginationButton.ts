@@ -9,7 +9,7 @@ import {
   SlashCommand,
   type SlashCommandContext,
 } from 'necord';
-import { LeaderBoardUser } from 'backend/schema';
+import { LeaderBoardUser } from '@team3132/attendance-backend/schema';
 import { Duration } from 'luxon';
 import {
   ActionRowBuilder,

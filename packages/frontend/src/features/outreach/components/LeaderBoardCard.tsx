@@ -2,7 +2,7 @@ import { Paper, Stack, Typography } from "@mui/material";
 import { createColumnHelper } from "@tanstack/react-table";
 import Datatable from "../../../components/DataTable";
 import { z } from "zod";
-import { LeaderBoardUser as LeaderboardUserSchema } from "backend/schema";
+import { LeaderBoardUser as LeaderboardUserSchema } from "@team3132/attendance-backend/schema";
 import { trpc } from "@/trpcClient";
 import { Duration } from "luxon";
 

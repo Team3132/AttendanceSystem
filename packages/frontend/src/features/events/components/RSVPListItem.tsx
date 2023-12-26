@@ -8,7 +8,7 @@ import {
 import { FaCheck, FaClock, FaXmark, FaQuestion } from "react-icons/fa6";
 import { DateTime } from "luxon";
 import { z } from "zod";
-import { RSVPUserSchema } from "backend/schema";
+import { RSVPUserSchema } from "@team3132/attendance-backend/schema";
 
 interface RSVPListItemProps {
   rsvp: z.infer<typeof RSVPUserSchema>;

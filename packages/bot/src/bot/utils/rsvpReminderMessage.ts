@@ -11,7 +11,10 @@ import rsvpToDescription from './rsvpToDescription';
 import { ROLES } from '@/constants';
 import { DateTime } from 'luxon';
 import { z } from 'zod';
-import { EventSchema, RSVPUserSchema } from 'backend/schema';
+import {
+  EventSchema,
+  RSVPUserSchema,
+} from '@team3132/attendance-backend/schema';
 
 export default function rsvpReminderMessage(
   event: z.infer<typeof EventSchema>,

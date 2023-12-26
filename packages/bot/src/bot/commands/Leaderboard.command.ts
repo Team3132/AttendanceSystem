@@ -3,7 +3,7 @@ import { SlashCommand, Context, type SlashCommandContext } from 'necord';
 
 import { EventAutocompleteInterceptor } from '../interceptors/event.interceptor';
 import { DateTime, Duration } from 'luxon';
-import { LeaderBoardUser } from 'backend/schema';
+import { LeaderBoardUser } from '@team3132/attendance-backend/schema';
 import { z } from 'zod';
 import { BACKEND_TOKEN, type BackendClient } from '@/backend/backend.module';
 import { GuildMemberGuard } from '../guards/GuildMemberGuard';

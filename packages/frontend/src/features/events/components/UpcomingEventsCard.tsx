@@ -18,7 +18,10 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import LinkBehavior from "../../../utils/LinkBehavior";
 import { trpc } from "@/trpcClient";
 import { z } from "zod";
-import { EventSchema, EventTypeSchema } from "backend/schema";
+import {
+  EventSchema,
+  EventTypeSchema,
+} from "@team3132/attendance-backend/schema";
 import { AuthStatusSchema } from "node_modules/backend/src/schema";
 
 interface UpcomingEventsCardProps {

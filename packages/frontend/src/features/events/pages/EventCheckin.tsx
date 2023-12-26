@@ -11,7 +11,7 @@ import { LoadingButton } from "@mui/lab";
 import useSelfCheckin from "../hooks/useSelfCheckin";
 import { useAlert } from "react-alert";
 import { isTRPCClientError } from "@/utils/trpc";
-import { SelfCheckinSchema } from "backend/schema";
+import { SelfCheckinSchema } from "@team3132/attendance-backend/schema";
 import ControlledTextField from "@/components/ControlledTextField";
 import { queryUtils } from "@/trpcClient";
 
