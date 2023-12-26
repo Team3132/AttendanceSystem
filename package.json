@@ -13,7 +13,8 @@
     "bot": "pnpm run --filter bot",
     "backend": "pnpm run --filter backend",
     "frontend": "pnpm run --filter frontend",
-    "release": "pnpm -r release"
+    "build": "pnpm run -r build",
+    "release": "changeset publish"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
