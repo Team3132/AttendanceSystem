@@ -1,6 +1,6 @@
 {
   "name": "@team3132/attendance-backend",
-  "version": "2.10.9",
+  "version": "3.0.0",
   "description": "",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
