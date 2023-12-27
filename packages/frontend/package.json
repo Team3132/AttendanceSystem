@@ -39,9 +39,9 @@
   "devDependencies": {
     "@swc/plugin-emotion": "^2.5.70",
     "@tanstack/eslint-plugin-query": "^5.0.0-beta.14",
-    "@trpc/client": "11.0.0-next-alpha.142",
-    "@trpc/react-query": "11.0.0-next-alpha.142",
-    "@trpc/server": "11.0.0-next-alpha.142",
+    "@trpc/client": "11.0.0-next-alpha.143",
+    "@trpc/react-query": "11.0.0-next-alpha.143",
+    "@trpc/server": "11.0.0-next-alpha.143",
     "@types/luxon": "^3.3.1",
     "@types/react": "^18.2.15",
     "@types/react-alert": "^7.0.2",
