@@ -9,7 +9,7 @@ COPY . .
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 RUN pnpm run -r build
 RUN pnpm deploy --filter backend --prod /opt/backend
-COPY /app/packages/frontend/dist /opt/backend/dist/frontend
+# COPY /app/packages/frontend/dist /opt/backend/dist/frontend
 RUN pnpm deploy --filter bot --prod /opt/bot
 
 FROM base as backend-runner
@@ -17,6 +17,7 @@ ARG VERSION
 ENV VERSION=$VERSION
 ENV NODE_ENV=production
 COPY --from=build /opt/backend /app
+COPY --from=build /app/packages/frontend/dist /app/dist/frontend
 EXPOSE 3000
 CMD [ "pnpm", "start" ]
 
