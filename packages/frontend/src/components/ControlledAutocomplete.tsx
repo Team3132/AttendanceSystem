@@ -88,7 +88,6 @@ export default function ControlledAutocomplete<
           }}
         />
       )}
-      placeholder={placeholder}
       value={field.value}
       onChange={(_, value) => {
         field.onChange(value);
