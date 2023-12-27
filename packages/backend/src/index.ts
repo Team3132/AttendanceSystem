@@ -17,6 +17,7 @@ import { Settings } from "luxon";
 import mainLogger from "./logger";
 import ws from "@fastify/websocket";
 import { registerCron } from "./registerCron";
+import { TRPCReconnectNotification } from "@trpc/server/rpc";
 
 Settings.defaultLocale = "en-au";
 Settings.defaultZone = "Australia/Sydney";
@@ -42,7 +43,23 @@ await server.register(fastifySecureSession, {
   },
 });
 
-await server.register(ws);
+await server.register(ws, {
+  preClose: async (done) => {
+    const { websocketServer } = server;
+    const response: TRPCReconnectNotification = {
+      id: null,
+      method: "reconnect",
+    };
+    const data = JSON.stringify(response);
+    for (const client of websocketServer.clients) {
+      if (client.readyState === 1 /* ws.OPEN */) {
+        client.send(data);
+      }
+      client.close();
+    }
+    server.close(done);
+  },
+});
 
 server.websocketServer.on("connection", (socket) => {
   console.log(`➕➕ Connection (${server.websocketServer.clients.size})`);

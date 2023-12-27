@@ -32,10 +32,5 @@
       "@semantic-release/release-notes-generator",
       "@semantic-release/github"
     ]
-  },
-  "pnpm": {
-    "patchedDependencies": {
-      "@trpc/server@11.0.0-alpha-next-2023-12-22-15-40-21.129": "patches/@trpc__server@11.0.0-alpha-next-2023-12-22-15-40-21.129.patch"
-    }
   }
 }
