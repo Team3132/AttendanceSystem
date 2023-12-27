@@ -51,6 +51,20 @@ The database is run using Docker. To start the database, run `docker-compose up 
 
 Further instructions for the different parts of the project can be found in the `README.md` files in the respective directories.
 
+## Versioning
+
+The project uses [SemVer](https://semver.org/) for versioning and [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) for commit messages. This means that features, bug fixes, etc. are all versioned and documented in the commit messages.
+
+## Deployment
+
+The project is deployed using [Docker](https://www.docker.com/) using two containers. One container runs the backend and the other runs the frontend and bot. The containers are deployed to the [Github Container Registry](ghcr.io) and are pulled by the server.
+
+The frontend is included in the same container as the backend for simplicity.
+
+They're accessible under the tags:
+`ghcr.io/team3132/attendancesystem-bot:latest`
+`ghcr.io/team3132/attendancesystem-backend:latest`
+
 ## Automatic Updates
 
 The project uses [Renovate](https://www.mend.io/renovate/) to automatically update dependencies. Renovate will automatically create pull requests to update dependencies. These pull requests will be automatically merged if they pass the CI checks.
