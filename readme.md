@@ -12,6 +12,15 @@ This is a simple attendance system for TDU students. It is written in TypeScript
 - **Backend**: The backend is served using [Fastify](https://www.fastify.io/). It processes requests through [tRPC](https://trpc.io/) from the frontend and bot and communicates with the database.
 - **Bot**: The bot is written using the [NestJS](https://nestjs.com/) framework. It communicates with the backend using [tRPC](https://trpc.io/) and interfaces with Discord over a wrapper library for [discord.js](https://discord.js.org/) called [Necord](https://necord.org/)
 
+## Features
+
+- [x] **Attendance**: Students can check in to meetings and events using the bot or the frontend.
+- [x] **RSVPs**: Students can RSVP to meetings and events using the bot or the frontend.
+- [x] **Outreach**: If students volunteer to help out with events, their outreach hours are tallied and added to a leaderboard accessible from the bot or the frontend.
+- [x] **Google Calendar Integration**: Events are automatically pulled from the team's Google Calendar and added to the database. This is done using a cron job that runs every day at ~midnight.
+- [x] **Live Updates**: If a student checks in to an event, the frontend will update in real time to reflect that. This is done using [tRPC](https://trpc.io/).
+- [ ] **Build Season Points**: Students can earn points during the build season (added by mentors) and the points are tallied and added to a leaderboard accessible from the bot or the frontend.
+
 ## Development
 
 ### Prerequisites
