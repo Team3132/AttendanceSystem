@@ -18,7 +18,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsup --watch",
     "start": "node --enable-source-maps dist/index.js",
-    "build": "tsup",
+    "build": "tsc && tsup",
     "typecheck": "tsc --noEmit",
     "release": "pnpm build"
   },

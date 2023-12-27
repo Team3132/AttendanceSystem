@@ -22,7 +22,7 @@ import {
   EventSchema,
   EventTypeSchema,
 } from "@team3132/attendance-backend/schema";
-import { AuthStatusSchema } from "node_modules/backend/src/schema";
+import { AuthStatusSchema } from "@team3132/attendance-backend/schema";
 
 interface UpcomingEventsCardProps {
   initialAuthStatus: z.infer<typeof AuthStatusSchema>;
