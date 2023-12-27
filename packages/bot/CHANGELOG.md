@@ -1,5 +1,13 @@
 # @team3132/attendance-bot
 
+## 3.0.4
+
+### Patch Changes
+
+- a0da619: Update publish workflow
+- Updated dependencies [a0da619]
+  - @team3132/attendance-backend@3.0.4
+
 ## 3.0.3
 
 ### Patch Changes

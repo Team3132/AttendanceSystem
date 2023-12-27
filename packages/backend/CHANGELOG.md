@@ -1,5 +1,11 @@
 # @team3132/attendance-backend
 
+## 3.0.4
+
+### Patch Changes
+
+- a0da619: Update publish workflow
+
 ## 3.0.3
 
 ### Patch Changes
