@@ -9,7 +9,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "generate": "openapi -i http://localhost:3000/api/docs-json -o ./src/api/generated --name ApiClient && yarn lint --fix",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",

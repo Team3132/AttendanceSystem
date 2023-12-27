@@ -19,7 +19,7 @@
     "dev": "tsup --watch",
     "start": "node --enable-source-maps dist/index.js",
     "build": "tsc && tsup",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc",
     "release": "pnpm build"
   },
   "type": "module",
