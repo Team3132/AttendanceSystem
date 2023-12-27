@@ -21,8 +21,8 @@ import { z } from "zod";
 import {
   EventSchema,
   EventTypeSchema,
-} from "@team3132/attendance-backend/schema";
-import { AuthStatusSchema } from "@team3132/attendance-backend/schema";
+} from "backend/schema";
+import { AuthStatusSchema } from "backend/schema";
 
 interface UpcomingEventsCardProps {
   initialAuthStatus: z.infer<typeof AuthStatusSchema>;

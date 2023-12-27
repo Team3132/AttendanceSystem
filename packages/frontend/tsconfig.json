@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "useDefineForClassFields": true,
+    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "useDefineForClassFields": true,
     "lib": ["ES2023", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
@@ -21,15 +22,12 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noPropertyAccessFromIndexSignature": true,
-
-    /* Paths */
+    "strictPropertyInitialization": false,
     "baseUrl": ".",
     "paths": {
-      "@team3132/attendance-backend": ["../backend/src"],
-      "@team3132/attendance-backend/*": ["../backend/src/*"],
       "@/*": ["src/*"],
-      "@": ["src"]
+      "backend": ["../backend/src"],
+      "backend/*": ["../backend/src/*"]
     }
-  },
-  "references": [{ "path": "./tsconfig.node.json" }]
+  }
 }

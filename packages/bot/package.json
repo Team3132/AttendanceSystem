@@ -1,5 +1,5 @@
 {
-  "name": "@team3132/attendance-bot",
+  "name": "bot",
   "version": "3.0.4",
   "description": "",
   "author": "",
@@ -31,7 +31,7 @@
     "@sentry/node": "^7.64.0",
     "@sentry/tracing": "^7.64.0",
     "@trpc/client": "11.0.0-alpha-next-2023-12-22-15-40-21.129",
-    "@team3132/attendance-backend": "workspace:*",
+    "backend": "workspace:*",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "cron": "^3.1.6",

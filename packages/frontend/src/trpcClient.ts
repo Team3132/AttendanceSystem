@@ -4,18 +4,18 @@ import {
   httpBatchLink,
   splitLink,
   wsLink,
-} from "@trpc/client";
-import SuperJSON from "superjson";
-import { createTRPCQueryUtils, createTRPCReact } from "@trpc/react-query";
-import { type AppRouter } from "@team3132/attendance-backend";
-import { QueryClient } from "@tanstack/react-query";
+} from '@trpc/client';
+import SuperJSON from 'superjson';
+import { createTRPCQueryUtils, createTRPCReact } from '@trpc/react-query';
+import { type AppRouter } from 'backend';
+import { QueryClient } from '@tanstack/react-query';
 
 export const trpc = createTRPCReact<AppRouter>();
 
-const backendUrl = new URL(`${import.meta.env["VITE_BACKEND_URL"]}/trpc`);
+const backendUrl = new URL(`${import.meta.env['VITE_BACKEND_URL']}/trpc`);
 
 // change the protocol to ws
-const wsBackendUrl = new URL(backendUrl.toString().replace("http", "ws"));
+const wsBackendUrl = new URL(backendUrl.toString().replace('http', 'ws'));
 
 const wsClient = createWSClient({
   url: wsBackendUrl.toString(),
@@ -25,7 +25,7 @@ export const trpcClient = trpc.createClient({
   transformer: SuperJSON,
   links: [
     splitLink({
-      condition: (op) => op.type === "subscription",
+      condition: (op) => op.type === 'subscription',
       true: wsLink({
         client: wsClient,
       }),
@@ -34,7 +34,7 @@ export const trpcClient = trpc.createClient({
         fetch(url, options) {
           return fetch(url, {
             ...options,
-            credentials: "include",
+            credentials: 'include',
           });
         },
         // You can pass any HTTP headers you wish here
@@ -50,7 +50,7 @@ proxyclient.invalidator.subscribe(undefined, {
     queryClient.invalidateQueries({
       queryKey: key,
     });
-    console.log("invalidated", key);
+    console.log('invalidated', key);
   },
 });
 

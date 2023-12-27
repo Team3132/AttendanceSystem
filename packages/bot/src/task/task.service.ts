@@ -1,54 +1,54 @@
-import { BACKEND_TOKEN, type BackendClient } from '@/backend/backend.module';
-import rsvpReminderMessage from '@/bot/utils/rsvpReminderMessage';
-import { ROLES } from '@/constants';
-import { Inject, Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { Cron } from '@nestjs/schedule';
+import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
+import rsvpReminderMessage from "@/bot/utils/rsvpReminderMessage";
+import { ROLES } from "@/constants";
+import { Inject, Injectable, Logger } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { Cron } from "@nestjs/schedule";
 import {
   BaseMessageOptions,
   bold,
   ChannelType,
   Client,
   roleMention,
-} from 'discord.js';
-import { z } from 'zod';
-import { EventSchema } from '@team3132/attendance-backend/schema';
+} from "discord.js";
+import { z } from "zod";
+import { EventSchema } from "backend/schema";
 
 @Injectable()
 export class TaskService {
   constructor(
     private readonly config: ConfigService,
     private readonly discordClient: Client,
-    @Inject(BACKEND_TOKEN) private readonly backendClient: BackendClient,
+    @Inject(BACKEND_TOKEN) private readonly backendClient: BackendClient
   ) {
     // this.handleCron(); // Run once on startup
   }
 
   private readonly logger = new Logger(TaskService.name);
 
-  @Cron('00 22 * * *')
+  @Cron("00 22 * * *")
   public async handleAttendanceReminder() {
-    const enabled = this.config.get('REMINDER_ENABLED');
+    const enabled = this.config.get("REMINDER_ENABLED");
     if (!enabled) return;
 
     const nextEvents =
       await this.backendClient.client.bot.getEventsInNextDay.query();
 
-    const attendanceChannelId = this.config.getOrThrow('ATTENDANCE_CHANNEL');
+    const attendanceChannelId = this.config.getOrThrow("ATTENDANCE_CHANNEL");
 
     const fetchedChannel =
       await this.discordClient.channels.fetch(attendanceChannelId);
 
-    if (!fetchedChannel) throw new Error('Attendance channel does not exist.');
+    if (!fetchedChannel) throw new Error("Attendance channel does not exist.");
 
     if (!fetchedChannel.isTextBased())
-      throw new Error('Attendance channel is not text based.');
+      throw new Error("Attendance channel is not text based.");
 
     if (fetchedChannel.isDMBased())
-      throw new Error('This channel is not in a server');
+      throw new Error("This channel is not in a server");
 
     if (fetchedChannel.type === ChannelType.GuildStageVoice)
-      throw new Error('This channel is a stage voice channel');
+      throw new Error("This channel is a stage voice channel");
 
     type MessageEvent = [
       message: BaseMessageOptions,
@@ -63,30 +63,30 @@ export class TaskService {
           rsvpReminderMessage(
             nextEvent,
             nextEventRsvps,
-            this.config.getOrThrow('FRONTEND_URL'),
+            this.config.getOrThrow("FRONTEND_URL")
           ),
           nextEvent,
         ] satisfies MessageEvent;
-      }),
+      })
     );
 
     const sentMessages = await Promise.all(
       messages.map(([message, event]) =>
         fetchedChannel.send({
           content: `${
-            event.type === 'Outreach'
+            event.type === "Outreach"
               ? roleMention(ROLES.OUTREACH)
-              : event.type === 'Mentor'
+              : event.type === "Mentor"
                 ? roleMention(ROLES.MENTOR)
-                : event.type === 'Social'
+                : event.type === "Social"
                   ? roleMention(ROLES.SOCIAL)
                   : roleMention(ROLES.EVERYONE)
           } ${bold(
-            `10pm reminder`,
+            `10pm reminder`
           )}: This channel should be used to let us know any last minute attendance changes on the day of the meeting.`,
           ...message,
-        }),
-      ),
+        })
+      )
     );
 
     this.logger.debug(`${sentMessages.length} reminder messages sent`);

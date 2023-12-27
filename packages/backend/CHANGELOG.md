@@ -1,4 +1,4 @@
-# @team3132/attendance-backend
+# backend
 
 ## 3.0.4
 

@@ -3,7 +3,7 @@ import { LoadingButton } from "@mui/lab";
 import useSelfCheckout from "../hooks/useSelfCheckout";
 import { DateTime } from "luxon";
 import { z } from "zod";
-import { RSVPEventSchema } from "@team3132/attendance-backend/schema";
+import { RSVPEventSchema } from "backend/schema";
 
 interface PendingEventListItemProps {
   rsvp: z.infer<typeof RSVPEventSchema>;

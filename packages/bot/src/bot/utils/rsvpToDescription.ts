@@ -1,4 +1,4 @@
-import { RSVPUserSchema } from '@team3132/attendance-backend/schema';
+import { RSVPUserSchema } from 'backend/schema';
 import { z } from 'zod';
 
 export default function rsvpToDescription(

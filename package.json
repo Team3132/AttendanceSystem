@@ -14,8 +14,7 @@
     "backend": "pnpm run --filter backend",
     "frontend": "pnpm run --filter frontend",
     "build": "pnpm run -r build",
-    "release": "changeset publish",
-    "ci:publish": "pnpm publish -r"
+    "dev": "pnpm run -r dev"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",

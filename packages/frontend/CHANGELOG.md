@@ -1,4 +1,4 @@
-# @team3132/attendance-frontend
+# frontend
 
 ## 3.0.0
 

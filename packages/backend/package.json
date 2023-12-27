@@ -1,5 +1,5 @@
 {
-  "name": "@team3132/attendance-backend",
+  "name": "backend",
   "version": "3.0.4",
   "description": "",
   "module": "./dist/index.js",

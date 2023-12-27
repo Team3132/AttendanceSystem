@@ -14,7 +14,7 @@ import useCheckoutUser from "../hooks/useCheckoutUser";
 import useCheckinUser from "../hooks/useCheckinUser";
 import { useAlert } from "react-alert";
 import { z } from "zod";
-import { RSVPUserSchema } from "@team3132/attendance-backend/schema";
+import { RSVPUserSchema } from "backend/schema";
 
 interface AdminRSVPListItemProps {
   rsvp: z.infer<typeof RSVPUserSchema>;

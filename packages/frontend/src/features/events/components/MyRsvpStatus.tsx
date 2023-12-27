@@ -10,7 +10,7 @@ import {
 import useUpdateRsvp from "../hooks/useUpdateRsvp";
 import { trpc } from "@/trpcClient";
 import { z } from "zod";
-import { RSVPSchema } from "@team3132/attendance-backend/schema";
+import { RSVPSchema } from "backend/schema";
 
 interface MyRsvpStatusProps {
   eventId: string;

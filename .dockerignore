@@ -2,6 +2,8 @@ node_modules/
 .devcontainer/
 .github/
 .vscode/
+*.md
+.git
 packages/backend/dist
 packages/backend/node_modules
 packages/frontend/dist

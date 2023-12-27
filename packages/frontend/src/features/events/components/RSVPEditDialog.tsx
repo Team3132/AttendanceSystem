@@ -20,7 +20,7 @@ import { FaRecycle } from "react-icons/fa6";
 import {
   RSVPSchema,
   RSVPStatusSchema,
-} from "@team3132/attendance-backend/schema";
+} from "backend/schema";
 
 interface RSVPEditDialogProps {
   onOpen: () => void;

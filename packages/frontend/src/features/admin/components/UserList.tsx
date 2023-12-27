@@ -2,7 +2,7 @@ import { List, Typography } from "@mui/material";
 import UserListItem from "./UserListItem";
 import { trpc } from "@/trpcClient";
 import { z } from "zod";
-import { UserSchema } from "@team3132/attendance-backend/schema";
+import { UserSchema } from "backend/schema";
 
 interface UserListProps {
   initialUserList: Array<z.infer<typeof UserSchema>>;
