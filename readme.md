@@ -42,6 +42,10 @@ The database is run using Docker. To start the database, run `docker-compose up 
 
 Further instructions for the different parts of the project can be found in the `README.md` files in the respective directories.
 
+## Automatic Updates
+
+The project uses [Renovate](https://www.mend.io/renovate/) to automatically update dependencies. Renovate will automatically create pull requests to update dependencies. These pull requests will be automatically merged if they pass the CI checks.
+
 ## Extra Resources
 
 - **[Fireship](https://www.youtube.com/@Fireship)**: This is a great YouTube channel for learning about web development.
