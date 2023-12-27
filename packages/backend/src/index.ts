@@ -18,6 +18,7 @@ import mainLogger from "./logger";
 import ws from "@fastify/websocket";
 import { registerCron } from "./registerCron";
 import { TRPCReconnectNotification } from "@trpc/server/rpc";
+import { WebSocket } from "ws";
 
 Settings.defaultLocale = "en-au";
 Settings.defaultZone = "Australia/Sydney";
@@ -61,7 +62,7 @@ await server.register(ws, {
   },
 });
 
-server.websocketServer.on("connection", (socket) => {
+server.websocketServer.on("connection", (socket: WebSocket) => {
   console.log(`➕➕ Connection (${server.websocketServer.clients.size})`);
   socket.once("close", () => {
     console.log(`➖➖ Connection (${server.websocketServer.clients.size})`);
