@@ -20,18 +20,11 @@ jobs:
           cache: "pnpm"
       - name: Install Dependancies
         run: pnpm install --frozen-lockfile
+
       - name: Add Problem Matcher
         run: echo "::add-matcher::.github/problem-matchers/tsc.json"
       - name: Add Problem Matcher
         run: echo "::add-matcher::.github/problem-matchers/eslint-stylish.json"
 
-      - name: Type Check Backend
-        run: pnpm backend typecheck
-
-      - name: Build Backend
-        run: pnpm backend build
-
-      - name: Type Check Frontend
-        run: pnpm frontend typecheck
-      - name: Type Check Bot
-        run: pnpm bot typecheck
+      - name: Type Check Packages
+        run: pnpm typecheck
