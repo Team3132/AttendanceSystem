@@ -26,11 +26,10 @@ ARG VERSION
 ENV VERSION=$VERSION
 ENV NODE_ENV=production
 COPY --from=build /opt/bot /app
+CMD [ "pnpm", "start" ]
 
 FROM scratch as backend-out
 COPY --from=backend-runner /app/dist /
 
 FROM scratch as bot-out
 COPY --from=bot-runner /app/dist /
-
-CMD [ "pnpm", "start" ]
