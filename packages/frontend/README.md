@@ -1,27 +1,15 @@
-# React + TypeScript + Vite
+# The TDU Attendance System (Frontend)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Installation and Setup
 
-Currently, two official plugins are available:
+The majority of the setup is done in the root directory of the project. Please refer to the [root readme](../../readme.md) for more information.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Development
 
-## Expanding the ESLint configuration
+To develop the frontend make sure the backend is running. To start the backend, run `pnpm dev` in the `packages/backend` directory. This will start the backend server on port `3000`. Then run `pnpm dev` in the `packages/frontend` directory. This will start the frontend server on port `4000`.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Libraries
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- **[React](https://react.dev)** - The frontend is built using React. React is a JavaScript library for building user interfaces. It is used to build single page applications.
+- **[tRPC React Query](https://trpc.io/docs/client/react)** - tRPC React Query is a library that allows React to interface with the backend. It is used to fetch data from the backend and update the UI accordingly.
+- **[MUI](https://mui.com/material-ui/)** - MUI is a React UI framework. It is used to build the UI of the frontend.
