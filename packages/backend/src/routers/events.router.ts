@@ -33,12 +33,11 @@ import { UserCheckinSchema } from "../schema/UserCheckinSchema";
 import { UserCheckoutSchema } from "../schema/UserCheckoutSchema";
 import { SelfCheckinSchema } from "../schema/SelfCheckinSchema";
 import { CreateBlankUserRsvpSchema } from "../schema/CreateBlankUserRsvpSchema";
-import { PagedEventsSchema } from "../schema";
 
 export const eventRouter = t.router({
   getEvents: sessionProcedure
     .input(GetEventParamsSchema)
-    .output(PagedEventsSchema)
+    .output(z.array(EventSchema))
     .query(({ input }) => getEvents(input)),
   getEvent: sessionProcedure
     .input(z.string().describe("The event ID"))

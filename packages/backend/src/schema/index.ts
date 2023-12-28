@@ -25,5 +25,3 @@ export * from "./EventsArraySchema";
 export * from "./UserCreateSchema";
 export * from "./SelfCheckinWithUserId";
 export * from "./AuthStatusSchema";
-export * from "./PagedEventsSchema";
-export * from "./PagedSchema";
