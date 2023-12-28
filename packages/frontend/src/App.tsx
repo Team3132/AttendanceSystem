@@ -13,6 +13,7 @@ import MuiAlert from "./components/MuiAlert";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { queryClient, trpc, trpcClient } from "./trpcClient";
+import { HelmetProvider } from "react-helmet-async";
 
 /**
  * The root component of the application.
@@ -31,18 +32,20 @@ function App() {
   );
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale="en-au">
-        <Provider template={MuiAlert} position="bottom center">
-          <trpc.Provider client={trpcClient} queryClient={queryClient}>
-            <QueryClientProvider client={queryClient}>
-              <RouterProvider router={router} />
-            </QueryClientProvider>
-          </trpc.Provider>
-        </Provider>
-      </LocalizationProvider>
-    </ThemeProvider>
+    <HelmetProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale="en-au">
+          <Provider template={MuiAlert} position="bottom center">
+            <trpc.Provider client={trpcClient} queryClient={queryClient}>
+              <QueryClientProvider client={queryClient}>
+                <RouterProvider router={router} />
+              </QueryClientProvider>
+            </trpc.Provider>
+          </Provider>
+        </LocalizationProvider>
+      </ThemeProvider>
+    </HelmetProvider>
   );
 }
 

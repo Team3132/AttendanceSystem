@@ -1,6 +1,7 @@
 import { AppBar, Toolbar, Typography, IconButton } from "@mui/material";
 import { FaCircleUser } from "react-icons/fa6";
 import LinkBehavior from "../utils/LinkBehavior";
+import { Helmet } from "react-helmet-async";
 
 interface DefaultAppBarProps {
   title: string;
@@ -9,6 +10,9 @@ interface DefaultAppBarProps {
 export default function DefaultAppBar({ title }: DefaultAppBarProps) {
   return (
     <>
+      <Helmet>
+        <title>{`${title} - TDU`}</title>
+      </Helmet>
       <AppBar
         position="absolute"
         sx={{
