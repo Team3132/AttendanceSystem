@@ -26,25 +26,18 @@ export function Component() {
   return (
     <>
       <DefaultAppBar title="Events" />
-      <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
-        <Stack gap={2}>
-          <Paper sx={{ p: 2, textAlign: "center" }}>
-            <Stack gap={2}>
-              <Typography variant="h4">
-                Welcome to the Attendance System
-              </Typography>
-              <Typography variant="body1">
-                This is the attendance system for the FRC team 3132 Thunder Down
-                Under. This system is used to track attendance for team members
-                at events and outreach activities.
-              </Typography>
-            </Stack>
-          </Paper>
-          <UpcomingEventsCard
-            initialAuthStatus={loaderData.initialAuth}
-            initialEvents={loaderData.initialEvents}
-          />
-        </Stack>
+      <Container
+        sx={{
+          my: 2,
+          flex: 1,
+          overflowY: "auto",
+          display: "flex",
+        }}
+      >
+        <UpcomingEventsCard
+          initialAuthStatus={loaderData.initialAuth}
+          // initialEvents={loaderData.initialEvents}
+        />
       </Container>
     </>
   );

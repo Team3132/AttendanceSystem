@@ -3,7 +3,6 @@ import {
   Button,
   FormControl,
   InputLabel,
-  List,
   MenuItem,
   Paper,
   Select,
@@ -18,15 +17,17 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import LinkBehavior from "../../../utils/LinkBehavior";
 import { trpc } from "@/trpcClient";
 import { z } from "zod";
-import {
-  EventSchema,
-  EventTypeSchema,
-} from "backend/schema";
+import { EventTypeSchema, PagedEventsSchema } from "backend/schema";
 import { AuthStatusSchema } from "backend/schema";
+import { InfiniteData } from "@tanstack/react-query";
+import InfiniteList from "@/components/InfiniteList";
 
 interface UpcomingEventsCardProps {
   initialAuthStatus: z.infer<typeof AuthStatusSchema>;
-  initialEvents: z.infer<typeof EventSchema>[];
+  initialEvents: InfiniteData<
+    z.infer<typeof PagedEventsSchema>,
+    string | null | undefined
+  >;
 }
 
 export default function UpcomingEventsCard(props: UpcomingEventsCardProps) {
@@ -43,15 +44,27 @@ export default function UpcomingEventsCard(props: UpcomingEventsCardProps) {
     z.infer<typeof EventTypeSchema> | undefined
   >();
 
-  const eventsQuery = trpc.events.getEvents.useQuery(
+  // const eventsQuery = trpc.events.getEvents.useQuery(
+  //   {
+  //     take: 5,
+  //     from: fromDate.toISO() ?? undefined,
+  //     to: toDate.toISO() ?? undefined,
+  //     type,
+  //   },
+  //   {
+  //     initialData: props.initialEvents,
+  //   }
+  // );
+  const infiniteEventsQuery = trpc.events.getEvents.useInfiniteQuery(
     {
-      take: 5,
+      limit: 10,
       from: fromDate.toISO() ?? undefined,
       to: toDate.toISO() ?? undefined,
       type,
     },
     {
-      initialData: props.initialEvents,
+      getNextPageParam: (lastPage) => lastPage?.nextCursor,
+      // initialData: props.initialEvents,
     }
   );
 
@@ -59,10 +72,16 @@ export default function UpcomingEventsCard(props: UpcomingEventsCardProps) {
     setType(event.target.value as z.infer<typeof EventTypeSchema>);
   };
 
-  if (eventsQuery.data) {
+  if (infiniteEventsQuery.data) {
     return (
-      <Paper sx={{ p: 2 }}>
-        <Stack gap={2}>
+      <Paper sx={{ height: "100%", p: 2, width: "100%" }}>
+        <Stack
+          gap={2}
+          height={"100%"}
+          display={"flex"}
+          flexDirection={"column"}
+          width={"100%"}
+        >
           <Box
             sx={{
               display: "flex",
@@ -120,12 +139,24 @@ export default function UpcomingEventsCard(props: UpcomingEventsCardProps) {
               }}
             />
           </Box>
+          <InfiniteList
+            data={infiniteEventsQuery.data}
+            ListItemProps={(event) => ({
+              LinkComponent: LinkBehavior,
+              href: `/events/${event.id}`,
+            })}
+            fetchNextPage={infiniteEventsQuery.fetchNextPage}
+            isFetching={infiniteEventsQuery.isFetching}
+            renderRow={(event) => <UpcomingEventListItem event={event} />}
+            fixedHeight={72}
+            sx={{
+              flex: 1,
+              // height: "100px",
+              // flexGrow: 1,
+              overflowY: "auto",
+            }}
+          />
 
-          <List>
-            {eventsQuery.data.map((event) => (
-              <UpcomingEventListItem event={event} key={event.id} />
-            ))}
-          </List>
           {authStatusQuery.data?.isAdmin ? (
             <Button
               LinkComponent={LinkBehavior}
@@ -141,7 +172,7 @@ export default function UpcomingEventsCard(props: UpcomingEventsCardProps) {
   }
 
   return (
-    <Paper sx={{ p: 2, textAlign: "center" }}>
+    <Paper sx={{ height: "100%", p: 2, width: "100%" }}>
       <Typography variant="h4">Loading...</Typography>
     </Paper>
   );

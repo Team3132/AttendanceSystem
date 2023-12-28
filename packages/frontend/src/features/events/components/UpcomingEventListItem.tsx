@@ -1,20 +1,20 @@
-import { ListItemButton, ListItemText, Typography } from '@mui/material';
-import EventDateText from './EventDateTypography';
-import { DateTime } from 'luxon';
-import LinkBehavior from '../../../utils/LinkBehavior';
-import { z } from 'zod';
-import { EventSchema } from 'backend/schema';
+import { ListItemButton, ListItemText, Typography } from "@mui/material";
+import EventDateText from "./EventDateTypography";
+import { DateTime } from "luxon";
+import LinkBehavior from "../../../utils/LinkBehavior";
+import { z } from "zod";
+import { EventSchema } from "backend/schema";
 
 interface UpcomingEventListItemProps {
   event: z.infer<typeof EventSchema>;
 }
 
 export default function UpcomingEventListItem(
-  props: UpcomingEventListItemProps,
+  props: UpcomingEventListItemProps
 ) {
   const { event } = props;
   return (
-    <ListItemButton LinkComponent={LinkBehavior} href={`/events/${event.id}`}>
+    <>
       <ListItemText
         primary={event.title}
         secondary={
@@ -26,6 +26,6 @@ export default function UpcomingEventListItem(
       <Typography variant="body2">
         {DateTime.fromISO(event.startDate).toRelativeCalendar()}
       </Typography>
-    </ListItemButton>
+    </>
   );
 }

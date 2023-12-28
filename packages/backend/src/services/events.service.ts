@@ -5,6 +5,7 @@ import {
   and,
   asc,
   between,
+  count,
   eq,
   gte,
   ilike,
@@ -31,6 +32,7 @@ import { ee, rtrpc } from "../routers/app.router";
 import { getQueryKey } from "@trpc/react-query";
 import { Queue, Worker, Job } from "bullmq";
 import env from "../env";
+import { PagedSchema } from "../schema/PagedSchema";
 
 interface EventCheckinJobData {
   eventId: string;
@@ -111,7 +113,7 @@ export async function getNextEvents() {
   return nextEventsWithoutSecret;
 }
 
-const EventsArraySchema = z.array(EventSchema);
+const PagedEventsSchema = PagedSchema(EventSchema);
 
 /**
  * Get events
@@ -120,45 +122,74 @@ const EventsArraySchema = z.array(EventSchema);
  */
 export async function getEvents(
   input: z.infer<typeof GetEventParamsSchema>
-): Promise<z.infer<typeof EventsArraySchema>> {
-  const { from, to, take, type } = input;
+): Promise<z.infer<typeof PagedEventsSchema>> {
+  const { from, to, limit, type } = input;
+
+  const conditions: Array<SQL<unknown> | undefined> = [];
+
+  if (from && to) {
+    conditions.push(
+      or(between(event.startDate, from, to), between(event.endDate, from, to))
+    );
+  } else {
+    if (from) {
+      conditions.push(or(gte(event.startDate, from), gte(event.endDate, from)));
+    }
+    if (to) {
+      conditions.push(or(lte(event.startDate, to), lte(event.endDate, to)));
+    }
+  }
+
+  if (type) {
+    conditions.push(eq(event.type, type));
+  }
+
+  const conditionsAndTotal = and(...conditions);
+
+  const { cursor } = input;
+  if (cursor) {
+    conditions.push(gte(event.id, cursor));
+  }
+
+  const conditionsAnd = and(...conditions);
+
+  const [totalMatchingEvents] = await db
+    .select({
+      count: count(),
+    })
+    .from(event)
+    .where(conditionsAndTotal);
+
+  if (!totalMatchingEvents) {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to get events",
+    });
+  }
+
   const events = await db.query.event.findMany({
-    where: (event) => {
-      const conditions = [];
-      if (from && to) {
-        conditions.push(
-          or(
-            between(event.startDate, from, to),
-            between(event.endDate, from, to)
-          )
-        );
-      } else {
-        if (from) {
-          conditions.push(
-            or(gte(event.startDate, from), gte(event.endDate, from))
-          );
-        }
-        if (to) {
-          conditions.push(or(lte(event.startDate, to), lte(event.endDate, to)));
-        }
-      }
-
-      if (type) {
-        conditions.push(eq(event.type, type));
-      }
-
-      return and(...conditions);
-    },
-    limit: take,
+    where: conditionsAnd,
     orderBy: (event) => [asc(event.startDate)],
+    limit: limit + 1,
   });
 
-  const eventsWithoutSecret = events.map((event) => {
+  const items = events.map((event) => {
     const { secret, ...rest } = event;
     return rest;
   });
 
-  return eventsWithoutSecret;
+  let nextCursor: typeof cursor | undefined = undefined;
+
+  if (items.length > limit) {
+    const nextItem = items.pop();
+    nextCursor = nextItem!.id;
+  }
+
+  return {
+    items,
+    nextCursor,
+    total: totalMatchingEvents.count,
+  };
 }
 
 /**
