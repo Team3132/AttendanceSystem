@@ -24,9 +24,9 @@ import {
   RowSelectionState,
   OnChangeFn,
 } from "@tanstack/react-table";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import React, { useMemo, useRef, useState } from "react";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa6";
-import { useVirtual } from "react-virtual";
 
 export interface DatatableProps<Data extends object>
   extends TableContainerProps {
@@ -87,14 +87,6 @@ export default function Datatable<Data extends object>({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
-  const estimateRowSize = useMemo(() => {
-    if (fixedHeight === undefined) {
-      return undefined;
-    }
-
-    return () => fixedHeight;
-  }, [fixedHeight]);
-
   const table = useReactTable({
     columns,
     data,
@@ -123,19 +115,12 @@ export default function Datatable<Data extends object>({
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
   const { rows } = table.getRowModel();
-  const rowVirtualizer = useVirtual({
-    parentRef: tableContainerRef,
-    size: rows.length,
-    estimateSize: estimateRowSize,
+  const virtualizer = useVirtualizer({
+    getScrollElement: () => tableContainerRef.current,
+    count: rows.length,
+    estimateSize: () => fixedHeight || 48,
     overscan: 10,
   });
-  const { virtualItems: virtualRows, totalSize } = rowVirtualizer;
-
-  const paddingTop = virtualRows.length > 0 ? virtualRows?.[0]?.start || 0 : 0;
-  const paddingBottom =
-    virtualRows.length > 0
-      ? totalSize - (virtualRows?.[virtualRows.length - 1]?.end || 0)
-      : 0;
 
   const totalFetched = useMemo(() => {
     return rows.length;
@@ -159,7 +144,7 @@ export default function Datatable<Data extends object>({
         }
       }
     },
-    [fetchNextPage, isFetching, totalFetched, totalDBRowCount],
+    [fetchNextPage, isFetching, totalFetched, totalDBRowCount]
   );
 
   React.useEffect(() => {
@@ -176,72 +161,69 @@ export default function Datatable<Data extends object>({
       }
       {...tableContainerProps}
     >
-      <Table stickyHeader size={size}>
-        <TableHead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableCell
-                  component={"th"}
-                  key={header.id}
-                  colSpan={header.colSpan}
-                  style={{ width: header.getSize() }}
-                >
-                  {header.isPlaceholder ? null : (
-                    <div onClick={header.column.getToggleSortingHandler()}>
-                      <b>
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                        {{
-                          asc: <FaArrowUp fontSize={"small"} />,
-                          desc: <FaArrowDown fontSize={"small"} />,
-                        }[header.column.getIsSorted() as string] ?? null}
-                      </b>
-                    </div>
-                  )}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableHead>
-
-        <TableBody>
-          {paddingTop > 0 && (
-            <tr>
-              <td style={{ height: `${paddingTop}px` }} />
-            </tr>
-          )}
-          {virtualRows.map((virtualRow) => {
-            const row = rows[virtualRow.index] as Row<Data>;
-            return (
-              <TableRow
-                key={row.id}
-                component="tr"
-                sx={{ height: fixedHeight }}
-              >
-                {row.getVisibleCells().map((cell) => {
-                  //   const meta: any = cell.column.columnDef.meta;
-                  return (
-                    <TableCell key={cell.id} component="td">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  );
-                })}
+      <div style={{ height: `${virtualizer.getTotalSize()}px` }}>
+        <Table stickyHeader size={size}>
+          <TableHead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableCell
+                    component={"th"}
+                    key={header.id}
+                    colSpan={header.colSpan}
+                    style={{ width: header.getSize() }}
+                  >
+                    {header.isPlaceholder ? null : (
+                      <div onClick={header.column.getToggleSortingHandler()}>
+                        <b>
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                          {{
+                            asc: <FaArrowUp fontSize={"small"} />,
+                            desc: <FaArrowDown fontSize={"small"} />,
+                          }[header.column.getIsSorted() as string] ?? null}
+                        </b>
+                      </div>
+                    )}
+                  </TableCell>
+                ))}
               </TableRow>
-            );
-          })}
-          {paddingBottom > 0 && (
-            <tr>
-              <td style={{ height: `${paddingBottom}px` }} />
-            </tr>
-          )}
-        </TableBody>
-      </Table>
+            ))}
+          </TableHead>
+
+          <TableBody>
+            {virtualizer.getVirtualItems().map((virtualRow, index) => {
+              const row = rows[virtualRow.index] as Row<Data>;
+              return (
+                <TableRow
+                  key={row.id}
+                  component="tr"
+                  style={{
+                    height: `${virtualRow.size}px`,
+                    transform: `translateY(${
+                      virtualRow.start - index * virtualRow.size
+                    }px)`,
+                  }}
+                >
+                  {row.getVisibleCells().map((cell) => {
+                    //   const meta: any = cell.column.columnDef.meta;
+                    return (
+                      <TableCell key={cell.id} component="td">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </div>
     </TableContainer>
   );
 }
