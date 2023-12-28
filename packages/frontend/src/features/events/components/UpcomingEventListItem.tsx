@@ -1,7 +1,6 @@
-import { ListItemButton, ListItemText, Typography } from "@mui/material";
+import { ListItemText, Typography } from "@mui/material";
 import EventDateText from "./EventDateTypography";
 import { DateTime } from "luxon";
-import LinkBehavior from "../../../utils/LinkBehavior";
 import { z } from "zod";
 import { EventSchema } from "backend/schema";
 

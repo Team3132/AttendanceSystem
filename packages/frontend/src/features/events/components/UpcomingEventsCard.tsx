@@ -17,17 +17,12 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import LinkBehavior from "../../../utils/LinkBehavior";
 import { trpc } from "@/trpcClient";
 import { z } from "zod";
-import { EventTypeSchema, PagedEventsSchema } from "backend/schema";
+import { EventTypeSchema } from "backend/schema";
 import { AuthStatusSchema } from "backend/schema";
-import { InfiniteData } from "@tanstack/react-query";
 import InfiniteList from "@/components/InfiniteList";
 
 interface UpcomingEventsCardProps {
   initialAuthStatus: z.infer<typeof AuthStatusSchema>;
-  initialEvents: InfiniteData<
-    z.infer<typeof PagedEventsSchema>,
-    string | null | undefined
-  >;
 }
 
 export default function UpcomingEventsCard(props: UpcomingEventsCardProps) {
@@ -64,7 +59,6 @@ export default function UpcomingEventsCard(props: UpcomingEventsCardProps) {
     },
     {
       getNextPageParam: (lastPage) => lastPage?.nextCursor,
-      // initialData: props.initialEvents,
     }
   );
 
