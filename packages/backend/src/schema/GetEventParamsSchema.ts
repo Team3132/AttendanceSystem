@@ -12,13 +12,12 @@ export const GetEventParamsSchema = z.object({
     .datetime({ offset: true })
     .optional()
     .describe("The end date of the range"),
-  take: z
+  limit: z
     .number()
-    .int()
-    .positive()
+    .min(1)
     .max(100)
     .default(10)
-    .describe("The number of events to take")
-    .optional(),
+    .describe("The number of events to return"),
+  cursor: z.number().nonnegative().default(0).describe("The page number"),
   type: z.enum(event.type.enumValues).optional().describe("The type of event"),
 });

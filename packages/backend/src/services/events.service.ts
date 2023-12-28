@@ -5,6 +5,7 @@ import {
   and,
   asc,
   between,
+  count,
   eq,
   gte,
   ilike,
@@ -31,6 +32,7 @@ import { ee, rtrpc } from "../routers/app.router";
 import { getQueryKey } from "@trpc/react-query";
 import { Queue, Worker, Job } from "bullmq";
 import env from "../env";
+import { PagedEventsSchema } from "../schema/PagedEventsSchema";
 
 interface EventCheckinJobData {
   eventId: string;
@@ -120,36 +122,49 @@ const EventsArraySchema = z.array(EventSchema);
  */
 export async function getEvents(
   input: z.infer<typeof GetEventParamsSchema>
-): Promise<z.infer<typeof EventsArraySchema>> {
-  const { from, to, take, type } = input;
+): Promise<z.infer<typeof PagedEventsSchema>> {
+  const { from, to, limit, type, cursor: page } = input;
+  const conditions: Array<SQL | undefined> = [];
+
+  if (from && to) {
+    conditions.push(
+      or(between(event.startDate, from, to), between(event.endDate, from, to))
+    );
+  } else {
+    if (from) {
+      conditions.push(or(gte(event.startDate, from), gte(event.endDate, from)));
+    }
+    if (to) {
+      conditions.push(or(lte(event.startDate, to), lte(event.endDate, to)));
+    }
+  }
+
+  if (type) {
+    conditions.push(eq(event.type, type));
+  }
+
+  const offset = page * limit;
+
+  const andConditions = and(...conditions);
+
+  const [totalEntry] = await db
+    .select({
+      total: count(),
+    })
+    .from(event)
+    .where(andConditions);
+
+  if (!totalEntry) {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to get total events",
+    });
+  }
+
   const events = await db.query.event.findMany({
-    where: (event) => {
-      const conditions = [];
-      if (from && to) {
-        conditions.push(
-          or(
-            between(event.startDate, from, to),
-            between(event.endDate, from, to)
-          )
-        );
-      } else {
-        if (from) {
-          conditions.push(
-            or(gte(event.startDate, from), gte(event.endDate, from))
-          );
-        }
-        if (to) {
-          conditions.push(or(lte(event.startDate, to), lte(event.endDate, to)));
-        }
-      }
-
-      if (type) {
-        conditions.push(eq(event.type, type));
-      }
-
-      return and(...conditions);
-    },
-    limit: take,
+    where: andConditions,
+    limit,
+    offset,
     orderBy: (event) => [asc(event.startDate)],
   });
 
@@ -158,7 +173,17 @@ export async function getEvents(
     return rest;
   });
 
-  return eventsWithoutSecret;
+  const { total } = totalEntry;
+
+  /** Undefined if no next page */
+  const nextPage = total > offset + limit ? page + 1 : undefined;
+
+  return {
+    items: eventsWithoutSecret,
+    page,
+    total,
+    nextPage,
+  };
 }
 
 /**
