@@ -11,7 +11,7 @@ export default function DefaultAppBar({ title }: DefaultAppBarProps) {
   return (
     <>
       <Helmet>
-        <title>{`${title} - TDU`}</title>
+        <title>{`${title} - Attendance System`}</title>
       </Helmet>
       <AppBar
         position="absolute"
