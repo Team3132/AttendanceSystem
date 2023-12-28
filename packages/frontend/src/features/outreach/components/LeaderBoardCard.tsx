@@ -46,7 +46,7 @@ export default function LeaderboardCard(props: LeaderboardCardProps) {
 
   if (leaderboardQuery.data) {
     return (
-      <Paper sx={{ p: 2, textAlign: "center", height: "100%" }}>
+      <Paper sx={{ p: 2, textAlign: "center", height: "100%", width: "100%" }}>
         <Stack gap={2} sx={{ height: "100%", display: "flex" }}>
           <Typography variant="h4">Leaderboard</Typography>
           <Datatable
