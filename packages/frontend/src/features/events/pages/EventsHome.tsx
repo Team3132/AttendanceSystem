@@ -1,4 +1,4 @@
-import { Container } from "@mui/material";
+import { Container, Paper, Stack, Typography } from "@mui/material";
 import ensureAuth from "../../../features/auth/utils/ensureAuth";
 import DefaultAppBar from "../../../components/DefaultAppBar";
 import UpcomingEventsCard from "../components/UpcomingEventsCard";
@@ -8,14 +8,15 @@ import { useLoaderData } from "react-router-dom";
 
 export async function loader() {
   const initialAuth = await ensureAuth();
-  await queryUtils.events.getEvents.prefetchInfinite({
-    limit: 10,
+  const initialEvents = await queryUtils.events.getEvents.ensureData({
+    take: 5,
     from: DateTime.now().startOf("day").toISO() ?? undefined,
     to: DateTime.now().plus({ month: 1 }).startOf("day").toISO() ?? undefined,
     type: undefined,
   });
   return {
     initialAuth,
+    initialEvents,
   };
 }
 
@@ -33,7 +34,10 @@ export function Component() {
           display: "flex",
         }}
       >
-        <UpcomingEventsCard initialAuthStatus={loaderData.initialAuth} />
+        <UpcomingEventsCard
+          initialAuthStatus={loaderData.initialAuth}
+          // initialEvents={loaderData.initialEvents}
+        />
       </Container>
     </>
   );
