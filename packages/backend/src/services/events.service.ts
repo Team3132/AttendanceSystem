@@ -113,8 +113,6 @@ export async function getNextEvents() {
   return nextEventsWithoutSecret;
 }
 
-const EventsArraySchema = z.array(EventSchema);
-
 /**
  * Get events
  * @param input Parameters for the query
