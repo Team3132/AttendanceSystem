@@ -80,6 +80,7 @@ export function Component() {
               data={usersQuery.data}
               globalFilter={search}
               setGlobalFilter={setSearch}
+              fixedHeight={69.5}
               sx={{
                 flex: 1,
               }}

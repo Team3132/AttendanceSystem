@@ -55,6 +55,7 @@ export default function LeaderboardCard(props: LeaderboardCardProps) {
             sx={{
               flex: 1,
             }}
+            fixedHeight={53}
           />
         </Stack>
       </Paper>
