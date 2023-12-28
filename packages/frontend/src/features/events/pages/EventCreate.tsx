@@ -1,17 +1,17 @@
-import { Container, Stack, Switch } from '@mui/material';
-import DefaultAppBar from '../../../components/DefaultAppBar';
-import ensureAuth from '../../auth/utils/ensureAuth';
-import useZodForm from '../../../hooks/useZodForm';
-import { DateTime } from 'luxon';
-import { DateTimePicker } from '@mui/x-date-pickers';
-import { Controller } from 'react-hook-form';
-import { LoadingButton } from '@mui/lab';
-import useCreateEvent from '../hooks/useCreateEvent';
-import { useNavigate } from 'react-router-dom';
-import { useAlert } from 'react-alert';
-import ControlledTextField from '@/components/ControlledTextField';
-import ControlledSelect from '@/components/ControlledSelect';
-import { CreateEventSchema } from 'backend/schema';
+import { Container, Stack, Switch } from "@mui/material";
+import DefaultAppBar from "../../../components/DefaultAppBar";
+import ensureAuth from "../../auth/utils/ensureAuth";
+import useZodForm from "../../../hooks/useZodForm";
+import { DateTime } from "luxon";
+import { DateTimePicker } from "@mui/x-date-pickers";
+import { Controller } from "react-hook-form";
+import { LoadingButton } from "@mui/lab";
+import useCreateEvent from "../hooks/useCreateEvent";
+import { useNavigate } from "react-router-dom";
+import { useAlert } from "react-alert";
+import ControlledTextField from "@/components/ControlledTextField";
+import ControlledSelect from "@/components/ControlledSelect";
+import { CreateEventSchema } from "backend/schema";
 
 export async function loader() {
   const initialAuthData = await ensureAuth(true);
@@ -29,12 +29,12 @@ export function Component() {
   } = useZodForm({
     schema: CreateEventSchema,
     defaultValues: {
-      description: '',
-      title: '',
+      description: "",
+      title: "",
       startDate: DateTime.now().toISODate() ?? undefined,
       endDate: DateTime.now().toISODate() ?? undefined,
       allDay: false,
-      type: 'Regular',
+      type: "Regular",
     },
   });
 
@@ -46,7 +46,7 @@ export function Component() {
   const onSubmit = handleSubmit(async (data) => {
     try {
       const createdEvent = await createEventMutation.mutateAsync(data);
-      alert.success('Event created');
+      alert.success("Event created");
       navigate(`/events/${createdEvent.id}`);
     } catch (error) {
       console.error(error);
@@ -56,8 +56,8 @@ export function Component() {
   return (
     <>
       <DefaultAppBar title="Create Event" />
-      <Container sx={{ overflow: 'auto' }}>
-        <Stack gap={2} py={2} component={'form'} onSubmit={onSubmit}>
+      <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
+        <Stack gap={2} py={2} component={"form"} onSubmit={onSubmit}>
           <ControlledTextField control={control} name="title" label="Title" />
           <ControlledTextField
             control={control}
@@ -72,8 +72,8 @@ export function Component() {
             render={({ field: { onChange, value, ...rest } }) => (
               <DateTimePicker
                 label="Start Date"
-                value={DateTime.fromISO(value ?? '')}
-                onChange={(v) => onChange(v?.toISO() ?? '')}
+                value={DateTime.fromISO(value ?? "")}
+                onChange={(v) => onChange(v?.toISO() ?? "")}
                 {...rest}
               />
             )}
@@ -84,23 +84,23 @@ export function Component() {
             render={({ field: { onChange, value, ...rest } }) => (
               <DateTimePicker
                 label="End Date"
-                value={DateTime.fromISO(value ?? '')}
-                onChange={(v) => onChange(v?.toISO() ?? '')}
+                value={DateTime.fromISO(value ?? "")}
+                onChange={(v) => onChange(v?.toISO() ?? "")}
                 {...rest}
               />
             )}
           />
-          <Switch {...register('allDay')} />
+          <Switch {...register("allDay")} />
           <ControlledSelect
             control={control}
             name="type"
             label="Type"
             displayEmpty={true}
             options={[
-              { label: 'All', value: undefined },
-              { label: 'Outreach', value: 'Outreach' },
-              { label: 'Regular', value: 'Regular' },
-              { label: 'Social', value: 'Social' },
+              { label: "All", value: undefined },
+              { label: "Outreach", value: "Outreach" },
+              { label: "Regular", value: "Regular" },
+              { label: "Social", value: "Social" },
             ]}
           />
           <LoadingButton loading={isSubmitting} type="submit">

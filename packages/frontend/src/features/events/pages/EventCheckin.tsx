@@ -2,18 +2,18 @@ import {
   LoaderFunctionArgs,
   useLoaderData,
   useNavigate,
-} from 'react-router-dom';
-import { z } from 'zod';
-import ensureAuth from '../../auth/utils/ensureAuth';
-import { Container, Paper, Stack, Typography } from '@mui/material';
-import useZodForm from '../../../hooks/useZodForm';
-import { LoadingButton } from '@mui/lab';
-import useSelfCheckin from '../hooks/useSelfCheckin';
-import { useAlert } from 'react-alert';
-import { isTRPCClientError } from '@/utils/trpc';
-import { SelfCheckinSchema } from 'backend/schema';
-import ControlledTextField from '@/components/ControlledTextField';
-import { queryUtils } from '@/trpcClient';
+} from "react-router-dom";
+import { z } from "zod";
+import ensureAuth from "../../auth/utils/ensureAuth";
+import { Container, Paper, Stack, Typography } from "@mui/material";
+import useZodForm from "../../../hooks/useZodForm";
+import { LoadingButton } from "@mui/lab";
+import useSelfCheckin from "../hooks/useSelfCheckin";
+import { useAlert } from "react-alert";
+import { isTRPCClientError } from "@/utils/trpc";
+import { SelfCheckinSchema } from "backend/schema";
+import ControlledTextField from "@/components/ControlledTextField";
+import { queryUtils } from "@/trpcClient";
 
 const EventParamsSchema = z.object({
   eventId: z.string(),
@@ -41,7 +41,7 @@ export function Component() {
   } = useZodForm({
     schema: SelfCheckinSchema,
     defaultValues: {
-      secret: '',
+      secret: "",
       eventId: loaderData.initialEventData.id,
     },
   });
@@ -58,7 +58,7 @@ export function Component() {
         eventId: loaderData.initialEventData.id,
       });
 
-      alert.success('Successfully checked in!', { timeout: 2000 });
+      alert.success("Successfully checked in!", { timeout: 2000 });
 
       navigate(`/`);
     } catch (e) {
@@ -69,19 +69,14 @@ export function Component() {
   });
 
   return (
-    <Container
-      sx={{
-        my: 2,
-        overflow: 'auto',
-      }}
-    >
+    <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
       <Stack gap={2}>
-        <Paper sx={{ p: 2 }} component={'form'} onSubmit={onSubmit}>
+        <Paper sx={{ p: 2 }} component={"form"} onSubmit={onSubmit}>
           <Stack gap={2}>
-            <Typography variant="h4" textAlign={'center'}>
+            <Typography variant="h4" textAlign={"center"}>
               Event Check In
             </Typography>
-            <Typography variant="body1" textAlign={'center'}>
+            <Typography variant="body1" textAlign={"center"}>
               Check in for the event using the code displayed at the event by
               entering it below. Or, use your phone's camera to scan the QR
               code.
@@ -92,7 +87,7 @@ export function Component() {
               fullWidth
               name="secret"
               control={control}
-              rules={{ required: 'This field is required' }}
+              rules={{ required: "This field is required" }}
               required
             />
             <LoadingButton

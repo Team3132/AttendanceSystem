@@ -26,12 +26,7 @@ export function Component() {
   return (
     <>
       <DefaultAppBar title="Events" />
-      <Container
-        sx={{
-          my: 2,
-          overflow: "auto",
-        }}
-      >
+      <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
         <Stack gap={2}>
           <Paper sx={{ p: 2, textAlign: "center" }}>
             <Stack gap={2}>

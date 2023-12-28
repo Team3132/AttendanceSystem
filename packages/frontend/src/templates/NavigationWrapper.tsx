@@ -31,9 +31,9 @@ export function Component() {
 
   const routes = useMemo(
     () =>
-      !authStatusQuery.data.isAdmin
-        ? ["/", "/outreach", "/events"]
-        : ["/", "/outreach", "/events", "/admin"],
+      authStatusQuery.data.isAdmin
+        ? ["/", "/outreach", "/events", "/admin"]
+        : ["/", "/outreach", "/events"],
     [authStatusQuery.data.isAdmin]
   );
 
@@ -46,12 +46,11 @@ export function Component() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        height: "100vh",
-        position: "relative",
-        overflowY: "auto",
+        height: "100%",
       }}
     >
       <Outlet />
+
       <BottomNavigation showLabels>
         <BottomNavigationAction />
       </BottomNavigation>

@@ -37,12 +37,7 @@ export function Component() {
 
   if (eventSecretQuery.data) {
     return (
-      <Container
-        sx={{
-          overflow: "auto",
-          my: 2,
-        }}
-      >
+      <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
         <Stack
           sx={{
             py: 2,
@@ -74,12 +69,7 @@ export function Component() {
   }
 
   return (
-    <Container
-      sx={{
-        my: 2,
-        overflow: "auto",
-      }}
-    >
+    <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
       <Stack gap={2}>
         <Paper sx={{ p: 2 }}>
           <Typography variant="h4" textAlign={"center"}>

@@ -1,4 +1,4 @@
-import { Container, Stack } from "@mui/material";
+import { Container } from "@mui/material";
 import DefaultAppBar from "../../../components/DefaultAppBar";
 import LeaderboardCard from "../components/LeaderBoardCard";
 import ensureAuth from "@/features/auth/utils/ensureAuth";
@@ -22,15 +22,8 @@ export function Component() {
   return (
     <>
       <DefaultAppBar title="Outreach" />
-      <Container
-        sx={{
-          my: 2,
-          overflow: "auto",
-        }}
-      >
-        <Stack gap={2}>
-          <LeaderboardCard initialLeaderboard={loaderData.initialLeaderboard} />
-        </Stack>
+      <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
+        <LeaderboardCard initialLeaderboard={loaderData.initialLeaderboard} />
       </Container>
     </>
   );
