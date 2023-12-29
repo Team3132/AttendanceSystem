@@ -75,9 +75,9 @@ export async function getOutreachTime(
 
     const [firstData] = await tx
       .select({ total: count() })
-      .from(rsvp)
+      .from(user)
+      .leftJoin(rsvp, eq(user.id, rsvp.userId))
       .leftJoin(event, eq(rsvp.eventId, event.id))
-      .innerJoin(user, eq(rsvp.userId, user.id))
       .where(
         and(
           eq(event.type, "Outreach"),
