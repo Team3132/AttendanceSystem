@@ -23,7 +23,7 @@ export default function ScaninCard(props: ScaninCardProps) {
   const { eventId } = props;
   const alert = useAlert();
   const [unknownCode, setUnknownCode] = useState<string | undefined>(undefined);
-  const { getDisclosureProps } = useDisclosure();
+  const { getDisclosureProps, onOpen } = useDisclosure();
 
   const {
     register,
@@ -56,6 +56,7 @@ export default function ScaninCard(props: ScaninCardProps) {
       setFocus("code");
     } catch (error) {
       setUnknownCode(data.code);
+      onOpen();
     }
   });
 
