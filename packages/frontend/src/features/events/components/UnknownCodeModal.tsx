@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import useZodForm from "../../../hooks/useZodForm";
 import { z } from "zod";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Controller } from "react-hook-form";
 import { LoadingButton } from "@mui/lab";
 import useScanin from "../hooks/useScanin";
@@ -19,6 +19,7 @@ import { trpc } from "@/trpcClient";
 import { useDisclosure } from "../../../hooks/useDisclosure";
 import useCreateUserScancode from "../../user/hooks/useCreateUserScancode";
 import { TRPCClientError } from "@trpc/client";
+import { useDebounce } from "usehooks-ts";
 
 interface UnknownCodeModalProps {
   code: string;
@@ -52,16 +53,30 @@ export default function UnknownCodeModal(props: UnknownCodeModalProps) {
     getDisclosureProps: getAutocompleteDisclosureProps,
     isOpen: isAutocompleteOpen,
   } = useDisclosure();
-  const usersQuery = trpc.users.getUserList.useQuery(undefined, {
-    enabled: isAutocompleteOpen,
-  });
+
+  const [inputValue, setInputValue] = useState("");
+
+  const debouncedInputValue = useDebounce(inputValue, 500);
+
+  const usersQuery = trpc.users.getUserList.useInfiniteQuery(
+    {
+      search: debouncedInputValue,
+      limit: 10,
+    },
+    {
+      enabled: isAutocompleteOpen,
+      getNextPageParam: (lastPage) => lastPage.nextPage,
+    }
+  );
 
   const userOption = useMemo(
     () =>
-      usersQuery.data?.map((user) => ({
-        label: user.username,
-        value: user.id,
-      })) || [],
+      usersQuery.data?.pages
+        ?.flatMap((page) => page.items)
+        .map((user) => ({
+          label: user.username,
+          value: user.id,
+        })) ?? [],
     [usersQuery.data]
   );
 
@@ -163,6 +178,9 @@ export default function UnknownCodeModal(props: UnknownCodeModalProps) {
                 )}
                 onChange={(_event, data) => {
                   onChange(data);
+                }}
+                onInputChange={(_event, value) => {
+                  setInputValue(value);
                 }}
                 isOptionEqualToValue={(option, value) =>
                   option.value === value.value

@@ -1,4 +1,4 @@
-import { and, count, eq, isNotNull, isNull } from "drizzle-orm";
+import { and, count, eq, ilike, isNotNull, isNull } from "drizzle-orm";
 import db from "../drizzle/db";
 import { TRPCError } from "@trpc/server";
 import { scancode, user } from "../drizzle/schema";
@@ -86,7 +86,8 @@ export async function getUserList(
     .select({
       total: count(),
     })
-    .from(user);
+    .from(user)
+    .where(ilike(user.username, `%${params.search}%`));
 
   if (totalData) {
     total = totalData.total;
@@ -94,7 +95,11 @@ export async function getUserList(
 
   const nextPage = total > offset + limit ? page + 1 : undefined;
 
-  const users = await db.query.user.findMany();
+  const users = await db.query.user.findMany({
+    where: (user) => ilike(user.username, `%${params.search}%`),
+    limit,
+    offset,
+  });
 
   return {
     items: users,

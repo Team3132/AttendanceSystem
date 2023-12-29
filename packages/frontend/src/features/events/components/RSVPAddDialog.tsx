@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import useZodForm, { ZodSubmitHandler } from "../../../hooks/useZodForm";
 import { LoadingButton } from "@mui/lab";
 import {
@@ -17,6 +17,8 @@ import { Controller } from "react-hook-form";
 import useAddUserRsvp from "../hooks/useAddRsvp";
 import { trpc } from "@/trpcClient";
 import { TRPCClientError } from "@trpc/client";
+import { useDebounce } from "usehooks-ts";
+import { useDisclosure } from "@/hooks/useDisclosure";
 
 interface RSVPAddDialogProps {
   onOpen: () => void;
@@ -36,14 +38,31 @@ const AddUserRsvpSchema = z.object({
 
 export default function RSVPAddDialog(props: RSVPAddDialogProps) {
   const { onClose, open, eventId } = props;
-  const usersQuery = trpc.users.getUserList.useQuery();
+  const [inputValue, setInputValue] = useState("");
+
+  const { getDisclosureProps, isOpen: isAutocompleteOpen } = useDisclosure();
+
+  const debouncedInputValue = useDebounce(inputValue, 500);
+
+  const usersQuery = trpc.users.getUserList.useInfiniteQuery(
+    {
+      search: debouncedInputValue,
+      limit: 10,
+    },
+    {
+      enabled: isAutocompleteOpen,
+      getNextPageParam: (lastPage) => lastPage.nextPage,
+    }
+  );
 
   const userOption = useMemo(
     () =>
-      usersQuery.data?.map((user) => ({
-        label: user.username,
-        value: user.id,
-      })) || [],
+      usersQuery.data?.pages
+        ?.flatMap((page) => page.items)
+        .map((user) => ({
+          label: user.username,
+          value: user.id,
+        })) ?? [],
     [usersQuery.data]
   );
 
@@ -120,6 +139,10 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
             }) => (
               <Autocomplete
                 options={userOption}
+                onInputChange={(_event, value) => {
+                  setInputValue(value);
+                }}
+                {...getDisclosureProps()}
                 renderInput={(props) => (
                   <TextField
                     {...props}

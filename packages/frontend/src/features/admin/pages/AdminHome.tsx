@@ -8,8 +8,7 @@ import {
 } from "@mui/material";
 import DefaultAppBar from "../../../components/DefaultAppBar";
 import ensureAuth from "../../auth/utils/ensureAuth";
-import { queryUtils, trpc } from "@/trpcClient";
-import { useLoaderData } from "react-router-dom";
+import { trpc } from "@/trpcClient";
 import Datatable from "@/components/DataTable";
 import { createColumnHelper } from "@tanstack/table-core";
 import { z } from "zod";
@@ -19,10 +18,8 @@ import { useMemo, useState } from "react";
 
 export async function loader() {
   const initialAuthData = await ensureAuth(true);
-  const initialUserList = await queryUtils.users.getUserList.ensureData();
   return {
     initialAuthData,
-    initialUserList,
   };
 }
 
