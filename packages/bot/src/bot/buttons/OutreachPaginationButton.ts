@@ -88,31 +88,31 @@ export class OutreachPaginationButton {
     });
   }
 
-  public async createMessage(to: number) {
+  public async createMessage(page: number) {
     const perPage = 10;
 
     const { items: leaderBoardData } =
       await this.backendClient.client.bot.leaderboard.query({
-        cursor: to,
+        cursor: page - 1,
         limit: perPage,
       });
 
     // pages start at 1
     const maxPage = Math.ceil(leaderBoardData.length / perPage);
 
-    if (to > maxPage || to < 1) throw new Error('Invalid page');
+    if (page > maxPage || page < 1) throw new Error('Invalid page');
 
-    const start = (to - 1) * perPage;
+    const start = (page - 1) * perPage;
 
     const end = start + perPage;
 
-    const page = leaderBoardData.slice(start, end);
+    const pageData = leaderBoardData.slice(start, end);
 
     const embed = new EmbedBuilder()
-      .setTitle(`Outreach Leaderboard ${to}/${maxPage}`)
+      .setTitle(`Outreach Leaderboard ${page}/${maxPage}`)
       .setTimestamp(new Date());
 
-    const lines = page.map(leaderboardLine).join('\n');
+    const lines = pageData.map(leaderboardLine).join('\n');
 
     embed.setDescription(lines);
 
@@ -122,22 +122,22 @@ export class OutreachPaginationButton {
           .setCustomId(`leaderboard/${1}/${randomStr(4)}`)
           .setLabel('First')
           .setStyle(ButtonStyle.Secondary)
-          .setDisabled(to === 1),
+          .setDisabled(page === 1),
         new ButtonBuilder()
-          .setCustomId(`leaderboard/${to - 1}/${randomStr(4)}`)
+          .setCustomId(`leaderboard/${page - 1}/${randomStr(4)}`)
           .setLabel('Previous')
           .setStyle(ButtonStyle.Secondary)
-          .setDisabled(to === 1),
+          .setDisabled(page === 1),
         new ButtonBuilder()
-          .setCustomId(`leaderboard/${to + 1}/${randomStr(4)}`)
+          .setCustomId(`leaderboard/${page + 1}/${randomStr(4)}`)
           .setLabel('Next')
           .setStyle(ButtonStyle.Secondary)
-          .setDisabled(to === maxPage),
+          .setDisabled(page === maxPage),
         new ButtonBuilder()
           .setCustomId(`leaderboard/${maxPage}/${randomStr(4)}`)
           .setLabel('Last')
           .setStyle(ButtonStyle.Secondary)
-          .setDisabled(to === maxPage),
+          .setDisabled(page === maxPage),
       );
 
     return { embed, messageComponent };
