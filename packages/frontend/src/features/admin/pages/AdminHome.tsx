@@ -15,7 +15,7 @@ import { createColumnHelper } from "@tanstack/table-core";
 import { z } from "zod";
 import { UserSchema } from "backend/schema";
 import LinkBehavior from "@/utils/LinkBehavior";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 export async function loader() {
   const initialAuthData = await ensureAuth(true);
@@ -47,11 +47,24 @@ const columns = [
 ];
 
 export function Component() {
-  const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const usersQuery = trpc.users.getUserList.useInfiniteQuery(
+    {
+      limit: 10,
+    },
+    {
+      getNextPageParam: (lastPage) => lastPage.nextPage,
+    }
+  );
 
-  const usersQuery = trpc.users.getUserList.useQuery(undefined, {
-    initialData: loaderData.initialUserList,
-  });
+  const pagedItems = useMemo(
+    () => usersQuery.data?.pages.flatMap((page) => page.items) ?? [],
+    [usersQuery.data]
+  );
+
+  const total = useMemo(
+    () => usersQuery.data?.pages.at(-1)?.total ?? 0,
+    [usersQuery.data]
+  );
 
   const [search, setSearch] = useState("");
 
@@ -77,9 +90,12 @@ export function Component() {
             />
             <Datatable
               columns={columns ?? []}
-              data={usersQuery.data}
+              data={pagedItems}
               globalFilter={search}
               setGlobalFilter={setSearch}
+              fetchNextPage={usersQuery.fetchNextPage}
+              isFetching={usersQuery.isFetching}
+              totalDBRowCount={total}
               fixedHeight={69.5}
               sx={{
                 flex: 1,

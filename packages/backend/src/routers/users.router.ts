@@ -13,6 +13,8 @@ import {
 } from "../services/user.service";
 import { RSVPEventSchema } from "../schema/RSVPEventSchema";
 import { AddUserScancodeParams } from "../schema";
+import { UserListParamsSchema } from "../schema/UserListParamsSchema";
+import { PagedUserSchema } from "../schema/PagedUserSchema";
 
 export const userRouter = t.router({
   getSelf: sessionProcedure
@@ -40,9 +42,9 @@ export const userRouter = t.router({
     .output(z.array(RSVPEventSchema))
     .query(({ input }) => getPendingUserRsvps(input)),
   getUserList: mentorSessionProcedure
-    .input(z.void())
-    .output(z.array(UserSchema))
-    .query(() => getUserList()),
+    .input(UserListParamsSchema)
+    .output(PagedUserSchema)
+    .query(({ input }) => getUserList(input)),
   addSelfScancode: sessionProcedure
     .input(z.string())
     .output(ScancodeSchema)
