@@ -55,7 +55,7 @@ export default function ScaninCard(props: ScaninCardProps) {
       setUnknownCode(undefined);
       setFocus("code");
     } catch (error) {
-      // console.error(error);
+      setUnknownCode(data.code);
     }
   });
 
