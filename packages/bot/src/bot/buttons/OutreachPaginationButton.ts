@@ -102,17 +102,11 @@ export class OutreachPaginationButton {
 
     if (page > maxPage || page < 1) throw new Error('Invalid page');
 
-    const start = (page - 1) * perPage;
-
-    const end = start + perPage;
-
-    const pageData = leaderBoardData.slice(start, end);
-
     const embed = new EmbedBuilder()
       .setTitle(`Outreach Leaderboard ${page}/${maxPage}`)
       .setTimestamp(new Date());
 
-    const lines = pageData.map(leaderboardLine).join('\n');
+    const lines = leaderBoardData.map(leaderboardLine).join('\n');
 
     embed.setDescription(lines);
 
