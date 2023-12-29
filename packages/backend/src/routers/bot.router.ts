@@ -2,7 +2,6 @@ import { z } from "zod";
 import { t } from "../trpc";
 import { tokenProcedure } from "../trpc/utils";
 import { getOutreachTime } from "../services/outreach.service";
-import { LeaderBoardSchema } from "../schema/LeaderboardSchema";
 import {
   editUserRsvpStatus,
   getAutocompleteEvents,

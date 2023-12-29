@@ -15,8 +15,6 @@ import env from "../env";
 import { z } from "zod";
 import { OutreachTimeSchema } from "../schema/OutreachTimeSchema";
 import { PagedLeaderboardSchema } from "../schema/PagedLeaderboardSchema";
-import { TRPCClientError } from "@trpc/client";
-import { TRPCError } from "@trpc/server";
 
 /**
  * Get the sum of the difference between the start and end dates of all
@@ -43,7 +41,7 @@ export async function getOutreachTime(
 
   const filters = and(
     eq(event.type, "Outreach"),
-    // not(arrayOverlaps(user.roles, [env.MENTOR_ROLE_ID])),
+    not(arrayOverlaps(user.roles, [env.MENTOR_ROLE_ID])),
     isNotNull(rsvp.checkinTime),
     isNotNull(rsvp.checkoutTime),
     gte(event.startDate, aprilIsoDate)
