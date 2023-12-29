@@ -49,8 +49,7 @@ export async function getOutreachTime(
 
   const [totalData] = await db
     .select({
-      total: count(),
-      duration: sql<string>`sum(${rsvp.checkoutTime} - ${rsvp.checkinTime})`,
+      total: count(user.id),
     })
     .from(rsvp)
     .leftJoin(event, eq(rsvp.eventId, event.id))
@@ -62,6 +61,7 @@ export async function getOutreachTime(
 
   if (totalData) {
     total = totalData.total;
+    console.log({ total });
   }
 
   const offset = page * limit;
