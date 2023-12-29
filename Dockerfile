@@ -7,6 +7,8 @@ RUN corepack enable
 FROM base as build
 COPY . .
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+ARG VERSION
+ENV VITE_APP_VERSION=$VERSION
 RUN pnpm run -r build
 RUN pnpm deploy --filter backend --prod /opt/backend
 # COPY /app/packages/frontend/dist /opt/backend/dist/frontend

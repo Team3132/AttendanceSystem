@@ -14,6 +14,8 @@ interface ImportMetaEnv {
   // more env variables...
 }
 
-interface ImportMeta {
-  readonly env: ImportMetaEnv;
+declare module "vite" {
+  interface ImportMeta {
+    readonly env: ImportMetaEnv;
+  }
 }
