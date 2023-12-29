@@ -15,6 +15,8 @@ import { z } from "zod";
 import { UserSchema } from "backend/schema";
 import LinkBehavior from "@/utils/LinkBehavior";
 import { useMemo, useState } from "react";
+import { useDebounce } from "usehooks-ts";
+import { keepPreviousData } from "@tanstack/react-query";
 
 export async function loader() {
   const initialAuthData = await ensureAuth(true);
@@ -44,12 +46,17 @@ const columns = [
 ];
 
 export function Component() {
+  const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 500);
+
   const usersQuery = trpc.users.getUserList.useInfiniteQuery(
     {
       limit: 10,
+      search: debouncedSearch,
     },
     {
       getNextPageParam: (lastPage) => lastPage.nextPage,
+      placeholderData: keepPreviousData,
     }
   );
 
@@ -62,8 +69,6 @@ export function Component() {
     () => usersQuery.data?.pages.at(-1)?.total ?? 0,
     [usersQuery.data]
   );
-
-  const [search, setSearch] = useState("");
 
   return (
     <>

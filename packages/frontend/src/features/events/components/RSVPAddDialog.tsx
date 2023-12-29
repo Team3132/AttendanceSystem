@@ -144,6 +144,7 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
                 onInputChange={(_event, value) => {
                   setInputValue(value);
                 }}
+                loading={usersQuery.isFetching}
                 {...getDisclosureProps()}
                 renderInput={(props) => (
                   <TextField

@@ -165,6 +165,7 @@ export default function UnknownCodeModal(props: UnknownCodeModalProps) {
             }) => (
               <Autocomplete
                 options={userOption}
+                loading={usersQuery.isFetching}
                 renderInput={(props) => (
                   <TextField
                     {...props}
