@@ -26,6 +26,8 @@ import {
 } from "../schema";
 import { createUser } from "../services/user.service";
 import { SelfCheckinWithUserId } from "../schema/SelfCheckinWithUserId";
+import { OutreachTimeSchema } from "../schema/OutreachTimeSchema";
+import { PagedLeaderboardSchema } from "../schema/PagedLeaderboardSchema";
 
 /**
  * A router than the bot uses to communicate with the backend
@@ -36,9 +38,9 @@ export const botRouter = t.router({
     .output(z.literal("OK"))
     .query(() => "OK"),
   leaderboard: tokenProcedure
-    .input(z.void())
-    .output(LeaderBoardSchema)
-    .query(() => getOutreachTime()),
+    .input(OutreachTimeSchema)
+    .output(PagedLeaderboardSchema)
+    .query(({ input }) => getOutreachTime(input)),
   getEventsInNextDay: tokenProcedure
     .input(z.void())
     .output(EventsArraySchema)

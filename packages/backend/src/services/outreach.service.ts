@@ -1,8 +1,22 @@
-import { and, arrayOverlaps, eq, gte, isNotNull, not, sql } from "drizzle-orm";
+import {
+  and,
+  arrayOverlaps,
+  count,
+  eq,
+  gte,
+  isNotNull,
+  not,
+  sql,
+} from "drizzle-orm";
 import db from "../drizzle/db";
 import { event, rsvp, user } from "../drizzle/schema";
 import { DateTime } from "luxon";
 import env from "../env";
+import { z } from "zod";
+import { OutreachTimeSchema } from "../schema/OutreachTimeSchema";
+import { PagedLeaderboardSchema } from "../schema/PagedLeaderboardSchema";
+import { TRPCClientError } from "@trpc/client";
+import { TRPCError } from "@trpc/server";
 
 /**
  * Get the sum of the difference between the start and end dates of all
@@ -11,7 +25,10 @@ import env from "../env";
  * Filters out events that have not been attended, and events that are not outreach events
  * and every event before the last 25th of the last april, all in sql
  */
-export function getOutreachTime() {
+export async function getOutreachTime(
+  params: z.infer<typeof OutreachTimeSchema>
+): Promise<z.infer<typeof PagedLeaderboardSchema>> {
+  const { limit, cursor: page } = OutreachTimeSchema.parse(params);
   const lastApril25 = getLastApril25();
 
   if (!lastApril25) {
@@ -24,7 +41,33 @@ export function getOutreachTime() {
     throw new Error("Could not convert last April 25th to ISO date");
   }
 
-  return db.transaction(async (tx) => {
+  const filters = and(
+    eq(event.type, "Outreach"),
+    // not(arrayOverlaps(user.roles, [env.MENTOR_ROLE_ID])),
+    isNotNull(rsvp.checkinTime),
+    isNotNull(rsvp.checkoutTime),
+    gte(event.startDate, aprilIsoDate)
+  );
+
+  const [totalData] = await db
+    .select({
+      total: count(),
+      duration: sql<string>`sum(${rsvp.checkoutTime} - ${rsvp.checkinTime})`,
+    })
+    .from(rsvp)
+    .leftJoin(event, eq(rsvp.eventId, event.id))
+    .innerJoin(user, eq(rsvp.userId, user.id))
+    .where(filters)
+    .groupBy(user.id);
+
+  let total = 0;
+
+  if (totalData) {
+    total = totalData.total;
+  }
+
+  const offset = page * limit;
+  const transactionResult = await db.transaction(async (tx) => {
     await tx.execute(sql`SET LOCAL intervalstyle = 'iso_8601'`); // set the interval style to iso_8601
 
     return tx
@@ -35,23 +78,34 @@ export function getOutreachTime() {
         userId: user.id,
         /** Duration (in ISO8601 format) */
         duration: sql<string>`sum(${rsvp.checkoutTime} - ${rsvp.checkinTime})`,
-        /** Rank */
-        rank: sql<string>`rank() over (order by sum(${rsvp.checkoutTime} - ${rsvp.checkinTime}) desc)`,
       })
       .from(rsvp)
       .groupBy(user.id)
       .leftJoin(event, eq(rsvp.eventId, event.id))
       .innerJoin(user, eq(rsvp.userId, user.id))
-      .where(
-        and(
-          eq(event.type, "Outreach"),
-          not(arrayOverlaps(user.roles, [env.MENTOR_ROLE_ID])),
-          isNotNull(rsvp.checkinTime),
-          isNotNull(rsvp.checkoutTime),
-          gte(event.startDate, aprilIsoDate)
-        )
-      );
+      .orderBy(
+        sql<string>`sum(${rsvp.checkoutTime} - ${rsvp.checkinTime}) DESC`
+      )
+      .where(filters)
+      .limit(limit)
+      .offset(offset);
   });
+
+  // add rank to the result
+  const result = transactionResult.map((row, index) => ({
+    ...row,
+    rank: index + 1 + offset,
+  }));
+
+  // If no next page then undefined
+  const nextPage = total > offset + limit ? page + 1 : undefined;
+
+  return {
+    items: result,
+    page,
+    total,
+    nextPage,
+  };
 }
 
 function getLastApril25() {

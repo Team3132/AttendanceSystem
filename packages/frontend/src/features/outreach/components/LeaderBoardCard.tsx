@@ -5,6 +5,7 @@ import { z } from "zod";
 import { LeaderBoardUser as LeaderboardUserSchema } from "backend/schema";
 import { trpc } from "@/trpcClient";
 import { Duration } from "luxon";
+import { useMemo } from "react";
 
 type LeaderboardUser = z.infer<typeof LeaderboardUserSchema>;
 
@@ -35,14 +36,25 @@ const columns = [
   }),
 ];
 
-interface LeaderboardCardProps {
-  initialLeaderboard: Array<LeaderboardUser>;
-}
+export default function LeaderboardCard() {
+  const leaderboardQuery = trpc.outreach.leaderboard.useInfiniteQuery(
+    {
+      limit: 10,
+    },
+    {
+      getNextPageParam: (lastPage) => lastPage.nextPage,
+    }
+  );
 
-export default function LeaderboardCard(props: LeaderboardCardProps) {
-  const leaderboardQuery = trpc.outreach.leaderboard.useQuery(undefined, {
-    initialData: props.initialLeaderboard,
-  });
+  const flatResults = useMemo(
+    () => leaderboardQuery.data?.pages.flatMap((page) => page.items),
+    [leaderboardQuery.data]
+  );
+
+  const totalRowCount = useMemo(
+    () => leaderboardQuery.data?.pages.at(-1)?.total ?? 0,
+    [leaderboardQuery.data]
+  );
 
   if (leaderboardQuery.data) {
     return (
@@ -51,7 +63,10 @@ export default function LeaderboardCard(props: LeaderboardCardProps) {
           <Typography variant="h4">Leaderboard</Typography>
           <Datatable
             columns={columns ?? []}
-            data={leaderboardQuery.data}
+            data={flatResults ?? []}
+            totalDBRowCount={totalRowCount}
+            fetchNextPage={leaderboardQuery.fetchNextPage}
+            isFetching={leaderboardQuery.isFetching}
             sx={{
               flex: 1,
             }}
