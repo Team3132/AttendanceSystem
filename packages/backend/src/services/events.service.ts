@@ -315,7 +315,7 @@ export async function updateEvent(
     });
   }
 
-  ee.emit("invalidate", getQueryKey(rtrpc.events.getEvent));
+  ee.emit("invalidate", getQueryKey(rtrpc.events.getEvent, eventId));
   ee.emit("invalidate", getQueryKey(rtrpc.events.getEvents));
 
   const { secret, ...rest } = updatedEvent;
@@ -340,7 +340,7 @@ export async function deleteEvent(id: string) {
     });
   }
 
-  ee.emit("invalidate", getQueryKey(rtrpc.events.getEvent));
+  ee.emit("invalidate", getQueryKey(rtrpc.events.getEvent, id));
   ee.emit("invalidate", getQueryKey(rtrpc.events.getEvents));
 
   const { secret, ...rest } = deletedEvent;
