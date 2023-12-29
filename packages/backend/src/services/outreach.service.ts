@@ -39,23 +39,23 @@ export async function getOutreachTime(
     throw new Error("Could not convert last April 25th to ISO date");
   }
 
-  const filters = and(
-    eq(event.type, "Outreach"),
-    not(arrayOverlaps(user.roles, [env.MENTOR_ROLE_ID])),
-    isNotNull(rsvp.checkinTime),
-    isNotNull(rsvp.checkoutTime),
-    gte(event.startDate, aprilIsoDate)
-  );
-
   const [totalData] = await db
     .select({
-      total: count(user.id),
+      total: count(),
     })
     .from(rsvp)
+    .groupBy(user.id)
     .leftJoin(event, eq(rsvp.eventId, event.id))
     .innerJoin(user, eq(rsvp.userId, user.id))
-    .where(filters)
-    .groupBy(user.id);
+    .where(
+      and(
+        eq(event.type, "Outreach"),
+        not(arrayOverlaps(user.roles, [env.MENTOR_ROLE_ID])),
+        isNotNull(rsvp.checkinTime),
+        isNotNull(rsvp.checkoutTime),
+        gte(event.startDate, aprilIsoDate)
+      )
+    );
 
   let total = 0;
 
@@ -84,7 +84,15 @@ export async function getOutreachTime(
       .orderBy(
         sql<string>`sum(${rsvp.checkoutTime} - ${rsvp.checkinTime}) DESC`
       )
-      .where(filters)
+      .where(
+        and(
+          eq(event.type, "Outreach"),
+          not(arrayOverlaps(user.roles, [env.MENTOR_ROLE_ID])),
+          isNotNull(rsvp.checkinTime),
+          isNotNull(rsvp.checkoutTime),
+          gte(event.startDate, aprilIsoDate)
+        )
+      )
       .limit(limit)
       .offset(offset);
   });
