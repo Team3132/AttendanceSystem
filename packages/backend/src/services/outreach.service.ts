@@ -39,36 +39,11 @@ export async function getOutreachTime(
     throw new Error("Could not convert last April 25th to ISO date");
   }
 
-  const [totalData] = await db
-    .select({
-      total: count(),
-    })
-    .from(rsvp)
-    .groupBy(user.id)
-    .leftJoin(event, eq(rsvp.eventId, event.id))
-    .innerJoin(user, eq(rsvp.userId, user.id))
-    .where(
-      and(
-        eq(event.type, "Outreach"),
-        not(arrayOverlaps(user.roles, [env.MENTOR_ROLE_ID])),
-        isNotNull(rsvp.checkinTime),
-        isNotNull(rsvp.checkoutTime),
-        gte(event.startDate, aprilIsoDate)
-      )
-    );
-
-  let total = 0;
-
-  if (totalData) {
-    total = totalData.total;
-    console.log({ total });
-  }
-
   const offset = page * limit;
-  const transactionResult = await db.transaction(async (tx) => {
+  const { items, total } = await db.transaction(async (tx) => {
     await tx.execute(sql`SET LOCAL intervalstyle = 'iso_8601'`); // set the interval style to iso_8601
 
-    return tx
+    const items = await tx
       .select({
         /** Username */
         username: user.username,
@@ -95,10 +70,36 @@ export async function getOutreachTime(
       )
       .limit(limit)
       .offset(offset);
+
+    let total = 0;
+
+    const [firstData] = await tx
+      .select({ total: count() })
+      .from(rsvp)
+      .leftJoin(event, eq(rsvp.eventId, event.id))
+      .innerJoin(user, eq(rsvp.userId, user.id))
+      .where(
+        and(
+          eq(event.type, "Outreach"),
+          not(arrayOverlaps(user.roles, [env.MENTOR_ROLE_ID])),
+          isNotNull(rsvp.checkinTime),
+          isNotNull(rsvp.checkoutTime),
+          gte(event.startDate, aprilIsoDate)
+        )
+      );
+
+    if (firstData) {
+      total = firstData.total;
+    }
+
+    return {
+      items,
+      total,
+    };
   });
 
   // add rank to the result
-  const result = transactionResult.map((row, index) => ({
+  const result = items.map((row, index) => ({
     ...row,
     rank: index + 1 + offset,
   }));
