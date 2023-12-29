@@ -19,6 +19,7 @@ import { trpc } from "@/trpcClient";
 import { TRPCClientError } from "@trpc/client";
 import { useDebounce } from "usehooks-ts";
 import { useDisclosure } from "@/hooks/useDisclosure";
+import { keepPreviousData } from "@tanstack/react-query";
 
 interface RSVPAddDialogProps {
   onOpen: () => void;
@@ -52,6 +53,7 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
     {
       enabled: isAutocompleteOpen,
       getNextPageParam: (lastPage) => lastPage.nextPage,
+      placeholderData: keepPreviousData,
     }
   );
 

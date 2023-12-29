@@ -20,6 +20,7 @@ import { useDisclosure } from "../../../hooks/useDisclosure";
 import useCreateUserScancode from "../../user/hooks/useCreateUserScancode";
 import { TRPCClientError } from "@trpc/client";
 import { useDebounce } from "usehooks-ts";
+import { keepPreviousData } from "@tanstack/react-query";
 
 interface UnknownCodeModalProps {
   code: string;
@@ -66,6 +67,7 @@ export default function UnknownCodeModal(props: UnknownCodeModalProps) {
     {
       enabled: isAutocompleteOpen,
       getNextPageParam: (lastPage) => lastPage.nextPage,
+      placeholderData: keepPreviousData,
     }
   );
 
