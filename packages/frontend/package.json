@@ -28,6 +28,7 @@
     "@tanstack/table-core": "^8.10.7",
     "backend": "workspace:*",
     "luxon": "^3.3.0",
+    "lz-string": "^1.5.0",
     "react": "^18.2.0",
     "react-alert": "^7.0.3",
     "react-dom": "^18.2.0",

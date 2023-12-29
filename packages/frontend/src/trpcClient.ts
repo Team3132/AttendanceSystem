@@ -11,6 +11,7 @@ import { type AppRouter } from "backend";
 import { QueryClient } from "@tanstack/react-query";
 import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
+import { compress, decompress } from "lz-string";
 
 export const trpc = createTRPCReact<AppRouter>();
 
@@ -56,12 +57,18 @@ proxyclient.invalidator.subscribe(undefined, {
   },
 });
 
-export const queryClient = new QueryClient();
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      gcTime: 1000 * 60 * 60 * 24, // 24 hours
+    },
+  },
+});
 
 const localStoragePersister = createSyncStoragePersister({
   storage: window.localStorage,
-  serialize: (o) => JSON.stringify(SuperJSON.serialize(o)),
-  deserialize: (o) => SuperJSON.deserialize(JSON.parse(o)),
+  serialize: (o) => compress(JSON.stringify(SuperJSON.serialize(o))),
+  deserialize: (o) => SuperJSON.deserialize(JSON.parse(decompress(o))),
 });
 
 persistQueryClient({
