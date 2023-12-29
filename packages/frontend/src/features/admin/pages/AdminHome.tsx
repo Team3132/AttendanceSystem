@@ -93,7 +93,7 @@ export function Component() {
             <Datatable
               columns={columns ?? []}
               data={pagedItems}
-              globalFilter={search}
+              globalFilter={debouncedSearch}
               setGlobalFilter={setSearch}
               fetchNextPage={usersQuery.fetchNextPage}
               isFetching={usersQuery.isFetching}
