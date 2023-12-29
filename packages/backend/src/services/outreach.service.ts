@@ -43,6 +43,14 @@ export async function getOutreachTime(
   const { items, total } = await db.transaction(async (tx) => {
     await tx.execute(sql`SET LOCAL intervalstyle = 'iso_8601'`); // set the interval style to iso_8601
 
+    const conditionalAnd = and(
+      eq(event.type, "Outreach"),
+      not(arrayOverlaps(user.roles, [env.MENTOR_ROLE_ID])),
+      isNotNull(rsvp.checkinTime),
+      isNotNull(rsvp.checkoutTime),
+      gte(event.startDate, aprilIsoDate)
+    );
+
     const items = await tx
       .select({
         /** Username */
@@ -59,34 +67,36 @@ export async function getOutreachTime(
       .orderBy(
         sql<string>`sum(${rsvp.checkoutTime} - ${rsvp.checkinTime}) DESC`
       )
-      .where(
-        and(
-          eq(event.type, "Outreach"),
-          not(arrayOverlaps(user.roles, [env.MENTOR_ROLE_ID])),
-          isNotNull(rsvp.checkinTime),
-          isNotNull(rsvp.checkoutTime),
-          gte(event.startDate, aprilIsoDate)
-        )
-      )
+      .where(conditionalAnd)
       .limit(limit)
       .offset(offset);
 
-    let total = 0;
+    const totalQuery = tx
+      .select({
+        /** Username */
+        username: user.username,
+        /** UserId */
+        userId: user.id,
+        /** Duration (in ISO8601 format) */
+        duration: sql<string>`sum(${rsvp.checkoutTime} - ${rsvp.checkinTime})`,
+      })
+      .from(rsvp)
+      .groupBy(user.id)
+      .leftJoin(event, eq(rsvp.eventId, event.id))
+      .innerJoin(user, eq(rsvp.userId, user.id))
+      .orderBy(
+        sql<string>`sum(${rsvp.checkoutTime} - ${rsvp.checkinTime}) DESC`
+      )
+      .where(conditionalAnd)
+      .as("totalQuery");
 
     const [firstData] = await tx
-      .select({ total: count() })
-      .from(user)
-      .leftJoin(rsvp, eq(user.id, rsvp.userId))
-      .leftJoin(event, eq(rsvp.eventId, event.id))
-      .where(
-        and(
-          eq(event.type, "Outreach"),
-          not(arrayOverlaps(user.roles, [env.MENTOR_ROLE_ID])),
-          isNotNull(rsvp.checkinTime),
-          isNotNull(rsvp.checkoutTime),
-          gte(event.startDate, aprilIsoDate)
-        )
-      );
+      .select({
+        total: count(),
+      })
+      .from(totalQuery);
+
+    let total = 0;
 
     if (firstData) {
       total = firstData.total;
