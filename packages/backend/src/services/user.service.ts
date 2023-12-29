@@ -1,4 +1,4 @@
-import { and, eq, isNotNull, isNull } from "drizzle-orm";
+import { and, count, eq, isNotNull, isNull } from "drizzle-orm";
 import db from "../drizzle/db";
 import { TRPCError } from "@trpc/server";
 import { scancode, user } from "../drizzle/schema";
@@ -6,6 +6,8 @@ import { z } from "zod";
 import { UserCreateSchema } from "../schema";
 import { ee, rtrpc } from "../routers/app.router";
 import { getQueryKey } from "@trpc/react-query";
+import { UserListParamsSchema } from "../schema/UserListParamsSchema";
+import { PagedUserSchema } from "../schema/PagedUserSchema";
 
 /**
  * Gets a user from the database
@@ -71,10 +73,35 @@ export async function getPendingUserRsvps(userId: string) {
   return rsvps;
 }
 
-export async function getUserList() {
+export async function getUserList(
+  params: z.infer<typeof UserListParamsSchema>
+): Promise<z.infer<typeof PagedUserSchema>> {
+  const { limit, cursor: page } = params;
+
+  const offset = page * limit;
+
+  let total = 0;
+
+  const [totalData] = await db
+    .select({
+      total: count(),
+    })
+    .from(user);
+
+  if (totalData) {
+    total = totalData.total;
+  }
+
+  const nextPage = total > offset + limit ? page + 1 : undefined;
+
   const users = await db.query.user.findMany();
 
-  return users;
+  return {
+    items: users,
+    page,
+    total,
+    nextPage,
+  };
 }
 
 export async function createUserScancode(userId: string, scancodeCode: string) {
