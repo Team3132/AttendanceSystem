@@ -9,34 +9,34 @@ importers:
   .:
     devDependencies:
       typescript:
-        specifier: ^5.3.3
+        specifier: 5.3.3
         version: 5.3.3
 
   packages/backend:
     dependencies:
       '@discordjs/core':
-        specifier: ^1.1.1
+        specifier: 1.1.1
         version: 1.1.1
       '@discordjs/rest':
-        specifier: ^2.2.0
+        specifier: 2.2.0
         version: 2.2.0
       '@dynamicabot/signales':
-        specifier: ^2.1.1
+        specifier: 2.1.1
         version: 2.1.1
       '@fastify/cookie':
-        specifier: ^9.2.0
+        specifier: 9.2.0
         version: 9.2.0
       '@fastify/passport':
-        specifier: ^2.4.0
+        specifier: 2.4.0
         version: 2.4.0
       '@fastify/secure-session':
-        specifier: ^7.1.0
+        specifier: 7.1.0
         version: 7.1.0
       '@fastify/static':
-        specifier: ^6.12.0
+        specifier: 6.12.0
         version: 6.12.0
       '@fastify/websocket':
-        specifier: ^8.3.0
+        specifier: 8.3.1
         version: 8.3.1
       '@trpc/client':
         specifier: 11.0.0-next-alpha.149
@@ -48,110 +48,110 @@ importers:
         specifier: 11.0.0-next-alpha.149
         version: 11.0.0-next-alpha.149
       bullmq:
-        specifier: ^5.1.1
+        specifier: 5.1.1
         version: 5.1.1
       cron:
-        specifier: ^3.1.6
+        specifier: 3.1.6
         version: 3.1.6
       discord-api-types:
-        specifier: ^0.37.67
+        specifier: 0.37.67
         version: 0.37.67
       dotenv:
-        specifier: ^16.3.1
+        specifier: 16.3.1
         version: 16.3.1
       drizzle-orm:
-        specifier: ^0.29.3
+        specifier: 0.29.3
         version: 0.29.3(postgres@3.4.3)(react@18.2.0)
       drizzle-zod:
-        specifier: ^0.5.1
+        specifier: 0.5.1
         version: 0.5.1(drizzle-orm@0.29.3)(zod@3.22.4)
       eventemitter3:
-        specifier: ^5.0.1
+        specifier: 5.0.1
         version: 5.0.1
       fastify:
-        specifier: ^4.24.3
+        specifier: 4.25.2
         version: 4.25.2
       googleapis:
-        specifier: '129'
+        specifier: 129.0.0
         version: 129.0.0
       luxon:
-        specifier: ^3.4.4
+        specifier: 3.4.4
         version: 3.4.4
       passport-discord:
-        specifier: ^0.1.4
+        specifier: 0.1.4
         version: 0.1.4
       postgres:
-        specifier: ^3.3.5
+        specifier: 3.4.3
         version: 3.4.3
       superjson:
-        specifier: ^2.2.1
+        specifier: 2.2.1
         version: 2.2.1
       ulidx:
-        specifier: ^2.2.1
+        specifier: 2.2.1
         version: 2.2.1
       uuid:
-        specifier: ^9.0.1
+        specifier: 9.0.1
         version: 9.0.1
       zod:
-        specifier: ^3.22.4
+        specifier: 3.22.4
         version: 3.22.4
     devDependencies:
       '@types/luxon':
-        specifier: ^3.3.6
+        specifier: 3.3.7
         version: 3.3.7
       '@types/passport-discord':
-        specifier: ^0.1.5
+        specifier: 0.1.11
         version: 0.1.11
       '@types/uuid':
-        specifier: ^9.0.7
+        specifier: 9.0.7
         version: 9.0.7
       '@types/ws':
-        specifier: ^8.5.10
+        specifier: 8.5.10
         version: 8.5.10
       drizzle-kit:
-        specifier: ^0.20.9
+        specifier: 0.20.9
         version: 0.20.9
       eslint:
-        specifier: ^8.55.0
+        specifier: 8.56.0
         version: 8.56.0
       prettier:
-        specifier: ^3.1.0
+        specifier: 3.1.1
         version: 3.1.1
       tsup:
-        specifier: ^8.0.0
+        specifier: 8.0.1
         version: 8.0.1(@swc/core@1.3.102)(typescript@5.3.3)
       typescript:
-        specifier: ^5.3.3
+        specifier: 5.3.3
         version: 5.3.3
 
   packages/bot:
     dependencies:
       '@discordjs/builders':
-        specifier: ^1.7.0
+        specifier: 1.7.0
         version: 1.7.0
       '@discordjs/rest':
-        specifier: ^2.0.0
+        specifier: 2.2.0
         version: 2.2.0
       '@nestjs/common':
-        specifier: ^10.0.0
+        specifier: 10.3.0
         version: 10.3.0(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.2.1)(rxjs@7.8.1)
       '@nestjs/config':
-        specifier: ^3.0.0
+        specifier: 3.1.1
         version: 3.1.1(@nestjs/common@10.3.0)(reflect-metadata@0.2.1)
       '@nestjs/core':
-        specifier: ^10.0.0
+        specifier: 10.3.0
         version: 10.3.0(@nestjs/common@10.3.0)(@nestjs/platform-express@10.3.0)(reflect-metadata@0.2.1)(rxjs@7.8.1)
       '@nestjs/platform-express':
-        specifier: ^10.0.0
+        specifier: 10.3.0
         version: 10.3.0(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)
       '@nestjs/schedule':
-        specifier: ^4.0.0
+        specifier: 4.0.0
         version: 4.0.0(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)(reflect-metadata@0.2.1)
       '@sentry/node':
-        specifier: ^7.64.0
+        specifier: 7.91.0
         version: 7.91.0
       '@sentry/tracing':
-        specifier: ^7.64.0
+        specifier: 7.91.0
         version: 7.91.0
       '@trpc/client':
         specifier: 11.0.0-next-alpha.149
@@ -160,183 +160,183 @@ importers:
         specifier: workspace:*
         version: link:../backend
       class-transformer:
-        specifier: ^0.5.1
+        specifier: 0.5.1
         version: 0.5.1
       class-validator:
-        specifier: ^0.14.0
+        specifier: 0.14.0
         version: 0.14.0
       cron:
-        specifier: ^3.1.6
+        specifier: 3.1.6
         version: 3.1.6
       discord-api-types:
-        specifier: ^0.37.67
+        specifier: 0.37.67
         version: 0.37.67
       discord.js:
-        specifier: ^14.7.1
+        specifier: 14.14.1
         version: 14.14.1
       express:
-        specifier: ^4.18.2
+        specifier: 4.18.2
         version: 4.18.2
       luxon:
-        specifier: ^3.0.1
+        specifier: 3.4.4
         version: 3.4.4
       necord:
-        specifier: ^6.0.0
+        specifier: 6.5.0
         version: 6.5.0(@nestjs/common@10.3.0)(@nestjs/core@10.3.0)(discord.js@14.14.1)(reflect-metadata@0.2.1)(rxjs@7.8.1)
       reflect-metadata:
-        specifier: ^0.2.0
+        specifier: 0.2.1
         version: 0.2.1
       rxjs:
-        specifier: ^7.6.0
+        specifier: 7.8.1
         version: 7.8.1
       superjson:
-        specifier: ^2.2.1
+        specifier: 2.2.1
         version: 2.2.1
       zod:
-        specifier: ^3.20.6
+        specifier: 3.22.4
         version: 3.22.4
     devDependencies:
       '@swc/cli':
-        specifier: ^0.1.57
+        specifier: 0.1.63
         version: 0.1.63(@swc/core@1.3.102)
       '@swc/core':
-        specifier: ^1.3.102
+        specifier: 1.3.102
         version: 1.3.102
       '@types/express':
-        specifier: ^4.17.13
+        specifier: 4.17.21
         version: 4.17.21
       '@types/luxon':
-        specifier: ^3.1.0
+        specifier: 3.3.7
         version: 3.3.7
       '@types/node':
-        specifier: ^20.10.6
+        specifier: 20.10.6
         version: 20.10.6
       '@types/uuid':
-        specifier: ^9.0.0
+        specifier: 9.0.7
         version: 9.0.7
       '@types/ws':
-        specifier: ^8.5.10
+        specifier: 8.5.10
         version: 8.5.10
       '@typescript-eslint/eslint-plugin':
-        specifier: ^6.17.0
+        specifier: 6.17.0
         version: 6.17.0(@typescript-eslint/parser@6.17.0)(eslint@8.56.0)(typescript@5.3.3)
       '@typescript-eslint/parser':
-        specifier: ^6.17.0
+        specifier: 6.17.0
         version: 6.17.0(eslint@8.56.0)(typescript@5.3.3)
       drizzle-kit:
-        specifier: ^0.20.9
+        specifier: 0.20.9
         version: 0.20.9
       eslint:
-        specifier: ^8.36.0
+        specifier: 8.56.0
         version: 8.56.0
       eslint-config-prettier:
-        specifier: ^9.0.0
+        specifier: 9.1.0
         version: 9.1.0(eslint@8.56.0)
       eslint-plugin-prettier:
-        specifier: ^5.0.0
+        specifier: 5.1.2
         version: 5.1.2(eslint-config-prettier@9.1.0)(eslint@8.56.0)(prettier@3.1.1)
       prettier:
-        specifier: ^3.0.0
+        specifier: 3.1.1
         version: 3.1.1
       tsconfig-paths:
         specifier: 4.2.0
         version: 4.2.0
       tsup:
-        specifier: ^8.0.0
+        specifier: 8.0.1
         version: 8.0.1(@swc/core@1.3.102)(typescript@5.3.3)
 
   packages/frontend:
     dependencies:
       '@emotion/react':
-        specifier: ^11.11.1
+        specifier: 11.11.3
         version: 11.11.3(@types/react@18.2.46)(react@18.2.0)
       '@emotion/styled':
-        specifier: ^11.11.0
+        specifier: 11.11.0
         version: 11.11.0(@emotion/react@11.11.3)(@types/react@18.2.46)(react@18.2.0)
       '@fontsource/roboto':
-        specifier: ^5.0.7
+        specifier: 5.0.8
         version: 5.0.8
       '@hookform/resolvers':
-        specifier: ^3.1.1
+        specifier: 3.3.3
         version: 3.3.3(react-hook-form@7.49.2)
       '@mui/lab':
-        specifier: ^5.0.0-alpha.138
+        specifier: 5.0.0-alpha.158
         version: 5.0.0-alpha.158(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/material@5.15.2)(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
       '@mui/material':
-        specifier: ^5.14.3
+        specifier: 5.15.2
         version: 5.15.2(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
       '@mui/x-date-pickers':
-        specifier: ^6.11.0
+        specifier: 6.18.6
         version: 6.18.6(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/material@5.15.2)(@mui/system@5.15.2)(@types/react@18.2.46)(luxon@3.4.4)(react-dom@18.2.0)(react@18.2.0)
       '@tanstack/match-sorter-utils':
-        specifier: ^8.8.4
+        specifier: 8.8.4
         version: 8.8.4
       '@tanstack/query-sync-storage-persister':
-        specifier: ^5.17.0
+        specifier: 5.17.0
         version: 5.17.0
       '@tanstack/react-query':
-        specifier: ^5.17.0
+        specifier: 5.17.0
         version: 5.17.0(react@18.2.0)
       '@tanstack/react-query-persist-client':
-        specifier: ^5.17.0
+        specifier: 5.17.0
         version: 5.17.0(@tanstack/react-query@5.17.0)(react@18.2.0)
       '@tanstack/react-table':
-        specifier: ^8.9.3
+        specifier: 8.11.2
         version: 8.11.2(react-dom@18.2.0)(react@18.2.0)
       '@tanstack/react-virtual':
-        specifier: ^3.0.1
+        specifier: 3.0.1
         version: 3.0.1(react-dom@18.2.0)(react@18.2.0)
       '@tanstack/table-core':
-        specifier: ^8.10.7
+        specifier: 8.11.2
         version: 8.11.2
       backend:
         specifier: workspace:*
         version: link:../backend
       luxon:
-        specifier: ^3.3.0
+        specifier: 3.4.4
         version: 3.4.4
       lz-string:
-        specifier: ^1.5.0
+        specifier: 1.5.0
         version: 1.5.0
       react:
-        specifier: ^18.2.0
+        specifier: 18.2.0
         version: 18.2.0
       react-alert:
-        specifier: ^7.0.3
+        specifier: 7.0.3
         version: 7.0.3(react-dom@18.2.0)(react@18.2.0)
       react-dom:
-        specifier: ^18.2.0
+        specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
       react-helmet-async:
-        specifier: ^2.0.4
+        specifier: 2.0.4
         version: 2.0.4(react-dom@18.2.0)(react@18.2.0)
       react-hook-form:
-        specifier: ^7.45.4
+        specifier: 7.49.2
         version: 7.49.2(react@18.2.0)
       react-icons:
-        specifier: ^4.10.1
+        specifier: 4.12.0
         version: 4.12.0(react@18.2.0)
       react-qr-code:
-        specifier: ^2.0.11
+        specifier: 2.0.12
         version: 2.0.12(react@18.2.0)
       react-router-dom:
-        specifier: ^6.14.2
+        specifier: 6.21.1
         version: 6.21.1(react-dom@18.2.0)(react@18.2.0)
       superjson:
-        specifier: ^2.2.1
+        specifier: 2.2.1
         version: 2.2.1
       usehooks-ts:
-        specifier: ^2.9.1
+        specifier: 2.9.1
         version: 2.9.1(react-dom@18.2.0)(react@18.2.0)
       zod:
-        specifier: ^3.21.4
+        specifier: 3.22.4
         version: 3.22.4
     devDependencies:
       '@swc/plugin-emotion':
-        specifier: ^2.5.70
+        specifier: 2.5.108
         version: 2.5.108
       '@tanstack/eslint-plugin-query':
-        specifier: ^5.0.0-beta.14
+        specifier: 5.14.6
         version: 5.14.6(eslint@8.56.0)(typescript@5.3.3)
       '@trpc/client':
         specifier: 11.0.0-next-alpha.149
@@ -348,49 +348,49 @@ importers:
         specifier: 11.0.0-next-alpha.149
         version: 11.0.0-next-alpha.149
       '@types/luxon':
-        specifier: ^3.3.1
+        specifier: 3.3.7
         version: 3.3.7
       '@types/react':
         specifier: 18.2.46
         version: 18.2.46
       '@types/react-alert':
-        specifier: ^7.0.2
+        specifier: 7.0.6
         version: 7.0.6
       '@types/react-dom':
         specifier: 18.2.18
         version: 18.2.18
       '@typescript-eslint/eslint-plugin':
-        specifier: ^6.17.0
+        specifier: 6.17.0
         version: 6.17.0(@typescript-eslint/parser@6.17.0)(eslint@8.56.0)(typescript@5.3.3)
       '@typescript-eslint/parser':
-        specifier: ^6.17.0
+        specifier: 6.17.0
         version: 6.17.0(eslint@8.56.0)(typescript@5.3.3)
       '@vitejs/plugin-react-swc':
-        specifier: ^3.3.2
+        specifier: 3.5.0
         version: 3.5.0(vite@5.0.10)
       eslint:
-        specifier: ^8.45.0
+        specifier: 8.56.0
         version: 8.56.0
       eslint-plugin-prettier:
-        specifier: ^5.0.0
+        specifier: 5.1.2
         version: 5.1.2(eslint-config-prettier@9.1.0)(eslint@8.56.0)(prettier@3.1.1)
       eslint-plugin-react-hooks:
-        specifier: ^4.6.0
+        specifier: 4.6.0
         version: 4.6.0(eslint@8.56.0)
       eslint-plugin-react-refresh:
-        specifier: ^0.4.3
+        specifier: 0.4.5
         version: 0.4.5(eslint@8.56.0)
       prettier:
-        specifier: ^3.0.1
+        specifier: 3.1.1
         version: 3.1.1
       typescript:
-        specifier: ^5.3.3
+        specifier: 5.3.3
         version: 5.3.3
       vite:
-        specifier: ^5.0.0
+        specifier: 5.0.10
         version: 5.0.10
       vite-tsconfig-paths:
-        specifier: ^4.2.3
+        specifier: 4.2.3
         version: 4.2.3(typescript@5.3.3)(vite@5.0.10)
 
 packages:
