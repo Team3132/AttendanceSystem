@@ -1,9 +1,9 @@
 import { and, count, eq, ilike, isNotNull, isNull } from "drizzle-orm";
 import db from "../drizzle/db";
 import { TRPCError } from "@trpc/server";
-import { scancode, user } from "../drizzle/schema";
+import { buildPoints, scancode, user } from "../drizzle/schema";
 import { z } from "zod";
-import { UserCreateSchema } from "../schema";
+import { AddBuildPointsUserSchema, UserCreateSchema } from "../schema";
 import { ee, rtrpc } from "../routers/app.router";
 import { getQueryKey } from "@trpc/react-query";
 import { UserListParamsSchema } from "../schema/UserListParamsSchema";
@@ -200,4 +200,42 @@ export async function createUser(userdata: z.infer<typeof UserCreateSchema>) {
   ee.emit("invalidate", getQueryKey(rtrpc.users.getUserList));
 
   return dbUser;
+}
+
+export async function addUserBuildPoints(
+  params: z.infer<typeof AddBuildPointsUserSchema>
+) {
+  const user = await db.query.user.findFirst({
+    where: (user) => eq(user.id, params.userId),
+  });
+
+  if (!user) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message:
+        "User does not exist, cannot add build points. Please register by rsvp'ing to an event first.",
+    });
+  }
+
+  const [newBuildPoints] = await db
+    .insert(buildPoints)
+    .values({
+      userId: params.userId,
+      points: params.points,
+      reason: params.reason,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    })
+    .returning();
+
+  if (!newBuildPoints) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "Failed to add build points",
+    });
+  }
+
+  ee.emit("invalidate", getQueryKey(rtrpc.outreach.outreachLeaderboard));
+
+  return newBuildPoints;
 }

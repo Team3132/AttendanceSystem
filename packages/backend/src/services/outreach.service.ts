@@ -1,20 +1,23 @@
 import {
   and,
   arrayOverlaps,
-  count,
+  countDistinct,
+  desc,
   eq,
   gte,
   isNotNull,
   not,
   sql,
+  sum,
 } from "drizzle-orm";
 import db from "../drizzle/db";
-import { event, rsvp, user } from "../drizzle/schema";
+import { buildPoints, event, rsvp, user } from "../drizzle/schema";
 import { DateTime } from "luxon";
 import env from "../env";
 import { z } from "zod";
 import { OutreachTimeSchema } from "../schema/OutreachTimeSchema";
 import { PagedLeaderboardSchema } from "../schema/PagedLeaderboardSchema";
+import { PagedBuildPointsSchema } from "../schema/PagedBuildPointUsersSchema";
 
 /**
  * Get the sum of the difference between the start and end dates of all
@@ -62,7 +65,7 @@ export async function getOutreachTime(
       })
       .from(rsvp)
       .groupBy(user.id)
-      .leftJoin(event, eq(rsvp.eventId, event.id))
+      .innerJoin(event, eq(rsvp.eventId, event.id))
       .innerJoin(user, eq(rsvp.userId, user.id))
       .orderBy(
         sql<string>`sum(${rsvp.checkoutTime} - ${rsvp.checkinTime}) DESC`
@@ -71,30 +74,15 @@ export async function getOutreachTime(
       .limit(limit)
       .offset(offset);
 
-    const totalQuery = tx
+    const [firstData] = await tx
       .select({
-        /** Username */
-        username: user.username,
-        /** UserId */
-        userId: user.id,
-        /** Duration (in ISO8601 format) */
-        duration: sql<string>`sum(${rsvp.checkoutTime} - ${rsvp.checkinTime})`,
+        total: countDistinct(user.id),
       })
       .from(rsvp)
       .groupBy(user.id)
-      .leftJoin(event, eq(rsvp.eventId, event.id))
+      .innerJoin(event, eq(rsvp.eventId, event.id))
       .innerJoin(user, eq(rsvp.userId, user.id))
-      .orderBy(
-        sql<string>`sum(${rsvp.checkoutTime} - ${rsvp.checkinTime}) DESC`
-      )
-      .where(conditionalAnd)
-      .as("totalQuery");
-
-    const [firstData] = await tx
-      .select({
-        total: count(),
-      })
-      .from(totalQuery);
+      .where(conditionalAnd);
 
     let total = 0;
 
@@ -122,6 +110,78 @@ export async function getOutreachTime(
     page,
     total,
     nextPage,
+  };
+}
+
+export async function getBuildPoints(
+  params: z.infer<typeof OutreachTimeSchema>
+): Promise<z.infer<typeof PagedBuildPointsSchema>> {
+  const { limit, cursor: page } = OutreachTimeSchema.parse(params);
+  const lastApril25 = getLastApril25();
+
+  if (!lastApril25) {
+    throw new Error("Could not find a valid date for last April 25th");
+  }
+
+  const aprilIsoDate = lastApril25.toISODate();
+
+  if (!aprilIsoDate) {
+    throw new Error("Could not convert last April 25th to ISO date");
+  }
+
+  const offset = page * limit;
+
+  const conditionalAnd = and(
+    not(arrayOverlaps(user.roles, [env.MENTOR_ROLE_ID])),
+    gte(buildPoints.createdAt, aprilIsoDate)
+  );
+
+  const items = await db
+    .select({
+      /** Username */
+      username: user.username,
+      /** UserId */
+      userId: user.id,
+      points: sql<string>`sum(${buildPoints.points})`,
+    })
+    .from(buildPoints)
+    .groupBy(user.id)
+    .having(gte(sum(buildPoints.points), 1))
+    .innerJoin(user, eq(buildPoints.userId, user.id))
+    .orderBy(desc(sum(buildPoints.points)))
+    .where(conditionalAnd)
+    .limit(limit)
+    .offset(offset);
+
+  const [firstData] = await db
+    .select({
+      total: countDistinct(user.id),
+    })
+    .from(buildPoints)
+    .groupBy(user.id)
+    .having(gte(sum(buildPoints.points), 1))
+    .innerJoin(user, eq(buildPoints.userId, user.id))
+    .where(conditionalAnd);
+
+  let total = 0;
+
+  if (firstData) {
+    total = firstData.total;
+  }
+
+  const result = items.map((row, index) => ({
+    ...row,
+    rank: index + 1 + offset,
+  }));
+
+  // If no next page then undefined
+  const nextPage = total > offset + limit ? page + 1 : undefined;
+
+  return {
+    items: result,
+    page,
+    nextPage,
+    total,
   };
 }
 

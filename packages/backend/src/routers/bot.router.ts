@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { t } from "../trpc";
 import { tokenProcedure } from "../trpc/utils";
-import { getOutreachTime } from "../services/outreach.service";
+import { getBuildPoints, getOutreachTime } from "../services/outreach.service";
 import {
   editUserRsvpStatus,
   getAutocompleteEvents,
@@ -14,6 +14,7 @@ import {
 } from "../services/events.service";
 import { EventsArraySchema } from "../schema/EventsArraySchema";
 import {
+  AddBuildPointsUserSchema,
   EditRSVPUserSchema,
   EventSchema,
   RSVPSchema,
@@ -23,10 +24,12 @@ import {
   UserCreateSchema,
   UserSchema,
 } from "../schema";
-import { createUser } from "../services/user.service";
+import { addUserBuildPoints, createUser } from "../services/user.service";
 import { SelfCheckinWithUserId } from "../schema/SelfCheckinWithUserId";
 import { OutreachTimeSchema } from "../schema/OutreachTimeSchema";
 import { PagedLeaderboardSchema } from "../schema/PagedLeaderboardSchema";
+import { BuildPointSchema } from "../schema/BuildPointSchema";
+import { PagedBuildPointsSchema } from "../schema/PagedBuildPointUsersSchema";
 
 /**
  * A router than the bot uses to communicate with the backend
@@ -36,7 +39,7 @@ export const botRouter = t.router({
     .input(z.void())
     .output(z.literal("OK"))
     .query(() => "OK"),
-  leaderboard: tokenProcedure
+  outreachLeaderboard: tokenProcedure
     .input(OutreachTimeSchema)
     .output(PagedLeaderboardSchema)
     .query(({ input }) => getOutreachTime(input)),
@@ -77,4 +80,12 @@ export const botRouter = t.router({
     .input(SelfCheckinWithUserId)
     .output(RSVPSchema)
     .mutation(({ input: { userId, ...rest } }) => selfCheckin(userId, rest)),
+  addBuildPoints: tokenProcedure
+    .input(AddBuildPointsUserSchema)
+    .output(BuildPointSchema)
+    .mutation(({ input }) => addUserBuildPoints(input)),
+  buildPointsLeaderboard: tokenProcedure
+    .input(OutreachTimeSchema)
+    .output(PagedBuildPointsSchema)
+    .query(({ input }) => getBuildPoints(input)),
 });

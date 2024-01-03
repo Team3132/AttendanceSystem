@@ -1,4 +1,4 @@
-import { Paper, Stack, Typography } from "@mui/material";
+import { Container, Paper, Stack, Typography } from "@mui/material";
 import { createColumnHelper } from "@tanstack/react-table";
 import Datatable from "../../../components/DataTable";
 import { z } from "zod";
@@ -36,8 +36,8 @@ const columns = [
   }),
 ];
 
-export default function LeaderboardCard() {
-  const leaderboardQuery = trpc.outreach.leaderboard.useInfiniteQuery(
+export function Component() {
+  const leaderboardQuery = trpc.outreach.outreachLeaderboard.useInfiniteQuery(
     {
       limit: 10,
     },
@@ -58,28 +58,34 @@ export default function LeaderboardCard() {
 
   if (leaderboardQuery.data) {
     return (
-      <Paper sx={{ p: 2, textAlign: "center", height: "100%", width: "100%" }}>
-        <Stack gap={2} sx={{ height: "100%", display: "flex" }}>
-          <Typography variant="h4">Leaderboard</Typography>
-          <Datatable
-            columns={columns ?? []}
-            data={flatResults ?? []}
-            totalDBRowCount={totalRowCount}
-            fetchNextPage={leaderboardQuery.fetchNextPage}
-            isFetching={leaderboardQuery.isFetching}
-            sx={{
-              flex: 1,
-            }}
-            fixedHeight={53}
-          />
-        </Stack>
-      </Paper>
+      <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
+        <Paper
+          sx={{ p: 2, textAlign: "center", height: "100%", width: "100%" }}
+        >
+          <Stack gap={2} sx={{ height: "100%", display: "flex" }}>
+            <Typography variant="h4">Leaderboard</Typography>
+            <Datatable
+              columns={columns ?? []}
+              data={flatResults ?? []}
+              totalDBRowCount={totalRowCount}
+              fetchNextPage={leaderboardQuery.fetchNextPage}
+              isFetching={leaderboardQuery.isFetching}
+              sx={{
+                flex: 1,
+              }}
+              fixedHeight={53}
+            />
+          </Stack>
+        </Paper>
+      </Container>
     );
   }
 
   return (
-    <Paper sx={{ p: 2, textAlign: "center" }}>
-      <Typography variant="h4">Loading...</Typography>
-    </Paper>
+    <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
+      <Paper sx={{ p: 2, textAlign: "center" }}>
+        <Typography variant="h4">Loading...</Typography>
+      </Paper>
+    </Container>
   );
 }
