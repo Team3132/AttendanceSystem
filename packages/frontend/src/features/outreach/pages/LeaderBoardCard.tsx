@@ -1,4 +1,4 @@
-import { Container, Paper, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { createColumnHelper } from "@tanstack/react-table";
 import Datatable from "../../../components/DataTable";
 import { z } from "zod";
@@ -58,34 +58,22 @@ export function Component() {
 
   if (leaderboardQuery.data) {
     return (
-      <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
-        <Paper
-          sx={{ p: 2, textAlign: "center", height: "100%", width: "100%" }}
-        >
-          <Stack gap={2} sx={{ height: "100%", display: "flex" }}>
-            <Typography variant="h4">Leaderboard</Typography>
-            <Datatable
-              columns={columns ?? []}
-              data={flatResults ?? []}
-              totalDBRowCount={totalRowCount}
-              fetchNextPage={leaderboardQuery.fetchNextPage}
-              isFetching={leaderboardQuery.isFetching}
-              sx={{
-                flex: 1,
-              }}
-              fixedHeight={53}
-            />
-          </Stack>
-        </Paper>
-      </Container>
+      <Stack gap={2} sx={{ height: "100%", display: "flex" }}>
+        <Typography variant="h4">Leaderboard</Typography>
+        <Datatable
+          columns={columns ?? []}
+          data={flatResults ?? []}
+          totalDBRowCount={totalRowCount}
+          fetchNextPage={leaderboardQuery.fetchNextPage}
+          isFetching={leaderboardQuery.isFetching}
+          sx={{
+            flex: 1,
+          }}
+          fixedHeight={53}
+        />
+      </Stack>
     );
   }
 
-  return (
-    <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
-      <Paper sx={{ p: 2, textAlign: "center" }}>
-        <Typography variant="h4">Loading...</Typography>
-      </Paper>
-    </Container>
-  );
+  return <Typography variant="h4">Loading...</Typography>;
 }

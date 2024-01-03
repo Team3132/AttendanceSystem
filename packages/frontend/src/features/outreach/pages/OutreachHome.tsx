@@ -1,4 +1,4 @@
-import { Tab, Tabs } from "@mui/material";
+import { Paper, Stack, Tab, Tabs } from "@mui/material";
 import DefaultAppBar from "../../../components/DefaultAppBar";
 import ensureAuth from "@/features/auth/utils/ensureAuth";
 import { queryUtils } from "@/trpcClient";
@@ -57,7 +57,11 @@ export function Component() {
           />
         ))}
       </Tabs>
-      <Outlet />
+      <Paper sx={{ p: 2, textAlign: "center", flex: 1, width: "100%" }}>
+        <Stack gap={2} sx={{ height: "100%", display: "flex" }}>
+          <Outlet />
+        </Stack>
+      </Paper>
     </>
   );
 }
