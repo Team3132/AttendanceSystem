@@ -21,8 +21,21 @@ const router = createBrowserRouter([
             lazy: () => import("./pages/HomePage"),
           },
           {
-            path: "/outreach",
+            path: "/leaderboard",
             lazy: () => import("./features/outreach/pages/OutreachHome"),
+            children: [
+              {
+                path: "outreach",
+                lazy: () => import("./features/outreach/pages/LeaderBoardCard"),
+              },
+              {
+                path: "build-points",
+                lazy: () =>
+                  import(
+                    "./features/outreach/pages/BuildPointsLeaderboardCard"
+                  ),
+              },
+            ],
           },
           {
             path: "/events",

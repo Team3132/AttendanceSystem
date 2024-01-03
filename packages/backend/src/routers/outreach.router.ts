@@ -1,12 +1,17 @@
 import { t } from "../trpc";
 import { sessionProcedure } from "../trpc/utils";
-import { getOutreachTime } from "../services/outreach.service";
+import { getBuildPoints, getOutreachTime } from "../services/outreach.service";
 import { OutreachTimeSchema } from "../schema/OutreachTimeSchema";
 import { PagedLeaderboardSchema } from "../schema/PagedLeaderboardSchema";
+import { PagedBuildPointsSchema } from "../schema/PagedBuildPointUsersSchema";
 
 export const outreachRouter = t.router({
-  leaderboard: sessionProcedure
+  outreachLeaderboard: sessionProcedure
     .input(OutreachTimeSchema)
     .output(PagedLeaderboardSchema)
     .query(({ input }) => getOutreachTime(input)),
+  buildPointsLeaderboard: sessionProcedure
+    .input(OutreachTimeSchema)
+    .output(PagedBuildPointsSchema)
+    .query(({ input }) => getBuildPoints(input)),
 });

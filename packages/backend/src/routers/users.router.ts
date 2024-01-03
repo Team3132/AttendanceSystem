@@ -4,6 +4,7 @@ import { mentorSessionProcedure, sessionProcedure } from "../trpc/utils";
 import UserSchema from "../schema/UserSchema";
 import { ScancodeSchema } from "../schema/ScancodeSchema";
 import {
+  addUserBuildPoints,
   createUserScancode,
   getPendingUserRsvps,
   getUser,
@@ -12,9 +13,10 @@ import {
   removeScancode,
 } from "../services/user.service";
 import { RSVPEventSchema } from "../schema/RSVPEventSchema";
-import { AddUserScancodeParams } from "../schema";
+import { AddBuildPointsUserSchema, AddUserScancodeParams } from "../schema";
 import { UserListParamsSchema } from "../schema/UserListParamsSchema";
 import { PagedUserSchema } from "../schema/PagedUserSchema";
+import { BuildPointSchema } from "../schema/BuildPointSchema";
 
 export const userRouter = t.router({
   getSelf: sessionProcedure
@@ -61,4 +63,8 @@ export const userRouter = t.router({
     .input(z.string())
     .output(ScancodeSchema)
     .mutation(({ input, ctx }) => removeScancode(ctx.user.id, input)),
+  addUserBuildPoints: mentorSessionProcedure
+    .input(AddBuildPointsUserSchema)
+    .output(BuildPointSchema)
+    .mutation(({ input }) => addUserBuildPoints(input)),
 });

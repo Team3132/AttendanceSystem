@@ -17,7 +17,7 @@
   "scripts": {
     "dev": "tsup --watch",
     "start": "node --enable-source-maps dist/index.js",
-    "generate": "drizzle-orm generate:pg",
+    "generate": "drizzle-kit generate:pg",
     "build": "tsc && tsup",
     "typecheck": "tsc",
     "release": "pnpm build"
@@ -54,6 +54,7 @@
     "passport-discord": "^0.1.4",
     "postgres": "^3.3.5",
     "superjson": "^2.2.1",
+    "ulidx": "^2.2.1",
     "uuid": "^9.0.1",
     "zod": "^3.22.4"
   },

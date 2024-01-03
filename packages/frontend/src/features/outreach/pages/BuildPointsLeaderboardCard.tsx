@@ -1,0 +1,79 @@
+import { Container, Paper, Stack, Typography } from "@mui/material";
+import { createColumnHelper } from "@tanstack/react-table";
+import Datatable from "../../../components/DataTable";
+import { z } from "zod";
+import { BuildPointUserSchema } from "backend/schema";
+import { trpc } from "@/trpcClient";
+import { useMemo } from "react";
+
+type LeaderboardUser = z.infer<typeof BuildPointUserSchema>;
+
+const columnHelper = createColumnHelper<LeaderboardUser>();
+
+const columns = [
+  columnHelper.accessor("rank", {
+    header: "Rank",
+    maxSize: 50,
+  }),
+  columnHelper.accessor("username", {
+    header: "Username",
+  }),
+  columnHelper.accessor("points", {
+    header: "Build Season Points",
+  }),
+];
+
+export function Component() {
+  const leaderboardQuery =
+    trpc.outreach.buildPointsLeaderboard.useInfiniteQuery(
+      {
+        limit: 10,
+      },
+      {
+        getNextPageParam: (lastPage) => lastPage.nextPage,
+      }
+    );
+
+  const flatResults = useMemo(
+    () => leaderboardQuery.data?.pages.flatMap((page) => page.items),
+    [leaderboardQuery.data]
+  );
+
+  const totalRowCount = useMemo(
+    () => leaderboardQuery.data?.pages.at(-1)?.total ?? 0,
+    [leaderboardQuery.data]
+  );
+
+  if (leaderboardQuery.data) {
+    return (
+      <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
+        <Paper
+          sx={{ p: 2, textAlign: "center", height: "100%", width: "100%" }}
+        >
+          <Stack gap={2} sx={{ height: "100%", display: "flex" }}>
+            <Typography variant="h4">Leaderboard</Typography>
+            <Datatable
+              columns={columns ?? []}
+              data={flatResults ?? []}
+              totalDBRowCount={totalRowCount}
+              fetchNextPage={leaderboardQuery.fetchNextPage}
+              isFetching={leaderboardQuery.isFetching}
+              sx={{
+                flex: 1,
+              }}
+              fixedHeight={53}
+            />
+          </Stack>
+        </Paper>
+      </Container>
+    );
+  }
+
+  return (
+    <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
+      <Paper sx={{ p: 2, textAlign: "center" }}>
+        <Typography variant="h4">Loading...</Typography>
+      </Paper>
+    </Container>
+  );
+}

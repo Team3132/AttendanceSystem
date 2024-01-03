@@ -72,10 +72,10 @@ export function Component() {
           icon={<FaHouse />}
         />
         <BottomNavigationAction
-          label="Outreach"
-          value="/outreach"
+          label="Leaderboard"
+          value="/leaderboard/outreach"
           LinkComponent={LinkBehavior}
-          href="/outreach"
+          href="/leaderboard/outreach"
           icon={<FaPeopleGroup />}
         />
         <BottomNavigationAction

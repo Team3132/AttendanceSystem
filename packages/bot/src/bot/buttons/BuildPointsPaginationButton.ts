@@ -8,30 +8,21 @@ import {
   Context,
   SlashCommand,
   type SlashCommandContext,
+  Options,
 } from 'necord';
-import { LeaderBoardUser } from 'backend/schema';
-import { Duration } from 'luxon';
 import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
   EmbedBuilder,
+  PermissionFlagsBits,
 } from 'discord.js';
 import { z } from 'zod';
+import { BuildPointUserSchema } from 'backend/schema/BuildPointUserSchema';
+import { AddBuildPointsOptionsDto } from '../dto/AddBuildPointsOptionsDto';
 
-const roundDuration = (duration: Duration) => {
-  const millis = duration.toMillis();
-  // round to the nearest minute
-  const rounded = Math.round(millis / 60000) * 60000;
-  const hours = Math.floor(rounded / 3600000);
-  const minutes = Math.floor((rounded % 3600000) / 60000);
-  return Duration.fromObject({ hours, minutes });
-};
-
-const leaderboardLine = (data: z.infer<typeof LeaderBoardUser>) =>
-  `${data.rank}. **${data.username}** - ${roundDuration(
-    Duration.fromISO(data.duration),
-  ).toHuman()}`;
+const leaderboardLine = (data: z.infer<typeof BuildPointUserSchema>) =>
+  `${data.rank}. **${data.username}** - ${data.points}`;
 
 function randomStr(length: number = 8): string {
   const alphanumericCharacters =
@@ -57,7 +48,7 @@ export class OutreachPaginationButton {
   ) {}
 
   @UseGuards(GuildMemberGuard)
-  @Button('leaderboard/:toPage/:random')
+  @Button('buildPointsLeaderboard/:toPage/:random')
   public async onPageChange(
     @Context() [interaction]: ButtonContext,
     @ComponentParam('toPage') toPage: string,
@@ -74,8 +65,8 @@ export class OutreachPaginationButton {
 
   @UseGuards(GuildMemberGuard)
   @SlashCommand({
-    name: 'leaderboard',
-    description: 'Get the leaderboard for outreach hours',
+    name: 'buildpoints',
+    description: 'Get the leaderboard for build season points',
     guilds: guildId ? [guildId] : undefined,
     dmPermission: false,
   })
@@ -88,11 +79,35 @@ export class OutreachPaginationButton {
     });
   }
 
+  @UseGuards(GuildMemberGuard)
+  @SlashCommand({
+    name: 'addbuildpoints',
+    description: 'Add build season points to a user',
+    guilds: guildId ? [guildId] : undefined,
+    defaultMemberPermissions: PermissionFlagsBits.ManageRoles,
+    dmPermission: false,
+  })
+  public async onAddBuildPoints(
+    @Context() [interaction]: SlashCommandContext,
+    @Options() params: AddBuildPointsOptionsDto,
+  ) {
+    const response = await this.backendClient.client.bot.addBuildPoints.mutate({
+      points: params.points,
+      userId: params.user.id,
+      reason: params.reason,
+    });
+
+    await interaction.reply({
+      ephemeral: true,
+      content: `Added ${response.points} points to ${params.user.toString()}`,
+    });
+  }
+
   public async createMessage(page: number) {
     const perPage = 10;
 
     const { items: leaderBoardData } =
-      await this.backendClient.client.bot.outreachLeaderboard.query({
+      await this.backendClient.client.bot.buildPointsLeaderboard.query({
         cursor: page - 1,
         limit: perPage,
       });
@@ -103,7 +118,7 @@ export class OutreachPaginationButton {
     if (page > maxPage || page < 1) throw new Error('Invalid page');
 
     const embed = new EmbedBuilder()
-      .setTitle(`Outreach Leaderboard ${page}/${maxPage}`)
+      .setTitle(`Build Points Leaderboard ${page}/${maxPage}`)
       .setTimestamp(new Date());
 
     const lines = leaderBoardData.map(leaderboardLine).join('\n');
@@ -113,27 +128,27 @@ export class OutreachPaginationButton {
     const messageComponent =
       new ActionRowBuilder<ButtonBuilder>().addComponents(
         new ButtonBuilder()
-          .setCustomId(`leaderboard/${1}/${randomStr(4)}`)
+          .setCustomId(`buildPointsLeaderboard/${1}/${randomStr(4)}`)
           .setLabel('First')
           .setStyle(ButtonStyle.Secondary)
           .setDisabled(page === 1),
         new ButtonBuilder()
-          .setCustomId(`leaderboard/${page - 1}/${randomStr(4)}`)
+          .setCustomId(`buildPointsLeaderboard/${page - 1}/${randomStr(4)}`)
           .setLabel('Previous')
           .setStyle(ButtonStyle.Secondary)
           .setDisabled(page === 1),
         new ButtonBuilder()
-          .setCustomId(`leaderboard/${page}/${randomStr(4)}`)
+          .setCustomId(`buildPointsLeaderboard/${page}/${randomStr(4)}`)
           .setLabel(`Refresh`)
           .setStyle(ButtonStyle.Primary)
           .setDisabled(false),
         new ButtonBuilder()
-          .setCustomId(`leaderboard/${page + 1}/${randomStr(4)}`)
+          .setCustomId(`buildPointsLeaderboard/${page + 1}/${randomStr(4)}`)
           .setLabel('Next')
           .setStyle(ButtonStyle.Secondary)
           .setDisabled(page === maxPage),
         new ButtonBuilder()
-          .setCustomId(`leaderboard/${maxPage}/${randomStr(4)}`)
+          .setCustomId(`buildPointsLeaderboard/${maxPage}/${randomStr(4)}`)
           .setLabel('Last')
           .setStyle(ButtonStyle.Secondary)
           .setDisabled(page === maxPage),

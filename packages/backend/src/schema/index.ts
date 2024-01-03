@@ -27,3 +27,7 @@ export * from "./SelfCheckinWithUserId";
 export * from "./AuthStatusSchema";
 export * from "./PagedEventsSchema";
 export * from "./PagedSchema";
+export * from "./AddBuildPointsSchema";
+export * from "./PagedBuildPointUsersSchema";
+export * from "./BuildPointSchema";
+export * from "./BuildPointUserSchema";
