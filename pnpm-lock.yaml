@@ -351,13 +351,13 @@ importers:
         specifier: ^3.3.1
         version: 3.3.7
       '@types/react':
-        specifier: ^18.2.46
+        specifier: 18.2.46
         version: 18.2.46
       '@types/react-alert':
         specifier: ^7.0.2
         version: 7.0.6
       '@types/react-dom':
-        specifier: ^18.2.7
+        specifier: 18.2.18
         version: 18.2.18
       '@typescript-eslint/eslint-plugin':
         specifier: ^6.17.0
