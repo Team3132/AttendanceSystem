@@ -257,8 +257,8 @@ importers:
         specifier: 5.0.8
         version: 5.0.8
       '@hookform/resolvers':
-        specifier: 3.3.3
-        version: 3.3.3(react-hook-form@7.49.2)
+        specifier: 3.3.4
+        version: 3.3.4(react-hook-form@7.49.2)
       '@mui/lab':
         specifier: 5.0.0-alpha.159
         version: 5.0.0-alpha.159(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/material@5.15.3)(@types/react@18.2.46)(react-dom@18.2.0)(react@18.2.0)
@@ -1244,8 +1244,8 @@ packages:
     resolution: {integrity: sha512-XxPltXs5R31D6UZeLIV1td3wTXU3jzd3f2DLsXI8tytMGBkIsGcc9sIyiupRtA8y73HAhuSCeweOoBqf6DbWCA==}
     dev: false
 
-  /@hookform/resolvers@3.3.3(react-hook-form@7.49.2):
-    resolution: {integrity: sha512-bOMxKkSD3zWcS11TKoUQ8O0ZqKslFohvUsPKSrdCHiuEuMjRo/u3cq9YRJD/+xtNGYup++XD2LkjhegP5XENiw==}
+  /@hookform/resolvers@3.3.4(react-hook-form@7.49.2):
+    resolution: {integrity: sha512-o5cgpGOuJYrd+iMKvkttOclgwRW86EsWJZZRC23prf0uU2i48Htq4PuT73AVb9ionFyZrwYEITuOFGF+BydEtQ==}
     peerDependencies:
       react-hook-form: ^7.0.0
     dependencies:
@@ -2254,11 +2254,6 @@ packages:
       '@tanstack/virtual-core': 3.0.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-    dev: false
-
-  /@tanstack/table-core@8.11.2:
-    resolution: {integrity: sha512-rR0VEQOtr0ARLvaNLaSQnt2BVwOp0OavOUA0LcZ3N45tLYXc4sXruNv8kJ7R7+5W1CrzGha217tzjBG83CpoMQ==}
-    engines: {node: '>=12'}
     dev: false
 
   /@tanstack/table-core@8.11.3:
