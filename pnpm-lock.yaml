@@ -97,8 +97,8 @@ importers:
         version: 3.22.4
     devDependencies:
       '@types/luxon':
-        specifier: 3.3.8
-        version: 3.3.8
+        specifier: 3.4.0
+        version: 3.4.0
       '@types/passport-discord':
         specifier: 0.1.11
         version: 0.1.11
@@ -206,8 +206,8 @@ importers:
         specifier: 4.17.21
         version: 4.17.21
       '@types/luxon':
-        specifier: 3.3.8
-        version: 3.3.8
+        specifier: 3.4.0
+        version: 3.4.0
       '@types/node':
         specifier: 20.10.6
         version: 20.10.6
@@ -348,8 +348,8 @@ importers:
         specifier: 11.0.0-next-alpha.152
         version: 11.0.0-next-alpha.152
       '@types/luxon':
-        specifier: 3.3.8
-        version: 3.3.8
+        specifier: 3.4.0
+        version: 3.4.0
       '@types/react':
         specifier: 18.2.46
         version: 18.2.46
@@ -2302,6 +2302,11 @@ packages:
 
   /@types/luxon@3.3.8:
     resolution: {integrity: sha512-jYvz8UMLDgy3a5SkGJne8H7VA7zPV2Lwohjx0V8V31+SqAjNmurWMkk9cQhfvlcnXWudBpK9xPM1n4rljOcHYQ==}
+    dev: false
+
+  /@types/luxon@3.4.0:
+    resolution: {integrity: sha512-PEVoA4MOfSsFNaPrZjIUGUZujBDxnO/tj2A2N9KfzlR+pNgpBdDuk0TmRvSMAVUP5q4q8IkMEZ8UOp3MIr+QgA==}
+    dev: true
 
   /@types/mime@1.3.5:
     resolution: {integrity: sha512-/pyBZWSLD2n0dcHE3hq8s8ZvcETHtEuF+3E7XVt0Ig2nvsVQXdghHVcEkIWjy9A0wKfTn97a/PSDYohKIlnP/w==}
