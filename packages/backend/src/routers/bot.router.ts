@@ -29,7 +29,7 @@ import { SelfCheckinWithUserId } from "../schema/SelfCheckinWithUserId";
 import { OutreachTimeSchema } from "../schema/OutreachTimeSchema";
 import { PagedLeaderboardSchema } from "../schema/PagedLeaderboardSchema";
 import { BuildPointSchema } from "../schema/BuildPointSchema";
-import { PagedBuildPointsSchema } from "../schema/PagedBuildPointUsersSchema";
+import { PagedBuildPointUsersSchema } from "../schema/PagedBuildPointUsersSchema";
 
 /**
  * A router than the bot uses to communicate with the backend
@@ -86,6 +86,6 @@ export const botRouter = t.router({
     .mutation(({ input }) => addUserBuildPoints(input)),
   buildPointsLeaderboard: tokenProcedure
     .input(OutreachTimeSchema)
-    .output(PagedBuildPointsSchema)
+    .output(PagedBuildPointUsersSchema)
     .query(({ input }) => getBuildPoints(input)),
 });

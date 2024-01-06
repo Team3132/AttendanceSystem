@@ -8,6 +8,9 @@ import { ee, rtrpc } from "../routers/app.router";
 import { getQueryKey } from "@trpc/react-query";
 import { UserListParamsSchema } from "../schema/UserListParamsSchema";
 import { PagedUserSchema } from "../schema/PagedUserSchema";
+import { GetBuildPointsSchema } from "../schema/GetBuildPointsSchema";
+import { PagedBuildPointsSchema } from "../schema/PagedBuildPointsSchema";
+import { RemoveBuildPointSchema } from "../schema/RemoveBuildPointSchema";
 
 /**
  * Gets a user from the database
@@ -238,4 +241,60 @@ export async function addUserBuildPoints(
   ee.emit("invalidate", getQueryKey(rtrpc.outreach.outreachLeaderboard));
 
   return newBuildPoints;
+}
+
+export async function getUserBuildPoints(
+  userId: string,
+  params: z.infer<typeof GetBuildPointsSchema>
+) {
+  const { limit, cursor: page } = params;
+
+  const offset = page * limit;
+
+  let total = 0;
+
+  const [totalData] = await db
+    .select({
+      total: count(),
+    })
+    .from(buildPoints)
+    .where(eq(buildPoints.userId, userId));
+
+  if (totalData) {
+    total = totalData.total;
+  }
+
+  const nextPage = total > offset + limit ? page + 1 : undefined;
+
+  const buildPointsRes = await db.query.buildPoints.findMany({
+    where: (buildPoints) => eq(buildPoints.userId, userId),
+    limit,
+    offset,
+  });
+
+  return {
+    items: buildPointsRes,
+    page,
+    total,
+    nextPage,
+  } satisfies z.infer<typeof PagedBuildPointsSchema>;
+}
+
+export async function removeUserBuildPoints(
+  params: z.infer<typeof RemoveBuildPointSchema>
+) {
+  const { buildPointId } = params;
+  const [res] = await db
+    .delete(buildPoints)
+    .where(eq(buildPoints.id, buildPointId))
+    .returning();
+
+  if (!res) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "Build point does not exist or has already been removed",
+    });
+  }
+
+  return res;
 }

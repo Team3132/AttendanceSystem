@@ -17,7 +17,7 @@ import env from "../env";
 import { z } from "zod";
 import { OutreachTimeSchema } from "../schema/OutreachTimeSchema";
 import { PagedLeaderboardSchema } from "../schema/PagedLeaderboardSchema";
-import { PagedBuildPointsSchema } from "../schema/PagedBuildPointUsersSchema";
+import { PagedBuildPointUsersSchema } from "../schema/PagedBuildPointUsersSchema";
 
 /**
  * Get the sum of the difference between the start and end dates of all
@@ -122,7 +122,7 @@ export async function getOutreachTime(
 
 export async function getBuildPoints(
   params: z.infer<typeof OutreachTimeSchema>
-): Promise<z.infer<typeof PagedBuildPointsSchema>> {
+): Promise<z.infer<typeof PagedBuildPointUsersSchema>> {
   const { limit, cursor: page } = OutreachTimeSchema.parse(params);
   const lastApril25 = getLastApril25();
 
