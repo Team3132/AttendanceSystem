@@ -70,7 +70,9 @@ export function Component() {
           sx={{
             p: 2,
             textAlign: "center",
-            flex: 1,
+            // flex: 1,
+            height: 0,
+            flexGrow: 1,
             width: "100%",
             display: "flex",
             flexDirection: "column",
