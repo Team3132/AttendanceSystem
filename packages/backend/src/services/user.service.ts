@@ -1,13 +1,4 @@
-import {
-  and,
-  count,
-  eq,
-  gte,
-  ilike,
-  isNotNull,
-  isNull,
-  lte,
-} from "drizzle-orm";
+import { and, count, eq, ilike, isNotNull, isNull } from "drizzle-orm";
 import db from "../drizzle/db";
 import { TRPCError } from "@trpc/server";
 import { buildPoints, scancode, user } from "../drizzle/schema";
@@ -20,8 +11,6 @@ import { PagedUserSchema } from "../schema/PagedUserSchema";
 import { GetBuildPointsSchema } from "../schema/GetBuildPointsSchema";
 import { PagedBuildPointsSchema } from "../schema/PagedBuildPointsSchema";
 import { RemoveBuildPointSchema } from "../schema/RemoveBuildPointSchema";
-import { DateTime } from "luxon";
-import { EventWithSecretSchema } from "../schema/EventWithSecretSchema";
 
 /**
  * Gets a user from the database
