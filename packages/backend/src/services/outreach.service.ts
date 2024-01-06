@@ -1,6 +1,7 @@
 import {
   and,
   arrayOverlaps,
+  count,
   countDistinct,
   desc,
   eq,
@@ -74,15 +75,22 @@ export async function getOutreachTime(
       .limit(limit)
       .offset(offset);
 
-    const [firstData] = await tx
+    const usersQuery = tx
       .select({
-        total: countDistinct(user.id),
+        userId: user.id,
       })
       .from(rsvp)
       .groupBy(user.id)
       .innerJoin(event, eq(rsvp.eventId, event.id))
       .innerJoin(user, eq(rsvp.userId, user.id))
-      .where(conditionalAnd);
+      .where(conditionalAnd)
+      .as("usersQuery");
+
+    const [firstData] = await tx
+      .select({
+        total: count(),
+      })
+      .from(usersQuery);
 
     let total = 0;
 
@@ -153,15 +161,22 @@ export async function getBuildPoints(
     .limit(limit)
     .offset(offset);
 
-  const [firstData] = await db
+  const usersQuery = db
     .select({
-      total: countDistinct(user.id),
+      userId: user.id,
     })
     .from(buildPoints)
     .groupBy(user.id)
     .having(gte(sum(buildPoints.points), 1))
     .innerJoin(user, eq(buildPoints.userId, user.id))
-    .where(conditionalAnd);
+    .where(conditionalAnd)
+    .as("usersQuery");
+
+  const [firstData] = await db
+    .select({
+      total: count(),
+    })
+    .from(usersQuery);
 
   let total = 0;
 
