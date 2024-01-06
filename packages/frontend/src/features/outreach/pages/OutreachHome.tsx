@@ -1,4 +1,4 @@
-import { Container, Paper, Stack, Tab, Tabs } from "@mui/material";
+import { Container, Paper, Tab, Tabs } from "@mui/material";
 import DefaultAppBar from "../../../components/DefaultAppBar";
 import ensureAuth from "@/features/auth/utils/ensureAuth";
 import { queryUtils } from "@/trpcClient";
