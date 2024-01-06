@@ -20,7 +20,7 @@ export class AddBuildPointsOptionsDto {
   @StringOption({
     name: 'reason',
     description: 'The reason for adding points',
-    required: false,
+    required: true,
   })
-  reason?: string;
+  reason: string;
 }
