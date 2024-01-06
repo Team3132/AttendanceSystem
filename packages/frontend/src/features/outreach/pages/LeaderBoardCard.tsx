@@ -68,6 +68,7 @@ export function Component() {
           isFetching={leaderboardQuery.isFetching}
           sx={{
             flex: 1,
+            overflowY: "scroll",
           }}
           fixedHeight={53}
         />
