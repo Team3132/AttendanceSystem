@@ -13,7 +13,7 @@ export class AddBuildPointsOptionsDto {
     description: 'The number of points to add',
     required: true,
     min_value: 1,
-    max_value: 1,
+    max_value: 5,
   })
   points: number;
 
