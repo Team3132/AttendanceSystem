@@ -50,10 +50,10 @@ export function Component() {
         label: "Pending",
         path: `/user/${loaderData.userId}/pending`,
       },
-      {
-        label: "Build Points",
-        path: `/user/${loaderData.userId}/build-points`,
-      },
+      // {
+      //   label: "Build Points",
+      //   path: `/user/${loaderData.userId}/build-points`,
+      // },
     ],
     [loaderData.userId]
   );

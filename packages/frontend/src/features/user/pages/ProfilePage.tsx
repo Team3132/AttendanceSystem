@@ -33,10 +33,10 @@ const tabs: Array<TabItem> = [
     label: "Pending",
     path: "/profile/pending",
   },
-  {
-    label: "Build Points",
-    path: "/profile/build-points",
-  },
+  // {
+  //   label: "Build Points",
+  //   path: "/profile/build-points",
+  // },
 ];
 
 const routes = tabs.map((tab) => tab.path);
