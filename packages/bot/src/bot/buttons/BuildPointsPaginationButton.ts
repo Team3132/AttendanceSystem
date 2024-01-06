@@ -106,14 +106,14 @@ export class BuildPointsPaginationButton {
   public async createMessage(page: number) {
     const perPage = 10;
 
-    const { items: leaderBoardData } =
+    const { items: leaderBoardData, total } =
       await this.backendClient.client.bot.buildPointsLeaderboard.query({
         cursor: page - 1,
         limit: perPage,
       });
 
     // pages start at 1
-    const maxPage = Math.ceil(leaderBoardData.length / perPage);
+    const maxPage = Math.ceil(total / perPage);
 
     if (page > maxPage || page < 1) throw new Error('Invalid page');
 
