@@ -22,6 +22,7 @@ interface TabItem {
   label: string;
   icon?: React.ReactElement | string;
   path: string;
+  disabled?: boolean;
 }
 
 const tabs: Array<TabItem> = [
@@ -32,6 +33,7 @@ const tabs: Array<TabItem> = [
   {
     label: "Build Points",
     path: "/leaderboard/build-points",
+    disabled: true,
   },
 ];
 
@@ -63,6 +65,7 @@ export function Component() {
               value={tab.path}
               href={tab.path}
               LinkComponent={LinkBehavior}
+              disabled={tab.disabled}
             />
           ))}
         </Tabs>

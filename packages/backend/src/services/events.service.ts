@@ -33,6 +33,7 @@ import { getQueryKey } from "@trpc/react-query";
 import { Queue, Worker, Job } from "bullmq";
 import env from "../env";
 import { PagedEventsSchema } from "../schema/PagedEventsSchema";
+import { EventWithSecretArraySchema } from "../schema/EventWithSecretArraySchema";
 
 interface EventCheckinJobData {
   eventId: string;
@@ -409,6 +410,18 @@ export async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
   const eventStartDateTime = DateTime.fromISO(dbEvent.startDate);
   const eventEndDateTime = DateTime.fromISO(dbEvent.endDate);
 
+  const currentRSVP = await db.query.rsvp.findFirst({
+    where: (rsvp, { and }) =>
+      and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
+  });
+
+  if (currentRSVP?.checkinTime) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "You are already checked in",
+    });
+  }
+
   const [updatedRsvp] = await db
     .insert(rsvp)
     .values({
@@ -479,71 +492,12 @@ export async function userScanin(params: z.infer<typeof ScaninSchema>) {
     });
   }
 
-  // find event
-  const dbEvent = await db.query.event.findFirst({
-    where: eq(event.id, eventId),
+  const checkedIn = await userCheckin({
+    eventId,
+    userId: dbScancode.userId,
   });
 
-  if (!dbEvent) {
-    throw new TRPCError({
-      code: "NOT_FOUND",
-      message: "Event not found",
-    });
-  }
-
-  const { userId } = dbScancode;
-
-  const eventStartDateTime = DateTime.fromISO(dbEvent.startDate);
-  const eventEndDateTime = DateTime.fromISO(dbEvent.endDate);
-
-  // find rsvp
-  const [updatedRsvp] = await db
-    .insert(rsvp)
-    .values({
-      userId,
-      eventId,
-      checkinTime: clampDateTime(
-        DateTime.local(),
-        eventStartDateTime,
-        eventEndDateTime
-      ).toISO(),
-      updatedAt: DateTime.local().toISO(),
-      createdAt: DateTime.local().toISO(),
-    })
-    .onConflictDoUpdate({
-      set: {
-        userId,
-        eventId,
-        checkinTime: clampDateTime(
-          DateTime.local(),
-          eventStartDateTime,
-          eventEndDateTime
-        ).toISO(),
-        updatedAt: DateTime.local().toISO(),
-      },
-      target: [rsvp.eventId, rsvp.userId],
-    })
-    .returning();
-
-  if (!updatedRsvp) {
-    throw new TRPCError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Failed to check in",
-    });
-  }
-
-  ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
-
-  const timeDiff = eventEndDateTime.toMillis() - DateTime.local().toMillis();
-  const delay = timeDiff > 0 ? timeDiff : 0;
-
-  await checkoutQueue.add(
-    "checkout",
-    { eventId, rsvpId: updatedRsvp.id },
-    { delay, jobId: updatedRsvp.id }
-  );
-
-  return updatedRsvp;
+  return checkedIn;
 }
 
 /**
@@ -707,68 +661,12 @@ export async function selfCheckin(
     });
   }
 
-  const currentRSVP = await db.query.rsvp.findFirst({
-    where: (rsvp, { and }) =>
-      and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
+  const updatedRSVP = await userCheckin({
+    eventId,
+    userId,
   });
 
-  if (currentRSVP?.checkinTime) {
-    throw new TRPCError({
-      code: "BAD_REQUEST",
-      message: "You are already checked in",
-    });
-  }
-
-  const eventStartDateTime = DateTime.fromISO(dbEvent.startDate);
-  const eventEndDateTime = DateTime.fromISO(dbEvent.endDate);
-
-  const [updatedRsvp] = await db
-    .insert(rsvp)
-    .values({
-      userId,
-      eventId,
-      checkinTime: clampDateTime(
-        DateTime.local(),
-        eventStartDateTime,
-        eventEndDateTime
-      ).toISO(),
-      updatedAt: DateTime.local().toISO(),
-      createdAt: DateTime.local().toISO(),
-    })
-    .onConflictDoUpdate({
-      set: {
-        userId,
-        eventId,
-        checkinTime: clampDateTime(
-          DateTime.local(),
-          eventStartDateTime,
-          eventEndDateTime
-        ).toISO(),
-        updatedAt: DateTime.local().toISO(),
-      },
-      target: [rsvp.eventId, rsvp.userId],
-    })
-    .returning();
-
-  if (!updatedRsvp) {
-    throw new TRPCError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Failed to check in",
-    });
-  }
-
-  ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
-
-  const timeDiff = eventEndDateTime.toMillis() - DateTime.local().toMillis();
-  const delay = timeDiff > 0 ? timeDiff : 0;
-
-  await checkoutQueue.add(
-    "checkout",
-    { eventId, rsvpId: updatedRsvp.id },
-    { delay, jobId: updatedRsvp.id }
-  );
-
-  return updatedRsvp;
+  return updatedRSVP;
 }
 
 export async function createBlankUserRsvp(
@@ -827,6 +725,18 @@ export async function getAutocompleteEvents(like?: string) {
     },
     orderBy: (event) => [asc(event.startDate)],
     limit: 10,
+  });
+
+  return events;
+}
+
+export async function getCurrentEvents(
+  leewayMinutes: number = 5
+): Promise<z.infer<typeof EventWithSecretArraySchema>> {
+  const now = DateTime.now().minus({ minutes: leewayMinutes }).toISO();
+
+  const events = await db.query.event.findMany({
+    where: (event) => and(gte(event.startDate, now), lte(event.endDate, now)),
   });
 
   return events;

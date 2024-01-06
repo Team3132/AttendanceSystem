@@ -1,7 +1,6 @@
-import { event } from "../drizzle/schema";
-import { createSelectSchema } from "drizzle-zod";
+import { EventWithSecretSchema } from "./EventWithSecretSchema";
 
-export const EventSchema = createSelectSchema(event).omit({
+export const EventSchema = EventWithSecretSchema.omit({
   secret: true,
 });
 

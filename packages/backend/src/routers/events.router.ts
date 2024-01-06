@@ -17,6 +17,7 @@ import {
   deleteEvent,
   editUserAttendance,
   editUserRsvpStatus,
+  getCurrentEvents,
   getEvent,
   getEventRsvp,
   getEventRsvps,
@@ -34,6 +35,8 @@ import { UserCheckoutSchema } from "../schema/UserCheckoutSchema";
 import { SelfCheckinSchema } from "../schema/SelfCheckinSchema";
 import { CreateBlankUserRsvpSchema } from "../schema/CreateBlankUserRsvpSchema";
 import { PagedEventsSchema } from "../schema/PagedEventsSchema";
+import { GetSecretUpcomingEventsSchema } from "../schema/GetSecretUpcomingEventsSchema";
+import { EventWithSecretArraySchema } from "../schema/EventWithSecretArraySchema";
 
 export const eventRouter = t.router({
   getEvents: sessionProcedure
@@ -108,4 +111,8 @@ export const eventRouter = t.router({
     .input(CreateBlankUserRsvpSchema)
     .output(RSVPSchema)
     .mutation(({ input }) => createBlankUserRsvp(input)),
+  getUpcomingEventsWithSecret: mentorSessionProcedure
+    .input(GetSecretUpcomingEventsSchema)
+    .output(EventWithSecretArraySchema)
+    .query(({ input }) => getCurrentEvents(input.leeway)),
 });

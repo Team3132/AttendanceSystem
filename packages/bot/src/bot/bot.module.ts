@@ -10,7 +10,7 @@ import { CheckinModal } from './modals/Checkin.modal';
 import { CheckoutButton } from './buttons/CheckoutButton';
 import { BackendModule } from '@/backend/backend.module';
 import { OutreachPaginationButton } from './buttons/OutreachPaginationButton';
-import { BuildPointsPaginationButton } from './buttons/BuildPointsPaginationButton';
+// import { BuildPointsPaginationButton } from './buttons/BuildPointsPaginationButton';
 
 @Module({
   controllers: [],
@@ -27,7 +27,7 @@ import { BuildPointsPaginationButton } from './buttons/BuildPointsPaginationButt
     CheckinModal,
     CheckoutButton,
     OutreachPaginationButton,
-    BuildPointsPaginationButton,
+    // BuildPointsPaginationButton,
   ],
   exports: [BotService],
 })
