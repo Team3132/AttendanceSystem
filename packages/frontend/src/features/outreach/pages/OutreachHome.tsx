@@ -66,10 +66,16 @@ export function Component() {
             />
           ))}
         </Tabs>
-        <Paper sx={{ p: 2, textAlign: "center", flex: 1, width: "100%" }}>
-          <Stack gap={2} sx={{ height: "100%", display: "flex" }}>
-            <Outlet />
-          </Stack>
+        <Paper
+          sx={{
+            p: 2,
+            textAlign: "center",
+            flex: 1,
+            width: "100%",
+            display: "flex",
+          }}
+        >
+          <Outlet />
         </Paper>
       </Container>
     </>
