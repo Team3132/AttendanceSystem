@@ -9,9 +9,9 @@ import SuperJSON from "superjson";
 import { createTRPCQueryUtils, createTRPCReact } from "@trpc/react-query";
 import { type AppRouter } from "backend";
 import { QueryClient } from "@tanstack/react-query";
-import { persistQueryClient } from "@tanstack/react-query-persist-client";
-import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
-import { compress, decompress } from "lz-string";
+// import { persistQueryClient } from "@tanstack/react-query-persist-client";
+// import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
+// import { compress, decompress } from "lz-string";
 
 export const trpc = createTRPCReact<AppRouter>();
 
@@ -65,17 +65,17 @@ export const queryClient = new QueryClient({
   },
 });
 
-const localStoragePersister = createSyncStoragePersister({
-  storage: window.localStorage,
-  serialize: (o) => compress(JSON.stringify(SuperJSON.serialize(o))),
-  deserialize: (o) => SuperJSON.deserialize(JSON.parse(decompress(o))),
-});
+// const localStoragePersister = createSyncStoragePersister({
+//   storage: window.localStorage,
+//   serialize: (o) => compress(JSON.stringify(SuperJSON.serialize(o))),
+//   deserialize: (o) => SuperJSON.deserialize(JSON.parse(decompress(o))),
+// });
 
-persistQueryClient({
-  queryClient,
-  persister: localStoragePersister,
-  buster: import.meta.env["VITE_APP_VERSION"],
-});
+// persistQueryClient({
+//   queryClient,
+//   persister: localStoragePersister,
+//   buster: import.meta.env["VITE_APP_VERSION"],
+// });
 
 export const queryUtils = createTRPCQueryUtils({
   client: trpcClient,
