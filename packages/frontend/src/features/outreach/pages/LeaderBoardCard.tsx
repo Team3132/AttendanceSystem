@@ -59,7 +59,7 @@ export function Component() {
   if (leaderboardQuery.data) {
     return (
       <Stack gap={2} sx={{ height: "100%", display: "flex" }}>
-        <Typography variant="h4">Leaderboard</Typography>
+        <Typography variant="h4">Outreach Leaderboard</Typography>
         <Datatable
           columns={columns ?? []}
           data={flatResults ?? []}
