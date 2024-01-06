@@ -42,7 +42,7 @@ function randomStr(length: number = 8): string {
 const guildId = process.env['GUILD_ID'];
 
 @Injectable()
-export class OutreachPaginationButton {
+export class BuildPointsPaginationButton {
   constructor(
     @Inject(BACKEND_TOKEN) private readonly backendClient: BackendClient,
   ) {}
