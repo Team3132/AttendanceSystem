@@ -14,7 +14,6 @@ import { z } from "zod";
 import { useEffect, useMemo, useState } from "react";
 import { Controller } from "react-hook-form";
 import { LoadingButton } from "@mui/lab";
-import useScanin from "../hooks/useScanin";
 import { trpc } from "@/trpcClient";
 import { useDisclosure } from "../../../hooks/useDisclosure";
 import useCreateUserScancode from "../../user/hooks/useCreateUserScancode";
@@ -24,10 +23,10 @@ import { keepPreviousData } from "@tanstack/react-query";
 
 interface UnknownCodeModalProps {
   code: string;
-  eventId: string;
   open: boolean;
   onClose: () => void;
   onOpen: () => void;
+  successCallback?: (code: string) => void;
 }
 
 const UserOptionSchema = z.object({
@@ -49,7 +48,7 @@ const RegisterNewCodeFormSchema = z.object({
 });
 
 export default function UnknownCodeModal(props: UnknownCodeModalProps) {
-  const { code, open, onClose, eventId } = props;
+  const { code, open, onClose, successCallback } = props;
   const {
     getDisclosureProps: getAutocompleteDisclosureProps,
     isOpen: isAutocompleteOpen,
@@ -103,7 +102,6 @@ export default function UnknownCodeModal(props: UnknownCodeModalProps) {
   }, [code, reset]);
 
   const createScancodeMutation = useCreateUserScancode();
-  const scaninMutation = useScanin();
 
   const onSubmit = handleSubmit(async (data) => {
     if (!data.userOption) {
@@ -115,14 +113,14 @@ export default function UnknownCodeModal(props: UnknownCodeModalProps) {
     }
 
     try {
-      await createScancodeMutation.mutateAsync({
+      const createdCode = await createScancodeMutation.mutateAsync({
         scancode: data.code,
         userId: data.userOption?.value,
       });
-      scaninMutation.mutate({
-        eventId,
-        scancode: data.code,
-      });
+
+      if (successCallback) {
+        successCallback(createdCode.code);
+      }
 
       onClose();
     } catch (error) {

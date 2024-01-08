@@ -48,14 +48,16 @@ export const trpcClient = trpc.createClient({
 
 export const proxyclient = createTRPCClientProxy(trpcClient);
 
-proxyclient.invalidator.subscribe(undefined, {
-  onData: (key) => {
-    queryClient.invalidateQueries({
-      queryKey: key,
-    });
-    console.log("invalidated", key);
-  },
-});
+if (import.meta.env.PROD) {
+  proxyclient.invalidator.subscribe(undefined, {
+    onData: (key) => {
+      queryClient.invalidateQueries({
+        queryKey: key,
+      });
+      console.log("invalidated", key);
+    },
+  });
+}
 
 export const queryClient = new QueryClient({
   defaultOptions: {

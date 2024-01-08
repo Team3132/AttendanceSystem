@@ -1,12 +1,13 @@
 import { Paper, Stack, TextField, Typography } from "@mui/material";
 import { z } from "zod";
-import useZodForm from "../../../hooks/useZodForm";
+import useZodForm, { ZodSubmitHandler } from "../../../hooks/useZodForm";
 import { LoadingButton } from "@mui/lab";
 import useScanin from "../hooks/useScanin";
 import { useAlert } from "react-alert";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import UnknownCodeModal from "./UnknownCodeModal";
 import { useDisclosure } from "../../../hooks/useDisclosure";
+import { isTRPCClientError } from "@/utils/trpc";
 
 interface ScaninCardProps {
   eventId: string;
@@ -40,29 +41,44 @@ export default function ScaninCard(props: ScaninCardProps) {
 
   const scanInMutation = useScanin();
 
-  const onSubmit = handleSubmit(async (data) => {
-    try {
-      await scanInMutation.mutateAsync({
-        eventId,
-        scancode: data.code,
+  const onSubmit: ZodSubmitHandler<typeof ScaninSchema> = useCallback(
+    async (data) => {
+      try {
+        await scanInMutation.mutateAsync({
+          eventId,
+          scancode: data.code,
+        });
+        reset({
+          code: "",
+        });
+        alert.success("Scan in successful", {
+          timeout: 2000,
+        });
+        setUnknownCode(undefined);
+        setFocus("code");
+      } catch (error) {
+        if (isTRPCClientError(error) && error.data?.code === "NOT_FOUND") {
+          console.log(error);
+          setUnknownCode(data.code);
+          onOpen();
+        }
+      }
+    },
+    [alert, eventId, onOpen, reset, scanInMutation, setFocus]
+  );
+
+  const codeCreatedCallback = useCallback(
+    (createdCode: string) => {
+      onSubmit({
+        code: createdCode,
       });
-      reset({
-        code: "",
-      });
-      alert.success("Scan in successful", {
-        timeout: 2000,
-      });
-      setUnknownCode(undefined);
-      setFocus("code");
-    } catch (error) {
-      setUnknownCode(data.code);
-      onOpen();
-    }
-  });
+    },
+    [onSubmit]
+  );
 
   return (
     <Paper sx={{ p: 2 }}>
-      <Stack gap={2} component={"form"} onSubmit={onSubmit}>
+      <Stack gap={2} component={"form"} onSubmit={handleSubmit(onSubmit)}>
         <Typography variant="h5" textAlign={"center"}>
           Scan In
         </Typography>
@@ -95,8 +111,8 @@ export default function ScaninCard(props: ScaninCardProps) {
       {unknownCode ? (
         <UnknownCodeModal
           code={unknownCode}
-          eventId={eventId}
           {...getDisclosureProps()}
+          successCallback={codeCreatedCallback}
         />
       ) : null}
     </Paper>
