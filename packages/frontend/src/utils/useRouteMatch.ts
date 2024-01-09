@@ -1,18 +1,23 @@
+import { RouterPaths } from "@/router";
+import { useMatchRoute } from "@tanstack/react-router";
 import { useMemo } from "react";
-import { matchPath, useLocation } from "react-router-dom";
 
-export default function useRouteMatch(patterns: readonly string[]) {
-  const { pathname } = useLocation();
+export default function useRouteMatch(patterns: readonly RouterPaths[]) {
+  const matchRoute = useMatchRoute();
 
   const possibleMatchMemo = useMemo(() => {
     for (let i = 0; i < patterns.length; i += 1) {
       const pattern = patterns[i];
-      const possibleMatch = matchPath(pattern, pathname);
+      const possibleMatch = matchRoute({
+        to: pattern,
+        fuzzy: true,
+        params: {},
+      });
       if (possibleMatch !== null) {
         return possibleMatch;
       }
     }
-  }, [pathname, patterns]);
+  }, [matchRoute, patterns]);
 
   return possibleMatchMemo;
 }

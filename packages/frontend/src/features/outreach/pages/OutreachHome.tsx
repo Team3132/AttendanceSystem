@@ -1,27 +1,14 @@
 import { Container, Paper, Tab, Tabs } from "@mui/material";
 import DefaultAppBar from "../../../components/DefaultAppBar";
-import ensureAuth from "@/features/auth/utils/ensureAuth";
-import { queryUtils } from "@/trpcClient";
 import useRouteMatch from "@/utils/useRouteMatch";
 import LinkBehavior from "@/utils/LinkBehavior";
 import { Outlet } from "react-router-dom";
-
-export async function loader() {
-  const initialAuth = await ensureAuth();
-
-  await queryUtils.outreach.outreachLeaderboard.prefetchInfinite({
-    limit: 10,
-  });
-
-  return {
-    initialAuth,
-  };
-}
+import { RouterPaths } from "@/router";
 
 interface TabItem {
   label: string;
   icon?: React.ReactElement | string;
-  path: string;
+  path: RouterPaths;
   disabled?: boolean;
 }
 
@@ -40,9 +27,7 @@ const tabs: Array<TabItem> = [
 const routes = tabs.map((tab) => tab.path);
 
 export function Component() {
-  const routeMatch = useRouteMatch(routes);
-
-  const currentTab = routeMatch?.pattern.path;
+  const currentTab = useRouteMatch(routes);
 
   return (
     <>

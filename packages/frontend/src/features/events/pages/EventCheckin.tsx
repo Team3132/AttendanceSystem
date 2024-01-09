@@ -1,10 +1,4 @@
-import {
-  LoaderFunctionArgs,
-  useLoaderData,
-  useNavigate,
-} from "react-router-dom";
-import { z } from "zod";
-import ensureAuth from "../../auth/utils/ensureAuth";
+import { useNavigate } from "react-router-dom";
 import { Container, Paper, Stack, Typography } from "@mui/material";
 import useZodForm from "../../../hooks/useZodForm";
 import { LoadingButton } from "@mui/lab";
@@ -13,27 +7,14 @@ import { useAlert } from "react-alert";
 import { isTRPCClientError } from "@/utils/trpc";
 import { SelfCheckinSchema } from "backend/schema";
 import ControlledTextField from "@/components/ControlledTextField";
-import { queryUtils } from "@/trpcClient";
+import { RouteApi } from "@tanstack/react-router";
 
-const EventParamsSchema = z.object({
-  eventId: z.string(),
+const apiRoute = new RouteApi({
+  id: "/authedOnly/events/$eventId/check-in",
 });
 
-export async function loader({ params }: LoaderFunctionArgs) {
-  const initialAuthStatus = await ensureAuth();
-
-  const { eventId } = EventParamsSchema.parse(params);
-
-  const initialEventData = await queryUtils.events.getEvent.ensureData(eventId);
-
-  return {
-    initialAuthStatus,
-    initialEventData,
-  };
-}
-
 export function Component() {
-  const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const loaderData = apiRoute.useLoaderData();
   const {
     handleSubmit,
     formState: { isSubmitting },
@@ -42,7 +23,7 @@ export function Component() {
     schema: SelfCheckinSchema,
     defaultValues: {
       secret: "",
-      eventId: loaderData.initialEventData.id,
+      eventId: loaderData.initialEvent.id,
     },
   });
 
@@ -55,7 +36,7 @@ export function Component() {
     try {
       await checkinMutation.mutateAsync({
         secret: data.secret,
-        eventId: loaderData.initialEventData.id,
+        eventId: loaderData.initialEvent.id,
       });
 
       alert.success("Successfully checked in!", { timeout: 2000 });

@@ -1,29 +1,13 @@
-import ensureAuth from "../../auth/utils/ensureAuth";
-import { useLoaderData } from "react-router-dom";
 import { Container, List, Paper, Stack, Typography } from "@mui/material";
 import NewScancodeListItem from "../components/NewScancodeForm";
 import ScancodeListItem from "../components/ScancodeListItem";
-import { queryUtils } from "@/trpcClient";
 import { trpc } from "@/trpcClient";
+import { RouteApi } from "@tanstack/react-router";
 
-export async function loader() {
-  await ensureAuth();
-
-  const initialUserData = await queryUtils.users.getSelf.ensureData();
-
-  const initialAuthStatus = await ensureAuth();
-
-  const initialScancodes = await queryUtils.users.getSelfScancodes.ensureData();
-
-  return {
-    initialUserData,
-    initialAuthStatus,
-    initialScancodes,
-  };
-}
+const routeApi = new RouteApi({ id: "/authedOnly/profile/" });
 
 export function Component() {
-  const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const loaderData = routeApi.useLoaderData();
 
   const scancodesQuery = trpc.users.getSelfScancodes.useQuery(undefined, {
     initialData: loaderData.initialScancodes,

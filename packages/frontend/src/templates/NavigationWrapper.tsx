@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa6";
 import { useMemo } from "react";
 import { trpc } from "@/trpcClient";
+import { RouterPaths } from "@/router";
 
 export async function loader() {
   const initialAuthStatus = await ensureAuth();
@@ -32,14 +33,17 @@ export function Component() {
   const routes = useMemo(
     () =>
       authStatusQuery.data.isAdmin
-        ? ["/", "/outreach", "/events", "/admin"]
-        : ["/", "/outreach", "/events"],
+        ? ([
+            "/",
+            "/leaderboard/outreach",
+            "/events",
+            "/admin",
+          ] satisfies RouterPaths[])
+        : (["/", "/leaderboard/outreach", "/events"] satisfies RouterPaths[]),
     [authStatusQuery.data.isAdmin]
   );
 
-  const routeMatch = useRouteMatch(routes);
-
-  const currentTab = routeMatch?.pattern.path;
+  const currentTab = useRouteMatch(routes);
 
   return (
     <Box

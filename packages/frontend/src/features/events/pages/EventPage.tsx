@@ -1,53 +1,35 @@
-import { LoaderFunctionArgs, Outlet, useLoaderData } from "react-router-dom";
-import ensureAuth from "../../auth/utils/ensureAuth";
 import { useMemo } from "react";
 import useRouteMatch from "../../../utils/useRouteMatch";
 import { Tab, Tabs } from "@mui/material";
 import DefaultAppBar from "../../../components/DefaultAppBar";
-import { z } from "zod";
 import { DateTime } from "luxon";
 import LinkBehavior from "../../../utils/LinkBehavior";
 import { trpc } from "@/trpcClient";
-import { queryUtils } from "@/trpcClient";
+import { RouterPaths } from "@/router";
+import { Outlet, RouteApi } from "@tanstack/react-router";
 
-const EventParamsSchema = z.object({
-  eventId: z.string(),
+const routeApi = new RouteApi({
+  id: "/authedOnly/events/$eventId",
 });
-
-export async function loader({ params }: LoaderFunctionArgs) {
-  const { eventId } = EventParamsSchema.parse(params);
-
-  const initialAuthStatus = await ensureAuth();
-
-  const initialEventData = await queryUtils.events.getEvent.ensureData(eventId);
-
-  return {
-    initialAuthStatus,
-    initialEventData,
-  };
-}
 
 interface TabItem {
   label: string;
   icon?: React.ReactElement | string;
-  path: string;
+  path: RouterPaths;
 }
 
 export function Component() {
-  const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const loaderData = routeApi.useLoaderData();
 
-  const { initialAuthStatus } = loaderData;
+  const { initialAuth, initialEvent } = loaderData;
 
   const authStatusQuery = trpc.auth.status.useQuery(undefined, {
-    initialData: initialAuthStatus,
+    initialData: initialAuth,
   });
 
-  const eventQuery = trpc.events.getEvent.useQuery(
-    loaderData.initialEventData.id,
-    {
-      initialData: loaderData.initialEventData,
-    }
-  );
+  const eventQuery = trpc.events.getEvent.useQuery(initialEvent.id, {
+    initialData: initialEvent,
+  });
 
   const tabs = useMemo<Array<TabItem>>(
     () =>
@@ -55,25 +37,25 @@ export function Component() {
         ? [
             {
               label: "Details",
-              path: "/events/:eventId",
+              path: "/events/$eventId",
             },
             {
               label: "Check In",
-              path: "/events/:eventId/check-in",
+              path: "/events/$eventId/check-in",
             },
           ]
         : [
             {
               label: "Details",
-              path: "/events/:eventId",
+              path: "/events/$eventId",
             },
             {
               label: "Check In",
-              path: "/events/:eventId/check-in",
+              path: "/events/$eventId/check-in",
             },
             {
               label: "QR Code",
-              path: "/events/:eventId/qr-code",
+              path: "/events/$eventId/qr-code",
             },
           ],
     [authStatusQuery.data.isAdmin]
@@ -81,9 +63,7 @@ export function Component() {
 
   const routes = useMemo(() => tabs.map((tab) => tab.path), [tabs]);
 
-  const routeMatch = useRouteMatch(routes);
-
-  const currentTab = routeMatch?.pattern.path;
+  const currentTab = useRouteMatch(routes);
 
   return (
     <>
@@ -99,7 +79,7 @@ export function Component() {
             label={tab.label}
             icon={tab.icon}
             value={tab.path}
-            href={tab.path.replace(":eventId", eventQuery.data.id)}
+            href={tab.path.replace("$eventId", eventQuery.data.id)}
             LinkComponent={LinkBehavior}
           />
         ))}

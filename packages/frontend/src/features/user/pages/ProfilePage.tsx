@@ -1,29 +1,18 @@
-import { Outlet, useLoaderData } from "react-router-dom";
-import ensureAuth from "../../auth/utils/ensureAuth";
 import useRouteMatch from "../../../utils/useRouteMatch";
 import DefaultAppBar from "../../../components/DefaultAppBar";
 import { Tab, Tabs } from "@mui/material";
 import LinkBehavior from "../../../utils/LinkBehavior";
-import { queryUtils } from "@/trpcClient";
 import { trpc } from "@/trpcClient";
+import { Outlet, RouteApi } from "@tanstack/react-router";
+import { RouterPaths } from "@/router";
 
 interface TabItem {
   label: string;
   icon?: React.ReactElement | string;
-  path: string;
+  path: RouterPaths;
 }
 
-export async function loader() {
-  const initialAuthStatus = await ensureAuth();
-
-  const initialUser = await queryUtils.users.getSelf.ensureData();
-
-  return {
-    initialUser,
-    initialAuthStatus,
-  };
-}
-
+const routeApi = new RouteApi({ id: "/authedOnly/profile" });
 const tabs: Array<TabItem> = [
   {
     label: "Scancodes",
@@ -42,15 +31,13 @@ const tabs: Array<TabItem> = [
 const routes = tabs.map((tab) => tab.path);
 
 export function Component() {
-  const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const loaderData = routeApi.useLoaderData();
 
   const userQuery = trpc.users.getSelf.useQuery(undefined, {
     initialData: loaderData.initialUser,
   });
 
-  const routeMatch = useRouteMatch(routes);
-
-  const currentTab = routeMatch?.pattern.path;
+  const currentTab = useRouteMatch(routes);
 
   return (
     <>

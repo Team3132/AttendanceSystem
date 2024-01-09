@@ -1,6 +1,5 @@
 import { Container, Stack, Switch } from "@mui/material";
 import DefaultAppBar from "../../../components/DefaultAppBar";
-import ensureAuth from "../../auth/utils/ensureAuth";
 import useZodForm from "../../../hooks/useZodForm";
 import { DateTime } from "luxon";
 import { DateTimePicker } from "@mui/x-date-pickers";
@@ -12,13 +11,6 @@ import { useAlert } from "react-alert";
 import ControlledTextField from "@/components/ControlledTextField";
 import ControlledSelect from "@/components/ControlledSelect";
 import { CreateEventSchema } from "backend/schema";
-
-export async function loader() {
-  const initialAuthData = await ensureAuth(true);
-  return {
-    initialAuthData,
-  };
-}
 
 export function Component() {
   const {

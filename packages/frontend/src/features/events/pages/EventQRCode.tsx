@@ -1,35 +1,17 @@
-import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
-import ensureAuth from "../../auth/utils/ensureAuth";
-import { z } from "zod";
 import { Container, Paper, Stack, Typography } from "@mui/material";
 import ScaninCard from "../components/ScaninCard";
 import { trpc } from "@/trpcClient";
-import { queryUtils } from "@/trpcClient";
+import { RouteApi } from "@tanstack/react-router";
 
-const EventUrlParamsSchema = z.object({
-  eventId: z.string(),
+const routeApi = new RouteApi({
+  id: "/adminOnly/events/$eventId/qr-code",
 });
 
-export async function loader({ params }: LoaderFunctionArgs) {
-  const initialAuthStatus = await ensureAuth(true);
-
-  const { eventId } = EventUrlParamsSchema.parse(params);
-
-  const initialEventSecret =
-    await queryUtils.events.getEventSecret.ensureData(eventId);
-
-  return {
-    initialAuthStatus,
-    initialEventSecret,
-    eventId,
-  };
-}
-
 export function Component() {
-  const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const loaderData = routeApi.useLoaderData();
 
   const eventSecretQuery = trpc.events.getEventSecret.useQuery(
-    loaderData.eventId,
+    loaderData.initialEvent.id,
     {
       initialData: loaderData.initialEventSecret,
     }
@@ -62,7 +44,7 @@ export function Component() {
               </Typography>
             </Stack>
           </Paper>
-          <ScaninCard eventId={loaderData.eventId} />
+          <ScaninCard eventId={loaderData.initialEvent.id} />
         </Stack>
       </Container>
     );

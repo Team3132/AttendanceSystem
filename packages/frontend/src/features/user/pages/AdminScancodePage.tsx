@@ -1,36 +1,13 @@
-import { z } from "zod";
-import ensureAuth from "../../auth/utils/ensureAuth";
-import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
 import { Container, List, Paper, Stack, Typography } from "@mui/material";
 import ScancodeListItem from "../components/AdminScancodeListItem";
-import { queryUtils } from "@/trpcClient";
 import { trpc } from "@/trpcClient";
 import NewAdminScancodeListItem from "../components/NewAdminScancodeForm";
+import { RouteApi } from "@tanstack/react-router";
 
-const UserParamsSchema = z.object({
-  userId: z.string(),
-});
-
-export async function loader({ params }: LoaderFunctionArgs) {
-  const { userId } = UserParamsSchema.parse(params);
-
-  const initialAuthStatus = await ensureAuth(true);
-
-  const initialUserData = await queryUtils.users.getUser.ensureData(userId);
-
-  const initialScancodes =
-    await queryUtils.users.getUserScancodes.ensureData(userId);
-
-  return {
-    userId,
-    initialUserData,
-    initialAuthStatus,
-    initialScancodes,
-  };
-}
+const routeApi = new RouteApi({ id: "/adminOnly/user/$userId/" });
 
 export function Component() {
-  const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const loaderData = routeApi.useLoaderData();
 
   const scancodesQuery = trpc.users.getUserScancodes.useQuery(
     loaderData.userId,
