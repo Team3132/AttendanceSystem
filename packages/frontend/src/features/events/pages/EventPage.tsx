@@ -3,10 +3,10 @@ import useRouteMatch from "../../../utils/useRouteMatch";
 import { Tab, Tabs } from "@mui/material";
 import DefaultAppBar from "../../../components/DefaultAppBar";
 import { DateTime } from "luxon";
-import LinkBehavior from "../../../utils/LinkBehavior";
 import { trpc } from "@/trpcClient";
 import { RouterPaths } from "@/router";
 import { Outlet, RouteApi } from "@tanstack/react-router";
+import AsChildLink from "@/components/AsChildLink";
 
 const routeApi = new RouteApi({
   id: "/authedOnly/events/$eventId",
@@ -31,10 +31,10 @@ export function Component() {
     initialData: initialEvent,
   });
 
-  const tabs = useMemo<Array<TabItem>>(
+  const tabs = useMemo(
     () =>
       !authStatusQuery.data.isAdmin
-        ? [
+        ? ([
             {
               label: "Details",
               path: "/events/$eventId",
@@ -43,8 +43,8 @@ export function Component() {
               label: "Check In",
               path: "/events/$eventId/check-in",
             },
-          ]
-        : [
+          ] satisfies Array<TabItem>)
+        : ([
             {
               label: "Details",
               path: "/events/$eventId",
@@ -57,7 +57,7 @@ export function Component() {
               label: "QR Code",
               path: "/events/$eventId/qr-code",
             },
-          ],
+          ] satisfies Array<TabItem>),
     [authStatusQuery.data.isAdmin]
   );
 
@@ -74,14 +74,14 @@ export function Component() {
       />
       <Tabs value={currentTab} variant="scrollable" scrollButtons="auto">
         {tabs.map((tab) => (
-          <Tab
-            key={tab.path}
-            label={tab.label}
-            icon={tab.icon}
-            value={tab.path}
-            href={tab.path.replace("$eventId", eventQuery.data.id)}
-            LinkComponent={LinkBehavior}
-          />
+          <AsChildLink
+            to={tab.path}
+            params={{
+              eventId: eventQuery.data.id,
+            }}
+          >
+            <Tab key={tab.path} label={tab.label} value={tab.path} />
+          </AsChildLink>
         ))}
       </Tabs>
       <Outlet />

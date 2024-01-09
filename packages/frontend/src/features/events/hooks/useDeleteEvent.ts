@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
 import { trpc } from "@/trpcClient";
+import { useNavigate } from "@tanstack/react-router";
 
 export default function useDeleteEvent() {
   const utils = trpc.useUtils();
@@ -9,7 +9,9 @@ export default function useDeleteEvent() {
     onSuccess: (data) => {
       utils.events.getEvents.invalidate();
       utils.events.getEvent.invalidate(data.id);
-      navigate("/events");
+      navigate({
+        to: "/events/",
+      });
     },
   });
 }

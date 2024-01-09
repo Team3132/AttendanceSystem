@@ -11,10 +11,9 @@ import { trpc } from "@/trpcClient";
 import { RouterPaths } from "@/router";
 import AsChildLink from "@/components/AsChildLink";
 import { Outlet, RouteApi } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 
 const routeApi = new RouteApi({
-  id: "/authedOnly",
+  id: "/adminOnly",
 });
 
 export function Component() {
@@ -89,7 +88,6 @@ export function Component() {
           </AsChildLink>
         ) : null}
       </BottomNavigation>
-      <TanStackRouterDevtools />
     </Box>
   );
 }

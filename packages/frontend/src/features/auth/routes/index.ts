@@ -1,5 +1,5 @@
 import { rootRoute } from "@/router";
-import { Route, redirect } from "@tanstack/react-router";
+import { Route, lazyRouteComponent, redirect } from "@tanstack/react-router";
 
 export const authedOnlyRoute = new Route({
   getParentRoute: () => rootRoute,
@@ -7,6 +7,11 @@ export const authedOnlyRoute = new Route({
     const authStatus = await queryUtils.auth.status.ensureData();
     if (!authStatus.isAuthenticated) throw redirect({ to: "/login" });
   },
+  loader: ({ context: { queryUtils } }) => queryUtils.auth.status.ensureData(),
+  component: lazyRouteComponent(
+    () => import("../../../templates/NavigationWrapper"),
+    "Component"
+  ),
   id: "authedOnly",
 });
 
@@ -24,6 +29,11 @@ export const adminOnlyRoute = new Route({
       throw redirect({ to: "/" });
     }
   },
+  loader: ({ context: { queryUtils } }) => queryUtils.auth.status.ensureData(),
+  component: lazyRouteComponent(
+    () => import("../../../templates/AdminNavigationWrapper"),
+    "Component"
+  ),
   id: "adminOnly",
 });
 

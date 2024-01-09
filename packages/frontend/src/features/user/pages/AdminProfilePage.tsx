@@ -2,10 +2,10 @@ import { useMemo } from "react";
 import useRouteMatch from "../../../utils/useRouteMatch";
 import DefaultAppBar from "../../../components/DefaultAppBar";
 import { Tab, Tabs } from "@mui/material";
-import LinkBehavior from "../../../utils/LinkBehavior";
 import { trpc } from "@/trpcClient";
 import { Outlet, RouteApi } from "@tanstack/react-router";
 import { RouterPaths } from "@/router";
+import AsChildLink from "@/components/AsChildLink";
 
 interface TabItem {
   label: string;
@@ -22,16 +22,16 @@ export function Component() {
     initialData: loaderData.initialUser,
   });
 
-  const tabs: Array<TabItem> = useMemo(
+  const tabs = useMemo(
     () =>
       [
         {
           label: "Scancodes",
-          path: `/user/$userId/`,
+          path: `/user/$userId/` as const,
         },
         {
           label: "Pending",
-          path: `/user/$userId/pending`,
+          path: `/user/$userId/pending` as const,
         },
         // {
         //   label: "Build Points",
@@ -52,14 +52,14 @@ export function Component() {
       />
       <Tabs value={currentTab}>
         {tabs.map((tab) => (
-          <Tab
-            key={tab.path}
-            label={tab.label}
-            icon={tab.icon}
-            value={tab.path}
-            href={tab.path.replace("$userId", loaderData.userId ?? "")}
-            LinkComponent={LinkBehavior}
-          />
+          <AsChildLink
+            to={tab.path}
+            params={{
+              userId: loaderData.userId,
+            }}
+          >
+            <Tab key={tab.path} label={tab.label} value={tab.path} />
+          </AsChildLink>
         ))}
       </Tabs>
       <Outlet />

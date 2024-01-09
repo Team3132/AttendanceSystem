@@ -6,11 +6,11 @@ import { DateTimePicker } from "@mui/x-date-pickers";
 import { Controller } from "react-hook-form";
 import { LoadingButton } from "@mui/lab";
 import useCreateEvent from "../hooks/useCreateEvent";
-import { useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert";
 import ControlledTextField from "@/components/ControlledTextField";
 import ControlledSelect from "@/components/ControlledSelect";
 import { CreateEventSchema } from "backend/schema";
+import { useNavigate } from "@tanstack/react-router";
 
 export function Component() {
   const {
@@ -39,7 +39,12 @@ export function Component() {
     try {
       const createdEvent = await createEventMutation.mutateAsync(data);
       alert.success("Event created");
-      navigate(`/events/${createdEvent.id}`);
+      navigate({
+        to: "/events/$eventId/",
+        params: {
+          eventId: createdEvent.id,
+        },
+      });
     } catch (error) {
       console.error(error);
     }

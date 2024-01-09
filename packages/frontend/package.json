@@ -26,6 +26,7 @@
     "@tanstack/react-router": "^1.1.12",
     "@tanstack/react-table": "8.11.3",
     "@tanstack/react-virtual": "3.0.1",
+    "@tanstack/router-devtools": "^1.2.2",
     "@tanstack/table-core": "8.11.3",
     "backend": "workspace:*",
     "luxon": "3.4.4",

@@ -1,9 +1,9 @@
 import { Container, Paper, Tab, Tabs } from "@mui/material";
 import DefaultAppBar from "../../../components/DefaultAppBar";
 import useRouteMatch from "@/utils/useRouteMatch";
-import LinkBehavior from "@/utils/LinkBehavior";
-import { Outlet } from "react-router-dom";
 import { RouterPaths } from "@/router";
+import AsChildLink from "@/components/AsChildLink";
+import { Outlet } from "@tanstack/react-router";
 
 interface TabItem {
   label: string;
@@ -12,17 +12,17 @@ interface TabItem {
   disabled?: boolean;
 }
 
-const tabs: Array<TabItem> = [
+const tabs = [
   {
     label: "Outreach",
-    path: "/leaderboard/outreach",
+    path: "/leaderboard/outreach" as const,
   },
   {
     label: "Build Points",
-    path: "/leaderboard/build-points",
+    path: "/leaderboard/build-points" as const,
     disabled: true,
   },
-];
+] satisfies Array<TabItem>;
 
 const routes = tabs.map((tab) => tab.path);
 
@@ -43,15 +43,14 @@ export function Component() {
       >
         <Tabs value={currentTab}>
           {tabs.map((tab) => (
-            <Tab
-              key={tab.path}
-              label={tab.label}
-              icon={tab.icon}
-              value={tab.path}
-              href={tab.path}
-              LinkComponent={LinkBehavior}
-              disabled={tab.disabled}
-            />
+            <AsChildLink to={tab.path}>
+              <Tab
+                key={tab.path}
+                label={tab.label}
+                value={tab.path}
+                disabled={tab.disabled}
+              />
+            </AsChildLink>
           ))}
         </Tabs>
         <Paper

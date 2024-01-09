@@ -10,7 +10,7 @@ export default function useRouteMatch(patterns: readonly RouterPaths[]) {
       const pattern = patterns[i];
       const possibleMatch = matchRoute({
         to: pattern,
-        fuzzy: true,
+        fuzzy: false,
         params: {},
       });
       if (possibleMatch !== null) {

@@ -1,25 +1,16 @@
 import { Container, Paper, Stack, Typography } from "@mui/material";
-import ensureAuth from "../features/auth/utils/ensureAuth";
 import DefaultAppBar from "../components/DefaultAppBar";
 import ActiveEventsList from "../components/ActiveEventsList";
-import { useLoaderData } from "react-router-dom";
-import { queryUtils } from "@/trpcClient";
-
-export async function loader() {
-  await ensureAuth();
-
-  const initialActiveEvents =
-    await queryUtils.users.getSelfPendingRsvps.ensureData();
-
-  return {
-    initialActiveEvents,
-  };
-}
+import { RouteApi } from "@tanstack/react-router";
 
 const appVersion = import.meta.env["VITE_APP_VERSION"] as string | undefined;
 
+const routeApi = new RouteApi({
+  id: "/authedOnly/",
+});
+
 export function Component() {
-  const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const loaderData = routeApi.useLoaderData();
 
   return (
     <>
@@ -41,9 +32,7 @@ export function Component() {
           <Paper sx={{ p: 2, textAlign: "center" }}>
             <Stack gap={2}>
               <Typography variant="h4">Active Events</Typography>
-              <ActiveEventsList
-                initialPendingEvents={loaderData.initialActiveEvents}
-              />
+              <ActiveEventsList initialPendingEvents={loaderData} />
             </Stack>
           </Paper>
           {appVersion ? (

@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { Container, Paper, Stack, Typography } from "@mui/material";
 import useZodForm from "../../../hooks/useZodForm";
 import { LoadingButton } from "@mui/lab";
@@ -8,6 +7,7 @@ import { isTRPCClientError } from "@/utils/trpc";
 import { SelfCheckinSchema } from "backend/schema";
 import ControlledTextField from "@/components/ControlledTextField";
 import { RouteApi } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 
 const apiRoute = new RouteApi({
   id: "/authedOnly/events/$eventId/check-in",
@@ -41,7 +41,9 @@ export function Component() {
 
       alert.success("Successfully checked in!", { timeout: 2000 });
 
-      navigate(`/`);
+      navigate({
+        to: "/",
+      });
     } catch (e) {
       if (isTRPCClientError(e)) {
         alert.error(e.message, { timeout: 2000 });

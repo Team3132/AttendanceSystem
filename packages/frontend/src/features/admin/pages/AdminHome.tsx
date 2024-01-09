@@ -12,10 +12,10 @@ import Datatable from "@/components/DataTable";
 import { createColumnHelper } from "@tanstack/table-core";
 import { z } from "zod";
 import { UserSchema } from "backend/schema";
-import LinkBehavior from "@/utils/LinkBehavior";
 import { useMemo, useState } from "react";
 import { useDebounce } from "usehooks-ts";
 import { keepPreviousData } from "@tanstack/react-query";
+import AsChildLink from "@/components/AsChildLink";
 
 const columnHelper = createColumnHelper<z.infer<typeof UserSchema>>();
 
@@ -26,13 +26,14 @@ const columns = [
   columnHelper.display({
     header: "Settings",
     cell: (row) => (
-      <Button
-        variant="outlined"
-        LinkComponent={LinkBehavior}
-        href={`/user/${row.row.original.id}`}
+      <AsChildLink
+        to={"/user/$userId/"}
+        params={{
+          userId: row.row.original.id,
+        }}
       >
-        Settings
-      </Button>
+        <Button variant="outlined">Settings</Button>
+      </AsChildLink>
     ),
   }),
 ];

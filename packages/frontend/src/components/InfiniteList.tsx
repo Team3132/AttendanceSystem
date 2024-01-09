@@ -1,12 +1,7 @@
-import {
-  List,
-  ListItemButton,
-  ListItemButtonProps,
-  ListProps,
-} from "@mui/material";
+import { List, ListProps } from "@mui/material";
 import { InfiniteData } from "@tanstack/react-query";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 
 type OmittedListProps = Omit<ListProps, "children" | "ref" | "component">;
 
@@ -16,13 +11,18 @@ type PagedType<T> = {
   nextCursor?: string | null | undefined;
 };
 
+interface RenderRowProps<T> {
+  key: number;
+  row: T;
+  style: React.CSSProperties;
+}
+
 interface InfiniteListParams<T, IPaged extends PagedType<T> = PagedType<T>> {
   data: InfiniteData<IPaged, number | null | undefined>;
   fetchNextPage: () => void;
   isFetching: boolean;
   fixedHeight?: number;
-  renderRow: (row: T) => React.ReactNode;
-  ListItemProps: (row: T) => Omit<ListItemButtonProps, "children">;
+  renderRow: (row: RenderRowProps<T>) => React.ReactNode;
 }
 
 interface InfiniteListProps<T, IPaged extends PagedType<T> = PagedType<T>>
@@ -30,14 +30,7 @@ interface InfiniteListProps<T, IPaged extends PagedType<T> = PagedType<T>>
     OmittedListProps {}
 
 export default function InfiniteList<T>(props: InfiniteListProps<T>) {
-  const {
-    data,
-    fetchNextPage,
-    isFetching,
-    fixedHeight,
-    ListItemProps,
-    ...listProps
-  } = props;
+  const { data, fetchNextPage, isFetching, fixedHeight, ...listProps } = props;
 
   const total = useMemo(() => data.pages.at(-1)?.total ?? 0, [data.pages]);
 
@@ -98,25 +91,19 @@ export default function InfiniteList<T>(props: InfiniteListProps<T>) {
         {virtualizer.getVirtualItems().map((virtualItem, index) => {
           const item = flatData[virtualItem.index] as T;
           const key = virtualItem.index;
-          const { style, ...RemainingListItemProps } = ListItemProps(item);
 
-          const newStyle = {
-            ...style,
+          const newStyle: React.CSSProperties = {
             height: `${virtualItem.size}px`,
             transform: `translateY(${
               virtualItem.start - index * virtualItem.size
             }px)`,
           };
 
-          return (
-            <ListItemButton
-              key={key}
-              {...RemainingListItemProps}
-              style={newStyle}
-            >
-              {props.renderRow(item)}
-            </ListItemButton>
-          );
+          return props.renderRow({
+            key,
+            row: item,
+            style: newStyle,
+          });
         })}
       </div>
     </List>
