@@ -258,7 +258,7 @@ importers:
         version: 5.0.8
       '@hookform/resolvers':
         specifier: 3.3.4
-        version: 3.3.4(react-hook-form@7.49.2)
+        version: 3.3.4(react-hook-form@7.49.3)
       '@mui/icons-material':
         specifier: 5.15.3
         version: 5.15.3(@mui/material@5.15.3)(@types/react@18.2.47)(react@18.2.0)
@@ -314,8 +314,8 @@ importers:
         specifier: 2.0.4
         version: 2.0.4(react-dom@18.2.0)(react@18.2.0)
       react-hook-form:
-        specifier: 7.49.2
-        version: 7.49.2(react@18.2.0)
+        specifier: 7.49.3
+        version: 7.49.3(react@18.2.0)
       react-icons:
         specifier: 4.12.0
         version: 4.12.0(react@18.2.0)
@@ -1247,12 +1247,12 @@ packages:
     resolution: {integrity: sha512-XxPltXs5R31D6UZeLIV1td3wTXU3jzd3f2DLsXI8tytMGBkIsGcc9sIyiupRtA8y73HAhuSCeweOoBqf6DbWCA==}
     dev: false
 
-  /@hookform/resolvers@3.3.4(react-hook-form@7.49.2):
+  /@hookform/resolvers@3.3.4(react-hook-form@7.49.3):
     resolution: {integrity: sha512-o5cgpGOuJYrd+iMKvkttOclgwRW86EsWJZZRC23prf0uU2i48Htq4PuT73AVb9ionFyZrwYEITuOFGF+BydEtQ==}
     peerDependencies:
       react-hook-form: ^7.0.0
     dependencies:
-      react-hook-form: 7.49.2(react@18.2.0)
+      react-hook-form: 7.49.3(react@18.2.0)
     dev: false
 
   /@humanwhocodes/config-array@0.11.13:
@@ -5534,8 +5534,8 @@ packages:
       shallowequal: 1.1.0
     dev: false
 
-  /react-hook-form@7.49.2(react@18.2.0):
-    resolution: {integrity: sha512-TZcnSc17+LPPVpMRIDNVITY6w20deMdNi6iehTFLV1x8SqThXGwu93HjlUVU09pzFgZH7qZOvLMM7UYf2ShAHA==}
+  /react-hook-form@7.49.3(react@18.2.0):
+    resolution: {integrity: sha512-foD6r3juidAT1cOZzpmD/gOKt7fRsDhXXZ0y28+Al1CHgX+AY1qIN9VSIIItXRq1dN68QrRwl1ORFlwjBaAqeQ==}
     engines: {node: '>=18', pnpm: '8'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18
