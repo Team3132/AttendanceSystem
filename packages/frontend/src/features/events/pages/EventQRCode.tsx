@@ -4,7 +4,7 @@ import { trpc } from "@/trpcClient";
 import { RouteApi } from "@tanstack/react-router";
 
 const routeApi = new RouteApi({
-  id: "/adminOnly/events/$eventId/qr-code",
+  id: "/authedOnly/adminOnly/events/$eventId/qr-code",
 });
 
 export function Component() {

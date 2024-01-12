@@ -9,7 +9,9 @@ import { z } from "zod";
 import BuildPointMenu from "../components/BuildPointMenu";
 import { RouteApi } from "@tanstack/react-router";
 
-const routeApi = new RouteApi({ id: "/adminOnly/user/$userId/build-points" });
+const routeApi = new RouteApi({
+  id: "/authedOnly/adminOnly/user/$userId/build-points",
+});
 
 const columnHelper = createColumnHelper<z.infer<typeof BuildPointSchema>>();
 

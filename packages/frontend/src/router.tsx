@@ -22,7 +22,9 @@ import { eventQrCodeRoute, eventsRoutes } from "./features/events/routes";
 export const rootRoute = rootRouteWithContext<{
   queryClient: QueryClient;
   queryUtils: CreateQueryUtils<AppRouter>;
-}>()();
+}>()({
+  errorComponent: lazyRouteComponent(() => import("./pages/RouterErrorPage")),
+});
 
 /**
  * Home Page
@@ -52,11 +54,11 @@ const routeTree = rootRoute.addChildren([
     outreachRoutes,
     profileRoutes,
     eventsRoutes,
-  ]),
-  adminOnlyRoute.addChildren([
-    adminIndexRoute,
-    adminUserRoutes,
-    eventQrCodeRoute,
+    adminOnlyRoute.addChildren([
+      adminIndexRoute,
+      adminUserRoutes,
+      eventQrCodeRoute,
+    ]),
   ]),
 ]);
 
@@ -66,6 +68,7 @@ export const router = new Router({
     queryClient,
     queryUtils,
   },
+  defaultPreload: "intent",
 });
 
 declare module "@tanstack/react-router" {

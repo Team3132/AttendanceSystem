@@ -4,7 +4,7 @@ import { trpc } from "@/trpcClient";
 import NewAdminScancodeListItem from "../components/NewAdminScancodeForm";
 import { RouteApi } from "@tanstack/react-router";
 
-const routeApi = new RouteApi({ id: "/adminOnly/user/$userId/" });
+const routeApi = new RouteApi({ id: "/authedOnly/adminOnly/user/$userId/" });
 
 export function Component() {
   const loaderData = routeApi.useLoaderData();

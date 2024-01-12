@@ -5,18 +5,38 @@ import DefaultAppBar from "../../../components/DefaultAppBar";
 import { DateTime } from "luxon";
 import { trpc } from "@/trpcClient";
 import { RouterPaths } from "@/router";
-import { Outlet, RouteApi } from "@tanstack/react-router";
+import {
+  AnyRoute,
+  Outlet,
+  RegisteredRouter,
+  Route,
+  RouteApi,
+  RouteByPath,
+  RoutePaths,
+  ToOptions,
+  ToPathOption,
+} from "@tanstack/react-router";
 import AsChildLink from "@/components/AsChildLink";
+import { PathParamOptions } from "@tanstack/react-router";
+import { ResolveRelativePath } from "@tanstack/react-router";
+import { NoInfer } from "@tanstack/react-query";
 
 const routeApi = new RouteApi({
   id: "/authedOnly/events/$eventId",
 });
 
-interface TabItem {
+type TabItem<
+  TRouteTree extends AnyRoute = RegisteredRouter["routeTree"],
+  TFrom extends RoutePaths<TRouteTree> | string = string,
+  TTo extends string = "",
+  TMaskFrom extends RoutePaths<TRouteTree> | string = TFrom,
+  TMaskTo extends string = "",
+  TResolved = ResolveRelativePath<TFrom, NoInfer<TTo>>,
+> = {
   label: string;
   icon?: React.ReactElement | string;
-  path: RouterPaths;
-}
+  to: ToPathOption<TRouteTree, TFrom, TTo>;
+} & PathParamOptions<TRouteTree, TFrom, TTo, TResolved>;
 
 export function Component() {
   const loaderData = routeApi.useLoaderData();
@@ -37,25 +57,29 @@ export function Component() {
         ? ([
             {
               label: "Details",
-              path: "/events/$eventId",
+              to: "/events/$eventId",
+              params: {
+                eventId: eventQuery.data.id,
+              },
             },
             {
               label: "Check In",
-              path: "/events/$eventId/check-in",
-            },
+              to: "/events/$eventId/check-in",
+              params: {},
+            } satisfies TabItem,
           ] satisfies Array<TabItem>)
         : ([
             {
               label: "Details",
-              path: "/events/$eventId",
+              to: "/events/$eventId",
             },
             {
               label: "Check In",
-              path: "/events/$eventId/check-in",
+              to: "/events/$eventId/check-in",
             },
             {
               label: "QR Code",
-              path: "/events/$eventId/qr-code",
+              to: "/events/$eventId/qr-code",
             },
           ] satisfies Array<TabItem>),
     [authStatusQuery.data.isAdmin]
@@ -79,6 +103,7 @@ export function Component() {
             params={{
               eventId: eventQuery.data.id,
             }}
+            activeProps={{}}
           >
             <Tab key={tab.path} label={tab.label} value={tab.path} />
           </AsChildLink>

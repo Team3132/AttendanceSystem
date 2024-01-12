@@ -40,7 +40,7 @@ export function Component() {
       const createdEvent = await createEventMutation.mutateAsync(data);
       alert.success("Event created");
       navigate({
-        to: "/events/$eventId/",
+        to: "/events/$eventId",
         params: {
           eventId: createdEvent.id,
         },

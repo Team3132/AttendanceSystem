@@ -72,7 +72,7 @@ export function Component() {
             icon={<FaPeopleGroup />}
           />
         </AsChildLink>
-        <AsChildLink to="/events/">
+        <AsChildLink to="/events">
           <BottomNavigationAction
             label="Events"
             value="/events"

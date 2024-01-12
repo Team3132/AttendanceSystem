@@ -3,7 +3,9 @@ import PendingEventListItem from "../../../components/AdminPendingEventListItem"
 import { trpc } from "@/trpcClient";
 import { RouteApi } from "@tanstack/react-router";
 
-const routeApi = new RouteApi({ id: "/adminOnly/user/$userId/pending" });
+const routeApi = new RouteApi({
+  id: "/authedOnly/adminOnly/user/$userId/pending",
+});
 
 export function Component() {
   const loaderData = routeApi.useLoaderData();

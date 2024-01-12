@@ -130,7 +130,7 @@ export default function UpcomingEventsCard(props: UpcomingEventsCardProps) {
             renderRow={({ key, row, style }) => (
               <AsChildLink
                 key={key}
-                to={"/events/$eventId/"}
+                to={"/events/$eventId"}
                 params={{
                   eventId: row.id,
                 }}

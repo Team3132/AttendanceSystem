@@ -27,7 +27,7 @@ const columns = [
     header: "Settings",
     cell: (row) => (
       <AsChildLink
-        to={"/user/$userId/"}
+        to={"/user/$userId"}
         params={{
           userId: row.row.original.id,
         }}

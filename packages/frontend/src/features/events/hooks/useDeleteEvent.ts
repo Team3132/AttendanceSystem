@@ -10,7 +10,7 @@ export default function useDeleteEvent() {
       utils.events.getEvents.invalidate();
       utils.events.getEvent.invalidate(data.id);
       navigate({
-        to: "/events/",
+        to: "/events",
       });
     },
   });

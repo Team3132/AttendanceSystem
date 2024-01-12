@@ -13,7 +13,7 @@ interface TabItem {
   path: RouterPaths;
 }
 
-const routeApi = new RouteApi({ id: "/adminOnly/user/$userId" });
+const routeApi = new RouteApi({ id: "/authedOnly/adminOnly/user/$userId" });
 
 export function Component() {
   const loaderData = routeApi.useLoaderData();
@@ -27,7 +27,7 @@ export function Component() {
       [
         {
           label: "Scancodes",
-          path: `/user/$userId/` as const,
+          path: `/user/$userId` as const,
         },
         {
           label: "Pending",
@@ -44,6 +44,7 @@ export function Component() {
   const routes = useMemo(() => tabs.map((tab) => tab.path), [tabs]);
 
   const currentTab = useRouteMatch(routes);
+  console.log(currentTab);
 
   return (
     <>
