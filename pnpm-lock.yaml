@@ -24,8 +24,8 @@ importers:
         specifier: 2.1.1
         version: 2.1.1
       '@fastify/cookie':
-        specifier: 9.2.0
-        version: 9.2.0
+        specifier: 9.3.0
+        version: 9.3.0
       '@fastify/passport':
         specifier: 2.4.0
         version: 2.4.0
@@ -1141,8 +1141,8 @@ packages:
     engines: {node: '>=14'}
     dev: false
 
-  /@fastify/cookie@9.2.0:
-    resolution: {integrity: sha512-fkg1yjjQRHPFAxSHeLC8CqYuNzvR6Lwlj/KjrzQcGjNBK+K82nW+UfCjfN71g1GkoVoc1GTOgIWkFJpcMfMkHQ==}
+  /@fastify/cookie@9.3.0:
+    resolution: {integrity: sha512-kDEo3hOaWGcbwgK2TLXAK034a4YmNIcencBeHFO3kiFs9YbGdNEluC62rzqKxSW+NyomezxDrpyts30hK0xQ6g==}
     dependencies:
       cookie-signature: 1.2.1
       fastify-plugin: 4.5.1
@@ -1179,7 +1179,7 @@ packages:
     resolution: {integrity: sha512-x0ZW57+sf6fQaL05B3n64m7DRe81NAtFAKpCKKuqdX9FDqzOH5uQbfDDfVQy2/qhDn3N343RMlNtY1iQyvvA9A==}
     hasBin: true
     dependencies:
-      '@fastify/cookie': 9.2.0
+      '@fastify/cookie': 9.3.0
       fastify-plugin: 4.5.1
       sodium-native: 4.0.4
     dev: false
