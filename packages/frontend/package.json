@@ -42,7 +42,7 @@
     "zod": "3.22.4"
   },
   "devDependencies": {
-    "@swc/plugin-emotion": "2.5.108",
+    "@swc/plugin-emotion": "2.5.110",
     "@tanstack/eslint-plugin-query": "5.17.7",
     "@trpc/client": "11.0.0-next-beta.193",
     "@trpc/react-query": "11.0.0-next-beta.193",

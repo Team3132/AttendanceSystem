@@ -336,8 +336,8 @@ importers:
         version: 3.22.4
     devDependencies:
       '@swc/plugin-emotion':
-        specifier: 2.5.108
-        version: 2.5.108
+        specifier: 2.5.110
+        version: 2.5.110
       '@tanstack/eslint-plugin-query':
         specifier: 5.17.7
         version: 5.17.7(eslint@8.56.0)(typescript@5.3.3)
@@ -2180,8 +2180,8 @@ packages:
     resolution: {integrity: sha512-9F4ys4C74eSTEUNndnER3VJ15oru2NumfQxS8geE+f3eB5xvfxpWyqE5XlVnxb/R14uoXi6SLbBwwiDSkv+XEw==}
     dev: true
 
-  /@swc/plugin-emotion@2.5.108:
-    resolution: {integrity: sha512-tMjdGutRWCB8RQ1MMH6Q+ONYFNaTneBhU4WZo+GNLWlLUTuybQyxgzM0+n6B6UvzmIEMVUEEB5pzxG0lTbYJIg==}
+  /@swc/plugin-emotion@2.5.110:
+    resolution: {integrity: sha512-fFjLpBs0WToD3soRUUgKVQbsXTgfVhb+gTPzC3eZXj0g8z8Q0PZSUwQb+NpvYbYzU5WIDBfTAfFx6rv7lEy+cA==}
     dev: true
 
   /@swc/types@0.1.5:
