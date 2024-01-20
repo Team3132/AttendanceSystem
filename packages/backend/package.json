@@ -59,7 +59,7 @@
     "zod": "3.22.4"
   },
   "devDependencies": {
-    "@types/luxon": "3.4.1",
+    "@types/luxon": "3.4.2",
     "@types/passport-discord": "0.1.11",
     "@types/uuid": "9.0.7",
     "@types/ws": "8.5.10",
