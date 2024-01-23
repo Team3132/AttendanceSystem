@@ -33,7 +33,7 @@
     "@trpc/client": "11.0.0-next-beta.228",
     "backend": "workspace:*",
     "class-transformer": "0.5.1",
-    "class-validator": "0.14.0",
+    "class-validator": "0.14.1",
     "cron": "3.1.6",
     "discord-api-types": "0.37.67",
     "discord.js": "14.14.1",
