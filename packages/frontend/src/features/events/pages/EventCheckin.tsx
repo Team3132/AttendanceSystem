@@ -42,7 +42,7 @@ export function Component() {
       alert.success("Successfully checked in!", { timeout: 2000 });
 
       navigate({
-        to: "",
+        to: "/",
       });
     } catch (e) {
       if (isTRPCClientError(e)) {

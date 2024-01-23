@@ -4,14 +4,8 @@ import DefaultAppBar from "../../../components/DefaultAppBar";
 import { Tab, Tabs } from "@mui/material";
 import { trpc } from "@/trpcClient";
 import { Outlet, RouteApi } from "@tanstack/react-router";
-import { RouterPaths } from "@/router";
 import AsChildLink from "@/components/AsChildLink";
-
-interface TabItem {
-  label: string;
-  icon?: React.ReactElement | string;
-  path: RouterPaths;
-}
+import { TabItem } from "@/types/TabItem";
 
 const routeApi = new RouteApi({ id: "/authedOnly/adminOnly/user/$userId" });
 
@@ -27,11 +21,11 @@ export function Component() {
       [
         {
           label: "Scancodes",
-          path: `/user/$userId` as const,
+          to: `/user/$userId` as const,
         },
         {
           label: "Pending",
-          path: `/user/$userId/pending` as const,
+          to: `/user/$userId/pending` as const,
         },
         // {
         //   label: "Build Points",
@@ -41,9 +35,7 @@ export function Component() {
     []
   );
 
-  const routes = useMemo(() => tabs.map((tab) => tab.path), [tabs]);
-
-  const currentTab = useRouteMatch(routes);
+  const currentTab = useRouteMatch(tabs);
   // console.log(currentTab);
 
   return (
@@ -52,14 +44,15 @@ export function Component() {
         title={`${userQuery.data?.username ?? "Loading"}'s Profile`}
       />
       <Tabs value={currentTab}>
-        {tabs.map((tab) => (
+        {tabs.map((tab, index) => (
           <AsChildLink
-            to={tab.path}
+            to={tab.to}
             params={{
               userId: loaderData.userId,
             }}
+            key={tab.to}
           >
-            <Tab key={tab.path} label={tab.label} value={tab.path} />
+            <Tab key={tab.to} label={tab.label} value={index} />
           </AsChildLink>
         ))}
       </Tabs>

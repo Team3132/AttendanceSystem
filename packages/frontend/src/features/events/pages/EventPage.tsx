@@ -66,22 +66,29 @@ export function Component() {
             {
               label: "Details",
               to: "/events/$eventId",
+              params: {
+                eventId: eventQuery.data.id,
+              },
             },
             {
               label: "Check In",
               to: "/events/$eventId/check-in",
+              params: {
+                eventId: eventQuery.data.id,
+              },
             },
             {
               label: "QR Code",
               to: "/events/$eventId/qr-code",
+              params: {
+                eventId: eventQuery.data.id,
+              },
             },
           ] satisfies Array<TabItem>),
     [authStatusQuery.data.isAdmin, eventQuery.data.id]
   );
 
-  const routes = useMemo(() => tabs.map((tab) => tab.to), [tabs]);
-
-  const currentTab = useRouteMatch(routes);
+  const currentTab = useRouteMatch(tabs);
 
   return (
     <>
@@ -91,7 +98,7 @@ export function Component() {
         )} - ${eventQuery.data.title}`}
       />
       <Tabs value={currentTab} variant="scrollable" scrollButtons="auto">
-        {tabs.map((tab) => (
+        {tabs.map((tab, index) => (
           <AsChildLink
             to={tab.to}
             params={{
@@ -99,7 +106,7 @@ export function Component() {
             }}
             activeProps={{}}
           >
-            <Tab key={tab.to} label={tab.label} value={tab.to} />
+            <Tab key={tab.to} label={tab.label} value={index} />
           </AsChildLink>
         ))}
       </Tabs>

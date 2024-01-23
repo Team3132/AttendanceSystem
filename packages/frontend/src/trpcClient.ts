@@ -29,9 +29,20 @@ export const trpcClient = trpc.createClient({
   links: [
     splitLink({
       condition: (op) => op.type === "subscription",
-      true: wsLink({
-        client: wsClient,
-      }),
+      true: import.meta.env.PROD
+        ? wsLink({
+            client: wsClient,
+          })
+        : httpBatchLink({
+            url: backendUrl.toString(),
+            fetch(url, options) {
+              return fetch(url, {
+                ...options,
+                credentials: "include",
+              });
+            },
+            // You can pass any HTTP headers you wish here
+          }),
       false: httpBatchLink({
         url: backendUrl.toString(),
         fetch(url, options) {

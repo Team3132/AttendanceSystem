@@ -3,32 +3,20 @@ import DefaultAppBar from "../../../components/DefaultAppBar";
 import { Tab, Tabs } from "@mui/material";
 import { trpc } from "@/trpcClient";
 import { Outlet, RouteApi } from "@tanstack/react-router";
-import { RouterPaths } from "@/router";
 import AsChildLink from "@/components/AsChildLink";
-
-interface TabItem {
-  label: string;
-  icon?: React.ReactElement | string;
-  path: RouterPaths;
-}
+import { TabItem } from "@/types/TabItem";
 
 const routeApi = new RouteApi({ id: "/authedOnly/profile" });
-const tabs = [
+const tabs: Array<TabItem> = [
   {
     label: "Scancodes",
-    path: "/profile" as const,
+    to: "/profile",
   },
   {
     label: "Pending",
-    path: "/profile/pending" as const,
+    to: "/profile/pending",
   },
-  // {
-  //   label: "Build Points",
-  //   path: "/profile/build-points",
-  // },
-] satisfies Array<TabItem>;
-
-const routes = tabs.map((tab) => tab.path);
+];
 
 export function Component() {
   const loaderData = routeApi.useLoaderData();
@@ -37,7 +25,7 @@ export function Component() {
     initialData: loaderData.initialUser,
   });
 
-  const currentTab = useRouteMatch(routes);
+  const currentTab = useRouteMatch(tabs);
 
   return (
     <>
@@ -45,9 +33,9 @@ export function Component() {
         title={`${userQuery.data?.username ?? "Loading"}'s Profile`}
       />
       <Tabs value={currentTab}>
-        {tabs.map((tab) => (
-          <AsChildLink to={tab.path}>
-            <Tab key={tab.path} label={tab.label} value={tab.path} />
+        {tabs.map((tab, index) => (
+          <AsChildLink to={tab.to} params={tab.params}>
+            <Tab key={tab.to} label={tab.label} value={index} />
           </AsChildLink>
         ))}
       </Tabs>

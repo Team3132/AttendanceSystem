@@ -1,33 +1,26 @@
 import { Container, Paper, Tab, Tabs } from "@mui/material";
 import DefaultAppBar from "../../../components/DefaultAppBar";
 import useRouteMatch from "@/utils/useRouteMatch";
-import { RouterPaths } from "@/router";
 import AsChildLink from "@/components/AsChildLink";
 import { Outlet } from "@tanstack/react-router";
-
-interface TabItem {
-  label: string;
-  icon?: React.ReactElement | string;
-  path: RouterPaths;
-  disabled?: boolean;
-}
+import { TabItem } from "@/types/TabItem";
 
 const tabs = [
   {
     label: "Outreach",
-    path: "/leaderboard/outreach" as const,
+    to: "/leaderboard/outreach" as const,
+    params: {},
   },
   {
     label: "Build Points",
-    path: "/leaderboard/build-points" as const,
+    to: "/leaderboard/build-points" as const,
+    params: {},
     disabled: true,
   },
 ] satisfies Array<TabItem>;
 
-const routes = tabs.map((tab) => tab.path);
-
 export function Component() {
-  const currentTab = useRouteMatch(routes);
+  const currentTab = useRouteMatch(tabs);
 
   return (
     <>
@@ -42,12 +35,12 @@ export function Component() {
         }}
       >
         <Tabs value={currentTab}>
-          {tabs.map((tab) => (
-            <AsChildLink to={tab.path}>
+          {tabs.map((tab, index) => (
+            <AsChildLink to={tab.to} key={tab.to}>
               <Tab
-                key={tab.path}
+                key={tab.to}
                 label={tab.label}
-                value={tab.path}
+                value={index}
                 disabled={tab.disabled}
               />
             </AsChildLink>

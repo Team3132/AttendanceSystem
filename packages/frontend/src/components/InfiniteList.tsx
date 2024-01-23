@@ -30,7 +30,14 @@ interface InfiniteListProps<T, IPaged extends PagedType<T> = PagedType<T>>
     OmittedListProps {}
 
 export default function InfiniteList<T>(props: InfiniteListProps<T>) {
-  const { data, fetchNextPage, isFetching, fixedHeight, ...listProps } = props;
+  const {
+    data,
+    fetchNextPage,
+    isFetching,
+    fixedHeight,
+    renderRow,
+    ...listProps
+  } = props;
 
   const total = useMemo(() => data.pages.at(-1)?.total ?? 0, [data.pages]);
 
@@ -99,7 +106,7 @@ export default function InfiniteList<T>(props: InfiniteListProps<T>) {
             }px)`,
           };
 
-          return props.renderRow({
+          return renderRow({
             key,
             row: item,
             style: newStyle,

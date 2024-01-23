@@ -8,10 +8,10 @@ import {
 } from "react-icons/fa6";
 import { useMemo } from "react";
 import { trpc } from "@/trpcClient";
-import { RouterPaths } from "@/router";
 import AsChildLink from "@/components/AsChildLink";
 import { Outlet, RouteApi } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
+import { TabItem } from "@/types/TabItem";
 
 const routeApi = new RouteApi({
   id: "/authedOnly",
@@ -24,16 +24,46 @@ export function Component() {
     initialData: initialAuthStatus,
   });
 
-  const routes = useMemo(
+  const routes = useMemo<TabItem[]>(
     () =>
       authStatusQuery.data.isAdmin
         ? ([
-            "/",
-            "/leaderboard/outreach",
-            "/events",
-            "/admin",
-          ] satisfies RouterPaths[])
-        : (["/", "/leaderboard/outreach", "/events"] satisfies RouterPaths[]),
+            {
+              to: "/",
+              label: "Home",
+              icon: <FaHouse />,
+            },
+            {
+              to: "/leaderboard/outreach",
+              label: "Leaderboard",
+              icon: <FaPeopleGroup />,
+            },
+            {
+              to: "/events",
+              label: "Events",
+              fuzzy: true,
+              icon: <FaRegCalendar />,
+            },
+            { to: "/admin", label: "Admin", icon: <FaHouseLock /> },
+          ] satisfies TabItem[])
+        : ([
+            {
+              to: "/",
+              label: "Home",
+              icon: <FaHouse />,
+            },
+            {
+              to: "/leaderboard/outreach",
+              label: "Leaderboard",
+              icon: <FaPeopleGroup />,
+            },
+            {
+              to: "/events",
+              fuzzy: true,
+              label: "Events",
+              icon: <FaRegCalendar />,
+            },
+          ] satisfies TabItem[]),
     [authStatusQuery.data.isAdmin]
   );
 
@@ -62,32 +92,15 @@ export function Component() {
           right: 0,
         }}
       >
-        <AsChildLink to="/">
-          <BottomNavigationAction label="Home" value="/" icon={<FaHouse />} />
-        </AsChildLink>
-        <AsChildLink to="/leaderboard/outreach">
-          <BottomNavigationAction
-            label="Leaderboard"
-            value="/leaderboard/outreach"
-            icon={<FaPeopleGroup />}
-          />
-        </AsChildLink>
-        <AsChildLink to="/events">
-          <BottomNavigationAction
-            label="Events"
-            value="/events"
-            icon={<FaRegCalendar />}
-          />
-        </AsChildLink>
-        {authStatusQuery.data.isAdmin ? (
-          <AsChildLink to="/admin">
+        {routes.map((route, index) => (
+          <AsChildLink to={route.to} params={route.params} key={route.to}>
             <BottomNavigationAction
-              label="Admin"
-              value="/admin"
-              icon={<FaHouseLock />}
+              label={route.label}
+              icon={route.icon}
+              value={index}
             />
           </AsChildLink>
-        ) : null}
+        ))}
       </BottomNavigation>
       <TanStackRouterDevtools />
     </Box>
