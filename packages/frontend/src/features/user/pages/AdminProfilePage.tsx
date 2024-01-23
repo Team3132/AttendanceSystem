@@ -44,7 +44,7 @@ export function Component() {
   const routes = useMemo(() => tabs.map((tab) => tab.path), [tabs]);
 
   const currentTab = useRouteMatch(routes);
-  console.log(currentTab);
+  // console.log(currentTab);
 
   return (
     <>

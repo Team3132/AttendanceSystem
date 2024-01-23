@@ -1,19 +1,23 @@
 import { RouterPaths } from "@/router";
-import { useMatch, useMatchRoute, useMatches } from "@tanstack/react-router";
+import { useMatchRoute } from "@tanstack/react-router";
 import { useMemo } from "react";
 
 export default function useRouteMatch(patterns: readonly RouterPaths[]) {
   const matchRoute = useMatchRoute();
-  
-  patterns.forEach((pattern) => {
-    const matches = matchRoute({
-      to: pattern,
-      fuzzy: true,
-      params: {},
-    })
 
-    if 
-  })
+  const matchingPatterns = useMemo(
+    () =>
+      patterns.find((pattern) =>
+        matchRoute({
+          to: pattern,
+          fuzzy: true,
+          params: {},
+        })
+      ),
+    [matchRoute, patterns]
+  );
 
-  return possibleMatchMemo;
+  console.log({ matchingPatterns });
+
+  return matchingPatterns;
 }

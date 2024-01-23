@@ -4,16 +4,12 @@ import { Tab, Tabs } from "@mui/material";
 import DefaultAppBar from "../../../components/DefaultAppBar";
 import { DateTime } from "luxon";
 import { trpc } from "@/trpcClient";
-import { RouterPaths } from "@/router";
 import {
   AnyRoute,
   Outlet,
   RegisteredRouter,
-  Route,
   RouteApi,
-  RouteByPath,
   RoutePaths,
-  ToOptions,
   ToPathOption,
 } from "@tanstack/react-router";
 import AsChildLink from "@/components/AsChildLink";
@@ -29,8 +25,6 @@ type TabItem<
   TRouteTree extends AnyRoute = RegisteredRouter["routeTree"],
   TFrom extends RoutePaths<TRouteTree> | string = string,
   TTo extends string = "",
-  TMaskFrom extends RoutePaths<TRouteTree> | string = TFrom,
-  TMaskTo extends string = "",
   TResolved = ResolveRelativePath<TFrom, NoInfer<TTo>>,
 > = {
   label: string;
@@ -82,10 +76,10 @@ export function Component() {
               to: "/events/$eventId/qr-code",
             },
           ] satisfies Array<TabItem>),
-    [authStatusQuery.data.isAdmin]
+    [authStatusQuery.data.isAdmin, eventQuery.data.id]
   );
 
-  const routes = useMemo(() => tabs.map((tab) => tab.path), [tabs]);
+  const routes = useMemo(() => tabs.map((tab) => tab.to), [tabs]);
 
   const currentTab = useRouteMatch(routes);
 
@@ -99,13 +93,13 @@ export function Component() {
       <Tabs value={currentTab} variant="scrollable" scrollButtons="auto">
         {tabs.map((tab) => (
           <AsChildLink
-            to={tab.path}
+            to={tab.to}
             params={{
               eventId: eventQuery.data.id,
             }}
             activeProps={{}}
           >
-            <Tab key={tab.path} label={tab.label} value={tab.path} />
+            <Tab key={tab.to} label={tab.label} value={tab.to} />
           </AsChildLink>
         ))}
       </Tabs>
