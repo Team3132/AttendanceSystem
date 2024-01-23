@@ -4,10 +4,7 @@ import viteTsconfigPaths from "vite-tsconfig-paths";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react({ plugins: [["@swc/plugin-emotion", {}]] }),
-    viteTsconfigPaths(),
-  ],
+  plugins: [react(), viteTsconfigPaths()],
   server: {
     port: 4000,
     proxy: {
