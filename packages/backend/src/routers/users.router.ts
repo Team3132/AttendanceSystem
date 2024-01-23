@@ -10,6 +10,7 @@ import {
   getUser,
   getUserBuildPoints,
   getUserList,
+  getUserRecentRsvps,
   getUserScancodes,
   removeScancode,
   removeUserBuildPoints,
@@ -25,6 +26,11 @@ import {
 } from "../schema/GetBuildPointsSchema";
 import { PagedBuildPointsSchema } from "../schema/PagedBuildPointsSchema";
 import { RemoveBuildPointSchema } from "../schema/RemoveBuildPointSchema";
+import {
+  GetSelfRecentRsvpsSchema,
+  GetUserRecentRsvpsSchema,
+} from "../schema/GetUserRecentRsvpsSchema";
+import { PagedUserRecentRsvpsSchema } from "../schema/PagedUserRecentRsvpsSchema";
 
 export const userRouter = t.router({
   getSelf: sessionProcedure
@@ -85,6 +91,14 @@ export const userRouter = t.router({
     .input(GetBuildPointsSchema)
     .output(PagedBuildPointsSchema)
     .query(({ ctx, input }) => getUserBuildPoints(ctx.user.id, input)),
+  getSelfRecentRsvps: sessionProcedure
+    .input(GetSelfRecentRsvpsSchema)
+    .output(PagedUserRecentRsvpsSchema)
+    .query(({ ctx, input }) => getUserRecentRsvps(ctx.user.id, input)),
+  getUserRecentRsvps: mentorSessionProcedure
+    .input(GetUserRecentRsvpsSchema)
+    .output(PagedUserRecentRsvpsSchema)
+    .query(({ input }) => getUserRecentRsvps(input.userId, input)),
   removeBuildPoints: mentorSessionProcedure
     .input(RemoveBuildPointSchema)
     .output(BuildPointSchema)

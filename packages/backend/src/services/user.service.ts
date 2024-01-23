@@ -1,7 +1,7 @@
-import { and, count, eq, ilike, isNotNull, isNull } from "drizzle-orm";
+import { and, count, desc, eq, ilike, isNotNull, isNull } from "drizzle-orm";
 import db from "../drizzle/db";
 import { TRPCError } from "@trpc/server";
-import { buildPoints, scancode, user } from "../drizzle/schema";
+import { buildPoints, event, rsvp, scancode, user } from "../drizzle/schema";
 import { z } from "zod";
 import { AddBuildPointsUserSchema, UserCreateSchema } from "../schema";
 import { ee, rtrpc } from "../routers/app.router";
@@ -11,6 +11,8 @@ import { PagedUserSchema } from "../schema/PagedUserSchema";
 import { GetBuildPointsSchema } from "../schema/GetBuildPointsSchema";
 import { PagedBuildPointsSchema } from "../schema/PagedBuildPointsSchema";
 import { RemoveBuildPointSchema } from "../schema/RemoveBuildPointSchema";
+import { GetUserRecentRsvpsSchema } from "../schema/GetUserRecentRsvpsSchema";
+import { PagedUserRecentRsvpsSchema } from "../schema/PagedUserRecentRsvpsSchema";
 
 /**
  * Gets a user from the database
@@ -297,4 +299,53 @@ export async function removeUserBuildPoints(
   }
 
   return res;
+}
+
+export async function getUserRecentRsvps(
+  userId: string,
+  params: z.infer<typeof GetUserRecentRsvpsSchema>
+) {
+  const { limit, cursor: page } = params;
+
+  const offset = page * limit;
+
+  let total = 0;
+
+  const [totalData] = await db
+    .select({
+      total: count(),
+    })
+    .from(rsvp)
+    .where(and(eq(rsvp.userId, userId)))
+    .innerJoin(event, eq(rsvp.eventId, event.id));
+
+  if (totalData) {
+    total = totalData.total;
+  }
+
+  const nextPage = total > offset + limit ? page + 1 : undefined;
+
+  const rsvps = await db
+    .select({
+      userId: rsvp.userId,
+      eventId: rsvp.eventId,
+      rsvpId: rsvp.id,
+      eventTitle: event.title,
+      eventStart: event.startDate,
+      eventEnd: event.endDate,
+      updatedAt: rsvp.updatedAt,
+    })
+    .from(rsvp)
+    .where(and(eq(rsvp.userId, userId)))
+    .innerJoin(event, eq(rsvp.eventId, event.id))
+    .limit(limit)
+    .offset(offset)
+    .orderBy(desc(rsvp.updatedAt));
+
+  return {
+    items: rsvps,
+    page,
+    total,
+    nextPage,
+  } satisfies z.infer<typeof PagedUserRecentRsvpsSchema>;
 }
