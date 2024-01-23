@@ -81,7 +81,7 @@ const adminUserBuildPointsRoute = new Route({
   ),
 });
 
-const adminUserRecentRsvpsRoute = (adminOnlyRoute = new Route({
+const adminUserRecentRsvpsRoute = new Route({
   path: "/recent-rsvps",
   getParentRoute: () => adminUserRoute,
   loader: async ({ context: { queryUtils }, params }) => {
@@ -96,4 +96,5 @@ export const adminUserRoutes = adminUserRoute.addChildren([
   adminUserIndexRoute,
   adminUserPendingEventsRoute,
   adminUserBuildPointsRoute,
+  adminUserRecentRsvpsRoute,
 ]);
