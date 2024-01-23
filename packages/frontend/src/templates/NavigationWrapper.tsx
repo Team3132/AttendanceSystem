@@ -45,7 +45,7 @@ export function Component() {
               icon: <FaRegCalendar />,
             },
             { to: "/admin", label: "Admin", icon: <FaHouseLock /> },
-          ] satisfies TabItem[])
+          ] as TabItem[])
         : ([
             {
               to: "/",
@@ -63,7 +63,7 @@ export function Component() {
               label: "Events",
               icon: <FaRegCalendar />,
             },
-          ] satisfies TabItem[]),
+          ] as TabItem[]),
     [authStatusQuery.data.isAdmin]
   );
 

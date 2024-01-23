@@ -45,7 +45,7 @@ export function Component() {
     initialData: initialEvent,
   });
 
-  const tabs = useMemo(
+  const tabs = useMemo<Array<TabItem>>(
     () =>
       !authStatusQuery.data.isAdmin
         ? ([
@@ -59,9 +59,8 @@ export function Component() {
             {
               label: "Check In",
               to: "/events/$eventId/check-in",
-              params: {},
-            } satisfies TabItem,
-          ] satisfies Array<TabItem>)
+            },
+          ] as TabItem[])
         : ([
             {
               label: "Details",
@@ -84,7 +83,7 @@ export function Component() {
                 eventId: eventQuery.data.id,
               },
             },
-          ] satisfies Array<TabItem>),
+          ] as TabItem[]),
     [authStatusQuery.data.isAdmin, eventQuery.data.id]
   );
 
@@ -99,13 +98,7 @@ export function Component() {
       />
       <Tabs value={currentTab} variant="scrollable" scrollButtons="auto">
         {tabs.map((tab, index) => (
-          <AsChildLink
-            to={tab.to}
-            params={{
-              eventId: eventQuery.data.id,
-            }}
-            activeProps={{}}
-          >
+          <AsChildLink to={tab.to} params={tab.params}>
             <Tab key={tab.to} label={tab.label} value={index} />
           </AsChildLink>
         ))}

@@ -16,23 +16,24 @@ export function Component() {
     initialData: loaderData.initialUser,
   });
 
-  const tabs = useMemo(
-    () =>
-      [
-        {
-          label: "Scancodes",
-          to: `/user/$userId` as const,
+  const tabs = useMemo<TabItem[]>(
+    () => [
+      {
+        label: "Scancodes",
+        to: `/user/$userId`,
+        params: {
+          userId: loaderData.userId,
         },
-        {
-          label: "Pending",
-          to: `/user/$userId/pending` as const,
+      },
+      {
+        label: "Pending",
+        to: `/user/$userId/pending`,
+        params: {
+          userId: loaderData.userId,
         },
-        // {
-        //   label: "Build Points",
-        //   path: `/user/${loaderData.userId}/build-points`,
-        // },
-      ] satisfies TabItem[],
-    []
+      },
+    ],
+    [loaderData.userId]
   );
 
   const currentTab = useRouteMatch(tabs);
@@ -45,13 +46,7 @@ export function Component() {
       />
       <Tabs value={currentTab}>
         {tabs.map((tab, index) => (
-          <AsChildLink
-            to={tab.to}
-            params={{
-              userId: loaderData.userId,
-            }}
-            key={tab.to}
-          >
+          <AsChildLink to={tab.to} params={tab.params} key={tab.to}>
             <Tab key={tab.to} label={tab.label} value={index} />
           </AsChildLink>
         ))}

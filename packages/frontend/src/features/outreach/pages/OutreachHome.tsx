@@ -5,19 +5,17 @@ import AsChildLink from "@/components/AsChildLink";
 import { Outlet } from "@tanstack/react-router";
 import { TabItem } from "@/types/TabItem";
 
-const tabs = [
+const tabs: Array<TabItem> = [
   {
     label: "Outreach",
     to: "/leaderboard/outreach" as const,
-    params: {},
   },
   {
     label: "Build Points",
     to: "/leaderboard/build-points" as const,
-    params: {},
     disabled: true,
   },
-] satisfies Array<TabItem>;
+];
 
 export function Component() {
   const currentTab = useRouteMatch(tabs);
@@ -36,7 +34,7 @@ export function Component() {
       >
         <Tabs value={currentTab}>
           {tabs.map((tab, index) => (
-            <AsChildLink to={tab.to} key={tab.to}>
+            <AsChildLink to={tab.to} key={tab.to} params={tab.params}>
               <Tab
                 key={tab.to}
                 label={tab.label}
