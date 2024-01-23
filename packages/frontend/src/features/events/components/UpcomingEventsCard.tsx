@@ -3,6 +3,7 @@ import {
   Button,
   FormControl,
   InputLabel,
+  ListItemButton,
   MenuItem,
   Paper,
   Select,
@@ -14,12 +15,12 @@ import UpcomingEventListItem from "./UpcomingEventListItem";
 import { DateTime } from "luxon";
 import { useState } from "react";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import LinkBehavior from "../../../utils/LinkBehavior";
 import { trpc } from "@/trpcClient";
 import { z } from "zod";
 import { EventTypeSchema } from "backend/schema";
 import { AuthStatusSchema } from "backend/schema";
 import InfiniteList from "@/components/InfiniteList";
+import AsChildLink from "@/components/AsChildLink";
 
 interface UpcomingEventsCardProps {
   initialAuthStatus: z.infer<typeof AuthStatusSchema>;
@@ -124,13 +125,21 @@ export default function UpcomingEventsCard(props: UpcomingEventsCardProps) {
           </Box>
           <InfiniteList
             data={infiniteEventsQuery.data}
-            ListItemProps={(event) => ({
-              LinkComponent: LinkBehavior,
-              href: `/events/${event.id}`,
-            })}
             fetchNextPage={infiniteEventsQuery.fetchNextPage}
             isFetching={infiniteEventsQuery.isFetching}
-            renderRow={(event) => <UpcomingEventListItem event={event} />}
+            renderRow={({ key, row, style }) => (
+              <AsChildLink
+                key={key}
+                to={"/events/$eventId"}
+                params={{
+                  eventId: row.id,
+                }}
+              >
+                <ListItemButton style={style}>
+                  <UpcomingEventListItem event={row} />
+                </ListItemButton>
+              </AsChildLink>
+            )}
             fixedHeight={72}
             sx={{
               flex: 1,
@@ -140,13 +149,9 @@ export default function UpcomingEventsCard(props: UpcomingEventsCardProps) {
             }}
           />
           {authStatusQuery.data?.isAdmin ? (
-            <Button
-              LinkComponent={LinkBehavior}
-              href="/events/create"
-              variant="contained"
-            >
-              Create Event
-            </Button>
+            <AsChildLink to="/events/create">
+              <Button variant="contained">Create Event</Button>
+            </AsChildLink>
           ) : null}
         </Stack>
       </Paper>

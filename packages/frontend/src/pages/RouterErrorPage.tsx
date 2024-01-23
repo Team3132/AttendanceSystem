@@ -1,32 +1,12 @@
 import { isTRPCClientError } from "@/utils/trpc";
 import { Stack, Typography } from "@mui/material";
-import { isRouteErrorResponse, useRouteError } from "react-router-dom";
 
-export default function ErrorBoundaryPage() {
-  const error = useRouteError();
+interface ErrorBoundaryPageProps {
+  error: unknown;
+}
 
-  if (isRouteErrorResponse(error)) {
-    return (
-      <Stack gap={2} my={2}>
-        <Typography variant="h5" textAlign={"center"}>
-          {error.status}
-        </Typography>
-        <Typography variant="h5" textAlign={"center"}>
-          {error.statusText}
-        </Typography>
-        {error.data ? (
-          <Typography
-            variant="body1"
-            textAlign={"center"}
-            fontFamily={"monospace"}
-          >
-            {error.data.message}
-          </Typography>
-        ) : null}
-      </Stack>
-    );
-  }
-
+export default function ErrorBoundaryPage(props: ErrorBoundaryPageProps) {
+  const error = props.error;
   if (isTRPCClientError(error)) {
     return (
       <Stack gap={2} my={2}>

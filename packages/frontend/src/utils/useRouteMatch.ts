@@ -1,18 +1,23 @@
-import { useMemo } from "react";
-import { matchPath, useLocation } from "react-router-dom";
+import { TabItem } from "@/types/TabItem";
+import { useMatchRoute } from "@tanstack/react-router";
 
-export default function useRouteMatch(patterns: readonly string[]) {
-  const { pathname } = useLocation();
+/**
+ * Get the index of the first matching route in an array of routes
+ * @param patterns An array of LinkOptions including a `to` and `params` property
+ */
+export default function useRouteMatch(patterns: readonly TabItem[]) {
+  const matchRoute = useMatchRoute();
 
-  const possibleMatchMemo = useMemo(() => {
-    for (let i = 0; i < patterns.length; i += 1) {
-      const pattern = patterns[i];
-      const possibleMatch = matchPath(pattern, pathname);
-      if (possibleMatch !== null) {
-        return possibleMatch;
-      }
-    }
-  }, [pathname, patterns]);
+  const matchedIndex = patterns.findIndex(
+    (pattern) =>
+      // @ts-expect-error deep
+      matchRoute({
+        to: pattern.to,
+        params: pattern.params,
+        fuzzy: pattern.fuzzy ?? false,
+        pending: true,
+      }) !== false
+  );
 
-  return possibleMatchMemo;
+  return matchedIndex === -1 ? undefined : matchedIndex;
 }

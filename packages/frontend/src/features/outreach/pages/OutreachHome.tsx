@@ -1,48 +1,26 @@
 import { Container, Paper, Tab, Tabs } from "@mui/material";
 import DefaultAppBar from "../../../components/DefaultAppBar";
-import ensureAuth from "@/features/auth/utils/ensureAuth";
-import { queryUtils } from "@/trpcClient";
 import useRouteMatch from "@/utils/useRouteMatch";
-import LinkBehavior from "@/utils/LinkBehavior";
-import { Outlet } from "react-router-dom";
+import AsChildLink from "@/components/AsChildLink";
+import { Outlet } from "@tanstack/react-router";
+import { TabItem } from "@/types/TabItem";
 
-export async function loader() {
-  const initialAuth = await ensureAuth();
-
-  await queryUtils.outreach.outreachLeaderboard.prefetchInfinite({
-    limit: 10,
-  });
-
-  return {
-    initialAuth,
-  };
-}
-
-interface TabItem {
-  label: string;
-  icon?: React.ReactElement | string;
-  path: string;
-  disabled?: boolean;
-}
-
-const tabs: Array<TabItem> = [
+const tabs = [
   {
     label: "Outreach",
-    path: "/leaderboard/outreach",
+    to: "/leaderboard/outreach" as const,
+    params: {},
   },
   {
     label: "Build Points",
-    path: "/leaderboard/build-points",
+    to: "/leaderboard/build-points" as const,
+    params: {},
     disabled: true,
   },
-];
-
-const routes = tabs.map((tab) => tab.path);
+] satisfies Array<TabItem>;
 
 export function Component() {
-  const routeMatch = useRouteMatch(routes);
-
-  const currentTab = routeMatch?.pattern.path;
+  const currentTab = useRouteMatch(tabs);
 
   return (
     <>
@@ -57,16 +35,15 @@ export function Component() {
         }}
       >
         <Tabs value={currentTab}>
-          {tabs.map((tab) => (
-            <Tab
-              key={tab.path}
-              label={tab.label}
-              icon={tab.icon}
-              value={tab.path}
-              href={tab.path}
-              LinkComponent={LinkBehavior}
-              disabled={tab.disabled}
-            />
+          {tabs.map((tab, index) => (
+            <AsChildLink to={tab.to} key={tab.to}>
+              <Tab
+                key={tab.to}
+                label={tab.label}
+                value={index}
+                disabled={tab.disabled}
+              />
+            </AsChildLink>
           ))}
         </Tabs>
         <Paper

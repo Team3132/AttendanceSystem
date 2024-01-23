@@ -1,27 +1,17 @@
-import { useLoaderData } from "react-router-dom";
-import ensureAuth from "../../auth/utils/ensureAuth";
 import { Container, Stack, Paper, Typography, List } from "@mui/material";
 import PendingEventListItem from "../../../components/PendingEventListItem";
-import { queryUtils } from "@/trpcClient";
 import { trpc } from "@/trpcClient";
+import { RouteApi } from "@tanstack/react-router";
 
-export async function loader() {
-  const initialAuthStatus = await ensureAuth();
-
-  const pendingEvents = await queryUtils.users.getSelfPendingRsvps.ensureData();
-  return {
-    pendingEvents,
-    initialAuthStatus,
-  };
-}
+const routeApi = new RouteApi({ id: "/authedOnly/profile/pending" });
 
 export function Component() {
-  const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const loaderData = routeApi.useLoaderData();
 
   const pendingEventsQuery = trpc.users.getSelfPendingRsvps.useQuery(
     undefined,
     {
-      initialData: loaderData.pendingEvents,
+      initialData: loaderData.initialPendingEvents,
     }
   );
 

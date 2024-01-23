@@ -1,36 +1,19 @@
-import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
-import { z } from "zod";
-import ensureAuth from "../../auth/utils/ensureAuth";
 import { Container, Stack, Paper, Typography, List } from "@mui/material";
 import PendingEventListItem from "../../../components/AdminPendingEventListItem";
 import { trpc } from "@/trpcClient";
-import { queryUtils } from "@/trpcClient";
+import { RouteApi } from "@tanstack/react-router";
 
-const PendingEventsPageParamsSchema = z.object({
-  userId: z.string(),
+const routeApi = new RouteApi({
+  id: "/authedOnly/adminOnly/user/$userId/pending",
 });
 
-export async function loader({ params }: LoaderFunctionArgs) {
-  const initialAuthStatus = await ensureAuth(true);
-
-  const validatedParams = PendingEventsPageParamsSchema.parse(params);
-  const userId = validatedParams.userId;
-  const pendingEvents =
-    await queryUtils.users.getUserPendingRsvps.ensureData(userId);
-  return {
-    userId: validatedParams.userId,
-    pendingEvents,
-    initialAuthStatus,
-  };
-}
-
 export function Component() {
-  const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const loaderData = routeApi.useLoaderData();
 
   const pendingEventsQuery = trpc.users.getUserPendingRsvps.useQuery(
     loaderData.userId,
     {
-      initialData: loaderData.pendingEvents,
+      initialData: loaderData.initialPendingEvents,
     }
   );
 

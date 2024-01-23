@@ -7,23 +7,15 @@ import {
   Typography,
 } from "@mui/material";
 import DefaultAppBar from "../../../components/DefaultAppBar";
-import ensureAuth from "../../auth/utils/ensureAuth";
 import { trpc } from "@/trpcClient";
 import Datatable from "@/components/DataTable";
 import { createColumnHelper } from "@tanstack/table-core";
 import { z } from "zod";
 import { UserSchema } from "backend/schema";
-import LinkBehavior from "@/utils/LinkBehavior";
 import { useMemo, useState } from "react";
 import { useDebounce } from "usehooks-ts";
 import { keepPreviousData } from "@tanstack/react-query";
-
-export async function loader() {
-  const initialAuthData = await ensureAuth(true);
-  return {
-    initialAuthData,
-  };
-}
+import AsChildLink from "@/components/AsChildLink";
 
 const columnHelper = createColumnHelper<z.infer<typeof UserSchema>>();
 
@@ -34,13 +26,14 @@ const columns = [
   columnHelper.display({
     header: "Settings",
     cell: (row) => (
-      <Button
-        variant="outlined"
-        LinkComponent={LinkBehavior}
-        href={`/user/${row.row.original.id}`}
+      <AsChildLink
+        to={"/user/$userId"}
+        params={{
+          userId: row.row.original.id,
+        }}
       >
-        Settings
-      </Button>
+        <Button variant="outlined">Settings</Button>
+      </AsChildLink>
     ),
   }),
 ];

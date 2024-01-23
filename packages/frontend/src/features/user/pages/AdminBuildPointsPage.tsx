@@ -1,30 +1,17 @@
 import Datatable from "@/components/DataTable";
-import ensureAuth from "@/features/auth/utils/ensureAuth";
 import { trpc } from "@/trpcClient";
 import { Container, Stack, Paper, Typography } from "@mui/material";
 import { createColumnHelper } from "@tanstack/table-core";
 import { BuildPointSchema } from "backend/schema";
 import { DateTime } from "luxon";
 import { useMemo } from "react";
-import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
 import { z } from "zod";
 import BuildPointMenu from "../components/BuildPointMenu";
+import { RouteApi } from "@tanstack/react-router";
 
-const PendingEventsPageParamsSchema = z.object({
-  userId: z.string(),
+const routeApi = new RouteApi({
+  id: "/authedOnly/adminOnly/user/$userId/build-points",
 });
-
-export async function loader({ params }: LoaderFunctionArgs) {
-  const initialAuthStatus = await ensureAuth(true);
-
-  const validatedParams = PendingEventsPageParamsSchema.parse(params);
-  const userId = validatedParams.userId;
-  return {
-    userId,
-    // pendingEvents,
-    initialAuthStatus,
-  };
-}
 
 const columnHelper = createColumnHelper<z.infer<typeof BuildPointSchema>>();
 
@@ -51,7 +38,7 @@ const columns = [
 ];
 
 export function Component() {
-  const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const loaderData = routeApi.useLoaderData();
 
   const buildPointsQuery = trpc.users.getUserBuildPoints.useInfiniteQuery(
     {

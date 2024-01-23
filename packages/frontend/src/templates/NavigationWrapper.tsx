@@ -1,8 +1,5 @@
-import ensureAuth from "../features/auth/utils/ensureAuth";
-import { Outlet, useLoaderData } from "react-router-dom";
 import { BottomNavigation, BottomNavigationAction, Box } from "@mui/material";
 import useRouteMatch from "../utils/useRouteMatch";
-import LinkBehavior from "../utils/LinkBehavior";
 import {
   FaHouse,
   FaHouseLock,
@@ -11,35 +8,66 @@ import {
 } from "react-icons/fa6";
 import { useMemo } from "react";
 import { trpc } from "@/trpcClient";
+import AsChildLink from "@/components/AsChildLink";
+import { Outlet, RouteApi } from "@tanstack/react-router";
+import { TanStackRouterDevtools } from "@tanstack/router-devtools";
+import { TabItem } from "@/types/TabItem";
 
-export async function loader() {
-  const initialAuthStatus = await ensureAuth();
-
-  return {
-    initialAuthStatus,
-  };
-}
+const routeApi = new RouteApi({
+  id: "/authedOnly",
+});
 
 export function Component() {
-  const { initialAuthStatus } = useLoaderData() as Awaited<
-    ReturnType<typeof loader>
-  >;
+  const initialAuthStatus = routeApi.useLoaderData();
 
   const authStatusQuery = trpc.auth.status.useQuery(undefined, {
     initialData: initialAuthStatus,
   });
 
-  const routes = useMemo(
+  const routes = useMemo<TabItem[]>(
     () =>
       authStatusQuery.data.isAdmin
-        ? ["/", "/outreach", "/events", "/admin"]
-        : ["/", "/outreach", "/events"],
+        ? ([
+            {
+              to: "/",
+              label: "Home",
+              icon: <FaHouse />,
+            },
+            {
+              to: "/leaderboard/outreach",
+              label: "Leaderboard",
+              icon: <FaPeopleGroup />,
+            },
+            {
+              to: "/events",
+              label: "Events",
+              fuzzy: true,
+              icon: <FaRegCalendar />,
+            },
+            { to: "/admin", label: "Admin", icon: <FaHouseLock /> },
+          ] satisfies TabItem[])
+        : ([
+            {
+              to: "/",
+              label: "Home",
+              icon: <FaHouse />,
+            },
+            {
+              to: "/leaderboard/outreach",
+              label: "Leaderboard",
+              icon: <FaPeopleGroup />,
+            },
+            {
+              to: "/events",
+              fuzzy: true,
+              label: "Events",
+              icon: <FaRegCalendar />,
+            },
+          ] satisfies TabItem[]),
     [authStatusQuery.data.isAdmin]
   );
 
-  const routeMatch = useRouteMatch(routes);
-
-  const currentTab = routeMatch?.pattern.path;
+  const currentTab = useRouteMatch(routes);
 
   return (
     <Box
@@ -64,37 +92,17 @@ export function Component() {
           right: 0,
         }}
       >
-        <BottomNavigationAction
-          label="Home"
-          value="/"
-          LinkComponent={LinkBehavior}
-          href="/"
-          icon={<FaHouse />}
-        />
-        <BottomNavigationAction
-          label="Leaderboard"
-          value="/leaderboard/outreach"
-          LinkComponent={LinkBehavior}
-          href="/leaderboard/outreach"
-          icon={<FaPeopleGroup />}
-        />
-        <BottomNavigationAction
-          label="Events"
-          value="/events"
-          LinkComponent={LinkBehavior}
-          href="/events"
-          icon={<FaRegCalendar />}
-        />
-        {authStatusQuery.data.isAdmin ? (
-          <BottomNavigationAction
-            label="Admin"
-            value="/admin"
-            LinkComponent={LinkBehavior}
-            href="/admin"
-            icon={<FaHouseLock />}
-          />
-        ) : null}
+        {routes.map((route, index) => (
+          <AsChildLink to={route.to} params={route.params} key={route.to}>
+            <BottomNavigationAction
+              label={route.label}
+              icon={route.icon}
+              value={index}
+            />
+          </AsChildLink>
+        ))}
       </BottomNavigation>
+      <TanStackRouterDevtools />
     </Box>
   );
 }

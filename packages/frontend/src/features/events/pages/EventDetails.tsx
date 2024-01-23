@@ -1,41 +1,24 @@
-import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
-import ensureAuth from "../../auth/utils/ensureAuth";
 import { Container, Grid, Paper, Stack, Typography } from "@mui/material";
-import { z } from "zod";
+
 import { DateTime } from "luxon";
 import RsvpList from "../components/RSVPList";
 import DeleteEventButton from "../components/DeleteEventButton";
 import { trpc } from "@/trpcClient";
-import { queryUtils } from "@/trpcClient";
+import { RouteApi } from "@tanstack/react-router";
 
-const EventParamsSchema = z.object({
-  eventId: z.string(),
+const routeApi = new RouteApi({
+  id: "/authedOnly/events/$eventId/",
 });
 
-export async function loader({ params }: LoaderFunctionArgs) {
-  const initialAuthStatus = await ensureAuth();
-
-  const { eventId } = EventParamsSchema.parse(params);
-
-  const initialEventData = await queryUtils.events.getEvent.ensureData(eventId);
-
-  return {
-    eventId,
-    initialAuthStatus,
-    initialEventData,
-  };
-}
-
 export function Component() {
-  const { initialEventData, initialAuthStatus, eventId } =
-    useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const { initialEvent, initialAuth } = routeApi.useLoaderData();
 
-  const eventQuery = trpc.events.getEvent.useQuery(initialEventData.id, {
-    initialData: initialEventData,
+  const eventQuery = trpc.events.getEvent.useQuery(initialEvent.id, {
+    initialData: initialEvent,
   });
 
   const authStatusQuery = trpc.auth.status.useQuery(undefined, {
-    initialData: initialAuthStatus,
+    initialData: initialAuth,
   });
 
   return (
@@ -103,13 +86,16 @@ export function Component() {
         {authStatusQuery.data.isAdmin ? (
           <Grid item xs={12}>
             <Stack spacing={2} direction="row">
-              <DeleteEventButton eventId={initialEventData.id} />
+              <DeleteEventButton eventId={initialEvent.id} />
             </Stack>
           </Grid>
         ) : null}
 
         <Grid item xs={12}>
-          <RsvpList eventId={eventId} admin={authStatusQuery.data.isAdmin} />
+          <RsvpList
+            eventId={initialEvent.id}
+            admin={authStatusQuery.data.isAdmin}
+          />
         </Grid>
       </Grid>
     </Container>

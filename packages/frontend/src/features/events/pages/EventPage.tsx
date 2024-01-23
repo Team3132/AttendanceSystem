@@ -1,89 +1,94 @@
-import { LoaderFunctionArgs, Outlet, useLoaderData } from "react-router-dom";
-import ensureAuth from "../../auth/utils/ensureAuth";
 import { useMemo } from "react";
 import useRouteMatch from "../../../utils/useRouteMatch";
 import { Tab, Tabs } from "@mui/material";
 import DefaultAppBar from "../../../components/DefaultAppBar";
-import { z } from "zod";
 import { DateTime } from "luxon";
-import LinkBehavior from "../../../utils/LinkBehavior";
 import { trpc } from "@/trpcClient";
-import { queryUtils } from "@/trpcClient";
+import {
+  AnyRoute,
+  Outlet,
+  RegisteredRouter,
+  RouteApi,
+  RoutePaths,
+  ToPathOption,
+} from "@tanstack/react-router";
+import AsChildLink from "@/components/AsChildLink";
+import { PathParamOptions } from "@tanstack/react-router";
+import { ResolveRelativePath } from "@tanstack/react-router";
+import { NoInfer } from "@tanstack/react-query";
 
-const EventParamsSchema = z.object({
-  eventId: z.string(),
+const routeApi = new RouteApi({
+  id: "/authedOnly/events/$eventId",
 });
 
-export async function loader({ params }: LoaderFunctionArgs) {
-  const { eventId } = EventParamsSchema.parse(params);
-
-  const initialAuthStatus = await ensureAuth();
-
-  const initialEventData = await queryUtils.events.getEvent.ensureData(eventId);
-
-  return {
-    initialAuthStatus,
-    initialEventData,
-  };
-}
-
-interface TabItem {
+type TabItem<
+  TRouteTree extends AnyRoute = RegisteredRouter["routeTree"],
+  TFrom extends RoutePaths<TRouteTree> | string = string,
+  TTo extends string = "",
+  TResolved = ResolveRelativePath<TFrom, NoInfer<TTo>>,
+> = {
   label: string;
   icon?: React.ReactElement | string;
-  path: string;
-}
+  to: ToPathOption<TRouteTree, TFrom, TTo>;
+} & PathParamOptions<TRouteTree, TFrom, TTo, TResolved>;
 
 export function Component() {
-  const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const loaderData = routeApi.useLoaderData();
 
-  const { initialAuthStatus } = loaderData;
+  const { initialAuth, initialEvent } = loaderData;
 
   const authStatusQuery = trpc.auth.status.useQuery(undefined, {
-    initialData: initialAuthStatus,
+    initialData: initialAuth,
   });
 
-  const eventQuery = trpc.events.getEvent.useQuery(
-    loaderData.initialEventData.id,
-    {
-      initialData: loaderData.initialEventData,
-    }
-  );
+  const eventQuery = trpc.events.getEvent.useQuery(initialEvent.id, {
+    initialData: initialEvent,
+  });
 
-  const tabs = useMemo<Array<TabItem>>(
+  const tabs = useMemo(
     () =>
       !authStatusQuery.data.isAdmin
-        ? [
+        ? ([
             {
               label: "Details",
-              path: "/events/:eventId",
+              to: "/events/$eventId",
+              params: {
+                eventId: eventQuery.data.id,
+              },
             },
             {
               label: "Check In",
-              path: "/events/:eventId/check-in",
-            },
-          ]
-        : [
+              to: "/events/$eventId/check-in",
+              params: {},
+            } satisfies TabItem,
+          ] satisfies Array<TabItem>)
+        : ([
             {
               label: "Details",
-              path: "/events/:eventId",
+              to: "/events/$eventId",
+              params: {
+                eventId: eventQuery.data.id,
+              },
             },
             {
               label: "Check In",
-              path: "/events/:eventId/check-in",
+              to: "/events/$eventId/check-in",
+              params: {
+                eventId: eventQuery.data.id,
+              },
             },
             {
               label: "QR Code",
-              path: "/events/:eventId/qr-code",
+              to: "/events/$eventId/qr-code",
+              params: {
+                eventId: eventQuery.data.id,
+              },
             },
-          ],
-    [authStatusQuery.data.isAdmin]
+          ] satisfies Array<TabItem>),
+    [authStatusQuery.data.isAdmin, eventQuery.data.id]
   );
 
-  const routes = useMemo(() => tabs.map((tab) => tab.path), [tabs]);
-
-  const routeMatch = useRouteMatch(routes);
-
-  const currentTab = routeMatch?.pattern.path;
+  const currentTab = useRouteMatch(tabs);
 
   return (
     <>
@@ -93,15 +98,16 @@ export function Component() {
         )} - ${eventQuery.data.title}`}
       />
       <Tabs value={currentTab} variant="scrollable" scrollButtons="auto">
-        {tabs.map((tab) => (
-          <Tab
-            key={tab.path}
-            label={tab.label}
-            icon={tab.icon}
-            value={tab.path}
-            href={tab.path.replace(":eventId", eventQuery.data.id)}
-            LinkComponent={LinkBehavior}
-          />
+        {tabs.map((tab, index) => (
+          <AsChildLink
+            to={tab.to}
+            params={{
+              eventId: eventQuery.data.id,
+            }}
+            activeProps={{}}
+          >
+            <Tab key={tab.to} label={tab.label} value={index} />
+          </AsChildLink>
         ))}
       </Tabs>
       <Outlet />

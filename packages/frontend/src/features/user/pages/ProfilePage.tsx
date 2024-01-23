@@ -1,56 +1,31 @@
-import { Outlet, useLoaderData } from "react-router-dom";
-import ensureAuth from "../../auth/utils/ensureAuth";
 import useRouteMatch from "../../../utils/useRouteMatch";
 import DefaultAppBar from "../../../components/DefaultAppBar";
 import { Tab, Tabs } from "@mui/material";
-import LinkBehavior from "../../../utils/LinkBehavior";
-import { queryUtils } from "@/trpcClient";
 import { trpc } from "@/trpcClient";
+import { Outlet, RouteApi } from "@tanstack/react-router";
+import AsChildLink from "@/components/AsChildLink";
+import { TabItem } from "@/types/TabItem";
 
-interface TabItem {
-  label: string;
-  icon?: React.ReactElement | string;
-  path: string;
-}
-
-export async function loader() {
-  const initialAuthStatus = await ensureAuth();
-
-  const initialUser = await queryUtils.users.getSelf.ensureData();
-
-  return {
-    initialUser,
-    initialAuthStatus,
-  };
-}
-
+const routeApi = new RouteApi({ id: "/authedOnly/profile" });
 const tabs: Array<TabItem> = [
   {
     label: "Scancodes",
-    path: "/profile",
+    to: "/profile",
   },
   {
     label: "Pending",
-    path: "/profile/pending",
+    to: "/profile/pending",
   },
-  // {
-  //   label: "Build Points",
-  //   path: "/profile/build-points",
-  // },
 ];
 
-const routes = tabs.map((tab) => tab.path);
-
 export function Component() {
-  const loaderData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const loaderData = routeApi.useLoaderData();
 
   const userQuery = trpc.users.getSelf.useQuery(undefined, {
     initialData: loaderData.initialUser,
   });
 
-  const routeMatch = useRouteMatch(routes);
-
-  const currentTab = routeMatch?.pattern.path;
+  const currentTab = useRouteMatch(tabs);
 
   return (
     <>
@@ -58,15 +33,10 @@ export function Component() {
         title={`${userQuery.data?.username ?? "Loading"}'s Profile`}
       />
       <Tabs value={currentTab}>
-        {tabs.map((tab) => (
-          <Tab
-            key={tab.path}
-            label={tab.label}
-            icon={tab.icon}
-            value={tab.path}
-            href={tab.path}
-            LinkComponent={LinkBehavior}
-          />
+        {tabs.map((tab, index) => (
+          <AsChildLink to={tab.to} params={tab.params}>
+            <Tab key={tab.to} label={tab.label} value={index} />
+          </AsChildLink>
         ))}
       </Tabs>
       <Outlet />

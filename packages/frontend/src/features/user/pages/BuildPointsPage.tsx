@@ -1,5 +1,4 @@
 import Datatable from "@/components/DataTable";
-import ensureAuth from "@/features/auth/utils/ensureAuth";
 import { trpc } from "@/trpcClient";
 import { Container, Stack, Paper, Typography } from "@mui/material";
 import { createColumnHelper } from "@tanstack/table-core";
@@ -7,15 +6,6 @@ import { BuildPointSchema } from "backend/schema";
 import { DateTime } from "luxon";
 import { useMemo } from "react";
 import { z } from "zod";
-
-export async function loader() {
-  const initialAuthStatus = await ensureAuth();
-
-  return {
-    // pendingEvents,
-    initialAuthStatus,
-  };
-}
 
 const columnHelper = createColumnHelper<z.infer<typeof BuildPointSchema>>();
 

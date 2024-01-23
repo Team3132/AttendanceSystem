@@ -1,20 +1,11 @@
 import { Button, Container, Paper, Stack, Typography } from "@mui/material";
-import { useLoaderData } from "react-router-dom";
-import ensureUnauth from "../utils/ensureUnauth";
 import { trpc } from "@/trpcClient";
+import { RouteApi } from "@tanstack/react-router";
 
-export const loader = async () => {
-  const initialAuthStatus = await ensureUnauth();
-
-  return {
-    initialAuthStatus,
-  };
-};
+const routeApi = new RouteApi({ id: "/unauthedOnly/login" });
 
 export function Component() {
-  const { initialAuthStatus } = useLoaderData() as Awaited<
-    ReturnType<typeof loader>
-  >;
+  const initialAuthStatus = routeApi.useLoaderData();
   const authStatusQuery = trpc.auth.status.useQuery(undefined, {
     initialData: initialAuthStatus,
   });

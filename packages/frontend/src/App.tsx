@@ -5,7 +5,6 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { useMemo } from "react";
-import { RouterProvider } from "react-router-dom";
 import router from "./router";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Provider } from "react-alert";
@@ -14,6 +13,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { queryClient, trpc, trpcClient } from "./trpcClient";
 import { HelmetProvider } from "react-helmet-async";
+import { RouterProvider } from "@tanstack/react-router";
 
 /**
  * The root component of the application.
