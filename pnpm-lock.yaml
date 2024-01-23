@@ -272,8 +272,8 @@ importers:
         specifier: 6.18.7
         version: 6.18.7(@emotion/react@11.11.3)(@emotion/styled@11.11.0)(@mui/material@5.15.3)(@mui/system@5.15.6)(@types/react@18.2.48)(luxon@3.4.4)(react-dom@18.2.0)(react@18.2.0)
       '@tanstack/match-sorter-utils':
-        specifier: 8.11.3
-        version: 8.11.3
+        specifier: 8.11.7
+        version: 8.11.7
       '@tanstack/query-sync-storage-persister':
         specifier: 5.17.9
         version: 5.17.9
@@ -2190,8 +2190,8 @@ packages:
     engines: {node: '>=12'}
     dev: false
 
-  /@tanstack/match-sorter-utils@8.11.3:
-    resolution: {integrity: sha512-2XVYTN6fLFyeIPywDL/HGKIQce3V6oUch1FHweGwxruPKEXip6Z9qg+zWZwNE26WG6CktqJh6NqTq90a42jeEw==}
+  /@tanstack/match-sorter-utils@8.11.7:
+    resolution: {integrity: sha512-4PUKgaaFpiB7MK406N5VAiLu2VUhDumojGWhEC8kNQ767RGU2vsJDI7Xp4D8lMBzijqswRWz3U8ioa2zUKnFeQ==}
     engines: {node: '>=12'}
     dependencies:
       remove-accents: 0.4.2
