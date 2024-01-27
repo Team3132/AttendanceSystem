@@ -342,8 +342,8 @@ importers:
         specifier: 2.5.115
         version: 2.5.115
       '@tanstack/eslint-plugin-query':
-        specifier: 5.17.20
-        version: 5.17.20(eslint@8.56.0)(typescript@5.3.3)
+        specifier: 5.17.22
+        version: 5.17.22(eslint@8.56.0)(typescript@5.3.3)
       '@trpc/client':
         specifier: 11.0.0-next-beta.242
         version: 11.0.0-next-beta.242(@trpc/server@11.0.0-next-beta.242)
@@ -2150,8 +2150,8 @@ packages:
       defer-to-connect: 2.0.1
     dev: true
 
-  /@tanstack/eslint-plugin-query@5.17.20(eslint@8.56.0)(typescript@5.3.3):
-    resolution: {integrity: sha512-Jxu/GV7JqDgI6HMP8wQqc5a8efe0GaXoc0qCI+YjVBWEaWh8+T+wF5Ywha44gVraaEGlqkEhYmZrykg6dUG3OA==}
+  /@tanstack/eslint-plugin-query@5.17.22(eslint@8.56.0)(typescript@5.3.3):
+    resolution: {integrity: sha512-9y85gtYcU60M4zW5/CNSxNygbil2jairs4DbtNvGKxQHi4LYUs30sLRcsuXDhu1cPGCY/yRN7LTjWFQCrWFGbQ==}
     peerDependencies:
       eslint: ^8.0.0
     dependencies:
