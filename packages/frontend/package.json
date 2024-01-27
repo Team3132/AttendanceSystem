@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@swc/plugin-emotion": "2.5.115",
-    "@tanstack/eslint-plugin-query": "5.17.20",
+    "@tanstack/eslint-plugin-query": "5.17.22",
     "@trpc/client": "11.0.0-next-beta.242",
     "@trpc/react-query": "11.0.0-next-beta.242",
     "@trpc/server": "11.0.0-next-beta.242",
