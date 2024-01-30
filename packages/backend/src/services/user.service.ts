@@ -11,7 +11,7 @@ import { PagedUserSchema } from "../schema/PagedUserSchema";
 import { GetBuildPointsSchema } from "../schema/GetBuildPointsSchema";
 import { PagedBuildPointsSchema } from "../schema/PagedBuildPointsSchema";
 import { RemoveBuildPointSchema } from "../schema/RemoveBuildPointSchema";
-import { GetUserRecentRsvpsSchema } from "../schema/GetUserRecentRsvpsSchema";
+import { GetSelfRecentRsvpsSchema } from "../schema/GetUserRecentRsvpsSchema";
 import { PagedUserRecentRsvpsSchema } from "../schema/PagedUserRecentRsvpsSchema";
 
 /**
@@ -303,7 +303,7 @@ export async function removeUserBuildPoints(
 
 export async function getUserRecentRsvps(
   userId: string,
-  params: z.infer<typeof GetUserRecentRsvpsSchema>
+  params: z.infer<typeof GetSelfRecentRsvpsSchema>
 ) {
   const { limit, cursor: page } = params;
 

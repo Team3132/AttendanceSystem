@@ -31,3 +31,4 @@ export * from "./AddBuildPointsSchema";
 export * from "./PagedBuildPointUsersSchema";
 export * from "./BuildPointSchema";
 export * from "./BuildPointUserSchema";
+export * from "./GetUserRecentRsvpsSchema";

@@ -5,6 +5,6 @@ export const GetSelfRecentRsvpsSchema = z.object({
   cursor: z.number().int().min(0).default(0),
 });
 
-export const GetUserRecentRsvpsSchema = GetSelfecentRsvpsSchema.extend({
+export const GetUserRecentRsvpsSchema = GetSelfRecentRsvpsSchema.extend({
   userId: z.string(),
 });

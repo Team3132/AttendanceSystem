@@ -84,13 +84,22 @@ const adminUserBuildPointsRoute = new Route({
 const adminUserRecentRsvpsRoute = new Route({
   path: "/recent-rsvps",
   getParentRoute: () => adminUserRoute,
+  component: lazyRouteComponent(() => import("../pages/AdminRecentRsvps")),
   loader: async ({ context: { queryUtils }, params }) => {
     const [initialUser, initialRecentRsvps] = await Promise.all([
       await queryUtils.users.getUser.ensureData(params.userId),
-      await queryUtils.users.getUserRecentRsvps.ensureData({}),
+      await queryUtils.users.getUserRecentRsvps.ensureData({
+        userId: params.userId,
+      }),
     ]);
+
+    return {
+      userId: params.userId,
+      initialUser,
+      initialRecentRsvps,
+    };
   },
-}));
+});
 
 export const adminUserRoutes = adminUserRoute.addChildren([
   adminUserIndexRoute,
