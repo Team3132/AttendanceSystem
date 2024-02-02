@@ -284,8 +284,8 @@ importers:
         specifier: 5.18.1
         version: 5.18.1(@tanstack/react-query@5.18.1)(react@18.2.0)
       '@tanstack/react-router':
-        specifier: 1.15.9
-        version: 1.15.9(react-dom@18.2.0)(react@18.2.0)
+        specifier: 1.15.13
+        version: 1.15.13(react-dom@18.2.0)(react@18.2.0)
       '@tanstack/react-table':
         specifier: 8.11.7
         version: 8.11.7(react-dom@18.2.0)(react@18.2.0)
@@ -2174,6 +2174,11 @@ packages:
     engines: {node: '>=12'}
     dev: false
 
+  /@tanstack/history@1.15.13:
+    resolution: {integrity: sha512-ToaeMtK5S4YaxCywAlYexc7KPFN0esjyTZ4vXzJhXEWAkro9iHgh7m/4ozPJb7oTo65WkHWX0W9GjcZbInSD8w==}
+    engines: {node: '>=12'}
+    dev: false
+
   /@tanstack/match-sorter-utils@8.11.8:
     resolution: {integrity: sha512-3VPh0SYMGCa5dWQEqNab87UpCMk+ANWHDP4ALs5PeEW9EpfTAbrezzaOk/OiM52IESViefkoAOYuxdoa04p6aA==}
     engines: {node: '>=12'}
@@ -2216,14 +2221,14 @@ packages:
       '@tanstack/query-core': 5.18.1
       react: 18.2.0
 
-  /@tanstack/react-router@1.15.7(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-4b5ia1HG1iQhdRQ67NDjzDkA0tLm2aeoE07DqIXSWTY8xrrNBgYUjfCKKNy2l/qIE5/gFmsoaqab3ZJxohOFmQ==}
+  /@tanstack/react-router@1.15.13(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-zkvYYUeK3N+799a4aEOZ/E6iXMz/LZ8i2ZThAzgk0NUNvp99PqakVosxAtfJdCTM8RrQwjFrnRwSRr0lNX1dDw==}
     engines: {node: '>=12'}
     peerDependencies:
       react: '>=16'
       react-dom: '>=16'
     dependencies:
-      '@tanstack/history': 1.12.16
+      '@tanstack/history': 1.15.13
       '@tanstack/react-store': 0.2.1(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -2231,8 +2236,8 @@ packages:
       tiny-warning: 1.0.3
     dev: false
 
-  /@tanstack/react-router@1.15.9(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-Ggs4oBaUzCjYLcg9ZtapHFijNQp+wzt7Jdc06zoqlrUuRxWKvQ5jLfCUvTsNnBnE8KgK9fGsXYRXm50HQd3riQ==}
+  /@tanstack/react-router@1.15.7(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-4b5ia1HG1iQhdRQ67NDjzDkA0tLm2aeoE07DqIXSWTY8xrrNBgYUjfCKKNy2l/qIE5/gFmsoaqab3ZJxohOFmQ==}
     engines: {node: '>=12'}
     peerDependencies:
       react: '>=16'
