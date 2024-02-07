@@ -6,14 +6,7 @@ settings:
 
 importers:
 
-  .:
-    devDependencies:
-      '@biomejs/biome':
-        specifier: 1.5.3
-        version: 1.5.3
-      typescript:
-        specifier: 5.3.3
-        version: 5.3.3
+  .: {}
 
   packages/backend:
     dependencies:
@@ -99,6 +92,9 @@ importers:
         specifier: 3.22.4
         version: 3.22.4
     devDependencies:
+      '@biomejs/biome':
+        specifier: 1.5.3
+        version: 1.5.3
       '@types/luxon':
         specifier: 3.4.2
         version: 3.4.2
@@ -199,6 +195,9 @@ importers:
         specifier: 3.22.4
         version: 3.22.4
     devDependencies:
+      '@biomejs/biome':
+        specifier: 1.5.3
+        version: 1.5.3
       '@swc/cli':
         specifier: 0.1.65
         version: 0.1.65(@swc/core@1.4.0)
@@ -344,6 +343,9 @@ importers:
         specifier: 3.22.4
         version: 3.22.4
     devDependencies:
+      '@biomejs/biome':
+        specifier: 1.5.3
+        version: 1.5.3
       '@swc/plugin-emotion':
         specifier: 2.5.119
         version: 2.5.119
