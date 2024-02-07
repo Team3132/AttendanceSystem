@@ -1,15 +1,15 @@
 import { relations } from "drizzle-orm";
 import {
-  pgTable,
-  pgEnum,
-  timestamp,
-  text,
-  integer,
-  uniqueIndex,
   boolean,
+  integer,
+  pgEnum,
+  pgTable,
+  text,
+  timestamp,
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
-import { v4 } from "uuid";
 import { ulid } from "ulidx";
+import { v4 } from "uuid";
 
 export const eventTypes = pgEnum("EventTypes", [
   "Social",
@@ -129,10 +129,10 @@ export const rsvp = pgTable(
     return {
       eventIdUserIdKey: uniqueIndex("RSVP_eventId_userId_key").on(
         table.eventId,
-        table.userId
+        table.userId,
       ),
     };
-  }
+  },
 );
 
 export const rsvpRelations = relations(rsvp, ({ one }) => ({
@@ -168,7 +168,7 @@ export const event = pgTable(
     return {
       secretKey: uniqueIndex("Event_secret_key").on(table.secret),
     };
-  }
+  },
 );
 
 export const eventRelations = relations(event, ({ many }) => ({

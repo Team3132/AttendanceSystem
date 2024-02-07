@@ -1,16 +1,22 @@
 import { z } from "zod";
-import { t } from "../trpc";
-import { mentorSessionProcedure, sessionProcedure } from "../trpc/utils";
-import { GetEventParamsSchema } from "../schema/GetEventParamsSchema";
-import { EventSchema } from "../schema/EventSchema";
-import { RSVPSchema } from "../schema/RSVPSchema";
-import { RSVPUserSchema } from "../schema/RSVPUserSchema";
+import { CreateBlankUserRsvpSchema } from "../schema/CreateBlankUserRsvpSchema";
 import { CreateEventSchema } from "../schema/CreateEventSchema";
 import { EditEventSchema } from "../schema/EditEventSchema";
 import { EditRSVPSelfSchema } from "../schema/EditRSVPSelfSchema";
 import { EditRSVPUserSchema } from "../schema/EditRSVPUserSchema";
-import { ScaninSchema } from "../schema/ScaninSchema";
 import { EditUserAttendanceSchema } from "../schema/EditUserAttendanceSchema";
+import { EventSchema } from "../schema/EventSchema";
+import { EventWithSecretArraySchema } from "../schema/EventWithSecretArraySchema";
+import { GetEventParamsSchema } from "../schema/GetEventParamsSchema";
+import { GetSecretUpcomingEventsSchema } from "../schema/GetSecretUpcomingEventsSchema";
+import { PagedEventsSchema } from "../schema/PagedEventsSchema";
+import { RSVPSchema } from "../schema/RSVPSchema";
+import { RSVPUserSchema } from "../schema/RSVPUserSchema";
+import { ScaninSchema } from "../schema/ScaninSchema";
+import { SecretOutputSchema } from "../schema/SecretOutputSchema";
+import { SelfCheckinSchema } from "../schema/SelfCheckinSchema";
+import { UserCheckinSchema } from "../schema/UserCheckinSchema";
+import { UserCheckoutSchema } from "../schema/UserCheckoutSchema";
 import {
   createBlankUserRsvp,
   createEvent,
@@ -29,14 +35,8 @@ import {
   userCheckout,
   userScanin,
 } from "../services/events.service";
-import { SecretOutputSchema } from "../schema/SecretOutputSchema";
-import { UserCheckinSchema } from "../schema/UserCheckinSchema";
-import { UserCheckoutSchema } from "../schema/UserCheckoutSchema";
-import { SelfCheckinSchema } from "../schema/SelfCheckinSchema";
-import { CreateBlankUserRsvpSchema } from "../schema/CreateBlankUserRsvpSchema";
-import { PagedEventsSchema } from "../schema/PagedEventsSchema";
-import { GetSecretUpcomingEventsSchema } from "../schema/GetSecretUpcomingEventsSchema";
-import { EventWithSecretArraySchema } from "../schema/EventWithSecretArraySchema";
+import { t } from "../trpc";
+import { mentorSessionProcedure, sessionProcedure } from "../trpc/utils";
 
 export const eventRouter = t.router({
   getEvents: sessionProcedure
@@ -79,7 +79,7 @@ export const eventRouter = t.router({
     .input(EditRSVPUserSchema)
     .output(RSVPSchema)
     .mutation(({ input: { userId, ...data } }) =>
-      editUserRsvpStatus(userId, data)
+      editUserRsvpStatus(userId, data),
     ),
   selfCheckin: sessionProcedure
     .input(SelfCheckinSchema)
@@ -101,7 +101,7 @@ export const eventRouter = t.router({
     .input(UserCheckoutSchema)
     .output(RSVPSchema)
     .mutation(({ input: { userId, eventId } }) =>
-      userCheckout(userId, eventId)
+      userCheckout(userId, eventId),
     ),
   editUserAttendance: mentorSessionProcedure
     .input(EditUserAttendanceSchema)

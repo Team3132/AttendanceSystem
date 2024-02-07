@@ -6,7 +6,7 @@ const leaderboardRoute = new Route({
   path: "/leaderboard",
   component: lazyRouteComponent(
     () => import("../pages/OutreachHome"),
-    "Component"
+    "Component",
   ),
 });
 
@@ -19,7 +19,7 @@ const outreachLeaderboardRoute = new Route({
     }),
   component: lazyRouteComponent(
     () => import("../pages/LeaderBoardCard"),
-    "Component"
+    "Component",
   ),
 });
 
@@ -32,7 +32,7 @@ const buildPointsLeaderboardRoute = new Route({
     }),
   component: lazyRouteComponent(
     () => import("../pages/LeaderBoardCard"),
-    "Component"
+    "Component",
   ),
 });
 

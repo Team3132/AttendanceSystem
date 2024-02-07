@@ -1,17 +1,17 @@
 import {
-  ExceptionFilter,
-  Catch,
   ArgumentsHost,
+  Catch,
+  ExceptionFilter,
   ForbiddenException,
-} from '@nestjs/common';
-import { NecordArgumentsHost } from 'necord';
-import { EmbedBuilder, InteractionType } from 'discord.js';
+} from "@nestjs/common";
+import { EmbedBuilder, InteractionType } from "discord.js";
+import { NecordArgumentsHost } from "necord";
 
 @Catch(ForbiddenException)
 export class ForbiddenDiscordFilter implements ExceptionFilter {
   public async catch(exception: ForbiddenException, host: ArgumentsHost) {
     const necordArguments =
-      NecordArgumentsHost.create(host).getContext<'interactionCreate'>();
+      NecordArgumentsHost.create(host).getContext<"interactionCreate">();
 
     if (!Array.isArray(necordArguments)) throw exception;
 
@@ -20,7 +20,7 @@ export class ForbiddenDiscordFilter implements ExceptionFilter {
     if (!interaction) return;
 
     const errorEmbed = new EmbedBuilder()
-      .setColor('Red')
+      .setColor("Red")
       .setTitle("You don't have permission to do that.");
 
     if (

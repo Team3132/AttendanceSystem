@@ -5,7 +5,7 @@ const profileRoute = new Route({
   getParentRoute: () => authedOnlyRoute,
   component: lazyRouteComponent(
     () => import("../pages/ProfilePage"),
-    "Component"
+    "Component",
   ),
   path: "/profile",
   loader: async ({ context: { queryUtils } }) => {
@@ -36,7 +36,7 @@ const profileIndexRoute = new Route({
   },
   component: lazyRouteComponent(
     () => import("../pages/ScancodePage"),
-    "Component"
+    "Component",
   ),
 });
 
@@ -56,7 +56,7 @@ const profilePendingEventsRoute = new Route({
   },
   component: lazyRouteComponent(
     () => import("../pages/PendingEventsPage"),
-    "Component"
+    "Component",
   ),
 });
 
@@ -74,7 +74,7 @@ const profileBuildPointsRoute = new Route({
   },
   component: lazyRouteComponent(
     () => import("../pages/BuildPointsPage"),
-    "Component"
+    "Component",
   ),
 });
 

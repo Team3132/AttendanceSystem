@@ -1,13 +1,13 @@
 import Datatable from "@/components/DataTable";
 import { trpc } from "@/trpcClient";
-import { Container, Stack, Paper, Typography } from "@mui/material";
+import { Container, Paper, Stack, Typography } from "@mui/material";
+import { RouteApi } from "@tanstack/react-router";
 import { createColumnHelper } from "@tanstack/table-core";
 import { BuildPointSchema } from "backend/schema";
 import { DateTime } from "luxon";
 import { useMemo } from "react";
 import { z } from "zod";
 import BuildPointMenu from "../components/BuildPointMenu";
-import { RouteApi } from "@tanstack/react-router";
 
 const routeApi = new RouteApi({
   id: "/authedOnly/adminOnly/user/$userId/build-points",
@@ -26,7 +26,7 @@ const columns = [
     header: "Date",
     cell: (row) =>
       DateTime.fromISO(row.getValue()).toLocaleString(
-        DateTime.DATE_MED_WITH_WEEKDAY
+        DateTime.DATE_MED_WITH_WEEKDAY,
       ),
   }),
   columnHelper.display({
@@ -47,17 +47,17 @@ export function Component() {
     },
     {
       getNextPageParam: (lastPage) => lastPage.nextPage,
-    }
+    },
   );
 
   const flatResults = useMemo(
     () => buildPointsQuery.data?.pages.flatMap((page) => page.items),
-    [buildPointsQuery.data]
+    [buildPointsQuery.data],
   );
 
   const totalRowCount = useMemo(
     () => buildPointsQuery.data?.pages.at(-1)?.total ?? 0,
-    [buildPointsQuery.data]
+    [buildPointsQuery.data],
   );
 
   return (

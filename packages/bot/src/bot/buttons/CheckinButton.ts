@@ -1,17 +1,17 @@
-import { Injectable, UseGuards } from '@nestjs/common';
-import { Button, Context, type ButtonContext, ComponentParam } from 'necord';
-import { CheckinModal } from '../modals/Checkin.modal';
-import { GuildMemberGuard } from '../guards/GuildMemberGuard';
+import { Injectable, UseGuards } from "@nestjs/common";
+import { Button, type ButtonContext, ComponentParam, Context } from "necord";
+import { GuildMemberGuard } from "../guards/GuildMemberGuard";
+import { CheckinModal } from "../modals/Checkin.modal";
 
 @Injectable()
 export class CheckinButton {
   constructor() {}
 
   @UseGuards(GuildMemberGuard)
-  @Button('event/:eventId/checkin')
+  @Button("event/:eventId/checkin")
   public async onRsvpsButton(
     @Context() [interaction]: ButtonContext,
-    @ComponentParam('eventId') eventId: string,
+    @ComponentParam("eventId") eventId: string,
   ) {
     return interaction.showModal(CheckinModal.build(eventId));
   }

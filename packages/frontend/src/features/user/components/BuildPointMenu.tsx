@@ -1,4 +1,6 @@
 import { useDisclosure } from "@/hooks/useDisclosure";
+import { trpc } from "@/trpcClient";
+import { Delete, MoreVert } from "@mui/icons-material";
 import {
   IconButton,
   ListItemIcon,
@@ -6,9 +8,7 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import { Delete, MoreVert } from "@mui/icons-material";
 import { useId, useRef } from "react";
-import { trpc } from "@/trpcClient";
 
 interface BuildPointMenuProps {
   buildPointId: string;

@@ -1,16 +1,16 @@
+import ControlledSelect from "@/components/ControlledSelect";
+import ControlledTextField from "@/components/ControlledTextField";
+import { LoadingButton } from "@mui/lab";
 import { Container, Stack, Switch } from "@mui/material";
+import { DateTimePicker } from "@mui/x-date-pickers";
+import { useNavigate } from "@tanstack/react-router";
+import { CreateEventSchema } from "backend/schema";
+import { DateTime } from "luxon";
+import { useAlert } from "react-alert";
+import { Controller } from "react-hook-form";
 import DefaultAppBar from "../../../components/DefaultAppBar";
 import useZodForm from "../../../hooks/useZodForm";
-import { DateTime } from "luxon";
-import { DateTimePicker } from "@mui/x-date-pickers";
-import { Controller } from "react-hook-form";
-import { LoadingButton } from "@mui/lab";
 import useCreateEvent from "../hooks/useCreateEvent";
-import { useAlert } from "react-alert";
-import ControlledTextField from "@/components/ControlledTextField";
-import ControlledSelect from "@/components/ControlledSelect";
-import { CreateEventSchema } from "backend/schema";
-import { useNavigate } from "@tanstack/react-router";
 
 export function Component() {
   const {

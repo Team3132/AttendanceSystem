@@ -1,33 +1,33 @@
-import { BACKEND_TOKEN, type BackendClient } from '@/backend/backend.module';
-import { Inject, Injectable, UseGuards } from '@nestjs/common';
-import { GuildMemberGuard } from '../guards/GuildMemberGuard';
-import {
-  Button,
-  type ButtonContext,
-  ComponentParam,
-  Context,
-  SlashCommand,
-  type SlashCommandContext,
-  Options,
-} from 'necord';
+import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
+import { Inject, Injectable, UseGuards } from "@nestjs/common";
+import { BuildPointUserSchema } from "backend/schema/BuildPointUserSchema";
 import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
   EmbedBuilder,
   PermissionFlagsBits,
-} from 'discord.js';
-import { z } from 'zod';
-import { BuildPointUserSchema } from 'backend/schema/BuildPointUserSchema';
-import { AddBuildPointsOptionsDto } from '../dto/AddBuildPointsOptionsDto';
+} from "discord.js";
+import {
+  Button,
+  type ButtonContext,
+  ComponentParam,
+  Context,
+  Options,
+  SlashCommand,
+  type SlashCommandContext,
+} from "necord";
+import { z } from "zod";
+import { AddBuildPointsOptionsDto } from "../dto/AddBuildPointsOptionsDto";
+import { GuildMemberGuard } from "../guards/GuildMemberGuard";
 
 const leaderboardLine = (data: z.infer<typeof BuildPointUserSchema>) =>
   `${data.rank}. **${data.username}** - ${data.points}`;
 
-function randomStr(length: number = 8): string {
+function randomStr(length = 8): string {
   const alphanumericCharacters =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
 
   for (let i = 0; i < length; i++) {
     const randomIndex = Math.floor(
@@ -39,7 +39,7 @@ function randomStr(length: number = 8): string {
   return result;
 }
 
-const guildId = process.env['GUILD_ID'];
+const guildId = process.env["GUILD_ID"];
 
 @Injectable()
 export class BuildPointsPaginationButton {
@@ -48,10 +48,10 @@ export class BuildPointsPaginationButton {
   ) {}
 
   @UseGuards(GuildMemberGuard)
-  @Button('buildPointsLeaderboard/:toPage/:random')
+  @Button("buildPointsLeaderboard/:toPage/:random")
   public async onPageChange(
     @Context() [interaction]: ButtonContext,
-    @ComponentParam('toPage') toPage: string,
+    @ComponentParam("toPage") toPage: string,
   ) {
     const to = parseInt(toPage);
 
@@ -65,8 +65,8 @@ export class BuildPointsPaginationButton {
 
   @UseGuards(GuildMemberGuard)
   @SlashCommand({
-    name: 'buildpoints',
-    description: 'Get the leaderboard for build season points',
+    name: "buildpoints",
+    description: "Get the leaderboard for build season points",
     guilds: guildId ? [guildId] : undefined,
     dmPermission: false,
   })
@@ -81,8 +81,8 @@ export class BuildPointsPaginationButton {
 
   @UseGuards(GuildMemberGuard)
   @SlashCommand({
-    name: 'addbuildpoints',
-    description: 'Add build season points to a user',
+    name: "addbuildpoints",
+    description: "Add build season points to a user",
     guilds: guildId ? [guildId] : undefined,
     defaultMemberPermissions: PermissionFlagsBits.ManageRoles,
     dmPermission: false,
@@ -115,13 +115,13 @@ export class BuildPointsPaginationButton {
     // pages start at 1
     const maxPage = Math.ceil(total / perPage);
 
-    if (page > maxPage || page < 1) throw new Error('Invalid page');
+    if (page > maxPage || page < 1) throw new Error("Invalid page");
 
     const embed = new EmbedBuilder()
       .setTitle(`Build Points Leaderboard ${page}/${maxPage}`)
       .setTimestamp(new Date());
 
-    const lines = leaderBoardData.map(leaderboardLine).join('\n');
+    const lines = leaderBoardData.map(leaderboardLine).join("\n");
 
     embed.setDescription(lines);
 
@@ -129,12 +129,12 @@ export class BuildPointsPaginationButton {
       new ActionRowBuilder<ButtonBuilder>().addComponents(
         new ButtonBuilder()
           .setCustomId(`buildPointsLeaderboard/${1}/${randomStr(4)}`)
-          .setLabel('First')
+          .setLabel("First")
           .setStyle(ButtonStyle.Secondary)
           .setDisabled(page === 1),
         new ButtonBuilder()
           .setCustomId(`buildPointsLeaderboard/${page - 1}/${randomStr(4)}`)
-          .setLabel('Previous')
+          .setLabel("Previous")
           .setStyle(ButtonStyle.Secondary)
           .setDisabled(page === 1),
         new ButtonBuilder()
@@ -144,12 +144,12 @@ export class BuildPointsPaginationButton {
           .setDisabled(false),
         new ButtonBuilder()
           .setCustomId(`buildPointsLeaderboard/${page + 1}/${randomStr(4)}`)
-          .setLabel('Next')
+          .setLabel("Next")
           .setStyle(ButtonStyle.Secondary)
           .setDisabled(page === maxPage),
         new ButtonBuilder()
           .setCustomId(`buildPointsLeaderboard/${maxPage}/${randomStr(4)}`)
-          .setLabel('Last')
+          .setLabel("Last")
           .setStyle(ButtonStyle.Secondary)
           .setDisabled(page === maxPage),
       );

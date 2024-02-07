@@ -1,3 +1,5 @@
+import { trpc } from "@/trpcClient";
+import { LoadingButton } from "@mui/lab";
 import {
   Autocomplete,
   Button,
@@ -9,17 +11,15 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
-import useZodForm from "../../../hooks/useZodForm";
-import { z } from "zod";
+import { keepPreviousData } from "@tanstack/react-query";
+import { TRPCClientError } from "@trpc/client";
 import { useEffect, useMemo, useState } from "react";
 import { Controller } from "react-hook-form";
-import { LoadingButton } from "@mui/lab";
-import { trpc } from "@/trpcClient";
-import { useDisclosure } from "../../../hooks/useDisclosure";
-import useCreateUserScancode from "../../user/hooks/useCreateUserScancode";
-import { TRPCClientError } from "@trpc/client";
 import { useDebounce } from "usehooks-ts";
-import { keepPreviousData } from "@tanstack/react-query";
+import { z } from "zod";
+import { useDisclosure } from "../../../hooks/useDisclosure";
+import useZodForm from "../../../hooks/useZodForm";
+import useCreateUserScancode from "../../user/hooks/useCreateUserScancode";
 
 interface UnknownCodeModalProps {
   code: string;
@@ -67,7 +67,7 @@ export default function UnknownCodeModal(props: UnknownCodeModalProps) {
       enabled: isAutocompleteOpen,
       getNextPageParam: (lastPage) => lastPage.nextPage,
       placeholderData: keepPreviousData,
-    }
+    },
   );
 
   const userOption = useMemo(
@@ -78,7 +78,7 @@ export default function UnknownCodeModal(props: UnknownCodeModalProps) {
           label: user.username,
           value: user.id,
         })) ?? [],
-    [usersQuery.data]
+    [usersQuery.data],
   );
 
   const {

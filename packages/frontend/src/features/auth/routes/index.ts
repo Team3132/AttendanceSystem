@@ -10,7 +10,7 @@ export const authedOnlyRoute = new Route({
   loader: ({ context: { queryUtils } }) => queryUtils.auth.status.ensureData(),
   component: lazyRouteComponent(
     () => import("../../../templates/NavigationWrapper"),
-    "Component"
+    "Component",
   ),
   id: "authedOnly",
 });

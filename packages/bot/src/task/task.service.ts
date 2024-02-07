@@ -4,22 +4,22 @@ import { ROLES } from "@/constants";
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Cron } from "@nestjs/schedule";
+import { EventSchema } from "backend/schema";
 import {
   BaseMessageOptions,
-  bold,
   ChannelType,
   Client,
+  bold,
   roleMention,
 } from "discord.js";
 import { z } from "zod";
-import { EventSchema } from "backend/schema";
 
 @Injectable()
 export class TaskService {
   constructor(
     private readonly config: ConfigService,
     private readonly discordClient: Client,
-    @Inject(BACKEND_TOKEN) private readonly backendClient: BackendClient
+    @Inject(BACKEND_TOKEN) private readonly backendClient: BackendClient,
   ) {
     // this.handleCron(); // Run once on startup
   }
@@ -63,11 +63,11 @@ export class TaskService {
           rsvpReminderMessage(
             nextEvent,
             nextEventRsvps,
-            this.config.getOrThrow("FRONTEND_URL")
+            this.config.getOrThrow("FRONTEND_URL"),
           ),
           nextEvent,
         ] satisfies MessageEvent;
-      })
+      }),
     );
 
     const sentMessages = await Promise.all(
@@ -82,11 +82,11 @@ export class TaskService {
                   ? roleMention(ROLES.SOCIAL)
                   : roleMention(ROLES.EVERYONE)
           } ${bold(
-            `10pm reminder`
+            `10pm reminder`,
           )}: This channel should be used to let us know any last minute attendance changes on the day of the meeting.`,
           ...message,
-        })
-      )
+        }),
+      ),
     );
 
     this.logger.debug(`${sentMessages.length} reminder messages sent`);

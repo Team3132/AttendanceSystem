@@ -1,7 +1,7 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { Context, type ContextOf, On } from 'necord';
-import { Client } from 'discord.js';
-import { ConfigService } from '@nestjs/config';
+import { Injectable, Logger } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { Client } from "discord.js";
+import { Context, type ContextOf, On } from "necord";
 
 @Injectable()
 export class BotService {
@@ -13,7 +13,7 @@ export class BotService {
   private readonly logger = new Logger(BotService.name);
 
   async getGuild() {
-    const guildId = this.config.getOrThrow<string>('GUILD_ID');
+    const guildId = this.config.getOrThrow<string>("GUILD_ID");
     const cachedGuild = this.client.guilds.cache.get(guildId);
 
     if (!cachedGuild || !cachedGuild.available) {
@@ -36,13 +36,13 @@ export class BotService {
     return guildMember;
   }
 
-  @On('warn')
-  public onWarn(@Context() [message]: ContextOf<'warn'>) {
+  @On("warn")
+  public onWarn(@Context() [message]: ContextOf<"warn">) {
     this.logger.warn(message);
   }
 
-  @On('error')
-  public onError(@Context() [message]: ContextOf<'error'>) {
+  @On("error")
+  public onError(@Context() [message]: ContextOf<"error">) {
     this.logger.error(message);
   }
 }

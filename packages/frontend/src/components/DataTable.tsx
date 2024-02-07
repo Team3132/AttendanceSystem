@@ -12,17 +12,17 @@ import {
 import { RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
 import {
   ColumnDef,
+  FilterFn,
+  OnChangeFn,
+  Row,
+  RowSelectionState,
+  SortingState,
+  VisibilityState,
   flexRender,
   getCoreRowModel,
-  getSortedRowModel,
-  SortingState,
-  useReactTable,
-  Row,
-  VisibilityState,
-  FilterFn,
   getFilteredRowModel,
-  RowSelectionState,
-  OnChangeFn,
+  getSortedRowModel,
+  useReactTable,
 } from "@tanstack/react-table";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import React, { useMemo, useRef, useState } from "react";
@@ -144,7 +144,7 @@ export default function Datatable<Data extends object>({
         }
       }
     },
-    [fetchNextPage, isFetching, totalFetched, totalDBRowCount]
+    [fetchNextPage, isFetching, totalFetched, totalDBRowCount],
   );
 
   React.useEffect(() => {
@@ -178,7 +178,7 @@ export default function Datatable<Data extends object>({
                         <b>
                           {flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                           {{
                             asc: <FaArrowUp fontSize={"small"} />,
@@ -213,7 +213,7 @@ export default function Datatable<Data extends object>({
                       <TableCell key={cell.id} component="td">
                         {flexRender(
                           cell.column.columnDef.cell,
-                          cell.getContext()
+                          cell.getContext(),
                         )}
                       </TableCell>
                     );

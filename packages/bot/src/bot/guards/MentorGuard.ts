@@ -1,15 +1,15 @@
-import { BACKEND_TOKEN, type BackendClient } from '@/backend/backend.module';
-import { ROLES } from '@/constants';
+import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
+import { ROLES } from "@/constants";
 import {
   CanActivate,
   ExecutionContext,
   Inject,
   Injectable,
   Logger,
-} from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { GuildMember } from 'discord.js';
-import { NecordExecutionContext } from 'necord';
+} from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { GuildMember } from "discord.js";
+import { NecordExecutionContext } from "necord";
 
 @Injectable()
 export class MentorGuard implements CanActivate {
@@ -24,9 +24,9 @@ export class MentorGuard implements CanActivate {
       const [interaction] =
         NecordExecutionContext.create(
           context,
-        ).getContext<'interactionCreate'>();
+        ).getContext<"interactionCreate">();
 
-      const approvedGuildId = this.config.getOrThrow('GUILD_ID');
+      const approvedGuildId = this.config.getOrThrow("GUILD_ID");
       const guildId = interaction.guildId;
 
       if (!guildId || guildId !== approvedGuildId) return false;

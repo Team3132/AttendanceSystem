@@ -1,20 +1,20 @@
-import { Inject, Injectable, UseGuards, UseInterceptors } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { EmbedBuilder } from 'discord.js';
-import { DateTime } from 'luxon';
+import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
+import { Inject, Injectable, UseGuards, UseInterceptors } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { EmbedBuilder } from "discord.js";
+import { DateTime } from "luxon";
 import {
-  SlashCommand,
   Context,
-  type SlashCommandContext,
   Options,
-} from 'necord';
-import { AttendanceDto } from '../dto/attendance.dto';
-import { EventAutocompleteInterceptor } from '../interceptors/event.interceptor';
-import rsvpToDescription from '../utils/rsvpToDescription';
-import { BACKEND_TOKEN, type BackendClient } from '@/backend/backend.module';
-import { GuildMemberGuard } from '../guards/GuildMemberGuard';
+  SlashCommand,
+  type SlashCommandContext,
+} from "necord";
+import { AttendanceDto } from "../dto/attendance.dto";
+import { GuildMemberGuard } from "../guards/GuildMemberGuard";
+import { EventAutocompleteInterceptor } from "../interceptors/event.interceptor";
+import rsvpToDescription from "../utils/rsvpToDescription";
 
-const guildId = process.env['GUILD_ID'];
+const guildId = process.env["GUILD_ID"];
 
 @Injectable()
 export class RsvpsCommand {
@@ -26,8 +26,8 @@ export class RsvpsCommand {
   @UseGuards(GuildMemberGuard)
   @UseInterceptors(EventAutocompleteInterceptor)
   @SlashCommand({
-    name: 'rsvps',
-    description: 'Get the rsvps for a meeting.',
+    name: "rsvps",
+    description: "Get the rsvps for a meeting.",
     guilds: guildId ? [guildId] : undefined,
     dmPermission: false,
   })
@@ -39,13 +39,13 @@ export class RsvpsCommand {
       await this.backendClient.client.bot.getEventDetails.query(meeting);
 
     if (!fetchedMeeting)
-      return interaction.reply({ content: 'Unknown event', ephemeral: true });
+      return interaction.reply({ content: "Unknown event", ephemeral: true });
 
     const fetchedRSVPs =
       await this.backendClient.client.bot.getEventRsvps.query(meeting);
 
     if (!fetchedRSVPs.length)
-      return interaction.reply({ content: 'No RSVPs', ephemeral: true });
+      return interaction.reply({ content: "No RSVPs", ephemeral: true });
 
     const firstId = fetchedRSVPs.at(0)?.id;
 
@@ -61,7 +61,7 @@ export class RsvpsCommand {
       )
       .setDescription(description)
       .setTimestamp(new Date())
-      .setURL(`${this.config.get('FRONTEND_URL')}/events/${fetchedMeeting.id}`);
+      .setURL(`${this.config.get("FRONTEND_URL")}/events/${fetchedMeeting.id}`);
 
     return interaction.reply({
       embeds: [rsvpEmbed],

@@ -28,7 +28,7 @@ const eventsIndexRoute = new Route({
   },
   component: lazyRouteComponent(
     () => import("../pages/EventsHome"),
-    "Component"
+    "Component",
   ),
 });
 
@@ -37,7 +37,7 @@ const eventsCreateRoute = new Route({
   path: "/create",
   component: lazyRouteComponent(
     () => import("../pages/EventCreate"),
-    "Component"
+    "Component",
   ),
 });
 
@@ -57,7 +57,7 @@ const eventRoute = new Route({
   },
   component: lazyRouteComponent(
     () => import("../pages/EventPage"),
-    "Component"
+    "Component",
   ),
 });
 
@@ -77,7 +77,7 @@ const eventIndexRoute = new Route({
   },
   component: lazyRouteComponent(
     () => import("../pages/EventDetails"),
-    "Component"
+    "Component",
   ),
 });
 
@@ -97,7 +97,7 @@ const eventCheckinRoute = new Route({
   },
   component: lazyRouteComponent(
     () => import("../pages/EventCheckin"),
-    "Component"
+    "Component",
   ),
 });
 
@@ -119,7 +119,7 @@ export const eventQrCodeRoute = new Route({
   },
   component: lazyRouteComponent(
     () => import("../pages/EventQRCode"),
-    "Component"
+    "Component",
   ),
 });
 

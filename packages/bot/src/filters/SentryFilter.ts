@@ -1,6 +1,6 @@
-import { Catch, ArgumentsHost, HttpServer } from '@nestjs/common';
-import { AbstractHttpAdapter, BaseExceptionFilter } from '@nestjs/core';
-import * as Sentry from '@sentry/node';
+import { ArgumentsHost, Catch, HttpServer } from "@nestjs/common";
+import { AbstractHttpAdapter, BaseExceptionFilter } from "@nestjs/core";
+import * as Sentry from "@sentry/node";
 
 @Catch()
 export class SentryFilter extends BaseExceptionFilter {

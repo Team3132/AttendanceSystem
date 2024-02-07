@@ -1,9 +1,9 @@
-import { ListItem, ListItemText } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import useSelfCheckout from "../hooks/useSelfCheckout";
+import { ListItem, ListItemText } from "@mui/material";
+import { RSVPEventSchema } from "backend/schema";
 import { DateTime } from "luxon";
 import { z } from "zod";
-import { RSVPEventSchema } from "backend/schema";
+import useSelfCheckout from "../hooks/useSelfCheckout";
 
 interface PendingEventListItemProps {
   rsvp: z.infer<typeof RSVPEventSchema>;
@@ -25,7 +25,7 @@ export default function PendingEventListItem(props: PendingEventListItemProps) {
         secondary={`Checked In: ${
           rsvp.checkinTime
             ? DateTime.fromISO(rsvp.checkinTime).toLocaleString(
-                DateTime.DATETIME_MED
+                DateTime.DATETIME_MED,
               )
             : "Unknown"
         }`}

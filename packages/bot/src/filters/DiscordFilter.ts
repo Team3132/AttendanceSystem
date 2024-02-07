@@ -1,15 +1,15 @@
-import { ExceptionFilter, Catch, ArgumentsHost, Logger } from '@nestjs/common';
-import { NecordArgumentsHost } from 'necord';
-import { EmbedBuilder, InteractionType, codeBlock } from 'discord.js';
-import * as Sentry from '@sentry/node';
-import { isTRPCClientError } from '@/backend/backend.module';
+import { isTRPCClientError } from "@/backend/backend.module";
+import { ArgumentsHost, Catch, ExceptionFilter, Logger } from "@nestjs/common";
+import * as Sentry from "@sentry/node";
+import { EmbedBuilder, InteractionType, codeBlock } from "discord.js";
+import { NecordArgumentsHost } from "necord";
 
 @Catch()
 export class DiscordExceptionFilter implements ExceptionFilter {
   public async catch(exception: Error, host: ArgumentsHost) {
     const logger = new Logger(DiscordExceptionFilter.name);
     const necordArguments =
-      NecordArgumentsHost.create(host).getContext<'interactionCreate'>();
+      NecordArgumentsHost.create(host).getContext<"interactionCreate">();
 
     if (!Array.isArray(necordArguments)) throw exception;
 
@@ -22,8 +22,8 @@ export class DiscordExceptionFilter implements ExceptionFilter {
       : exception.message;
 
     const errorEmbed = new EmbedBuilder()
-      .setColor('Red')
-      .setTitle('An error occurred')
+      .setColor("Red")
+      .setTitle("An error occurred")
       .setDescription(descriptionWithStack);
 
     if (

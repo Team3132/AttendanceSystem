@@ -1,15 +1,15 @@
-import { Inject, Injectable, UseGuards } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { EmbedBuilder } from 'discord.js';
-import { DateTime } from 'luxon';
-import { Button, Context, type ButtonContext, ComponentParam } from 'necord';
-import rsvpToDescription from '../utils/rsvpToDescription';
 import {
   BACKEND_TOKEN,
-  isTRPCClientError,
   type BackendClient,
-} from '@/backend/backend.module';
-import { GuildMemberGuard } from '../guards/GuildMemberGuard';
+  isTRPCClientError,
+} from "@/backend/backend.module";
+import { Inject, Injectable, UseGuards } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { EmbedBuilder } from "discord.js";
+import { DateTime } from "luxon";
+import { Button, type ButtonContext, ComponentParam, Context } from "necord";
+import { GuildMemberGuard } from "../guards/GuildMemberGuard";
+import rsvpToDescription from "../utils/rsvpToDescription";
 
 @Injectable()
 export class RsvpButton {
@@ -19,10 +19,10 @@ export class RsvpButton {
   ) {}
 
   @UseGuards(GuildMemberGuard)
-  @Button('event/:eventId/rsvps')
+  @Button("event/:eventId/rsvps")
   public async onRsvpsButton(
     @Context() [interaction]: ButtonContext,
-    @ComponentParam('eventId') eventId: string,
+    @ComponentParam("eventId") eventId: string,
   ) {
     try {
       const rsvpEvent =
@@ -32,7 +32,7 @@ export class RsvpButton {
         await this.backendClient.client.bot.getEventRsvps.query(eventId);
 
       if (!eventRsvps.length)
-        return interaction.reply({ content: 'No RSVPs', ephemeral: true });
+        return interaction.reply({ content: "No RSVPs", ephemeral: true });
 
       const firstIdRsvp = eventRsvps.at(0)?.id;
 
@@ -48,7 +48,7 @@ export class RsvpButton {
         )
         .setDescription(description)
         .setTimestamp(new Date())
-        .setURL(`${this.config.get('FRONTEND_URL')}/event/${rsvpEvent.id}`);
+        .setURL(`${this.config.get("FRONTEND_URL")}/event/${rsvpEvent.id}`);
 
       return interaction.reply({
         ephemeral: true,

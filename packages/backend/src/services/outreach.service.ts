@@ -10,14 +10,14 @@ import {
   sql,
   sum,
 } from "drizzle-orm";
+import { DateTime } from "luxon";
+import { z } from "zod";
 import db from "../drizzle/db";
 import { buildPoints, event, rsvp, user } from "../drizzle/schema";
-import { DateTime } from "luxon";
 import env from "../env";
-import { z } from "zod";
 import { OutreachTimeSchema } from "../schema/OutreachTimeSchema";
-import { PagedLeaderboardSchema } from "../schema/PagedLeaderboardSchema";
 import { PagedBuildPointUsersSchema } from "../schema/PagedBuildPointUsersSchema";
+import { PagedLeaderboardSchema } from "../schema/PagedLeaderboardSchema";
 
 /**
  * Get the sum of the difference between the start and end dates of all
@@ -27,7 +27,7 @@ import { PagedBuildPointUsersSchema } from "../schema/PagedBuildPointUsersSchema
  * and every event before the last 25th of the last april, all in sql
  */
 export async function getOutreachTime(
-  params: z.infer<typeof OutreachTimeSchema>
+  params: z.infer<typeof OutreachTimeSchema>,
 ): Promise<z.infer<typeof PagedLeaderboardSchema>> {
   const { limit, cursor: page } = OutreachTimeSchema.parse(params);
   const lastApril25 = getLastApril25();
@@ -51,7 +51,7 @@ export async function getOutreachTime(
       not(arrayOverlaps(user.roles, [env.MENTOR_ROLE_ID])),
       isNotNull(rsvp.checkinTime),
       isNotNull(rsvp.checkoutTime),
-      gte(event.startDate, aprilIsoDate)
+      gte(event.startDate, aprilIsoDate),
     );
 
     const items = await tx
@@ -68,7 +68,7 @@ export async function getOutreachTime(
       .innerJoin(event, eq(rsvp.eventId, event.id))
       .innerJoin(user, eq(rsvp.userId, user.id))
       .orderBy(
-        sql<string>`sum(${rsvp.checkoutTime} - ${rsvp.checkinTime}) DESC`
+        sql<string>`sum(${rsvp.checkoutTime} - ${rsvp.checkinTime}) DESC`,
       )
       .where(conditionalAnd)
       .limit(limit)
@@ -121,7 +121,7 @@ export async function getOutreachTime(
 }
 
 export async function getBuildPoints(
-  params: z.infer<typeof OutreachTimeSchema>
+  params: z.infer<typeof OutreachTimeSchema>,
 ): Promise<z.infer<typeof PagedBuildPointUsersSchema>> {
   const { limit, cursor: page } = OutreachTimeSchema.parse(params);
   const lastApril25 = getLastApril25();
@@ -140,7 +140,7 @@ export async function getBuildPoints(
 
   const conditionalAnd = and(
     not(arrayOverlaps(user.roles, [env.MENTOR_ROLE_ID])),
-    gte(buildPoints.createdAt, aprilIsoDate)
+    gte(buildPoints.createdAt, aprilIsoDate),
   );
 
   const items = await db

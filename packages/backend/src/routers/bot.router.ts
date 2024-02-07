@@ -1,18 +1,4 @@
 import { z } from "zod";
-import { t } from "../trpc";
-import { tokenProcedure } from "../trpc/utils";
-import { getBuildPoints, getOutreachTime } from "../services/outreach.service";
-import {
-  editUserRsvpStatus,
-  getAutocompleteEvents,
-  getEvent,
-  getEventRsvps,
-  getEventSecret,
-  getNextEvents,
-  selfCheckin,
-  userCheckout,
-} from "../services/events.service";
-import { EventsArraySchema } from "../schema/EventsArraySchema";
 import {
   AddBuildPointsUserSchema,
   EditRSVPUserSchema,
@@ -24,12 +10,26 @@ import {
   UserCreateSchema,
   UserSchema,
 } from "../schema";
-import { addUserBuildPoints, createUser } from "../services/user.service";
-import { SelfCheckinWithUserId } from "../schema/SelfCheckinWithUserId";
-import { OutreachTimeSchema } from "../schema/OutreachTimeSchema";
-import { PagedLeaderboardSchema } from "../schema/PagedLeaderboardSchema";
 import { BuildPointSchema } from "../schema/BuildPointSchema";
+import { EventsArraySchema } from "../schema/EventsArraySchema";
+import { OutreachTimeSchema } from "../schema/OutreachTimeSchema";
 import { PagedBuildPointUsersSchema } from "../schema/PagedBuildPointUsersSchema";
+import { PagedLeaderboardSchema } from "../schema/PagedLeaderboardSchema";
+import { SelfCheckinWithUserId } from "../schema/SelfCheckinWithUserId";
+import {
+  editUserRsvpStatus,
+  getAutocompleteEvents,
+  getEvent,
+  getEventRsvps,
+  getEventSecret,
+  getNextEvents,
+  selfCheckin,
+  userCheckout,
+} from "../services/events.service";
+import { getBuildPoints, getOutreachTime } from "../services/outreach.service";
+import { addUserBuildPoints, createUser } from "../services/user.service";
+import { t } from "../trpc";
+import { tokenProcedure } from "../trpc/utils";
 
 /**
  * A router than the bot uses to communicate with the backend
@@ -70,7 +70,7 @@ export const botRouter = t.router({
     .input(EditRSVPUserSchema)
     .output(RSVPSchema)
     .mutation(({ input: { userId, ...rest } }) =>
-      editUserRsvpStatus(userId, rest)
+      editUserRsvpStatus(userId, rest),
     ),
   getAutocompleteEvents: tokenProcedure
     .input(z.string())

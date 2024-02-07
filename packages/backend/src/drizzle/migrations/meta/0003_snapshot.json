@@ -76,9 +76,7 @@
       "indexes": {
         "Event_secret_key": {
           "name": "Event_secret_key",
-          "columns": [
-            "secret"
-          ],
+          "columns": ["secret"],
           "isUnique": true
         }
       },
@@ -145,10 +143,7 @@
       "indexes": {
         "RSVP_eventId_userId_key": {
           "name": "RSVP_eventId_userId_key",
-          "columns": [
-            "eventId",
-            "userId"
-          ],
+          "columns": ["eventId", "userId"],
           "isUnique": true
         }
       },
@@ -157,12 +152,8 @@
           "name": "RSVP_eventId_Event_id_fk",
           "tableFrom": "RSVP",
           "tableTo": "Event",
-          "columnsFrom": [
-            "eventId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["eventId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -170,12 +161,8 @@
           "name": "RSVP_userId_User_id_fk",
           "tableFrom": "RSVP",
           "tableTo": "User",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -220,12 +207,8 @@
           "name": "Scancode_userId_User_id_fk",
           "tableFrom": "Scancode",
           "tableTo": "User",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "cascade"
         }

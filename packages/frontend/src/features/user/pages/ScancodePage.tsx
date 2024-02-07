@@ -1,8 +1,8 @@
+import { trpc } from "@/trpcClient";
 import { Container, List, Paper, Stack, Typography } from "@mui/material";
+import { RouteApi } from "@tanstack/react-router";
 import NewScancodeListItem from "../components/NewScancodeForm";
 import ScancodeListItem from "../components/ScancodeListItem";
-import { trpc } from "@/trpcClient";
-import { RouteApi } from "@tanstack/react-router";
 
 const routeApi = new RouteApi({ id: "/authedOnly/profile/" });
 

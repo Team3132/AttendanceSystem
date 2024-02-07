@@ -1,10 +1,10 @@
-import { BACKEND_TOKEN, type BackendClient } from '@/backend/backend.module';
-import { Inject, Injectable } from '@nestjs/common';
-import { AutocompleteInteraction, CacheType } from 'discord.js';
-import { DateTime } from 'luxon';
-import { AutocompleteInterceptor } from 'necord';
-import { EventSchema } from 'backend/schema';
-import { z } from 'zod';
+import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
+import { Inject, Injectable } from "@nestjs/common";
+import { EventSchema } from "backend/schema";
+import { AutocompleteInteraction, CacheType } from "discord.js";
+import { DateTime } from "luxon";
+import { AutocompleteInterceptor } from "necord";
+import { z } from "zod";
 
 @Injectable()
 export class EventAutocompleteInterceptor extends AutocompleteInterceptor {

@@ -1,5 +1,6 @@
-import { DateTime } from "luxon";
-import db from "../drizzle/db";
+import { getQueryKey } from "@trpc/react-query";
+import { TRPCError } from "@trpc/server";
+import { Job, Queue, Worker } from "bullmq";
 import {
   SQL,
   and,
@@ -13,27 +14,26 @@ import {
   lte,
   or,
 } from "drizzle-orm";
-import { event, rsvp } from "../drizzle/schema";
+import { DateTime } from "luxon";
 import { z } from "zod";
-import { GetEventParamsSchema } from "../schema/GetEventParamsSchema";
-import EventSchema from "../schema/EventSchema";
-import { TRPCError } from "@trpc/server";
-import { CreateEventSchema } from "../schema/CreateEventSchema";
-import randomStr from "../utils/randomStr";
-import { EditEventSchema } from "../schema/EditEventSchema";
-import { EditRSVPSelfSchema } from "../schema/EditRSVPSelfSchema";
-import { ScaninSchema } from "../schema/ScaninSchema";
-import { EditUserAttendanceSchema } from "../schema/EditUserAttendanceSchema";
-import { SelfCheckinSchema } from "../schema/SelfCheckinSchema";
+import db from "../drizzle/db";
+import { event, rsvp } from "../drizzle/schema";
+import env from "../env";
+import { ee, rtrpc } from "../routers/app.router";
 import { RSVPUserSchema, UserCheckinSchema } from "../schema";
 import { CreateBlankUserRsvpSchema } from "../schema/CreateBlankUserRsvpSchema";
-import clampDateTime from "../utils/clampDateTime";
-import { ee, rtrpc } from "../routers/app.router";
-import { getQueryKey } from "@trpc/react-query";
-import { Queue, Worker, Job } from "bullmq";
-import env from "../env";
-import { PagedEventsSchema } from "../schema/PagedEventsSchema";
+import { CreateEventSchema } from "../schema/CreateEventSchema";
+import { EditEventSchema } from "../schema/EditEventSchema";
+import { EditRSVPSelfSchema } from "../schema/EditRSVPSelfSchema";
+import { EditUserAttendanceSchema } from "../schema/EditUserAttendanceSchema";
+import EventSchema from "../schema/EventSchema";
 import { EventWithSecretArraySchema } from "../schema/EventWithSecretArraySchema";
+import { GetEventParamsSchema } from "../schema/GetEventParamsSchema";
+import { PagedEventsSchema } from "../schema/PagedEventsSchema";
+import { ScaninSchema } from "../schema/ScaninSchema";
+import { SelfCheckinSchema } from "../schema/SelfCheckinSchema";
+import clampDateTime from "../utils/clampDateTime";
+import randomStr from "../utils/randomStr";
 
 interface EventCheckinJobData {
   eventId: string;
@@ -77,7 +77,7 @@ new Worker(
   },
   {
     connection: { host: env.REDIS_HOST, port: env.REDIS_PORT, db: 2 },
-  }
+  },
 );
 
 /**
@@ -120,14 +120,14 @@ export async function getNextEvents() {
  * @returns A list of events
  */
 export async function getEvents(
-  input: z.infer<typeof GetEventParamsSchema>
+  input: z.infer<typeof GetEventParamsSchema>,
 ): Promise<z.infer<typeof PagedEventsSchema>> {
   const { from, to, limit, type, cursor: page } = input;
   const conditions: Array<SQL | undefined> = [];
 
   if (from && to) {
     conditions.push(
-      or(between(event.startDate, from, to), between(event.endDate, from, to))
+      or(between(event.startDate, from, to), between(event.endDate, from, to)),
     );
   } else {
     if (from) {
@@ -191,7 +191,7 @@ export async function getEvents(
  * @returns The event
  */
 export async function getEvent(
-  id: string
+  id: string,
 ): Promise<z.infer<typeof EventSchema>> {
   const dbEvent = await db.query.event.findFirst({
     where: (event) => eq(event.id, id),
@@ -253,7 +253,7 @@ export async function getEventRsvp(eventId: string, userId: string) {
  * @param eventId The id of the event
  */
 export async function getEventRsvps(
-  eventId: string
+  eventId: string,
 ): Promise<Array<z.infer<typeof RSVPUserSchema>>> {
   const eventRsvps = await db.query.rsvp.findMany({
     where: (rsvp, { and }) => and(eq(rsvp.eventId, eventId)),
@@ -300,7 +300,7 @@ export async function createEvent(params: z.infer<typeof CreateEventSchema>) {
  * @returns The updated event
  */
 export async function updateEvent(
-  params: z.infer<typeof EditEventSchema>
+  params: z.infer<typeof EditEventSchema>,
 ): Promise<z.infer<typeof EventSchema>> {
   const { id: eventId, ...data } = params;
   const [updatedEvent] = await db
@@ -354,7 +354,7 @@ export async function deleteEvent(id: string) {
  */
 export async function editUserRsvpStatus(
   userId: string,
-  params: z.infer<typeof EditRSVPSelfSchema>
+  params: z.infer<typeof EditRSVPSelfSchema>,
 ) {
   const { eventId, status, delay } = params;
   const [updatedRsvp] = await db
@@ -430,7 +430,7 @@ export async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
       checkinTime: clampDateTime(
         DateTime.local(),
         eventStartDateTime,
-        eventEndDateTime
+        eventEndDateTime,
       ).toISO(),
       updatedAt: DateTime.local().toISO(),
       createdAt: DateTime.local().toISO(),
@@ -442,7 +442,7 @@ export async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
         checkinTime: clampDateTime(
           DateTime.local(),
           eventStartDateTime,
-          eventEndDateTime
+          eventEndDateTime,
         ).toISO(),
         updatedAt: DateTime.local().toISO(),
       },
@@ -465,7 +465,7 @@ export async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
   await checkoutQueue.add(
     "checkout",
     { eventId, rsvpId: updatedRsvp.id },
-    { delay, jobId: updatedRsvp.id }
+    { delay, jobId: updatedRsvp.id },
   );
 
   return updatedRsvp;
@@ -555,7 +555,7 @@ export async function userCheckout(userId: string, eventId: string) {
       checkoutTime: clampDateTime(
         DateTime.local(),
         existingRsvpCheckinTime,
-        eventEndDateTime
+        eventEndDateTime,
       ).toISO(),
       createdAt: DateTime.local().toISO(),
       updatedAt: DateTime.local().toISO(),
@@ -567,7 +567,7 @@ export async function userCheckout(userId: string, eventId: string) {
         checkoutTime: clampDateTime(
           DateTime.local(),
           existingRsvpCheckinTime,
-          eventEndDateTime
+          eventEndDateTime,
         ).toISO(),
         updatedAt: DateTime.local().toISO(),
       },
@@ -591,7 +591,7 @@ export async function userCheckout(userId: string, eventId: string) {
  * Edit a user's event attendance
  */
 export async function editUserAttendance(
-  params: z.infer<typeof EditUserAttendanceSchema>
+  params: z.infer<typeof EditUserAttendanceSchema>,
 ) {
   const { userId, eventId, checkinTime, checkoutTime } = params;
 
@@ -640,7 +640,7 @@ export async function editUserAttendance(
 
 export async function selfCheckin(
   userId: string,
-  params: z.infer<typeof SelfCheckinSchema>
+  params: z.infer<typeof SelfCheckinSchema>,
 ) {
   const { eventId, secret } = params;
   const dbEvent = await db.query.event.findFirst({
@@ -670,7 +670,7 @@ export async function selfCheckin(
 }
 
 export async function createBlankUserRsvp(
-  params: z.infer<typeof CreateBlankUserRsvpSchema>
+  params: z.infer<typeof CreateBlankUserRsvpSchema>,
 ) {
   const { userId, eventId } = params;
   const [createdRsvp] = await db
@@ -713,7 +713,7 @@ export async function getAutocompleteEvents(like?: string) {
       if (like) {
         const condition = or(
           ilike(event.title, `%${like}%`),
-          ilike(event.id, `%${like}%`)
+          ilike(event.id, `%${like}%`),
         );
 
         if (condition) {
@@ -731,7 +731,7 @@ export async function getAutocompleteEvents(like?: string) {
 }
 
 export async function getCurrentEvents(
-  leewayMinutes: number = 5
+  leewayMinutes = 5,
 ): Promise<z.infer<typeof EventWithSecretArraySchema>> {
   const now = DateTime.now().minus({ minutes: leewayMinutes }).toISO();
 

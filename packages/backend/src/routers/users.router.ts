@@ -1,8 +1,17 @@
 import { z } from "zod";
-import { t } from "../trpc";
-import { mentorSessionProcedure, sessionProcedure } from "../trpc/utils";
-import UserSchema from "../schema/UserSchema";
+import { AddBuildPointsUserSchema, AddUserScancodeParams } from "../schema";
+import { BuildPointSchema } from "../schema/BuildPointSchema";
+import {
+  GetBuildPointsSchema,
+  GetUserBuildPointsSchema,
+} from "../schema/GetBuildPointsSchema";
+import { PagedBuildPointsSchema } from "../schema/PagedBuildPointsSchema";
+import { PagedUserSchema } from "../schema/PagedUserSchema";
+import { RSVPEventSchema } from "../schema/RSVPEventSchema";
+import { RemoveBuildPointSchema } from "../schema/RemoveBuildPointSchema";
 import { ScancodeSchema } from "../schema/ScancodeSchema";
+import { UserListParamsSchema } from "../schema/UserListParamsSchema";
+import UserSchema from "../schema/UserSchema";
 import {
   addUserBuildPoints,
   createUserScancode,
@@ -14,17 +23,8 @@ import {
   removeScancode,
   removeUserBuildPoints,
 } from "../services/user.service";
-import { RSVPEventSchema } from "../schema/RSVPEventSchema";
-import { AddBuildPointsUserSchema, AddUserScancodeParams } from "../schema";
-import { UserListParamsSchema } from "../schema/UserListParamsSchema";
-import { PagedUserSchema } from "../schema/PagedUserSchema";
-import { BuildPointSchema } from "../schema/BuildPointSchema";
-import {
-  GetBuildPointsSchema,
-  GetUserBuildPointsSchema,
-} from "../schema/GetBuildPointsSchema";
-import { PagedBuildPointsSchema } from "../schema/PagedBuildPointsSchema";
-import { RemoveBuildPointSchema } from "../schema/RemoveBuildPointSchema";
+import { t } from "../trpc";
+import { mentorSessionProcedure, sessionProcedure } from "../trpc/utils";
 
 export const userRouter = t.router({
   getSelf: sessionProcedure
@@ -79,7 +79,7 @@ export const userRouter = t.router({
     .input(GetUserBuildPointsSchema)
     .output(PagedBuildPointsSchema)
     .query(({ input: { userId, ...data } }) =>
-      getUserBuildPoints(userId, data)
+      getUserBuildPoints(userId, data),
     ),
   getSelfBuildPoints: sessionProcedure
     .input(GetBuildPointsSchema)

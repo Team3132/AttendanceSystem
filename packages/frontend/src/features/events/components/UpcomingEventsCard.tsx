@@ -1,3 +1,6 @@
+import AsChildLink from "@/components/AsChildLink";
+import InfiniteList from "@/components/InfiniteList";
+import { trpc } from "@/trpcClient";
 import {
   Box,
   Button,
@@ -11,16 +14,13 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import UpcomingEventListItem from "./UpcomingEventListItem";
-import { DateTime } from "luxon";
-import { useState } from "react";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { trpc } from "@/trpcClient";
-import { z } from "zod";
 import { EventTypeSchema } from "backend/schema";
 import { AuthStatusSchema } from "backend/schema";
-import InfiniteList from "@/components/InfiniteList";
-import AsChildLink from "@/components/AsChildLink";
+import { DateTime } from "luxon";
+import { useState } from "react";
+import { z } from "zod";
+import UpcomingEventListItem from "./UpcomingEventListItem";
 
 interface UpcomingEventsCardProps {
   initialAuthStatus: z.infer<typeof AuthStatusSchema>;
@@ -33,7 +33,7 @@ export default function UpcomingEventsCard(props: UpcomingEventsCardProps) {
 
   const [fromDate, setFromDate] = useState(DateTime.now().startOf("day"));
   const [toDate, setToDate] = useState(
-    DateTime.now().plus({ month: 1 }).startOf("day")
+    DateTime.now().plus({ month: 1 }).startOf("day"),
   );
 
   const [type, setType] = useState<
@@ -49,7 +49,7 @@ export default function UpcomingEventsCard(props: UpcomingEventsCardProps) {
     },
     {
       getNextPageParam: (lastPage) => lastPage.nextPage,
-    }
+    },
   );
 
   const handleChange = (event: SelectChangeEvent) => {

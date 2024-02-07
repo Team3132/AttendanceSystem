@@ -1,15 +1,15 @@
-import { Global, Module } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Global, Module } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import {
   CreateTRPCClient,
   TRPCClientError,
   createTRPCClient,
   httpLink,
-} from '@trpc/client';
-import type { AppRouter } from 'backend';
-import SuperJSON from 'superjson';
+} from "@trpc/client";
+import type { AppRouter } from "backend";
+import SuperJSON from "superjson";
 
-export const BACKEND_TOKEN = Symbol('BACKEND_TOKEN');
+export const BACKEND_TOKEN = Symbol("BACKEND_TOKEN");
 
 export type BackendClient = { client: CreateTRPCClient<AppRouter> };
 
@@ -20,9 +20,9 @@ export type BackendClient = { client: CreateTRPCClient<AppRouter> };
       provide: BACKEND_TOKEN,
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => {
-        const backendTrpcUrl = config.getOrThrow<string>('BACKEND_TRPC_URL');
+        const backendTrpcUrl = config.getOrThrow<string>("BACKEND_TRPC_URL");
         const backendSecretToken = config.getOrThrow<string>(
-          'BACKEND_SECRET_TOKEN',
+          "BACKEND_SECRET_TOKEN",
         );
 
         /** The tRPC Client that connects to the backend */
@@ -34,7 +34,7 @@ export type BackendClient = { client: CreateTRPCClient<AppRouter> };
               fetch(url, options) {
                 return fetch(url, {
                   ...options,
-                  credentials: 'include',
+                  credentials: "include",
                   headers: {
                     Authorization: `Bearer ${backendSecretToken}`,
                   },

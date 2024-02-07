@@ -1,9 +1,7 @@
-import { useMemo } from "react";
-import useRouteMatch from "../../../utils/useRouteMatch";
-import { Tab, Tabs } from "@mui/material";
-import DefaultAppBar from "../../../components/DefaultAppBar";
-import { DateTime } from "luxon";
+import AsChildLink from "@/components/AsChildLink";
 import { trpc } from "@/trpcClient";
+import { Tab, Tabs } from "@mui/material";
+import { NoInfer } from "@tanstack/react-query";
 import {
   AnyRoute,
   Outlet,
@@ -12,10 +10,12 @@ import {
   RoutePaths,
   ToPathOption,
 } from "@tanstack/react-router";
-import AsChildLink from "@/components/AsChildLink";
 import { PathParamOptions } from "@tanstack/react-router";
 import { ResolveRelativePath } from "@tanstack/react-router";
-import { NoInfer } from "@tanstack/react-query";
+import { DateTime } from "luxon";
+import { useMemo } from "react";
+import DefaultAppBar from "../../../components/DefaultAppBar";
+import useRouteMatch from "../../../utils/useRouteMatch";
 
 const routeApi = new RouteApi({
   id: "/authedOnly/events/$eventId",
@@ -84,7 +84,7 @@ export function Component() {
               },
             },
           ] as TabItem[]),
-    [authStatusQuery.data.isAdmin, eventQuery.data.id]
+    [authStatusQuery.data.isAdmin, eventQuery.data.id],
   );
 
   const currentTab = useRouteMatch(tabs);
@@ -93,7 +93,7 @@ export function Component() {
     <>
       <DefaultAppBar
         title={`${DateTime.fromISO(eventQuery.data.startDate).toLocaleString(
-          DateTime.DATE_SHORT
+          DateTime.DATE_SHORT,
         )} - ${eventQuery.data.title}`}
       />
       <Tabs value={currentTab} variant="scrollable" scrollButtons="auto">

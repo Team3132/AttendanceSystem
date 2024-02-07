@@ -1,5 +1,5 @@
-import { DateTime } from "luxon";
 import { EventSchema } from "backend/schema";
+import { DateTime } from "luxon";
 import { z } from "zod";
 
 interface EventDateTypographyProps {

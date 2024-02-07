@@ -1,9 +1,9 @@
+import { API } from "@discordjs/core";
+import { REST } from "@discordjs/rest";
 import { Strategy } from "passport-discord";
-import env from "../env";
 import db from "../drizzle/db";
 import { user } from "../drizzle/schema";
-import { REST } from "@discordjs/rest";
-import { API } from "@discordjs/core";
+import env from "../env";
 
 const discordStrategy = new Strategy(
   {
@@ -27,7 +27,7 @@ const discordStrategy = new Strategy(
 
     // Create a discord rest client with the user's access token
     const rest = new REST({ version: "10", authPrefix: "Bearer" }).setToken(
-      accessToken
+      accessToken,
     );
 
     // Create a discord api client with the rest client
@@ -63,7 +63,7 @@ const discordStrategy = new Strategy(
     }
 
     return cb(null, authedUser);
-  }
+  },
 );
 
 export default discordStrategy;

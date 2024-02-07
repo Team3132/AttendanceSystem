@@ -1,7 +1,7 @@
-import { Container, Paper, Stack, Typography } from "@mui/material";
-import ScaninCard from "../components/ScaninCard";
 import { trpc } from "@/trpcClient";
+import { Container, Paper, Stack, Typography } from "@mui/material";
 import { RouteApi } from "@tanstack/react-router";
+import ScaninCard from "../components/ScaninCard";
 
 const routeApi = new RouteApi({
   id: "/authedOnly/adminOnly/events/$eventId/qr-code",
@@ -14,7 +14,7 @@ export function Component() {
     loaderData.initialEvent.id,
     {
       initialData: loaderData.initialEventSecret,
-    }
+    },
   );
 
   if (eventSecretQuery.data) {

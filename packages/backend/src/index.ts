@@ -1,24 +1,24 @@
-import fastify from "fastify";
-import db, { migrate } from "./drizzle/db";
+import path from "path";
+import { fileURLToPath } from "url";
 import fastifyCookie from "@fastify/cookie";
+import fastifyPassport from "@fastify/passport";
 import fastifySecureSession from "@fastify/secure-session";
 import fastifyStatic from "@fastify/static";
-import env, { isProd } from "./env";
-import path from "path";
+import ws from "@fastify/websocket";
 import { fastifyTRPCPlugin } from "@trpc/server/adapters/fastify";
-import { fileURLToPath } from "url";
+import { TRPCReconnectNotification } from "@trpc/server/rpc";
+import { eq } from "drizzle-orm";
+import fastify from "fastify";
+import { Settings } from "luxon";
+import { WebSocket } from "ws";
+import discordStrategy from "./auth/Discord.strategy";
+import db, { migrate } from "./drizzle/db";
+import { user } from "./drizzle/schema";
+import env, { isProd } from "./env";
+import mainLogger from "./logger";
+import { registerCron } from "./registerCron";
 import appRouter, { AppRouter } from "./routers/app.router";
 import { createContext } from "./trpc/context";
-import fastifyPassport from "@fastify/passport";
-import discordStrategy from "./auth/Discord.strategy";
-import { user } from "./drizzle/schema";
-import { eq } from "drizzle-orm";
-import { Settings } from "luxon";
-import mainLogger from "./logger";
-import ws from "@fastify/websocket";
-import { registerCron } from "./registerCron";
-import { TRPCReconnectNotification } from "@trpc/server/rpc";
-import { WebSocket } from "ws";
 
 Settings.defaultLocale = "en-au";
 Settings.defaultZone = "Australia/Sydney";
@@ -141,7 +141,7 @@ server.listen(
     }
 
     mainLogger.info(address);
-  }
+  },
 );
 
 registerCron();

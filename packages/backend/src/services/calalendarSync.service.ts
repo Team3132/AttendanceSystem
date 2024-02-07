@@ -1,10 +1,10 @@
-import { google, calendar_v3 } from "googleapis";
+import { calendar_v3, google } from "googleapis";
 
-import env from "../env";
-import { DateTime } from "luxon";
 import { gte, inArray, lte } from "drizzle-orm";
+import { DateTime } from "luxon";
 import db from "../drizzle/db";
 import { event } from "../drizzle/schema";
+import env from "../env";
 import mainLogger from "../logger";
 import randomStr from "../utils/randomStr";
 
@@ -14,7 +14,7 @@ const client = new google.auth.JWT(
   env.GOOGLE_CLIENT_EMAIL,
   undefined,
   env.GOOGLE_PRIVATE_KEY,
-  ["https://www.googleapis.com/auth/calendar.readonly"]
+  ["https://www.googleapis.com/auth/calendar.readonly"],
 );
 
 const calendar = google.calendar({
@@ -40,7 +40,7 @@ export const getCalendarEvents = () =>
           throw new Error("Result is null or undefined");
         }
         res(result.data);
-      }
+      },
     );
   });
 
@@ -53,7 +53,7 @@ export const syncEvents = async () => {
       and(
         gte(event.startDate, DateTime.now().toISO()),
         lte(event.endDate, DateTime.now().plus({ month: 1 }).toISO()),
-        eq(event.isSyncedEvent, true)
+        eq(event.isSyncedEvent, true),
       ),
   });
 

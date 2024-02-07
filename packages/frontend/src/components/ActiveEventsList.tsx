@@ -1,8 +1,8 @@
+import { trpc } from "@/trpcClient";
 import { List, Typography } from "@mui/material";
-import PendingEventListItem from "./PendingEventListItem";
 import { RSVPEventSchema } from "backend/schema";
 import { z } from "zod";
-import { trpc } from "@/trpcClient";
+import PendingEventListItem from "./PendingEventListItem";
 
 interface ActiveEventsListProps {
   initialPendingEvents: z.infer<typeof RSVPEventSchema>[];
@@ -15,7 +15,7 @@ export default function ActiveEventsList(props: ActiveEventsListProps) {
     undefined,
     {
       initialData: initialPendingEvents,
-    }
+    },
   );
 
   if (pendingEventsQuery.data.length === 0)

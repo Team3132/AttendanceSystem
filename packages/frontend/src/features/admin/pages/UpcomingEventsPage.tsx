@@ -16,7 +16,7 @@ export default function UpcomingEventsPage() {
     {
       // refresh every minute
       refetchInterval: 60 * 1000,
-    }
+    },
   );
 
   return (
@@ -30,11 +30,11 @@ export default function UpcomingEventsPage() {
       <List>
         {upcomingEventsQuery.data?.map((secretEvent) => {
           const startTimeText = DateTime.fromISO(
-            secretEvent.startDate
+            secretEvent.startDate,
           ).toLocaleString(DateTime.TIME_SIMPLE);
 
           const endTimeText = DateTime.fromISO(
-            secretEvent.endDate
+            secretEvent.endDate,
           ).toLocaleString(DateTime.TIME_SIMPLE);
 
           return (

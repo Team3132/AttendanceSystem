@@ -16,7 +16,7 @@ export default function useRouteMatch(patterns: readonly TabItem[]) {
         params: pattern.params,
         fuzzy: pattern.fuzzy ?? false,
         pending: true,
-      }) !== false
+      }) !== false,
   );
 
   return matchedIndex === -1 ? undefined : matchedIndex;

@@ -6,7 +6,7 @@ const adminUserRoute = new Route({
   path: "/user/$userId",
   component: lazyRouteComponent(
     () => import("../pages/AdminProfilePage"),
-    "Component"
+    "Component",
   ),
   loader: async ({ context: { queryUtils }, params }) => {
     const [initialUser] = await Promise.all([
@@ -37,7 +37,7 @@ const adminUserIndexRoute = new Route({
   },
   component: lazyRouteComponent(
     () => import("../pages/AdminScancodePage"),
-    "Component"
+    "Component",
   ),
 });
 
@@ -58,7 +58,7 @@ const adminUserPendingEventsRoute = new Route({
   },
   component: lazyRouteComponent(
     () => import("../pages/AdminPendingEventsPage"),
-    "Component"
+    "Component",
   ),
 });
 
@@ -77,7 +77,7 @@ const adminUserBuildPointsRoute = new Route({
   },
   component: lazyRouteComponent(
     () => import("../pages/AdminBuildPointsPage"),
-    "Component"
+    "Component",
   ),
 });
 

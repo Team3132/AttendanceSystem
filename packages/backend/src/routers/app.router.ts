@@ -1,14 +1,14 @@
+import { createTRPCReact, getQueryKey } from "@trpc/react-query";
+import { observable } from "@trpc/server/observable";
+import { EventEmitter } from "eventemitter3";
 import z from "zod";
 import { t } from "../trpc";
-import { botRouter } from "./bot.router";
-import { authRouter } from "./auth.router";
 import { publicProcedure } from "../trpc/utils";
+import { authRouter } from "./auth.router";
+import { botRouter } from "./bot.router";
 import { eventRouter as eventsRouter } from "./events.router";
 import { outreachRouter } from "./outreach.router";
 import { userRouter as usersRouter } from "./users.router";
-import { EventEmitter } from "eventemitter3";
-import { observable } from "@trpc/server/observable";
-import { createTRPCReact, getQueryKey } from "@trpc/react-query";
 
 interface IEventEmitter {
   invalidate: [TRPCQueryKey];

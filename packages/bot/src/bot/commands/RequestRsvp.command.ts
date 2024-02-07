@@ -1,19 +1,19 @@
-import { Inject, Injectable, UseGuards, UseInterceptors } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { PermissionFlagsBits } from 'discord.js';
+import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
+import { Inject, Injectable, UseGuards, UseInterceptors } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { PermissionFlagsBits } from "discord.js";
 import {
-  SlashCommand,
   Context,
-  type SlashCommandContext,
   Options,
-} from 'necord';
-import { RequestRSVPDto } from '../dto/requestRSVP.dto';
-import { EventAutocompleteInterceptor } from '../interceptors/event.interceptor';
-import rsvpReminderMessage from '../utils/rsvpReminderMessage';
-import { BACKEND_TOKEN, type BackendClient } from '@/backend/backend.module';
-import { GuildMemberGuard } from '../guards/GuildMemberGuard';
+  SlashCommand,
+  type SlashCommandContext,
+} from "necord";
+import { RequestRSVPDto } from "../dto/requestRSVP.dto";
+import { GuildMemberGuard } from "../guards/GuildMemberGuard";
+import { EventAutocompleteInterceptor } from "../interceptors/event.interceptor";
+import rsvpReminderMessage from "../utils/rsvpReminderMessage";
 
-const guildId = process.env['GUILD_ID'];
+const guildId = process.env["GUILD_ID"];
 
 @Injectable()
 export class RequestRsvpCommand {
@@ -25,8 +25,8 @@ export class RequestRsvpCommand {
   @UseGuards(GuildMemberGuard)
   @UseInterceptors(EventAutocompleteInterceptor)
   @SlashCommand({
-    name: 'requestrsvp',
-    description: 'Send a message for people to RSVP to a specific event.',
+    name: "requestrsvp",
+    description: "Send a message for people to RSVP to a specific event.",
     defaultMemberPermissions: PermissionFlagsBits.ManageRoles,
     guilds: guildId ? [guildId] : undefined,
     dmPermission: false,
@@ -41,7 +41,7 @@ export class RequestRsvpCommand {
     if (!eventDetails)
       return interaction.reply({
         ephemeral: true,
-        content: 'No meeting with that Id',
+        content: "No meeting with that Id",
       });
 
     const fetchedRSVPs =
@@ -51,7 +51,7 @@ export class RequestRsvpCommand {
       rsvpReminderMessage(
         eventDetails,
         fetchedRSVPs,
-        this.config.getOrThrow('FRONTEND_URL'),
+        this.config.getOrThrow("FRONTEND_URL"),
       ),
     );
   }

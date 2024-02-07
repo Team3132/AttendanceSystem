@@ -1,8 +1,8 @@
-import { Container, List, Paper, Stack, Typography } from "@mui/material";
-import ScancodeListItem from "../components/AdminScancodeListItem";
 import { trpc } from "@/trpcClient";
-import NewAdminScancodeListItem from "../components/NewAdminScancodeForm";
+import { Container, List, Paper, Stack, Typography } from "@mui/material";
 import { RouteApi } from "@tanstack/react-router";
+import ScancodeListItem from "../components/AdminScancodeListItem";
+import NewAdminScancodeListItem from "../components/NewAdminScancodeForm";
 
 const routeApi = new RouteApi({ id: "/authedOnly/adminOnly/user/$userId/" });
 
@@ -13,7 +13,7 @@ export function Component() {
     loaderData.userId,
     {
       initialData: loaderData.initialScancodes,
-    }
+    },
   );
 
   return (

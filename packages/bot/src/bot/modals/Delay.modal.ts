@@ -1,17 +1,17 @@
+import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
 import {
   ActionRowBuilder,
   ModalActionRowComponentBuilder,
   ModalBuilder,
   TextInputBuilder,
-} from '@discordjs/builders';
-import { Inject, Injectable, UseGuards } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { TextInputStyle } from 'discord.js';
-import { Ctx, Modal, type ModalContext, ModalParam } from 'necord';
-import { z } from 'zod';
-import rsvpReminderMessage from '../utils/rsvpReminderMessage';
-import { BACKEND_TOKEN, type BackendClient } from '@/backend/backend.module';
-import { GuildMemberGuard } from '../guards/GuildMemberGuard';
+} from "@discordjs/builders";
+import { Inject, Injectable, UseGuards } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { TextInputStyle } from "discord.js";
+import { Ctx, Modal, type ModalContext, ModalParam } from "necord";
+import { z } from "zod";
+import { GuildMemberGuard } from "../guards/GuildMemberGuard";
+import rsvpReminderMessage from "../utils/rsvpReminderMessage";
 
 @Injectable()
 export class DelayModal {
@@ -24,9 +24,9 @@ export class DelayModal {
   @Modal(`event/:eventId/delay`)
   public async onDelayModal(
     @Ctx() [interaction]: ModalContext,
-    @ModalParam('eventId') eventId: string,
+    @ModalParam("eventId") eventId: string,
   ) {
-    const delay = interaction.fields.getTextInputValue('delay');
+    const delay = interaction.fields.getTextInputValue("delay");
 
     const value = await z
       .string()
@@ -36,7 +36,7 @@ export class DelayModal {
 
     if (!value.success) {
       return interaction.reply({
-        content: 'Please enter a valid number in minutes (no decimals)',
+        content: "Please enter a valid number in minutes (no decimals)",
         ephemeral: true,
       });
     }
@@ -46,7 +46,7 @@ export class DelayModal {
     await this.backendClient.client.bot.setEventRsvp.mutate({
       eventId,
       userId,
-      status: 'LATE',
+      status: "LATE",
       delay: value.data,
     });
 
@@ -56,7 +56,7 @@ export class DelayModal {
     const rsvps =
       await this.backendClient.client.bot.getEventRsvps.query(eventId);
 
-    const frontendUrl = this.config.getOrThrow('FRONTEND_URL');
+    const frontendUrl = this.config.getOrThrow("FRONTEND_URL");
 
     if (interaction.isFromMessage()) {
       return interaction.update({
@@ -72,14 +72,14 @@ export class DelayModal {
 
   public static build(eventId: string) {
     return new ModalBuilder()
-      .setTitle('Delay')
+      .setTitle("Delay")
       .setCustomId(`event/${eventId}/delay`)
       .setComponents([
         new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents([
           new TextInputBuilder()
-            .setCustomId('delay')
-            .setPlaceholder('Delay')
-            .setLabel('Delay (in minutes)')
+            .setCustomId("delay")
+            .setPlaceholder("Delay")
+            .setLabel("Delay (in minutes)")
             .setStyle(TextInputStyle.Short),
         ]),
       ]);

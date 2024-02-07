@@ -1,13 +1,13 @@
-import { Paper, Stack, TextField, Typography } from "@mui/material";
-import { z } from "zod";
-import useZodForm, { ZodSubmitHandler } from "../../../hooks/useZodForm";
-import { LoadingButton } from "@mui/lab";
-import useScanin from "../hooks/useScanin";
-import { useAlert } from "react-alert";
-import { useCallback, useState } from "react";
-import UnknownCodeModal from "./UnknownCodeModal";
-import { useDisclosure } from "../../../hooks/useDisclosure";
 import { isTRPCClientError } from "@/utils/trpc";
+import { LoadingButton } from "@mui/lab";
+import { Paper, Stack, TextField, Typography } from "@mui/material";
+import { useCallback, useState } from "react";
+import { useAlert } from "react-alert";
+import { z } from "zod";
+import { useDisclosure } from "../../../hooks/useDisclosure";
+import useZodForm, { ZodSubmitHandler } from "../../../hooks/useZodForm";
+import useScanin from "../hooks/useScanin";
+import UnknownCodeModal from "./UnknownCodeModal";
 
 interface ScaninCardProps {
   eventId: string;
@@ -64,7 +64,7 @@ export default function ScaninCard(props: ScaninCardProps) {
         }
       }
     },
-    [alert, eventId, onOpen, reset, scanInMutation, setFocus]
+    [alert, eventId, onOpen, reset, scanInMutation, setFocus],
   );
 
   const codeCreatedCallback = useCallback(
@@ -73,7 +73,7 @@ export default function ScaninCard(props: ScaninCardProps) {
         code: createdCode,
       });
     },
-    [onSubmit]
+    [onSubmit],
   );
 
   return (

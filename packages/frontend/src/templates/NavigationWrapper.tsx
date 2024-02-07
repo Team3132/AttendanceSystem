@@ -1,17 +1,17 @@
+import AsChildLink from "@/components/AsChildLink";
+import { trpc } from "@/trpcClient";
+import { TabItem } from "@/types/TabItem";
 import { BottomNavigation, BottomNavigationAction, Box } from "@mui/material";
-import useRouteMatch from "../utils/useRouteMatch";
+import { Outlet, RouteApi } from "@tanstack/react-router";
+import { TanStackRouterDevtools } from "@tanstack/router-devtools";
+import { useMemo } from "react";
 import {
   FaHouse,
   FaHouseLock,
   FaPeopleGroup,
   FaRegCalendar,
 } from "react-icons/fa6";
-import { useMemo } from "react";
-import { trpc } from "@/trpcClient";
-import AsChildLink from "@/components/AsChildLink";
-import { Outlet, RouteApi } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-import { TabItem } from "@/types/TabItem";
+import useRouteMatch from "../utils/useRouteMatch";
 
 const routeApi = new RouteApi({
   id: "/authedOnly",
@@ -64,7 +64,7 @@ export function Component() {
               icon: <FaRegCalendar />,
             },
           ] as TabItem[]),
-    [authStatusQuery.data.isAdmin]
+    [authStatusQuery.data.isAdmin],
   );
 
   const currentTab = useRouteMatch(routes);

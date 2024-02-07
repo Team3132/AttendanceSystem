@@ -1,3 +1,6 @@
+import AsChildLink from "@/components/AsChildLink";
+import Datatable from "@/components/DataTable";
+import { trpc } from "@/trpcClient";
 import {
   Button,
   Container,
@@ -6,16 +9,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import DefaultAppBar from "../../../components/DefaultAppBar";
-import { trpc } from "@/trpcClient";
-import Datatable from "@/components/DataTable";
+import { keepPreviousData } from "@tanstack/react-query";
 import { createColumnHelper } from "@tanstack/table-core";
-import { z } from "zod";
 import { UserSchema } from "backend/schema";
 import { useMemo, useState } from "react";
 import { useDebounce } from "usehooks-ts";
-import { keepPreviousData } from "@tanstack/react-query";
-import AsChildLink from "@/components/AsChildLink";
+import { z } from "zod";
+import DefaultAppBar from "../../../components/DefaultAppBar";
 
 const columnHelper = createColumnHelper<z.infer<typeof UserSchema>>();
 
@@ -50,17 +50,17 @@ export function Component() {
     {
       getNextPageParam: (lastPage) => lastPage.nextPage,
       placeholderData: keepPreviousData,
-    }
+    },
   );
 
   const pagedItems = useMemo(
     () => usersQuery.data?.pages.flatMap((page) => page.items) ?? [],
-    [usersQuery.data]
+    [usersQuery.data],
   );
 
   const total = useMemo(
     () => usersQuery.data?.pages.at(-1)?.total ?? 0,
-    [usersQuery.data]
+    [usersQuery.data],
   );
 
   return (

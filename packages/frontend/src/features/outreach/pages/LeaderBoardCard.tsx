@@ -1,11 +1,11 @@
+import { trpc } from "@/trpcClient";
 import { Stack, Typography } from "@mui/material";
 import { createColumnHelper } from "@tanstack/react-table";
-import Datatable from "../../../components/DataTable";
-import { z } from "zod";
 import { LeaderBoardUser as LeaderboardUserSchema } from "backend/schema";
-import { trpc } from "@/trpcClient";
 import { Duration } from "luxon";
 import { useMemo } from "react";
+import { z } from "zod";
+import Datatable from "../../../components/DataTable";
 
 type LeaderboardUser = z.infer<typeof LeaderboardUserSchema>;
 
@@ -43,17 +43,17 @@ export function Component() {
     },
     {
       getNextPageParam: (lastPage) => lastPage.nextPage,
-    }
+    },
   );
 
   const flatResults = useMemo(
     () => leaderboardQuery.data?.pages.flatMap((page) => page.items),
-    [leaderboardQuery.data]
+    [leaderboardQuery.data],
   );
 
   const totalRowCount = useMemo(
     () => leaderboardQuery.data?.pages.at(-1)?.total ?? 0,
-    [leaderboardQuery.data]
+    [leaderboardQuery.data],
   );
 
   if (leaderboardQuery.data) {

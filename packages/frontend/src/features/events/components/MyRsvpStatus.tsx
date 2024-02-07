@@ -1,3 +1,4 @@
+import { trpc } from "@/trpcClient";
 import {
   FormControl,
   FormHelperText,
@@ -7,10 +8,9 @@ import {
   SelectChangeEvent,
   TextField,
 } from "@mui/material";
-import useUpdateRsvp from "../hooks/useUpdateRsvp";
-import { trpc } from "@/trpcClient";
-import { z } from "zod";
 import { RSVPSchema } from "backend/schema";
+import { z } from "zod";
+import useUpdateRsvp from "../hooks/useUpdateRsvp";
 
 interface MyRsvpStatusProps {
   eventId: string;

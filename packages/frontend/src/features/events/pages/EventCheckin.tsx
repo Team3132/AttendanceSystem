@@ -1,13 +1,13 @@
-import { Container, Paper, Stack, Typography } from "@mui/material";
-import useZodForm from "../../../hooks/useZodForm";
-import { LoadingButton } from "@mui/lab";
-import useSelfCheckin from "../hooks/useSelfCheckin";
-import { useAlert } from "react-alert";
-import { isTRPCClientError } from "@/utils/trpc";
-import { SelfCheckinSchema } from "backend/schema";
 import ControlledTextField from "@/components/ControlledTextField";
+import { isTRPCClientError } from "@/utils/trpc";
+import { LoadingButton } from "@mui/lab";
+import { Container, Paper, Stack, Typography } from "@mui/material";
 import { RouteApi } from "@tanstack/react-router";
 import { useNavigate } from "@tanstack/react-router";
+import { SelfCheckinSchema } from "backend/schema";
+import { useAlert } from "react-alert";
+import useZodForm from "../../../hooks/useZodForm";
+import useSelfCheckin from "../hooks/useSelfCheckin";
 
 const apiRoute = new RouteApi({
   id: "/authedOnly/events/$eventId/check-in",

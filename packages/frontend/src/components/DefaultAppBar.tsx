@@ -1,6 +1,6 @@
-import { AppBar, Toolbar, Typography, IconButton } from "@mui/material";
-import { FaCircleUser } from "react-icons/fa6";
+import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
 import { Helmet } from "react-helmet-async";
+import { FaCircleUser } from "react-icons/fa6";
 import AsChildLink from "./AsChildLink";
 
 interface DefaultAppBarProps {

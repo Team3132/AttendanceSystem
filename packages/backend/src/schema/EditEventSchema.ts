@@ -1,6 +1,6 @@
 import { createInsertSchema } from "drizzle-zod";
-import { event } from "../drizzle/schema";
 import { z } from "zod";
+import { event } from "../drizzle/schema";
 
 export const EditEventSchema = createInsertSchema(event)
   .omit({
@@ -10,5 +10,5 @@ export const EditEventSchema = createInsertSchema(event)
   .merge(
     z.object({
       id: z.string(),
-    })
+    }),
   );

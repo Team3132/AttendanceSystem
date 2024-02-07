@@ -1,7 +1,7 @@
 import { Container, Paper, Stack, Typography } from "@mui/material";
-import DefaultAppBar from "../components/DefaultAppBar";
-import ActiveEventsList from "../components/ActiveEventsList";
 import { RouteApi } from "@tanstack/react-router";
+import ActiveEventsList from "../components/ActiveEventsList";
+import DefaultAppBar from "../components/DefaultAppBar";
 
 const appVersion = import.meta.env["VITE_APP_VERSION"] as string | undefined;
 

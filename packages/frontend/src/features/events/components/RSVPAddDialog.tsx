@@ -1,25 +1,25 @@
-import { z } from "zod";
-import { useMemo, useState } from "react";
-import useZodForm, { ZodSubmitHandler } from "../../../hooks/useZodForm";
+import { useDisclosure } from "@/hooks/useDisclosure";
+import { trpc } from "@/trpcClient";
 import { LoadingButton } from "@mui/lab";
 import {
+  Autocomplete,
+  Button,
   Dialog,
-  DialogTitle,
+  DialogActions,
   DialogContent,
   DialogContentText,
+  DialogTitle,
   Stack,
-  Autocomplete,
   TextField,
-  DialogActions,
-  Button,
 } from "@mui/material";
-import { Controller } from "react-hook-form";
-import useAddUserRsvp from "../hooks/useAddRsvp";
-import { trpc } from "@/trpcClient";
-import { TRPCClientError } from "@trpc/client";
-import { useDebounce } from "usehooks-ts";
-import { useDisclosure } from "@/hooks/useDisclosure";
 import { keepPreviousData } from "@tanstack/react-query";
+import { TRPCClientError } from "@trpc/client";
+import { useMemo, useState } from "react";
+import { Controller } from "react-hook-form";
+import { useDebounce } from "usehooks-ts";
+import { z } from "zod";
+import useZodForm, { ZodSubmitHandler } from "../../../hooks/useZodForm";
+import useAddUserRsvp from "../hooks/useAddRsvp";
 
 interface RSVPAddDialogProps {
   onOpen: () => void;
@@ -54,7 +54,7 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
       enabled: isAutocompleteOpen,
       getNextPageParam: (lastPage) => lastPage.nextPage,
       placeholderData: keepPreviousData,
-    }
+    },
   );
 
   const userOption = useMemo(
@@ -65,7 +65,7 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
           label: user.username,
           value: user.id,
         })) ?? [],
-    [usersQuery.data]
+    [usersQuery.data],
   );
 
   const {

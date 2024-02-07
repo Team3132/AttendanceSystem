@@ -1,7 +1,7 @@
 import { z } from "zod";
+import env from "../env";
 import { t } from "../trpc";
 import { publicProcedure, sessionProcedure } from "../trpc/utils";
-import env from "../env";
 
 /**
  * Auth router

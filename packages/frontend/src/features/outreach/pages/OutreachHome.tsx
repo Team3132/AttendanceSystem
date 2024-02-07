@@ -1,9 +1,9 @@
-import { Container, Paper, Tab, Tabs } from "@mui/material";
-import DefaultAppBar from "../../../components/DefaultAppBar";
-import useRouteMatch from "@/utils/useRouteMatch";
 import AsChildLink from "@/components/AsChildLink";
-import { Outlet } from "@tanstack/react-router";
 import { TabItem } from "@/types/TabItem";
+import useRouteMatch from "@/utils/useRouteMatch";
+import { Container, Paper, Tab, Tabs } from "@mui/material";
+import { Outlet } from "@tanstack/react-router";
+import DefaultAppBar from "../../../components/DefaultAppBar";
 
 const tabs: Array<TabItem> = [
   {

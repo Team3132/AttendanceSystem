@@ -1,5 +1,5 @@
-import { z } from "zod";
 import { config } from "dotenv";
+import { z } from "zod";
 
 config();
 
@@ -60,8 +60,8 @@ export type Env = z.infer<typeof EnvSchema>;
 
 export const env = EnvSchema.parse(process.env);
 
-export const isDev = process.env["NODE_ENV"] === "development";
+export const isDev = process.env.NODE_ENV === "development";
 
-export const isProd = process.env["NODE_ENV"] === "production";
+export const isProd = process.env.NODE_ENV === "production";
 
 export default env;

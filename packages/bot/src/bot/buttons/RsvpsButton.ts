@@ -1,14 +1,14 @@
-import { Inject, Injectable, Logger, UseGuards } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { GuildMember } from 'discord.js';
-import { Button, Context, type ButtonContext, ComponentParam } from 'necord';
-import rsvpReminderMessage from '../utils/rsvpReminderMessage';
-import { ROLES } from '@/constants';
-import { DelayModal } from '../modals/Delay.modal';
-import { BACKEND_TOKEN, type BackendClient } from '@/backend/backend.module';
-import { z } from 'zod';
-import { RSVPStatusSchema } from 'backend/schema';
-import { GuildMemberGuard } from '../guards/GuildMemberGuard';
+import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
+import { ROLES } from "@/constants";
+import { Inject, Injectable, Logger, UseGuards } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { RSVPStatusSchema } from "backend/schema";
+import { GuildMember } from "discord.js";
+import { Button, type ButtonContext, ComponentParam, Context } from "necord";
+import { z } from "zod";
+import { GuildMemberGuard } from "../guards/GuildMemberGuard";
+import { DelayModal } from "../modals/Delay.modal";
+import rsvpReminderMessage from "../utils/rsvpReminderMessage";
 
 @Injectable()
 export class RsvpsButton {
@@ -20,11 +20,11 @@ export class RsvpsButton {
   private readonly logger = new Logger(RsvpsButton.name);
 
   @UseGuards(GuildMemberGuard)
-  @Button('event/:eventId/rsvp/:rsvpStatus')
+  @Button("event/:eventId/rsvp/:rsvpStatus")
   public async onRsvpButton(
     @Context() [interaction]: ButtonContext,
-    @ComponentParam('eventId') eventId: string,
-    @ComponentParam('rsvpStatus') rsvpStatus: z.infer<typeof RSVPStatusSchema>,
+    @ComponentParam("eventId") eventId: string,
+    @ComponentParam("rsvpStatus") rsvpStatus: z.infer<typeof RSVPStatusSchema>,
   ) {
     const fetchedEvent =
       await this.backendClient.client.bot.getEventDetails.query(eventId);
@@ -40,7 +40,7 @@ export class RsvpsButton {
     const interactionUser = interaction.member;
 
     if (!(interactionUser instanceof GuildMember)) {
-      return interaction.reply('Not a guild member');
+      return interaction.reply("Not a guild member");
     }
 
     const userRoles = [
@@ -59,7 +59,7 @@ export class RsvpsButton {
 
     // const fetchedUser = fetchedUsers.at(0);
 
-    if (fetchedEvent.type === 'Mentor' && !userRoles.includes(ROLES.MENTOR)) {
+    if (fetchedEvent.type === "Mentor" && !userRoles.includes(ROLES.MENTOR)) {
       return interaction.reply({
         ephemeral: true,
         content: "You're not a mentor.",
@@ -77,9 +77,9 @@ export class RsvpsButton {
     const newRSVPs =
       await this.backendClient.client.bot.getEventRsvps.query(eventId);
 
-    const frontendUrl = this.config.getOrThrow('FRONTEND_URL');
+    const frontendUrl = this.config.getOrThrow("FRONTEND_URL");
 
-    if (rsvpStatus === 'LATE') {
+    if (rsvpStatus === "LATE") {
       // return interaction.deferUpdate();
       return interaction.showModal(DelayModal.build(eventId));
     } else {

@@ -1,16 +1,16 @@
-import { and, count, eq, ilike, isNotNull, isNull } from "drizzle-orm";
-import db from "../drizzle/db";
-import { TRPCError } from "@trpc/server";
-import { buildPoints, scancode, user } from "../drizzle/schema";
-import { z } from "zod";
-import { AddBuildPointsUserSchema, UserCreateSchema } from "../schema";
-import { ee, rtrpc } from "../routers/app.router";
 import { getQueryKey } from "@trpc/react-query";
-import { UserListParamsSchema } from "../schema/UserListParamsSchema";
-import { PagedUserSchema } from "../schema/PagedUserSchema";
+import { TRPCError } from "@trpc/server";
+import { and, count, eq, ilike, isNotNull, isNull } from "drizzle-orm";
+import { z } from "zod";
+import db from "../drizzle/db";
+import { buildPoints, scancode, user } from "../drizzle/schema";
+import { ee, rtrpc } from "../routers/app.router";
+import { AddBuildPointsUserSchema, UserCreateSchema } from "../schema";
 import { GetBuildPointsSchema } from "../schema/GetBuildPointsSchema";
 import { PagedBuildPointsSchema } from "../schema/PagedBuildPointsSchema";
+import { PagedUserSchema } from "../schema/PagedUserSchema";
 import { RemoveBuildPointSchema } from "../schema/RemoveBuildPointSchema";
+import { UserListParamsSchema } from "../schema/UserListParamsSchema";
 
 /**
  * Gets a user from the database
@@ -54,7 +54,7 @@ export async function getPendingUserRsvps(userId: string) {
       and(
         eq(rsvp.userId, userId),
         isNotNull(rsvp.checkinTime),
-        isNull(rsvp.checkoutTime)
+        isNull(rsvp.checkoutTime),
       ),
     with: {
       event: {
@@ -77,7 +77,7 @@ export async function getPendingUserRsvps(userId: string) {
 }
 
 export async function getUserList(
-  params: z.infer<typeof UserListParamsSchema>
+  params: z.infer<typeof UserListParamsSchema>,
 ): Promise<z.infer<typeof PagedUserSchema>> {
   const { limit, cursor: page } = params;
 
@@ -206,7 +206,7 @@ export async function createUser(userdata: z.infer<typeof UserCreateSchema>) {
 }
 
 export async function addUserBuildPoints(
-  params: z.infer<typeof AddBuildPointsUserSchema>
+  params: z.infer<typeof AddBuildPointsUserSchema>,
 ) {
   const user = await db.query.user.findFirst({
     where: (user) => eq(user.id, params.userId),
@@ -245,7 +245,7 @@ export async function addUserBuildPoints(
 
 export async function getUserBuildPoints(
   userId: string,
-  params: z.infer<typeof GetBuildPointsSchema>
+  params: z.infer<typeof GetBuildPointsSchema>,
 ) {
   const { limit, cursor: page } = params;
 
@@ -281,7 +281,7 @@ export async function getUserBuildPoints(
 }
 
 export async function removeUserBuildPoints(
-  params: z.infer<typeof RemoveBuildPointSchema>
+  params: z.infer<typeof RemoveBuildPointSchema>,
 ) {
   const { buildPointId } = params;
   const [res] = await db

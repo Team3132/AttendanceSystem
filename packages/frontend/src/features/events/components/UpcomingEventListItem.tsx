@@ -1,15 +1,15 @@
 import { ListItemText, Typography } from "@mui/material";
-import EventDateText from "./EventDateTypography";
+import { EventSchema } from "backend/schema";
 import { DateTime } from "luxon";
 import { z } from "zod";
-import { EventSchema } from "backend/schema";
+import EventDateText from "./EventDateTypography";
 
 interface UpcomingEventListItemProps {
   event: z.infer<typeof EventSchema>;
 }
 
 export default function UpcomingEventListItem(
-  props: UpcomingEventListItemProps
+  props: UpcomingEventListItemProps,
 ) {
   const { event } = props;
   return (

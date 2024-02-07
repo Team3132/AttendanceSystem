@@ -1,10 +1,10 @@
-import useRouteMatch from "../../../utils/useRouteMatch";
-import DefaultAppBar from "../../../components/DefaultAppBar";
-import { Tab, Tabs } from "@mui/material";
-import { trpc } from "@/trpcClient";
-import { Outlet, RouteApi } from "@tanstack/react-router";
 import AsChildLink from "@/components/AsChildLink";
+import { trpc } from "@/trpcClient";
 import { TabItem } from "@/types/TabItem";
+import { Tab, Tabs } from "@mui/material";
+import { Outlet, RouteApi } from "@tanstack/react-router";
+import DefaultAppBar from "../../../components/DefaultAppBar";
+import useRouteMatch from "../../../utils/useRouteMatch";
 
 const routeApi = new RouteApi({ id: "/authedOnly/profile" });
 const tabs: Array<TabItem> = [

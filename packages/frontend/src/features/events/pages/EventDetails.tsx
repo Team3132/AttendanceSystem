@@ -1,10 +1,10 @@
 import { Container, Grid, Paper, Stack, Typography } from "@mui/material";
 
-import { DateTime } from "luxon";
-import RsvpList from "../components/RSVPList";
-import DeleteEventButton from "../components/DeleteEventButton";
 import { trpc } from "@/trpcClient";
 import { RouteApi } from "@tanstack/react-router";
+import { DateTime } from "luxon";
+import DeleteEventButton from "../components/DeleteEventButton";
+import RsvpList from "../components/RSVPList";
 
 const routeApi = new RouteApi({
   id: "/authedOnly/events/$eventId/",
@@ -41,7 +41,7 @@ export function Component() {
             <Typography variant="h5">Start</Typography>
             <Typography variant="body1">
               {DateTime.fromISO(eventQuery.data.startDate).toLocaleString(
-                DateTime.DATETIME_MED_WITH_WEEKDAY
+                DateTime.DATETIME_MED_WITH_WEEKDAY,
               )}
             </Typography>
           </Paper>
@@ -64,7 +64,7 @@ export function Component() {
             <Typography variant="h5">End</Typography>
             <Typography variant="body1">
               {DateTime.fromISO(eventQuery.data.endDate).toLocaleString(
-                DateTime.DATETIME_MED_WITH_WEEKDAY
+                DateTime.DATETIME_MED_WITH_WEEKDAY,
               )}
             </Typography>
           </Paper>

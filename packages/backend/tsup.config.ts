@@ -17,4 +17,5 @@ export default defineConfig(({ watch }) => ({
     ".json": "copy",
   },
   publicDir: "public",
+  tsconfig: "tsconfig.json",
 }));

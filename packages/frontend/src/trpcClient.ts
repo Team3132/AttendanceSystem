@@ -1,3 +1,4 @@
+import { QueryClient } from "@tanstack/react-query";
 import {
   createTRPCClientProxy,
   createWSClient,
@@ -5,10 +6,9 @@ import {
   splitLink,
   wsLink,
 } from "@trpc/client";
-import SuperJSON from "superjson";
 import { createTRPCQueryUtils, createTRPCReact } from "@trpc/react-query";
 import { type AppRouter } from "backend";
-import { QueryClient } from "@tanstack/react-query";
+import SuperJSON from "superjson";
 // import { persistQueryClient } from "@tanstack/react-query-persist-client";
 // import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 // import { compress, decompress } from "lz-string";

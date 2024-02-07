@@ -1,7 +1,7 @@
-import { Container, Stack, Paper, Typography, List } from "@mui/material";
-import PendingEventListItem from "../../../components/PendingEventListItem";
 import { trpc } from "@/trpcClient";
+import { Container, List, Paper, Stack, Typography } from "@mui/material";
 import { RouteApi } from "@tanstack/react-router";
+import PendingEventListItem from "../../../components/PendingEventListItem";
 
 const routeApi = new RouteApi({ id: "/authedOnly/profile/pending" });
 
@@ -12,7 +12,7 @@ export function Component() {
     undefined,
     {
       initialData: loaderData.initialPendingEvents,
-    }
+    },
   );
 
   return (

@@ -1,7 +1,7 @@
-import { Container, Stack, Paper, Typography, List } from "@mui/material";
-import PendingEventListItem from "../../../components/AdminPendingEventListItem";
 import { trpc } from "@/trpcClient";
+import { Container, List, Paper, Stack, Typography } from "@mui/material";
 import { RouteApi } from "@tanstack/react-router";
+import PendingEventListItem from "../../../components/AdminPendingEventListItem";
 
 const routeApi = new RouteApi({
   id: "/authedOnly/adminOnly/user/$userId/pending",
@@ -14,7 +14,7 @@ export function Component() {
     loaderData.userId,
     {
       initialData: loaderData.initialPendingEvents,
-    }
+    },
   );
 
   return (

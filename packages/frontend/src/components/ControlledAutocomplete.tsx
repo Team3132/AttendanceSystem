@@ -47,7 +47,7 @@ export default function ControlledAutocomplete<
     DisableClearable,
     FreeSolo,
     ChipComponent
-  >
+  >,
 ) {
   const {
     control,

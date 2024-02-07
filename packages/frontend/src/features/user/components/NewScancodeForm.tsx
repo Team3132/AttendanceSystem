@@ -1,9 +1,9 @@
+import { LoadingButton } from "@mui/lab";
+import { ListItem, TextField } from "@mui/material";
+import { TRPCClientError } from "@trpc/client";
 import { z } from "zod";
 import useZodForm from "../../../hooks/useZodForm";
-import { ListItem, TextField } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
 import useCreateSelfScancode from "../hooks/useCreateSelfScancode";
-import { TRPCClientError } from "@trpc/client";
 
 const NewScancodeSchema = z.object({
   code: z

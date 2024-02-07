@@ -1,14 +1,14 @@
+import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
 import {
   ActionRowBuilder,
   ModalActionRowComponentBuilder,
   ModalBuilder,
   TextInputBuilder,
-} from '@discordjs/builders';
-import { Inject, Injectable, UseGuards } from '@nestjs/common';
-import { GuildMember, TextInputStyle } from 'discord.js';
-import { Ctx, Modal, type ModalContext, ModalParam } from 'necord';
-import { BACKEND_TOKEN, type BackendClient } from '@/backend/backend.module';
-import { GuildMemberGuard } from '../guards/GuildMemberGuard';
+} from "@discordjs/builders";
+import { Inject, Injectable, UseGuards } from "@nestjs/common";
+import { GuildMember, TextInputStyle } from "discord.js";
+import { Ctx, Modal, type ModalContext, ModalParam } from "necord";
+import { GuildMemberGuard } from "../guards/GuildMemberGuard";
 
 @Injectable()
 export class CheckinModal {
@@ -20,9 +20,9 @@ export class CheckinModal {
   @Modal(`event/:eventId/checkin`)
   public async onCheckinModal(
     @Ctx() [interaction]: ModalContext,
-    @ModalParam('eventId') eventId: string,
+    @ModalParam("eventId") eventId: string,
   ) {
-    const code = interaction.fields.getTextInputValue('code');
+    const code = interaction.fields.getTextInputValue("code");
 
     const userId = interaction.user.id;
 
@@ -42,14 +42,14 @@ export class CheckinModal {
     if (secret !== code) {
       return interaction.reply({
         ephemeral: true,
-        content: 'Invalid code.',
+        content: "Invalid code.",
       });
     }
 
     const interactionUser = interaction.member;
 
     if (!(interactionUser instanceof GuildMember)) {
-      return interaction.reply('Not a guild member');
+      return interaction.reply("Not a guild member");
     }
 
     const userRoles = [
@@ -74,7 +74,7 @@ export class CheckinModal {
 
     return interaction.reply({
       ephemeral: true,
-      content: 'You have checked in',
+      content: "You have checked in",
     });
   }
 
@@ -85,17 +85,17 @@ export class CheckinModal {
    */
   public static build(eventId: string) {
     return new ModalBuilder()
-      .setTitle('Checkin')
+      .setTitle("Checkin")
       .setCustomId(`event/${eventId}/checkin`)
       .setComponents([
         new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents([
           new TextInputBuilder()
-            .setCustomId('code')
-            .setPlaceholder('8 digit code')
+            .setCustomId("code")
+            .setPlaceholder("8 digit code")
             .setRequired(true)
             .setMinLength(8)
             .setMaxLength(8)
-            .setLabel('The event code')
+            .setLabel("The event code")
             .setStyle(TextInputStyle.Short),
         ]),
       ]);

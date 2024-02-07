@@ -12,7 +12,7 @@ export default function AsChildLink<
 >(
   props: UseLinkPropsOptions<TRouteTree, TFrom, TTo, TMaskFrom, TMaskTo> & {
     children: React.ReactNode;
-  }
+  },
 ) {
   const linkPropsProps = useLinkProps(props);
 

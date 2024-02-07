@@ -1,10 +1,10 @@
-import postgres from "postgres";
-import env from "../env";
-import mainLogger from "../logger";
 import path from "path";
 import { fileURLToPath } from "url";
 import { drizzle } from "drizzle-orm/postgres-js";
 import { migrate as migrateDB } from "drizzle-orm/postgres-js/migrator";
+import postgres from "postgres";
+import env from "../env";
+import mainLogger from "../logger";
 import * as schema from "./schema";
 
 const connectionUrl = `postgres://${env.POSTGRES_USER}:${env.POSTGRES_PASSWORD}@${env.POSTGRES_HOST}:5432/${env.POSTGRES_DB}`;
@@ -14,7 +14,7 @@ export async function migrate() {
 
   const migrationsFolder = path.join(
     fileURLToPath(import.meta.url),
-    "../drizzle/migrations"
+    "../drizzle/migrations",
   );
   const migrationPgClient = postgres(connectionUrl, {
     max: 1,

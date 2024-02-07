@@ -6,6 +6,6 @@ export const adminIndexRoute = new Route({
   path: "/admin",
   component: lazyRouteComponent(
     () => import("../pages/AdminHome"),
-    "Component"
+    "Component",
   ),
 });

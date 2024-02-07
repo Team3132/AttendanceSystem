@@ -43,12 +43,12 @@ export default function InfiniteList<T>(props: InfiniteListProps<T>) {
 
   const currentTotal = useMemo(
     () => data.pages?.reduce((acc, page) => acc + page.items.length, 0) ?? 0,
-    [data.pages]
+    [data.pages],
   );
 
   const flatData = useMemo(
     () => data.pages?.flatMap((page) => page.items) ?? [],
-    [data.pages]
+    [data.pages],
   );
 
   const tableContainerRef = useRef<HTMLUListElement>(null);
@@ -74,7 +74,7 @@ export default function InfiniteList<T>(props: InfiniteListProps<T>) {
         }
       }
     },
-    [fetchNextPage, isFetching, currentTotal, total]
+    [fetchNextPage, isFetching, currentTotal, total],
   );
 
   useEffect(() => {

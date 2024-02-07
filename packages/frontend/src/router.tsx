@@ -1,3 +1,4 @@
+import { QueryClient } from "@tanstack/react-query";
 import {
   Route,
   RoutePaths,
@@ -5,19 +6,18 @@ import {
   lazyRouteComponent,
 } from "@tanstack/react-router";
 import { rootRouteWithContext } from "@tanstack/react-router";
-import { QueryClient } from "@tanstack/react-query";
 import { CreateQueryUtils } from "@trpc/react-query/shared";
 import type { AppRouter } from "backend";
-import { queryClient, queryUtils } from "./trpcClient";
-import { outreachRoutes } from "./features/outreach/routes";
 import { adminIndexRoute } from "./features/admin/routes";
 import {
   adminOnlyRoute,
   authedOnlyRoute,
   unauthedOnlyRoute,
 } from "./features/auth/routes";
-import { adminUserRoutes, profileRoutes } from "./features/user/routes";
 import { eventQrCodeRoute, eventsRoutes } from "./features/events/routes";
+import { outreachRoutes } from "./features/outreach/routes";
+import { adminUserRoutes, profileRoutes } from "./features/user/routes";
+import { queryClient, queryUtils } from "./trpcClient";
 
 export const rootRoute = rootRouteWithContext<{
   queryClient: QueryClient;
@@ -43,7 +43,7 @@ const loginRoute = new Route({
   loader: ({ context: { queryUtils } }) => queryUtils.auth.status.ensureData(),
   component: lazyRouteComponent(
     () => import("./features/auth/pages/LoginPage"),
-    "Component"
+    "Component",
   ),
 });
 

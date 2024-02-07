@@ -4,16 +4,16 @@ import {
   createTheme,
   useMediaQuery,
 } from "@mui/material";
-import { useMemo } from "react";
-import router from "./router";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { Provider } from "react-alert";
-import MuiAlert from "./components/MuiAlert";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
-import { queryClient, trpc, trpcClient } from "./trpcClient";
-import { HelmetProvider } from "react-helmet-async";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider } from "@tanstack/react-router";
+import { useMemo } from "react";
+import { Provider } from "react-alert";
+import { HelmetProvider } from "react-helmet-async";
+import MuiAlert from "./components/MuiAlert";
+import router from "./router";
+import { queryClient, trpc, trpcClient } from "./trpcClient";
 
 /**
  * The root component of the application.
@@ -28,7 +28,7 @@ function App() {
           mode: prefersDarkMode ? "dark" : "light",
         },
       }),
-    [prefersDarkMode]
+    [prefersDarkMode],
   );
 
   return (

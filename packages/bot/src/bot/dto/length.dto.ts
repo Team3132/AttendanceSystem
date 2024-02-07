@@ -1,9 +1,9 @@
-import { StringOption } from 'necord';
+import { StringOption } from "necord";
 
 export class LengthDto {
   @StringOption({
-    name: 'text',
-    description: 'Your text',
+    name: "text",
+    description: "Your text",
     required: true,
   })
   text: string;
