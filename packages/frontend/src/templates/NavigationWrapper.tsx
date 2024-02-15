@@ -64,7 +64,7 @@ export function Component() {
               icon: <FaRegCalendar />,
             },
           ] as TabItem[]),
-    [authStatusQuery.data.isAdmin],
+    [authStatusQuery.data.isAdmin]
   );
 
   const currentTab = useRouteMatch(routes);
