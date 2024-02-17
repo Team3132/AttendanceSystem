@@ -45,7 +45,8 @@ jobs:
           echo "Minor: ${{ steps.semantic.outputs.new_release_minor_version }}" >> $GITHUB_STEP_SUMMARY
           echo "Patch: ${{ steps.semantic.outputs.new_release_patch_version }}" >> $GITHUB_STEP_SUMMARY
   publish-tauri:
-    if: true
+    if: needs.release.outputs.published == 'true'
+    needs: ["release"]
     permissions:
       contents: write
     strategy:
