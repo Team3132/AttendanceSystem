@@ -44,8 +44,8 @@ importers:
         specifier: 11.0.0-next-beta.248
         version: 11.0.0-next-beta.248
       bullmq:
-        specifier: 5.2.0
-        version: 5.2.0
+        specifier: 5.2.1
+        version: 5.2.1
       cron:
         specifier: 3.1.6
         version: 3.1.6
@@ -3560,8 +3560,8 @@ packages:
       ieee754: 1.2.1
     dev: false
 
-  /bullmq@5.2.0:
-    resolution: {integrity: sha512-h0lkO9dNBLuFRdjPZXyb9sq0gyaaLir5tY9+uE7qjZaMtDXKUOhZlI7KgVWFT9smotsKG204Mwa7Y7jHxPCctQ==}
+  /bullmq@5.2.1:
+    resolution: {integrity: sha512-uImDp9k4hiitA1Ve5W/7AlOAaHMXwLtM2gPay7X7O6Do0LlXHW5fD4M0SthBtZLhECBQtZCCvzJcd2COoCi40g==}
     dependencies:
       cron-parser: 4.9.0
       glob: 8.1.0
