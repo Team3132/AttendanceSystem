@@ -13,6 +13,7 @@
     "bot": "pnpm run --filter bot",
     "backend": "pnpm run --filter backend",
     "frontend": "pnpm run --filter frontend",
+    "desktop": "pnpm run --filter desktop",
     "build": "pnpm run -r build",
     "typecheck": "pnpm run -r typecheck",
     "typecheck:watch": "pnpm run -r typecheck --watch",
