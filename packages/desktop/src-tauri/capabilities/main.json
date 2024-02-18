@@ -16,7 +16,14 @@
     "shell:allow-open",
     {
       "identifier": "http:default",
-      "allow": [{ "url": "http://localhost:1420/*" }, { "https://attendance.team3132.com/*" }],
+      "allow": [
+        {
+          "url": "http://localhost:1420/*"
+        },
+        {
+          "url": "https://attendance.team3132.com/*"
+        }
+      ],
       "deny": []
     }
   ]
