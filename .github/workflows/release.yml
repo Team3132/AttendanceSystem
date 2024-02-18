@@ -83,7 +83,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf libglib2.0-dev
           export PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig
-          ls /usr/lib/x86_64-linux-gnu/pkgconfig -la
+          echo "-----"
+          pkg-config --libs --cflags glib-2.0
+          pkg-config --list-all
+          export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig
+          echo "-----"
+          pkg-config --libs --cflags glib-2.0
+          pkg-config --list-all
       - name: Install Dependancies
         run: pnpm install --frozen-lockfile
 
