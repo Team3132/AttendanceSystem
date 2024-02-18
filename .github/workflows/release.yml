@@ -92,8 +92,8 @@ jobs:
           PKG_CONFIG_PATH: /usr/lib/x86_64-linux-gnu/pkgconfig
         with:
           projectPath: ./packages/desktop
-          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
-          releaseName: "App v__VERSION__"
+          tagName: v${{ needs.release.outputs.version }}
+          releaseName: v${{ needs.release.outputs.version }}
           releaseBody: "See the assets to download this version and install."
           releaseDraft: true
           prerelease: false
