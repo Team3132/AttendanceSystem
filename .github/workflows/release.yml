@@ -84,6 +84,7 @@ jobs:
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PKG_CONFIG_PATH: /usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig
         with:
           projectPath: ./packages/desktop
           tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
