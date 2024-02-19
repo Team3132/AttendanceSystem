@@ -32,8 +32,8 @@ importers:
         specifier: 7.0.1
         version: 7.0.1
       '@fastify/websocket':
-        specifier: 8.3.1
-        version: 8.3.1
+        specifier: 9.0.0
+        version: 9.0.0
       '@trpc/client':
         specifier: 11.0.0-next-beta.248
         version: 11.0.0-next-beta.248(@trpc/server@11.0.0-next-beta.248)
@@ -1556,9 +1556,10 @@ packages:
       glob: 10.3.10
     dev: false
 
-  /@fastify/websocket@8.3.1:
-    resolution: {integrity: sha512-hsQYHHJme/kvP3ZS4v/WMUznPBVeeQHHwAoMy1LiN6m/HuPfbdXq1MBJ4Nt8qX1YI+eVbog4MnOsU7MTozkwYA==}
+  /@fastify/websocket@9.0.0:
+    resolution: {integrity: sha512-rpHDtDdTaAQ1GuN6VzOZaUEmegXR3HhSA2QAL2e8GgiNGo/cTyy+chwbu7OjDIWnq3HZisitln/0N8Xdn0Fc+w==}
     dependencies:
+      duplexify: 4.1.2
       fastify-plugin: 4.5.1
       ws: 8.16.0
     transitivePeerDependencies:
@@ -4123,6 +4124,15 @@ packages:
       zod: 3.22.4
     dev: false
 
+  /duplexify@4.1.2:
+    resolution: {integrity: sha512-fz3OjcNCHmRP12MJoZMPglx8m4rrFP8rovnk4vT8Fs+aonZoCwGg10dSsQsfP/E62eZcPTMSMP6686fu9Qlqtw==}
+    dependencies:
+      end-of-stream: 1.4.4
+      inherits: 2.0.4
+      readable-stream: 3.6.2
+      stream-shift: 1.0.3
+    dev: false
+
   /eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
@@ -4155,7 +4165,6 @@ packages:
     resolution: {integrity: sha512-+uw1inIHVPQoaVuHzRyXd21icM+cnt4CzD5rW+NC1wjOUSTOs+Te7FOv7AhN7vS9x/oIyhLP5PR1H+phQAHu5Q==}
     dependencies:
       once: 1.4.0
-    dev: true
 
   /env-paths@3.0.0:
     resolution: {integrity: sha512-dtJUTepzMW3Lm/NPxRf3wP4642UWhjL2sQxc+ym2YMj1m/H2zDNQOlezafzkHwn6sMstjHTwG6iQQsctDW/b1A==}
@@ -6252,7 +6261,6 @@ packages:
       inherits: 2.0.4
       string_decoder: 1.3.0
       util-deprecate: 1.0.2
-    dev: true
 
   /readable-stream@4.5.2:
     resolution: {integrity: sha512-yjavECdqeZ3GLXNgRXgeQEdz9fvDDkNKyHnbHRFtOr7/LcfgBcmct7t/ET+HaCTqfh06OzoAxrkN/IfjJBVe+g==}
@@ -6628,6 +6636,10 @@ packages:
   /statuses@2.0.1:
     resolution: {integrity: sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==}
     engines: {node: '>= 0.8'}
+    dev: false
+
+  /stream-shift@1.0.3:
+    resolution: {integrity: sha512-76ORR0DO1o1hlKwTbi/DM3EXWGf3ZJYO8cXX5RJwnul2DEg2oyoZyjLNoQM8WsvZiFKCRfC1O0J7iCvie3RZmQ==}
     dev: false
 
   /streamsearch@1.1.0:
