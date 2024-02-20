@@ -259,7 +259,7 @@ importers:
         specifier: ^5.21.0
         version: 5.21.0(@tanstack/react-query@5.22.2)(react@18.2.0)
       '@tauri-apps/api':
-        specifier: ^2.0.0-beta.0
+        specifier: ^2.0.0-beta
         version: 2.0.0-beta.0
       '@tauri-apps/plugin-http':
         specifier: 2.0.0-beta.0
@@ -290,7 +290,7 @@ importers:
         version: 2.2.1
     devDependencies:
       '@tauri-apps/cli':
-        specifier: ^2.0.0-beta.0
+        specifier: ^2.0.0-beta
         version: 2.0.0-beta.1
       '@types/react':
         specifier: 18.2.57
