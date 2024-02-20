@@ -44,7 +44,7 @@
     "bullmq": "5.2.1",
     "cron": "3.1.6",
     "discord-api-types": "0.37.70",
-    "dotenv": "16.4.4",
+    "dotenv": "16.4.5",
     "drizzle-orm": "0.29.3",
     "drizzle-zod": "0.5.1",
     "eventemitter3": "5.0.1",
