@@ -268,8 +268,8 @@ importers:
         specifier: ^2.0.0-beta
         version: 2.0.0-beta.0
       '@tauri-apps/plugin-websocket':
-        specifier: 2.0.0-beta.0
-        version: 2.0.0-beta.0
+        specifier: 2.0.0-beta.1
+        version: 2.0.0-beta.1
       '@trpc/client':
         specifier: 11.0.0-next-beta.248
         version: 11.0.0-next-beta.248(@trpc/server@11.0.0-next-beta.248)
@@ -2785,10 +2785,10 @@ packages:
       '@tauri-apps/api': 2.0.0-beta.0
     dev: false
 
-  /@tauri-apps/plugin-websocket@2.0.0-beta.0:
-    resolution: {integrity: sha512-SiYwDYEmawJSpDyyMg3UY0J2EW+U15sN99uQ64Zd5Z4LuSN48bkUt05S8puidWBH/6KXPucQtN5iVvpf9WyG+w==}
+  /@tauri-apps/plugin-websocket@2.0.0-beta.1:
+    resolution: {integrity: sha512-mPohjviJ8mlqXFUPivDDOq4Pz6eyrOjvhGm6q2AN5fRPZq2k4OZtCno5YaoUjpnIuOiwhZdEF/oM9K4oXtLqZA==}
     dependencies:
-      '@tauri-apps/api': 2.0.0-beta.0
+      '@tauri-apps/api': 2.0.0-beta.2
     dev: false
 
   /@tokenizer/token@0.3.0:
