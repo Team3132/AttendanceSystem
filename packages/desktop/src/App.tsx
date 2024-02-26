@@ -5,6 +5,13 @@ import "./App.css";
 import { trpc } from "./trpcClient";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
+import {
+  isPermissionGranted,
+  requestPermission,
+  sendNotification,
+} from '@tauri-apps/plugin-notification';
+
+
 function App() {
   const [greetMsg, setGreetMsg] = useState("");
   const [name, setName] = useState("");
@@ -13,6 +20,23 @@ function App() {
     // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
     setGreetMsg(await invoke("greet", { name }));
   }
+
+  async function notify() {
+    // Do you have permission to send a notification?
+    let permissionGranted = await isPermissionGranted();
+
+    // If not we need to request it
+    if (!permissionGranted) {
+      const permission = await requestPermission();
+      permissionGranted = permission === 'granted';
+    }
+
+    // Once permission has been granted we can send the notification
+    if (permissionGranted) {
+      sendNotification({ title: 'Tauri', body: 'Tauri is awesome!' });
+    }
+  }
+
 
   const test = trpc.test.useQuery();
 
@@ -47,9 +71,18 @@ function App() {
           placeholder="Enter a name..."
         />
         <button type="submit">Greet</button>
-      </form>
 
+      </form>
       <p>{greetMsg}</p>
+      <form
+        className="row"
+        onSubmit={(e) => {
+          e.preventDefault();
+          notify();
+        }}
+      >
+        <button type="submit">Notify</button>
+      </form>
       <ReactQueryDevtools />
     </div>
   );

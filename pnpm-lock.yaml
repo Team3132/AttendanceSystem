@@ -264,6 +264,9 @@ importers:
       '@tauri-apps/plugin-http':
         specifier: 2.0.0-beta.1
         version: 2.0.0-beta.1
+      '@tauri-apps/plugin-notification':
+        specifier: 2.0.0-beta.1
+        version: 2.0.0-beta.1
       '@tauri-apps/plugin-shell':
         specifier: 2.0.0-beta.1
         version: 2.0.0-beta.1
@@ -2777,6 +2780,12 @@ packages:
 
   /@tauri-apps/plugin-http@2.0.0-beta.1:
     resolution: {integrity: sha512-17i1KL7ug39p21ThtzxcmIifTaR0odmrUEzT+BUFwMANh3IXV8iurooOcHesrKmYN7A4t0NXlaFErYLvPs+4DA==}
+    dependencies:
+      '@tauri-apps/api': 2.0.0-beta.2
+    dev: false
+
+  /@tauri-apps/plugin-notification@2.0.0-beta.1:
+    resolution: {integrity: sha512-yFMRJt3AxUW7D4fcHy2l8WWVZW4s7Gb1aupk6YFVgnrHx4sqDDDoj/NAwjvEG7wxbLav7oxk7LwYvKKuT/OpFg==}
     dependencies:
       '@tauri-apps/api': 2.0.0-beta.2
     dev: false

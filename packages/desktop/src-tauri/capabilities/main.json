@@ -16,6 +16,7 @@
     "shell:allow-open",
     "websocket:default",
     "websocket:allow-connect",
+    "notification:default",
     {
       "identifier": "http:default",
       "allow": [
