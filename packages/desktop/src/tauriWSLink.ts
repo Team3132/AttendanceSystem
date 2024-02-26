@@ -180,7 +180,8 @@ export function createWSClient(opts: WebSocketClientOptions) {
       state: "connecting",
     } as Connection;
 
-    const onError = () => {
+    const onError = (e: any) => {
+      console.error("error", e);
       self.state = "closed";
       if (self === activeConnection) {
         tryReconnect(self);
@@ -188,7 +189,9 @@ export function createWSClient(opts: WebSocketClientOptions) {
     };
     run(async () => {
       const urlString = typeof url === "function" ? await url() : url;
+      console.log("connecting to", urlString);
       const ws = await TauriWebsocket.connect(urlString);
+      console.log("connected to", urlString);
       self.ws = ws;
       connectAttempt = 0;
       self.state = "open";
@@ -352,6 +355,7 @@ export function tauriWsLink<TRouter extends AnyRouter>(
             error(err) {
               // biome-ignore lint/suspicious/noExplicitAny: <explanation>
               observer.error(err as TRPCClientError<any>);
+              console.error("error", err);
               unsub();
             },
             complete() {

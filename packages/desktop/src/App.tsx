@@ -16,8 +16,6 @@ function App() {
 
   const test = trpc.test.useQuery();
 
-  console.log(test);
-
   return (
     <div className="container">
       <h1>Welcome to Tauri!</h1>

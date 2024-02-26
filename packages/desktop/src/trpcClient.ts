@@ -30,7 +30,7 @@ export const trpcClient = trpc.createClient({
   transformer: SuperJSON,
   links: [
     splitLink({
-      condition: (op) => op.type === "subscription" && import.meta.env.PROD,
+      condition: (op) => op.type === "subscription",
       true: tauriWsLink({
         client: wsClient,
       }),
@@ -38,7 +38,6 @@ export const trpcClient = trpc.createClient({
       false: httpBatchLink({
         url: backendUrl.toString(),
         fetch: async (url, options) => {
-          console.log("fetching", url, options);
           try {
             const response = await tauriFetch(url, {
               ...options,
