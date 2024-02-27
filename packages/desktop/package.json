@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@tauri-apps/cli": "2.0.0-beta.5",
-    "@types/react": "18.2.59",
+    "@types/react": "18.2.60",
     "@types/react-dom": "18.2.19",
     "@vitejs/plugin-react": "4.2.1",
     "backend": "workspace:*",
