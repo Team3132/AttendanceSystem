@@ -60,7 +60,7 @@
   },
   "devDependencies": {
     "@types/luxon": "3.4.2",
-    "@types/passport-discord": "0.1.11",
+    "@types/passport-discord": "0.1.12",
     "@types/uuid": "9.0.8",
     "@types/ws": "8.5.10",
     "drizzle-kit": "0.20.14",
