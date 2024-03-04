@@ -38,6 +38,7 @@ const EnvSchema = z.object({
   GUILD_ID: z.string(),
   FRONTEND_URL: z.string().default("http://localhost:3000"),
   SESSION_SECRET: z.string().default("secret"),
+  JWT_SECRET: z.string().default("secret"),
   PORT: z.coerce.number().int().default(3000),
   /**
    * Calendar stuff

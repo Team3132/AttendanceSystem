@@ -797,6 +797,7 @@ dependencies = [
  "serde_json",
  "tauri",
  "tauri-build",
+ "tauri-plugin-deep-link",
  "tauri-plugin-http",
  "tauri-plugin-notification",
  "tauri-plugin-shell",
@@ -3668,6 +3669,21 @@ dependencies = [
  "tauri-utils",
  "toml 0.8.2",
  "walkdir 1.0.7",
+]
+
+[[package]]
+name = "tauri-plugin-deep-link"
+version = "2.0.0-beta.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dadae3e312477fd96f04f56ef6bd2765d4a83b0746ea3033fda63819480d9fb3"
+dependencies = [
+ "log",
+ "serde",
+ "serde_json",
+ "tauri",
+ "tauri-plugin",
+ "thiserror",
+ "url",
 ]
 
 [[package]]

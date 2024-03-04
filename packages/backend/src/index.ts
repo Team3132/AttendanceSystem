@@ -19,6 +19,7 @@ import mainLogger from "./logger";
 import { registerCron } from "./registerCron";
 import appRouter, { AppRouter } from "./routers/app.router";
 import { createContext } from "./trpc/context";
+import jwt from "@fastify/jwt";
 
 Settings.defaultLocale = "en-au";
 Settings.defaultZone = "Australia/Sydney";
@@ -43,6 +44,10 @@ await server.register(fastifySecureSession, {
     httpOnly: true,
   },
 });
+
+await server.register(jwt, {
+  secret: env.JWT_SECRET,
+})
 
 await server.register(ws, {
   preClose: async (done) => {
@@ -76,7 +81,7 @@ await fastifyPassport.use("discord", discordStrategy);
 type User = typeof user.$inferSelect;
 
 declare module "fastify" {
-  interface PassportUser extends User {}
+  interface PassportUser extends User { }
 }
 
 // register a serializer that stores the user object's id in the session ...
@@ -114,6 +119,46 @@ await server.get("/api/auth/discord/callback", {
   }),
   handler: async (_req, res) => {
     return res.redirect(env.FRONTEND_URL);
+  },
+});
+
+await server.get("/api/auth/discord-desktop", {
+  preValidation: fastifyPassport.authenticate("discord", { authInfo: false }),
+  handler: async (_req, res) => {
+    return res.redirect(env.FRONTEND_URL);
+  },
+})
+
+await server.get("/api/auth/discord-desktop/callback", {
+  preValidation: fastifyPassport.authenticate("discord", {
+    authInfo: false,
+    failureRedirect: "/login",
+    successRedirect: env.FRONTEND_URL,
+  }),
+  handler: async (req, res) => {
+    if (!req.user) {
+      return res.redirect("/api/auth/discord-desktop")
+    }
+
+    const jwtPayload = {
+      id: req.user.id
+    }
+
+    // This callback should redirect to a deep link that will open the desktop app with an access token
+    // and refresh token in the URL.
+    const accessToken = await res.jwtSign(jwtPayload, {
+      sign: {
+        expiresIn: "1h",
+      }
+    })
+
+    const refreshToken = await res.jwtSign(jwtPayload, {
+      sign: {
+        expiresIn: "7d",
+      }
+    })
+
+    return res.redirect(`tdu://auth?accessToken=${accessToken}&refreshToken=${refreshToken}`)
   },
 });
 

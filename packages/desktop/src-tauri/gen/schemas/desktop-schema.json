@@ -460,6 +460,27 @@
           ]
         },
         {
+          "description": "deep-link:default -> Allows reading the opened deep link via the get_current command",
+          "type": "string",
+          "enum": [
+            "deep-link:default"
+          ]
+        },
+        {
+          "description": "deep-link:allow-get-current -> Enables the get_current command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "deep-link:allow-get-current"
+          ]
+        },
+        {
+          "description": "deep-link:deny-get-current -> Denies the get_current command without any pre-configured scope.",
+          "type": "string",
+          "enum": [
+            "deep-link:deny-get-current"
+          ]
+        },
+        {
           "description": "event:default -> Default permissions for the plugin.",
           "type": "string",
           "enum": [

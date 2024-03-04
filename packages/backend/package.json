@@ -34,6 +34,7 @@
     "@discordjs/rest": "2.2.0",
     "@dynamicabot/signales": "2.1.1",
     "@fastify/cookie": "9.3.1",
+    "@fastify/jwt": "^8.0.0",
     "@fastify/passport": "2.4.0",
     "@fastify/secure-session": "7.1.0",
     "@fastify/static": "7.0.1",
@@ -59,6 +60,7 @@
     "zod": "3.22.4"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.5.3",
     "@types/luxon": "3.4.2",
     "@types/passport-discord": "0.1.11",
     "@types/uuid": "9.0.8",
@@ -67,7 +69,6 @@
     "eslint": "8.57.0",
     "prettier": "3.2.5",
     "tsup": "8.0.2",
-    "typescript": "5.3.3",
-    "@biomejs/biome": "1.5.3"
+    "typescript": "5.3.3"
   }
 }
