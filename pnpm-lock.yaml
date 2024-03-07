@@ -265,8 +265,8 @@ importers:
         specifier: 2.0.0-beta.4
         version: 2.0.0-beta.4
       '@tauri-apps/plugin-deep-link':
-        specifier: 2.0.0-beta.1
-        version: 2.0.0-beta.1
+        specifier: 2.0.0-beta.2
+        version: 2.0.0-beta.2
       '@tauri-apps/plugin-http':
         specifier: 2.0.0-beta.1
         version: 2.0.0-beta.1
@@ -2797,10 +2797,10 @@ packages:
       '@tauri-apps/cli-win32-x64-msvc': 2.0.0-beta.7
     dev: true
 
-  /@tauri-apps/plugin-deep-link@2.0.0-beta.1:
-    resolution: {integrity: sha512-Rd6dOGTrGZhPX2TB5WywzJTqVXh7nOtL8r4w+01v0xWKrmjIpEBL0zr9w4WrMi1+2Vu+3nzaBKCdpD9U43bkSQ==}
+  /@tauri-apps/plugin-deep-link@2.0.0-beta.2:
+    resolution: {integrity: sha512-fwMq9TiWYRam4483oXQinYKXlQDnAi4vP7qD8TyriT0YITcvrSek8kkSPpu1mqdk/wrNd4SRjoYUdWk5AQPmRg==}
     dependencies:
-      '@tauri-apps/api': 2.0.0-beta.2
+      '@tauri-apps/api': 2.0.0-beta.4
     dev: false
 
   /@tauri-apps/plugin-http@2.0.0-beta.1:
