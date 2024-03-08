@@ -3712,9 +3712,9 @@ dependencies = [
 
 [[package]]
 name = "tauri-plugin-notification"
-version = "2.0.0-beta.1"
+version = "2.0.0-beta.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a65c040c7f2b764aa03cc1bed36973a90bc08917936c944ec0885bdf5eeaa2fe"
+checksum = "16c69417d3e60449a6b88fd8af94854a39cab6b5096e50bdbc433d5271d9b465"
 dependencies = [
  "log",
  "mac-notification-sys",
