@@ -19,7 +19,7 @@ import { z } from "zod";
 import db from "../drizzle/db";
 import { event, rsvp } from "../drizzle/schema";
 import env from "../env";
-import { ee, rtrpc } from "../routers/app.router";
+import { ee } from "../routers/app.router";
 import { RSVPUserSchema, UserCheckinSchema } from "../schema";
 import { CreateBlankUserRsvpSchema } from "../schema/CreateBlankUserRsvpSchema";
 import { CreateEventSchema } from "../schema/CreateEventSchema";
@@ -289,7 +289,7 @@ export async function createEvent(params: z.infer<typeof CreateEventSchema>) {
 
   const { secret, ...data } = createdEvent;
 
-  ee.emit("invalidate", getQueryKey(rtrpc.events.getEvents));
+  // ee.emit("invalidate", getQueryKey(rtrpc.events.getEvents));
 
   return data;
 }
@@ -316,8 +316,8 @@ export async function updateEvent(
     });
   }
 
-  ee.emit("invalidate", getQueryKey(rtrpc.events.getEvent, eventId));
-  ee.emit("invalidate", getQueryKey(rtrpc.events.getEvents));
+  // ee.emit("invalidate", getQueryKey(rtrpc.events.getEvent, eventId));
+  // ee.emit("invalidate", getQueryKey(rtrpc.events.getEvents));
 
   const { secret, ...rest } = updatedEvent;
 
@@ -341,8 +341,8 @@ export async function deleteEvent(id: string) {
     });
   }
 
-  ee.emit("invalidate", getQueryKey(rtrpc.events.getEvent, id));
-  ee.emit("invalidate", getQueryKey(rtrpc.events.getEvents));
+  // ee.emit("invalidate", getQueryKey(rtrpc.events.getEvent, id));
+  // ee.emit("invalidate", getQueryKey(rtrpc.events.getEvents));
 
   const { secret, ...rest } = deletedEvent;
 
@@ -383,7 +383,7 @@ export async function editUserRsvpStatus(
     });
   }
 
-  ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
+  // ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
 
   return updatedRsvp;
 }
@@ -457,7 +457,7 @@ export async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
     });
   }
 
-  ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
+  // ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
 
   const timeDiff = eventEndDateTime.toMillis() - DateTime.local().toMillis();
   const delay = timeDiff > 0 ? timeDiff : 0;
@@ -582,7 +582,7 @@ export async function userCheckout(userId: string, eventId: string) {
     });
   }
 
-  ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
+  // ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
 
   return updatedRsvp;
 }
@@ -633,7 +633,7 @@ export async function editUserAttendance(
 
   // TODO: Schedule a job to check out the user after the delay
 
-  ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
+  // ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
 
   return updatedRsvp;
 }
@@ -698,7 +698,7 @@ export async function createBlankUserRsvp(
     });
   }
 
-  ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
+  // ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
 
   return createdRsvp;
 }

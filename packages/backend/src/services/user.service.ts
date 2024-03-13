@@ -4,7 +4,7 @@ import { and, count, eq, ilike, isNotNull, isNull } from "drizzle-orm";
 import { z } from "zod";
 import db from "../drizzle/db";
 import { buildPoints, scancode, user } from "../drizzle/schema";
-import { ee, rtrpc } from "../routers/app.router";
+import { ee } from "../routers/app.router";
 import { AddBuildPointsUserSchema, UserCreateSchema } from "../schema";
 import { GetBuildPointsSchema } from "../schema/GetBuildPointsSchema";
 import { PagedBuildPointsSchema } from "../schema/PagedBuildPointsSchema";
@@ -200,8 +200,6 @@ export async function createUser(userdata: z.infer<typeof UserCreateSchema>) {
     });
   }
 
-  ee.emit("invalidate", getQueryKey(rtrpc.users.getUserList));
-
   return dbUser;
 }
 
@@ -237,8 +235,6 @@ export async function addUserBuildPoints(
       message: "Failed to add build points",
     });
   }
-
-  ee.emit("invalidate", getQueryKey(rtrpc.outreach.outreachLeaderboard));
 
   return newBuildPoints;
 }

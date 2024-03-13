@@ -16,7 +16,7 @@ interface IEventEmitter {
 
 export const ee = new EventEmitter<IEventEmitter>();
 
-type TRPCQueryKey = ReturnType<typeof getQueryKey>;
+type TRPCQueryKey = string
 
 /**
  * The main router for the backend, contains all other routers
@@ -44,7 +44,5 @@ const appRouter = t.router({
 });
 
 export type AppRouter = typeof appRouter;
-
-export const rtrpc = createTRPCReact<AppRouter>();
 
 export default appRouter;
