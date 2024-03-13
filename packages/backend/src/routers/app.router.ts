@@ -16,7 +16,7 @@ interface IEventEmitter {
 
 export const ee = new EventEmitter<IEventEmitter>();
 
-type TRPCQueryKey = string
+type TRPCQueryKey = readonly unknown[]
 
 /**
  * The main router for the backend, contains all other routers
