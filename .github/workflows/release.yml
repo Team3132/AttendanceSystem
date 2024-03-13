@@ -74,7 +74,7 @@ jobs:
       - name: Rust cache
         uses: swatinem/rust-cache@v2
         with:
-          workspaces: "./packages/desktop/src-tauri -> target"
+          workspaces: "./packages/frontend/src-tauri -> target"
           cache-on-failure: true
 
       - name: Install dependencies (ubuntu only)
@@ -91,7 +91,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PKG_CONFIG_PATH: /usr/lib/x86_64-linux-gnu/pkgconfig
         with:
-          projectPath: ./packages/desktop
+          projectPath: ./packages/frontend
           tagName: v${{ needs.release.outputs.version }}
           releaseName: v${{ needs.release.outputs.version }}
           releaseBody: "See the assets to download this version and install."

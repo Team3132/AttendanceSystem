@@ -10,12 +10,20 @@ export default defineConfig({
       projects: ["./tsconfig.json"],
     }),
   ],
+  clearScreen: false,
+  // 2. tauri expects a fixed port, fail if that port is not available
   server: {
-    port: 4000,
+    port: 1420,
+    strictPort: true,
+    watch: {
+      // 3. tell vite to ignore watching `src-tauri`
+      ignored: ["**/src-tauri/**"],
+    },
     proxy: {
       "/api": {
         target: "http://127.0.0.1:3000",
         changeOrigin: true,
+        ws: true,
       },
     },
   },
