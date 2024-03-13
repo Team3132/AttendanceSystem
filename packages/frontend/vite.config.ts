@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import viteTsconfigPaths from "vite-tsconfig-paths";
+import mkcert from'vite-plugin-mkcert'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -9,7 +10,9 @@ export default defineConfig({
     viteTsconfigPaths({
       projects: ["./tsconfig.json"],
     }),
+    mkcert()
   ],
+  
   clearScreen: false,
   // 2. tauri expects a fixed port, fail if that port is not available
   server: {
