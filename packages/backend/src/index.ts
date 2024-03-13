@@ -45,9 +45,9 @@ await server.register(fastifySecureSession, {
   },
 });
 
-await server.register(jwt, {
-  secret: env.JWT_SECRET,
-})
+// await server.register(jwt, {
+//   secret: env.JWT_SECRET,
+// })
 
 await server.register(ws, {
   preClose: async (done) => {
@@ -122,45 +122,45 @@ await server.get("/api/auth/discord/callback", {
   },
 });
 
-await server.get("/api/auth/discord-desktop", {
-  preValidation: fastifyPassport.authenticate("discord", { authInfo: false }),
-  handler: async (_req, res) => {
-    return res.redirect(env.FRONTEND_URL);
-  },
-})
+// await server.get("/api/auth/discord-desktop", {
+//   preValidation: fastifyPassport.authenticate("discord", { authInfo: false }),
+//   handler: async (_req, res) => {
+//     return res.redirect(env.FRONTEND_URL);
+//   },
+// })
 
-await server.get("/api/auth/discord-desktop/callback", {
-  preValidation: fastifyPassport.authenticate("discord", {
-    authInfo: false,
-    failureRedirect: "/login",
-    successRedirect: env.FRONTEND_URL,
-  }),
-  handler: async (req, res) => {
-    if (!req.user) {
-      return res.redirect("/api/auth/discord-desktop")
-    }
+// await server.get("/api/auth/discord-desktop/callback", {
+//   preValidation: fastifyPassport.authenticate("discord", {
+//     authInfo: false,
+//     failureRedirect: "/login",
+//     successRedirect: env.FRONTEND_URL,
+//   }),
+//   handler: async (req, res) => {
+//     if (!req.user) {
+//       return res.redirect("/api/auth/discord-desktop")
+//     }
 
-    const jwtPayload = {
-      id: req.user.id
-    }
+//     const jwtPayload = {
+//       id: req.user.id
+//     }
 
-    // This callback should redirect to a deep link that will open the desktop app with an access token
-    // and refresh token in the URL.
-    const accessToken = await res.jwtSign(jwtPayload, {
-      sign: {
-        expiresIn: "1h",
-      }
-    })
+//     // This callback should redirect to a deep link that will open the desktop app with an access token
+//     // and refresh token in the URL.
+//     const accessToken = await res.jwtSign(jwtPayload, {
+//       sign: {
+//         expiresIn: "1h",
+//       }
+//     })
 
-    const refreshToken = await res.jwtSign(jwtPayload, {
-      sign: {
-        expiresIn: "7d",
-      }
-    })
+//     const refreshToken = await res.jwtSign(jwtPayload, {
+//       sign: {
+//         expiresIn: "7d",
+//       }
+//     })
 
-    return res.redirect(`tdu://auth?accessToken=${accessToken}&refreshToken=${refreshToken}`)
-  },
-});
+//     return res.redirect(`tdu://auth?accessToken=${accessToken}&refreshToken=${refreshToken}`)
+//   },
+// });
 
 console.log(path.join(root, "frontend"));
 

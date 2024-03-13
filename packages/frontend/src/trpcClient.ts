@@ -8,6 +8,7 @@ import {
 } from "@trpc/client";
 import { createTRPCQueryUtils, createTRPCReact } from "@trpc/react-query";
 import { type AppRouter } from "backend";
+import { createTauriWSClient, tauriWsLink } from "./tauriWSLink";
 import SuperJSON from "superjson";
 // import { persistQueryClient } from "@tanstack/react-query-persist-client";
 // import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
@@ -24,28 +25,36 @@ const wsClient = createWSClient({
   url: wsBackendUrl.toString(),
 });
 
+const tauriWsClient = createTauriWSClient({
+  url: wsBackendUrl.toString(),
+});
+
 export const trpcClient = trpc.createClient({
   transformer: SuperJSON,
   links: [
     splitLink({
       condition: (op) => op.type === "subscription",
-      true: import.meta.env.PROD
-        ? wsLink({
-            client: wsClient,
-          })
-        : httpBatchLink({
-            url: backendUrl.toString(),
-            fetch(url, options) {
-              return fetch(url, {
-                ...options,
-                credentials: "include",
-              });
-            },
-            // You can pass any HTTP headers you wish here
-          }),
+      true:
+        import.meta.env.VITE_TAURI === "false"
+          ? wsLink({
+              client: wsClient,
+            })
+          : tauriWsLink({
+              client: tauriWsClient,
+            }),
       false: httpBatchLink({
         url: backendUrl.toString(),
-        fetch(url, options) {
+        fetch: async (url, options) => {
+          if (import.meta.env.VITE_TAURI === "true") {
+            const { fetch: tauriFetch } = await import(
+              "@tauri-apps/plugin-http"
+            );
+
+            return tauriFetch(url, {
+              ...options,
+              credentials: "include",
+            });
+          }
           return fetch(url, {
             ...options,
             credentials: "include",

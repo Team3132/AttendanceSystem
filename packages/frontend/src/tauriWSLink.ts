@@ -54,7 +54,7 @@ export interface WebSocketClientOptions {
   onClose?: (cause?: { code?: number }) => void;
 }
 
-export function createWSClient(opts: WebSocketClientOptions) {
+export function createTauriWSClient(opts: WebSocketClientOptions) {
   const {
     url,
     // WebSocket: WebSocketImpl = WebSocket,
@@ -84,7 +84,7 @@ export function createWSClient(opts: WebSocketClientOptions) {
   let connectAttempt = 0;
   let connectTimer: ReturnType<typeof setTimeout> | undefined = undefined;
   let connectionIndex = 0;
-  let activeConnection: null | Connection = createConnection();
+  let activeConnection: null | Connection = null;
 
   type Connection = {
     id: number;
@@ -322,7 +322,7 @@ export function createWSClient(opts: WebSocketClientOptions) {
     },
   };
 }
-export type TRPCWebSocketClient = ReturnType<typeof createWSClient>;
+export type TRPCWebSocketClient = ReturnType<typeof createTauriWSClient>;
 
 export interface WebSocketLinkOptions {
   client: TRPCWebSocketClient;

@@ -21,10 +21,13 @@
       "identifier": "http:default",
       "allow": [
         {
-          "url": "http://localhost:1420/*"
+          "url": "http://localhost:1420/api/*"
         },
         {
-          "url": "https://attendance.team3132.com/*"
+          "url": "https://attendance.team3132.com/api/*"
+        },
+        {
+          "url": "https://*.discord.com/*"
         }
       ],
       "deny": []
