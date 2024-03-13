@@ -71,11 +71,12 @@ jobs:
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
 
-      # - name: Rust cache
-      #   uses: swatinem/rust-cache@v2
-      #   with:
-      #     workspaces: "./packages/frontend/src-tauri -> target"
-      #     cache-on-failure: true
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: "./packages/frontend/src-tauri -> target"
+          cache-on-failure: true
+          prefix-key: ${{ runner.os }}-tauri
 
       - name: Install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-22.04'
