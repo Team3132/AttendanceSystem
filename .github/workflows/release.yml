@@ -87,10 +87,10 @@ jobs:
       - name: Install Dependancies
         run: pnpm install --frozen-lockfile
       - name: Edit Toml
-        uses: sebasptsch/toml-edit-action@v1.3.0
+        uses: sebasptsch/json-edit-action@v1.3.1
         with:
-          path: ./packages/frontend/src-tauri/Cargo.toml
-          key: package.version
+          path: ./packages/frontend/src-tauri/tauri.conf.json
+          key: version
           value: ${{ needs.release.outputs.version }}
       - uses: tauri-apps/tauri-action@v0
         env:
