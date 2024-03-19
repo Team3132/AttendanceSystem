@@ -46,7 +46,7 @@
     "cron": "3.1.6",
     "discord-api-types": "0.37.71",
     "dotenv": "16.4.5",
-    "drizzle-orm": "0.29.4",
+    "drizzle-orm": "0.30.4",
     "drizzle-zod": "0.5.1",
     "eventemitter3": "5.0.1",
     "fastify": "4.26.2",
