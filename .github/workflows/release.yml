@@ -87,7 +87,7 @@ jobs:
       - name: Install Dependancies
         run: pnpm install --frozen-lockfile
       - name: Edit Toml
-        uses: sebasptsch/toml-edit-action@v1.1.3
+        uses: sebasptsch/toml-edit-action@v1.2.0
         with:
           path: ./packages/frontend/src-tauri/Cargo.toml
           key: package.version
