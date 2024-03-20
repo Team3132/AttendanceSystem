@@ -328,7 +328,7 @@ importers:
         specifier: workspace:*
         version: link:../backend
       cross-env:
-        specifier: ^7.0.3
+        specifier: 7.0.3
         version: 7.0.3
       luxon:
         specifier: 3.4.4
@@ -431,7 +431,7 @@ importers:
         specifier: 5.1.6
         version: 5.1.6
       vite-plugin-mkcert:
-        specifier: ^1.17.4
+        specifier: 1.17.4
         version: 1.17.4(vite@5.1.6)
       vite-tsconfig-paths:
         specifier: 4.3.1
