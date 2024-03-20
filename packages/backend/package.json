@@ -44,7 +44,7 @@
     "@trpc/server": "11.0.0-next-beta.248",
     "bullmq": "5.4.2",
     "cron": "3.1.6",
-    "discord-api-types": "0.37.71",
+    "discord-api-types": "0.37.75",
     "dotenv": "16.4.5",
     "drizzle-orm": "0.30.4",
     "drizzle-zod": "0.5.1",
