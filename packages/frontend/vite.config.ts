@@ -10,7 +10,7 @@ export default defineConfig({
     viteTsconfigPaths({
       projects: ["./tsconfig.json"],
     }),
-    mkcert()
+    // mkcert()
   ],
   
   clearScreen: false,

@@ -37,11 +37,11 @@ export const trpcClient = trpc.createClient({
       true:
         import.meta.env.VITE_TAURI === "false"
           ? wsLink({
-              client: wsClient,
-            })
+            client: wsClient,
+          })
           : tauriWsLink({
-              client: tauriWsClient,
-            }),
+            client: tauriWsClient,
+          }),
       false: httpBatchLink({
         url: backendUrl.toString(),
         fetch: async (url, options) => {

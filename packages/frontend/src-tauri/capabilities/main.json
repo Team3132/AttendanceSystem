@@ -21,13 +21,10 @@
       "identifier": "http:default",
       "allow": [
         {
-          "url": "http://localhost:1420/api/*"
+          "url": "http://localhost:1420/api/trpc/*\\?batch=*&input=*"
         },
         {
-          "url": "https://attendance.team3132.com/api/*"
-        },
-        {
-          "url": "https://*.discord.com/*"
+          "url": "https://attendance.team3132.com/api/trpc/*\\?batch=*&input=*"
         }
       ],
       "deny": []
