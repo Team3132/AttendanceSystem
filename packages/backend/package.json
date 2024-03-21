@@ -53,7 +53,7 @@
     "googleapis": "133.0.0",
     "luxon": "3.4.4",
     "passport-discord": "0.1.4",
-    "postgres": "3.4.3",
+    "postgres": "3.4.4",
     "superjson": "2.2.1",
     "ulidx": "2.3.0",
     "uuid": "9.0.1",
