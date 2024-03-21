@@ -47,8 +47,8 @@ importers:
         specifier: 11.0.0-next-beta.248
         version: 11.0.0-next-beta.248
       bullmq:
-        specifier: 5.4.2
-        version: 5.4.2
+        specifier: 5.4.4
+        version: 5.4.4
       cron:
         specifier: 3.1.6
         version: 3.1.6
@@ -3441,12 +3441,11 @@ packages:
       ieee754: 1.2.1
     dev: false
 
-  /bullmq@5.4.2:
-    resolution: {integrity: sha512-dkR/KGUw18miLe3QWtvSlmGvEe08aZF+w1jZyqEHMWFW3RP4162qp6OGud0/QCAOjusiRI8UOxUhbnortPY+rA==}
+  /bullmq@5.4.4:
+    resolution: {integrity: sha512-W5cZ2z7y434LnmdyyVPiE8q5Ok3znQKykyMi0xBQNxUrEx0NgbA+ZkOBmVw8bZ/fgn+qTnR2opbUNYAzGjzpnA==}
     dependencies:
       cron-parser: 4.9.0
       ioredis: 5.3.2
-      lodash: 4.17.21
       msgpackr: 1.10.1
       node-abort-controller: 3.1.1
       semver: 7.5.4
