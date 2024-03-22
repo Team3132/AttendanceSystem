@@ -60,7 +60,7 @@ importers:
         version: 16.4.5
       drizzle-orm:
         specifier: 0.30.4
-        version: 0.30.4(postgres@3.4.3)(react@18.2.0)
+        version: 0.30.4(postgres@3.4.4)(react@18.2.0)
       drizzle-zod:
         specifier: 0.5.1
         version: 0.5.1(drizzle-orm@0.30.4)(zod@3.22.4)
@@ -80,8 +80,8 @@ importers:
         specifier: 0.1.4
         version: 0.1.4
       postgres:
-        specifier: 3.4.3
-        version: 3.4.3
+        specifier: 3.4.4
+        version: 3.4.4
       superjson:
         specifier: 2.2.1
         version: 2.2.1
@@ -3916,7 +3916,7 @@ packages:
       - supports-color
     dev: true
 
-  /drizzle-orm@0.30.4(postgres@3.4.3)(react@18.2.0):
+  /drizzle-orm@0.30.4(postgres@3.4.4)(react@18.2.0):
     resolution: {integrity: sha512-kWoSMGbrOFkmkAweLTFtHJMpN+nwhx89q0mLELqT2aEU+1szNV8jrnBmJwZ0WGNp7J7yQn/ezEtxBI/qzTSElQ==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
@@ -3993,7 +3993,7 @@ packages:
       sqlite3:
         optional: true
     dependencies:
-      postgres: 3.4.3
+      postgres: 3.4.4
       react: 18.2.0
     dev: false
 
@@ -4003,7 +4003,7 @@ packages:
       drizzle-orm: '>=0.23.13'
       zod: '*'
     dependencies:
-      drizzle-orm: 0.30.4(postgres@3.4.3)(react@18.2.0)
+      drizzle-orm: 0.30.4(postgres@3.4.4)(react@18.2.0)
       zod: 3.22.4
     dev: false
 
@@ -5933,8 +5933,8 @@ packages:
       source-map-js: 1.0.2
     dev: true
 
-  /postgres@3.4.3:
-    resolution: {integrity: sha512-iHJn4+M9vbTdHSdDzNkC0crHq+1CUdFhx+YqCE+SqWxPjm+Zu63jq7yZborOBF64c8pc58O5uMudyL1FQcHacA==}
+  /postgres@3.4.4:
+    resolution: {integrity: sha512-IbyN+9KslkqcXa8AO9fxpk97PA4pzewvpi2B3Dwy9u4zpV32QicaEdgmF3eSQUzdRk7ttDHQejNgAEr4XoeH4A==}
     engines: {node: '>=12'}
     dev: false
 
