@@ -38,7 +38,7 @@
     "@fastify/passport": "2.4.0",
     "@fastify/secure-session": "7.1.0",
     "@fastify/static": "7.0.1",
-    "@fastify/websocket": "9.0.0",
+    "@fastify/websocket": "10.0.1",
     "@trpc/client": "11.0.0-next-beta.248",
     "@trpc/react-query": "11.0.0-next-beta.248",
     "@trpc/server": "11.0.0-next-beta.248",
