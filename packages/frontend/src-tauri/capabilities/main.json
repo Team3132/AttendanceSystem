@@ -17,6 +17,7 @@
     "websocket:default",
     "websocket:allow-connect",
     "notification:default",
+    "deep-link:default",
     {
       "identifier": "http:default",
       "allow": [
