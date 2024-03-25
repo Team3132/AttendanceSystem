@@ -59,7 +59,7 @@
     "@trpc/react-query": "11.0.0-next-beta.248",
     "@trpc/server": "11.0.0-next-beta.248",
     "@types/luxon": "3.4.2",
-    "@types/react": "18.2.69",
+    "@types/react": "18.2.70",
     "@types/react-alert": "7.0.6",
     "@types/react-dom": "18.2.22",
     "@typescript-eslint/eslint-plugin": "7.3.1",
