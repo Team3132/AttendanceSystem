@@ -23,10 +23,10 @@
   "dependencies": {
     "@discordjs/builders": "1.7.0",
     "@discordjs/rest": "2.2.0",
-    "@nestjs/common": "10.3.5",
+    "@nestjs/common": "10.3.6",
     "@nestjs/config": "3.2.1",
-    "@nestjs/core": "10.3.5",
-    "@nestjs/platform-express": "10.3.5",
+    "@nestjs/core": "10.3.6",
+    "@nestjs/platform-express": "10.3.6",
     "@nestjs/schedule": "4.0.1",
     "@sentry/node": "7.108.0",
     "@sentry/tracing": "7.108.0",
