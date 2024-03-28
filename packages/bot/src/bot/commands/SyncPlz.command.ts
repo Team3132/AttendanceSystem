@@ -1,8 +1,7 @@
 import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
 import { Inject, Injectable, UseGuards } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
 import { GuildMemberGuard } from "../guards/GuildMemberGuard";
-import { Context, Options, SlashCommand, SlashCommandContext } from "necord";
+import { Context, SlashCommand, type SlashCommandContext } from "necord";
 import { PermissionFlagsBits } from "discord.js";
 import { EmbedBuilder } from "@discordjs/builders";
 
