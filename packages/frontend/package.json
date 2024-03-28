@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.6.3",
-    "@swc/plugin-emotion": "2.5.123",
+    "@swc/plugin-emotion": "2.5.124",
     "@tanstack/eslint-plugin-query": "5.28.6",
     "@tauri-apps/cli": "2.0.0-beta.11",
     "@trpc/client": "11.0.0-next-beta.248",
