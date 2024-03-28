@@ -280,8 +280,8 @@ importers:
         specifier: 7.1.0
         version: 7.1.0(@emotion/react@11.11.4)(@emotion/styled@11.11.0)(@mui/material@5.15.14)(@types/react@18.2.73)(luxon@3.4.4)(react-dom@18.2.0)(react@18.2.0)
       '@tanstack/match-sorter-utils':
-        specifier: 8.11.8
-        version: 8.11.8
+        specifier: 8.15.1
+        version: 8.15.1
       '@tanstack/query-sync-storage-persister':
         specifier: 5.28.9
         version: 5.28.9
@@ -2724,11 +2724,11 @@ packages:
     engines: {node: '>=12'}
     dev: false
 
-  /@tanstack/match-sorter-utils@8.11.8:
-    resolution: {integrity: sha512-3VPh0SYMGCa5dWQEqNab87UpCMk+ANWHDP4ALs5PeEW9EpfTAbrezzaOk/OiM52IESViefkoAOYuxdoa04p6aA==}
+  /@tanstack/match-sorter-utils@8.15.1:
+    resolution: {integrity: sha512-PnVV3d2poenUM31ZbZi/yXkBu3J7kd5k2u51CGwwNojag451AjTH9N6n41yjXz2fpLeewleyLBmNS6+HcGDlXw==}
     engines: {node: '>=12'}
     dependencies:
-      remove-accents: 0.4.2
+      remove-accents: 0.5.0
     dev: false
 
   /@tanstack/query-core@5.28.9:
@@ -6569,8 +6569,8 @@ packages:
     resolution: {integrity: sha512-dYnhHh0nJoMfnkZs6GmmhFknAGRrLznOu5nc9ML+EJxGvrx6H7teuevqVqCuPcPK//3eDrrjQhehXVx9cnkGdw==}
     dev: false
 
-  /remove-accents@0.4.2:
-    resolution: {integrity: sha512-7pXIJqJOq5tFgG1A2Zxti3Ht8jJF337m4sowbuHsW30ZnkQFnDzy9qBNhgzX8ZLW4+UBcXiiR7SwR6pokHsxiA==}
+  /remove-accents@0.5.0:
+    resolution: {integrity: sha512-8g3/Otx1eJaVD12e31UbJj1YzdtVvzH85HV7t+9MJYk/u3XmkOUJ5Ys9wQrf9PCPK8+xn4ymzqYCiZl6QWKn+A==}
     dev: false
 
   /require-from-string@2.0.2:
