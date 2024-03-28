@@ -22,8 +22,8 @@ export default function rsvpReminderMessage(
 
   const sortedByCreated = clonedRsvp.sort(
     (rsvpA, rsvpB) =>
-      DateTime.fromISO(rsvpB.createdAt).toMillis() -
-      DateTime.fromISO(rsvpA.createdAt).toMillis(),
+      DateTime.fromMillis(Date.parse(rsvpB.createdAt)).toMillis() -
+      DateTime.fromMillis(Date.parse(rsvpA.createdAt)).toMillis(),
   );
 
   const firstId = sortedByCreated.at(-1)?.id;
@@ -38,14 +38,14 @@ export default function rsvpReminderMessage(
 
   const mentorDescription = mentorRSVPs.length
     ? mentorRSVPs
-        .map((rawRsvp) => rsvpToDescription(rawRsvp, rawRsvp.id === firstId))
-        .join("\n")
+      .map((rawRsvp) => rsvpToDescription(rawRsvp, rawRsvp.id === firstId))
+      .join("\n")
     : undefined;
 
   const otherDescription = otherRSVPs.length
     ? otherRSVPs
-        .map((rawRsvp) => rsvpToDescription(rawRsvp, rawRsvp.id === firstId))
-        .join("\n")
+      .map((rawRsvp) => rsvpToDescription(rawRsvp, rawRsvp.id === firstId))
+      .join("\n")
     : undefined;
 
   const meetingInfo = new EmbedBuilder({
@@ -69,12 +69,12 @@ export default function rsvpReminderMessage(
       { name: "All Day", value: event.allDay ? "Yes" : "No", inline: true },
       {
         name: "Start Time",
-        value: time(DateTime.fromISO(event.startDate).toJSDate()),
+        value: time(DateTime.fromMillis(Date.parse(event.startDate)).toJSDate()),
         inline: true,
       },
       {
         name: "End Time",
-        value: time(DateTime.fromISO(event.endDate).toJSDate()),
+        value: time(DateTime.fromMillis(Date.parse(event.endDate)).toJSDate()),
         inline: true,
       },
     )
@@ -91,16 +91,16 @@ export default function rsvpReminderMessage(
 
   const mentorEmbed = mentorDescription
     ? new EmbedBuilder()
-        .setTitle(`Mentors (${comingMentorCount})`)
-        .setDescription(mentorDescription)
-        .setColor("#ccb010")
+      .setTitle(`Mentors (${comingMentorCount})`)
+      .setDescription(mentorDescription)
+      .setColor("#ccb010")
     : undefined;
 
   const otherEmbed = otherDescription
     ? new EmbedBuilder()
-        .setTitle(`Others (${comingStudentCount})`)
-        .setDescription(otherDescription)
-        .setColor("#71d11f")
+      .setTitle(`Others (${comingStudentCount})`)
+      .setDescription(otherDescription)
+      .setColor("#71d11f")
     : undefined;
 
   const messageComponent = new ActionRowBuilder<ButtonBuilder>().addComponents(

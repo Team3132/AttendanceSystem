@@ -63,7 +63,7 @@ new Worker(
 
     if (!fetchedEvent) throw new Error("Event not found");
 
-    const eventEndTime = DateTime.fromISO(fetchedEvent.endDate);
+    const eventEndTime = DateTime.fromMillis(Date.parse(fetchedEvent.endDate));
 
     const checkoutTime =
       currentTime > eventEndTime ? eventEndTime : currentTime;
@@ -407,8 +407,8 @@ export async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
     });
   }
 
-  const eventStartDateTime = DateTime.fromISO(dbEvent.startDate);
-  const eventEndDateTime = DateTime.fromISO(dbEvent.endDate);
+  const eventStartDateTime = DateTime.fromMillis(Date.parse(dbEvent.startDate));
+  const eventEndDateTime = DateTime.fromMillis(Date.parse(dbEvent.endDate));
 
   const currentRSVP = await db.query.rsvp.findFirst({
     where: (rsvp, { and }) =>
@@ -544,8 +544,8 @@ export async function userCheckout(userId: string, eventId: string) {
     });
   }
 
-  const existingRsvpCheckinTime = DateTime.fromISO(existingRsvp.checkinTime);
-  const eventEndDateTime = DateTime.fromISO(existingEvent.endDate);
+  const existingRsvpCheckinTime = DateTime.fromMillis(Date.parse(existingRsvp.checkinTime));
+  const eventEndDateTime = DateTime.fromMillis(Date.parse(existingEvent.endDate));
 
   const [updatedRsvp] = await db
     .insert(rsvp)

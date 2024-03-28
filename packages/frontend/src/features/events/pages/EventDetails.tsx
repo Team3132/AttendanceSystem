@@ -40,7 +40,7 @@ export function Component() {
           <Paper sx={{ p: 2, textAlign: "center" }}>
             <Typography variant="h5">Start</Typography>
             <Typography variant="body1">
-              {DateTime.fromISO(eventQuery.data.startDate).toLocaleString(
+              {DateTime.fromMillis(Date.parse(eventQuery.data.startDate)).toLocaleString(
                 DateTime.DATETIME_MED_WITH_WEEKDAY,
               )}
             </Typography>
@@ -50,8 +50,8 @@ export function Component() {
           <Paper sx={{ p: 2, textAlign: "center" }}>
             <Typography variant="h5">Duration</Typography>
             <Typography variant="body1">
-              {DateTime.fromISO(eventQuery.data.endDate)
-                .diff(DateTime.fromISO(eventQuery.data.startDate), [
+              {DateTime.fromMillis(Date.parse(eventQuery.data.endDate))
+                .diff(DateTime.fromMillis(Date.parse(eventQuery.data.startDate)), [
                   "hours",
                   "minutes",
                 ])
@@ -63,7 +63,7 @@ export function Component() {
           <Paper sx={{ p: 2, textAlign: "center" }}>
             <Typography variant="h5">End</Typography>
             <Typography variant="body1">
-              {DateTime.fromISO(eventQuery.data.endDate).toLocaleString(
+              {DateTime.fromMillis(Date.parse(eventQuery.data.endDate)).toLocaleString(
                 DateTime.DATETIME_MED_WITH_WEEKDAY,
               )}
             </Typography>

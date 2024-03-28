@@ -29,13 +29,13 @@ export default function UpcomingEventsPage() {
       </Typography>
       <List>
         {upcomingEventsQuery.data?.map((secretEvent) => {
-          const startTimeText = DateTime.fromISO(
+          const startTimeText = DateTime.fromMillis(Date.parse(
             secretEvent.startDate,
-          ).toLocaleString(DateTime.TIME_SIMPLE);
+          )).toLocaleString(DateTime.TIME_SIMPLE);
 
-          const endTimeText = DateTime.fromISO(
+          const endTimeText = DateTime.fromMillis(Date.parse(
             secretEvent.endDate,
-          ).toLocaleString(DateTime.TIME_SIMPLE);
+          )).toLocaleString(DateTime.TIME_SIMPLE);
 
           return (
             <ListItem key={secretEvent.id}>

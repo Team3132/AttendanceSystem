@@ -49,41 +49,41 @@ export function Component() {
     () =>
       !authStatusQuery.data.isAdmin
         ? ([
-            {
-              label: "Details",
-              to: "/events/$eventId",
-              params: {
-                eventId: eventQuery.data.id,
-              },
+          {
+            label: "Details",
+            to: "/events/$eventId",
+            params: {
+              eventId: eventQuery.data.id,
             },
-            {
-              label: "Check In",
-              to: "/events/$eventId/check-in",
-            },
-          ] as TabItem[])
+          },
+          {
+            label: "Check In",
+            to: "/events/$eventId/check-in",
+          },
+        ] as TabItem[])
         : ([
-            {
-              label: "Details",
-              to: "/events/$eventId",
-              params: {
-                eventId: eventQuery.data.id,
-              },
+          {
+            label: "Details",
+            to: "/events/$eventId",
+            params: {
+              eventId: eventQuery.data.id,
             },
-            {
-              label: "Check In",
-              to: "/events/$eventId/check-in",
-              params: {
-                eventId: eventQuery.data.id,
-              },
+          },
+          {
+            label: "Check In",
+            to: "/events/$eventId/check-in",
+            params: {
+              eventId: eventQuery.data.id,
             },
-            {
-              label: "QR Code",
-              to: "/events/$eventId/qr-code",
-              params: {
-                eventId: eventQuery.data.id,
-              },
+          },
+          {
+            label: "QR Code",
+            to: "/events/$eventId/qr-code",
+            params: {
+              eventId: eventQuery.data.id,
             },
-          ] as TabItem[]),
+          },
+        ] as TabItem[]),
     [authStatusQuery.data.isAdmin, eventQuery.data.id],
   );
 
@@ -92,7 +92,7 @@ export function Component() {
   return (
     <>
       <DefaultAppBar
-        title={`${DateTime.fromISO(eventQuery.data.startDate).toLocaleString(
+        title={`${DateTime.fromMillis(Date.parse(eventQuery.data.startDate)).toLocaleString(
           DateTime.DATE_SHORT,
         )} - ${eventQuery.data.title}`}
       />

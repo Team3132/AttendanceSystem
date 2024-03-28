@@ -23,7 +23,7 @@ export default function UpcomingEventListItem(
         }
       />
       <Typography variant="body2">
-        {DateTime.fromISO(event.startDate).toRelativeCalendar()}
+        {DateTime.fromMillis(Date.parse(event.startDate)).toRelativeCalendar()}
       </Typography>
     </>
   );

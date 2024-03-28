@@ -87,7 +87,7 @@ export default function RSVPEditDialog(props: RSVPEditDialogProps) {
               name="checkinTime"
               render={({ field: { value, onChange, ...rest } }) => (
                 <DateTimePicker
-                  value={value ? DateTime.fromISO(value) : null}
+                  value={value ? DateTime.fromMillis(Date.parse(value)) : null}
                   label="Checkin Time"
                   onChange={(date) => {
                     if (date) {
@@ -115,7 +115,7 @@ export default function RSVPEditDialog(props: RSVPEditDialogProps) {
               name="checkoutTime"
               render={({ field: { value, onChange, ...rest } }) => (
                 <DateTimePicker
-                  value={value ? DateTime.fromISO(value) : null}
+                  value={value ? DateTime.fromMillis(Date.parse(value)) : null}
                   label="Checkout Time"
                   onChange={(date) => {
                     if (date) {

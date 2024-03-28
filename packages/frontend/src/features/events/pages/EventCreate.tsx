@@ -69,7 +69,7 @@ export function Component() {
             render={({ field: { onChange, value, ...rest } }) => (
               <DateTimePicker
                 label="Start Date"
-                value={DateTime.fromISO(value ?? "")}
+                value={DateTime.fromMillis(Date.parse(value ?? ""))}
                 onChange={(v) => onChange(v?.toISO() ?? "")}
                 {...rest}
               />
@@ -81,7 +81,7 @@ export function Component() {
             render={({ field: { onChange, value, ...rest } }) => (
               <DateTimePicker
                 label="End Date"
-                value={DateTime.fromISO(value ?? "")}
+                value={DateTime.fromMillis(Date.parse(value ?? ""))}
                 onChange={(v) => onChange(v?.toISO() ?? "")}
                 {...rest}
               />

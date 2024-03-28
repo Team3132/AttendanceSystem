@@ -21,7 +21,7 @@ export class RsvpsCommand {
   constructor(
     @Inject(BACKEND_TOKEN) private readonly backendClient: BackendClient,
     private readonly config: ConfigService,
-  ) {}
+  ) { }
 
   @UseGuards(GuildMemberGuard)
   @UseInterceptors(EventAutocompleteInterceptor)
@@ -55,9 +55,9 @@ export class RsvpsCommand {
 
     const rsvpEmbed = new EmbedBuilder()
       .setTitle(
-        `RSVPs for ${fetchedMeeting.title} at ${DateTime.fromISO(
+        `RSVPs for ${fetchedMeeting.title} at ${DateTime.fromMillis(Date.parse(
           fetchedMeeting.startDate,
-        ).toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}`,
+        )).toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}`,
       )
       .setDescription(description)
       .setTimestamp(new Date())

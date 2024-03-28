@@ -14,8 +14,8 @@ interface EventDateTypographyProps {
  */
 export default function EventDateText(props: EventDateTypographyProps) {
   const { event } = props;
-  const startDate = DateTime.fromISO(event.startDate);
-  const endDate = DateTime.fromISO(event.endDate);
+  const startDate = DateTime.fromMillis(Date.parse(event.startDate));
+  const endDate = DateTime.fromMillis(Date.parse(event.endDate));
 
   if (startDate.hasSame(endDate, "day")) {
     return (

@@ -25,7 +25,7 @@ const columns = [
   columnHelper.accessor("createdAt", {
     header: "Date",
     cell: (row) =>
-      DateTime.fromISO(row.getValue()).toLocaleString(
+      DateTime.fromMillis(Date.parse(row.getValue())).toLocaleString(
         DateTime.DATE_MED_WITH_WEEKDAY,
       ),
   }),

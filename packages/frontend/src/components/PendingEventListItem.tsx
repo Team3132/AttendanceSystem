@@ -22,13 +22,12 @@ export default function PendingEventListItem(props: PendingEventListItemProps) {
     <ListItem>
       <ListItemText
         primary={rsvp.event.title}
-        secondary={`Checked In: ${
-          rsvp.checkinTime
-            ? DateTime.fromISO(rsvp.checkinTime).toLocaleString(
-                DateTime.DATETIME_MED,
-              )
-            : "Unknown"
-        }`}
+        secondary={`Checked In: ${rsvp.checkinTime
+          ? DateTime.fromMillis(Date.parse(rsvp.checkinTime)).toLocaleString(
+            DateTime.DATETIME_MED,
+          )
+          : "Unknown"
+          }`}
       />
       <LoadingButton
         variant="contained"
