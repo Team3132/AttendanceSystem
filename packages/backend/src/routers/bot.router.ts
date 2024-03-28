@@ -30,6 +30,8 @@ import { getBuildPoints, getOutreachTime } from "../services/outreach.service";
 import { addUserBuildPoints, createUser } from "../services/user.service";
 import { t } from "../trpc";
 import { tokenProcedure } from "../trpc/utils";
+import { syncEvents } from "../services/calalendarSync.service";
+import { SyncResponseSchema } from "../schema/SyncResponseSchema";
 
 /**
  * A router than the bot uses to communicate with the backend
@@ -88,4 +90,8 @@ export const botRouter = t.router({
     .input(OutreachTimeSchema)
     .output(PagedBuildPointUsersSchema)
     .query(({ input }) => getBuildPoints(input)),
+  syncEvents: tokenProcedure
+    .input(z.void())
+    .output(SyncResponseSchema)
+    .mutation(() => syncEvents()),
 });

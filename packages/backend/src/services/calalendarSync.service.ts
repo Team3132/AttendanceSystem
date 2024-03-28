@@ -162,4 +162,9 @@ export const syncEvents = async () => {
   });
   eventLogger.timeEnd("Sync Events");
   eventLogger.info(`${updatedEvents} events updated/created`);
+
+  return {
+    updatedEvents,
+    deletedEventCount,
+  };
 };

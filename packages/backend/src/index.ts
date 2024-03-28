@@ -81,7 +81,7 @@ await fastifyPassport.use("discord", discordStrategy);
 type User = typeof user.$inferSelect;
 
 declare module "fastify" {
-  interface PassportUser extends User { }
+  interface PassportUser extends User {}
 }
 
 // register a serializer that stores the user object's id in the session ...

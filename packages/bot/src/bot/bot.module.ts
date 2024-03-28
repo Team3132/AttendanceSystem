@@ -10,6 +10,7 @@ import { RequestRsvpCommand } from "./commands/RequestRsvp.command";
 import { RsvpsCommand } from "./commands/Rsvps.command";
 import { CheckinModal } from "./modals/Checkin.modal";
 import { DelayModal } from "./modals/Delay.modal";
+import { SyncPlzCommand } from "./commands/SyncPlz.command";
 // import { BuildPointsPaginationButton } from './buttons/BuildPointsPaginationButton';
 
 @Module({
@@ -28,7 +29,8 @@ import { DelayModal } from "./modals/Delay.modal";
     CheckoutButton,
     OutreachPaginationButton,
     // BuildPointsPaginationButton,
+    SyncPlzCommand
   ],
   exports: [BotService],
 })
-export class BotModule {}
+export class BotModule { }
