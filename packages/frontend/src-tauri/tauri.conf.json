@@ -32,5 +32,17 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ]
+  },
+  "plugins": {
+    "deep-link": {
+      "domains": [
+        {
+          "host": "attendance.team3132.com",
+          "pathPrefix": [
+            "/desktop"
+          ]
+        }
+      ]
+    }
   }
 }
