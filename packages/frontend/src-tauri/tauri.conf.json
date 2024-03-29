@@ -51,7 +51,7 @@
     },
     "updater": {
       "endpoints": [
-        "https://github.com/Team3132/AttendanceSystem/releases/download/v{{current_version}}"
+        "https://github.com/Team3132/AttendanceSystem/releases/latest/download/latest.json"
       ],
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDRBQTJCRDZCQTcwMTlBMDgKUldRSW1nR25hNzJpU3NFcE5HQUxMTzZNK2F1QUY0MGJNMGN5MWUrNW12UDArb1dBTWtFL0o0QmsK",
       "windows": {
