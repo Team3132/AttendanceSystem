@@ -20,7 +20,9 @@
     "generate": "drizzle-kit generate:pg",
     "build": "tsc && tsup",
     "typecheck": "tsc",
-    "release": "pnpm build"
+    "release": "pnpm build",
+    "format": "pnpm biome format ./src --write",
+    "lint": "pnpm biome lint ./src --apply"
   },
   "type": "module",
   "keywords": [],

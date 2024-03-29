@@ -1,23 +1,23 @@
-import path from "path";
-import { fileURLToPath } from "url";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import fastifyCookie from "@fastify/cookie";
 import fastifyPassport from "@fastify/passport";
 import fastifySecureSession from "@fastify/secure-session";
 import fastifyStatic from "@fastify/static";
 import ws from "@fastify/websocket";
 import { fastifyTRPCPlugin } from "@trpc/server/adapters/fastify";
-import { TRPCReconnectNotification } from "@trpc/server/rpc";
+import type { TRPCReconnectNotification } from "@trpc/server/rpc";
 import { eq } from "drizzle-orm";
 import fastify from "fastify";
 import { Settings } from "luxon";
-import { WebSocket } from "ws";
+import type { WebSocket } from "ws";
 import discordStrategy from "./auth/Discord.strategy";
 import db, { migrate } from "./drizzle/db";
 import { user } from "./drizzle/schema";
 import env, { isProd } from "./env";
 import mainLogger from "./logger";
 import { registerCron } from "./registerCron";
-import appRouter, { AppRouter } from "./routers/app.router";
+import appRouter, { type AppRouter } from "./routers/app.router";
 import { createContext } from "./trpc/context";
 import jwt from "@fastify/jwt";
 
@@ -191,5 +191,5 @@ server.listen(
 
 registerCron();
 
-export { type AppRouter };
+export type { AppRouter };
 export * as Schema from "./schema";

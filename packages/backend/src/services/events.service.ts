@@ -1,8 +1,8 @@
 import { getQueryKey } from "@trpc/react-query";
 import { TRPCError } from "@trpc/server";
-import { Job, Queue, Worker } from "bullmq";
+import { type Job, Queue, Worker } from "bullmq";
 import {
-  SQL,
+  type SQL,
   and,
   asc,
   between,
@@ -15,23 +15,23 @@ import {
   or,
 } from "drizzle-orm";
 import { DateTime } from "luxon";
-import { z } from "zod";
+import type { z } from "zod";
 import db from "../drizzle/db";
 import { event, rsvp } from "../drizzle/schema";
 import env from "../env";
 import { ee } from "../routers/app.router";
-import { RSVPUserSchema, UserCheckinSchema } from "../schema";
-import { CreateBlankUserRsvpSchema } from "../schema/CreateBlankUserRsvpSchema";
-import { CreateEventSchema } from "../schema/CreateEventSchema";
-import { EditEventSchema } from "../schema/EditEventSchema";
-import { EditRSVPSelfSchema } from "../schema/EditRSVPSelfSchema";
-import { EditUserAttendanceSchema } from "../schema/EditUserAttendanceSchema";
-import EventSchema from "../schema/EventSchema";
-import { EventWithSecretArraySchema } from "../schema/EventWithSecretArraySchema";
-import { GetEventParamsSchema } from "../schema/GetEventParamsSchema";
-import { PagedEventsSchema } from "../schema/PagedEventsSchema";
-import { ScaninSchema } from "../schema/ScaninSchema";
-import { SelfCheckinSchema } from "../schema/SelfCheckinSchema";
+import type { RSVPUserSchema, UserCheckinSchema } from "../schema";
+import type { CreateBlankUserRsvpSchema } from "../schema/CreateBlankUserRsvpSchema";
+import type { CreateEventSchema } from "../schema/CreateEventSchema";
+import type { EditEventSchema } from "../schema/EditEventSchema";
+import type { EditRSVPSelfSchema } from "../schema/EditRSVPSelfSchema";
+import type { EditUserAttendanceSchema } from "../schema/EditUserAttendanceSchema";
+import type EventSchema from "../schema/EventSchema";
+import type { EventWithSecretArraySchema } from "../schema/EventWithSecretArraySchema";
+import type { GetEventParamsSchema } from "../schema/GetEventParamsSchema";
+import type { PagedEventsSchema } from "../schema/PagedEventsSchema";
+import type { ScaninSchema } from "../schema/ScaninSchema";
+import type { SelfCheckinSchema } from "../schema/SelfCheckinSchema";
 import clampDateTime from "../utils/clampDateTime";
 import randomStr from "../utils/randomStr";
 
@@ -544,8 +544,12 @@ export async function userCheckout(userId: string, eventId: string) {
     });
   }
 
-  const existingRsvpCheckinTime = DateTime.fromMillis(Date.parse(existingRsvp.checkinTime));
-  const eventEndDateTime = DateTime.fromMillis(Date.parse(existingEvent.endDate));
+  const existingRsvpCheckinTime = DateTime.fromMillis(
+    Date.parse(existingRsvp.checkinTime),
+  );
+  const eventEndDateTime = DateTime.fromMillis(
+    Date.parse(existingEvent.endDate),
+  );
 
   const [updatedRsvp] = await db
     .insert(rsvp)

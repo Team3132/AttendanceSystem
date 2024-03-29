@@ -1,16 +1,16 @@
 import { getQueryKey } from "@trpc/react-query";
 import { TRPCError } from "@trpc/server";
 import { and, count, eq, ilike, isNotNull, isNull } from "drizzle-orm";
-import { z } from "zod";
+import type { z } from "zod";
 import db from "../drizzle/db";
 import { buildPoints, scancode, user } from "../drizzle/schema";
 import { ee } from "../routers/app.router";
-import { AddBuildPointsUserSchema, UserCreateSchema } from "../schema";
-import { GetBuildPointsSchema } from "../schema/GetBuildPointsSchema";
-import { PagedBuildPointsSchema } from "../schema/PagedBuildPointsSchema";
-import { PagedUserSchema } from "../schema/PagedUserSchema";
-import { RemoveBuildPointSchema } from "../schema/RemoveBuildPointSchema";
-import { UserListParamsSchema } from "../schema/UserListParamsSchema";
+import type { AddBuildPointsUserSchema, UserCreateSchema } from "../schema";
+import type { GetBuildPointsSchema } from "../schema/GetBuildPointsSchema";
+import type { PagedBuildPointsSchema } from "../schema/PagedBuildPointsSchema";
+import type { PagedUserSchema } from "../schema/PagedUserSchema";
+import type { RemoveBuildPointSchema } from "../schema/RemoveBuildPointSchema";
+import type { UserListParamsSchema } from "../schema/UserListParamsSchema";
 
 /**
  * Gets a user from the database

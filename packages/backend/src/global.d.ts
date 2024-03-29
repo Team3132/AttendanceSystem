@@ -1,4 +1,4 @@
-import { user } from "./drizzle/schema";
+import type { user } from "./drizzle/schema";
 
 type UserSelect = typeof user.$inferSelect;
 

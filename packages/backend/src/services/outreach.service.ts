@@ -11,13 +11,13 @@ import {
   sum,
 } from "drizzle-orm";
 import { DateTime } from "luxon";
-import { z } from "zod";
+import type { z } from "zod";
 import db from "../drizzle/db";
 import { buildPoints, event, rsvp, user } from "../drizzle/schema";
 import env from "../env";
 import { OutreachTimeSchema } from "../schema/OutreachTimeSchema";
-import { PagedBuildPointUsersSchema } from "../schema/PagedBuildPointUsersSchema";
-import { PagedLeaderboardSchema } from "../schema/PagedLeaderboardSchema";
+import type { PagedBuildPointUsersSchema } from "../schema/PagedBuildPointUsersSchema";
+import type { PagedLeaderboardSchema } from "../schema/PagedLeaderboardSchema";
 
 /**
  * Get the sum of the difference between the start and end dates of all

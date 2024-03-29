@@ -1,4 +1,4 @@
-import { calendar_v3, google } from "googleapis";
+import { type calendar_v3, google } from "googleapis";
 
 import { gte, inArray, lte } from "drizzle-orm";
 import { DateTime } from "luxon";
@@ -66,9 +66,9 @@ export const syncEvents = async () => {
 
   const deletedEvents = deletedEventIds.length
     ? await db
-      .delete(event)
-      .where(inArray(event.id, deletedEventIds))
-      .returning()
+        .delete(event)
+        .where(inArray(event.id, deletedEventIds))
+        .returning()
     : [];
 
   const deletedEventCount = deletedEvents.length;
@@ -79,7 +79,7 @@ export const syncEvents = async () => {
 
   let updatedEvents = 0;
 
-  eventItems.forEach(async (gcalEvent) => {
+  for (const gcalEvent of eventItems) {
     try {
       const secret = randomStr(8);
 
@@ -106,13 +106,17 @@ export const syncEvents = async () => {
       const startDate = gcalEvent.start?.dateTime
         ? gcalEvent.start.dateTime
         : gcalEvent.end?.date
-          ? DateTime.fromMillis(Date.parse(gcalEvent.end.date)).startOf("day").toISO()
+          ? DateTime.fromMillis(Date.parse(gcalEvent.end.date))
+              .startOf("day")
+              .toISO()
           : null;
 
       const endDate = gcalEvent.end?.dateTime
         ? gcalEvent.end.dateTime
         : gcalEvent.end?.date
-          ? DateTime.fromMillis(Date.parse(gcalEvent.end.date)).endOf("day").toISO()
+          ? DateTime.fromMillis(Date.parse(gcalEvent.end.date))
+              .endOf("day")
+              .toISO()
           : null;
 
       const eventId = gcalEvent.id ?? null;
@@ -159,7 +163,8 @@ export const syncEvents = async () => {
     } catch (error) {
       mainLogger.error("Failed to update event", error);
     }
-  });
+  }
+
   eventLogger.timeEnd("Sync Events");
   eventLogger.info(`${updatedEvents} events updated/created`);
 
