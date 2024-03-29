@@ -97,6 +97,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PKG_CONFIG_PATH: /usr/lib/x86_64-linux-gnu/pkgconfig
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
           projectPath: ./packages/frontend
           tagName: v${{ needs.release.outputs.version }}
@@ -104,6 +106,7 @@ jobs:
           releaseBody: "See the assets to download this version and install."
           releaseDraft: true
           prerelease: false
+          includeUpdaterJson: true
   docker-build:
     permissions:
       contents: read

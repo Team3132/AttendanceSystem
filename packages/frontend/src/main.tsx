@@ -13,3 +13,17 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <App />
   </React.StrictMode>,
 );
+
+const tauriUpdate = async () => {
+  if (!import.meta.env.VITE_TAURI) return;
+
+  const { check } = await import("@tauri-apps/plugin-updater");
+  const { relaunch } = await import("@tauri-apps/plugin-process");
+  const update = await check();
+  if (update?.available) {
+    await update.downloadAndInstall();
+    await relaunch();
+  }
+};
+
+tauriUpdate();
