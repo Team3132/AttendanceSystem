@@ -48,15 +48,16 @@ export interface DatatableProps<Data extends object>
 
 declare module "@tanstack/table-core" {
   interface FilterFns {
-    fuzzy: FilterFn<unknown>;
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    fuzzy: FilterFn<any>;
   }
   interface FilterMeta {
     itemRank: RankingInfo;
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const fuzzyFilter: FilterFn = (row, columnId, value, addMeta) => {
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   // Rank the item
   const itemRank = rankItem(row.getValue(columnId), value);
 
