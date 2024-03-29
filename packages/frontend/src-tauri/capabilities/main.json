@@ -18,6 +18,7 @@
     "websocket:allow-connect",
     "notification:default",
     "deep-link:default",
+    "process:allow-restart",
     {
       "identifier": "http:default",
       "allow": [
