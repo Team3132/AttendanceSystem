@@ -1,4 +1,4 @@
-import { GuildMember } from "discord.js";
+import type { GuildMember } from "discord.js";
 import { MemberOption, NumberOption, StringOption } from "necord";
 
 export class AddBuildPointsOptionsDto {

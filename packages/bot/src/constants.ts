@@ -1,6 +1,6 @@
 /** Prod */
 export const ROLES =
-  process.env["NODE_ENV"] === "production"
+  process.env.NODE_ENV === "production"
     ? {
         EVERYONE: "605683682493333507",
         MENTOR: "605687041228800030",

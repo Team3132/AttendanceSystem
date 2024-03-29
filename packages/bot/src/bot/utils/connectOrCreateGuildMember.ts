@@ -1,4 +1,4 @@
-import { GuildMember } from "discord.js";
+import type { GuildMember } from "discord.js";
 
 export default function connectOrCreateGuildMember(guildMember: GuildMember) {
   return {

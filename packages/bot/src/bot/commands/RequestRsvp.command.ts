@@ -1,6 +1,6 @@
 import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
 import { Inject, Injectable, UseGuards, UseInterceptors } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
+import type { ConfigService } from "@nestjs/config";
 import { PermissionFlagsBits } from "discord.js";
 import {
   Context,
@@ -8,12 +8,12 @@ import {
   SlashCommand,
   type SlashCommandContext,
 } from "necord";
-import { RequestRSVPDto } from "../dto/requestRSVP.dto";
+import type { RequestRSVPDto } from "../dto/requestRSVP.dto";
 import { GuildMemberGuard } from "../guards/GuildMemberGuard";
 import { EventAutocompleteInterceptor } from "../interceptors/event.interceptor";
 import rsvpReminderMessage from "../utils/rsvpReminderMessage";
 
-const guildId = process.env["GUILD_ID"];
+const guildId = process.env.GUILD_ID;
 
 @Injectable()
 export class RequestRsvpCommand {

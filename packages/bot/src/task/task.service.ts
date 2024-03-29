@@ -2,17 +2,17 @@ import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
 import rsvpReminderMessage from "@/bot/utils/rsvpReminderMessage";
 import { ROLES } from "@/constants";
 import { Inject, Injectable, Logger } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
+import type { ConfigService } from "@nestjs/config";
 import { Cron } from "@nestjs/schedule";
-import { EventSchema } from "backend/schema";
+import type { EventSchema } from "backend/schema";
 import {
-  BaseMessageOptions,
+  type BaseMessageOptions,
   ChannelType,
-  Client,
+  type Client,
   bold,
   roleMention,
 } from "discord.js";
-import { z } from "zod";
+import type { z } from "zod";
 
 @Injectable()
 export class TaskService {
@@ -79,16 +79,17 @@ export class TaskService {
     const sentMessages = await Promise.all(
       messages.map(([message, event]) =>
         fetchedChannel.send({
-          content: `${event.type === "Outreach"
+          content: `${
+            event.type === "Outreach"
               ? roleMention(ROLES.OUTREACH)
               : event.type === "Mentor"
                 ? roleMention(ROLES.MENTOR)
                 : event.type === "Social"
                   ? roleMention(ROLES.SOCIAL)
                   : roleMention(ROLES.EVERYONE)
-            } ${bold(
-              `10pm reminder`,
-            )}: This channel should be used to let us know any last minute attendance changes on the day of the meeting.`,
+          } ${bold(
+            "10pm reminder",
+          )}: This channel should be used to let us know any last minute attendance changes on the day of the meeting.`,
           ...message,
         }),
       ),

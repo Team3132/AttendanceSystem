@@ -12,7 +12,7 @@ Settings.defaultZone = "Australia/Sydney";
 
 async function bootstrap() {
   const logger = new Logger("Main");
-  logger.log("Node Env:", process.env["NODE_ENV"]);
+  logger.log("Node Env:", process.env.NODE_ENV);
 
   const app = await NestFactory.create(AppModule);
   const config = app.get(ConfigService);

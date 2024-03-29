@@ -1,12 +1,12 @@
 import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
 import {
   ActionRowBuilder,
-  ModalActionRowComponentBuilder,
+  type ModalActionRowComponentBuilder,
   ModalBuilder,
   TextInputBuilder,
 } from "@discordjs/builders";
 import { Inject, Injectable, UseGuards } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
+import type { ConfigService } from "@nestjs/config";
 import { TextInputStyle } from "discord.js";
 import { Ctx, Modal, type ModalContext, ModalParam } from "necord";
 import { z } from "zod";
@@ -21,7 +21,7 @@ export class DelayModal {
   ) {}
 
   @UseGuards(GuildMemberGuard)
-  @Modal(`event/:eventId/delay`)
+  @Modal("event/:eventId/delay")
   public async onDelayModal(
     @Ctx() [interaction]: ModalContext,
     @ModalParam("eventId") eventId: string,
@@ -62,12 +62,11 @@ export class DelayModal {
       return interaction.update({
         ...rsvpReminderMessage(fetchEvent, rsvps, frontendUrl),
       });
-    } else {
-      return interaction.reply({
-        ephemeral: true,
-        ...rsvpReminderMessage(fetchEvent, rsvps, frontendUrl),
-      });
     }
+    return interaction.reply({
+      ephemeral: true,
+      ...rsvpReminderMessage(fetchEvent, rsvps, frontendUrl),
+    });
   }
 
   public static build(eventId: string) {

@@ -1,7 +1,7 @@
 import {
-  ArgumentsHost,
+  type ArgumentsHost,
   Catch,
-  ExceptionFilter,
+  type ExceptionFilter,
   ForbiddenException,
 } from "@nestjs/common";
 import { EmbedBuilder, InteractionType } from "discord.js";

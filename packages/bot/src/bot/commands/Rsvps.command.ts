@@ -1,6 +1,6 @@
 import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
 import { Inject, Injectable, UseGuards, UseInterceptors } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
+import type { ConfigService } from "@nestjs/config";
 import { EmbedBuilder } from "discord.js";
 import { DateTime } from "luxon";
 import {
@@ -9,19 +9,19 @@ import {
   SlashCommand,
   type SlashCommandContext,
 } from "necord";
-import { AttendanceDto } from "../dto/attendance.dto";
+import type { AttendanceDto } from "../dto/attendance.dto";
 import { GuildMemberGuard } from "../guards/GuildMemberGuard";
 import { EventAutocompleteInterceptor } from "../interceptors/event.interceptor";
 import rsvpToDescription from "../utils/rsvpToDescription";
 
-const guildId = process.env["GUILD_ID"];
+const guildId = process.env.GUILD_ID;
 
 @Injectable()
 export class RsvpsCommand {
   constructor(
     @Inject(BACKEND_TOKEN) private readonly backendClient: BackendClient,
     private readonly config: ConfigService,
-  ) { }
+  ) {}
 
   @UseGuards(GuildMemberGuard)
   @UseInterceptors(EventAutocompleteInterceptor)
@@ -51,13 +51,13 @@ export class RsvpsCommand {
 
     const description = fetchedRSVPs
       .map((rsvp) => rsvpToDescription(rsvp, rsvp.id === firstId))
-      .join(`\n`);
+      .join("\n");
 
     const rsvpEmbed = new EmbedBuilder()
       .setTitle(
-        `RSVPs for ${fetchedMeeting.title} at ${DateTime.fromMillis(Date.parse(
-          fetchedMeeting.startDate,
-        )).toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}`,
+        `RSVPs for ${fetchedMeeting.title} at ${DateTime.fromMillis(
+          Date.parse(fetchedMeeting.startDate),
+        ).toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}`,
       )
       .setDescription(description)
       .setTimestamp(new Date())

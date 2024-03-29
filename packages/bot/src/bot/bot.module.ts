@@ -29,8 +29,8 @@ import { SyncPlzCommand } from "./commands/SyncPlz.command";
     CheckoutButton,
     OutreachPaginationButton,
     // BuildPointsPaginationButton,
-    SyncPlzCommand
+    SyncPlzCommand,
   ],
   exports: [BotService],
 })
-export class BotModule { }
+export class BotModule {}

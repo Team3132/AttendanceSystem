@@ -1,6 +1,6 @@
 import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
 import { Inject, Injectable, UseGuards } from "@nestjs/common";
-import { LeaderBoardUser } from "backend/schema";
+import type { LeaderBoardUser } from "backend/schema";
 import {
   ActionRowBuilder,
   ButtonBuilder,
@@ -16,7 +16,7 @@ import {
   SlashCommand,
   type SlashCommandContext,
 } from "necord";
-import { z } from "zod";
+import type { z } from "zod";
 import { GuildMemberGuard } from "../guards/GuildMemberGuard";
 
 const roundDuration = (duration: Duration) => {
@@ -48,7 +48,7 @@ function randomStr(length = 8): string {
   return result;
 }
 
-const guildId = process.env["GUILD_ID"];
+const guildId = process.env.GUILD_ID;
 
 @Injectable()
 export class OutreachPaginationButton {
@@ -62,7 +62,7 @@ export class OutreachPaginationButton {
     @Context() [interaction]: ButtonContext,
     @ComponentParam("toPage") toPage: string,
   ) {
-    const to = parseInt(toPage);
+    const to = Number.parseInt(toPage);
 
     const { embed, messageComponent } = await this.createMessage(to);
 
@@ -124,7 +124,7 @@ export class OutreachPaginationButton {
           .setDisabled(page === 1),
         new ButtonBuilder()
           .setCustomId(`leaderboard/${page}/${randomStr(4)}`)
-          .setLabel(`Refresh`)
+          .setLabel("Refresh")
           .setStyle(ButtonStyle.Primary)
           .setDisabled(false),
         new ButtonBuilder()

@@ -1,6 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import { Client } from "discord.js";
+import type { ConfigService } from "@nestjs/config";
+import type { Client } from "discord.js";
 import { Context, type ContextOf, On } from "necord";
 
 @Injectable()
@@ -18,9 +18,8 @@ export class BotService {
 
     if (!cachedGuild || !cachedGuild.available) {
       return this.client.guilds.fetch(guildId);
-    } else {
-      return cachedGuild;
     }
+    return cachedGuild;
   }
 
   async getRoles() {

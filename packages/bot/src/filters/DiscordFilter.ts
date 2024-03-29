@@ -1,5 +1,10 @@
 import { isTRPCClientError } from "@/backend/backend.module";
-import { ArgumentsHost, Catch, ExceptionFilter, Logger } from "@nestjs/common";
+import {
+  type ArgumentsHost,
+  Catch,
+  type ExceptionFilter,
+  Logger,
+} from "@nestjs/common";
 import * as Sentry from "@sentry/node";
 import { EmbedBuilder, InteractionType, codeBlock } from "discord.js";
 import { NecordArgumentsHost } from "necord";

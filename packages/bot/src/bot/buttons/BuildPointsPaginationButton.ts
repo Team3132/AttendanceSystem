@@ -1,6 +1,6 @@
 import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
 import { Inject, Injectable, UseGuards } from "@nestjs/common";
-import { BuildPointUserSchema } from "backend/schema/BuildPointUserSchema";
+import type { BuildPointUserSchema } from "backend/schema/BuildPointUserSchema";
 import {
   ActionRowBuilder,
   ButtonBuilder,
@@ -17,8 +17,8 @@ import {
   SlashCommand,
   type SlashCommandContext,
 } from "necord";
-import { z } from "zod";
-import { AddBuildPointsOptionsDto } from "../dto/AddBuildPointsOptionsDto";
+import type { z } from "zod";
+import type { AddBuildPointsOptionsDto } from "../dto/AddBuildPointsOptionsDto";
 import { GuildMemberGuard } from "../guards/GuildMemberGuard";
 
 const leaderboardLine = (data: z.infer<typeof BuildPointUserSchema>) =>
@@ -39,7 +39,7 @@ function randomStr(length = 8): string {
   return result;
 }
 
-const guildId = process.env["GUILD_ID"];
+const guildId = process.env.GUILD_ID;
 
 @Injectable()
 export class BuildPointsPaginationButton {
@@ -53,7 +53,7 @@ export class BuildPointsPaginationButton {
     @Context() [interaction]: ButtonContext,
     @ComponentParam("toPage") toPage: string,
   ) {
-    const to = parseInt(toPage);
+    const to = Number.parseInt(toPage);
 
     const { embed, messageComponent } = await this.createMessage(to);
 
@@ -139,7 +139,7 @@ export class BuildPointsPaginationButton {
           .setDisabled(page === 1),
         new ButtonBuilder()
           .setCustomId(`buildPointsLeaderboard/${page}/${randomStr(4)}`)
-          .setLabel(`Refresh`)
+          .setLabel("Refresh")
           .setStyle(ButtonStyle.Primary)
           .setDisabled(false),
         new ButtonBuilder()

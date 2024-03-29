@@ -5,8 +5,6 @@ import { CheckinModal } from "../modals/Checkin.modal";
 
 @Injectable()
 export class CheckinButton {
-  constructor() {}
-
   @UseGuards(GuildMemberGuard)
   @Button("event/:eventId/checkin")
   public async onRsvpsButton(

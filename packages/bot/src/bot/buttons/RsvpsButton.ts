@@ -1,11 +1,11 @@
 import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
 import { ROLES } from "@/constants";
 import { Inject, Injectable, Logger, UseGuards } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import { RSVPStatusSchema } from "backend/schema";
+import type { ConfigService } from "@nestjs/config";
+import type { RSVPStatusSchema } from "backend/schema";
 import { GuildMember } from "discord.js";
 import { Button, type ButtonContext, ComponentParam, Context } from "necord";
-import { z } from "zod";
+import type { z } from "zod";
 import { GuildMemberGuard } from "../guards/GuildMemberGuard";
 import { DelayModal } from "../modals/Delay.modal";
 import rsvpReminderMessage from "../utils/rsvpReminderMessage";
@@ -82,10 +82,9 @@ export class RsvpsButton {
     if (rsvpStatus === "LATE") {
       // return interaction.deferUpdate();
       return interaction.showModal(DelayModal.build(eventId));
-    } else {
-      return interaction.update({
-        ...rsvpReminderMessage(fetchedEvent, newRSVPs, frontendUrl),
-      });
     }
+    return interaction.update({
+      ...rsvpReminderMessage(fetchedEvent, newRSVPs, frontendUrl),
+    });
   }
 }

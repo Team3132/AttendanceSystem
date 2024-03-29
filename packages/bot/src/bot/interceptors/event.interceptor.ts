@@ -1,10 +1,10 @@
 import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
 import { Inject, Injectable } from "@nestjs/common";
-import { EventSchema } from "backend/schema";
-import { AutocompleteInteraction, CacheType } from "discord.js";
+import type { EventSchema } from "backend/schema";
+import type { AutocompleteInteraction, CacheType } from "discord.js";
 import { DateTime } from "luxon";
 import { AutocompleteInterceptor } from "necord";
-import { z } from "zod";
+import type { z } from "zod";
 
 @Injectable()
 export class EventAutocompleteInterceptor extends AutocompleteInterceptor {
@@ -41,11 +41,11 @@ export class EventAutocompleteInterceptor extends AutocompleteInterceptor {
       );
 
     const dateEvent = (event: z.infer<typeof EventSchema>) => ({
-      name: `${event.title} - ${DateTime.fromMillis(Date.parse(
-        event.startDate,
-      )).toLocaleString(DateTime.DATETIME_SHORT)} - ${DateTime.fromMillis(Date.parse(
-        event.endDate,
-      )).toLocaleString(DateTime.DATETIME_SHORT)} `,
+      name: `${event.title} - ${DateTime.fromMillis(
+        Date.parse(event.startDate),
+      ).toLocaleString(DateTime.DATETIME_SHORT)} - ${DateTime.fromMillis(
+        Date.parse(event.endDate),
+      ).toLocaleString(DateTime.DATETIME_SHORT)} `,
       value: event.id,
     });
 

@@ -1,7 +1,7 @@
 import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
 import {
   ActionRowBuilder,
-  ModalActionRowComponentBuilder,
+  type ModalActionRowComponentBuilder,
   ModalBuilder,
   TextInputBuilder,
 } from "@discordjs/builders";
@@ -17,7 +17,7 @@ export class CheckinModal {
   ) {}
 
   @UseGuards(GuildMemberGuard)
-  @Modal(`event/:eventId/checkin`)
+  @Modal("event/:eventId/checkin")
   public async onCheckinModal(
     @Ctx() [interaction]: ModalContext,
     @ModalParam("eventId") eventId: string,

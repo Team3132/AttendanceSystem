@@ -26,7 +26,7 @@ export class CheckoutButton {
         userId,
       });
       await interaction.reply({
-        content: `You have been successfully checked out.`,
+        content: "You have been successfully checked out.",
         ephemeral: true,
       });
     } catch (error) {
@@ -37,7 +37,7 @@ export class CheckoutButton {
         });
       } else {
         await interaction.reply({
-          content: `Something went wrong. Please try again later.`,
+          content: "Something went wrong. Please try again later.",
           ephemeral: true,
         });
       }

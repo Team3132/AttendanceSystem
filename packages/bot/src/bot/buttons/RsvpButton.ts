@@ -4,7 +4,7 @@ import {
   isTRPCClientError,
 } from "@/backend/backend.module";
 import { Inject, Injectable, UseGuards } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
+import type { ConfigService } from "@nestjs/config";
 import { EmbedBuilder } from "discord.js";
 import { DateTime } from "luxon";
 import { Button, type ButtonContext, ComponentParam, Context } from "necord";
@@ -16,7 +16,7 @@ export class RsvpButton {
   constructor(
     private readonly config: ConfigService,
     @Inject(BACKEND_TOKEN) private readonly backendClient: BackendClient,
-  ) { }
+  ) {}
 
   @UseGuards(GuildMemberGuard)
   @Button("event/:eventId/rsvps")
@@ -38,13 +38,13 @@ export class RsvpButton {
 
       const description = eventRsvps
         .map((rsvp) => rsvpToDescription(rsvp, firstIdRsvp === rsvp.id))
-        .join(`\n`);
+        .join("\n");
 
       const rsvpEmbed = new EmbedBuilder()
         .setTitle(
-          `RSVPs for ${rsvpEvent.title} at ${DateTime.fromMillis(Date.parse(
-            rsvpEvent.startDate,
-          )).toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}`,
+          `RSVPs for ${rsvpEvent.title} at ${DateTime.fromMillis(
+            Date.parse(rsvpEvent.startDate),
+          ).toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}`,
         )
         .setDescription(description)
         .setTimestamp(new Date())
@@ -62,7 +62,7 @@ export class RsvpButton {
         });
       } else {
         await interaction.reply({
-          content: `Something went wrong. Please try again later.`,
+          content: "Something went wrong. Please try again later.",
           ephemeral: true,
         });
       }
