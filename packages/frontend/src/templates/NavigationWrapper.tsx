@@ -1,6 +1,6 @@
 import AsChildLink from "@/components/AsChildLink";
 import { trpc } from "@/trpcClient";
-import { TabItem } from "@/types/TabItem";
+import type { TabItem } from "@/types/TabItem";
 import { BottomNavigation, BottomNavigationAction, Box } from "@mui/material";
 import { Outlet, RouteApi } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
@@ -64,7 +64,7 @@ export function Component() {
               icon: <FaRegCalendar />,
             },
           ] as TabItem[]),
-    [authStatusQuery.data.isAdmin]
+    [authStatusQuery.data.isAdmin],
   );
 
   const currentTab = useRouteMatch(routes);

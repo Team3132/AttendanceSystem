@@ -5,7 +5,7 @@ import { useCallback, useState } from "react";
 import { useAlert } from "react-alert";
 import { z } from "zod";
 import { useDisclosure } from "../../../hooks/useDisclosure";
-import useZodForm, { ZodSubmitHandler } from "../../../hooks/useZodForm";
+import useZodForm, { type ZodSubmitHandler } from "../../../hooks/useZodForm";
 import useScanin from "../hooks/useScanin";
 import UnknownCodeModal from "./UnknownCodeModal";
 

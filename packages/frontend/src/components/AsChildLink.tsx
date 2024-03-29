@@ -1,6 +1,6 @@
-import { AnyRoute, RoutePaths } from "@tanstack/react-router";
-import { RegisteredRouter } from "@tanstack/react-router";
-import { UseLinkPropsOptions, useLinkProps } from "@tanstack/react-router";
+import type { AnyRoute, RoutePaths } from "@tanstack/react-router";
+import type { RegisteredRouter } from "@tanstack/react-router";
+import { type UseLinkPropsOptions, useLinkProps } from "@tanstack/react-router";
 import React from "react";
 
 export default function AsChildLink<

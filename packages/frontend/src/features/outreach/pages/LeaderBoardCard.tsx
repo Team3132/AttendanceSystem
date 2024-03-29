@@ -1,10 +1,10 @@
 import { trpc } from "@/trpcClient";
 import { Stack, Typography } from "@mui/material";
 import { createColumnHelper } from "@tanstack/react-table";
-import { LeaderBoardUser as LeaderboardUserSchema } from "backend/schema";
+import type { LeaderBoardUser as LeaderboardUserSchema } from "backend/schema";
 import { Duration } from "luxon";
 import { useMemo } from "react";
-import { z } from "zod";
+import type { z } from "zod";
 import Datatable from "../../../components/DataTable";
 
 type LeaderboardUser = z.infer<typeof LeaderboardUserSchema>;

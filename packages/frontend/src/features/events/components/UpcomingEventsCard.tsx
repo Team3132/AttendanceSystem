@@ -10,16 +10,16 @@ import {
   MenuItem,
   Paper,
   Select,
-  SelectChangeEvent,
+  type SelectChangeEvent,
   Stack,
   Typography,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { EventTypeSchema } from "backend/schema";
-import { AuthStatusSchema } from "backend/schema";
+import type { EventTypeSchema } from "backend/schema";
+import type { AuthStatusSchema } from "backend/schema";
 import { DateTime } from "luxon";
 import { useState } from "react";
-import { z } from "zod";
+import type { z } from "zod";
 import UpcomingEventListItem from "./UpcomingEventListItem";
 
 interface UpcomingEventsCardProps {

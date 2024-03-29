@@ -4,20 +4,20 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableContainerProps,
+  type TableContainerProps,
   TableHead,
-  TableProps,
+  type TableProps,
   TableRow,
 } from "@mui/material";
-import { RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
+import { type RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
 import {
-  ColumnDef,
-  FilterFn,
-  OnChangeFn,
-  Row,
-  RowSelectionState,
-  SortingState,
-  VisibilityState,
+  type ColumnDef,
+  type FilterFn,
+  type OnChangeFn,
+  type Row,
+  type RowSelectionState,
+  type SortingState,
+  type VisibilityState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -31,7 +31,7 @@ import { FaArrowDown, FaArrowUp } from "react-icons/fa6";
 export interface DatatableProps<Data extends object>
   extends TableContainerProps {
   data: Data[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   columns: ColumnDef<Data, any>[];
   globalFilter?: string;
   setGlobalFilter?: (filter: string) => void;
@@ -56,7 +56,7 @@ declare module "@tanstack/table-core" {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
+const fuzzyFilter: FilterFn = (row, columnId, value, addMeta) => {
   // Rank the item
   const itemRank = rankItem(row.getValue(columnId), value);
 
@@ -155,7 +155,7 @@ export default function Datatable<Data extends object>({
     <TableContainer
       component={Paper}
       ref={tableContainerRef}
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // biome-ignore lint/suspicious/noExplicitAny: Weird type intersection if there's no any
       onScroll={(e: any) =>
         fetchMoreOnBottomReached(e.target as HTMLDivElement)
       }
@@ -174,6 +174,7 @@ export default function Datatable<Data extends object>({
                     style={{ width: header.getSize() }}
                   >
                     {header.isPlaceholder ? null : (
+                      // biome-ignore lint/a11y/useKeyWithClickEvents: I'm not sure what this is
                       <div onClick={header.column.getToggleSortingHandler()}>
                         <b>
                           {flexRender(

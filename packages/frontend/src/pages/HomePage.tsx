@@ -3,7 +3,7 @@ import { RouteApi } from "@tanstack/react-router";
 import ActiveEventsList from "../components/ActiveEventsList";
 import DefaultAppBar from "../components/DefaultAppBar";
 
-const appVersion = import.meta.env["VITE_APP_VERSION"] as string | undefined;
+const appVersion = import.meta.env.VITE_APP_VERSION as string | undefined;
 
 const routeApi = new RouteApi({
   id: "/authedOnly/",

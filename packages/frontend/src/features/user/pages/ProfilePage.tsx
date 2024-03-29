@@ -1,6 +1,6 @@
 import AsChildLink from "@/components/AsChildLink";
 import { trpc } from "@/trpcClient";
-import { TabItem } from "@/types/TabItem";
+import type { TabItem } from "@/types/TabItem";
 import { Tab, Tabs } from "@mui/material";
 import { Outlet, RouteApi } from "@tanstack/react-router";
 import DefaultAppBar from "../../../components/DefaultAppBar";

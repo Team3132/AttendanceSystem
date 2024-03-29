@@ -1,12 +1,12 @@
-import { QueryClient } from "@tanstack/react-query";
+import type { QueryClient } from "@tanstack/react-query";
 import {
   Route,
-  RoutePaths,
+  type RoutePaths,
   Router,
   lazyRouteComponent,
 } from "@tanstack/react-router";
 import { rootRouteWithContext } from "@tanstack/react-router";
-import { CreateQueryUtils } from "@trpc/react-query/shared";
+import type { CreateQueryUtils } from "@trpc/react-query/shared";
 import type { AppRouter } from "backend";
 import { adminIndexRoute } from "./features/admin/routes";
 import {

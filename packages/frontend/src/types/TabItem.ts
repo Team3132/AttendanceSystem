@@ -1,5 +1,5 @@
-import { NavigateOptions } from "@tanstack/react-router";
-import { AnyRoute, RoutePaths } from "@tanstack/react-router";
+import type { NavigateOptions } from "@tanstack/react-router";
+import type { AnyRoute, RoutePaths } from "@tanstack/react-router";
 
 export type TabItem<
   TRouteTree extends AnyRoute = AnyRoute,

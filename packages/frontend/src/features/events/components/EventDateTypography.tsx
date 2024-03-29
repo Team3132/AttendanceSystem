@@ -1,6 +1,6 @@
-import { EventSchema } from "backend/schema";
+import type { EventSchema } from "backend/schema";
 import { DateTime } from "luxon";
-import { z } from "zod";
+import type { z } from "zod";
 
 interface EventDateTypographyProps {
   event: z.infer<typeof EventSchema>;

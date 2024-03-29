@@ -1,4 +1,4 @@
-import { Button, ButtonProps } from "@mui/material";
+import { Button, type ButtonProps } from "@mui/material";
 import { forwardRef } from "react";
 import { useRemoveBuildPoint } from "../hooks/useRemoveBuildPoint";
 

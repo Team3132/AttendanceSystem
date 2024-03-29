@@ -5,10 +5,10 @@ import {
   ListItemText,
   Tooltip,
 } from "@mui/material";
-import { RSVPUserSchema } from "backend/schema";
+import type { RSVPUserSchema } from "backend/schema";
 import { DateTime } from "luxon";
 import { FaCheck, FaClock, FaQuestion, FaXmark } from "react-icons/fa6";
-import { z } from "zod";
+import type { z } from "zod";
 
 interface RSVPListItemProps {
   rsvp: z.infer<typeof RSVPUserSchema>;
@@ -49,13 +49,13 @@ export default function RSVPListItem({ rsvp }: RSVPListItemProps) {
         primary={rsvp.user.username}
         secondary={
           rsvp.checkinTime && rsvp.checkoutTime
-            ? `Checked out at ${DateTime.fromMillis(Date.parse(
-              rsvp.checkoutTime,
-            )).toLocaleString(DateTime.TIME_SIMPLE)}`
+            ? `Checked out at ${DateTime.fromMillis(
+                Date.parse(rsvp.checkoutTime),
+              ).toLocaleString(DateTime.TIME_SIMPLE)}`
             : rsvp.checkinTime
-              ? `Checked in at ${DateTime.fromMillis(Date.parse(
-                rsvp.checkinTime,
-              )).toLocaleString(DateTime.TIME_SIMPLE)}`
+              ? `Checked in at ${DateTime.fromMillis(
+                  Date.parse(rsvp.checkinTime),
+                ).toLocaleString(DateTime.TIME_SIMPLE)}`
               : "No check-in"
         }
       />

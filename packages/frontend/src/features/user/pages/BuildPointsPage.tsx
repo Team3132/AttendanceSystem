@@ -2,10 +2,10 @@ import Datatable from "@/components/DataTable";
 import { trpc } from "@/trpcClient";
 import { Container, Paper, Stack, Typography } from "@mui/material";
 import { createColumnHelper } from "@tanstack/table-core";
-import { BuildPointSchema } from "backend/schema";
+import type { BuildPointSchema } from "backend/schema";
 import { DateTime } from "luxon";
 import { useMemo } from "react";
-import { z } from "zod";
+import type { z } from "zod";
 
 const columnHelper = createColumnHelper<z.infer<typeof BuildPointSchema>>();
 

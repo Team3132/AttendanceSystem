@@ -11,10 +11,10 @@ import {
 } from "@mui/material";
 import { keepPreviousData } from "@tanstack/react-query";
 import { createColumnHelper } from "@tanstack/table-core";
-import { UserSchema } from "backend/schema";
+import type { UserSchema } from "backend/schema";
 import { useMemo, useState } from "react";
 import { useDebounce } from "usehooks-ts";
-import { z } from "zod";
+import type { z } from "zod";
 import DefaultAppBar from "../../../components/DefaultAppBar";
 
 const columnHelper = createColumnHelper<z.infer<typeof UserSchema>>();

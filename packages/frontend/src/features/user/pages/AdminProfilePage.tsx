@@ -1,6 +1,6 @@
 import AsChildLink from "@/components/AsChildLink";
 import { trpc } from "@/trpcClient";
-import { TabItem } from "@/types/TabItem";
+import type { TabItem } from "@/types/TabItem";
 import { Tab, Tabs } from "@mui/material";
 import { Outlet, RouteApi } from "@tanstack/react-router";
 import { useMemo } from "react";
@@ -20,14 +20,14 @@ export function Component() {
     () => [
       {
         label: "Scancodes",
-        to: `/user/$userId`,
+        to: "/user/$userId",
         params: {
           userId: loaderData.userId,
         },
       },
       {
         label: "Pending",
-        to: `/user/$userId/pending`,
+        to: "/user/$userId/pending",
         params: {
           userId: loaderData.userId,
         },

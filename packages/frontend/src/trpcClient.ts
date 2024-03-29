@@ -7,7 +7,7 @@ import {
   wsLink,
 } from "@trpc/client";
 import { createTRPCQueryUtils, createTRPCReact } from "@trpc/react-query";
-import { type AppRouter } from "backend";
+import type { AppRouter } from "backend";
 import { createTauriWSClient, tauriWsLink } from "./tauriWSLink";
 import SuperJSON from "superjson";
 // import { persistQueryClient } from "@tanstack/react-query-persist-client";
@@ -16,7 +16,7 @@ import SuperJSON from "superjson";
 
 export const trpc = createTRPCReact<AppRouter>();
 
-const backendUrl = new URL(`${import.meta.env["VITE_BACKEND_URL"]}/trpc`);
+const backendUrl = new URL(`${import.meta.env.VITE_BACKEND_URL}/trpc`);
 
 // change the protocol to ws
 const wsBackendUrl = new URL(backendUrl.toString().replace("http", "ws"));
@@ -37,11 +37,11 @@ export const trpcClient = trpc.createClient({
       true:
         import.meta.env.VITE_TAURI === "false"
           ? wsLink({
-            client: wsClient,
-          })
+              client: wsClient,
+            })
           : tauriWsLink({
-            client: tauriWsClient,
-          }),
+              client: tauriWsClient,
+            }),
       false: httpBatchLink({
         url: backendUrl.toString(),
         fetch: async (url, options) => {

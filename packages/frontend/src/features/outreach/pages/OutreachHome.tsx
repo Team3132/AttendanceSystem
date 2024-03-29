@@ -1,5 +1,5 @@
 import AsChildLink from "@/components/AsChildLink";
-import { TabItem } from "@/types/TabItem";
+import type { TabItem } from "@/types/TabItem";
 import useRouteMatch from "@/utils/useRouteMatch";
 import { Container, Paper, Tab, Tabs } from "@mui/material";
 import { Outlet } from "@tanstack/react-router";

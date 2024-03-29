@@ -1,7 +1,8 @@
-import { List, ListProps } from "@mui/material";
-import { InfiniteData } from "@tanstack/react-query";
+import { List, type ListProps } from "@mui/material";
+import type { InfiniteData } from "@tanstack/react-query";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import type React from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 
 type OmittedListProps = Omit<ListProps, "children" | "ref" | "component">;
 

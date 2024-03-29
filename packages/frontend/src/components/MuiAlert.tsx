@@ -1,5 +1,5 @@
 import { Alert } from "@mui/material";
-import { AlertTemplateProps } from "react-alert";
+import type { AlertTemplateProps } from "react-alert";
 
 export const MuiAlert: React.FC<AlertTemplateProps> = ({
   options,

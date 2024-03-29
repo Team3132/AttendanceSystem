@@ -18,7 +18,7 @@ import { useMemo, useState } from "react";
 import { Controller } from "react-hook-form";
 import { useDebounce } from "usehooks-ts";
 import { z } from "zod";
-import useZodForm, { ZodSubmitHandler } from "../../../hooks/useZodForm";
+import useZodForm, { type ZodSubmitHandler } from "../../../hooks/useZodForm";
 import useAddUserRsvp from "../hooks/useAddRsvp";
 
 interface RSVPAddDialogProps {

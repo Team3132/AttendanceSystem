@@ -1,4 +1,4 @@
-import { TabItem } from "@/types/TabItem";
+import type { TabItem } from "@/types/TabItem";
 import { useMatchRoute } from "@tanstack/react-router";
 
 /**

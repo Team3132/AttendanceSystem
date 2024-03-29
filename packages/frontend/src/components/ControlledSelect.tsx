@@ -4,14 +4,14 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  SelectProps,
+  type SelectProps,
 } from "@mui/material";
 import { useId } from "react";
 import {
-  FieldPath,
-  FieldValues,
-  PathValue,
-  UseControllerProps,
+  type FieldPath,
+  type FieldValues,
+  type PathValue,
+  type UseControllerProps,
   useController,
 } from "react-hook-form";
 

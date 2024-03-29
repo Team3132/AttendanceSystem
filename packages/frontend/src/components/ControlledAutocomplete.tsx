@@ -1,13 +1,13 @@
 import {
   Autocomplete,
-  AutocompleteProps,
-  ChipTypeMap,
+  type AutocompleteProps,
+  type ChipTypeMap,
   TextField,
 } from "@mui/material";
 import {
-  FieldPath,
-  FieldValues,
-  UseControllerProps,
+  type FieldPath,
+  type FieldValues,
+  type UseControllerProps,
   useController,
 } from "react-hook-form";
 

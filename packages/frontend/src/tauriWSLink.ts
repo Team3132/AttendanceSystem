@@ -1,4 +1,4 @@
-import { Operation, TRPCClientError, TRPCLink } from "@trpc/client";
+import { type Operation, TRPCClientError, type TRPCLink } from "@trpc/client";
 import type { Observer, UnsubscribeFn } from "@trpc/server/observable";
 import { observable } from "@trpc/server/observable";
 import type {
@@ -180,7 +180,7 @@ export function createTauriWSClient(opts: WebSocketClientOptions) {
       state: "connecting",
     } as Connection;
 
-    const onError = (e: any) => {
+    const onError = (e: unknown) => {
       console.error("error", e);
       self.state = "closed";
       if (self === activeConnection) {
@@ -306,8 +306,8 @@ export function createTauriWSClient(opts: WebSocketClientOptions) {
           // close pending requests that aren't attached to a connection yet
           req.callbacks.error(
             TRPCClientError.from(
-              new Error("Closed before connection was established")
-            )
+              new Error("Closed before connection was established"),
+            ),
           );
         }
       }
@@ -339,7 +339,7 @@ class TRPCWebSocketClosedError extends Error {
  * @link https://trpc.io/docs/v11/client/links/wsLink
  */
 export function tauriWsLink<TRouter extends AnyRouter>(
-  opts: WebSocketLinkOptions
+  opts: WebSocketLinkOptions,
 ): TRPCLink<TRouter> {
   return (runtime) => {
     const { client } = opts;
@@ -379,7 +379,7 @@ export function tauriWsLink<TRouter extends AnyRouter>(
                 observer.complete();
               }
             },
-          }
+          },
         );
         return () => {
           unsub();

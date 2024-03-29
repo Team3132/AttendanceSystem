@@ -5,11 +5,11 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  SelectChangeEvent,
+  type SelectChangeEvent,
   TextField,
 } from "@mui/material";
-import { RSVPSchema } from "backend/schema";
-import { z } from "zod";
+import type { RSVPSchema } from "backend/schema";
+import type { z } from "zod";
 import useUpdateRsvp from "../hooks/useUpdateRsvp";
 
 interface MyRsvpStatusProps {

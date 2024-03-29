@@ -3,10 +3,10 @@ import { trpc } from "@/trpcClient";
 import { Container, Paper, Stack, Typography } from "@mui/material";
 import { RouteApi } from "@tanstack/react-router";
 import { createColumnHelper } from "@tanstack/table-core";
-import { BuildPointSchema } from "backend/schema";
+import type { BuildPointSchema } from "backend/schema";
 import { DateTime } from "luxon";
 import { useMemo } from "react";
-import { z } from "zod";
+import type { z } from "zod";
 import BuildPointMenu from "../components/BuildPointMenu";
 
 const routeApi = new RouteApi({
