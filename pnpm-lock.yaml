@@ -63,11 +63,11 @@ importers:
         specifier: 16.4.5
         version: 16.4.5
       drizzle-orm:
-        specifier: 0.30.5
-        version: 0.30.5(postgres@3.4.4)(react@18.2.0)
+        specifier: 0.30.7
+        version: 0.30.7(postgres@3.4.4)(react@18.2.0)
       drizzle-zod:
         specifier: 0.5.1
-        version: 0.5.1(drizzle-orm@0.30.5)(zod@3.22.4)
+        version: 0.5.1(drizzle-orm@0.30.7)(zod@3.22.4)
       eventemitter3:
         specifier: 5.0.1
         version: 5.0.1
@@ -4258,11 +4258,12 @@ packages:
       - supports-color
     dev: true
 
-  /drizzle-orm@0.30.5(postgres@3.4.4)(react@18.2.0):
-    resolution: {integrity: sha512-oImmwGpe1jTWvhPkpsnramZA8m/lE8krTj7Ws7KHSFCMshMXmcZWX2g2Ki793PQOBmwI50KYzWJ9yNKKhWYLyA==}
+  /drizzle-orm@0.30.7(postgres@3.4.4)(react@18.2.0):
+    resolution: {integrity: sha512-9qefSZQlu2fO2qv24piHyWFWcxcOY15//0v4j8qomMqaxzipNoG+fUBrQ7Ftk7PY7APRbRdn/nkEXWxiI4a8mw==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
       '@cloudflare/workers-types': '>=3'
+      '@electric-sql/pglite': '>=0.1.1'
       '@libsql/client': '*'
       '@neondatabase/serverless': '>=0.1'
       '@op-engineering/op-sqlite': '>=2'
@@ -4272,7 +4273,7 @@ packages:
       '@types/pg': '*'
       '@types/react': '>=18'
       '@types/sql.js': '*'
-      '@vercel/postgres': '*'
+      '@vercel/postgres': '>=0.8.0'
       '@xata.io/client': '*'
       better-sqlite3: '>=7'
       bun-types: '*'
@@ -4289,6 +4290,8 @@ packages:
       '@aws-sdk/client-rds-data':
         optional: true
       '@cloudflare/workers-types':
+        optional: true
+      '@electric-sql/pglite':
         optional: true
       '@libsql/client':
         optional: true
@@ -4339,13 +4342,13 @@ packages:
       react: 18.2.0
     dev: false
 
-  /drizzle-zod@0.5.1(drizzle-orm@0.30.5)(zod@3.22.4):
+  /drizzle-zod@0.5.1(drizzle-orm@0.30.7)(zod@3.22.4):
     resolution: {integrity: sha512-C/8bvzUH/zSnVfwdSibOgFjLhtDtbKYmkbPbUCq46QZyZCH6kODIMSOgZ8R7rVjoI+tCj3k06MRJMDqsIeoS4A==}
     peerDependencies:
       drizzle-orm: '>=0.23.13'
       zod: '*'
     dependencies:
-      drizzle-orm: 0.30.5(postgres@3.4.4)(react@18.2.0)
+      drizzle-orm: 0.30.7(postgres@3.4.4)(react@18.2.0)
       zod: 3.22.4
     dev: false
 
