@@ -371,8 +371,8 @@ importers:
         specifier: 2.2.1
         version: 2.2.1
       usehooks-ts:
-        specifier: 2.16.0
-        version: 2.16.0(react@18.2.0)
+        specifier: 3.1.0
+        version: 3.1.0(react@18.2.0)
       zod:
         specifier: 3.22.4
         version: 3.22.4
@@ -7343,8 +7343,8 @@ packages:
       react: 18.2.0
     dev: false
 
-  /usehooks-ts@2.16.0(react@18.2.0):
-    resolution: {integrity: sha512-bez95WqYujxp6hFdM/CpRDiVPirZPxlMzOH2QB8yopoKQMXpscyZoxOjpEdaxvV+CAWUDSM62cWnqHE0E/MZ7w==}
+  /usehooks-ts@3.1.0(react@18.2.0):
+    resolution: {integrity: sha512-bBIa7yUyPhE1BCc0GmR96VU/15l/9gP1Ch5mYdLcFBaFGQsdmXkvjV0TtOqW1yUd6VjIwDunm+flSciCQXujiw==}
     engines: {node: '>=16.15.0'}
     peerDependencies:
       react: ^16.8.0  || ^17 || ^18
