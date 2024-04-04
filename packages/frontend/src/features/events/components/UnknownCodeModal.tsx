@@ -15,7 +15,7 @@ import { keepPreviousData } from "@tanstack/react-query";
 import { TRPCClientError } from "@trpc/client";
 import { useEffect, useMemo, useState } from "react";
 import { Controller } from "react-hook-form";
-import { useDebounce } from "usehooks-ts";
+import { useDebounceValue } from "usehooks-ts";
 import { z } from "zod";
 import { useDisclosure } from "../../../hooks/useDisclosure";
 import useZodForm from "../../../hooks/useZodForm";
@@ -54,9 +54,7 @@ export default function UnknownCodeModal(props: UnknownCodeModalProps) {
     isOpen: isAutocompleteOpen,
   } = useDisclosure();
 
-  const [inputValue, setInputValue] = useState("");
-
-  const debouncedInputValue = useDebounce(inputValue, 500);
+  const [debouncedInputValue, setInputValue] = useDebounceValue("", 500);
 
   const usersQuery = trpc.users.getUserList.useInfiniteQuery(
     {

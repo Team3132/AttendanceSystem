@@ -16,7 +16,7 @@ import { keepPreviousData } from "@tanstack/react-query";
 import { TRPCClientError } from "@trpc/client";
 import { useMemo, useState } from "react";
 import { Controller } from "react-hook-form";
-import { useDebounce } from "usehooks-ts";
+import { useDebounceValue } from "usehooks-ts";
 import { z } from "zod";
 import useZodForm, { type ZodSubmitHandler } from "../../../hooks/useZodForm";
 import useAddUserRsvp from "../hooks/useAddRsvp";
@@ -39,11 +39,10 @@ const AddUserRsvpSchema = z.object({
 
 export default function RSVPAddDialog(props: RSVPAddDialogProps) {
   const { onClose, open, eventId } = props;
-  const [inputValue, setInputValue] = useState("");
 
   const { getDisclosureProps, isOpen: isAutocompleteOpen } = useDisclosure();
 
-  const debouncedInputValue = useDebounce(inputValue, 500);
+  const [debouncedInputValue, setInputValue] = useDebounceValue("", 500);
 
   const usersQuery = trpc.users.getUserList.useInfiniteQuery(
     {
