@@ -13,7 +13,7 @@ import { keepPreviousData } from "@tanstack/react-query";
 import { createColumnHelper } from "@tanstack/table-core";
 import type { UserSchema } from "backend/schema";
 import { useMemo, useState } from "react";
-import { useDebounce } from "usehooks-ts";
+import { useDebounceValue } from "usehooks-ts";
 import type { z } from "zod";
 import DefaultAppBar from "../../../components/DefaultAppBar";
 
@@ -39,13 +39,12 @@ const columns = [
 ];
 
 export function Component() {
-  const [search, setSearch] = useState("");
-  const debouncedSearch = useDebounce(search, 500);
+  const [search, setSearch] = useDebounceValue("", 500);
 
   const usersQuery = trpc.users.getUserList.useInfiniteQuery(
     {
       limit: 10,
-      search: debouncedSearch,
+      search: search,
     },
     {
       getNextPageParam: (lastPage) => lastPage.nextPage,
@@ -75,7 +74,7 @@ export function Component() {
             <Typography variant="h4">Users</Typography>
             <TextField
               onChange={(e) => setSearch(e.target.value)}
-              value={search}
+              defaultValue={""}
               label="Search"
               InputLabelProps={{
                 shrink: true,
@@ -86,7 +85,7 @@ export function Component() {
             <Datatable
               columns={columns ?? []}
               data={pagedItems}
-              globalFilter={debouncedSearch}
+              globalFilter={search}
               setGlobalFilter={setSearch}
               fetchNextPage={usersQuery.fetchNextPage}
               isFetching={usersQuery.isFetching}
