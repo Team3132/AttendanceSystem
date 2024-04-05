@@ -2,13 +2,13 @@ import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
 import rsvpReminderMessage from "@/bot/utils/rsvpReminderMessage";
 import { ROLES } from "@/constants";
 import { Inject, Injectable, Logger } from "@nestjs/common";
-import type { ConfigService } from "@nestjs/config";
+import { ConfigService } from "@nestjs/config";
 import { Cron } from "@nestjs/schedule";
 import type { EventSchema } from "backend/schema";
 import {
   type BaseMessageOptions,
   ChannelType,
-  type Client,
+  Client,
   bold,
   roleMention,
 } from "discord.js";
