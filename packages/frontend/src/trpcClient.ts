@@ -30,19 +30,21 @@ const tauriWsClient = createTauriWSClient({
 });
 
 export const trpcClient = trpc.createClient({
-  transformer: SuperJSON,
   links: [
     splitLink({
       condition: (op) => op.type === "subscription",
       true:
         import.meta.env.VITE_TAURI === "false"
           ? wsLink({
+              transformer: SuperJSON,
               client: wsClient,
             })
           : tauriWsLink({
+              transformer: SuperJSON,
               client: tauriWsClient,
             }),
       false: httpBatchLink({
+        transformer: SuperJSON,
         url: backendUrl.toString(),
         fetch: async (url, options) => {
           if (import.meta.env.VITE_TAURI === "true") {
