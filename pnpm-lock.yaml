@@ -184,8 +184,8 @@ importers:
         specifier: 3.4.4
         version: 3.4.4
       necord:
-        specifier: 6.7.0
-        version: 6.7.0(@nestjs/common@10.3.7)(@nestjs/core@10.3.7)(discord.js@14.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+        specifier: 6.8.1
+        version: 6.8.1(@nestjs/common@10.3.7)(@nestjs/core@10.3.7)(discord.js@14.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       reflect-metadata:
         specifier: 0.2.2
         version: 0.2.2
@@ -5345,8 +5345,8 @@ packages:
     hasBin: true
     dev: true
 
-  /necord@6.7.0(@nestjs/common@10.3.7)(@nestjs/core@10.3.7)(discord.js@14.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1):
-    resolution: {integrity: sha512-9ifYCSKxjSRtsNenhe8RTS1L2KbtXxdfWPkiSLU3tHYDHE1d5xBR7KipfY+2HI0p2lzi1qOBWhm35S3YyBzhtQ==}
+  /necord@6.8.1(@nestjs/common@10.3.7)(@nestjs/core@10.3.7)(discord.js@14.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1):
+    resolution: {integrity: sha512-AV+1FbYx0t6W/Nb0MTN3YEYZshKxKmxH3r5CV2sDkf6/OYE0FoDjbhRFsuqPQJgG+LilPsLR+vf+9ibZ5hLtkA==}
     engines: {node: '>=16.6.0', npm: '>=7.0.0'}
     peerDependencies:
       '@nestjs/common': ^10.2.0
