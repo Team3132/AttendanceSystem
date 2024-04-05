@@ -27,9 +27,9 @@ export type BackendClient = { client: CreateTRPCClient<AppRouter> };
 
         /** The tRPC Client that connects to the backend */
         const client = createTRPCClient<AppRouter>({
-          transformer: SuperJSON,
           links: [
             httpLink({
+              transformer: SuperJSON,
               url: backendTrpcUrl,
               fetch(url, options) {
                 return fetch(url, {
