@@ -1,6 +1,6 @@
 {
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
+    "quickfix.biome": "explicit"
   },
   "editor.formatOnSave": true,
   "git.openRepositoryInParentFolders": "always"

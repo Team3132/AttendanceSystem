@@ -23,8 +23,5 @@ jobs:
 
       - name: Add Problem Matcher
         run: echo "::add-matcher::.github/problem-matchers/tsc.json"
-      - name: Add Problem Matcher
-        run: echo "::add-matcher::.github/problem-matchers/eslint-stylish.json"
-
       - name: Type Check Packages
         run: pnpm typecheck
