@@ -25,12 +25,11 @@ type TabItem<
   TRouteTree extends AnyRoute = RegisteredRouter["routeTree"],
   TFrom extends RoutePaths<TRouteTree> | string = string,
   TTo extends string = "",
-  TResolved = ResolveRelativePath<TFrom, NoInfer<TTo>>,
 > = {
   label: string;
   icon?: React.ReactElement | string;
   to: ToPathOption<TRouteTree, TFrom, TTo>;
-} & PathParamOptions<TRouteTree, TFrom, TTo, TResolved>;
+} & PathParamOptions<TRouteTree, TFrom, TTo>;
 
 export function Component() {
   const loaderData = routeApi.useLoaderData();

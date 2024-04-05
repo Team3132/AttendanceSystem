@@ -10,7 +10,6 @@ export default function useRouteMatch(patterns: readonly TabItem[]) {
 
   const matchedIndex = patterns.findIndex(
     (pattern) =>
-      // @ts-expect-error deep
       matchRoute({
         to: pattern.to,
         params: pattern.params,
