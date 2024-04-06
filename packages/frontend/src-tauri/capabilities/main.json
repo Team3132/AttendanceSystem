@@ -28,6 +28,9 @@
         },
         {
           "url": "https://attendance.team3132.com/api/trpc/*\\?batch=*&input=*"
+        },
+        {
+          "url": "https://github.com/Team3132/AttendanceSystem/*"
         }
       ],
       "deny": []
