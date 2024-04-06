@@ -19,6 +19,7 @@
     "notification:default",
     "deep-link:default",
     "process:allow-restart",
+    "updater:default",
     {
       "identifier": "http:default",
       "allow": [
