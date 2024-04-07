@@ -21,8 +21,12 @@ const tauriUpdate = async () => {
   const { relaunch } = await import("@tauri-apps/plugin-process");
   const update = await check();
   if (update?.available) {
+    console.log("Update available. Downloading and installing...");
     await update.downloadAndInstall();
+    console.log("Update installed. Relaunching...");
     await relaunch();
+  } else {
+    console.log("No update available.");
   }
 };
 
