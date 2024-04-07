@@ -11,11 +11,11 @@ edition = "2021"
 tauri-build = { version = "=2.0.0-beta.11", features = [] }
 
 [dependencies]
-tauri = { version = "=2.0.0-beta.14", features = ["devtools", "rustls-tls"] }
+tauri = { version = "=2.0.0-beta.14", features = ["devtools"] }
 tauri-plugin-shell = "=2.0.0-beta.3"
 serde_json = "=1.0.115"
 tauri-plugin-websocket = "=2.0.0-beta.3"
-tauri-plugin-http = "=2.0.0-beta.4"
+tauri-plugin-http = { version = "=2.0.0-beta.4", features = ["rustls-tls"] }
 tauri-plugin-window-state = "=2.0.0-beta.4"
 tauri-plugin-deep-link = "=2.0.0-beta.3"
 tauri-plugin-notification = "=2.0.0-beta.3"
