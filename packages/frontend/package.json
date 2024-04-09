@@ -61,7 +61,7 @@
     "@trpc/react-query": "11.0.0-rc.332",
     "@trpc/server": "11.0.0-rc.332",
     "@types/luxon": "3.4.2",
-    "@types/react": "18.2.74",
+    "@types/react": "18.2.75",
     "@types/react-alert": "7.0.6",
     "@types/react-dom": "18.2.24",
     "@vitejs/plugin-react-swc": "3.6.0",
