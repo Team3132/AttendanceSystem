@@ -34,7 +34,7 @@
     "backend": "workspace:*",
     "class-transformer": "0.5.1",
     "class-validator": "0.14.1",
-    "cron": "3.1.6",
+    "cron": "3.1.7",
     "discord-api-types": "0.37.79",
     "discord.js": "14.14.1",
     "express": "4.19.2",
