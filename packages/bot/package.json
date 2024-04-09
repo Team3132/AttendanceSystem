@@ -30,7 +30,7 @@
     "@nestjs/schedule": "4.0.1",
     "@sentry/node": "7.109.0",
     "@sentry/tracing": "7.109.0",
-    "@trpc/client": "11.0.0-rc.332",
+    "@trpc/client": "11.0.0-rc.334",
     "backend": "workspace:*",
     "class-transformer": "0.5.1",
     "class-validator": "0.14.1",
