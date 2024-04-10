@@ -184,8 +184,8 @@ importers:
         specifier: 3.4.4
         version: 3.4.4
       necord:
-        specifier: 6.8.1
-        version: 6.8.1(@nestjs/common@10.3.7)(@nestjs/core@10.3.7)(discord.js@14.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+        specifier: 6.8.3
+        version: 6.8.3(@nestjs/common@10.3.7)(@nestjs/core@10.3.7)(discord.js@14.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       reflect-metadata:
         specifier: 0.2.2
         version: 0.2.2
@@ -5321,8 +5321,8 @@ packages:
     hasBin: true
     dev: true
 
-  /necord@6.8.1(@nestjs/common@10.3.7)(@nestjs/core@10.3.7)(discord.js@14.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1):
-    resolution: {integrity: sha512-AV+1FbYx0t6W/Nb0MTN3YEYZshKxKmxH3r5CV2sDkf6/OYE0FoDjbhRFsuqPQJgG+LilPsLR+vf+9ibZ5hLtkA==}
+  /necord@6.8.3(@nestjs/common@10.3.7)(@nestjs/core@10.3.7)(discord.js@14.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1):
+    resolution: {integrity: sha512-eYCvku/oqWU1uLN/onmKZ1Oy605fdvLTt46JiV6ko0/+XYPXDwYLNEHOrJwP1VY5sVrvMfeU11ZOJCTlpE+OvA==}
     engines: {node: '>=16.6.0', npm: '>=7.0.0'}
     peerDependencies:
       '@nestjs/common': ^10.2.0
@@ -5334,7 +5334,7 @@ packages:
       '@nestjs/common': 10.3.7(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/core': 10.3.7(@nestjs/common@10.3.7)(@nestjs/platform-express@10.3.7)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       discord.js: 14.14.1
-      path-to-regexp: 6.2.1
+      path-to-regexp: 6.2.2
       reflect-metadata: 0.2.2
       rxjs: 7.8.1
     dev: false
@@ -5544,8 +5544,8 @@ packages:
     resolution: {integrity: sha512-jczvQbCUS7XmS7o+y1aEO9OBVFeZBQ1MDSEqmO7xSoPgOPoowY/SxLpZ6Vh97/8qHZOteiCKb7gkG9gA2ZUxJA==}
     dev: false
 
-  /path-to-regexp@6.2.1:
-    resolution: {integrity: sha512-JLyh7xT1kizaEvcaXOQwOc2/Yhw6KZOvPf1S8401UyLk86CU79LN3vl7ztXGm/pZ+YjoyAJ4rxmHwbkBXJX+yw==}
+  /path-to-regexp@6.2.2:
+    resolution: {integrity: sha512-GQX3SSMokngb36+whdpRXE+3f9V8UzyAorlYvOGx87ufGHehNTn5lCxrKtLyZ4Yl/wEKnNnr98ZzOwwDZV5ogw==}
     dev: false
 
   /path-type@4.0.0:
