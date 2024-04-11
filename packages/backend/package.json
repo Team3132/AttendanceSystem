@@ -38,7 +38,7 @@
     "@fastify/cookie": "9.3.1",
     "@fastify/jwt": "8.0.0",
     "@fastify/passport": "2.4.0",
-    "@fastify/secure-session": "7.1.0",
+    "@fastify/secure-session": "7.4.0",
     "@fastify/static": "7.0.3",
     "@fastify/websocket": "10.0.1",
     "@trpc/client": "11.0.0-rc.334",

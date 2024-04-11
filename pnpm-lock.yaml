@@ -33,8 +33,8 @@ importers:
         specifier: 2.4.0
         version: 2.4.0
       '@fastify/secure-session':
-        specifier: 7.1.0
-        version: 7.1.0
+        specifier: 7.4.0
+        version: 7.4.0
       '@fastify/static':
         specifier: 7.0.3
         version: 7.0.3
@@ -1467,8 +1467,8 @@ packages:
       fastify-plugin: 4.5.1
     dev: false
 
-  /@fastify/secure-session@7.1.0:
-    resolution: {integrity: sha512-x0ZW57+sf6fQaL05B3n64m7DRe81NAtFAKpCKKuqdX9FDqzOH5uQbfDDfVQy2/qhDn3N343RMlNtY1iQyvvA9A==}
+  /@fastify/secure-session@7.4.0:
+    resolution: {integrity: sha512-IT2D3kC1oez4CNkjOASJq4rADoQAv2guaIDJQQgrTH82sidzsrRIY7fUtxe8SprCXNnmjEZtRBAXJPgI4uf7eQ==}
     hasBin: true
     dependencies:
       '@fastify/cookie': 9.3.1
