@@ -42,14 +42,14 @@ importers:
         specifier: 10.0.1
         version: 10.0.1
       '@trpc/client':
-        specifier: 11.0.0-rc.334
-        version: 11.0.0-rc.334(@trpc/server@11.0.0-rc.334)
+        specifier: 11.0.0-rc.340
+        version: 11.0.0-rc.340(@trpc/server@11.0.0-rc.340)
       '@trpc/react-query':
-        specifier: 11.0.0-rc.334
-        version: 11.0.0-rc.334(@tanstack/react-query@5.29.2)(@trpc/client@11.0.0-rc.334)(@trpc/server@11.0.0-rc.334)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 11.0.0-rc.340
+        version: 11.0.0-rc.340(@tanstack/react-query@5.29.2)(@trpc/client@11.0.0-rc.340)(@trpc/server@11.0.0-rc.340)(react-dom@18.2.0)(react@18.2.0)
       '@trpc/server':
-        specifier: 11.0.0-rc.334
-        version: 11.0.0-rc.334
+        specifier: 11.0.0-rc.340
+        version: 11.0.0-rc.340
       bullmq:
         specifier: 5.7.1
         version: 5.7.1
@@ -157,8 +157,8 @@ importers:
         specifier: 7.110.0
         version: 7.110.0
       '@trpc/client':
-        specifier: 11.0.0-rc.334
-        version: 11.0.0-rc.334(@trpc/server@11.0.0-rc.334)
+        specifier: 11.0.0-rc.340
+        version: 11.0.0-rc.340(@trpc/server@11.0.0-rc.340)
       backend:
         specifier: workspace:*
         version: link:../backend
@@ -369,14 +369,14 @@ importers:
         specifier: 2.0.0-beta.12
         version: 2.0.0-beta.12
       '@trpc/client':
-        specifier: 11.0.0-rc.334
-        version: 11.0.0-rc.334(@trpc/server@11.0.0-rc.334)
+        specifier: 11.0.0-rc.340
+        version: 11.0.0-rc.340(@trpc/server@11.0.0-rc.340)
       '@trpc/react-query':
-        specifier: 11.0.0-rc.334
-        version: 11.0.0-rc.334(@tanstack/react-query@5.29.2)(@trpc/client@11.0.0-rc.334)(@trpc/server@11.0.0-rc.334)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 11.0.0-rc.340
+        version: 11.0.0-rc.340(@tanstack/react-query@5.29.2)(@trpc/client@11.0.0-rc.340)(@trpc/server@11.0.0-rc.340)(react-dom@18.2.0)(react@18.2.0)
       '@trpc/server':
-        specifier: 11.0.0-rc.334
-        version: 11.0.0-rc.334
+        specifier: 11.0.0-rc.340
+        version: 11.0.0-rc.340
       '@types/luxon':
         specifier: 3.4.2
         version: 3.4.2
@@ -2904,30 +2904,30 @@ packages:
     resolution: {integrity: sha512-OvjF+z51L3ov0OyAU0duzsYuvO01PH7x4t6DJx+guahgTnBHkhJdG7soQeTSFLWN3efnHyibZ4Z8l2EuWwJN3A==}
     dev: true
 
-  /@trpc/client@11.0.0-rc.334(@trpc/server@11.0.0-rc.334):
-    resolution: {integrity: sha512-nVKOxCfhKxBXvs1MwjfNNsWHQH/rHWzS4SxYPtYld7zqANTfNqn8cuClHMKlkeMKljObFiCfWhbdrBamKO/dDw==}
+  /@trpc/client@11.0.0-rc.340(@trpc/server@11.0.0-rc.340):
+    resolution: {integrity: sha512-q2ecZW58LM9pKpzRt+um9Jh33Nmjt7qDZu3xsjMFD61QLE6M/Tply7lC02iqZzrXzTGxR0w2+dLdkkrSlITOKQ==}
     peerDependencies:
-      '@trpc/server': 11.0.0-rc.334+fdf26e552
+      '@trpc/server': 11.0.0-rc.340+d1652d1bc
     dependencies:
-      '@trpc/server': 11.0.0-rc.334
+      '@trpc/server': 11.0.0-rc.340
 
-  /@trpc/react-query@11.0.0-rc.334(@tanstack/react-query@5.29.2)(@trpc/client@11.0.0-rc.334)(@trpc/server@11.0.0-rc.334)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-DvhU7qMfQkLyrhQoDlrtMAGIgJyin9I8WCsF0oGlAD95ygoJcviD8D+lQzSCUttul9rPcNqWDuGhm5laS7V43A==}
+  /@trpc/react-query@11.0.0-rc.340(@tanstack/react-query@5.29.2)(@trpc/client@11.0.0-rc.340)(@trpc/server@11.0.0-rc.340)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-3c+KWh3+KN+T0gBKSnxzGfrHlX1NRK5u+v4BqFWLTBg0ADi2eVOgSpTaToF/WEea616kacmPh5ptJeK8SmyBKQ==}
     peerDependencies:
       '@tanstack/react-query': ^5.25.0
-      '@trpc/client': 11.0.0-rc.334+fdf26e552
-      '@trpc/server': 11.0.0-rc.334+fdf26e552
+      '@trpc/client': 11.0.0-rc.340+d1652d1bc
+      '@trpc/server': 11.0.0-rc.340+d1652d1bc
       react: '>=18.2.0'
       react-dom: '>=18.2.0'
     dependencies:
       '@tanstack/react-query': 5.29.2(react@18.2.0)
-      '@trpc/client': 11.0.0-rc.334(@trpc/server@11.0.0-rc.334)
-      '@trpc/server': 11.0.0-rc.334
+      '@trpc/client': 11.0.0-rc.340(@trpc/server@11.0.0-rc.340)
+      '@trpc/server': 11.0.0-rc.340
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
-  /@trpc/server@11.0.0-rc.334:
-    resolution: {integrity: sha512-ckg+f4z3Lc0wYvm1Cx8Zjz8b2hguNlUFQeF8vLrtWYBL8HEolshmxOHMG9MLc6WDE6T1R7DZrG+xEwjI44XH9w==}
+  /@trpc/server@11.0.0-rc.340:
+    resolution: {integrity: sha512-fKzFeAzFbsezC8Jx6gIy4AjlzNvQy4aFc2LT0qIq7hNWYCkuv3gQ7ROgcIF4dUI0rfPC3Gt/y8PQjE+GayAhvA==}
 
   /@types/body-parser@1.19.5:
     resolution: {integrity: sha512-fB3Zu92ucau0iQ0JMCFQE7b/dv8Ot07NI3KaZIkIUNXq82k4eBAqUaneXfleGY9JWskeS9y+u0nXMyspcuQrCg==}
