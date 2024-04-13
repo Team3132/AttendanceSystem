@@ -290,8 +290,8 @@ importers:
         specifier: 1.27.0
         version: 1.27.0(csstype@3.1.3)(react-dom@18.2.0)(react@18.2.0)
       '@tanstack/table-core':
-        specifier: 8.15.3
-        version: 8.15.3
+        specifier: 8.16.0
+        version: 8.16.0
       '@tauri-apps/api':
         specifier: 2.0.0-beta.7
         version: 2.0.0-beta.7
@@ -2734,6 +2734,11 @@ packages:
 
   /@tanstack/table-core@8.15.3:
     resolution: {integrity: sha512-wOgV0HfEvuMOv8RlqdR9MdNNqq0uyvQtP39QOvGlggHvIObOE4exS+D5LGO8LZ3LUXxId2IlUKcHDHaGujWhUg==}
+    engines: {node: '>=12'}
+    dev: false
+
+  /@tanstack/table-core@8.16.0:
+    resolution: {integrity: sha512-dCG8vQGk4js5v88/k83tTedWOwjGnIyONrKpHpfmSJB8jwFHl8GSu1sBBxbtACVAPtAQgwNxl0rw1d3RqRM1Tg==}
     engines: {node: '>=12'}
     dev: false
 
