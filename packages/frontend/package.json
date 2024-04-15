@@ -30,7 +30,7 @@
     "@tanstack/react-virtual": "3.2.1",
     "@tanstack/router-devtools": "1.27.0",
     "@tanstack/table-core": "8.16.0",
-    "@tauri-apps/api": "2.0.0-beta.7",
+    "@tauri-apps/api": "2.0.0-beta.8",
     "@tauri-apps/plugin-deep-link": "2.0.0-beta.2",
     "@tauri-apps/plugin-http": "2.0.0-beta.2",
     "@tauri-apps/plugin-log": "2.0.0-beta.2",
@@ -57,7 +57,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.6.4",
     "@swc/plugin-emotion": "2.5.124",
-    "@tauri-apps/cli": "2.0.0-beta.12",
+    "@tauri-apps/cli": "2.0.0-beta.13",
     "@trpc/client": "11.0.0-rc.340",
     "@trpc/react-query": "11.0.0-rc.340",
     "@trpc/server": "11.0.0-rc.340",
