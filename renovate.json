@@ -6,6 +6,10 @@
       "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "!/^0/",
       "automerge": true
+    },
+    {
+      "matchSourceUrls": ["https://github.com/TanStack/table"],
+      "groupName": "Tanstack table monorepo packages"
     }
   ],
   "rangeStrategy": "pin",
