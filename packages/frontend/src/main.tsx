@@ -15,6 +15,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 );
 
 const tauriUpdate = async () => {
+  return;
+  // biome-ignore lint/correctness/noUnreachable: disabled for now
   if (!import.meta.env.VITE_TAURI) return;
 
   const { check } = await import("@tauri-apps/plugin-updater");
