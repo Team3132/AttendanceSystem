@@ -14,22 +14,28 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   </React.StrictMode>,
 );
 
-const tauriUpdate = async () => {
-  return;
-  // biome-ignore lint/correctness/noUnreachable: disabled for now
+const tauriInit = async () => {
   if (!import.meta.env.VITE_TAURI) return;
+  const { attachConsole } = await import("@tauri-apps/plugin-log");
 
+  await attachConsole();
+  await tauriUpdate();
+};
+
+const tauriUpdate = async () => {
   const { check } = await import("@tauri-apps/plugin-updater");
-  const { relaunch } = await import("@tauri-apps/plugin-process");
   const update = await check();
   if (update?.available) {
-    console.log("Update available. Downloading and installing...");
+    console.log(
+      `Update to ${update.version} from ${update.currentVersion} available. Downloading and installing...`,
+    );
     await update.downloadAndInstall();
     console.log("Update installed. Relaunching...");
+    const { relaunch } = await import("@tauri-apps/plugin-process");
     await relaunch();
   } else {
     console.log("No update available.");
   }
 };
 
-tauriUpdate();
+tauriInit();
