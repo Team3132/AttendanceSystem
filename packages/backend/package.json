@@ -67,7 +67,7 @@
     "@types/passport-discord": "0.1.13",
     "@types/uuid": "9.0.8",
     "@types/ws": "8.5.10",
-    "drizzle-kit": "0.20.14",
+    "drizzle-kit": "0.20.17",
     "prettier": "3.2.5",
     "tsup": "8.0.2",
     "typescript": "5.4.5"
