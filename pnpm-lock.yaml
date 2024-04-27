@@ -57,8 +57,8 @@ importers:
         specifier: 3.1.7
         version: 3.1.7
       discord-api-types:
-        specifier: 0.37.81
-        version: 0.37.81
+        specifier: 0.37.83
+        version: 0.37.83
       dotenv:
         specifier: 16.4.5
         version: 16.4.5
@@ -172,8 +172,8 @@ importers:
         specifier: 3.1.7
         version: 3.1.7
       discord-api-types:
-        specifier: 0.37.81
-        version: 0.37.81
+        specifier: 0.37.83
+        version: 0.37.83
       discord.js:
         specifier: 14.14.1
         version: 14.14.1
@@ -3819,8 +3819,8 @@ packages:
     resolution: {integrity: sha512-o/dXNFfhBpYHpQFdT6FWzeO7pKc838QeeZ9d91CfVAtpr5XLK4B/zYxQbYgPdoMiTDvJfzcsLW5naXgmHGDNXw==}
     dev: false
 
-  /discord-api-types@0.37.81:
-    resolution: {integrity: sha512-GNUnmQeIO5S9lSDbH3hFCIbfhSO62BYtXEFVWMUsV2H7Xx/lCZIe53uQcYtfaO8nxO0kcqNkYgohrhqQMGxthg==}
+  /discord-api-types@0.37.83:
+    resolution: {integrity: sha512-urGGYeWtWNYMKnYlZnOnDHm8fVRffQs3U0SpE8RHeiuLKb/u92APS8HoQnPTFbnXmY1vVnXjXO4dOxcAn3J+DA==}
     dev: false
 
   /discord.js@14.14.1:
