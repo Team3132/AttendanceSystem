@@ -52,7 +52,7 @@
     "react-qr-code": "2.0.12",
     "superjson": "2.2.1",
     "usehooks-ts": "3.1.0",
-    "zod": "3.23.4"
+    "zod": "3.23.5"
   },
   "devDependencies": {
     "@biomejs/biome": "1.7.1",
