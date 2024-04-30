@@ -32,6 +32,6 @@
     ]
   },
   "devDependencies": {
-    "@biomejs/biome": "1.7.1"
+    "@biomejs/biome": "1.7.2"
   }
 }
