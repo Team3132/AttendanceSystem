@@ -71,11 +71,11 @@ export const router = new Router({
   defaultPreload: "intent",
 });
 
-declare module "@tanstack/react-router" {
-  interface Register {
-    router: typeof router;
-  }
-}
+// declare module "@tanstack/react-router" {
+//   interface Register {
+//     router: typeof router;
+//   }
+// }
 
 export type RouterPaths = RoutePaths<typeof routeTree>;
 
