@@ -75,8 +75,8 @@ importers:
         specifier: 4.26.2
         version: 4.26.2
       googleapis:
-        specifier: 134.0.0
-        version: 134.0.0
+        specifier: 135.1.0
+        version: 135.1.0
       luxon:
         specifier: 3.4.4
         version: 3.4.4
@@ -4701,8 +4701,8 @@ packages:
       - supports-color
     dev: false
 
-  /googleapis@134.0.0:
-    resolution: {integrity: sha512-o8LhD1754W6MHWtpwAPeP1WUHgNxuMxCnLMDFlMKAA5kCMTNqX9/eaTXnkkAIv6YRfoKMQ6D1vyR6/biXuhE9g==}
+  /googleapis@135.1.0:
+    resolution: {integrity: sha512-cQ4P0ok2YJZGOW6nBFI/ZC3rjX5CAzp+onIc1O8ovIp1N7wiVW6vGJhLgB3lfUls9EqNf5yNFP4mqTT3MAYInA==}
     engines: {node: '>=14.0.0'}
     dependencies:
       google-auth-library: 9.4.1
