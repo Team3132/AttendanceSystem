@@ -308,8 +308,8 @@ importers:
         specifier: 2.0.0-beta.3
         version: 2.0.0-beta.3
       '@tauri-apps/plugin-process':
-        specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
       '@tauri-apps/plugin-shell':
         specifier: 2.0.0-beta.3
         version: 2.0.0-beta.3
@@ -2896,10 +2896,10 @@ packages:
       '@tauri-apps/api': 2.0.0-beta.11
     dev: false
 
-  /@tauri-apps/plugin-process@2.0.0-beta.2:
-    resolution: {integrity: sha512-CLF3Figv68fk+mqdV1q8bufFlcQS3SSTiNX8Lc7FbSD211XOWShgiGm4D6QMUkFBxgXzZICWh/mrYnWdv3aYQA==}
+  /@tauri-apps/plugin-process@2.0.0-beta.3:
+    resolution: {integrity: sha512-N3TkHxoQQb45FP8mbKfcI+e6foR17QlLrrwvPK8SH+LhEP9uo1b5EUvpZM1TIegAmL/3LQIBtJw1loyHVn8Esg==}
     dependencies:
-      '@tauri-apps/api': 2.0.0-beta.4
+      '@tauri-apps/api': 2.0.0-beta.11
     dev: false
 
   /@tauri-apps/plugin-shell@2.0.0-beta.3:
