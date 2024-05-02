@@ -63,11 +63,11 @@ importers:
         specifier: 16.4.5
         version: 16.4.5
       drizzle-orm:
-        specifier: 0.30.9
-        version: 0.30.9(postgres@3.4.4)(react@18.3.1)
+        specifier: 0.30.10
+        version: 0.30.10(postgres@3.4.4)(react@18.3.1)
       drizzle-zod:
         specifier: 0.5.1
-        version: 0.5.1(drizzle-orm@0.30.9)(zod@3.23.5)
+        version: 0.5.1(drizzle-orm@0.30.10)(zod@3.23.5)
       eventemitter3:
         specifier: 5.0.1
         version: 5.0.1
@@ -3890,8 +3890,8 @@ packages:
       - supports-color
     dev: true
 
-  /drizzle-orm@0.30.9(postgres@3.4.4)(react@18.3.1):
-    resolution: {integrity: sha512-VOiCFsexErmgqvNCOmbzmqDCZzZsHoz6SkWAjTFxsTr1AllKDbDJ2+GgedLXsXMDgpg/ljDG1zItIFeZtiO2LA==}
+  /drizzle-orm@0.30.10(postgres@3.4.4)(react@18.3.1):
+    resolution: {integrity: sha512-IRy/QmMWw9lAQHpwbUh1b8fcn27S/a9zMIzqea1WNOxK9/4EB8gIo+FZWLiPXzl2n9ixGSv8BhsLZiOppWEwBw==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
       '@cloudflare/workers-types': '>=3'
@@ -3974,13 +3974,13 @@ packages:
       react: 18.3.1
     dev: false
 
-  /drizzle-zod@0.5.1(drizzle-orm@0.30.9)(zod@3.23.5):
+  /drizzle-zod@0.5.1(drizzle-orm@0.30.10)(zod@3.23.5):
     resolution: {integrity: sha512-C/8bvzUH/zSnVfwdSibOgFjLhtDtbKYmkbPbUCq46QZyZCH6kODIMSOgZ8R7rVjoI+tCj3k06MRJMDqsIeoS4A==}
     peerDependencies:
       drizzle-orm: '>=0.23.13'
       zod: '*'
     dependencies:
-      drizzle-orm: 0.30.9(postgres@3.4.4)(react@18.3.1)
+      drizzle-orm: 0.30.10(postgres@3.4.4)(react@18.3.1)
       zod: 3.23.5
     dev: false
 
