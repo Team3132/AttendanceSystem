@@ -314,8 +314,8 @@ importers:
         specifier: 2.0.0-beta.3
         version: 2.0.0-beta.3
       '@tauri-apps/plugin-updater':
-        specifier: 2.0.0-beta.2
-        version: 2.0.0-beta.2
+        specifier: 2.0.0-beta.3
+        version: 2.0.0-beta.3
       '@tauri-apps/plugin-websocket':
         specifier: 2.0.0-beta.3
         version: 2.0.0-beta.3
@@ -2908,10 +2908,10 @@ packages:
       '@tauri-apps/api': 2.0.0-beta.11
     dev: false
 
-  /@tauri-apps/plugin-updater@2.0.0-beta.2:
-    resolution: {integrity: sha512-T8EkAXawbyV/6/Lcf1VVIWhtGuals63zKn+udYNqlC8CRM5iYQ+8bM8Nmy2E+pIzkkx93d1t6/8geFitLZPmKw==}
+  /@tauri-apps/plugin-updater@2.0.0-beta.3:
+    resolution: {integrity: sha512-bD1ikPz80uK9YJKNYpYlA6StSp9lr0Ob1kGLG2XdmOgspv7SZLLNVzMORtKeqgepxwG99qdYGDDegT3Ll6+UlA==}
     dependencies:
-      '@tauri-apps/api': 2.0.0-beta.4
+      '@tauri-apps/api': 2.0.0-beta.11
     dev: false
 
   /@tauri-apps/plugin-websocket@2.0.0-beta.3:
