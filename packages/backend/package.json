@@ -52,7 +52,7 @@
     "drizzle-zod": "0.5.1",
     "eventemitter3": "5.0.1",
     "fastify": "4.26.2",
-    "googleapis": "134.0.0",
+    "googleapis": "135.1.0",
     "luxon": "3.4.4",
     "passport-discord": "0.1.4",
     "postgres": "3.4.4",
