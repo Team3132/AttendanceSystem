@@ -394,7 +394,7 @@ importers:
         version: 18.3.0
       '@vitejs/plugin-react-swc':
         specifier: 3.6.0
-        version: 3.6.0(vite@5.2.10)
+        version: 3.6.0(vite@5.2.11)
       prettier:
         specifier: 3.2.5
         version: 3.2.5
@@ -402,14 +402,14 @@ importers:
         specifier: 5.4.5
         version: 5.4.5
       vite:
-        specifier: 5.2.10
-        version: 5.2.10
+        specifier: 5.2.11
+        version: 5.2.11
       vite-plugin-mkcert:
         specifier: 1.17.5
-        version: 1.17.5(vite@5.2.10)
+        version: 1.17.5(vite@5.2.11)
       vite-tsconfig-paths:
         specifier: 4.3.2
-        version: 4.3.2(typescript@5.4.5)(vite@5.2.10)
+        version: 4.3.2(typescript@5.4.5)(vite@5.2.11)
 
 packages:
 
@@ -3135,13 +3135,13 @@ packages:
       '@types/node': 20.12.8
     dev: false
 
-  /@vitejs/plugin-react-swc@3.6.0(vite@5.2.10):
+  /@vitejs/plugin-react-swc@3.6.0(vite@5.2.11):
     resolution: {integrity: sha512-XFRbsGgpGxGzEV5i5+vRiro1bwcIaZDIdBRP16qwm+jP68ue/S8FJTBEgOeojtVDYrbSua3XFp71kC8VJE6v+g==}
     peerDependencies:
       vite: ^4 || ^5
     dependencies:
       '@swc/core': 1.5.2
-      vite: 5.2.10
+      vite: 5.2.11
     transitivePeerDependencies:
       - '@swc/helpers'
     dev: true
@@ -6685,7 +6685,7 @@ packages:
     engines: {node: '>= 0.8'}
     dev: false
 
-  /vite-plugin-mkcert@1.17.5(vite@5.2.10):
+  /vite-plugin-mkcert@1.17.5(vite@5.2.11):
     resolution: {integrity: sha512-KKGY3iHx/9zb7ow8JJ+nLN2HiNIBuPBwj34fJ+jAJT89/8qfk7msO7G7qipR8VDEm9xMCys0xT11QOJbZcg3/Q==}
     engines: {node: '>=v16.7.0'}
     peerDependencies:
@@ -6695,12 +6695,12 @@ packages:
       axios: 1.6.8(debug@4.3.4)
       debug: 4.3.4
       picocolors: 1.0.0
-      vite: 5.2.10
+      vite: 5.2.11
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /vite-tsconfig-paths@4.3.2(typescript@5.4.5)(vite@5.2.10):
+  /vite-tsconfig-paths@4.3.2(typescript@5.4.5)(vite@5.2.11):
     resolution: {integrity: sha512-0Vd/a6po6Q+86rPlntHye7F31zA2URZMbH8M3saAZ/xR9QoGN/L21bxEGfXdWmFdNkqPpRdxFT7nmNe12e9/uA==}
     peerDependencies:
       vite: '*'
@@ -6711,14 +6711,14 @@ packages:
       debug: 4.3.4
       globrex: 0.1.2
       tsconfck: 3.0.3(typescript@5.4.5)
-      vite: 5.2.10
+      vite: 5.2.11
     transitivePeerDependencies:
       - supports-color
       - typescript
     dev: true
 
-  /vite@5.2.10:
-    resolution: {integrity: sha512-PAzgUZbP7msvQvqdSD+ErD5qGnSFiGOoWmV5yAKUEI0kdhjbH6nMWVyZQC/hSc4aXwc0oJ9aEdIiF9Oje0JFCw==}
+  /vite@5.2.11:
+    resolution: {integrity: sha512-HndV31LWW05i1BLPMUCE1B9E9GFbOu1MbenhS58FuK6owSO5qHm7GiCotrNY1YE5rMeQSFBGmT5ZaLEjFizgiQ==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
