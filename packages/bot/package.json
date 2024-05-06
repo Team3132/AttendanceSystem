@@ -61,6 +61,6 @@
     "tsconfig-paths": "4.2.0",
     "tsup": "8.0.2",
     "typescript": "5.4.5",
-    "@biomejs/biome": "1.7.2"
+    "@biomejs/biome": "1.7.3"
   }
 }

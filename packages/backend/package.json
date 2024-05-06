@@ -62,7 +62,7 @@
     "zod": "3.23.6"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.7.2",
+    "@biomejs/biome": "1.7.3",
     "@types/luxon": "3.4.2",
     "@types/passport-discord": "0.1.13",
     "@types/uuid": "9.0.8",
