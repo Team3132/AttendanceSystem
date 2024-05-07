@@ -36,8 +36,8 @@ importers:
         specifier: 7.5.1
         version: 7.5.1
       '@fastify/static':
-        specifier: 7.0.3
-        version: 7.0.3
+        specifier: 7.0.4
+        version: 7.0.4
       '@fastify/websocket':
         specifier: 10.0.1
         version: 10.0.1
@@ -1478,8 +1478,8 @@ packages:
       mime: 3.0.0
     dev: false
 
-  /@fastify/static@7.0.3:
-    resolution: {integrity: sha512-2tmTdF+uFCykasutaO6k4/wOt7eXyi7m3dGuCPo5micXzv0qt6ttb/nWnDYL/BlXjYGfp1JI4a1gyluTIylvQA==}
+  /@fastify/static@7.0.4:
+    resolution: {integrity: sha512-p2uKtaf8BMOZWLs6wu+Ihg7bWNBdjNgCwDza4MJtTqg+5ovKmcbgbR9Xs5/smZ1YISfzKOCNYmZV8LaCj+eJ1Q==}
     dependencies:
       '@fastify/accept-negotiator': 1.1.0
       '@fastify/send': 2.1.0
