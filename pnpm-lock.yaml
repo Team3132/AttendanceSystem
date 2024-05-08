@@ -67,7 +67,7 @@ importers:
         version: 0.30.10(postgres@3.4.4)(react@18.3.1)
       drizzle-zod:
         specifier: 0.5.1
-        version: 0.5.1(drizzle-orm@0.30.10)(zod@3.23.6)
+        version: 0.5.1(drizzle-orm@0.30.10)(zod@3.23.7)
       eventemitter3:
         specifier: 5.0.1
         version: 5.0.1
@@ -96,8 +96,8 @@ importers:
         specifier: 9.0.1
         version: 9.0.1
       zod:
-        specifier: 3.23.6
-        version: 3.23.6
+        specifier: 3.23.7
+        version: 3.23.7
     devDependencies:
       '@biomejs/biome':
         specifier: 1.7.3
@@ -196,8 +196,8 @@ importers:
         specifier: 2.2.1
         version: 2.2.1
       zod:
-        specifier: 3.23.6
-        version: 3.23.6
+        specifier: 3.23.7
+        version: 3.23.7
     devDependencies:
       '@biomejs/biome':
         specifier: 1.7.3
@@ -359,8 +359,8 @@ importers:
         specifier: 3.1.0
         version: 3.1.0(react@18.3.1)
       zod:
-        specifier: 3.23.6
-        version: 3.23.6
+        specifier: 3.23.7
+        version: 3.23.7
     devDependencies:
       '@biomejs/biome':
         specifier: 1.7.3
@@ -1537,14 +1537,14 @@ packages:
     engines: {node: '>=18.14.1'}
     dev: true
 
-  /@hono/zod-validator@0.2.1(hono@4.2.5)(zod@3.23.6):
+  /@hono/zod-validator@0.2.1(hono@4.2.5)(zod@3.23.7):
     resolution: {integrity: sha512-HFoxln7Q6JsE64qz2WBS28SD33UB2alp3aRKmcWnNLDzEL1BLsWfbdX6e1HIiUprHYTIXf5y7ax8eYidKUwyaA==}
     peerDependencies:
       hono: '>=3.9.0'
       zod: ^3.19.1
     dependencies:
       hono: 4.2.5
-      zod: 3.23.6
+      zod: 3.23.7
     dev: true
 
   /@hookform/resolvers@3.3.4(react-hook-form@7.51.4):
@@ -3854,7 +3854,7 @@ packages:
     dependencies:
       '@esbuild-kit/esm-loader': 2.6.5
       '@hono/node-server': 1.11.0
-      '@hono/zod-validator': 0.2.1(hono@4.2.5)(zod@3.23.6)
+      '@hono/zod-validator': 0.2.1(hono@4.2.5)(zod@3.23.7)
       camelcase: 7.0.1
       chalk: 5.3.0
       commander: 9.5.0
@@ -3868,7 +3868,7 @@ packages:
       minimatch: 7.4.6
       semver: 7.5.4
       superjson: 2.2.1
-      zod: 3.23.6
+      zod: 3.23.7
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -3957,14 +3957,14 @@ packages:
       react: 18.3.1
     dev: false
 
-  /drizzle-zod@0.5.1(drizzle-orm@0.30.10)(zod@3.23.6):
+  /drizzle-zod@0.5.1(drizzle-orm@0.30.10)(zod@3.23.7):
     resolution: {integrity: sha512-C/8bvzUH/zSnVfwdSibOgFjLhtDtbKYmkbPbUCq46QZyZCH6kODIMSOgZ8R7rVjoI+tCj3k06MRJMDqsIeoS4A==}
     peerDependencies:
       drizzle-orm: '>=0.23.13'
       zod: '*'
     dependencies:
       drizzle-orm: 0.30.10(postgres@3.4.4)(react@18.3.1)
-      zod: 3.23.6
+      zod: 3.23.7
     dev: false
 
   /duplexify@4.1.2:
@@ -6826,5 +6826,5 @@ packages:
     engines: {node: '>= 14'}
     dev: true
 
-  /zod@3.23.6:
-    resolution: {integrity: sha512-RTHJlZhsRbuA8Hmp/iNL7jnfc4nZishjsanDAfEY1QpDQZCahUp3xDzl+zfweE9BklxMUcgBgS1b7Lvie/ZVwA==}
+  /zod@3.23.7:
+    resolution: {integrity: sha512-NBeIoqbtOiUMomACV/y+V3Qfs9+Okr18vR5c/5pHClPpufWOrsx8TENboDPe265lFdfewX2yBtNTLPvnmCxwog==}
