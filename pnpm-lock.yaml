@@ -46,7 +46,7 @@ importers:
         version: 11.0.0-rc.366(@trpc/server@11.0.0-rc.366)
       '@trpc/react-query':
         specifier: 11.0.0-rc.366
-        version: 11.0.0-rc.366(@tanstack/react-query@5.35.1)(@trpc/client@11.0.0-rc.366)(@trpc/server@11.0.0-rc.366)(react-dom@18.3.1)(react@18.3.1)
+        version: 11.0.0-rc.366(@tanstack/react-query@5.35.5)(@trpc/client@11.0.0-rc.366)(@trpc/server@11.0.0-rc.366)(react-dom@18.3.1)(react@18.3.1)
       '@trpc/server':
         specifier: 11.0.0-rc.366
         version: 11.0.0-rc.366
@@ -269,14 +269,14 @@ importers:
         specifier: 8.15.1
         version: 8.15.1
       '@tanstack/query-sync-storage-persister':
-        specifier: 5.35.1
-        version: 5.35.1
+        specifier: 5.35.5
+        version: 5.35.5
       '@tanstack/react-query':
-        specifier: 5.35.1
-        version: 5.35.1(react@18.3.1)
+        specifier: 5.35.5
+        version: 5.35.5(react@18.3.1)
       '@tanstack/react-query-persist-client':
-        specifier: 5.35.1
-        version: 5.35.1(@tanstack/react-query@5.35.1)(react@18.3.1)
+        specifier: 5.35.5
+        version: 5.35.5(@tanstack/react-query@5.35.5)(react@18.3.1)
       '@tanstack/react-router':
         specifier: 1.30.1
         version: 1.30.1(react-dom@18.3.1)(react@18.3.1)
@@ -376,7 +376,7 @@ importers:
         version: 11.0.0-rc.366(@trpc/server@11.0.0-rc.366)
       '@trpc/react-query':
         specifier: 11.0.0-rc.366
-        version: 11.0.0-rc.366(@tanstack/react-query@5.35.1)(@trpc/client@11.0.0-rc.366)(@trpc/server@11.0.0-rc.366)(react-dom@18.3.1)(react@18.3.1)
+        version: 11.0.0-rc.366(@tanstack/react-query@5.35.5)(@trpc/client@11.0.0-rc.366)(@trpc/server@11.0.0-rc.366)(react-dom@18.3.1)(react@18.3.1)
       '@trpc/server':
         specifier: 11.0.0-rc.366
         version: 11.0.0-rc.366
@@ -2639,39 +2639,39 @@ packages:
       remove-accents: 0.5.0
     dev: false
 
-  /@tanstack/query-core@5.35.1:
-    resolution: {integrity: sha512-0Dnpybqb8+ps6WgqBnqFEC+1F/xLvUosRAq+wiGisTgolOZzqZfkE2995dEXmhuzINiTM7/a6xSGznU0NIvBkw==}
+  /@tanstack/query-core@5.35.5:
+    resolution: {integrity: sha512-OMWvlEqG01RfGj+XZb/piDzPp0eZkkHWSDHt2LvE/fd1zWburP/xwm0ghk6Iv8cuPlP+ACFkZviKXK0OVt6lhg==}
 
-  /@tanstack/query-persist-client-core@5.35.1:
-    resolution: {integrity: sha512-zKannBiI04TY4Ciysaim1PUAA3pgtX2e7yGQxv2aFukMtOrppSNHzcNgl0JwMnFfR2wyxegURA/4PnIa3gQzZA==}
+  /@tanstack/query-persist-client-core@5.35.5:
+    resolution: {integrity: sha512-ILWDPB0p/KLe7LkaNkMZpqS9t50R+jBYnAqB5dZUVgpLMbUmL8Nf4n9uLoyzJ8L4j3+hBEmcEJXaahixdViyIQ==}
     dependencies:
-      '@tanstack/query-core': 5.35.1
+      '@tanstack/query-core': 5.35.5
     dev: false
 
-  /@tanstack/query-sync-storage-persister@5.35.1:
-    resolution: {integrity: sha512-/6+d4X4kgimmmQlKIBlEHSdLRQI3eP3IyZknH12yba8cq5hdawNerD7L+05k2oS3xvIJJnqnCK4yO0rLzkL1qw==}
+  /@tanstack/query-sync-storage-persister@5.35.5:
+    resolution: {integrity: sha512-UVxiIEfbnTFBW8ZisFavAgmoaj86zdv2L3ioSLaa1qewDIYNoDLntvUwJF2EfU5/GDsEDj9bQUziNKSi35XNCg==}
     dependencies:
-      '@tanstack/query-core': 5.35.1
-      '@tanstack/query-persist-client-core': 5.35.1
+      '@tanstack/query-core': 5.35.5
+      '@tanstack/query-persist-client-core': 5.35.5
     dev: false
 
-  /@tanstack/react-query-persist-client@5.35.1(@tanstack/react-query@5.35.1)(react@18.3.1):
-    resolution: {integrity: sha512-bZwwMmzYaXR/Rq8IliY/eI1QarCraAywTrjaihXvTBuXMzVGIGjdfu9J7pMuHddIEnnPRQGfnaGGcIPRXoT+qA==}
+  /@tanstack/react-query-persist-client@5.35.5(@tanstack/react-query@5.35.5)(react@18.3.1):
+    resolution: {integrity: sha512-WRnbUH9c47/i12KsNBKVmCFqeGCxvRUEo1VVWQFu9A8AfulYczSVTDsLAfC6VGzeAUyp0uPow03OUUpAIZhDFQ==}
     peerDependencies:
-      '@tanstack/react-query': ^5.35.1
+      '@tanstack/react-query': ^5.35.5
       react: ^18.0.0
     dependencies:
-      '@tanstack/query-persist-client-core': 5.35.1
-      '@tanstack/react-query': 5.35.1(react@18.3.1)
+      '@tanstack/query-persist-client-core': 5.35.5
+      '@tanstack/react-query': 5.35.5(react@18.3.1)
       react: 18.3.1
     dev: false
 
-  /@tanstack/react-query@5.35.1(react@18.3.1):
-    resolution: {integrity: sha512-i2T7m2ffQdNqlX3pO+uMsnQ0H4a59Ens2GxtlMsRiOvdSB4SfYmHb27MnvFV8rGmtWRaa4gPli0/rpDoSS5LbQ==}
+  /@tanstack/react-query@5.35.5(react@18.3.1):
+    resolution: {integrity: sha512-sppX7L+PVn5GBV3In6zzj0zcKfnZRKhXbX1MfIfKo1OjIq2GMaopvAFOP0x1bRYTUk2ikrdYcQYOozX7PWkb8A==}
     peerDependencies:
       react: ^18.0.0
     dependencies:
-      '@tanstack/query-core': 5.35.1
+      '@tanstack/query-core': 5.35.5
       react: 18.3.1
 
   /@tanstack/react-router@1.30.1(react-dom@18.3.1)(react@18.3.1):
@@ -2925,7 +2925,7 @@ packages:
     dependencies:
       '@trpc/server': 11.0.0-rc.366
 
-  /@trpc/react-query@11.0.0-rc.366(@tanstack/react-query@5.35.1)(@trpc/client@11.0.0-rc.366)(@trpc/server@11.0.0-rc.366)(react-dom@18.3.1)(react@18.3.1):
+  /@trpc/react-query@11.0.0-rc.366(@tanstack/react-query@5.35.5)(@trpc/client@11.0.0-rc.366)(@trpc/server@11.0.0-rc.366)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-LCdJFymEdaKBBNRQPVAcEw9qNu3m+n9hH3qIPKDanLWYlo4h+8lQnj8JIhYpClD2G3gkvD0ZSZ+F54QvwrI3nA==}
     peerDependencies:
       '@tanstack/react-query': ^5.25.0
@@ -2934,7 +2934,7 @@ packages:
       react: '>=18.2.0'
       react-dom: '>=18.2.0'
     dependencies:
-      '@tanstack/react-query': 5.35.1(react@18.3.1)
+      '@tanstack/react-query': 5.35.5(react@18.3.1)
       '@trpc/client': 11.0.0-rc.366(@trpc/server@11.0.0-rc.366)
       '@trpc/server': 11.0.0-rc.366
       react: 18.3.1
