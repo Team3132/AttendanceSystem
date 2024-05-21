@@ -51,8 +51,8 @@ importers:
         specifier: 11.0.0-rc.374
         version: 11.0.0-rc.374
       bullmq:
-        specifier: 5.7.9
-        version: 5.7.9
+        specifier: 5.7.10
+        version: 5.7.10
       cron:
         specifier: 3.1.7
         version: 3.1.7
@@ -3432,8 +3432,8 @@ packages:
       ieee754: 1.2.1
     dev: false
 
-  /bullmq@5.7.9:
-    resolution: {integrity: sha512-ZTDIT6gM5XXeqBKqW6/Sbq1tdEzx0HXpx29ffejMcIXiG0wVBlOAEyp5dVHnjRyB2Nz9pZlQmhmJC9a1l+o0ug==}
+  /bullmq@5.7.10:
+    resolution: {integrity: sha512-DX0oHsXkCicuhHZ0sAkpnpN/40dst+5qQ4JxqmlzTYLvfoMPAkxRdpcLZTHfApXobSki9tkxwJovRf8ouALh7w==}
     dependencies:
       cron-parser: 4.9.0
       ioredis: 5.4.1
