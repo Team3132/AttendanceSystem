@@ -393,8 +393,8 @@ importers:
         specifier: 18.3.0
         version: 18.3.0
       '@vitejs/plugin-react-swc':
-        specifier: 3.6.0
-        version: 3.6.0(vite@5.2.11)
+        specifier: 3.7.0
+        version: 3.7.0(vite@5.2.11)
       prettier:
         specifier: 3.2.5
         version: 3.2.5
@@ -3162,8 +3162,8 @@ packages:
     dependencies:
       '@types/node': 20.10.6
 
-  /@vitejs/plugin-react-swc@3.6.0(vite@5.2.11):
-    resolution: {integrity: sha512-XFRbsGgpGxGzEV5i5+vRiro1bwcIaZDIdBRP16qwm+jP68ue/S8FJTBEgOeojtVDYrbSua3XFp71kC8VJE6v+g==}
+  /@vitejs/plugin-react-swc@3.7.0(vite@5.2.11):
+    resolution: {integrity: sha512-yrknSb3Dci6svCd/qhHqhFPDSw0QtjumcqdKMoNNzmOl5lMXTTiqzjWtG4Qask2HdvvzaNgSunbQGet8/GrKdA==}
     peerDependencies:
       vite: ^4 || ^5
     dependencies:
