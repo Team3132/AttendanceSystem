@@ -302,8 +302,8 @@ importers:
         specifier: 2.0.0-beta.4
         version: 2.0.0-beta.4
       '@tauri-apps/plugin-log':
-        specifier: 2.0.0-beta.4
-        version: 2.0.0-beta.4
+        specifier: 2.0.0-beta.6
+        version: 2.0.0-beta.6
       '@tauri-apps/plugin-notification':
         specifier: 2.0.0-beta.3
         version: 2.0.0-beta.3
@@ -2926,10 +2926,10 @@ packages:
       '@tauri-apps/api': 2.0.0-beta.12
     dev: false
 
-  /@tauri-apps/plugin-log@2.0.0-beta.4:
-    resolution: {integrity: sha512-QE5oZO6S3LU+VkhhZzvTIjEVC9J1I8R70DqYEC2UUF4zSEblOM0rxkGXfD4oUIG5OW6/xoks3zmFL18vWbsK3w==}
+  /@tauri-apps/plugin-log@2.0.0-beta.6:
+    resolution: {integrity: sha512-AFJj3eC9IKR9cDs3mgNeew1HeMgg1UWC2OlWc2A9q4qRtuJNdJRD0A6yu4ZvfO1AqQBFJ15J/dmeq40lu5dz8w==}
     dependencies:
-      '@tauri-apps/api': 2.0.0-beta.11
+      '@tauri-apps/api': 2.0.0-beta.13
     dev: false
 
   /@tauri-apps/plugin-notification@2.0.0-beta.3:
