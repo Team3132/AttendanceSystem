@@ -44,7 +44,7 @@
     "@trpc/client": "11.0.0-rc.382",
     "@trpc/react-query": "11.0.0-rc.382",
     "@trpc/server": "11.0.0-rc.382",
-    "bullmq": "5.7.13",
+    "bullmq": "5.7.14",
     "cron": "3.1.7",
     "discord-api-types": "0.37.83",
     "dotenv": "16.4.5",
