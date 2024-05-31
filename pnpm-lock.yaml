@@ -317,8 +317,8 @@ importers:
         specifier: 2.0.0-beta.5
         version: 2.0.0-beta.5
       '@tauri-apps/plugin-websocket':
-        specifier: 2.0.0-beta.3
-        version: 2.0.0-beta.3
+        specifier: 2.0.0-beta.5
+        version: 2.0.0-beta.5
       backend:
         specifier: workspace:*
         version: link:../backend
@@ -2792,11 +2792,6 @@ packages:
     resolution: {integrity: sha512-KnPRCkQTyqhanNC0K63GBG3wA8I+D1fQuVnAvcBF8f13akOKeQp1gSbu6f77zCxhEk727iV5oQnbHLYzHrECLg==}
     dev: false
 
-  /@tauri-apps/api@2.0.0-beta.11:
-    resolution: {integrity: sha512-wJRY+fBUm3KpqZDHMIz5HRv+1vlnvRJ/dFxiyY3NlINTx2qXqDou5qWYcP1CuZXsd39InWVPV3FAZvno/kGCkA==}
-    engines: {node: '>= 18', npm: '>= 6.6.0', yarn: '>= 1.19.1'}
-    dev: false
-
   /@tauri-apps/api@2.0.0-beta.13:
     resolution: {integrity: sha512-Np1opKANzRMF3lgJ9gDquBCB9SxlE2lRmNpVx1+L6RyzAmigkuh0ZulT5jMnDA3JLsuSDU135r/s4t/Pmx4atg==}
     engines: {node: '>= 18', npm: '>= 6.6.0', yarn: '>= 1.19.1'}
@@ -2951,10 +2946,10 @@ packages:
       '@tauri-apps/api': 2.0.0-beta.13
     dev: false
 
-  /@tauri-apps/plugin-websocket@2.0.0-beta.3:
-    resolution: {integrity: sha512-DBFNtS3UqCVWqOU1pUckQD8zdMnbJ54rH7vFJOeN4w0JKKu+Luooj8d89HWTV8xeEm3pyNtlCEebXJIQrobBeg==}
+  /@tauri-apps/plugin-websocket@2.0.0-beta.5:
+    resolution: {integrity: sha512-cGgWGkapWoOFl4VaVOSE0QuF7g53nB1kGjYAdhmRpbkHccJnkAIk/qBm2JJ3WGx0i2nKAdyv0+EWWPxiJUQjsw==}
     dependencies:
-      '@tauri-apps/api': 2.0.0-beta.11
+      '@tauri-apps/api': 2.0.0-beta.13
     dev: false
 
   /@tokenizer/token@0.3.0:
