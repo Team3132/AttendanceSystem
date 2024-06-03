@@ -175,8 +175,8 @@ importers:
         specifier: 0.37.83
         version: 0.37.83
       discord.js:
-        specifier: 14.15.2
-        version: 14.15.2
+        specifier: 14.15.3
+        version: 14.15.3
       express:
         specifier: 4.19.2
         version: 4.19.2
@@ -185,7 +185,7 @@ importers:
         version: 3.4.4
       necord:
         specifier: 6.8.3
-        version: 6.8.3(@nestjs/common@10.3.8)(@nestjs/core@10.3.8)(discord.js@14.15.2)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+        version: 6.8.3(@nestjs/common@10.3.8)(@nestjs/core@10.3.8)(discord.js@14.15.3)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       reflect-metadata:
         specifier: 0.2.2
         version: 0.2.2
@@ -639,6 +639,24 @@ packages:
 
   /@discordjs/ws@1.1.0:
     resolution: {integrity: sha512-O97DIeSvfNTn5wz5vaER6ciyUsr7nOqSEtsLoMhhIgeFkhnxLRqSr00/Fpq2/ppLgjDGLbQCDzIK7ilGoB/M7A==}
+    engines: {node: '>=16.11.0'}
+    dependencies:
+      '@discordjs/collection': 2.1.0
+      '@discordjs/rest': 2.3.0
+      '@discordjs/util': 1.1.0
+      '@sapphire/async-queue': 1.5.2
+      '@types/ws': 8.5.10
+      '@vladfrangu/async_event_emitter': 2.2.4
+      discord-api-types: 0.37.83
+      tslib: 2.6.2
+      ws: 8.16.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+    dev: false
+
+  /@discordjs/ws@1.1.1:
+    resolution: {integrity: sha512-PZ+vLpxGCRtmr2RMkqh8Zp+BenUaJqlS6xhgWKEZcgC/vfHLEzpHtKkB0sl3nZWpwtcKk6YWy+pU3okL2I97FA==}
     engines: {node: '>=16.11.0'}
     dependencies:
       '@discordjs/collection': 2.1.0
@@ -3853,8 +3871,8 @@ packages:
     resolution: {integrity: sha512-urGGYeWtWNYMKnYlZnOnDHm8fVRffQs3U0SpE8RHeiuLKb/u92APS8HoQnPTFbnXmY1vVnXjXO4dOxcAn3J+DA==}
     dev: false
 
-  /discord.js@14.15.2:
-    resolution: {integrity: sha512-wGD37YCaTUNprtpqMIRuNiswwsvSWXrHykBSm2SAosoTYut0VUDj9yo9t4iLtMKvuhI49zYkvKc2TNdzdvpJhg==}
+  /discord.js@14.15.3:
+    resolution: {integrity: sha512-/UJDQO10VuU6wQPglA4kz2bw2ngeeSbogiIPx/TsnctfzV/tNf+q+i1HlgtX1OGpeOBpJH9erZQNO5oRM2uAtQ==}
     engines: {node: '>=16.11.0'}
     dependencies:
       '@discordjs/builders': 1.8.2
@@ -3862,7 +3880,7 @@ packages:
       '@discordjs/formatters': 0.4.0
       '@discordjs/rest': 2.3.0
       '@discordjs/util': 1.1.0
-      '@discordjs/ws': 1.1.0
+      '@discordjs/ws': 1.1.1
       '@sapphire/snowflake': 3.5.3
       discord-api-types: 0.37.83
       fast-deep-equal: 3.1.3
@@ -5387,7 +5405,7 @@ packages:
     hasBin: true
     dev: true
 
-  /necord@6.8.3(@nestjs/common@10.3.8)(@nestjs/core@10.3.8)(discord.js@14.15.2)(reflect-metadata@0.2.2)(rxjs@7.8.1):
+  /necord@6.8.3(@nestjs/common@10.3.8)(@nestjs/core@10.3.8)(discord.js@14.15.3)(reflect-metadata@0.2.2)(rxjs@7.8.1):
     resolution: {integrity: sha512-eYCvku/oqWU1uLN/onmKZ1Oy605fdvLTt46JiV6ko0/+XYPXDwYLNEHOrJwP1VY5sVrvMfeU11ZOJCTlpE+OvA==}
     engines: {node: '>=16.6.0', npm: '>=7.0.0'}
     peerDependencies:
@@ -5399,7 +5417,7 @@ packages:
     dependencies:
       '@nestjs/common': 10.3.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/core': 10.3.8(@nestjs/common@10.3.8)(@nestjs/platform-express@10.3.8)(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      discord.js: 14.15.2
+      discord.js: 14.15.3
       path-to-regexp: 6.2.2
       reflect-metadata: 0.2.2
       rxjs: 7.8.1
