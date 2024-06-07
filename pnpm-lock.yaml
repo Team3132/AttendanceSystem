@@ -366,8 +366,8 @@ importers:
         specifier: 1.8.0
         version: 1.8.0
       '@swc/plugin-emotion':
-        specifier: 3.0.5
-        version: 3.0.5
+        specifier: 3.0.6
+        version: 3.0.6
       '@tauri-apps/cli':
         specifier: 2.0.0-beta.20
         version: 2.0.0-beta.20
@@ -2774,8 +2774,8 @@ packages:
     resolution: {integrity: sha512-e2BR4lsJkkRlKZ/qCHPw9ZaSxc0MVUd7gtbtaB7aMvHeJVYe8sOB8DBZkP2DtISHGSku9sCK6T6cnY0CtXrOCQ==}
     dev: true
 
-  /@swc/plugin-emotion@3.0.5:
-    resolution: {integrity: sha512-iCCV7ovfJ9dE3bvScH1/UYtiD3Ph3uNXvEAH38Gr7iAqY3x50z7wZPk70hyzsMQldmgDKRV0d/gzUaFPQTKUJA==}
+  /@swc/plugin-emotion@3.0.6:
+    resolution: {integrity: sha512-S1POmCXh3xUKjKEpMsgT+fsnqmz9s8eHH1XJ3x9I26nU41aD355TBgSHSwIfrciTmb1bMI0eSLogLO7zXd4yvw==}
     dependencies:
       '@swc/counter': 0.1.3
     dev: true
