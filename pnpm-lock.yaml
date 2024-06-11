@@ -30,8 +30,8 @@ importers:
         specifier: 8.0.1
         version: 8.0.1
       '@fastify/passport':
-        specifier: 2.4.0
-        version: 2.4.0
+        specifier: 2.5.0
+        version: 2.5.0
       '@fastify/secure-session':
         specifier: 7.5.1
         version: 7.5.1
@@ -1691,8 +1691,8 @@ packages:
       steed: 1.1.3
     dev: false
 
-  /@fastify/passport@2.4.0:
-    resolution: {integrity: sha512-ad/Bg8mi9qrB2jqx63+t6rwUr4KtJzAUj7P+OIObq8zX/LhPz8OyHg8Ou9oyevSo3vZHA8YFmZvLExP4Xwmlhw==}
+  /@fastify/passport@2.5.0:
+    resolution: {integrity: sha512-C7FFT4XMjjDFQDDDNZYfciDpCC/BcEy+PBI0RgSJTrRtrDhvDxbQXCiFV6ls5wnGFfz+fIkUYfYzRP2HPv+pBw==}
     dependencies:
       '@fastify/flash': 5.1.0
       fastify-plugin: 4.5.1
