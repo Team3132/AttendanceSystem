@@ -160,7 +160,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push (Backend)
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         id: docker_build_backend
         with:
           build-args: |
@@ -172,7 +172,7 @@ jobs:
           target: backend-runner
 
       - name: Build and push (Bot)
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         id: docker_build_bot
         with:
           build-args: |
@@ -184,7 +184,7 @@ jobs:
           target: bot-runner
 
       - name: Extract Backend Dist (Backend)
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         id: docker_build_dist_backend
         with:
           push: false
@@ -192,7 +192,7 @@ jobs:
           outputs: type=local,dest=dist/backend
 
       - name: Extract Backend Dist (Bot)
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         id: docker_build_dist_bot
         with:
           push: false
