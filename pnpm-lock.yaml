@@ -299,8 +299,8 @@ importers:
         specifier: 2.0.0-beta.8
         version: 2.0.0-beta.8
       '@tauri-apps/plugin-http':
-        specifier: 2.0.0-beta.6
-        version: 2.0.0-beta.6
+        specifier: 2.0.0-beta.7
+        version: 2.0.0-beta.7
       '@tauri-apps/plugin-log':
         specifier: 2.0.0-beta.6
         version: 2.0.0-beta.6
@@ -2883,10 +2883,10 @@ packages:
       '@tauri-apps/api': 2.0.0-beta.14
     dev: false
 
-  /@tauri-apps/plugin-http@2.0.0-beta.6:
-    resolution: {integrity: sha512-/5cDY9LwrZkPBTqxx2xwvzA3fzYS+Y1UD0rK9NVxjKkNXoA9NmGxEetug05u0KPbOtciyFiTyq31koszlPy6KA==}
+  /@tauri-apps/plugin-http@2.0.0-beta.7:
+    resolution: {integrity: sha512-mxdhcpPPT2oHm0FWe6HS2UbQW2LFTbAv2vExrTYAPJSuXOp2kisgOjazZtswYqpmftpcSZ4dFpmzNlQp188e/g==}
     dependencies:
-      '@tauri-apps/api': 2.0.0-beta.13
+      '@tauri-apps/api': 2.0.0-beta.14
     dev: false
 
   /@tauri-apps/plugin-log@2.0.0-beta.6:
