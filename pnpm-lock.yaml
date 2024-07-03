@@ -394,7 +394,7 @@ importers:
         version: 18.3.0
       '@vitejs/plugin-react-swc':
         specifier: 3.7.0
-        version: 3.7.0(vite@5.3.2)
+        version: 3.7.0(vite@5.3.3)
       prettier:
         specifier: 3.3.2
         version: 3.3.2
@@ -402,14 +402,14 @@ importers:
         specifier: 5.5.3
         version: 5.5.3
       vite:
-        specifier: 5.3.2
-        version: 5.3.2
+        specifier: 5.3.3
+        version: 5.3.3
       vite-plugin-mkcert:
         specifier: 1.17.5
-        version: 1.17.5(vite@5.3.2)
+        version: 1.17.5(vite@5.3.3)
       vite-tsconfig-paths:
         specifier: 4.3.2
-        version: 4.3.2(typescript@5.5.3)(vite@5.3.2)
+        version: 4.3.2(typescript@5.5.3)(vite@5.3.3)
 
 packages:
 
@@ -3135,13 +3135,13 @@ packages:
     dependencies:
       '@types/node': 20.10.6
 
-  /@vitejs/plugin-react-swc@3.7.0(vite@5.3.2):
+  /@vitejs/plugin-react-swc@3.7.0(vite@5.3.3):
     resolution: {integrity: sha512-yrknSb3Dci6svCd/qhHqhFPDSw0QtjumcqdKMoNNzmOl5lMXTTiqzjWtG4Qask2HdvvzaNgSunbQGet8/GrKdA==}
     peerDependencies:
       vite: ^4 || ^5
     dependencies:
       '@swc/core': 1.6.3
-      vite: 5.3.2
+      vite: 5.3.3
     transitivePeerDependencies:
       - '@swc/helpers'
     dev: true
@@ -5593,6 +5593,10 @@ packages:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
     dev: true
 
+  /picocolors@1.0.1:
+    resolution: {integrity: sha512-anP1Z8qwhkbmu7MFP5iTt+wQKXgwzf7zTyGlcdzabySa9vd0Xt392U0rVmz9poOaBj0uHJKyyo9/upk0HrEQew==}
+    dev: true
+
   /picomatch@2.3.1:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
@@ -5658,12 +5662,12 @@ packages:
       yaml: 2.3.4
     dev: true
 
-  /postcss@8.4.38:
-    resolution: {integrity: sha512-Wglpdk03BSfXkHoQa3b/oulrotAkwrlLDRSOb9D0bN86FdRyE9lppSp33aHNPgBa0JKCoB+drFLZkQoRRYae5A==}
+  /postcss@8.4.39:
+    resolution: {integrity: sha512-0vzE+lAiG7hZl1/9I8yzKLx3aR9Xbof3fBHKunvMfOCYAtMhrsnccJY2iTURb9EZd5+pLuiNV9/c/GZJOHsgIw==}
     engines: {node: ^10 || ^12 || >=14}
     dependencies:
       nanoid: 3.3.7
-      picocolors: 1.0.0
+      picocolors: 1.0.1
       source-map-js: 1.2.0
     dev: true
 
@@ -6659,7 +6663,7 @@ packages:
     engines: {node: '>= 0.8'}
     dev: false
 
-  /vite-plugin-mkcert@1.17.5(vite@5.3.2):
+  /vite-plugin-mkcert@1.17.5(vite@5.3.3):
     resolution: {integrity: sha512-KKGY3iHx/9zb7ow8JJ+nLN2HiNIBuPBwj34fJ+jAJT89/8qfk7msO7G7qipR8VDEm9xMCys0xT11QOJbZcg3/Q==}
     engines: {node: '>=v16.7.0'}
     peerDependencies:
@@ -6669,12 +6673,12 @@ packages:
       axios: 1.6.8(debug@4.3.4)
       debug: 4.3.4
       picocolors: 1.0.0
-      vite: 5.3.2
+      vite: 5.3.3
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /vite-tsconfig-paths@4.3.2(typescript@5.5.3)(vite@5.3.2):
+  /vite-tsconfig-paths@4.3.2(typescript@5.5.3)(vite@5.3.3):
     resolution: {integrity: sha512-0Vd/a6po6Q+86rPlntHye7F31zA2URZMbH8M3saAZ/xR9QoGN/L21bxEGfXdWmFdNkqPpRdxFT7nmNe12e9/uA==}
     peerDependencies:
       vite: '*'
@@ -6685,14 +6689,14 @@ packages:
       debug: 4.3.4
       globrex: 0.1.2
       tsconfck: 3.0.3(typescript@5.5.3)
-      vite: 5.3.2
+      vite: 5.3.3
     transitivePeerDependencies:
       - supports-color
       - typescript
     dev: true
 
-  /vite@5.3.2:
-    resolution: {integrity: sha512-6lA7OBHBlXUxiJxbO5aAY2fsHHzDr1q7DvXYnyZycRs2Dz+dXBWuhpWHvmljTRTpQC2uvGmUFFkSHF2vGo90MA==}
+  /vite@5.3.3:
+    resolution: {integrity: sha512-NPQdeCU0Dv2z5fu+ULotpuq5yfCS1BzKUIPhNbP3YBfAMGJXbt2nS+sbTFu+qchaqWTD+H3JK++nRwr6XIcp6A==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -6720,7 +6724,7 @@ packages:
         optional: true
     dependencies:
       esbuild: 0.21.4
-      postcss: 8.4.38
+      postcss: 8.4.39
       rollup: 4.13.0
     optionalDependencies:
       fsevents: 2.3.3
