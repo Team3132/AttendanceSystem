@@ -305,8 +305,8 @@ importers:
         specifier: 2.0.0-beta.7
         version: 2.0.0-beta.7
       '@tauri-apps/plugin-notification':
-        specifier: 2.0.0-beta.5
-        version: 2.0.0-beta.5
+        specifier: 2.0.0-beta.6
+        version: 2.0.0-beta.6
       '@tauri-apps/plugin-process':
         specifier: 2.0.0-beta.5
         version: 2.0.0-beta.5
@@ -2895,10 +2895,10 @@ packages:
       '@tauri-apps/api': 2.0.0-beta.14
     dev: false
 
-  /@tauri-apps/plugin-notification@2.0.0-beta.5:
-    resolution: {integrity: sha512-5zYK2aT1ZvR+LnuwsnTvg28iEhI7FiZSPvBqQ8y6fj28T4oIHVox19Pk4YRyTyfyJN1nZclXxVAqWLSXLI9SKQ==}
+  /@tauri-apps/plugin-notification@2.0.0-beta.6:
+    resolution: {integrity: sha512-KoYxGuBn3MIzTFyEhwh5O1VYGSwIplmABlYrDnLudf81Y8zKAIuJ8lnGprtiiUfU2ycXQH/0Zr/ku/NU8a+wdA==}
     dependencies:
-      '@tauri-apps/api': 2.0.0-beta.13
+      '@tauri-apps/api': 2.0.0-beta.14
     dev: false
 
   /@tauri-apps/plugin-process@2.0.0-beta.5:
