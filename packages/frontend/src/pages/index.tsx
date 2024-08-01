@@ -1,16 +1,16 @@
 import { Container, Paper, Stack, Typography } from "@mui/material";
-import { RouteApi } from "@tanstack/react-router";
+import { RouteApi, createFileRoute } from "@tanstack/react-router";
 import ActiveEventsList from "../components/ActiveEventsList";
 import DefaultAppBar from "../components/DefaultAppBar";
 
 const appVersion = import.meta.env.VITE_APP_VERSION as string | undefined;
 
-const routeApi = new RouteApi({
-  id: "/authedOnly/",
-});
+export const Route = createFileRoute('/')({
+  component: () => <Component />
+})
 
 export function Component() {
-  const loaderData = routeApi.useLoaderData();
+  const loaderData = Route.useLoaderData();
 
   return (
     <>

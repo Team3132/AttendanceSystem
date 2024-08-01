@@ -31,7 +31,7 @@ export const rootRoute = rootRouteWithContext<{
  */
 const indexRoute = new Route({
   getParentRoute: () => authedOnlyRoute,
-  component: lazyRouteComponent(() => import("./pages/HomePage"), "Component"),
+  component: lazyRouteComponent(() => import("./pages"), "Component"),
   loader: ({ context: { queryUtils } }) =>
     queryUtils.users.getSelfPendingRsvps.ensureData(),
   path: "/",
