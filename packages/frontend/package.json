@@ -56,7 +56,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@swc/plugin-emotion": "3.0.9",
+    "@swc/plugin-emotion": "3.0.10",
     "@tauri-apps/cli": "2.0.0-beta.21",
     "@trpc/client": "11.0.0-rc.436",
     "@trpc/react-query": "11.0.0-rc.436",
