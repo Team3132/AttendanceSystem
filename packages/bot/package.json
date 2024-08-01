@@ -60,7 +60,7 @@
     "prettier": "3.3.3",
     "tsconfig-paths": "4.2.0",
     "tsup": "8.1.0",
-    "typescript": "5.5.3",
+    "typescript": "5.5.4",
     "@biomejs/biome": "1.8.3"
   }
 }
