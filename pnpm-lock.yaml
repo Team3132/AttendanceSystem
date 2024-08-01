@@ -296,8 +296,8 @@ importers:
         specifier: 2.0.0-beta.14
         version: 2.0.0-beta.14
       '@tauri-apps/plugin-deep-link':
-        specifier: 2.0.0-beta.8
-        version: 2.0.0-beta.8
+        specifier: 2.0.0-beta.10
+        version: 2.0.0-beta.10
       '@tauri-apps/plugin-http':
         specifier: 2.0.0-beta.7
         version: 2.0.0-beta.7
@@ -3145,6 +3145,11 @@ packages:
     engines: {node: '>= 18.18', npm: '>= 6.6.0', yarn: '>= 1.19.1'}
     dev: false
 
+  /@tauri-apps/api@2.0.0-beta.16:
+    resolution: {integrity: sha512-YGjkR9HxS/YyIoqoXDkk8o9Yy5NW6u9YxzeqEodwwOUoeS0nac6mzLTW3VYIuSelHmyUQCgbyENVY6e5CJXA4Q==}
+    engines: {node: '>= 18.18', npm: '>= 6.6.0', yarn: '>= 1.19.1'}
+    dev: false
+
   /@tauri-apps/cli-darwin-arm64@2.0.0-beta.21:
     resolution: {integrity: sha512-okI7PRSC6RO4JfrOTqu4oWf0IfBPbkGHisyDOTay6K5uhz4zzry5fFJVa8S/DTrKtdjau4vcik/EDCxiGRun9Q==}
     engines: {node: '>= 10'}
@@ -3252,10 +3257,10 @@ packages:
       '@tauri-apps/cli-win32-x64-msvc': 2.0.0-beta.21
     dev: true
 
-  /@tauri-apps/plugin-deep-link@2.0.0-beta.8:
-    resolution: {integrity: sha512-lFpMaz2pmbz6YbMEWaokR7nQ3UMgYjIqzFt+EWDdFJsM5hTnLf72/4hK++WHgXepXhZbPWcm5PLL6BtibXebyA==}
+  /@tauri-apps/plugin-deep-link@2.0.0-beta.10:
+    resolution: {integrity: sha512-UIBOMsMwF28GpK3Lp0FATU24Uuvmq1EIO9h2Bn2F3xyfbf8kG4zAi1otYizPhQ3h4FVHmgdo0fmbGnJQZA73xw==}
     dependencies:
-      '@tauri-apps/api': 2.0.0-beta.14
+      '@tauri-apps/api': 2.0.0-beta.16
     dev: false
 
   /@tauri-apps/plugin-http@2.0.0-beta.7:
