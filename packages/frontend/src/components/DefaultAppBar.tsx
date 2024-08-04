@@ -25,7 +25,7 @@ export default function DefaultAppBar({ title }: DefaultAppBarProps) {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {title}
           </Typography>
-          <AsChildLink to="/profile/">
+          <AsChildLink to="/profile">
             <IconButton>
               <FaCircleUser />
             </IconButton>
