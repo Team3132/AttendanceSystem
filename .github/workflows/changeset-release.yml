@@ -47,7 +47,7 @@ jobs:
 
         with:
           # this npm script triggers `changeset publish`
-          publish: echo "Dummy publish script"
+          publish: pnpm changeset tag
           createGithubReleases: true
   publish-docker:
     name: Publish Docker Images
