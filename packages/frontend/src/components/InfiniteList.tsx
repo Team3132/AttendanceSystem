@@ -19,7 +19,7 @@ interface RenderRowProps<T> {
 }
 
 interface InfiniteListParams<T, IPaged extends PagedType<T> = PagedType<T>> {
-  data: InfiniteData<IPaged, number | null | undefined>;
+  data?: InfiniteData<IPaged, number | null | undefined>;
   fetchNextPage: () => void;
   isFetching: boolean;
   fixedHeight?: number;
@@ -40,16 +40,16 @@ export default function InfiniteList<T>(props: InfiniteListProps<T>) {
     ...listProps
   } = props;
 
-  const total = useMemo(() => data.pages.at(-1)?.total ?? 0, [data.pages]);
+  const total = useMemo(() => data?.pages.at(-1)?.total ?? 0, [data?.pages]);
 
   const currentTotal = useMemo(
-    () => data.pages?.reduce((acc, page) => acc + page.items.length, 0) ?? 0,
-    [data.pages],
+    () => data?.pages?.reduce((acc, page) => acc + page.items.length, 0) ?? 0,
+    [data?.pages],
   );
 
   const flatData = useMemo(
-    () => data.pages?.flatMap((page) => page.items) ?? [],
-    [data.pages],
+    () => data?.pages?.flatMap((page) => page.items) ?? [],
+    [data?.pages],
   );
 
   const tableContainerRef = useRef<HTMLUListElement>(null);
