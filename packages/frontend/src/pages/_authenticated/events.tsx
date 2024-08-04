@@ -2,7 +2,6 @@ import AsChildLink from "@/components/AsChildLink";
 import DefaultAppBar from "@/components/DefaultAppBar";
 import InfiniteList from "@/components/InfiniteList";
 import UpcomingEventListItem from "@/features/events/components/UpcomingEventListItem";
-import UpcomingEventsCard from "@/features/events/components/UpcomingEventsCard";
 import { trpc } from "@/trpcClient";
 import {
   Box,
@@ -42,18 +41,39 @@ type EventsSearch = z.infer<typeof eventsSearchSchema>;
 
 export const Route = createFileRoute("/_authenticated/events")({
   component: Component,
-  loader: async ({ context: { queryUtils } }) =>
-    queryUtils.auth.status.ensureData(),
   validateSearch: (search) => eventsSearchSchema.parse(search),
+  loaderDeps: ({ search: { fromDate, toDate, type } }) => ({
+    fromDate,
+    toDate,
+    type,
+  }),
+  loader: async ({
+    context: { queryUtils },
+    deps: { fromDate, toDate, type },
+  }) => {
+    const authStatus = await queryUtils.auth.status.ensureData();
+
+    const eventsList = await queryUtils.events.getEvents.prefetchInfinite({
+      from: fromDate,
+      to: toDate,
+      type,
+      limit: 5,
+    });
+
+    return {
+      eventsList,
+      authStatus,
+    };
+  },
 });
 
 function Component() {
-  const loaderData = Route.useLoaderData();
+  const { authStatus, eventsList } = Route.useLoaderData();
   const { fromDate, toDate, type } = Route.useSearch();
   const navigate = Route.useNavigate();
 
   const authStatusQuery = trpc.auth.status.useQuery(undefined, {
-    initialData: loaderData,
+    initialData: authStatus,
   });
 
   const infiniteEventsQuery = trpc.events.getEvents.useInfiniteQuery(
