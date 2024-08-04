@@ -51,8 +51,8 @@ importers:
         specifier: 11.0.0-rc.477
         version: 11.0.0-rc.477
       bullmq:
-        specifier: 5.8.3
-        version: 5.8.3
+        specifier: 5.12.0
+        version: 5.12.0
       cron:
         specifier: 3.1.7
         version: 3.1.7
@@ -2382,8 +2382,8 @@ packages:
   buffer@6.0.3:
     resolution: {integrity: sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==}
 
-  bullmq@5.8.3:
-    resolution: {integrity: sha512-RJgQu/vgSZqjOYrZ7F1UJsSAzveNx7FFpR3Tp/1TxOMXXN9TtZMSly5MT+vjzOhQX//3+YWNRbMWpC1mkqBc9w==}
+  bullmq@5.12.0:
+    resolution: {integrity: sha512-kOtSQx9ymylslsLNFD0xOMJM9mHqnq3x6KD7+DYkHByWe0HFRdblpYKhZyL4uR3rwaKZwzOrJVl3RwRaDjZxSg==}
 
   bundle-require@4.0.2:
     resolution: {integrity: sha512-jwzPOChofl67PSTW2SGubV9HBQAhhR2i6nskiOThauo9dzwDUgOWQScFVaJkjEfYX+UXiD+LEx8EblQMc2wIag==}
@@ -6342,14 +6342,14 @@ snapshots:
       base64-js: 1.5.1
       ieee754: 1.2.1
 
-  bullmq@5.8.3:
+  bullmq@5.12.0:
     dependencies:
       cron-parser: 4.9.0
       ioredis: 5.4.1
       msgpackr: 1.10.1
       node-abort-controller: 3.1.1
       semver: 7.5.4
-      tslib: 2.6.2
+      tslib: 2.6.3
       uuid: 9.0.1
     transitivePeerDependencies:
       - supports-color
@@ -7199,7 +7199,7 @@ snapshots:
     dependencies:
       '@ioredis/commands': 1.2.0
       cluster-key-slot: 1.1.2
-      debug: 4.3.4
+      debug: 4.3.6
       denque: 2.1.0
       lodash.defaults: 4.2.0
       lodash.isarguments: 3.1.0
