@@ -37,6 +37,7 @@ export type BackendClient = { client: CreateTRPCClient<AppRouter> };
                   credentials: "include",
                   headers: {
                     Authorization: `Bearer ${backendSecretToken}`,
+                    ...options?.headers,
                   },
                 });
               },
@@ -52,7 +53,7 @@ export type BackendClient = { client: CreateTRPCClient<AppRouter> };
   ],
   exports: [BACKEND_TOKEN],
 })
-export class BackendModule {}
+export class BackendModule { }
 
 export function isTRPCClientError(
   cause: unknown,
