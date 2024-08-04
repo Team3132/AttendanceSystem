@@ -204,7 +204,7 @@ importers:
         version: 1.8.3
       '@swc/cli':
         specifier: 0.4.0
-        version: 0.4.0(@swc/core@1.7.5)(chokidar@3.5.3)
+        version: 0.4.0(@swc/core@1.7.5)(chokidar@3.6.0)
       '@swc/core':
         specifier: 1.7.5
         version: 1.7.5
@@ -278,8 +278,8 @@ importers:
         specifier: 5.49.2
         version: 5.49.2(@tanstack/react-query@5.49.2(react@18.3.1))(react@18.3.1)
       '@tanstack/react-router':
-        specifier: 1.46.0
-        version: 1.46.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 1.46.4
+        version: 1.46.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tanstack/react-table':
         specifier: 8.19.2
         version: 8.19.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -287,8 +287,8 @@ importers:
         specifier: 3.8.4
         version: 3.8.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tanstack/router-devtools':
-        specifier: 1.30.1
-        version: 1.30.1(csstype@3.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 1.46.5
+        version: 1.46.5(@tanstack/react-router@1.46.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(csstype@3.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tanstack/table-core':
         specifier: 8.19.2
         version: 8.19.2
@@ -1943,10 +1943,6 @@ packages:
     resolution: {integrity: sha512-4BAffykYOgO+5nzBWYwE3W90sBgLJoUPRWWcL8wlyiM8IB8ipJz3UMJ9KXQd1RKQXpKp8Tutn80HZtWsu2u76w==}
     engines: {node: '>=10'}
 
-  '@tanstack/history@1.28.9':
-    resolution: {integrity: sha512-WgTFJhHaZnGZPyt0H11xFhGGDj1MtA1mrUmdAjB/nhVpmsAYXsSB5O+hkF9N66u7MjbNb405wTb9diBsztvI5w==}
-    engines: {node: '>=12'}
-
   '@tanstack/history@1.45.3':
     resolution: {integrity: sha512-n4XXInV9irIq0obRvINIkESkGk280Q+xkIIbswmM0z9nAu2wsIRZNvlmPrtYh6bgNWtItOWWoihFUjLTW8g6Jg==}
     engines: {node: '>=12'}
@@ -1975,25 +1971,12 @@ packages:
     peerDependencies:
       react: ^18.0.0
 
-  '@tanstack/react-router@1.30.1':
-    resolution: {integrity: sha512-EQupCMFL0gkVQwPPtBMyv8dKjpvQi+jK+uTvWIWvvyaQgzyY9cXRx/krA7wFysVxcr28LmcYQkIlDAwUqdf4HA==}
-    engines: {node: '>=12'}
-    peerDependencies:
-      react: '>=16.8'
-      react-dom: '>=16.8'
-
-  '@tanstack/react-router@1.46.0':
-    resolution: {integrity: sha512-KWTLZEXh5KP6PBGq5GN1XhprO8J4VFHPuKRjdSM0TMQfs0/8HJA1hqvrFyHBddWBWsAoei/8rqO34l8cCC5yYw==}
+  '@tanstack/react-router@1.46.4':
+    resolution: {integrity: sha512-ELuHRaUCswAPwzrdf+X1BStKbogEQ82qW9Nyl0FfdK3qta7b28frBD9mmDOeyHW/Ff+OhWhY3KgpeViHef/+LQ==}
     engines: {node: '>=12'}
     peerDependencies:
       react: '>=18'
       react-dom: '>=18'
-
-  '@tanstack/react-store@0.2.1':
-    resolution: {integrity: sha512-tEbMCQjbeVw9KOP/202LfqZMSNAVi6zYkkp1kBom8nFuMx/965Hzes3+6G6b/comCwVxoJU8Gg9IrcF8yRPthw==}
-    peerDependencies:
-      react: '>=16'
-      react-dom: '>=16'
 
   '@tanstack/react-store@0.5.5':
     resolution: {integrity: sha512-1orYXGatBqXCYKuroFwV8Ll/6aDa5E3pU6RR4h7RvRk7TmxF1+zLCsWALZaeijXkySNMGmvawSbUXRypivg2XA==}
@@ -2014,12 +1997,13 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
 
-  '@tanstack/router-devtools@1.30.1':
-    resolution: {integrity: sha512-rXdZ1mCr2L5+z5hxYgT/IYIUppK8ikXR8IkjUXdbfKf9U/49udhH8w22tusMazpxP9boryteDyJd5C0HX136VQ==}
+  '@tanstack/router-devtools@1.46.5':
+    resolution: {integrity: sha512-VZVampaUcvMQtNcPqAKO3PF/rBFI/dT3p9/yhC3A5RnzMa2XGNNJcxuM1hPD6LnNJosxplDyakZb2zjmCxr7lA==}
     engines: {node: '>=12'}
     peerDependencies:
-      react: '>=16.8'
-      react-dom: '>=16.8'
+      '@tanstack/react-router': ^1.46.4
+      react: '>=18'
+      react-dom: '>=18'
 
   '@tanstack/router-generator@1.45.7':
     resolution: {integrity: sha512-5B756YXpZO0/yr7ahsxXoBOCpqroLx/D3l6X9qPlZaP0FVHVmTR6ZKGRX6zzuAxns/VO+sxnQso4AYLdDyZ9GA==}
@@ -2039,9 +2023,6 @@ packages:
         optional: true
       webpack:
         optional: true
-
-  '@tanstack/store@0.1.3':
-    resolution: {integrity: sha512-GnolmC8Fr4mvsHE1fGQmR3Nm0eBO3KnZjDU0a+P3TeQNM/dDscFGxtA7p31NplQNW3KwBw4t1RVFmz0VeKLxcw==}
 
   '@tanstack/store@0.5.5':
     resolution: {integrity: sha512-EOSrgdDAJExbvRZEQ/Xhh9iZchXpMN+ga1Bnk8Nmygzs8TfiE6hbzThF+Pr2G19uHL6+DTDTHhJ8VQiOd7l4tA==}
@@ -3157,6 +3138,7 @@ packages:
   glob@8.1.0:
     resolution: {integrity: sha512-r8hpEjiQEYlF2QU0df3dS+nxxSIreXQS1qRhMJM0Q5NDdR386C7jb7Hwwod8Fgiuex+k0GFjgft18yvxm5XoCQ==}
     engines: {node: '>=12'}
+    deprecated: Glob versions prior to v9 are no longer supported
 
   globals@11.12.0:
     resolution: {integrity: sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==}
@@ -3275,6 +3257,7 @@ packages:
 
   inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
+    deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
 
   inherits@2.0.4:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
@@ -5976,7 +5959,7 @@ snapshots:
 
   '@sindresorhus/is@4.6.0': {}
 
-  '@swc/cli@0.4.0(@swc/core@1.7.5)(chokidar@3.5.3)':
+  '@swc/cli@0.4.0(@swc/core@1.7.5)(chokidar@3.6.0)':
     dependencies:
       '@mole-inc/bin-wrapper': 8.0.1
       '@swc/core': 1.7.5
@@ -5989,7 +5972,7 @@ snapshots:
       slash: 3.0.0
       source-map: 0.7.4
     optionalDependencies:
-      chokidar: 3.5.3
+      chokidar: 3.6.0
 
   '@swc/core-darwin-arm64@1.7.5':
     optional: true
@@ -6051,8 +6034,6 @@ snapshots:
     dependencies:
       defer-to-connect: 2.0.1
 
-  '@tanstack/history@1.28.9': {}
-
   '@tanstack/history@1.45.3': {}
 
   '@tanstack/match-sorter-utils@8.15.1':
@@ -6081,16 +6062,7 @@ snapshots:
       '@tanstack/query-core': 5.49.1
       react: 18.3.1
 
-  '@tanstack/react-router@1.30.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@tanstack/history': 1.28.9
-      '@tanstack/react-store': 0.2.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      tiny-invariant: 1.3.3
-      tiny-warning: 1.0.3
-
-  '@tanstack/react-router@1.46.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@tanstack/react-router@1.46.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@tanstack/history': 1.45.3
       '@tanstack/react-store': 0.5.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -6098,13 +6070,6 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
       tiny-invariant: 1.3.3
       tiny-warning: 1.0.3
-
-  '@tanstack/react-store@0.2.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@tanstack/store': 0.1.3
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      use-sync-external-store: 1.2.2(react@18.3.1)
 
   '@tanstack/react-store@0.5.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
@@ -6125,11 +6090,10 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@tanstack/router-devtools@1.30.1(csstype@3.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@tanstack/router-devtools@1.46.5(@tanstack/react-router@1.46.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(csstype@3.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@tanstack/react-router': 1.30.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@tanstack/react-router': 1.46.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       clsx: 2.1.1
-      date-fns: 2.30.0
       goober: 2.1.14(csstype@3.1.3)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -6164,8 +6128,6 @@ snapshots:
       vite: 5.3.5(@types/node@20.14.14)
     transitivePeerDependencies:
       - supports-color
-
-  '@tanstack/store@0.1.3': {}
 
   '@tanstack/store@0.5.5': {}
 
@@ -6841,6 +6803,7 @@ snapshots:
   date-fns@2.30.0:
     dependencies:
       '@babel/runtime': 7.24.7
+    optional: true
 
   debug@2.6.9:
     dependencies:
