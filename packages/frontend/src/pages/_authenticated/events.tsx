@@ -23,18 +23,13 @@ import { EventTypeSchema } from "backend/schema";
 import { DateTime } from "luxon";
 import { z } from "zod";
 
+const defaultTo = DateTime.now().plus({ month: 1 }).startOf("day").toISO();
+const defaultFrom = DateTime.now().startOf("day").toISO();
+
 const eventsSearchSchema = z.object({
-  fromDate: z
-    .string()
-    .datetime()
-    .optional()
-    .catch(DateTime.now().startOf("day").toISO()),
-  toDate: z
-    .string()
-    .datetime()
-    .optional()
-    .catch(DateTime.now().plus({ month: 1 }).startOf("day").toISO()),
-  type: EventTypeSchema.optional().catch(undefined),
+  fromDate: z.string().datetime().catch(defaultFrom),
+  toDate: z.string().datetime().catch(defaultTo),
+  type: z.union([EventTypeSchema, z.undefined()]).catch(undefined),
 });
 
 type EventsSearch = z.infer<typeof eventsSearchSchema>;
@@ -100,14 +95,14 @@ function Component() {
   const handleStartChange = (date: DateTime<true> | DateTime<false> | null) => {
     const iso = date?.toISO();
     navigate({
-      search: (prev) => ({ ...prev, fromDate: iso ? iso : undefined }),
+      search: (prev) => ({ ...prev, fromDate: iso ? iso : defaultFrom }),
     });
   };
 
   const handleEndChange = (date: DateTime<true> | DateTime<false> | null) => {
     const iso = date?.toISO();
     navigate({
-      search: (prev) => ({ ...prev, toDate: iso ? iso : undefined }),
+      search: (prev) => ({ ...prev, toDate: iso ? iso : defaultTo }),
     });
   };
 
