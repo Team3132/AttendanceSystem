@@ -53,7 +53,7 @@
     "eventemitter3": "5.0.1",
     "fastify": "4.28.1",
     "googleapis": "140.0.1",
-    "luxon": "3.4.4",
+    "luxon": "3.5.0",
     "passport-discord": "0.1.4",
     "postgres": "3.4.4",
     "superjson": "2.2.1",
