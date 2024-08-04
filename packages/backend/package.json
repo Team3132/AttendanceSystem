@@ -66,10 +66,10 @@
     "@types/luxon": "3.4.2",
     "@types/passport-discord": "0.1.13",
     "@types/uuid": "10.0.0",
-    "@types/ws": "8.5.11",
+    "@types/ws": "8.5.12",
     "drizzle-kit": "0.20.17",
     "prettier": "3.3.3",
     "tsup": "8.1.0",
-    "typescript": "5.5.3"
+    "typescript": "5.5.4"
   }
 }
