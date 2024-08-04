@@ -1,5 +1,13 @@
 # bot
 
+## 4.0.2
+
+### Patch Changes
+
+- 56e937c: testing
+- Updated dependencies [56e937c]
+  - backend@4.0.2
+
 ## 4.0.1
 
 ### Patch Changes
