@@ -94,19 +94,19 @@ export function createTauriWSClient(opts: WebSocketClientOptions) {
   type Connection = {
     id: number;
   } & (
-    | {
+      | {
         state: "open";
         ws: TauriWebsocket;
       }
-    | {
+      | {
         state: "closed";
         ws: TauriWebsocket;
       }
-    | {
+      | {
         state: "connecting";
         ws?: TauriWebsocket;
       }
-  );
+    );
 
   /**
    * tries to send the list of messages
@@ -352,12 +352,12 @@ export function tauriWsLink<TRouter extends AnyRouter>(
     const { client } = opts;
     return ({ op }) => {
       return observable((observer) => {
-        const { type, path, id, context } = op;
+        const { type, path, id, context, signal } = op;
 
         const input = transformer.input.serialize(op.input);
 
         const unsub = client.request(
-          { type, path, input, id, context },
+          { type, path, input, id, context, signal },
           {
             error(err) {
               // biome-ignore lint/suspicious/noExplicitAny: <explanation>
