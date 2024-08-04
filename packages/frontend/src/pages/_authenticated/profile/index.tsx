@@ -1,16 +1,21 @@
+import PendingEventListItem from "@/components/PendingEventListItem";
+import NewScancodeListItem from "@/features/user/components/NewScancodeForm";
+import ScancodeListItem from "@/features/user/components/ScancodeListItem";
 import { trpc } from "@/trpcClient";
-import { Container, List, Paper, Stack, Typography } from "@mui/material";
-import { RouteApi } from "@tanstack/react-router";
-import NewScancodeListItem from "../components/NewScancodeForm";
-import ScancodeListItem from "../components/ScancodeListItem";
+import { Container, Stack, Paper, Typography, List } from "@mui/material";
+import { createFileRoute } from "@tanstack/react-router";
 
-const routeApi = new RouteApi({ id: "/authedOnly/profile/" });
+export const Route = createFileRoute("/_authenticated/profile/")({
+  loader: async ({ context: { queryUtils } }) =>
+    queryUtils.users.getSelfScancodes.ensureData(),
+  component: Component,
+});
 
-export function Component() {
-  const loaderData = routeApi.useLoaderData();
+function Component() {
+  const loaderData = Route.useLoaderData();
 
   const scancodesQuery = trpc.users.getSelfScancodes.useQuery(undefined, {
-    initialData: loaderData.initialScancodes,
+    initialData: loaderData,
   });
 
   return (

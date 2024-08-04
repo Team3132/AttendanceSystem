@@ -1,18 +1,33 @@
 import ControlledSelect from "@/components/ControlledSelect";
 import ControlledTextField from "@/components/ControlledTextField";
+import DefaultAppBar from "@/components/DefaultAppBar";
+import useCreateEvent from "@/features/events/hooks/useCreateEvent";
+import useZodForm from "@/hooks/useZodForm";
 import { LoadingButton } from "@mui/lab";
 import { Container, Stack, Switch } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers";
-import { useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { CreateEventSchema } from "backend/schema";
 import { DateTime } from "luxon";
 import { useAlert } from "react-alert";
 import { Controller } from "react-hook-form";
-import DefaultAppBar from "../../../components/DefaultAppBar";
-import useZodForm from "../../../hooks/useZodForm";
-import useCreateEvent from "../hooks/useCreateEvent";
 
-export function Component() {
+export const Route = createFileRoute("/_authenticated/events/create")({
+  component: Component,
+  beforeLoad: async ({ context: { queryUtils } }) => {
+    const { isAdmin, isAuthenticated } =
+      await queryUtils.auth.status.ensureData();
+    if (!isAdmin) {
+      return {
+        redirect: {
+          to: "/",
+        },
+      };
+    }
+  },
+});
+
+function Component() {
   const {
     register,
     control,

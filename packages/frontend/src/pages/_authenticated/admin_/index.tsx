@@ -1,5 +1,6 @@
 import AsChildLink from "@/components/AsChildLink";
 import Datatable from "@/components/DataTable";
+import DefaultAppBar from "@/components/DefaultAppBar";
 import { trpc } from "@/trpcClient";
 import {
   Button,
@@ -10,12 +11,12 @@ import {
   Typography,
 } from "@mui/material";
 import { keepPreviousData } from "@tanstack/react-query";
-import { createColumnHelper } from "@tanstack/table-core";
-import type { UserSchema } from "backend/schema";
-import { useMemo, useState } from "react";
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createColumnHelper } from "@tanstack/react-table";
+import { UserSchema } from "backend/schema";
+import { useMemo } from "react";
 import { useDebounceValue } from "usehooks-ts";
-import type { z } from "zod";
-import DefaultAppBar from "../../../components/DefaultAppBar";
+import { z } from "zod";
 
 const columnHelper = createColumnHelper<z.infer<typeof UserSchema>>();
 
@@ -27,7 +28,7 @@ const columns = [
     header: "Settings",
     cell: (row) => (
       <AsChildLink
-        to={"/user/$userId"}
+        to={"/admin/users/$userId"}
         params={{
           userId: row.row.original.id,
         }}
@@ -38,7 +39,19 @@ const columns = [
   }),
 ];
 
-export function Component() {
+export const Route = createFileRoute("/_authenticated/admin/")({
+  beforeLoad: async ({ context: { queryUtils } }) => {
+    const { isAdmin } = await queryUtils.auth.status.ensureData();
+    if (!isAdmin) {
+      throw redirect({
+        to: "/",
+      });
+    }
+  },
+  component: Component,
+});
+
+function Component() {
   const [search, setSearch] = useDebounceValue("", 500);
 
   const usersQuery = trpc.users.getUserList.useInfiniteQuery(

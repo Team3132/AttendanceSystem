@@ -1,18 +1,28 @@
-import { trpc } from "@/trpcClient";
-import { Container, List, Paper, Stack, Typography } from "@mui/material";
-import { RouteApi } from "@tanstack/react-router";
-import ScancodeListItem from "../components/AdminScancodeListItem";
-import NewAdminScancodeListItem from "../components/NewAdminScancodeForm";
+import ScancodeListItem from "@/features/user/components/AdminScancodeListItem";
+import NewAdminScancodeListItem from "@/features/user/components/NewAdminScancodeForm";
+import { queryUtils, trpc } from "@/trpcClient";
+import { Container, Stack, Paper, Typography, List } from "@mui/material";
+import { createFileRoute } from "@tanstack/react-router";
 
-const routeApi = new RouteApi({ id: "/authedOnly/adminOnly/user/$userId/" });
+export const Route = createFileRoute("/_authenticated/admin/users/$userId/")({
+  component: Component,
+  loader: async ({ context: { queryUtils }, params: { userId } }) => {
+    const scancodes =
+      await queryUtils.users.getUserScancodes.ensureData(userId);
+    return {
+      userId,
+      scancodes,
+    };
+  },
+});
 
-export function Component() {
-  const loaderData = routeApi.useLoaderData();
+function Component() {
+  const loaderData = Route.useLoaderData();
 
   const scancodesQuery = trpc.users.getUserScancodes.useQuery(
     loaderData.userId,
     {
-      initialData: loaderData.initialScancodes,
+      initialData: loaderData.scancodes,
     },
   );
 

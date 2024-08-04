@@ -1,38 +1,27 @@
 import AsChildLink from "@/components/AsChildLink";
+import DefaultAppBar from "@/components/DefaultAppBar";
 import { trpc } from "@/trpcClient";
+import { TabItem } from "@/types/TabItem";
 import { Tab, Tabs } from "@mui/material";
-import type { NoInfer } from "@tanstack/react-query";
-import {
-  type AnyRoute,
-  Outlet,
-  type RegisteredRouter,
-  RouteApi,
-  type RoutePaths,
-  type ToPathOption,
-} from "@tanstack/react-router";
-import type { PathParamOptions } from "@tanstack/react-router";
-import type { ResolveRelativePath } from "@tanstack/react-router";
+import { Outlet, createFileRoute } from "@tanstack/react-router";
 import { DateTime } from "luxon";
 import { useMemo } from "react";
-import DefaultAppBar from "../../../components/DefaultAppBar";
-import useRouteMatch from "../../../utils/useRouteMatch";
 
-const routeApi = new RouteApi({
-  id: "/authedOnly/events/$eventId",
+export const Route = createFileRoute("/_authenticated/events/$eventId")({
+  loader: async ({ context: { queryUtils }, params: { eventId } }) => {
+    const eventData = await queryUtils.events.getEvent.ensureData(eventId);
+    const authStatus = await queryUtils.auth.status.ensureData();
+
+    return {
+      initialEvent: eventData,
+      initialAuth: authStatus,
+    };
+  },
+  component: Component,
 });
 
-type TabItem<
-  TRouteTree extends AnyRoute = RegisteredRouter["routeTree"],
-  TFrom extends RoutePaths<TRouteTree> | string = string,
-  TTo extends string = "",
-> = {
-  label: string;
-  icon?: React.ReactElement | string;
-  to: ToPathOption<TRouteTree, TFrom, TTo>;
-} & PathParamOptions<TRouteTree, TFrom, TTo>;
-
-export function Component() {
-  const loaderData = routeApi.useLoaderData();
+function Component() {
+  const loaderData = Route.useLoaderData();
 
   const { initialAuth, initialEvent } = loaderData;
 
@@ -86,8 +75,6 @@ export function Component() {
     [authStatusQuery.data.isAdmin, eventQuery.data.id],
   );
 
-  const currentTab = useRouteMatch(tabs);
-
   return (
     <>
       <DefaultAppBar
@@ -95,9 +82,9 @@ export function Component() {
           Date.parse(eventQuery.data.startDate),
         ).toLocaleString(DateTime.DATE_SHORT)} - ${eventQuery.data.title}`}
       />
-      <Tabs value={currentTab} variant="scrollable" scrollButtons="auto">
+      <Tabs variant="scrollable" scrollButtons="auto">
         {tabs.map((tab, index) => (
-          <AsChildLink to={tab.to} params={tab.params}>
+          <AsChildLink to={tab.to} params={tab.params} key={tab.label}>
             <Tab key={tab.to} label={tab.label} value={index} />
           </AsChildLink>
         ))}

@@ -1,24 +1,32 @@
-import { Container, Grid, Paper, Stack, Typography } from "@mui/material";
-
+import DeleteEventButton from "@/features/events/components/DeleteEventButton";
+import RsvpList from "@/features/events/components/RSVPList";
 import { trpc } from "@/trpcClient";
-import { RouteApi } from "@tanstack/react-router";
+import { Container, Grid, Paper, Typography, Stack } from "@mui/material";
+import { createFileRoute } from "@tanstack/react-router";
 import { DateTime } from "luxon";
-import DeleteEventButton from "../components/DeleteEventButton";
-import RsvpList from "../components/RSVPList";
 
-const routeApi = new RouteApi({
-  id: "/authedOnly/events/$eventId/",
+export const Route = createFileRoute("/_authenticated/events/$eventId/")({
+  component: Component,
+  loader: async ({ context: { queryUtils }, params: { eventId } }) => {
+    const initialEvent = await queryUtils.events.getEvent.ensureData(eventId);
+    const authStatus = await queryUtils.auth.status.ensureData();
+
+    return {
+      initialEvent,
+      initialAuth: authStatus,
+    };
+  },
 });
 
-export function Component() {
-  const { initialEvent, initialAuth } = routeApi.useLoaderData();
+function Component() {
+  const loaderData = Route.useLoaderData();
 
-  const eventQuery = trpc.events.getEvent.useQuery(initialEvent.id, {
-    initialData: initialEvent,
+  const eventQuery = trpc.events.getEvent.useQuery(loaderData.initialEvent.id, {
+    initialData: loaderData.initialEvent,
   });
 
   const authStatusQuery = trpc.auth.status.useQuery(undefined, {
-    initialData: initialAuth,
+    initialData: loaderData.initialAuth,
   });
 
   return (
@@ -86,14 +94,14 @@ export function Component() {
         {authStatusQuery.data.isAdmin ? (
           <Grid item xs={12}>
             <Stack spacing={2} direction="row">
-              <DeleteEventButton eventId={initialEvent.id} />
+              <DeleteEventButton eventId={eventQuery.data.id} />
             </Stack>
           </Grid>
         ) : null}
 
         <Grid item xs={12}>
           <RsvpList
-            eventId={initialEvent.id}
+            eventId={eventQuery.data.id}
             admin={authStatusQuery.data.isAdmin}
           />
         </Grid>

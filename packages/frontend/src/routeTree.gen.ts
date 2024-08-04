@@ -11,18 +11,27 @@
 // Import Routes
 
 import { Route as rootRoute } from './pages/__root'
-import { Route as TestImport } from './pages/test'
 import { Route as UnauthenticatedImport } from './pages/_unauthenticated'
 import { Route as AuthenticatedImport } from './pages/_authenticated'
 import { Route as AuthenticatedIndexImport } from './pages/_authenticated/index'
 import { Route as UnauthenticatedLoginImport } from './pages/_unauthenticated/login'
+import { Route as AuthenticatedProfileImport } from './pages/_authenticated/profile'
+import { Route as AuthenticatedLeaderboardImport } from './pages/_authenticated/leaderboard'
+import { Route as AuthenticatedEventsImport } from './pages/_authenticated/events'
+import { Route as AuthenticatedAdminImport } from './pages/_authenticated/admin_'
+import { Route as AuthenticatedProfileIndexImport } from './pages/_authenticated/profile/index'
+import { Route as AuthenticatedAdminIndexImport } from './pages/_authenticated/admin_/index'
+import { Route as AuthenticatedProfilePendingImport } from './pages/_authenticated/profile/pending'
+import { Route as AuthenticatedEventsCreateImport } from './pages/_authenticated/events_/create'
+import { Route as AuthenticatedEventsEventIdImport } from './pages/_authenticated/events_/$eventId'
+import { Route as AuthenticatedEventsEventIdIndexImport } from './pages/_authenticated/events_/$eventId/index'
+import { Route as AuthenticatedEventsEventIdQrCodeImport } from './pages/_authenticated/events_/$eventId/qr-code'
+import { Route as AuthenticatedEventsEventIdCheckInImport } from './pages/_authenticated/events_/$eventId/check-in'
+import { Route as AuthenticatedAdminUsersUserIdImport } from './pages/_authenticated/admin_/users.$userId'
+import { Route as AuthenticatedAdminUsersUserIdIndexImport } from './pages/_authenticated/admin_/users.$userId/index'
+import { Route as AuthenticatedAdminUsersUserIdPendingImport } from './pages/_authenticated/admin_/users.$userId/pending'
 
 // Create/Update Routes
-
-const TestRoute = TestImport.update({
-  path: '/test',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const UnauthenticatedRoute = UnauthenticatedImport.update({
   id: '/_unauthenticated',
@@ -44,6 +53,90 @@ const UnauthenticatedLoginRoute = UnauthenticatedLoginImport.update({
   getParentRoute: () => UnauthenticatedRoute,
 } as any)
 
+const AuthenticatedProfileRoute = AuthenticatedProfileImport.update({
+  path: '/profile',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const AuthenticatedLeaderboardRoute = AuthenticatedLeaderboardImport.update({
+  path: '/leaderboard',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const AuthenticatedEventsRoute = AuthenticatedEventsImport.update({
+  path: '/events',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const AuthenticatedAdminRoute = AuthenticatedAdminImport.update({
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const AuthenticatedProfileIndexRoute = AuthenticatedProfileIndexImport.update({
+  path: '/',
+  getParentRoute: () => AuthenticatedProfileRoute,
+} as any)
+
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexImport.update({
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+
+const AuthenticatedProfilePendingRoute =
+  AuthenticatedProfilePendingImport.update({
+    path: '/pending',
+    getParentRoute: () => AuthenticatedProfileRoute,
+  } as any)
+
+const AuthenticatedEventsCreateRoute = AuthenticatedEventsCreateImport.update({
+  path: '/events/create',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const AuthenticatedEventsEventIdRoute = AuthenticatedEventsEventIdImport.update(
+  {
+    path: '/events/$eventId',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any,
+)
+
+const AuthenticatedEventsEventIdIndexRoute =
+  AuthenticatedEventsEventIdIndexImport.update({
+    path: '/',
+    getParentRoute: () => AuthenticatedEventsEventIdRoute,
+  } as any)
+
+const AuthenticatedEventsEventIdQrCodeRoute =
+  AuthenticatedEventsEventIdQrCodeImport.update({
+    path: '/qr-code',
+    getParentRoute: () => AuthenticatedEventsEventIdRoute,
+  } as any)
+
+const AuthenticatedEventsEventIdCheckInRoute =
+  AuthenticatedEventsEventIdCheckInImport.update({
+    path: '/check-in',
+    getParentRoute: () => AuthenticatedEventsEventIdRoute,
+  } as any)
+
+const AuthenticatedAdminUsersUserIdRoute =
+  AuthenticatedAdminUsersUserIdImport.update({
+    path: '/users/$userId',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+
+const AuthenticatedAdminUsersUserIdIndexRoute =
+  AuthenticatedAdminUsersUserIdIndexImport.update({
+    path: '/',
+    getParentRoute: () => AuthenticatedAdminUsersUserIdRoute,
+  } as any)
+
+const AuthenticatedAdminUsersUserIdPendingRoute =
+  AuthenticatedAdminUsersUserIdPendingImport.update({
+    path: '/pending',
+    getParentRoute: () => AuthenticatedAdminUsersUserIdRoute,
+  } as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -62,12 +155,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UnauthenticatedImport
       parentRoute: typeof rootRoute
     }
-    '/test': {
-      id: '/test'
-      path: '/test'
-      fullPath: '/test'
-      preLoaderRoute: typeof TestImport
-      parentRoute: typeof rootRoute
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/events': {
+      id: '/_authenticated/events'
+      path: '/events'
+      fullPath: '/events'
+      preLoaderRoute: typeof AuthenticatedEventsImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/leaderboard': {
+      id: '/_authenticated/leaderboard'
+      path: '/leaderboard'
+      fullPath: '/leaderboard'
+      preLoaderRoute: typeof AuthenticatedLeaderboardImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileImport
+      parentRoute: typeof AuthenticatedImport
     }
     '/_unauthenticated/login': {
       id: '/_unauthenticated/login'
@@ -83,6 +197,83 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIndexImport
       parentRoute: typeof AuthenticatedImport
     }
+    '/_authenticated/events/$eventId': {
+      id: '/_authenticated/events/$eventId'
+      path: '/events/$eventId'
+      fullPath: '/events/$eventId'
+      preLoaderRoute: typeof AuthenticatedEventsEventIdImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/events/create': {
+      id: '/_authenticated/events/create'
+      path: '/events/create'
+      fullPath: '/events/create'
+      preLoaderRoute: typeof AuthenticatedEventsCreateImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/profile/pending': {
+      id: '/_authenticated/profile/pending'
+      path: '/pending'
+      fullPath: '/profile/pending'
+      preLoaderRoute: typeof AuthenticatedProfilePendingImport
+      parentRoute: typeof AuthenticatedProfileImport
+    }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexImport
+      parentRoute: typeof AuthenticatedAdminImport
+    }
+    '/_authenticated/profile/': {
+      id: '/_authenticated/profile/'
+      path: '/'
+      fullPath: '/profile/'
+      preLoaderRoute: typeof AuthenticatedProfileIndexImport
+      parentRoute: typeof AuthenticatedProfileImport
+    }
+    '/_authenticated/admin/users/$userId': {
+      id: '/_authenticated/admin/users/$userId'
+      path: '/users/$userId'
+      fullPath: '/admin/users/$userId'
+      preLoaderRoute: typeof AuthenticatedAdminUsersUserIdImport
+      parentRoute: typeof AuthenticatedAdminImport
+    }
+    '/_authenticated/events/$eventId/check-in': {
+      id: '/_authenticated/events/$eventId/check-in'
+      path: '/check-in'
+      fullPath: '/events/$eventId/check-in'
+      preLoaderRoute: typeof AuthenticatedEventsEventIdCheckInImport
+      parentRoute: typeof AuthenticatedEventsEventIdImport
+    }
+    '/_authenticated/events/$eventId/qr-code': {
+      id: '/_authenticated/events/$eventId/qr-code'
+      path: '/qr-code'
+      fullPath: '/events/$eventId/qr-code'
+      preLoaderRoute: typeof AuthenticatedEventsEventIdQrCodeImport
+      parentRoute: typeof AuthenticatedEventsEventIdImport
+    }
+    '/_authenticated/events/$eventId/': {
+      id: '/_authenticated/events/$eventId/'
+      path: '/'
+      fullPath: '/events/$eventId/'
+      preLoaderRoute: typeof AuthenticatedEventsEventIdIndexImport
+      parentRoute: typeof AuthenticatedEventsEventIdImport
+    }
+    '/_authenticated/admin/users/$userId/pending': {
+      id: '/_authenticated/admin/users/$userId/pending'
+      path: '/pending'
+      fullPath: '/admin/users/$userId/pending'
+      preLoaderRoute: typeof AuthenticatedAdminUsersUserIdPendingImport
+      parentRoute: typeof AuthenticatedAdminUsersUserIdImport
+    }
+    '/_authenticated/admin/users/$userId/': {
+      id: '/_authenticated/admin/users/$userId/'
+      path: '/'
+      fullPath: '/admin/users/$userId/'
+      preLoaderRoute: typeof AuthenticatedAdminUsersUserIdIndexImport
+      parentRoute: typeof AuthenticatedAdminUsersUserIdImport
+    }
   }
 }
 
@@ -90,12 +281,32 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   AuthenticatedRoute: AuthenticatedRoute.addChildren({
+    AuthenticatedAdminRoute: AuthenticatedAdminRoute.addChildren({
+      AuthenticatedAdminIndexRoute,
+      AuthenticatedAdminUsersUserIdRoute:
+        AuthenticatedAdminUsersUserIdRoute.addChildren({
+          AuthenticatedAdminUsersUserIdPendingRoute,
+          AuthenticatedAdminUsersUserIdIndexRoute,
+        }),
+    }),
+    AuthenticatedEventsRoute,
+    AuthenticatedLeaderboardRoute,
+    AuthenticatedProfileRoute: AuthenticatedProfileRoute.addChildren({
+      AuthenticatedProfilePendingRoute,
+      AuthenticatedProfileIndexRoute,
+    }),
     AuthenticatedIndexRoute,
+    AuthenticatedEventsEventIdRoute:
+      AuthenticatedEventsEventIdRoute.addChildren({
+        AuthenticatedEventsEventIdCheckInRoute,
+        AuthenticatedEventsEventIdQrCodeRoute,
+        AuthenticatedEventsEventIdIndexRoute,
+      }),
+    AuthenticatedEventsCreateRoute,
   }),
   UnauthenticatedRoute: UnauthenticatedRoute.addChildren({
     UnauthenticatedLoginRoute,
   }),
-  TestRoute,
 })
 
 /* prettier-ignore-end */
@@ -107,14 +318,19 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/_authenticated",
-        "/_unauthenticated",
-        "/test"
+        "/_unauthenticated"
       ]
     },
     "/_authenticated": {
       "filePath": "_authenticated.tsx",
       "children": [
-        "/_authenticated/"
+        "/_authenticated/admin",
+        "/_authenticated/events",
+        "/_authenticated/leaderboard",
+        "/_authenticated/profile",
+        "/_authenticated/",
+        "/_authenticated/events/$eventId",
+        "/_authenticated/events/create"
       ]
     },
     "/_unauthenticated": {
@@ -123,8 +339,29 @@ export const routeTree = rootRoute.addChildren({
         "/_unauthenticated/login"
       ]
     },
-    "/test": {
-      "filePath": "test.tsx"
+    "/_authenticated/admin": {
+      "filePath": "_authenticated/admin_.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/admin/",
+        "/_authenticated/admin/users/$userId"
+      ]
+    },
+    "/_authenticated/events": {
+      "filePath": "_authenticated/events.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/leaderboard": {
+      "filePath": "_authenticated/leaderboard.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/profile": {
+      "filePath": "_authenticated/profile.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/profile/pending",
+        "/_authenticated/profile/"
+      ]
     },
     "/_unauthenticated/login": {
       "filePath": "_unauthenticated/login.tsx",
@@ -133,6 +370,59 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated/": {
       "filePath": "_authenticated/index.tsx",
       "parent": "/_authenticated"
+    },
+    "/_authenticated/events/$eventId": {
+      "filePath": "_authenticated/events_/$eventId.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/events/$eventId/check-in",
+        "/_authenticated/events/$eventId/qr-code",
+        "/_authenticated/events/$eventId/"
+      ]
+    },
+    "/_authenticated/events/create": {
+      "filePath": "_authenticated/events_/create.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/profile/pending": {
+      "filePath": "_authenticated/profile/pending.tsx",
+      "parent": "/_authenticated/profile"
+    },
+    "/_authenticated/admin/": {
+      "filePath": "_authenticated/admin_/index.tsx",
+      "parent": "/_authenticated/admin"
+    },
+    "/_authenticated/profile/": {
+      "filePath": "_authenticated/profile/index.tsx",
+      "parent": "/_authenticated/profile"
+    },
+    "/_authenticated/admin/users/$userId": {
+      "filePath": "_authenticated/admin_/users.$userId.tsx",
+      "parent": "/_authenticated/admin",
+      "children": [
+        "/_authenticated/admin/users/$userId/pending",
+        "/_authenticated/admin/users/$userId/"
+      ]
+    },
+    "/_authenticated/events/$eventId/check-in": {
+      "filePath": "_authenticated/events_/$eventId/check-in.tsx",
+      "parent": "/_authenticated/events/$eventId"
+    },
+    "/_authenticated/events/$eventId/qr-code": {
+      "filePath": "_authenticated/events_/$eventId/qr-code.tsx",
+      "parent": "/_authenticated/events/$eventId"
+    },
+    "/_authenticated/events/$eventId/": {
+      "filePath": "_authenticated/events_/$eventId/index.tsx",
+      "parent": "/_authenticated/events/$eventId"
+    },
+    "/_authenticated/admin/users/$userId/pending": {
+      "filePath": "_authenticated/admin_/users.$userId/pending.tsx",
+      "parent": "/_authenticated/admin/users/$userId"
+    },
+    "/_authenticated/admin/users/$userId/": {
+      "filePath": "_authenticated/admin_/users.$userId/index.tsx",
+      "parent": "/_authenticated/admin/users/$userId"
     }
   }
 }

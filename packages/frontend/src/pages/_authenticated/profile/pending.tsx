@@ -1,17 +1,21 @@
+import PendingEventListItem from "@/components/PendingEventListItem";
 import { trpc } from "@/trpcClient";
-import { Container, List, Paper, Stack, Typography } from "@mui/material";
-import { RouteApi } from "@tanstack/react-router";
-import PendingEventListItem from "../../../components/PendingEventListItem";
+import { Container, Stack, Paper, Typography, List } from "@mui/material";
+import { createFileRoute } from "@tanstack/react-router";
 
-const routeApi = new RouteApi({ id: "/authedOnly/profile/pending" });
+export const Route = createFileRoute("/_authenticated/profile/pending")({
+  component: Component,
+  loader: ({ context: { queryUtils } }) =>
+    queryUtils.users.getSelfPendingRsvps.ensureData(),
+});
 
-export function Component() {
-  const loaderData = routeApi.useLoaderData();
+function Component() {
+  const loaderData = Route.useLoaderData();
 
   const pendingEventsQuery = trpc.users.getSelfPendingRsvps.useQuery(
     undefined,
     {
-      initialData: loaderData.initialPendingEvents,
+      initialData: loaderData,
     },
   );
 
@@ -26,7 +30,7 @@ export function Component() {
             </Typography>
             <List>
               {pendingEventsQuery.data.map((rsvp) => (
-                <PendingEventListItem rsvp={rsvp} />
+                <PendingEventListItem rsvp={rsvp} key={rsvp.id} />
               ))}
             </List>
           </Stack>
