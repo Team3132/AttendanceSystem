@@ -1,5 +1,11 @@
 # backend
 
+## 4.0.1
+
+### Patch Changes
+
+- b86eb77: Try and fix versioning
+
 ## 4.0.0
 
 ### Major Changes
