@@ -90,8 +90,8 @@ importers:
         specifier: 2.2.1
         version: 2.2.1
       ulidx:
-        specifier: 2.3.0
-        version: 2.3.0
+        specifier: 2.4.0
+        version: 2.4.0
       uuid:
         specifier: 10.0.0
         version: 10.0.0
@@ -3235,8 +3235,8 @@ packages:
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
 
-  layerr@2.0.1:
-    resolution: {integrity: sha512-z0730CwG/JO24evdORnyDkwG1Q7b7mF2Tp1qRQ0YvrMMARbt1DFG694SOv439Gm7hYKolyZyaB49YIrYIfZBdg==}
+  layerr@3.0.0:
+    resolution: {integrity: sha512-tv754Ki2dXpPVApOrjTyRo4/QegVb9eVFq4mjqp4+NM5NaX7syQvN5BBNfV/ZpAHCEHV24XdUVrBAoka4jt3pA==}
 
   libphonenumber-js@1.10.53:
     resolution: {integrity: sha512-sDTnnqlWK4vH4AlDQuswz3n4Hx7bIQWTpIcScJX+Sp7St3LXHmfiax/ZFfyYxHmkdCvydOLSuvtAO/XpXiSySw==}
@@ -4192,8 +4192,8 @@ packages:
     resolution: {integrity: sha512-u3xV3X7uzvi5b1MncmZo3i2Aw222Zk1keqLA1YkHldREkAhAqi65wuPfe7lHx8H/Wzy+8CE7S7uS3jekIM5s8g==}
     engines: {node: '>=8'}
 
-  ulidx@2.3.0:
-    resolution: {integrity: sha512-36piWNqcdp9hKlQewyeehCaALy4lyx3FodsCxHuV6i0YdexSkjDOubwxEVr2yi4kh62L/0MgyrxqG4K+qtovnw==}
+  ulidx@2.4.0:
+    resolution: {integrity: sha512-iTZHiSCrIZeXvbJ34qCSBO4fmwf4GRzkv3hb7adB+00nyJKCwVFK0xw2gXGNfJsIFfET7Av+OP8/rsxxJHRSVQ==}
     engines: {node: '>=16'}
 
   undici-types@5.26.5:
@@ -7290,7 +7290,7 @@ snapshots:
     dependencies:
       json-buffer: 3.0.1
 
-  layerr@2.0.1: {}
+  layerr@3.0.0: {}
 
   libphonenumber-js@1.10.53: {}
 
@@ -8173,9 +8173,9 @@ snapshots:
     dependencies:
       '@lukeed/csprng': 1.1.0
 
-  ulidx@2.3.0:
+  ulidx@2.4.0:
     dependencies:
-      layerr: 2.0.1
+      layerr: 3.0.0
 
   undici-types@5.26.5: {}
 
