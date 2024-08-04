@@ -1,5 +1,14 @@
 # bot
 
+## 4.0.3
+
+### Patch Changes
+
+- 9d37825: Remove semantic-cli package
+- Updated dependencies [8450cd4]
+- Updated dependencies [9d37825]
+  - backend@4.0.3
+
 ## 4.0.2
 
 ### Patch Changes
