@@ -56,7 +56,7 @@
     "@types/node": "20.14.14",
     "@types/uuid": "10.0.0",
     "@types/ws": "8.5.12",
-    "drizzle-kit": "0.20.17",
+    "drizzle-kit": "0.23.1",
     "prettier": "3.3.3",
     "tsconfig-paths": "4.2.0",
     "tsup": "8.1.0",
