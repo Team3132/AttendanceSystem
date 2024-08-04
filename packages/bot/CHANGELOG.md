@@ -1,5 +1,16 @@
 # bot
 
+## 4.0.0
+
+### Major Changes
+
+- 15f8fb6: Add Changesets
+
+### Patch Changes
+
+- Updated dependencies [15f8fb6]
+  - backend@4.0.0
+
 ## 3.0.4
 
 ### Patch Changes
