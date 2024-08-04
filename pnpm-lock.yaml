@@ -223,9 +223,6 @@ importers:
       '@types/ws':
         specifier: 8.5.12
         version: 8.5.12
-      drizzle-kit:
-        specifier: 0.23.1
-        version: 0.23.1
       prettier:
         specifier: 3.3.3
         version: 3.3.3
