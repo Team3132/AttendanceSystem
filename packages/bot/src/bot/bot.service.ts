@@ -1,6 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { Client } from "discord.js";
+import { Client, OAuth2Scopes } from "discord.js";
 import { Context, type ContextOf, On } from "necord";
 
 @Injectable()
@@ -8,7 +8,7 @@ export class BotService {
   constructor(
     private readonly client: Client,
     private readonly config: ConfigService,
-  ) {}
+  ) { }
 
   private readonly logger = new Logger(BotService.name);
 
@@ -43,5 +43,14 @@ export class BotService {
   @On("error")
   public onError(@Context() [message]: ContextOf<"error">) {
     this.logger.error(message);
+  }
+
+  @On("ready")
+  public onReady() {
+    const inviteLink = this.client.generateInvite({
+      scopes: [OAuth2Scopes.Bot, OAuth2Scopes.ApplicationsCommands],
+    })
+
+    this.logger.log(`Bot is ready! Invite link: ${inviteLink}`);
   }
 }
