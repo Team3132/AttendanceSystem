@@ -4,6 +4,8 @@ import {
   type RoutePaths,
   Router,
   lazyRouteComponent,
+  createRouter,
+  createRootRouteWithContext,
 } from "@tanstack/react-router";
 import { rootRouteWithContext } from "@tanstack/react-router";
 import type { CreateQueryUtils } from "@trpc/react-query/shared";
@@ -18,65 +20,47 @@ import { eventQrCodeRoute, eventsRoutes } from "./features/events/routes";
 import { outreachRoutes } from "./features/outreach/routes";
 import { adminUserRoutes, profileRoutes } from "./features/user/routes";
 import { queryClient, queryUtils } from "./trpcClient";
-
-export const rootRoute = rootRouteWithContext<{
-  queryClient: QueryClient;
-  queryUtils: CreateQueryUtils<AppRouter>;
-}>()({
-  errorComponent: lazyRouteComponent(() => import("./pages/RouterErrorPage")),
-});
+import { routeTree } from "./routeTree.gen";
 
 /**
  * Home Page
  */
-const indexRoute = new Route({
-  getParentRoute: () => authedOnlyRoute,
-  component: lazyRouteComponent(() => import("./pages"), "Component"),
-  loader: ({ context: { queryUtils } }) =>
-    queryUtils.users.getSelfPendingRsvps.ensureData(),
-  path: "/",
-});
+// const indexRoute = new Route({
+//   getParentRoute: () => authedOnlyRoute,
+//   component: lazyRouteComponent(
+//     () => import("./pages/_authenticated"),
+//     "Component",
+//   ),
+//   loader: ({ context: { queryUtils } }) =>
+//     queryUtils.users.getSelfPendingRsvps.ensureData(),
+//   path: "/",
+// });
 
-const loginRoute = new Route({
-  getParentRoute: () => unauthedOnlyRoute,
-  path: "/login",
-  loader: ({ context: { queryUtils } }) => queryUtils.auth.status.ensureData(),
-  component: lazyRouteComponent(
-    () => import("./features/auth/pages/LoginPage"),
-    "Component",
-  ),
-});
+// const loginRoute = new Route({
+//   getParentRoute: () => unauthedOnlyRoute,
+//   path: "/login",
+//   loader: ({ context: { queryUtils } }) => queryUtils.auth.status.ensureData(),
+//   component: lazyRouteComponent(
+//     () => import("./features/auth/pages/LoginPage"),
+//     "Component",
+//   ),
+// });
 
-const routeTree = rootRoute.addChildren([
-  unauthedOnlyRoute.addChildren([loginRoute]),
-  authedOnlyRoute.addChildren([
-    indexRoute,
-    outreachRoutes,
-    profileRoutes,
-    eventsRoutes,
-    adminOnlyRoute.addChildren([
-      adminIndexRoute,
-      adminUserRoutes,
-      eventQrCodeRoute,
-    ]),
-  ]),
-]);
+// const routeTree = rootRoute.addChildren([
+//   unauthedOnlyRoute.addChildren([loginRoute]),
+//   authedOnlyRoute.addChildren([
+//     indexRoute,
+//     outreachRoutes,
+//     profileRoutes,
+//     eventsRoutes,
+//     adminOnlyRoute.addChildren([
+//       adminIndexRoute,
+//       adminUserRoutes,
+//       eventQrCodeRoute,
+//     ]),
+//   ]),
+// ]);
 
-export const router = new Router({
-  routeTree,
-  context: {
-    queryClient,
-    queryUtils,
-  },
-  defaultPreload: "intent",
-});
+// export type RouterPaths = RoutePaths<typeof routeTree>;
 
-declare module "@tanstack/react-router" {
-  interface Register {
-    router: typeof router;
-  }
-}
-
-export type RouterPaths = RoutePaths<typeof routeTree>;
-
-export default router;
+// export default router;

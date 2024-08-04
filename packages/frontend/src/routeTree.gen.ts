@@ -12,8 +12,10 @@
 
 import { Route as rootRoute } from './pages/__root'
 import { Route as TestImport } from './pages/test'
-import { Route as RouterErrorPageImport } from './pages/RouterErrorPage'
-import { Route as IndexImport } from './pages/index'
+import { Route as UnauthenticatedImport } from './pages/_unauthenticated'
+import { Route as AuthenticatedImport } from './pages/_authenticated'
+import { Route as AuthenticatedIndexImport } from './pages/_authenticated/index'
+import { Route as UnauthenticatedLoginImport } from './pages/_unauthenticated/login'
 
 // Create/Update Routes
 
@@ -22,32 +24,42 @@ const TestRoute = TestImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const RouterErrorPageRoute = RouterErrorPageImport.update({
-  path: '/RouterErrorPage',
+const UnauthenticatedRoute = UnauthenticatedImport.update({
+  id: '/_unauthenticated',
   getParentRoute: () => rootRoute,
 } as any)
 
-const IndexRoute = IndexImport.update({
-  path: '/',
+const AuthenticatedRoute = AuthenticatedImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRoute,
+} as any)
+
+const AuthenticatedIndexRoute = AuthenticatedIndexImport.update({
+  path: '/',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const UnauthenticatedLoginRoute = UnauthenticatedLoginImport.update({
+  path: '/login',
+  getParentRoute: () => UnauthenticatedRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthenticatedImport
       parentRoute: typeof rootRoute
     }
-    '/RouterErrorPage': {
-      id: '/RouterErrorPage'
-      path: '/RouterErrorPage'
-      fullPath: '/RouterErrorPage'
-      preLoaderRoute: typeof RouterErrorPageImport
+    '/_unauthenticated': {
+      id: '/_unauthenticated'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof UnauthenticatedImport
       parentRoute: typeof rootRoute
     }
     '/test': {
@@ -57,14 +69,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TestImport
       parentRoute: typeof rootRoute
     }
+    '/_unauthenticated/login': {
+      id: '/_unauthenticated/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof UnauthenticatedLoginImport
+      parentRoute: typeof UnauthenticatedImport
+    }
+    '/_authenticated/': {
+      id: '/_authenticated/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
   }
 }
 
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren({
-  IndexRoute,
-  RouterErrorPageRoute,
+  AuthenticatedRoute: AuthenticatedRoute.addChildren({
+    AuthenticatedIndexRoute,
+  }),
+  UnauthenticatedRoute: UnauthenticatedRoute.addChildren({
+    UnauthenticatedLoginRoute,
+  }),
   TestRoute,
 })
 
@@ -74,20 +104,35 @@ export const routeTree = rootRoute.addChildren({
 {
   "routes": {
     "__root__": {
+      "filePath": "__root.tsx",
       "children": [
-        "/",
-        "/RouterErrorPage",
+        "/_authenticated",
+        "/_unauthenticated",
         "/test"
       ]
     },
-    "/": {
-      "filePath": "index.tsx"
+    "/_authenticated": {
+      "filePath": "_authenticated.tsx",
+      "children": [
+        "/_authenticated/"
+      ]
     },
-    "/RouterErrorPage": {
-      "filePath": "RouterErrorPage.tsx"
+    "/_unauthenticated": {
+      "filePath": "_unauthenticated.tsx",
+      "children": [
+        "/_unauthenticated/login"
+      ]
     },
     "/test": {
       "filePath": "test.tsx"
+    },
+    "/_unauthenticated/login": {
+      "filePath": "_unauthenticated/login.tsx",
+      "parent": "/_unauthenticated"
+    },
+    "/_authenticated/": {
+      "filePath": "_authenticated/index.tsx",
+      "parent": "/_authenticated"
     }
   }
 }

@@ -1,13 +1,15 @@
 import { Container, Paper, Stack, Typography } from "@mui/material";
 import { RouteApi, createFileRoute } from "@tanstack/react-router";
-import ActiveEventsList from "../components/ActiveEventsList";
-import DefaultAppBar from "../components/DefaultAppBar";
+import ActiveEventsList from "../../components/ActiveEventsList";
+import DefaultAppBar from "../../components/DefaultAppBar";
 
 const appVersion = import.meta.env.VITE_APP_VERSION as string | undefined;
 
-export const Route = createFileRoute('/')({
-  component: () => <Component />
-})
+export const Route = createFileRoute("/_authenticated/")({
+  component: () => <Component />,
+  loader: async ({ context: { queryUtils } }) =>
+    queryUtils.users.getSelfPendingRsvps.ensureData(),
+});
 
 export function Component() {
   const loaderData = Route.useLoaderData();
