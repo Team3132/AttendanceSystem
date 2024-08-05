@@ -27,9 +27,9 @@ const defaultTo = DateTime.now().plus({ month: 1 }).startOf("day").toISO();
 const defaultFrom = DateTime.now().startOf("day").toISO();
 
 const eventsSearchSchema = z.object({
-  fromDate: z.string().datetime().optional().catch(defaultFrom),
-  toDate: z.string().datetime().catch(defaultTo),
-  type: z.union([EventTypeSchema, z.undefined()]).catch(undefined),
+  fromDate: z.string().datetime().default(defaultFrom).optional().catch(defaultFrom),
+  toDate: z.string().datetime().default(defaultTo).optional().catch(defaultTo),
+  type: z.union([EventTypeSchema, z.undefined()]).optional().catch(undefined),
 });
 
 type EventsSearch = z.infer<typeof eventsSearchSchema>;
