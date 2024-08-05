@@ -1,5 +1,12 @@
 # backend
 
+## 4.0.4
+
+### Patch Changes
+
+- bc00f86: Add type check before versioning
+- 2b7834f: Add Devcontainer
+
 ## 4.0.3
 
 ### Patch Changes
