@@ -1,5 +1,14 @@
 # bot
 
+## 4.0.5
+
+### Patch Changes
+
+- [#1564](https://github.com/Team3132/AttendanceSystem/pull/1564) [`c75d425`](https://github.com/Team3132/AttendanceSystem/commit/c75d4253f4e1fa46f4d050cbb8a5f847fd0d15f2) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Reactive search params for event page
+
+- Updated dependencies [[`c75d425`](https://github.com/Team3132/AttendanceSystem/commit/c75d4253f4e1fa46f4d050cbb8a5f847fd0d15f2)]:
+  - backend@4.0.5
+
 ## 4.0.4
 
 ### Patch Changes
