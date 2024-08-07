@@ -38,7 +38,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 );
 
 const tauriInit = async () => {
-  if (!import.meta.env.VITE_TAURI) return;
+  if (!(window as unknown as any).__TAURI_INTERNALS__) return;
   const { attachConsole } = await import("@tauri-apps/plugin-log");
 
   await attachConsole();
