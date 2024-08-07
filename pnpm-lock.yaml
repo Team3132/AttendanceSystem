@@ -54,8 +54,8 @@ importers:
         specifier: 11.0.0-rc.477
         version: 11.0.0-rc.477
       bullmq:
-        specifier: 5.12.0
-        version: 5.12.0
+        specifier: 5.12.1
+        version: 5.12.1
       cron:
         specifier: 3.1.7
         version: 3.1.7
@@ -2672,8 +2672,8 @@ packages:
   buffer@6.0.3:
     resolution: {integrity: sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==}
 
-  bullmq@5.12.0:
-    resolution: {integrity: sha512-kOtSQx9ymylslsLNFD0xOMJM9mHqnq3x6KD7+DYkHByWe0HFRdblpYKhZyL4uR3rwaKZwzOrJVl3RwRaDjZxSg==}
+  bullmq@5.12.1:
+    resolution: {integrity: sha512-XNUnT4+hJ/bnu3HkIeauN/i+fU+DwC74rubPLktoUsds7zBfugN3jF8XbaT7Ya4U+SANR+3T4u9YG8KUbsp2+g==}
 
   bundle-require@5.0.0:
     resolution: {integrity: sha512-GuziW3fSSmopcx4KRymQEJVbZUfqlCqcq7dvs6TYwKRZiegK/2buMxQTPs6MGlNv50wms1699qYO54R8XfRX4w==}
@@ -5238,7 +5238,7 @@ snapshots:
       '@types/ws': 8.5.12
       '@vladfrangu/async_event_emitter': 2.2.4
       discord-api-types: 0.37.83
-      tslib: 2.6.2
+      tslib: 2.6.3
       ws: 8.16.0
     transitivePeerDependencies:
       - bufferutil
@@ -5253,7 +5253,7 @@ snapshots:
       '@types/ws': 8.5.12
       '@vladfrangu/async_event_emitter': 2.2.4
       discord-api-types: 0.37.83
-      tslib: 2.6.2
+      tslib: 2.6.3
       ws: 8.16.0
     transitivePeerDependencies:
       - bufferutil
@@ -7111,7 +7111,7 @@ snapshots:
       base64-js: 1.5.1
       ieee754: 1.2.1
 
-  bullmq@5.12.0:
+  bullmq@5.12.1:
     dependencies:
       cron-parser: 4.9.0
       ioredis: 5.4.1
