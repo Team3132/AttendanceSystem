@@ -1,5 +1,14 @@
 # frontend
 
+## 4.0.9
+
+### Patch Changes
+
+- [`5cd275a`](https://github.com/Team3132/AttendanceSystem/commit/5cd275a1c94190b64e6a7dd5cb4ef67b9331ffbc) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix docker file
+
+- Updated dependencies []:
+  - backend@4.0.9
+
 ## 4.0.8
 
 ### Patch Changes
