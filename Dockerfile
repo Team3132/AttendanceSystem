@@ -41,4 +41,4 @@ FROM scratch as bot-out
 COPY --from=build /opt/bot /
 
 FROM scratch as frontend-out
-COPY --from=build /opt/frontend/dist
+COPY --from=build /opt/frontend/dist /
