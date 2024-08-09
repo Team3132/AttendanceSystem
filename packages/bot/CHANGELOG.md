@@ -1,5 +1,12 @@
 # bot
 
+## 4.0.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - backend@4.0.6
+
 ## 4.0.5
 
 ### Patch Changes
