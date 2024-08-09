@@ -10,14 +10,13 @@
   "fixed": [
     [
       "backend",
-      "bot"
+      "bot",
+      "frontend"
     ]
   ],
   "linked": [],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": [
-    "frontend"
-  ]
+  "ignore": []
 }
