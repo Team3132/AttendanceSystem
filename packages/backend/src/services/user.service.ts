@@ -68,6 +68,7 @@ export async function getPendingUserRsvps(userId: string) {
           startDate: true,
           title: true,
           type: true,
+          isPosted: true,
         },
       },
     },

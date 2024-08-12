@@ -1,10 +1,8 @@
 {
-  "version": "5",
-  "dialect": "pg",
-  "id": "422b1af0-1a67-4c6e-adf5-388fbeae1f2b",
-  "prevId": "b6d8c5a7-96e8-4b96-bd8f-1c2e9b40473e",
+  "version": "7",
+  "dialect": "postgresql",
   "tables": {
-    "Event": {
+    "public.Event": {
       "name": "Event",
       "schema": "",
       "columns": {
@@ -69,16 +67,26 @@
       },
       "indexes": {
         "Event_secret_key": {
+          "columns": [
+            {
+              "expression": "secret",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "with": {},
           "name": "Event_secret_key",
-          "columns": ["secret"],
-          "isUnique": true
+          "isUnique": true,
+          "method": "btree",
+          "concurrently": false
         }
       },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "RSVP": {
+    "public.RSVP": {
       "name": "RSVP",
       "schema": "",
       "columns": {
@@ -141,35 +149,59 @@
       },
       "indexes": {
         "RSVP_eventId_userId_key": {
+          "columns": [
+            {
+              "expression": "eventId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "userId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "with": {},
           "name": "RSVP_eventId_userId_key",
-          "columns": ["eventId", "userId"],
-          "isUnique": true
+          "isUnique": true,
+          "method": "btree",
+          "concurrently": false
         }
       },
       "foreignKeys": {
         "RSVP_eventId_Event_id_fk": {
           "name": "RSVP_eventId_Event_id_fk",
           "tableFrom": "RSVP",
+          "columnsFrom": [
+            "eventId"
+          ],
           "tableTo": "Event",
-          "columnsFrom": ["eventId"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "RSVP_userId_User_id_fk": {
           "name": "RSVP_userId_User_id_fk",
           "tableFrom": "RSVP",
+          "columnsFrom": [
+            "userId"
+          ],
           "tableTo": "User",
-          "columnsFrom": ["userId"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "Scancode": {
+    "public.Scancode": {
       "name": "Scancode",
       "schema": "",
       "columns": {
@@ -205,17 +237,21 @@
         "Scancode_userId_User_id_fk": {
           "name": "Scancode_userId_User_id_fk",
           "tableFrom": "Scancode",
+          "columnsFrom": [
+            "userId"
+          ],
           "tableTo": "User",
-          "columnsFrom": ["userId"],
-          "columnsTo": ["id"],
-          "onDelete": "restrict",
-          "onUpdate": "cascade"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "cascade",
+          "onDelete": "restrict"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "User": {
+    "public.User": {
       "name": "User",
       "schema": "",
       "columns": {
@@ -265,23 +301,25 @@
     }
   },
   "enums": {
-    "EventTypes": {
+    "public.EventTypes": {
       "name": "EventTypes",
-      "values": {
-        "Social": "Social",
-        "Regular": "Regular",
-        "Outreach": "Outreach",
-        "Mentor": "Mentor"
-      }
+      "schema": "public",
+      "values": [
+        "Social",
+        "Regular",
+        "Outreach",
+        "Mentor"
+      ]
     },
-    "RSVPStatus": {
+    "public.RSVPStatus": {
       "name": "RSVPStatus",
-      "values": {
-        "LATE": "LATE",
-        "MAYBE": "MAYBE",
-        "NO": "NO",
-        "YES": "YES"
-      }
+      "schema": "public",
+      "values": [
+        "LATE",
+        "MAYBE",
+        "NO",
+        "YES"
+      ]
     }
   },
   "schemas": {},
@@ -289,5 +327,8 @@
     "schemas": {},
     "tables": {},
     "columns": {}
-  }
+  },
+  "id": "422b1af0-1a67-4c6e-adf5-388fbeae1f2b",
+  "prevId": "b6d8c5a7-96e8-4b96-bd8f-1c2e9b40473e",
+  "sequences": {}
 }
