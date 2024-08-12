@@ -13,6 +13,7 @@ RUN pnpm run -r build
 RUN pnpm deploy --filter backend --prod /opt/backend
 # COPY /app/packages/frontend/dist /opt/backend/dist/frontend
 RUN pnpm deploy --filter bot --prod /opt/bot
+COPY /app/packages/frontend/dist /opt/frontend/dist
 
 FROM base as backend-runner
 ARG VERSION
