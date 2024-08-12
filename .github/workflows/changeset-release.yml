@@ -96,16 +96,3 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=registry,ref=ghcr.io/team3132/attendancesystem-${{ matrix.package.name }}:latest
           target: ${{ matrix.package.name }}-runner
-      
-      - name: Extract Dist
-        uses: docker/build-push-action@v6
-        with:
-          push: false
-          target: ${{ matrix.package.name }}-out
-          outputs: type=local,dest=dist/${{ matrix.package.name }}
-
-      - name: Upload Dist
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.package.name }}-dist
-          path: ./dist/${{ matrix.package.name }}

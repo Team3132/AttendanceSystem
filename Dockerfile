@@ -34,12 +34,3 @@ CMD [ "pnpm", "start" ]
 FROM caddy:2.8 as frontend-runner
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=build /app/packages/frontend/dist /usr/share/caddy
-
-FROM scratch as backend-out
-COPY --from=build /opt/backend /
-
-FROM scratch as bot-out
-COPY --from=build /opt/bot /
-
-FROM scratch as frontend-out
-COPY --from=build /opt/frontend/dist /
