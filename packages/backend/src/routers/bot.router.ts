@@ -23,6 +23,7 @@ import {
   getEventRsvps,
   getEventSecret,
   getNextEvents,
+  markEventPosted,
   selfCheckin,
   userCheckout,
 } from "../services/events.service";
@@ -60,6 +61,10 @@ export const botRouter = t.router({
     .input(z.string())
     .output(EventSchema)
     .query(({ input }) => getEvent(input)),
+  markEventPosted: tokenProcedure
+    .input(z.string())
+    .output(EventSchema)
+    .mutation(({ input }) => markEventPosted(input)),
   getEventSecret: tokenProcedure
     .input(z.string())
     .output(SecretOutputSchema)

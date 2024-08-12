@@ -12,6 +12,7 @@ import {
   ilike,
   isNull,
   lte,
+  not,
   or,
 } from "drizzle-orm";
 import { DateTime } from "luxon";
@@ -90,7 +91,10 @@ export async function getNextEvents() {
 
   const nextEvents = await db.query.event.findMany({
     where: (event) =>
-      between(event.startDate, startNextDay.toISO(), endNextDay.toISO()),
+      and(
+        between(event.startDate, startNextDay.toISO(), endNextDay.toISO()),
+        not(event.isPosted),
+      ),
     with: {
       rsvps: {
         orderBy: [rsvp.status, rsvp.updatedAt],
@@ -744,4 +748,23 @@ export async function getCurrentEvents(
   });
 
   return events;
+}
+
+export async function markEventPosted(eventId: string) {
+  const [updatedEvent] = await db
+    .update(event)
+    .set({
+      isPosted: true,
+    })
+    .where(eq(event.id, eventId))
+    .returning();
+
+  if (!updatedEvent) {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to mark event as posted",
+    });
+  }
+
+  return updatedEvent;
 }
