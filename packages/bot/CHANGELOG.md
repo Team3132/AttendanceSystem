@@ -1,5 +1,14 @@
 # bot
 
+## 4.0.10
+
+### Patch Changes
+
+- [#1592](https://github.com/Team3132/AttendanceSystem/pull/1592) [`fd902f3`](https://github.com/Team3132/AttendanceSystem/commit/fd902f3c7a8ef39cebdea198449f497b6637111a) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix Duplicate Posts after a rsvp message is requested
+
+- Updated dependencies [[`fd902f3`](https://github.com/Team3132/AttendanceSystem/commit/fd902f3c7a8ef39cebdea198449f497b6637111a)]:
+  - backend@4.0.10
+
 ## 4.0.9
 
 ### Patch Changes
