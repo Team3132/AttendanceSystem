@@ -47,6 +47,8 @@ export class RequestRsvpCommand {
     const fetchedRSVPs =
       await this.backendClient.client.bot.getEventRsvps.query(meeting);
 
+    await this.backendClient.client.bot.markEventPosted.mutate(meeting);
+
     return interaction.reply(
       rsvpReminderMessage(
         eventDetails,

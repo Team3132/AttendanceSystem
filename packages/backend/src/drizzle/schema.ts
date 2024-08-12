@@ -163,6 +163,7 @@ export const event = pgTable(
     type: eventTypes("type").default("Regular").notNull(),
     secret: text("secret").notNull(),
     isSyncedEvent: boolean("isSyncedEvent").default(false).notNull(),
+    isPosted: boolean("isPosted").default(false).notNull(),
   },
   (table) => {
     return {
