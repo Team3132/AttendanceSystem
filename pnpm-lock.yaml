@@ -12,7 +12,7 @@ importers:
         specifier: 1.8.3
         version: 1.8.3
       '@changesets/changelog-github':
-        specifier: ^0.5.0
+        specifier: 0.5.0
         version: 0.5.0
       '@changesets/cli':
         specifier: 2.27.7
