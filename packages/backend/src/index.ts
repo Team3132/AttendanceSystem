@@ -19,7 +19,7 @@ import { generateState, OAuth2RequestError } from "arctic";
 import { discord, lucia } from "./auth/lucia";
 import { DiscordAPIError, REST } from "@discordjs/rest";
 import { API } from "@discordjs/core";
-import { csrfPlugin } from "auth/csrf";
+import { csrfPlugin } from "./auth/csrf";
 
 Settings.defaultLocale = "en-au";
 Settings.defaultZone = "Australia/Sydney";
