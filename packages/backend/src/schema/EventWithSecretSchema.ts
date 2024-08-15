@@ -1,4 +1,4 @@
 import { createSelectSchema } from "drizzle-zod";
-import { event } from "../drizzle/schema";
+import { eventTable } from "../drizzle/schema";
 
-export const EventWithSecretSchema = createSelectSchema(event);
+export const EventWithSecretSchema = createSelectSchema(eventTable);

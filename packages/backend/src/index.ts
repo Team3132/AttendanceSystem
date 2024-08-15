@@ -1,25 +1,24 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import fastifyCookie from "@fastify/cookie";
-import fastifyPassport from "@fastify/passport";
-import fastifySecureSession from "@fastify/secure-session";
 import fastifyStatic from "@fastify/static";
 import ws from "@fastify/websocket";
 import { fastifyTRPCPlugin } from "@trpc/server/adapters/fastify";
 import type { TRPCReconnectNotification } from "@trpc/server/rpc";
-import { eq } from "drizzle-orm";
 import fastify from "fastify";
 import { Settings } from "luxon";
 import type { WebSocket } from "ws";
-import discordStrategy from "./auth/Discord.strategy";
 import db, { migrate } from "./drizzle/db";
-import { user } from "./drizzle/schema";
+import { userTable } from "./drizzle/schema";
 import env, { isProd } from "./env";
 import mainLogger from "./logger";
 import { registerCron } from "./registerCron";
 import appRouter, { type AppRouter } from "./routers/app.router";
 import { createContext } from "./trpc/context";
-import jwt from "@fastify/jwt";
+import { generateState, OAuth2RequestError } from "arctic";
+import { discord, lucia } from "auth/lucia";
+import { DiscordAPIError, REST } from "@discordjs/rest";
+import { API } from "@discordjs/core";
 
 Settings.defaultLocale = "en-au";
 Settings.defaultZone = "Australia/Sydney";
@@ -33,21 +32,6 @@ const server = fastify({
 });
 
 await server.register(fastifyCookie);
-
-await server.register(fastifySecureSession, {
-  cookieName: "session",
-  key: Buffer.from(env.SESSION_SECRET, "hex"),
-  cookie: {
-    path: "/",
-    sameSite: "strict",
-    secure: isProd,
-    httpOnly: true,
-  },
-});
-
-// await server.register(jwt, {
-//   secret: env.JWT_SECRET,
-// })
 
 await server.register(ws, {
   preClose: async (done) => {
@@ -74,60 +58,124 @@ server.websocketServer.on("connection", (socket: WebSocket) => {
   });
 });
 
-await server.register(fastifyPassport.initialize());
-await server.register(fastifyPassport.secureSession());
-await fastifyPassport.use("discord", discordStrategy);
-
-type User = typeof user.$inferSelect;
-
-declare module "fastify" {
-  interface PassportUser extends User {}
-}
-
-// register a serializer that stores the user object's id in the session ...
-fastifyPassport.registerUserSerializer(async (user: User) => user.id);
-
-// ... and then a deserializer that will fetch that user from the database when a request with an id in the session arrives
-fastifyPassport.registerUserDeserializer(async (id: string) => {
-  const [dbUser] = await db.select().from(user).where(eq(user.id, id)).limit(1);
-
-  if (!dbUser) {
-    return null;
-  }
-
-  return dbUser;
-});
-
 await server.register(fastifyTRPCPlugin, {
   prefix: "/api/trpc",
   useWSS: true,
   trpcOptions: { router: appRouter, createContext },
 });
 
-await server.get("/api/auth/discord", {
-  preValidation: fastifyPassport.authenticate("discord", { authInfo: false }),
-  handler: async (_req, res) => {
-    return res.redirect(env.FRONTEND_URL);
-  },
+await server.get("/api/auth/discord", async (req, res) => {
+  const state = generateState();
+  const url = await discord.createAuthorizationURL(state, {
+    scopes: ["identify", "guilds", "guilds.members.read"],
+  });
+
+  return res
+    .setCookie("discord_oauth_state", state, {
+      path: "/",
+      secure: isProd,
+      httpOnly: true,
+      maxAge: 60 * 10,
+      sameSite: "lax",
+    })
+    .redirect(url.toString());
 });
 
-await server.get("/api/auth/discord/callback", {
-  preValidation: fastifyPassport.authenticate("discord", {
-    authInfo: false,
-    failureRedirect: "/login",
-    successRedirect: env.FRONTEND_URL,
-  }),
-  handler: async (_req, res) => {
-    return res.redirect(env.FRONTEND_URL);
+interface DiscordCallbackQuerystring {
+  code: string;
+  state: string;
+}
+
+await server.route<{ Querystring: DiscordCallbackQuerystring }>({
+  method: "GET",
+  url: "/api/auth/discord/callback",
+  schema: {
+    querystring: {
+      type: "object",
+      properties: {
+        code: { type: "string" },
+        state: { type: "string" },
+      },
+      required: ["code", "state"],
+    },
+  },
+  handler: async (req, res) => {
+    const { code, state } = req.query;
+
+    const discordState = req.cookies.discord_oauth_state;
+
+    if (discordState !== state) {
+      res.redirect(env.FRONTEND_URL).send(); // TODO: Redirect to an error page
+    }
+
+    // Clear the state cookie
+    res.clearCookie("discord_oauth_state");
+
+    try {
+      const tokens = await discord.validateAuthorizationCode(code);
+      console.log(tokens);
+      const rest = new REST({ version: "10", authPrefix: "Bearer" }).setToken(
+        tokens.accessToken,
+      );
+      const api = new API(rest);
+
+      const discordUserGuilds = await api.users.getGuilds();
+
+      const validGuild =
+        discordUserGuilds.findIndex((guild) => guild.id === env.GUILD_ID) !==
+        -1;
+
+      if (!validGuild) {
+        return res.redirect(env.FRONTEND_URL); // TODO: Redirect to an error page
+      }
+
+      const discordUser = await api.users.get("@me");
+
+      const guildMember = await api.users.getGuildMember(env.GUILD_ID);
+
+      const [authedUser] = await db
+        .insert(userTable)
+        .values({
+          id: discordUser.id,
+          username: guildMember.nick || discordUser.username,
+          roles: guildMember.roles,
+        })
+        .onConflictDoUpdate({
+          target: userTable.id,
+          set: {
+            username: guildMember.nick || discordUser.username,
+            roles: guildMember.roles,
+            updatedAt: new Date().toISOString(),
+          },
+        })
+        .returning();
+
+      if (!authedUser) {
+        res.redirect(env.FRONTEND_URL).send(); // TODO: Redirect to an error page
+      }
+
+      const session = await lucia.createSession(discordUser.id, {});
+
+      const sessionCookie = lucia.createSessionCookie(session.id);
+      res
+        .header("Set-Cookie", sessionCookie.serialize())
+        .redirect(env.FRONTEND_URL)
+        .send();
+    } catch (error) {
+      if (error instanceof OAuth2RequestError) {
+        mainLogger.error(error);
+      } else if (error instanceof DiscordAPIError) {
+        mainLogger.error(error);
+      } else if (error instanceof Error) {
+        mainLogger.error(error);
+      } else {
+        mainLogger.error("Unknown error", error);
+      }
+
+      res.redirect(env.FRONTEND_URL).send(); // TODO: Redirect to an error page
+    }
   },
 });
-
-// await server.get("/api/auth/discord-desktop", {
-//   preValidation: fastifyPassport.authenticate("discord", { authInfo: false }),
-//   handler: async (_req, res) => {
-//     return res.redirect(env.FRONTEND_URL);
-//   },
-// })
 
 // await server.get("/api/auth/discord-desktop/callback", {
 //   preValidation: fastifyPassport.authenticate("discord", {

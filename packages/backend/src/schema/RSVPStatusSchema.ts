@@ -1,4 +1,4 @@
 import { z } from "zod";
-import { rsvp } from "../drizzle/schema";
+import { rsvpTable } from "../drizzle/schema";
 
-export const RSVPStatusSchema = z.enum(rsvp.status.enumValues);
+export const RSVPStatusSchema = z.enum(rsvpTable.status.enumValues);
