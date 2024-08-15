@@ -1,5 +1,11 @@
 # backend
 
+## 4.1.3
+
+### Patch Changes
+
+- [`cbb17b6`](https://github.com/Team3132/AttendanceSystem/commit/cbb17b64283940da3f8fe57f41bef1eb0d763784) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix backend error
+
 ## 4.1.2
 
 ### Patch Changes
