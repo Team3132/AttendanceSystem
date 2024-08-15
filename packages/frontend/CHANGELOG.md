@@ -1,5 +1,14 @@
 # frontend
 
+## 4.1.1
+
+### Patch Changes
+
+- [`63d4b57`](https://github.com/Team3132/AttendanceSystem/commit/63d4b576d9ff3948df70893ecbffedd802c6d54c) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix copy
+
+- Updated dependencies []:
+  - backend@4.1.1
+
 ## 4.1.0
 
 ### Patch Changes
