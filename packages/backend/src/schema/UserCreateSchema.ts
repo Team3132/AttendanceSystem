@@ -1,8 +1,8 @@
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
-import { user } from "../drizzle/schema";
+import { userTable } from "../drizzle/schema";
 
-export const UserCreateSchema = createInsertSchema(user, {
+export const UserCreateSchema = createInsertSchema(userTable, {
   roles: z.array(z.string()).nullable(),
 }).omit({
   createdAt: true,

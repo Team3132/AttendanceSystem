@@ -3,7 +3,7 @@ import { TRPCError } from "@trpc/server";
 import { and, count, eq, ilike, isNotNull, isNull } from "drizzle-orm";
 import type { z } from "zod";
 import db from "../drizzle/db";
-import { buildPoints, scancode, user } from "../drizzle/schema";
+import { buildPointsTable, scancodeTable, userTable } from "../drizzle/schema";
 import { ee } from "../routers/app.router";
 import type { AddBuildPointsUserSchema, UserCreateSchema } from "../schema";
 import type { GetBuildPointsSchema } from "../schema/GetBuildPointsSchema";
@@ -18,7 +18,7 @@ import type { UserListParamsSchema } from "../schema/UserListParamsSchema";
  * @returns The user object
  */
 export async function getUser(userId: string) {
-  const dbUser = await db.query.user.findFirst({
+  const dbUser = await db.query.userTable.findFirst({
     where: (user) => eq(user.id, userId),
   });
 
@@ -38,7 +38,7 @@ export async function getUser(userId: string) {
  * @returns The scancodes for the user
  */
 export function getUserScancodes(userId: string) {
-  return db.query.scancode.findMany({
+  return db.query.scancodeTable.findMany({
     where: (scancode) => eq(scancode.userId, userId),
   });
 }
@@ -49,7 +49,7 @@ export function getUserScancodes(userId: string) {
  * @returns The pending RSVPs for the user
  */
 export async function getPendingUserRsvps(userId: string) {
-  const rsvps = await db.query.rsvp.findMany({
+  const rsvps = await db.query.rsvpTable.findMany({
     where: (rsvp) =>
       and(
         eq(rsvp.userId, userId),
@@ -90,8 +90,8 @@ export async function getUserList(
     .select({
       total: count(),
     })
-    .from(user)
-    .where(ilike(user.username, `%${params.search}%`));
+    .from(userTable)
+    .where(ilike(userTable.username, `%${params.search}%`));
 
   if (totalData) {
     total = totalData.total;
@@ -99,7 +99,7 @@ export async function getUserList(
 
   const nextPage = total > offset + limit ? page + 1 : undefined;
 
-  const users = await db.query.user.findMany({
+  const users = await db.query.userTable.findMany({
     where: (user) => ilike(user.username, `%${params.search}%`),
     limit,
     offset,
@@ -116,8 +116,8 @@ export async function getUserList(
 export async function createUserScancode(userId: string, scancodeCode: string) {
   const [dbScancode] = await db
     .select()
-    .from(scancode)
-    .where(eq(scancode.code, scancodeCode))
+    .from(scancodeTable)
+    .where(eq(scancodeTable.code, scancodeCode))
     .limit(1);
 
   if (dbScancode) {
@@ -128,7 +128,7 @@ export async function createUserScancode(userId: string, scancodeCode: string) {
   }
 
   const [createdScancode] = await db
-    .insert(scancode)
+    .insert(scancodeTable)
     .values({
       userId,
       code: scancodeCode,
@@ -150,8 +150,8 @@ export async function createUserScancode(userId: string, scancodeCode: string) {
 export async function removeScancode(userId: string, code: string) {
   const [dbScancode] = await db
     .select()
-    .from(scancode)
-    .where(and(eq(scancode.userId, userId), eq(scancode.code, code)))
+    .from(scancodeTable)
+    .where(and(eq(scancodeTable.userId, userId), eq(scancodeTable.code, code)))
     .limit(1);
 
   if (!dbScancode) {
@@ -162,8 +162,8 @@ export async function removeScancode(userId: string, code: string) {
   }
 
   await db
-    .delete(scancode)
-    .where(and(eq(scancode.userId, userId), eq(scancode.code, code)))
+    .delete(scancodeTable)
+    .where(and(eq(scancodeTable.userId, userId), eq(scancodeTable.code, code)))
     .returning();
 
   // if (!deletedScancode) {
@@ -179,14 +179,14 @@ export async function removeScancode(userId: string, code: string) {
 
 export async function createUser(userdata: z.infer<typeof UserCreateSchema>) {
   const [dbUser] = await db
-    .insert(user)
+    .insert(userTable)
     .values({
       ...userdata,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     })
     .onConflictDoUpdate({
-      target: [user.id],
+      target: [userTable.id],
       set: {
         ...userdata,
         updatedAt: new Date().toISOString(),
@@ -207,7 +207,7 @@ export async function createUser(userdata: z.infer<typeof UserCreateSchema>) {
 export async function addUserBuildPoints(
   params: z.infer<typeof AddBuildPointsUserSchema>,
 ) {
-  const user = await db.query.user.findFirst({
+  const user = await db.query.userTable.findFirst({
     where: (user) => eq(user.id, params.userId),
   });
 
@@ -220,7 +220,7 @@ export async function addUserBuildPoints(
   }
 
   const [newBuildPoints] = await db
-    .insert(buildPoints)
+    .insert(buildPointsTable)
     .values({
       userId: params.userId,
       points: params.points,
@@ -254,8 +254,8 @@ export async function getUserBuildPoints(
     .select({
       total: count(),
     })
-    .from(buildPoints)
-    .where(eq(buildPoints.userId, userId));
+    .from(buildPointsTable)
+    .where(eq(buildPointsTable.userId, userId));
 
   if (totalData) {
     total = totalData.total;
@@ -263,7 +263,7 @@ export async function getUserBuildPoints(
 
   const nextPage = total > offset + limit ? page + 1 : undefined;
 
-  const buildPointsRes = await db.query.buildPoints.findMany({
+  const buildPointsRes = await db.query.buildPointsTable.findMany({
     where: (buildPoints) => eq(buildPoints.userId, userId),
     limit,
     offset,
@@ -282,8 +282,8 @@ export async function removeUserBuildPoints(
 ) {
   const { buildPointId } = params;
   const [res] = await db
-    .delete(buildPoints)
-    .where(eq(buildPoints.id, buildPointId))
+    .delete(buildPointsTable)
+    .where(eq(buildPointsTable.id, buildPointId))
     .returning();
 
   if (!res) {

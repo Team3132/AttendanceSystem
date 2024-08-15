@@ -19,7 +19,7 @@ export const eventTypes = pgEnum("EventTypes", [
 ]);
 export const rsvpStatus = pgEnum("RSVPStatus", ["LATE", "MAYBE", "NO", "YES"]);
 
-export const user = pgTable("User", {
+export const userTable = pgTable("User", {
   username: text("username").notNull(),
   createdAt: timestamp("createdAt", {
     precision: 3,
@@ -43,20 +43,34 @@ export const user = pgTable("User", {
     .notNull(),
 });
 
-export const userRelations = relations(user, ({ many }) => ({
-  rsvps: many(rsvp),
-  scancodes: many(scancode),
-  buildPoints: many(buildPoints),
+export const sessionTable = pgTable("session", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => userTable.id),
+  expiresAt: timestamp("expires_at", {
+    withTimezone: true,
+    mode: "date",
+  }).notNull(),
+});
+
+export const userTableRelations = relations(userTable, ({ many }) => ({
+  rsvps: many(rsvpTable),
+  scancodes: many(scancodeTable),
+  buildPoints: many(buildPointsTable),
 }));
 
-export const buildPoints = pgTable("BuildPoints", {
+export const buildPointsTable = pgTable("BuildPoints", {
   id: text("id")
     .primaryKey()
     .notNull()
     .$defaultFn(() => ulid()),
   userId: text("userId")
     .notNull()
-    .references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" }),
+    .references(() => userTable.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
   points: integer("points").notNull(),
   reason: text("reason").notNull().default(""),
   createdAt: timestamp("createdAt", {
@@ -75,11 +89,17 @@ export const buildPoints = pgTable("BuildPoints", {
     .notNull(),
 });
 
-export const buildPointsRelations = relations(buildPoints, ({ one }) => ({
-  user: one(user, { fields: [buildPoints.userId], references: [user.id] }),
-}));
+export const buildPointsTableRelations = relations(
+  buildPointsTable,
+  ({ one }) => ({
+    user: one(userTable, {
+      fields: [buildPointsTable.userId],
+      references: [userTable.id],
+    }),
+  }),
+);
 
-export const rsvp = pgTable(
+export const rsvpTable = pgTable(
   "RSVP",
   {
     id: text("id")
@@ -88,10 +108,16 @@ export const rsvp = pgTable(
       .$default(() => v4()),
     eventId: text("eventId")
       .notNull()
-      .references(() => event.id, { onDelete: "cascade", onUpdate: "cascade" }),
+      .references(() => eventTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
     userId: text("userId")
       .notNull()
-      .references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" }),
+      .references(() => userTable.id, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
     delay: integer("delay"),
     createdAt: timestamp("createdAt", {
       precision: 3,
@@ -135,12 +161,18 @@ export const rsvp = pgTable(
   },
 );
 
-export const rsvpRelations = relations(rsvp, ({ one }) => ({
-  user: one(user, { fields: [rsvp.userId], references: [user.id] }),
-  event: one(event, { fields: [rsvp.eventId], references: [event.id] }),
+export const rsvpTableRelations = relations(rsvpTable, ({ one }) => ({
+  user: one(userTable, {
+    fields: [rsvpTable.userId],
+    references: [userTable.id],
+  }),
+  event: one(eventTable, {
+    fields: [rsvpTable.eventId],
+    references: [eventTable.id],
+  }),
 }));
 
-export const event = pgTable(
+export const eventTable = pgTable(
   "Event",
   {
     id: text("id")
@@ -172,11 +204,11 @@ export const event = pgTable(
   },
 );
 
-export const eventRelations = relations(event, ({ many }) => ({
-  rsvps: many(rsvp),
+export const eventTableRelations = relations(eventTable, ({ many }) => ({
+  rsvps: many(rsvpTable),
 }));
 
-export const scancode = pgTable("Scancode", {
+export const scancodeTable = pgTable("Scancode", {
   code: text("code").primaryKey().notNull(),
   createdAt: timestamp("createdAt", {
     precision: 3,
@@ -194,9 +226,15 @@ export const scancode = pgTable("Scancode", {
     .notNull(),
   userId: text("userId")
     .notNull()
-    .references(() => user.id, { onDelete: "restrict", onUpdate: "cascade" }),
+    .references(() => userTable.id, {
+      onDelete: "restrict",
+      onUpdate: "cascade",
+    }),
 });
 
-export const scancodeRelations = relations(scancode, ({ one }) => ({
-  user: one(user, { fields: [scancode.userId], references: [user.id] }),
+export const scancodeTableRelations = relations(scancodeTable, ({ one }) => ({
+  user: one(userTable, {
+    fields: [scancodeTable.userId],
+    references: [userTable.id],
+  }),
 }));

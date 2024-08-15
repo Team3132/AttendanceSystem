@@ -3,12 +3,12 @@ import { type calendar_v3, google } from "googleapis";
 import { gte, inArray, lte } from "drizzle-orm";
 import { DateTime } from "luxon";
 import db from "../drizzle/db";
-import { event } from "../drizzle/schema";
+import { eventTable } from "../drizzle/schema";
 import env from "../env";
 import mainLogger from "../logger";
 import randomStr from "../utils/randomStr";
 
-type EventInsert = typeof event.$inferInsert;
+type EventInsert = typeof eventTable.$inferInsert;
 
 const client = new google.auth.JWT(
   env.GOOGLE_CLIENT_EMAIL,
@@ -48,7 +48,7 @@ export const syncEvents = async () => {
   const eventLogger = mainLogger.child("Sync Events");
   const events = await getCalendarEvents();
   eventLogger.time("Sync Events");
-  const currentSyncedEventIds = await db.query.event.findMany({
+  const currentSyncedEventIds = await db.query.eventTable.findMany({
     where: (event, { and, eq }) =>
       and(
         gte(event.startDate, DateTime.now().toISO()),
@@ -66,8 +66,8 @@ export const syncEvents = async () => {
 
   const deletedEvents = deletedEventIds.length
     ? await db
-        .delete(event)
-        .where(inArray(event.id, deletedEventIds))
+        .delete(eventTable)
+        .where(inArray(eventTable.id, deletedEventIds))
         .returning()
     : [];
 
@@ -152,11 +152,11 @@ export const syncEvents = async () => {
       } satisfies Partial<EventInsert>;
 
       await db
-        .insert(event)
+        .insert(eventTable)
         .values(newEvent)
         .onConflictDoUpdate({
           set: updatedEvent,
-          target: [event.id],
+          target: [eventTable.id],
         });
 
       updatedEvents++;

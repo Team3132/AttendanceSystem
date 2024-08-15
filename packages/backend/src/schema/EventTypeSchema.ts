@@ -1,4 +1,4 @@
 import { z } from "zod";
-import { event } from "../drizzle/schema";
+import { eventTable } from "../drizzle/schema";
 
-export const EventTypeSchema = z.enum(event.type.enumValues);
+export const EventTypeSchema = z.enum(eventTable.type.enumValues);
