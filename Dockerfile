@@ -4,7 +4,7 @@ ENV PATH="$PNPM_HOME:$PATH"
 WORKDIR /app
 RUN corepack enable
 
-FROM base as build
+FROM base AS build
 COPY . .
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 ARG VERSION
@@ -13,9 +13,8 @@ RUN pnpm run -r build
 RUN pnpm deploy --filter backend --prod /opt/backend
 # COPY /app/packages/frontend/dist /opt/backend/dist/frontend
 RUN pnpm deploy --filter bot --prod /opt/bot
-COPY /app/packages/frontend/dist /opt/frontend/dist
 
-FROM base as backend-runner
+FROM base AS backend-runner
 ARG VERSION
 ENV VERSION=$VERSION
 ENV NODE_ENV=production
@@ -24,13 +23,13 @@ COPY --from=build /app/packages/frontend/dist /app/dist/frontend
 EXPOSE 3000
 CMD [ "pnpm", "start" ]
 
-FROM base as bot-runner
+FROM base AS bot-runner
 ARG VERSION
 ENV VERSION=$VERSION
 ENV NODE_ENV=production
 COPY --from=build /opt/bot /app
 CMD [ "pnpm", "start" ]
 
-FROM caddy:2.8 as frontend-runner
+FROM caddy:2.8 AS frontend-runner
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=build /app/packages/frontend/dist /usr/share/caddy
