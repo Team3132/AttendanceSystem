@@ -60,7 +60,7 @@ server.websocketServer.on("connection", (socket: WebSocket) => {
 });
 
 await server.register(csrfPlugin, {
-  enabled: isProd,
+  enabled: false,
 });
 
 await server.register(fastifyTRPCPlugin, {

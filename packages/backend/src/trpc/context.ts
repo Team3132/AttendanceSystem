@@ -1,10 +1,15 @@
 import type { CreateFastifyContextOptions } from "@trpc/server/adapters/fastify";
 import { lucia } from "../auth/lucia";
+import env from "../env";
 
 const dummyLogout = async () => {};
 
 export async function createContext({ req, res }: CreateFastifyContextOptions) {
   const { headers, ws, cookies } = req;
+
+  if (headers.authorization === `Bearer ${env.BACKEND_SECRET_TOKEN}`) {
+    return { user: null, logOut: dummyLogout, headers };
+  }
 
   // Get the bearer token session
   const sessionIdAuthorization = lucia.readBearerToken(
