@@ -31,7 +31,7 @@ const server = fastify({
   maxParamLength: 5000,
 });
 
-await server.register(fastifyCookie);
+await server.register(fastifyCookie, { secret: env.SESSION_SECRET });
 
 await server.register(ws, {
   preClose: async (done) => {
