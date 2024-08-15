@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { event } from "../drizzle/schema";
+import { eventTable } from "../drizzle/schema";
 
 export const GetEventParamsSchema = z.object({
   from: z
@@ -19,5 +19,8 @@ export const GetEventParamsSchema = z.object({
     .default(10)
     .describe("The number of events to return"),
   cursor: z.number().nonnegative().default(0).describe("The page number"),
-  type: z.enum(event.type.enumValues).optional().describe("The type of event"),
+  type: z
+    .enum(eventTable.type.enumValues)
+    .optional()
+    .describe("The type of event"),
 });

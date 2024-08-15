@@ -18,7 +18,7 @@ import {
 import { DateTime } from "luxon";
 import type { z } from "zod";
 import db from "../drizzle/db";
-import { event, rsvp } from "../drizzle/schema";
+import { eventTable, rsvpTable } from "../drizzle/schema";
 import env from "../env";
 import { ee } from "../routers/app.router";
 import type { RSVPUserSchema, UserCheckinSchema } from "../schema";
@@ -58,7 +58,7 @@ new Worker(
 
     const currentTime = DateTime.local();
 
-    const fetchedEvent = await db.query.event.findFirst({
+    const fetchedEvent = await db.query.eventTable.findFirst({
       where: (event, { eq }) => eq(event.id, eventId),
     });
 
@@ -70,11 +70,11 @@ new Worker(
       currentTime > eventEndTime ? eventEndTime : currentTime;
 
     await db
-      .update(rsvp)
+      .update(rsvpTable)
       .set({
         checkoutTime: checkoutTime.toISO(),
       })
-      .where(and(eq(rsvp.id, rsvpId), isNull(rsvp.checkoutTime)));
+      .where(and(eq(rsvpTable.id, rsvpId), isNull(rsvpTable.checkoutTime)));
   },
   {
     connection: { host: env.REDIS_HOST, port: env.REDIS_PORT, db: 2 },
@@ -89,7 +89,7 @@ export async function getNextEvents() {
 
   const endNextDay = startNextDay.endOf("day");
 
-  const nextEvents = await db.query.event.findMany({
+  const nextEvents = await db.query.eventTable.findMany({
     where: (event) =>
       and(
         between(event.startDate, startNextDay.toISO(), endNextDay.toISO()),
@@ -97,7 +97,7 @@ export async function getNextEvents() {
       ),
     with: {
       rsvps: {
-        orderBy: [rsvp.status, rsvp.updatedAt],
+        orderBy: [rsvpTable.status, rsvpTable.updatedAt],
         with: {
           user: {
             columns: {
@@ -131,19 +131,26 @@ export async function getEvents(
 
   if (from && to) {
     conditions.push(
-      or(between(event.startDate, from, to), between(event.endDate, from, to)),
+      or(
+        between(eventTable.startDate, from, to),
+        between(eventTable.endDate, from, to),
+      ),
     );
   } else {
     if (from) {
-      conditions.push(or(gte(event.startDate, from), gte(event.endDate, from)));
+      conditions.push(
+        or(gte(eventTable.startDate, from), gte(eventTable.endDate, from)),
+      );
     }
     if (to) {
-      conditions.push(or(lte(event.startDate, to), lte(event.endDate, to)));
+      conditions.push(
+        or(lte(eventTable.startDate, to), lte(eventTable.endDate, to)),
+      );
     }
   }
 
   if (type) {
-    conditions.push(eq(event.type, type));
+    conditions.push(eq(eventTable.type, type));
   }
 
   const offset = page * limit;
@@ -154,7 +161,7 @@ export async function getEvents(
     .select({
       total: count(),
     })
-    .from(event)
+    .from(eventTable)
     .where(andConditions);
 
   if (!totalEntry) {
@@ -164,7 +171,7 @@ export async function getEvents(
     });
   }
 
-  const events = await db.query.event.findMany({
+  const events = await db.query.eventTable.findMany({
     where: andConditions,
     limit,
     offset,
@@ -197,7 +204,7 @@ export async function getEvents(
 export async function getEvent(
   id: string,
 ): Promise<z.infer<typeof EventSchema>> {
-  const dbEvent = await db.query.event.findFirst({
+  const dbEvent = await db.query.eventTable.findFirst({
     where: (event) => eq(event.id, id),
   });
 
@@ -221,7 +228,7 @@ export async function getEvent(
 export async function getEventSecret(id: string): Promise<{
   secret: string;
 }> {
-  const dbEvent = await db.query.event.findFirst({
+  const dbEvent = await db.query.eventTable.findFirst({
     where: (event) => eq(event.id, id),
   });
 
@@ -244,7 +251,7 @@ export async function getEventSecret(id: string): Promise<{
  * @returns The RSVP of the user for the event
  */
 export async function getEventRsvp(eventId: string, userId: string) {
-  const eventRsvp = await db.query.rsvp.findFirst({
+  const eventRsvp = await db.query.rsvpTable.findFirst({
     where: (rsvp, { and }) =>
       and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
   });
@@ -259,7 +266,7 @@ export async function getEventRsvp(eventId: string, userId: string) {
 export async function getEventRsvps(
   eventId: string,
 ): Promise<Array<z.infer<typeof RSVPUserSchema>>> {
-  const eventRsvps = await db.query.rsvp.findMany({
+  const eventRsvps = await db.query.rsvpTable.findMany({
     where: (rsvp, { and }) => and(eq(rsvp.eventId, eventId)),
     orderBy: (rsvp) => [asc(rsvp.updatedAt)],
     with: {
@@ -277,7 +284,7 @@ export async function getEventRsvps(
  */
 export async function createEvent(params: z.infer<typeof CreateEventSchema>) {
   const [createdEvent] = await db
-    .insert(event)
+    .insert(eventTable)
     .values({
       ...params,
       secret: randomStr(8),
@@ -308,9 +315,9 @@ export async function updateEvent(
 ): Promise<z.infer<typeof EventSchema>> {
   const { id: eventId, ...data } = params;
   const [updatedEvent] = await db
-    .update(event)
+    .update(eventTable)
     .set(data)
-    .where(eq(event.id, eventId))
+    .where(eq(eventTable.id, eventId))
     .returning();
 
   if (!updatedEvent) {
@@ -334,8 +341,8 @@ export async function updateEvent(
  */
 export async function deleteEvent(id: string) {
   const [deletedEvent] = await db
-    .delete(event)
-    .where(eq(event.id, id))
+    .delete(eventTable)
+    .where(eq(eventTable.id, id))
     .returning();
 
   if (!deletedEvent) {
@@ -362,7 +369,7 @@ export async function editUserRsvpStatus(
 ) {
   const { eventId, status, delay } = params;
   const [updatedRsvp] = await db
-    .insert(rsvp)
+    .insert(rsvpTable)
     .values({
       userId,
       eventId,
@@ -376,7 +383,7 @@ export async function editUserRsvpStatus(
         status,
         delay,
       },
-      target: [rsvp.eventId, rsvp.userId],
+      target: [rsvpTable.eventId, rsvpTable.userId],
     })
     .returning();
 
@@ -400,8 +407,8 @@ export async function editUserRsvpStatus(
  */
 export async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
   const { eventId, userId } = params;
-  const dbEvent = await db.query.event.findFirst({
-    where: eq(event.id, eventId),
+  const dbEvent = await db.query.eventTable.findFirst({
+    where: eq(eventTable.id, eventId),
   });
 
   if (!dbEvent) {
@@ -414,7 +421,7 @@ export async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
   const eventStartDateTime = DateTime.fromMillis(Date.parse(dbEvent.startDate));
   const eventEndDateTime = DateTime.fromMillis(Date.parse(dbEvent.endDate));
 
-  const currentRSVP = await db.query.rsvp.findFirst({
+  const currentRSVP = await db.query.rsvpTable.findFirst({
     where: (rsvp, { and }) =>
       and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
   });
@@ -427,7 +434,7 @@ export async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
   }
 
   const [updatedRsvp] = await db
-    .insert(rsvp)
+    .insert(rsvpTable)
     .values({
       userId,
       eventId,
@@ -450,7 +457,7 @@ export async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
         ).toISO(),
         updatedAt: DateTime.local().toISO(),
       },
-      target: [rsvp.eventId, rsvp.userId],
+      target: [rsvpTable.eventId, rsvpTable.userId],
     })
     .returning();
 
@@ -485,7 +492,7 @@ export async function userScanin(params: z.infer<typeof ScaninSchema>) {
   const { eventId, scancode: code } = params;
 
   // find scancode
-  const dbScancode = await db.query.scancode.findFirst({
+  const dbScancode = await db.query.scancodeTable.findFirst({
     where: (scancode) => eq(scancode.code, code),
   });
 
@@ -511,13 +518,13 @@ export async function userScanin(params: z.infer<typeof ScaninSchema>) {
  * @returns The updated rsvp
  */
 export async function userCheckout(userId: string, eventId: string) {
-  const existingRsvp = await db.query.rsvp.findFirst({
+  const existingRsvp = await db.query.rsvpTable.findFirst({
     where: (rsvp, { and }) =>
       and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
   });
 
-  const existingEvent = await db.query.event.findFirst({
-    where: eq(event.id, eventId),
+  const existingEvent = await db.query.eventTable.findFirst({
+    where: eq(eventTable.id, eventId),
   });
 
   if (!existingRsvp) {
@@ -556,7 +563,7 @@ export async function userCheckout(userId: string, eventId: string) {
   );
 
   const [updatedRsvp] = await db
-    .insert(rsvp)
+    .insert(rsvpTable)
     .values({
       userId,
       eventId,
@@ -579,7 +586,7 @@ export async function userCheckout(userId: string, eventId: string) {
         ).toISO(),
         updatedAt: DateTime.local().toISO(),
       },
-      target: [rsvp.eventId, rsvp.userId],
+      target: [rsvpTable.eventId, rsvpTable.userId],
     })
     .returning();
 
@@ -611,7 +618,7 @@ export async function editUserAttendance(
   }
 
   const [updatedRsvp] = await db
-    .insert(rsvp)
+    .insert(rsvpTable)
     .values({
       userId,
       eventId,
@@ -628,7 +635,7 @@ export async function editUserAttendance(
         checkoutTime,
         updatedAt: DateTime.local().toISO(),
       },
-      target: [rsvp.eventId, rsvp.userId],
+      target: [rsvpTable.eventId, rsvpTable.userId],
     })
     .returning();
 
@@ -651,8 +658,8 @@ export async function selfCheckin(
   params: z.infer<typeof SelfCheckinSchema>,
 ) {
   const { eventId, secret } = params;
-  const dbEvent = await db.query.event.findFirst({
-    where: eq(event.id, eventId),
+  const dbEvent = await db.query.eventTable.findFirst({
+    where: eq(eventTable.id, eventId),
   });
 
   if (!dbEvent) {
@@ -682,7 +689,7 @@ export async function createBlankUserRsvp(
 ) {
   const { userId, eventId } = params;
   const [createdRsvp] = await db
-    .insert(rsvp)
+    .insert(rsvpTable)
     .values({
       userId,
       eventId,
@@ -695,7 +702,7 @@ export async function createBlankUserRsvp(
         eventId,
         updatedAt: DateTime.local().toISO(),
       },
-      target: [rsvp.eventId, rsvp.userId],
+      target: [rsvpTable.eventId, rsvpTable.userId],
     })
     .returning();
 
@@ -712,7 +719,7 @@ export async function createBlankUserRsvp(
 }
 
 export async function getAutocompleteEvents(like?: string) {
-  const events = await db.query.event.findMany({
+  const events = await db.query.eventTable.findMany({
     where: (event) => {
       const conditions: Array<SQL<unknown>> = [
         gte(event.endDate, DateTime.local().toISO()),
@@ -743,7 +750,7 @@ export async function getCurrentEvents(
 ): Promise<z.infer<typeof EventWithSecretArraySchema>> {
   const now = DateTime.now().minus({ minutes: leewayMinutes }).toISO();
 
-  const events = await db.query.event.findMany({
+  const events = await db.query.eventTable.findMany({
     where: (event) => and(gte(event.startDate, now), lte(event.endDate, now)),
   });
 
@@ -752,11 +759,11 @@ export async function getCurrentEvents(
 
 export async function markEventPosted(eventId: string) {
   const [updatedEvent] = await db
-    .update(event)
+    .update(eventTable)
     .set({
       isPosted: true,
     })
-    .where(eq(event.id, eventId))
+    .where(eq(eventTable.id, eventId))
     .returning();
 
   if (!updatedEvent) {

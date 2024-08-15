@@ -1,4 +1,4 @@
 import { createSelectSchema } from "drizzle-zod";
-import { buildPoints } from "../drizzle/schema";
+import { buildPointsTable } from "../drizzle/schema";
 
-export const BuildPointSchema = createSelectSchema(buildPoints);
+export const BuildPointSchema = createSelectSchema(buildPointsTable);

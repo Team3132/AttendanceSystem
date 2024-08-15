@@ -1,8 +1,8 @@
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
-import { event } from "../drizzle/schema";
+import { eventTable } from "../drizzle/schema";
 
-export const EditEventSchema = createInsertSchema(event)
+export const EditEventSchema = createInsertSchema(eventTable)
   .omit({
     secret: true,
     isSyncedEvent: true,

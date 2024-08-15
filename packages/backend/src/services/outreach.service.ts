@@ -13,7 +13,12 @@ import {
 import { DateTime } from "luxon";
 import type { z } from "zod";
 import db from "../drizzle/db";
-import { buildPoints, event, rsvp, user } from "../drizzle/schema";
+import {
+  buildPointsTable,
+  eventTable,
+  rsvpTable,
+  userTable,
+} from "../drizzle/schema";
 import env from "../env";
 import { OutreachTimeSchema } from "../schema/OutreachTimeSchema";
 import type { PagedBuildPointUsersSchema } from "../schema/PagedBuildPointUsersSchema";
@@ -47,28 +52,28 @@ export async function getOutreachTime(
     await tx.execute(sql`SET LOCAL intervalstyle = 'iso_8601'`); // set the interval style to iso_8601
 
     const conditionalAnd = and(
-      eq(event.type, "Outreach"),
-      not(arrayOverlaps(user.roles, [env.MENTOR_ROLE_ID])),
-      isNotNull(rsvp.checkinTime),
-      isNotNull(rsvp.checkoutTime),
-      gte(event.startDate, aprilIsoDate),
+      eq(eventTable.type, "Outreach"),
+      not(arrayOverlaps(userTable.roles, [env.MENTOR_ROLE_ID])),
+      isNotNull(rsvpTable.checkinTime),
+      isNotNull(rsvpTable.checkoutTime),
+      gte(eventTable.startDate, aprilIsoDate),
     );
 
     const items = await tx
       .select({
         /** Username */
-        username: user.username,
+        username: userTable.username,
         /** UserId */
-        userId: user.id,
+        userId: userTable.id,
         /** Duration (in ISO8601 format) */
-        duration: sql<string>`sum(${rsvp.checkoutTime} - ${rsvp.checkinTime})`,
+        duration: sql<string>`sum(${rsvpTable.checkoutTime} - ${rsvpTable.checkinTime})`,
       })
-      .from(rsvp)
-      .groupBy(user.id)
-      .innerJoin(event, eq(rsvp.eventId, event.id))
-      .innerJoin(user, eq(rsvp.userId, user.id))
+      .from(rsvpTable)
+      .groupBy(userTable.id)
+      .innerJoin(eventTable, eq(rsvpTable.eventId, eventTable.id))
+      .innerJoin(userTable, eq(rsvpTable.userId, userTable.id))
       .orderBy(
-        sql<string>`sum(${rsvp.checkoutTime} - ${rsvp.checkinTime}) DESC`,
+        sql<string>`sum(${rsvpTable.checkoutTime} - ${rsvpTable.checkinTime}) DESC`,
       )
       .where(conditionalAnd)
       .limit(limit)
@@ -76,12 +81,12 @@ export async function getOutreachTime(
 
     const usersQuery = tx
       .select({
-        userId: user.id,
+        userId: userTable.id,
       })
-      .from(rsvp)
-      .groupBy(user.id)
-      .innerJoin(event, eq(rsvp.eventId, event.id))
-      .innerJoin(user, eq(rsvp.userId, user.id))
+      .from(rsvpTable)
+      .groupBy(userTable.id)
+      .innerJoin(eventTable, eq(rsvpTable.eventId, eventTable.id))
+      .innerJoin(userTable, eq(rsvpTable.userId, userTable.id))
       .where(conditionalAnd)
       .as("usersQuery");
 
@@ -139,35 +144,35 @@ export async function getBuildPoints(
   const offset = page * limit;
 
   const conditionalAnd = and(
-    not(arrayOverlaps(user.roles, [env.MENTOR_ROLE_ID])),
-    gte(buildPoints.createdAt, aprilIsoDate),
+    not(arrayOverlaps(userTable.roles, [env.MENTOR_ROLE_ID])),
+    gte(buildPointsTable.createdAt, aprilIsoDate),
   );
 
   const items = await db
     .select({
       /** Username */
-      username: user.username,
+      username: userTable.username,
       /** UserId */
-      userId: user.id,
-      points: sql<string>`sum(${buildPoints.points})`,
+      userId: userTable.id,
+      points: sql<string>`sum(${buildPointsTable.points})`,
     })
-    .from(buildPoints)
-    .groupBy(user.id)
-    .having(gte(sum(buildPoints.points), 1))
-    .innerJoin(user, eq(buildPoints.userId, user.id))
-    .orderBy(desc(sum(buildPoints.points)))
+    .from(buildPointsTable)
+    .groupBy(userTable.id)
+    .having(gte(sum(buildPointsTable.points), 1))
+    .innerJoin(userTable, eq(buildPointsTable.userId, userTable.id))
+    .orderBy(desc(sum(buildPointsTable.points)))
     .where(conditionalAnd)
     .limit(limit)
     .offset(offset);
 
   const usersQuery = db
     .select({
-      userId: user.id,
+      userId: userTable.id,
     })
-    .from(buildPoints)
-    .groupBy(user.id)
-    .having(gte(sum(buildPoints.points), 1))
-    .innerJoin(user, eq(buildPoints.userId, user.id))
+    .from(buildPointsTable)
+    .groupBy(userTable.id)
+    .having(gte(sum(buildPointsTable.points), 1))
+    .innerJoin(userTable, eq(buildPointsTable.userId, userTable.id))
     .where(conditionalAnd)
     .as("usersQuery");
 
