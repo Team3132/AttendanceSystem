@@ -42,7 +42,7 @@ importers:
         specifier: 10.0.1
         version: 10.0.1
       '@lucia-auth/adapter-drizzle':
-        specifier: ^1.1.0
+        specifier: 1.1.0
         version: 1.1.0(drizzle-orm@0.33.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@18.3.3)(postgres@3.4.4)(react@18.3.1))(lucia@3.2.0)
       '@trpc/client':
         specifier: 11.0.0-rc.477
@@ -54,7 +54,7 @@ importers:
         specifier: 11.0.0-rc.477
         version: 11.0.0-rc.477
       arctic:
-        specifier: ^1.9.2
+        specifier: 1.9.2
         version: 1.9.2
       bullmq:
         specifier: 5.12.6
@@ -84,7 +84,7 @@ importers:
         specifier: 140.0.1
         version: 140.0.1
       lucia:
-        specifier: ^3.2.0
+        specifier: 3.2.0
         version: 3.2.0
       luxon:
         specifier: 3.5.0
