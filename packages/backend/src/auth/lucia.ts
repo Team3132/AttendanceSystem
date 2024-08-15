@@ -1,10 +1,9 @@
 import { Lucia } from "lucia";
 import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
-import { sessionTable, userTable } from "drizzle/schema";
-import db from "drizzle/db";
+import { sessionTable, userTable } from "../drizzle/schema";
+import db from "../drizzle/db";
 import { Discord } from "arctic";
-import env from "env";
-import { REST } from "@discordjs/rest";
+import env from "../env";
 
 const adapter = new DrizzlePostgreSQLAdapter(db, sessionTable, userTable); // your adapter
 

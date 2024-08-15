@@ -16,7 +16,7 @@ import { registerCron } from "./registerCron";
 import appRouter, { type AppRouter } from "./routers/app.router";
 import { createContext } from "./trpc/context";
 import { generateState, OAuth2RequestError } from "arctic";
-import { discord, lucia } from "auth/lucia";
+import { discord, lucia } from "./auth/lucia";
 import { DiscordAPIError, REST } from "@discordjs/rest";
 import { API } from "@discordjs/core";
 

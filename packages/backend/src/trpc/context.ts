@@ -1,5 +1,5 @@
 import type { CreateFastifyContextOptions } from "@trpc/server/adapters/fastify";
-import { lucia } from "auth/lucia";
+import { lucia } from "../auth/lucia";
 
 const dummyLogout = async () => {};
 
