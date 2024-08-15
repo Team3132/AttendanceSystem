@@ -1,5 +1,11 @@
 # backend
 
+## 4.1.0
+
+### Minor Changes
+
+- [#1605](https://github.com/Team3132/AttendanceSystem/pull/1605) [`8165baa`](https://github.com/Team3132/AttendanceSystem/commit/8165baa91ca9ea5a04a03991dd9cfc8f898210c8) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Change Authentication Library to Lucia
+
 ## 4.0.10
 
 ### Patch Changes
