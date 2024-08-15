@@ -13,7 +13,7 @@ import { userTable } from "./drizzle/schema";
 import env, { isProd } from "./env";
 import mainLogger from "./logger";
 import { registerCron } from "./registerCron";
-import appRouter, { type AppRouter } from "./routers/app.router";
+import appRouter, { ee, type AppRouter } from "./routers/app.router";
 import { createContext } from "./trpc/context";
 import { generateState, OAuth2RequestError } from "arctic";
 import { discord, lucia } from "./auth/lucia";
@@ -54,8 +54,10 @@ await server.register(ws, {
 
 server.websocketServer.on("connection", (socket: WebSocket) => {
   console.log(`➕➕ Connection (${server.websocketServer.clients.size})`);
+  ee.emit("onlineCount", server.websocketServer.clients.size);
   socket.once("close", () => {
     console.log(`➖➖ Connection (${server.websocketServer.clients.size})`);
+    ee.emit("onlineCount", server.websocketServer.clients.size);
   });
 });
 

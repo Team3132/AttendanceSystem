@@ -1,4 +1,3 @@
-import { createTRPCReact, getQueryKey } from "@trpc/react-query";
 import { observable } from "@trpc/server/observable";
 import { EventEmitter } from "eventemitter3";
 import z from "zod";
@@ -12,9 +11,16 @@ import { userRouter as usersRouter } from "./users.router";
 
 interface IEventEmitter {
   invalidate: [TRPCQueryKey];
+  onlineCount: [number];
 }
 
 export const ee = new EventEmitter<IEventEmitter>();
+
+let onlineCount = 0;
+
+ee.on("onlineCount", (count) => {
+  onlineCount = count;
+});
 
 type TRPCQueryKey = readonly unknown[];
 
@@ -38,6 +44,21 @@ const appRouter = t.router({
 
       return () => {
         ee.off("invalidate");
+      };
+    });
+  }),
+  frontendOnline: publicProcedure
+    .input(z.void())
+    .output(z.number())
+    .query(() => onlineCount),
+  frontendOnlineSubscription: publicProcedure.subscription(() => {
+    return observable<number>((emit) => {
+      ee.on("onlineCount", (count) => {
+        emit.next(count);
+      });
+
+      return () => {
+        ee.off("onlineCount");
       };
     });
   }),

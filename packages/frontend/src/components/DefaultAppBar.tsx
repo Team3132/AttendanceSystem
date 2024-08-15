@@ -2,6 +2,7 @@ import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
 import { Helmet } from "react-helmet-async";
 import { FaCircleUser } from "react-icons/fa6";
 import AsChildLink from "./AsChildLink";
+import OnlineCountComponent from "./OnlineCount";
 
 interface DefaultAppBarProps {
   title: string;
