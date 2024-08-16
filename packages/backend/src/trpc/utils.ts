@@ -1,6 +1,8 @@
 import { TRPCError } from "@trpc/server";
 import { t } from ".";
 import env from "../env";
+import { lucia } from "../auth/lucia";
+import { Context } from "./context";
 
 /**
  * Public (unauthenticated) procedure
@@ -12,20 +14,84 @@ import env from "../env";
 export const publicProcedure = t.procedure;
 
 /**
+ * Session processor
+ *
+ * This function processes the session data for a request, and returns the user and session data.
+ */
+const sessionProcessor = async (ctx: Context) => {
+  const { req, res } = ctx;
+  const { headers, cookies, ws } = req;
+
+  // Get the bearer token session
+  const sessionIdAuthorization = lucia.readBearerToken(
+    headers.authorization ?? "",
+  );
+
+  // If the Authorization Bearer strategy is used then we skip any cookie-related logic and just return the session details
+  // It's the client's job to refresh the session should it be required
+  if (sessionIdAuthorization) {
+    const { session, user } = await lucia.validateSession(
+      sessionIdAuthorization,
+    );
+
+    // If there's no valid session then pass the null user (fails rules)
+    if (!session) {
+      throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid session" });
+    }
+
+    return { user, session, req, res };
+  }
+
+  // If we're in a WebSocket context, we don't have cookies
+  if (ws || res.header === undefined) {
+    throw new TRPCError({
+      code: "METHOD_NOT_SUPPORTED",
+      message: "WebSockets not supported when using cookie authentication.",
+    });
+  }
+
+  // If we're in a HTTP context, we can use cookies
+  const sessionId = cookies?.[lucia.sessionCookieName];
+
+  // If there's no session cookie, we're not logged in so create a blank cookie
+  if (!sessionId) {
+    const sessionCookie = lucia.createBlankSessionCookie();
+    res.header("Set-Cookie", sessionCookie.serialize());
+
+    throw new TRPCError({ code: "UNAUTHORIZED", message: "No session" });
+  }
+
+  const { session, user } = await lucia.validateSession(sessionId); // Validate the session
+
+  // No session or invalid session so create a blank cookie
+  if (!session) {
+    const sessionCookie = lucia.createBlankSessionCookie();
+
+    res.header("Set-Cookie", sessionCookie.serialize());
+
+    throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid session" });
+  }
+
+  // If the session is fresh, we need to update the cookie to extend the expiry
+  if (session?.fresh) {
+    const sessionCookie = lucia.createSessionCookie(session.id);
+    res.header("Set-Cookie", sessionCookie.serialize());
+  }
+
+  // Return the user, logOut function and headers
+  return { user, session, req, res };
+};
+
+/**
  * Authenticated procedure
  *
  * This is the base piece you use to build new queries and mutations on your tRPC API. It guarantees
  * that a user querying is authorized, and you can access user session data.
  */
-const enforceSession = t.middleware(({ ctx, next }) => {
-  const ctxUser = ctx.user;
+const enforceSession = t.middleware(async ({ ctx, next }) => {
+  const { user, session, req, res } = await sessionProcessor(ctx);
 
-  if (!ctxUser) {
-    // Redirect to login page?
-    throw new TRPCError({ code: "UNAUTHORIZED", message: "No session" });
-  }
-
-  return next({ ctx: { user: ctxUser } });
+  return next({ ctx: { user, session, req, res } });
 });
 
 /**
@@ -36,23 +102,18 @@ const enforceSession = t.middleware(({ ctx, next }) => {
  */
 export const sessionProcedure = t.procedure.use(enforceSession);
 
-const enforceMentorSession = t.middleware(({ ctx, next }) => {
-  const ctxUser = ctx.user;
+const enforceMentorSession = t.middleware(async ({ ctx, next }) => {
+  const { user, session, req, res } = await sessionProcessor(ctx);
 
-  if (!ctxUser) {
-    // Redirect to login page?
-    throw new TRPCError({ code: "UNAUTHORIZED", message: "No session" });
-  }
-
-  if (!ctxUser.roles) {
+  if (!user.roles) {
     throw new TRPCError({ code: "UNAUTHORIZED", message: "No roles" });
   }
 
-  if (!ctxUser.roles.includes(env.MENTOR_ROLE_ID)) {
+  if (!user.roles.includes(env.MENTOR_ROLE_ID)) {
     throw new TRPCError({ code: "UNAUTHORIZED", message: "Not a mentor" });
   }
 
-  return next({ ctx: { user: ctxUser } });
+  return next({ ctx: { user: user, session, req, res } });
 });
 
 export const mentorSessionProcedure = t.procedure.use(enforceMentorSession);
@@ -61,7 +122,9 @@ export const mentorSessionProcedure = t.procedure.use(enforceMentorSession);
  * API Authenticated procedure (for the bot)
  */
 const enforceApiToken = t.middleware(({ ctx, next }) => {
-  const { headers } = ctx;
+  const {
+    req: { headers },
+  } = ctx;
 
   if (!headers.authorization) {
     throw new TRPCError({ code: "UNAUTHORIZED", message: "API Token not set" });
