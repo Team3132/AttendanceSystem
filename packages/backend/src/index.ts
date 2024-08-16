@@ -16,7 +16,7 @@ import { registerCron } from "./registerCron";
 import appRouter, { ee, type AppRouter } from "./routers/app.router";
 import { createContext } from "./trpc/context";
 import { generateState, OAuth2RequestError } from "arctic";
-import { discord, lucia } from "./auth/lucia";
+import { discord, discordDesktop, lucia } from "./auth/lucia";
 import { DiscordAPIError, REST } from "@discordjs/rest";
 import { API } from "@discordjs/core";
 import { csrfPlugin } from "./auth/csrf";
@@ -74,6 +74,23 @@ await server.register(fastifyTRPCPlugin, {
 await server.get("/api/auth/discord", async (req, res) => {
   const state = generateState();
   const url = await discord.createAuthorizationURL(state, {
+    scopes: ["identify", "guilds", "guilds.members.read"],
+  });
+
+  return res
+    .setCookie("discord_oauth_state", state, {
+      path: "/",
+      secure: isProd,
+      httpOnly: true,
+      maxAge: 60 * 10,
+      sameSite: "lax",
+    })
+    .redirect(url.toString());
+});
+
+await server.get("/api/auth/discord-desktop", async (req, res) => {
+  const state = generateState();
+  const url = await discordDesktop.createAuthorizationURL(state, {
     scopes: ["identify", "guilds", "guilds.members.read"],
   });
 
@@ -184,38 +201,97 @@ await server.route<{ Querystring: DiscordCallbackQuerystring }>({
   },
 });
 
-// await server.get("/api/auth/discord-desktop/callback", {
-//   preValidation: fastifyPassport.authenticate("discord", {
-//     authInfo: false,
-//     failureRedirect: "/login",
-//     successRedirect: env.FRONTEND_URL,
-//   }),
-//   handler: async (req, res) => {
-//     if (!req.user) {
-//       return res.redirect("/api/auth/discord-desktop")
-//     }
+interface DiscordDesktopCallbackQuerystring {
+  code: string;
+  state: string;
+}
 
-//     const jwtPayload = {
-//       id: req.user.id
-//     }
+await server.route<{ Querystring: DiscordDesktopCallbackQuerystring }>({
+  method: "GET",
+  url: "/api/auth/discord-desktop/callback",
+  schema: {
+    querystring: {
+      type: "object",
+      properties: {
+        code: { type: "string" },
+        state: { type: "string" },
+      },
+      required: ["code", "state"],
+    },
+  },
+  handler: async (req, res) => {
+    const { code, state } = req.query;
 
-//     // This callback should redirect to a deep link that will open the desktop app with an access token
-//     // and refresh token in the URL.
-//     const accessToken = await res.jwtSign(jwtPayload, {
-//       sign: {
-//         expiresIn: "1h",
-//       }
-//     })
+    const discordState = req.cookies.discord_oauth_state;
 
-//     const refreshToken = await res.jwtSign(jwtPayload, {
-//       sign: {
-//         expiresIn: "7d",
-//       }
-//     })
+    // if (discordState !== state) {
+    //   res.redirect(env.FRONTEND_URL).send(); // TODO: Redirect to an error page
+    // }
 
-//     return res.redirect(`tdu://auth?accessToken=${accessToken}&refreshToken=${refreshToken}`)
-//   },
-// });
+    // Clear the state cookie
+    res.clearCookie("discord_oauth_state");
+
+    try {
+      const tokens = await discordDesktop.validateAuthorizationCode(code);
+      console.log(tokens);
+      const rest = new REST({ version: "10", authPrefix: "Bearer" }).setToken(
+        tokens.accessToken,
+      );
+      const api = new API(rest);
+
+      const discordUserGuilds = await api.users.getGuilds();
+
+      const validGuild =
+        discordUserGuilds.findIndex((guild) => guild.id === env.GUILD_ID) !==
+        -1;
+
+      if (!validGuild) {
+        return res.redirect(env.FRONTEND_URL); // TODO: Redirect to an error page
+      }
+
+      const discordUser = await api.users.get("@me");
+
+      const guildMember = await api.users.getGuildMember(env.GUILD_ID);
+
+      const [authedUser] = await db
+        .insert(userTable)
+        .values({
+          id: discordUser.id,
+          username: guildMember.nick || discordUser.username,
+          roles: guildMember.roles,
+        })
+        .onConflictDoUpdate({
+          target: userTable.id,
+          set: {
+            username: guildMember.nick || discordUser.username,
+            roles: guildMember.roles,
+            updatedAt: new Date().toISOString(),
+          },
+        })
+        .returning();
+
+      if (!authedUser) {
+        res.redirect(env.FRONTEND_URL).send(); // TODO: Redirect to an error page
+      }
+
+      const session = await lucia.createSession(discordUser.id, {});
+
+      res.redirect(`tdu-attendance://auth?session=${session.id}`).send();
+    } catch (error) {
+      if (error instanceof OAuth2RequestError) {
+        mainLogger.error(error);
+      } else if (error instanceof DiscordAPIError) {
+        mainLogger.error(error);
+      } else if (error instanceof Error) {
+        mainLogger.error(error);
+      } else {
+        mainLogger.error("Unknown error", error);
+      }
+
+      res.redirect(env.FRONTEND_URL).send(); // TODO: Redirect to an error page
+    }
+  },
+});
 
 console.log(path.join(root, "frontend"));
 

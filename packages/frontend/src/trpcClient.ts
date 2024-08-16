@@ -52,9 +52,19 @@ export const trpcClient = trpc.createClient({
               "@tauri-apps/plugin-http"
             );
 
+            const { Store } = await import("@tauri-apps/plugin-store");
+
+            const store = new Store("store.bin");
+
+            const session = await store.get("session");
+
             return tauriFetch(url, {
               ...options,
               credentials: "include",
+              headers: {
+                ...options?.headers,
+                Authorization: `Bearer ${session}`,
+              },
             });
           }
           return fetch(url, {

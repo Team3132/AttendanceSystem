@@ -33,6 +33,12 @@ export const discord = new Discord(
   env.DISCORD_CALLBACK_URL,
 );
 
+export const discordDesktop = new Discord(
+  env.DISCORD_CLIENT_ID,
+  env.DISCORD_CLIENT_SECRET,
+  env.DISCORD_DESKTOP_CALLBACK_URL,
+);
+
 // IMPORTANT!
 declare module "lucia" {
   interface Register {
