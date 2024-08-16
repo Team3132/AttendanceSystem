@@ -46,7 +46,7 @@
     "arctic": "1.9.2",
     "bullmq": "5.12.7",
     "cron": "3.1.7",
-    "discord-api-types": "0.37.93",
+    "discord-api-types": "0.37.94",
     "dotenv": "16.4.5",
     "drizzle-orm": "0.33.0",
     "drizzle-zod": "0.5.1",
