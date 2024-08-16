@@ -3,6 +3,7 @@ import { t } from ".";
 import env from "../env";
 import { lucia } from "../auth/lucia";
 import { Context } from "./context";
+import { Session, User } from "lucia";
 
 /**
  * Public (unauthenticated) procedure
@@ -12,6 +13,31 @@ import { Context } from "./context";
  * are logged in.
  */
 export const publicProcedure = t.procedure;
+
+type OptionalSessionResult = Context &
+  ({ user: null; session: null } | { user: User; session: Session });
+
+/**
+ * Optional session
+ *
+ * This middleware is used to process the session data for a request, and returns the user and session
+ * data. If there is no session, it will return a null user and session.
+ */
+const optionalSession = t.middleware<OptionalSessionResult>(
+  async ({ ctx, next }) => {
+    try {
+      const { user, session, req, res } = await sessionProcessor(ctx);
+
+      return next({ ctx: { user, session, req, res } });
+    } catch (error) {
+      return next({
+        ctx: { user: null, session: null, req: ctx.req, res: ctx.res },
+      });
+    }
+  },
+);
+
+export const optionalSessionProcedure = t.procedure.use(optionalSession);
 
 /**
  * Session processor
