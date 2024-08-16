@@ -1,5 +1,13 @@
 # backend
 
+## 4.1.4
+
+### Patch Changes
+
+- [`50d4bb9`](https://github.com/Team3132/AttendanceSystem/commit/50d4bb91d18a48e2eaed0fba51556582497dccb7) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Move authentication logic to tRPC middleware
+
+- [`230110b`](https://github.com/Team3132/AttendanceSystem/commit/230110bd152fa4240fd0a463cf86484ee4362acf) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Online Count Subscriptions
+
 ## 4.1.3
 
 ### Patch Changes
