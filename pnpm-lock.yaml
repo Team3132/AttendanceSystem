@@ -81,7 +81,7 @@ importers:
         specifier: 4.28.1
         version: 4.28.1
       fastify-plugin:
-        specifier: ^4.5.1
+        specifier: 4.5.1
         version: 4.5.1
       googleapis:
         specifier: 140.0.1
