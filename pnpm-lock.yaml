@@ -6993,7 +6993,7 @@ snapshots:
 
   '@tauri-apps/plugin-store@2.0.0-rc.0':
     dependencies:
-      '@tauri-apps/api': 2.0.0-rc.0
+      '@tauri-apps/api': 2.0.0-rc.2
 
   '@tauri-apps/plugin-updater@2.0.0-rc.0':
     dependencies:
