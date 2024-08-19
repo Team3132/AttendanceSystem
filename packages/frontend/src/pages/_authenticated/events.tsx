@@ -18,22 +18,25 @@ import {
   Typography,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
-import { createFileRoute, useLocation, useSearch } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  useLocation,
+  useSearch,
+} from "@tanstack/react-router";
 import { EventTypeSchema } from "backend/schema";
 import { DateTime } from "luxon";
-import { useMemo } from "react";
 import { z } from "zod";
 
-const defaultToLuxon = DateTime.now().plus({ month: 1 }).startOf("day")
-const defaultFromLuxon = DateTime.now().startOf("day")
+const defaultToLuxon = DateTime.now().plus({ month: 1 }).startOf("day");
+const defaultFromLuxon = DateTime.now().startOf("day");
 
 const defaultTo = defaultToLuxon.toISO();
 const defaultFrom = defaultFromLuxon.toISO();
 
 const eventsSearchSchema = z.object({
-  fromDate: z.string().datetime().default(defaultFrom).optional().catch(defaultFrom),
-  toDate: z.string().datetime().default(defaultTo).optional().catch(defaultTo),
-  type: z.union([EventTypeSchema, z.undefined()]).optional().catch(undefined),
+  from: z.string().datetime().optional().catch(defaultFrom),
+  to: z.string().datetime().optional().catch(defaultTo),
+  type: EventTypeSchema.optional().catch(undefined),
 });
 
 type EventsSearch = z.infer<typeof eventsSearchSchema>;
@@ -41,21 +44,21 @@ type EventsSearch = z.infer<typeof eventsSearchSchema>;
 export const Route = createFileRoute("/_authenticated/events")({
   component: Component,
   validateSearch: (search) => eventsSearchSchema.parse(search),
-  loaderDeps: ({ search: { fromDate, toDate, type } }) => ({
-    fromDate,
-    toDate,
+  loaderDeps: ({ search: { from, to, type } }) => ({
+    from,
+    to,
     type,
   }),
   loader: async ({
     context: { queryUtils },
-    deps: { fromDate, toDate, type },
+    deps: { from = defaultFrom, to = defaultTo, type },
   }) => {
-    console.log("Loading events", fromDate, toDate, type);
+    console.log("Loading events", from, to, type);
     const authStatus = await queryUtils.auth.status.ensureData();
 
     const eventsList = await queryUtils.events.getEvents.prefetchInfinite({
-      from: fromDate,
-      to: toDate,
+      from,
+      to,
       type,
       limit: 5,
     });
@@ -69,17 +72,21 @@ export const Route = createFileRoute("/_authenticated/events")({
 
 function Component() {
   const { authStatus, eventsList } = Route.useLoaderData();
-  const { fromDate, toDate, type } = useLocation({ select: (s) => s.search})
+  const {
+    from = defaultFrom,
+    to = defaultTo,
+    type,
+  } = useLocation({ select: (s) => s.search });
   const navigate = Route.useNavigate();
 
   const authStatusQuery = trpc.auth.status.useQuery(undefined, {
     initialData: authStatus,
-  });  
+  });
 
   const infiniteEventsQuery = trpc.events.getEvents.useInfiniteQuery(
     {
-      from: fromDate,
-      to: toDate,
+      from,
+      to,
       type,
       limit: 5,
     },
@@ -100,14 +107,14 @@ function Component() {
   const handleStartChange = (date: DateTime<true> | DateTime<false> | null) => {
     const iso = date?.toISO();
     navigate({
-      search: (prev) => ({ ...prev, fromDate: iso ? iso : defaultFrom }),
+      search: (prev) => ({ ...prev, from: iso ? iso : defaultFrom }),
     });
   };
 
   const handleEndChange = (date: DateTime<true> | DateTime<false> | null) => {
     const iso = date?.toISO();
     navigate({
-      search: (prev) => ({ ...prev, toDate: iso ? iso : defaultTo }),
+      search: (prev) => ({ ...prev, to: iso ? iso : defaultTo }),
     });
   };
 
@@ -154,7 +161,6 @@ function Component() {
                 <Select
                   labelId="select-event-type-label"
                   id="select-event-type"
-                  //   value={age}
                   value={type ?? ""}
                   onChange={handleTypeChange}
                   label="Type"
@@ -169,12 +175,12 @@ function Component() {
             </Box>
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               <DatePicker
-                value={DateTime.fromISO(fromDate ?? defaultFrom)}
+                value={DateTime.fromISO(from ?? defaultFrom)}
                 label="From"
                 onChange={handleStartChange}
               />
               <DatePicker
-                value={DateTime.fromISO(toDate ?? defaultTo)}
+                value={DateTime.fromISO(to ?? defaultTo)}
                 label="To"
                 onChange={handleEndChange}
               />
