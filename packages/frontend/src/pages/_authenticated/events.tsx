@@ -27,16 +27,15 @@ import { EventTypeSchema } from "backend/schema";
 import { DateTime } from "luxon";
 import { z } from "zod";
 
-const defaultToLuxon = DateTime.now().plus({ month: 1 }).startOf("day");
-const defaultFromLuxon = DateTime.now().startOf("day");
-
-const defaultTo = defaultToLuxon.toISO();
-const defaultFrom = defaultFromLuxon.toISO();
+const defaultTo = DateTime.now().plus({ month: 1 }).startOf("day").toISODate();
+const defaultFrom = DateTime.now().startOf("day").toISODate();
+const defaultLimit = 5;
 
 const eventsSearchSchema = z.object({
-  from: z.string().datetime().optional().catch(defaultFrom),
-  to: z.string().datetime().optional().catch(defaultTo),
+  from: z.string().date().optional().catch(defaultFrom),
+  to: z.string().date().optional().catch(defaultTo),
   type: EventTypeSchema.optional().catch(undefined),
+  limit: z.number().optional().catch(defaultLimit),
 });
 
 type EventsSearch = z.infer<typeof eventsSearchSchema>;
@@ -44,23 +43,18 @@ type EventsSearch = z.infer<typeof eventsSearchSchema>;
 export const Route = createFileRoute("/_authenticated/events")({
   component: Component,
   validateSearch: (search) => eventsSearchSchema.parse(search),
-  loaderDeps: ({ search: { from, to, type } }) => ({
-    from,
-    to,
-    type,
-  }),
+  loaderDeps: ({ search }) => search,
   loader: async ({
     context: { queryUtils },
-    deps: { from = defaultFrom, to = defaultTo, type },
+    deps: { from = defaultFrom, to = defaultTo, type, limit = defaultLimit },
   }) => {
-    console.log("Loading events", from, to, type);
     const authStatus = await queryUtils.auth.status.ensureData();
 
     const eventsList = await queryUtils.events.getEvents.prefetchInfinite({
       from,
       to,
       type,
-      limit: 5,
+      limit,
     });
 
     return {
@@ -76,6 +70,7 @@ function Component() {
     from = defaultFrom,
     to = defaultTo,
     type,
+    limit = defaultLimit,
   } = useLocation({ select: (s) => s.search });
   const navigate = Route.useNavigate();
 
@@ -88,7 +83,7 @@ function Component() {
       from,
       to,
       type,
-      limit: 5,
+      limit,
     },
     {
       getNextPageParam: (lastPage) => lastPage.nextPage,
@@ -105,14 +100,14 @@ function Component() {
   };
 
   const handleStartChange = (date: DateTime<true> | DateTime<false> | null) => {
-    const iso = date?.toISO();
+    const iso = date?.toISODate();
     navigate({
       search: (prev) => ({ ...prev, from: iso ? iso : defaultFrom }),
     });
   };
 
   const handleEndChange = (date: DateTime<true> | DateTime<false> | null) => {
-    const iso = date?.toISO();
+    const iso = date?.toISODate();
     navigate({
       search: (prev) => ({ ...prev, to: iso ? iso : defaultTo }),
     });
