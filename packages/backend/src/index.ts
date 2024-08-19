@@ -120,7 +120,7 @@ await server.route<{ Querystring: DiscordCallbackQuerystring }>({
 
     try {
       const tokens = await discord.validateAuthorizationCode(code);
-      console.log(tokens);
+
       const rest = new REST({ version: "10", authPrefix: "Bearer" }).setToken(
         tokens.accessToken,
       );
@@ -183,41 +183,6 @@ await server.route<{ Querystring: DiscordCallbackQuerystring }>({
     }
   },
 });
-
-// await server.get("/api/auth/discord-desktop/callback", {
-//   preValidation: fastifyPassport.authenticate("discord", {
-//     authInfo: false,
-//     failureRedirect: "/login",
-//     successRedirect: env.FRONTEND_URL,
-//   }),
-//   handler: async (req, res) => {
-//     if (!req.user) {
-//       return res.redirect("/api/auth/discord-desktop")
-//     }
-
-//     const jwtPayload = {
-//       id: req.user.id
-//     }
-
-//     // This callback should redirect to a deep link that will open the desktop app with an access token
-//     // and refresh token in the URL.
-//     const accessToken = await res.jwtSign(jwtPayload, {
-//       sign: {
-//         expiresIn: "1h",
-//       }
-//     })
-
-//     const refreshToken = await res.jwtSign(jwtPayload, {
-//       sign: {
-//         expiresIn: "7d",
-//       }
-//     })
-
-//     return res.redirect(`tdu://auth?accessToken=${accessToken}&refreshToken=${refreshToken}`)
-//   },
-// });
-
-console.log(path.join(root, "frontend"));
 
 await server.register(fastifyStatic, {
   root: path.join(root, "frontend"),
