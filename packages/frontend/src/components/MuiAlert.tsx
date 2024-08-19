@@ -7,7 +7,6 @@ export const MuiAlert: React.FC<AlertTemplateProps> = ({
   message,
   close,
 }: AlertTemplateProps) => {
-  console.log(options);
   return (
     <Alert severity={options.type} style={style} onClose={close}>
       {message}

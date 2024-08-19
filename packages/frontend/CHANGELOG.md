@@ -1,5 +1,23 @@
 # frontend
 
+## 4.1.6
+
+### Patch Changes
+
+- [`c2838b1`](https://github.com/Team3132/AttendanceSystem/commit/c2838b1c8c890df45c32fd5a9502b83cbe467fb0) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Use dates instead of datetime
+
+- Updated dependencies []:
+  - backend@4.1.6
+
+## 4.1.5
+
+### Patch Changes
+
+- [`aa874d3`](https://github.com/Team3132/AttendanceSystem/commit/aa874d3a2cde44ed49c9075cd721e0fc86eecde1) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix bug with dates
+
+- Updated dependencies []:
+  - backend@4.1.5
+
 ## 4.1.4
 
 ### Patch Changes

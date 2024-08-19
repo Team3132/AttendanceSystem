@@ -86,7 +86,6 @@ if (import.meta.env.PROD) {
       queryClient.invalidateQueries({
         queryKey: key,
       });
-      console.log("invalidated", key);
     },
   });
 }
