@@ -16,7 +16,7 @@ import { registerCron } from "./registerCron";
 import appRouter, { ee, type AppRouter } from "./routers/app.router";
 import { createContext } from "./trpc/context";
 import { generateState, OAuth2RequestError } from "arctic";
-import { discord, lucia } from "./auth/lucia";
+import { discord, discordDesktop, lucia } from "./auth/lucia";
 import { DiscordAPIError, REST } from "@discordjs/rest";
 import { API } from "@discordjs/core";
 import { csrfPlugin } from "./auth/csrf";
@@ -74,6 +74,23 @@ await server.register(fastifyTRPCPlugin, {
 await server.get("/api/auth/discord", async (req, res) => {
   const state = generateState();
   const url = await discord.createAuthorizationURL(state, {
+    scopes: ["identify", "guilds", "guilds.members.read"],
+  });
+
+  return res
+    .setCookie("discord_oauth_state", state, {
+      path: "/",
+      secure: isProd,
+      httpOnly: true,
+      maxAge: 60 * 10,
+      sameSite: "lax",
+    })
+    .redirect(url.toString());
+});
+
+await server.get("/api/auth/discord-desktop", async (req, res) => {
+  const state = generateState();
+  const url = await discordDesktop.createAuthorizationURL(state, {
     scopes: ["identify", "guilds", "guilds.members.read"],
   });
 
