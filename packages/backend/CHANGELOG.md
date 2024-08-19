@@ -1,5 +1,11 @@
 # backend
 
+## 4.2.0
+
+### Minor Changes
+
+- [#1645](https://github.com/Team3132/AttendanceSystem/pull/1645) [`be16382`](https://github.com/Team3132/AttendanceSystem/commit/be16382fa73bd0d2819c6c26dc3412e76488bb3f) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add support for the desktop app and bearer auth through url scheme
+
 ## 4.1.6
 
 ## 4.1.5
