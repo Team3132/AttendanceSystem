@@ -1,5 +1,14 @@
 # frontend
 
+## 4.1.6
+
+### Patch Changes
+
+- [`c2838b1`](https://github.com/Team3132/AttendanceSystem/commit/c2838b1c8c890df45c32fd5a9502b83cbe467fb0) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Use dates instead of datetime
+
+- Updated dependencies []:
+  - backend@4.1.6
+
 ## 4.1.5
 
 ### Patch Changes
