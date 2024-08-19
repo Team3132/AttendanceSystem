@@ -1,5 +1,14 @@
 # frontend
 
+## 4.1.5
+
+### Patch Changes
+
+- [`aa874d3`](https://github.com/Team3132/AttendanceSystem/commit/aa874d3a2cde44ed49c9075cd721e0fc86eecde1) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix bug with dates
+
+- Updated dependencies []:
+  - backend@4.1.5
+
 ## 4.1.4
 
 ### Patch Changes
