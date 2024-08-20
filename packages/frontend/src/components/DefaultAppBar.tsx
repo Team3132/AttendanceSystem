@@ -27,7 +27,7 @@ interface DefaultAppBarProps {
 
 export default function DefaultAppBar({ title }: DefaultAppBarProps) {
   const { isOpen, onClose, onToggle } = useDisclosure();
-  const buttonRef = useRef<HTMLElement>(null);
+  const [buttonRef, setButtonRef] = useState<HTMLButtonElement | null>(null);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -73,12 +73,13 @@ export default function DefaultAppBar({ title }: DefaultAppBarProps) {
               aria-controls={isOpen ? "account-menu" : undefined}
               aria-haspopup="true"
               aria-expanded={isOpen ? "true" : undefined}
+              ref={(e) => setButtonRef(e)}
             >
-              <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+              <Avatar sx={{ width: 32, height: 32 }} />
             </IconButton>
           </Tooltip>
           <Menu
-            anchorEl={buttonRef.current}
+            anchorEl={buttonRef}
             id="account-menu"
             open={isOpen}
             onClose={onClose}
@@ -115,14 +116,10 @@ export default function DefaultAppBar({ title }: DefaultAppBarProps) {
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
             <AsChildLink to="/profile">
-              <MenuItem>
-                <Avatar /> Profile
-              </MenuItem>
+              <MenuItem>Profile</MenuItem>
             </AsChildLink>
             <AsChildLink to="/profile/pending">
-              <MenuItem>
-                <Avatar /> Pending Checkouts
-              </MenuItem>
+              <MenuItem>Pending Checkouts</MenuItem>
             </AsChildLink>
             <Divider />
             <MenuItem onClick={handleLogout}>
