@@ -18,7 +18,7 @@ tauri-plugin-websocket = "=2.0.0-rc.0"
 tauri-plugin-http = { version = "=2.0.0-rc.0", features = ["rustls-tls"] }
 tauri-plugin-window-state = "=2.0.0-rc.1"
 tauri-plugin-deep-link = "=2.0.0-rc.1"
-tauri-plugin-notification = "=2.0.0-rc.1"
+tauri-plugin-notification = "=2.0.0-rc.2"
 tauri-plugin-process = "=2.0.0-rc.0"
 log = "0.4"
 tauri-plugin-log = "=2.0.0-rc.1"
