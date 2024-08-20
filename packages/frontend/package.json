@@ -59,7 +59,7 @@
     "@biomejs/biome": "1.8.3",
     "@swc/plugin-emotion": "3.0.13",
     "@tanstack/router-plugin": "1.48.6",
-    "@tauri-apps/cli": "2.0.0-rc.5",
+    "@tauri-apps/cli": "2.0.0-rc.6",
     "@trpc/client": "11.0.0-rc.482",
     "@trpc/react-query": "11.0.0-rc.482",
     "@trpc/server": "11.0.0-rc.482",
