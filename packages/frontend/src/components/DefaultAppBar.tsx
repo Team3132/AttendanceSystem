@@ -25,6 +25,21 @@ interface DefaultAppBarProps {
   title: string;
 }
 
+const isTauri = !!(
+  window as unknown as Window & {
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    __TAURI_INTERNALS__: any;
+  }
+).__TAURI_INTERNALS__;
+
+const tauriLogout = async () => {
+  const { Store } = await import("@tauri-apps/plugin-store");
+
+  const store = new Store("store.bin");
+
+  await store.delete("session");
+};
+
 export default function DefaultAppBar({ title }: DefaultAppBarProps) {
   const { isOpen, onClose, onToggle } = useDisclosure();
   const [buttonRef, setButtonRef] = useState<HTMLButtonElement | null>(null);
@@ -36,6 +51,9 @@ export default function DefaultAppBar({ title }: DefaultAppBarProps) {
   const handleLogout = useCallback(async () => {
     try {
       await logoutMutation.mutateAsync();
+      if (isTauri) {
+        await tauriLogout();
+      }
     } catch (error) {
       console.log("Already logged out", error);
     }
