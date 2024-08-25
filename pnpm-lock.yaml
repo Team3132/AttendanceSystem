@@ -99,8 +99,8 @@ importers:
         specifier: 2.2.1
         version: 2.2.1
       ulidx:
-        specifier: 2.4.0
-        version: 2.4.0
+        specifier: 2.4.1
+        version: 2.4.1
       uuid:
         specifier: 10.0.0
         version: 10.0.0
@@ -4806,8 +4806,8 @@ packages:
     resolution: {integrity: sha512-u3xV3X7uzvi5b1MncmZo3i2Aw222Zk1keqLA1YkHldREkAhAqi65wuPfe7lHx8H/Wzy+8CE7S7uS3jekIM5s8g==}
     engines: {node: '>=8'}
 
-  ulidx@2.4.0:
-    resolution: {integrity: sha512-iTZHiSCrIZeXvbJ34qCSBO4fmwf4GRzkv3hb7adB+00nyJKCwVFK0xw2gXGNfJsIFfET7Av+OP8/rsxxJHRSVQ==}
+  ulidx@2.4.1:
+    resolution: {integrity: sha512-xY7c8LPyzvhvew0Fn+Ek3wBC9STZAuDI/Y5andCKi9AX6/jvfaX45PhsDX8oxgPL0YFp0Jhr8qWMbS/p9375Xg==}
     engines: {node: '>=16'}
 
   undici-types@5.26.5:
@@ -9409,7 +9409,7 @@ snapshots:
     dependencies:
       '@lukeed/csprng': 1.1.0
 
-  ulidx@2.4.0:
+  ulidx@2.4.1:
     dependencies:
       layerr: 3.0.0
 
