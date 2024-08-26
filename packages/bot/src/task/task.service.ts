@@ -26,7 +26,7 @@ export class TaskService {
 
   private readonly logger = new Logger(TaskService.name);
 
-  @Cron("00 22 * * *")
+  @Cron("00 17 * * *")
   public async handleAttendanceReminder() {
     const enabled = this.config.get("REMINDER_ENABLED");
     if (!enabled) return;
@@ -79,17 +79,16 @@ export class TaskService {
     const sentMessages = await Promise.all(
       messages.map(([message, event]) =>
         fetchedChannel.send({
-          content: `${
-            event.type === "Outreach"
+          content: `${event.type === "Outreach"
               ? roleMention(ROLES.OUTREACH)
               : event.type === "Mentor"
                 ? roleMention(ROLES.MENTOR)
                 : event.type === "Social"
                   ? roleMention(ROLES.SOCIAL)
                   : roleMention(ROLES.EVERYONE)
-          } ${bold(
-            "10pm reminder",
-          )}: This channel should be used to let us know any last minute attendance changes on the day of the meeting.`,
+            } ${bold(
+              "10pm reminder",
+            )}: This channel should be used to let us know any last minute attendance changes on the day of the meeting.`,
           ...message,
         }),
       ),
