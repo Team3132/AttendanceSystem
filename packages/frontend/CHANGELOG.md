@@ -1,5 +1,12 @@
 # frontend
 
+## 4.3.0
+
+### Patch Changes
+
+- Updated dependencies []:
+  - backend@4.3.0
+
 ## 4.2.0
 
 ### Minor Changes

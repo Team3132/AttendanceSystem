@@ -1,5 +1,16 @@
 # bot
 
+## 4.3.0
+
+### Minor Changes
+
+- [`29da538`](https://github.com/Team3132/AttendanceSystem/commit/29da538d1e90305dc3b62a48349dc50faf1608c0) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Change reminder time from 9pm to 5pm
+
+### Patch Changes
+
+- Updated dependencies []:
+  - backend@4.3.0
+
 ## 4.2.0
 
 ### Patch Changes
