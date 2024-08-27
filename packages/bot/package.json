@@ -6,13 +6,13 @@
   "private": false,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "tsc && tsup",
-    "start": "node --enable-source-maps dist/main.js --inspect",
-    "dev": "tsup --watch",
+    "build": "tsc && bunx --bun tsup",
+    "start": "bun run --enable-source-maps dist/main.js --inspect",
+    "dev": "bunx --bun tsup --watch",
     "typecheck": "tsc",
-    "release": "pnpm build",
-    "format": "pnpm biome format ./src --write",
-    "lint": "pnpm biome lint ./src --apply"
+    "release": "build",
+    "format": "bunx --bun biome format ./src --write",
+    "lint": "bunx --bun bun biome lint ./src --apply"
   },
   "type": "module",
   "main": "./dist/main.js",

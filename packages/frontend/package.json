@@ -4,12 +4,12 @@
   "version": "4.3.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
+    "dev": "bunx --bun vite",
+    "build": "bunx --bun vite build",
+    "preview": "bunx --bun vite preview",
     "typecheck": "tsc",
-    "format": "pnpm biome format ./src --write",
-    "lint": "pnpm biome lint ./src --apply"
+    "format": "bunx --bun biome format ./src --write",
+    "lint": "bunx --bun biome lint ./src --apply"
   },
   "dependencies": {
     "@emotion/react": "11.13.3",

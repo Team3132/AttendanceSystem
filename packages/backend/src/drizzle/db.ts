@@ -12,10 +12,13 @@ const connectionUrl = `postgres://${env.POSTGRES_USER}:${env.POSTGRES_PASSWORD}@
 export async function migrate() {
   const logger = mainLogger.child("DB");
 
+  // drizzle migrations are stored in $cwd/drizzle
   const migrationsFolder = path.join(
-    fileURLToPath(import.meta.url),
-    "../drizzle/migrations",
+    import.meta.dirname,
+    "../",
+    "drizzle"
   );
+
   const migrationPgClient = postgres(connectionUrl, {
     max: 1,
   });

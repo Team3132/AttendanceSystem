@@ -28,11 +28,10 @@ export const trpcClient = trpc.createClient({
   links: [
     splitLink({
       condition: (op) => op.type === "subscription",
-      true:
-        wsLink({
-          transformer: SuperJSON,
-          client: wsClient,
-        }),
+      true: wsLink({
+        transformer: SuperJSON,
+        client: wsClient,
+      }),
       false: httpBatchLink({
         transformer: SuperJSON,
         url: backendUrl.toString(),

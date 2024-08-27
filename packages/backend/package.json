@@ -15,14 +15,14 @@
     }
   },
   "scripts": {
-    "dev": "tsup --watch",
-    "start": "node --enable-source-maps dist/index.js",
+    "dev": "bunx --bun tsup --watch",
+    "start": "bun run --enable-source-maps dist/index.js",
     "generate": "drizzle-kit generate:pg",
-    "build": "tsc && tsup",
+    "build": "tsc && bunx --bun tsup",
     "typecheck": "tsc",
-    "release": "pnpm build",
-    "format": "pnpm biome format ./src --write",
-    "lint": "pnpm biome lint ./src --apply"
+    "release": "build",
+    "format": "bunx --bun biome format ./src --write",
+    "lint": "bunx --bun biome lint ./src --apply"
   },
   "type": "module",
   "keywords": [],

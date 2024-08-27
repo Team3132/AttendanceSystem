@@ -24,8 +24,6 @@ import { csrfPlugin } from "./auth/csrf";
 Settings.defaultLocale = "en-au";
 Settings.defaultZone = "Australia/Sydney";
 
-const root = path.dirname(fileURLToPath(import.meta.url));
-
 await migrate();
 
 const server = fastify({
@@ -202,7 +200,7 @@ await server.route<{ Querystring: DiscordCallbackQuerystring }>({
 });
 
 await server.register(fastifyStatic, {
-  root: path.join(root, "frontend"),
+  root: path.join(import.meta.dirname, "frontend"),
   wildcard: true,
 });
 
