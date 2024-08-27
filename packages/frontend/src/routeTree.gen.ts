@@ -14,7 +14,6 @@ import { Route as rootRoute } from './pages/__root'
 import { Route as UnauthenticatedImport } from './pages/_unauthenticated'
 import { Route as AuthenticatedImport } from './pages/_authenticated'
 import { Route as AuthenticatedIndexImport } from './pages/_authenticated/index'
-import { Route as LoginDesktopImport } from './pages/login_/desktop'
 import { Route as UnauthenticatedLoginImport } from './pages/_unauthenticated/login'
 import { Route as AuthenticatedProfileImport } from './pages/_authenticated/profile'
 import { Route as AuthenticatedLeaderboardImport } from './pages/_authenticated/leaderboard'
@@ -47,11 +46,6 @@ const AuthenticatedRoute = AuthenticatedImport.update({
 const AuthenticatedIndexRoute = AuthenticatedIndexImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedRoute,
-} as any)
-
-const LoginDesktopRoute = LoginDesktopImport.update({
-  path: '/login/desktop',
-  getParentRoute: () => rootRoute,
 } as any)
 
 const UnauthenticatedLoginRoute = UnauthenticatedLoginImport.update({
@@ -196,13 +190,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UnauthenticatedLoginImport
       parentRoute: typeof UnauthenticatedImport
     }
-    '/login/desktop': {
-      id: '/login/desktop'
-      path: '/login/desktop'
-      fullPath: '/login/desktop'
-      preLoaderRoute: typeof LoginDesktopImport
-      parentRoute: typeof rootRoute
-    }
     '/_authenticated/': {
       id: '/_authenticated/'
       path: '/'
@@ -320,7 +307,6 @@ export const routeTree = rootRoute.addChildren({
   UnauthenticatedRoute: UnauthenticatedRoute.addChildren({
     UnauthenticatedLoginRoute,
   }),
-  LoginDesktopRoute,
 })
 
 /* prettier-ignore-end */
@@ -332,8 +318,7 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/_authenticated",
-        "/_unauthenticated",
-        "/login/desktop"
+        "/_unauthenticated"
       ]
     },
     "/_authenticated": {
@@ -381,9 +366,6 @@ export const routeTree = rootRoute.addChildren({
     "/_unauthenticated/login": {
       "filePath": "_unauthenticated/login.tsx",
       "parent": "/_unauthenticated"
-    },
-    "/login/desktop": {
-      "filePath": "login_/desktop.tsx"
     },
     "/_authenticated/": {
       "filePath": "_authenticated/index.tsx",

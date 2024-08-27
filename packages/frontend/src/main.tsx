@@ -36,29 +36,3 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     </trpc.Provider>
   </React.StrictMode>,
 );
-
-const tauriInit = async () => {
-  if (!(window as unknown as any).__TAURI_INTERNALS__) return;
-  const { attachConsole } = await import("@tauri-apps/plugin-log");
-
-  await attachConsole();
-  await tauriUpdate();
-};
-
-const tauriUpdate = async () => {
-  const { check } = await import("@tauri-apps/plugin-updater");
-  const update = await check();
-  if (update?.available) {
-    console.log(
-      `Update to ${update.version} from ${update.currentVersion} available. Downloading and installing...`,
-    );
-    await update.downloadAndInstall();
-    console.log("Update installed. Relaunching...");
-    const { relaunch } = await import("@tauri-apps/plugin-process");
-    await relaunch();
-  } else {
-    console.log("No update available.");
-  }
-};
-
-tauriInit();
