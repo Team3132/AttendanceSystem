@@ -8,7 +8,6 @@ import {
 } from "@trpc/client";
 import { createTRPCQueryUtils, createTRPCReact } from "@trpc/react-query";
 import type { AppRouter } from "backend";
-import { createTauriWSClient, tauriWsLink } from "./tauriWSLink";
 import SuperJSON from "superjson";
 // import { persistQueryClient } from "@tanstack/react-query-persist-client";
 // import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
@@ -25,48 +24,19 @@ const wsClient = createWSClient({
   url: wsBackendUrl.toString(),
 });
 
-const tauriWsClient = createTauriWSClient({
-  url: wsBackendUrl.toString(),
-});
-
 export const trpcClient = trpc.createClient({
   links: [
     splitLink({
       condition: (op) => op.type === "subscription",
       true:
-        import.meta.env.VITE_TAURI === "false"
-          ? wsLink({
-              transformer: SuperJSON,
-              client: wsClient,
-            })
-          : tauriWsLink({
-              transformer: SuperJSON,
-              client: tauriWsClient,
-            }),
+        wsLink({
+          transformer: SuperJSON,
+          client: wsClient,
+        }),
       false: httpBatchLink({
         transformer: SuperJSON,
         url: backendUrl.toString(),
         fetch: async (url, options) => {
-          if (import.meta.env.VITE_TAURI === "true") {
-            const { fetch: tauriFetch } = await import(
-              "@tauri-apps/plugin-http"
-            );
-
-            const { Store } = await import("@tauri-apps/plugin-store");
-
-            const store = new Store("store.bin");
-
-            const session = await store.get("session");
-
-            return tauriFetch(url, {
-              ...options,
-              credentials: "include",
-              headers: {
-                ...options?.headers,
-                Authorization: `Bearer ${session}`,
-              },
-            });
-          }
           return fetch(url, {
             ...options,
             credentials: "include",
