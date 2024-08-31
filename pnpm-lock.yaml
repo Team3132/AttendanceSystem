@@ -281,8 +281,8 @@ importers:
         specifier: 5.53.1
         version: 5.53.1(@tanstack/react-query@5.53.1(react@18.3.1))(react@18.3.1)
       '@tanstack/react-router':
-        specifier: 1.51.6
-        version: 1.51.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 1.51.7
+        version: 1.51.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tanstack/react-table':
         specifier: 8.20.5
         version: 8.20.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -290,8 +290,8 @@ importers:
         specifier: 3.10.6
         version: 3.10.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tanstack/router-devtools':
-        specifier: 1.51.6
-        version: 1.51.6(@tanstack/react-router@1.51.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(csstype@3.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 1.51.7
+        version: 1.51.7(@tanstack/react-router@1.51.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(csstype@3.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tanstack/table-core':
         specifier: 8.20.5
         version: 8.20.5
@@ -2278,8 +2278,8 @@ packages:
     resolution: {integrity: sha512-4BAffykYOgO+5nzBWYwE3W90sBgLJoUPRWWcL8wlyiM8IB8ipJz3UMJ9KXQd1RKQXpKp8Tutn80HZtWsu2u76w==}
     engines: {node: '>=10'}
 
-  '@tanstack/history@1.51.6':
-    resolution: {integrity: sha512-qx6HpTSDI8X6fQauiaAIHmCAEfK2m0nkED6A3WoLs0AUcnDhFiAlJ/0KGJjYnjWtiLL35LAVsHqL9ofpsm9yHA==}
+  '@tanstack/history@1.51.7':
+    resolution: {integrity: sha512-y25aH3NDbdUp5Gk6Fnb77LsHTT2JrzVgI44ZiyEOf8i2j14Ma3oJ80fCw7rT/iV4xa4IN2Yex9flAsZQdh1i4A==}
     engines: {node: '>=12'}
 
   '@tanstack/match-sorter-utils@8.19.4':
@@ -2306,8 +2306,8 @@ packages:
     peerDependencies:
       react: ^18 || ^19
 
-  '@tanstack/react-router@1.51.6':
-    resolution: {integrity: sha512-Z/y8RD50vxZUnsKHJ1VP6U9fKRKwDBmJcM8eHsIbhM7fbhK2mKvYZsSWZNsNWxRT+nnzEXCF+6tU7FIq0EGhBg==}
+  '@tanstack/react-router@1.51.7':
+    resolution: {integrity: sha512-nGRQ09T+ZlXSl1774O5PR/uSdemPf5U18KA6LLI9Se5VD2Ic6BHBFHFiDm16FbCjsEUXeakt7gaDxwsP7RxvpA==}
     engines: {node: '>=12'}
     peerDependencies:
       react: '>=18'
@@ -2332,11 +2332,11 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
 
-  '@tanstack/router-devtools@1.51.6':
-    resolution: {integrity: sha512-YWE5lpnkXqM1t8846rwOu1OpfUwO1uayvUgTCeAmlDX0OpBWVFupHjlRP0GZ3HMZpzPGmYOwqbd+QorWraYMMQ==}
+  '@tanstack/router-devtools@1.51.7':
+    resolution: {integrity: sha512-8zVgthaPgAsQ6QDxbptNeWYxddfLYBNZ3AbGXQqctxSrT5/RIK/Hly/WqwxehEp+nAxv4jPyJqRZE07ORePmww==}
     engines: {node: '>=12'}
     peerDependencies:
-      '@tanstack/react-router': ^1.51.6
+      '@tanstack/react-router': ^1.51.7
       react: '>=18'
       react-dom: '>=18'
 
@@ -6721,7 +6721,7 @@ snapshots:
     dependencies:
       defer-to-connect: 2.0.1
 
-  '@tanstack/history@1.51.6': {}
+  '@tanstack/history@1.51.7': {}
 
   '@tanstack/match-sorter-utils@8.19.4':
     dependencies:
@@ -6749,9 +6749,9 @@ snapshots:
       '@tanstack/query-core': 5.53.1
       react: 18.3.1
 
-  '@tanstack/react-router@1.51.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@tanstack/react-router@1.51.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@tanstack/history': 1.51.6
+      '@tanstack/history': 1.51.7
       '@tanstack/react-store': 0.5.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -6777,9 +6777,9 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@tanstack/router-devtools@1.51.6(@tanstack/react-router@1.51.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(csstype@3.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@tanstack/router-devtools@1.51.7(@tanstack/react-router@1.51.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(csstype@3.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@tanstack/react-router': 1.51.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@tanstack/react-router': 1.51.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       clsx: 2.1.1
       goober: 2.1.14(csstype@3.1.3)
       react: 18.3.1
