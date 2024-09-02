@@ -27,8 +27,8 @@ importers:
         specifier: 2.3.0
         version: 2.3.0
       '@dynamicabot/signales':
-        specifier: 2.1.1
-        version: 2.1.1
+        specifier: 2.1.2
+        version: 2.1.2
       '@fastify/cookie':
         specifier: 9.4.0
         version: 9.4.0
@@ -645,8 +645,8 @@ packages:
   '@drizzle-team/brocli@0.10.1':
     resolution: {integrity: sha512-AHy0vjc+n/4w/8Mif+w86qpppHuF3AyXbcWW+R/W7GNA3F5/p2nuhlkCJaTXSLZheB4l1rtHzOfr9A7NwoR/Zg==}
 
-  '@dynamicabot/signales@2.1.1':
-    resolution: {integrity: sha512-7Bn+i9a6aUkFpcpraXZxXMoRbCeRQNjXgld9uiXWWF25fPxL2JjSylheJoH9VlRWM1FZ/byX5NsPomxiFD+iCA==}
+  '@dynamicabot/signales@2.1.2':
+    resolution: {integrity: sha512-/ufI8CR8xZUwOaQhcITZimLGwzG3Rl6srJyFLQ3Y6KClth0t4c+Pd2fPzU4cFnXqWa9Y/BACAhHoXkOmVsNwlA==}
     engines: {node: '>=10'}
 
   '@emnapi/core@0.45.0':
@@ -5307,7 +5307,7 @@ snapshots:
 
   '@drizzle-team/brocli@0.10.1': {}
 
-  '@dynamicabot/signales@2.1.1':
+  '@dynamicabot/signales@2.1.2':
     dependencies:
       chalk: 5.3.0
       figures: 6.0.1
