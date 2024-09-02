@@ -34,7 +34,7 @@
   "dependencies": {
     "@discordjs/core": "1.2.0",
     "@discordjs/rest": "2.3.0",
-    "@dynamicabot/signales": "2.1.1",
+    "@dynamicabot/signales": "2.1.2",
     "@fastify/cookie": "9.4.0",
     "@fastify/jwt": "8.0.1",
     "@fastify/static": "7.0.4",
