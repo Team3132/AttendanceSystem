@@ -32,7 +32,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@discordjs/core": "1.2.0",
+    "@discordjs/core": "2.0.0",
     "@discordjs/rest": "2.4.0",
     "@dynamicabot/signales": "2.1.2",
     "@fastify/cookie": "9.4.0",
