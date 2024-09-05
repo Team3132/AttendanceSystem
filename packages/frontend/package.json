@@ -19,7 +19,7 @@
     "@mui/icons-material": "5.16.7",
     "@mui/lab": "5.0.0-alpha.173",
     "@mui/material": "5.16.7",
-    "@mui/x-date-pickers": "7.15.0",
+    "@mui/x-date-pickers": "7.16.0",
     "@tanstack/match-sorter-utils": "8.19.4",
     "@tanstack/query-sync-storage-persister": "5.54.1",
     "@tanstack/react-query": "5.54.1",
