@@ -128,10 +128,10 @@ importers:
         version: 3.3.3
       tsup:
         specifier: 8.2.4
-        version: 8.2.4(@swc/core@1.7.24)(postcss@8.4.44)(tsx@4.19.0)(typescript@5.5.4)
+        version: 8.2.4(@swc/core@1.7.24)(postcss@8.4.44)(tsx@4.19.0)(typescript@5.6.2)
       typescript:
-        specifier: 5.5.4
-        version: 5.5.4
+        specifier: 5.6.2
+        version: 5.6.2
 
   packages/bot:
     dependencies:
@@ -237,10 +237,10 @@ importers:
         version: 4.2.0
       tsup:
         specifier: 8.2.4
-        version: 8.2.4(@swc/core@1.7.24)(postcss@8.4.44)(tsx@4.19.0)(typescript@5.5.4)
+        version: 8.2.4(@swc/core@1.7.24)(postcss@8.4.44)(tsx@4.19.0)(typescript@5.6.2)
       typescript:
-        specifier: 5.5.4
-        version: 5.5.4
+        specifier: 5.6.2
+        version: 5.6.2
 
   packages/frontend:
     dependencies:
@@ -375,8 +375,8 @@ importers:
         specifier: 3.3.3
         version: 3.3.3
       typescript:
-        specifier: 5.5.4
-        version: 5.5.4
+        specifier: 5.6.2
+        version: 5.6.2
       vite:
         specifier: 5.4.3
         version: 5.4.3(@types/node@20.16.5)
@@ -385,7 +385,7 @@ importers:
         version: 1.17.6(vite@5.4.3(@types/node@20.16.5))
       vite-tsconfig-paths:
         specifier: 5.0.1
-        version: 5.0.1(typescript@5.5.4)(vite@5.4.3(@types/node@20.16.5))
+        version: 5.0.1(typescript@5.6.2)(vite@5.4.3(@types/node@20.16.5))
 
 packages:
 
@@ -4716,8 +4716,8 @@ packages:
   typedarray@0.0.6:
     resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
 
-  typescript@5.5.4:
-    resolution: {integrity: sha512-Mtq29sKDAEYP7aljRgtPOpTvOfbwRWlS6dPRzwjdE+C0R4brX/GUyhHSecbHMFLNBLcJIPt9nl9yG5TZ1weH+Q==}
+  typescript@5.6.2:
+    resolution: {integrity: sha512-NW8ByodCSNCwZeghjN3o+JX5OFH0Ojg6sadjEKY4huZ52TqbJTJnDo5+Tw98lSy63NZvi4n+ez5m2u5d4PkZyw==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -9200,9 +9200,9 @@ snapshots:
 
   ts-mixer@6.0.4: {}
 
-  tsconfck@3.0.3(typescript@5.5.4):
+  tsconfck@3.0.3(typescript@5.6.2):
     optionalDependencies:
-      typescript: 5.5.4
+      typescript: 5.6.2
 
   tsconfig-paths@4.2.0:
     dependencies:
@@ -9214,7 +9214,7 @@ snapshots:
 
   tslib@2.6.3: {}
 
-  tsup@8.2.4(@swc/core@1.7.24)(postcss@8.4.44)(tsx@4.19.0)(typescript@5.5.4):
+  tsup@8.2.4(@swc/core@1.7.24)(postcss@8.4.44)(tsx@4.19.0)(typescript@5.6.2):
     dependencies:
       bundle-require: 5.0.0(esbuild@0.23.0)
       cac: 6.7.14
@@ -9235,7 +9235,7 @@ snapshots:
     optionalDependencies:
       '@swc/core': 1.7.24
       postcss: 8.4.44
-      typescript: 5.5.4
+      typescript: 5.6.2
     transitivePeerDependencies:
       - jiti
       - supports-color
@@ -9256,7 +9256,7 @@ snapshots:
 
   typedarray@0.0.6: {}
 
-  typescript@5.5.4: {}
+  typescript@5.6.2: {}
 
   uid@2.0.2:
     dependencies:
@@ -9328,11 +9328,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vite-tsconfig-paths@5.0.1(typescript@5.5.4)(vite@5.4.3(@types/node@20.16.5)):
+  vite-tsconfig-paths@5.0.1(typescript@5.6.2)(vite@5.4.3(@types/node@20.16.5)):
     dependencies:
       debug: 4.3.6
       globrex: 0.1.2
-      tsconfck: 3.0.3(typescript@5.5.4)
+      tsconfck: 3.0.3(typescript@5.6.2)
     optionalDependencies:
       vite: 5.4.3(@types/node@20.16.5)
     transitivePeerDependencies:
