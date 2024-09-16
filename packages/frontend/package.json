@@ -52,7 +52,7 @@
     "@trpc/react-query": "11.0.0-rc.502",
     "@trpc/server": "11.0.0-rc.502",
     "@types/luxon": "3.4.2",
-    "@types/react": "18.3.5",
+    "@types/react": "18.3.6",
     "@types/react-alert": "7.0.6",
     "@types/react-dom": "18.3.0",
     "@vitejs/plugin-react-swc": "3.7.0",
