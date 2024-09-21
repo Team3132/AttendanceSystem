@@ -1,5 +1,11 @@
 # backend
 
+## 4.3.2
+
+### Patch Changes
+
+- [#1796](https://github.com/Team3132/AttendanceSystem/pull/1796) [`3276480`](https://github.com/Team3132/AttendanceSystem/commit/3276480b6a7a867e0179522187cd15bf1524ae71) Thanks [@renovate](https://github.com/apps/renovate)! - fix(deps): update dependency fastify-plugin to v5
+
 ## 4.3.1
 
 ## 4.3.0
