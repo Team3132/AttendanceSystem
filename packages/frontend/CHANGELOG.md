@@ -1,5 +1,14 @@
 # frontend
 
+## 4.3.1
+
+### Patch Changes
+
+- [#1685](https://github.com/Team3132/AttendanceSystem/pull/1685) [`fbcd85f`](https://github.com/Team3132/AttendanceSystem/commit/fbcd85f1048779944edc92932c96dcfd175c58f8) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Remove Tauri Support (to be looked at later)
+
+- Updated dependencies []:
+  - backend@4.3.1
+
 ## 4.3.0
 
 ### Patch Changes
