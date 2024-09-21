@@ -35,7 +35,7 @@
     "@discordjs/core": "2.0.0",
     "@discordjs/rest": "2.4.0",
     "@dynamicabot/signales": "2.1.2",
-    "@fastify/cookie": "9.4.0",
+    "@fastify/cookie": "10.0.0",
     "@fastify/jwt": "9.0.0",
     "@fastify/static": "7.0.4",
     "@fastify/websocket": "11.0.1",
