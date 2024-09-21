@@ -34,7 +34,7 @@
     "class-transformer": "0.5.1",
     "class-validator": "0.14.1",
     "cron": "3.1.7",
-    "discord-api-types": "0.37.97",
+    "discord-api-types": "0.37.100",
     "discord.js": "14.16.2",
     "express": "4.21.0",
     "luxon": "3.5.0",
