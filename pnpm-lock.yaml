@@ -33,8 +33,8 @@ importers:
         specifier: 9.4.0
         version: 9.4.0
       '@fastify/jwt':
-        specifier: 8.0.1
-        version: 8.0.1
+        specifier: 9.0.0
+        version: 9.0.0
       '@fastify/static':
         specifier: 7.0.4
         version: 7.0.4
@@ -1291,17 +1291,14 @@ packages:
   '@fastify/cookie@9.4.0':
     resolution: {integrity: sha512-Th+pt3kEkh4MQD/Q2q1bMuJIB5NX/D5SwSpOKu3G/tjoGbwfpurIMJsWSPS0SJJ4eyjtmQ8OipDQspf8RbUOlg==}
 
-  '@fastify/error@3.4.1':
-    resolution: {integrity: sha512-wWSvph+29GR783IhmvdwWnN4bUxTD01Vm5Xad4i7i1VuAOItLvbPAb69sb0IQ2N57yprvhNIwAP5B6xfKTmjmQ==}
-
   '@fastify/error@4.0.0':
     resolution: {integrity: sha512-OO/SA8As24JtT1usTUTKgGH7uLvhfwZPwlptRi2Dp5P4KKmJI3gvsZ8MIHnNwDs4sLf/aai5LzTyl66xr7qMxA==}
 
   '@fastify/fast-json-stringify-compiler@5.0.0':
     resolution: {integrity: sha512-tywfuZfXsyxLC5kEqrMubbFa9vpAxNtuPE7j9w5si1r+6p5b981pDfZ5Y8HBqmjDQl+PABT7cV5jZgXI2j+I5g==}
 
-  '@fastify/jwt@8.0.1':
-    resolution: {integrity: sha512-295bd7V6bDCnZOu8MAQgM6r7V1KILB+kdEq1q6nbHfXCnML569n7NSo3WzeLDG6IAqDl+Rhzi1vjxwaNHhRCBA==}
+  '@fastify/jwt@9.0.0':
+    resolution: {integrity: sha512-3XKFgpK/D/6vGY6gqy9Fe8TvUEk+UYBkFcIHvTvwLhe4wmmlNCE1si16wUdCZmeHRajjZKxfdBwRUklK8cHGIA==}
 
   '@fastify/merge-json-schemas@0.1.1':
     resolution: {integrity: sha512-fERDVz7topgNjtXsJTTW1JKLy0rhuLRcquYqNR9rF7OcVpCa2OVW49ZPDIhaRRCaUuvVxI+N416xUoF76HNSXA==}
@@ -3320,6 +3317,9 @@ packages:
 
   fastify-plugin@4.5.1:
     resolution: {integrity: sha512-stRHYGeuqpEZTL1Ef0Ovr2ltazUT9g844X5z/zEBFLG8RYlpDiOCIG+ATvYEp+/zmc7sN29mcIMp8gvYplYPIQ==}
+
+  fastify-plugin@5.0.1:
+    resolution: {integrity: sha512-HCxs+YnRaWzCl+cWRYFnHmeRFyR5GVnJTAaCJQiYzQSDwK9MgJdyAsuL3nh0EWRCYMgQ5MeziymvmAhUHYHDUQ==}
 
   fastify@5.0.0:
     resolution: {integrity: sha512-Qe4dU+zGOzg7vXjw4EvcuyIbNnMwTmcuOhlOrOJsgwzvjEZmsM/IeHulgJk+r46STjdJS/ZJbxO8N70ODXDMEQ==}
@@ -5784,20 +5784,18 @@ snapshots:
       cookie-signature: 1.2.1
       fastify-plugin: 4.5.1
 
-  '@fastify/error@3.4.1': {}
-
   '@fastify/error@4.0.0': {}
 
   '@fastify/fast-json-stringify-compiler@5.0.0':
     dependencies:
       fast-json-stringify: 6.0.0
 
-  '@fastify/jwt@8.0.1':
+  '@fastify/jwt@9.0.0':
     dependencies:
-      '@fastify/error': 3.4.1
+      '@fastify/error': 4.0.0
       '@lukeed/ms': 2.0.2
       fast-jwt: 4.0.1
-      fastify-plugin: 4.5.1
+      fastify-plugin: 5.0.1
       steed: 1.1.3
 
   '@fastify/merge-json-schemas@0.1.1':
@@ -7923,6 +7921,8 @@ snapshots:
       reusify: 1.0.4
 
   fastify-plugin@4.5.1: {}
+
+  fastify-plugin@5.0.1: {}
 
   fastify@5.0.0:
     dependencies:
