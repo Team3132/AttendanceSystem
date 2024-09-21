@@ -37,7 +37,7 @@
     "@dynamicabot/signales": "2.1.2",
     "@fastify/cookie": "9.4.0",
     "@fastify/jwt": "9.0.0",
-    "@fastify/static": "7.0.4",
+    "@fastify/static": "8.0.1",
     "@fastify/websocket": "11.0.1",
     "@lucia-auth/adapter-drizzle": "1.1.0",
     "@trpc/client": "11.0.0-rc.502",
