@@ -38,7 +38,7 @@
     "@fastify/cookie": "9.4.0",
     "@fastify/jwt": "8.0.1",
     "@fastify/static": "7.0.4",
-    "@fastify/websocket": "10.0.1",
+    "@fastify/websocket": "11.0.1",
     "@lucia-auth/adapter-drizzle": "1.1.0",
     "@trpc/client": "11.0.0-rc.502",
     "@trpc/react-query": "11.0.0-rc.502",
