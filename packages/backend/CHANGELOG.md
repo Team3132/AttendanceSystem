@@ -1,5 +1,11 @@
 # backend
 
+## 4.3.3
+
+### Patch Changes
+
+- [#1804](https://github.com/Team3132/AttendanceSystem/pull/1804) [`d480d5d`](https://github.com/Team3132/AttendanceSystem/commit/d480d5da9e56a54332bff08cb9cf22ad085e272e) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): lock file maintenance
+
 ## 4.3.2
 
 ### Patch Changes
