@@ -1,5 +1,12 @@
 # frontend
 
+## 4.3.6
+
+### Patch Changes
+
+- Updated dependencies [[`8689381`](https://github.com/Team3132/AttendanceSystem/commit/868938149e569ff1962ad8f323a0ce0f4e664f19)]:
+  - backend@4.3.6
+
 ## 4.3.5
 
 ### Patch Changes
