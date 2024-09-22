@@ -13,8 +13,8 @@ export async function migrate() {
   const logger = mainLogger.child("DB");
 
   const migrationsFolder = path.join(
-    fileURLToPath(import.meta.url),
-    "../drizzle/migrations",
+    fileURLToPath(import.meta.dirname),
+    "./drizzle",
   );
   const migrationPgClient = postgres(connectionUrl, {
     max: 1,

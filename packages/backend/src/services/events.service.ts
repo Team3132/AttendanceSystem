@@ -1,3 +1,5 @@
+"use server";
+
 import { getQueryKey } from "@trpc/react-query";
 import { TRPCError } from "@trpc/server";
 import { type Job, Queue, Worker } from "bullmq";

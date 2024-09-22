@@ -12,6 +12,10 @@
     "./schema": {
       "import": "./dist/schema/index.js",
       "types": "./dist/schema/index.d.ts"
+    },
+    "./services": {
+      "import": "./dist/services/index.js",
+      "types": "./dist/services/index.d.ts"
     }
   },
   "scripts": {
@@ -27,7 +31,8 @@
   "type": "module",
   "keywords": [],
   "files": [
-    "dist"
+    "dist",
+    "drizzle"
   ],
   "author": "",
   "license": "ISC",

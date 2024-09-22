@@ -1,3 +1,5 @@
+"use server";
+
 import { getQueryKey } from "@trpc/react-query";
 import { TRPCError } from "@trpc/server";
 import { and, count, eq, ilike, isNotNull, isNull } from "drizzle-orm";
