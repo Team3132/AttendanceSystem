@@ -34,6 +34,6 @@ export const csrfPlugin = fastifyPlugin(
   },
   {
     name: "csrf",
-    fastify: "4.x",
+    fastify: "5.x",
   },
 );
