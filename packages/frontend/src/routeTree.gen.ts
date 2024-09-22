@@ -279,35 +279,242 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren({
-  AuthenticatedRoute: AuthenticatedRoute.addChildren({
-    AuthenticatedAdminRoute: AuthenticatedAdminRoute.addChildren({
-      AuthenticatedAdminIndexRoute,
-      AuthenticatedAdminUsersUserIdRoute:
-        AuthenticatedAdminUsersUserIdRoute.addChildren({
-          AuthenticatedAdminUsersUserIdPendingRoute,
-          AuthenticatedAdminUsersUserIdIndexRoute,
-        }),
-    }),
-    AuthenticatedEventsRoute,
-    AuthenticatedLeaderboardRoute,
-    AuthenticatedProfileRoute: AuthenticatedProfileRoute.addChildren({
-      AuthenticatedProfilePendingRoute,
-      AuthenticatedProfileIndexRoute,
-    }),
-    AuthenticatedIndexRoute,
-    AuthenticatedEventsEventIdRoute:
-      AuthenticatedEventsEventIdRoute.addChildren({
-        AuthenticatedEventsEventIdCheckInRoute,
-        AuthenticatedEventsEventIdQrCodeRoute,
-        AuthenticatedEventsEventIdIndexRoute,
-      }),
-    AuthenticatedEventsCreateRoute,
-  }),
-  UnauthenticatedRoute: UnauthenticatedRoute.addChildren({
-    UnauthenticatedLoginRoute,
-  }),
-})
+interface AuthenticatedAdminUsersUserIdRouteChildren {
+  AuthenticatedAdminUsersUserIdPendingRoute: typeof AuthenticatedAdminUsersUserIdPendingRoute
+  AuthenticatedAdminUsersUserIdIndexRoute: typeof AuthenticatedAdminUsersUserIdIndexRoute
+}
+
+const AuthenticatedAdminUsersUserIdRouteChildren: AuthenticatedAdminUsersUserIdRouteChildren =
+  {
+    AuthenticatedAdminUsersUserIdPendingRoute:
+      AuthenticatedAdminUsersUserIdPendingRoute,
+    AuthenticatedAdminUsersUserIdIndexRoute:
+      AuthenticatedAdminUsersUserIdIndexRoute,
+  }
+
+const AuthenticatedAdminUsersUserIdRouteWithChildren =
+  AuthenticatedAdminUsersUserIdRoute._addFileChildren(
+    AuthenticatedAdminUsersUserIdRouteChildren,
+  )
+
+interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+  AuthenticatedAdminUsersUserIdRoute: typeof AuthenticatedAdminUsersUserIdRouteWithChildren
+}
+
+const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+  AuthenticatedAdminUsersUserIdRoute:
+    AuthenticatedAdminUsersUserIdRouteWithChildren,
+}
+
+const AuthenticatedAdminRouteWithChildren =
+  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
+
+interface AuthenticatedProfileRouteChildren {
+  AuthenticatedProfilePendingRoute: typeof AuthenticatedProfilePendingRoute
+  AuthenticatedProfileIndexRoute: typeof AuthenticatedProfileIndexRoute
+}
+
+const AuthenticatedProfileRouteChildren: AuthenticatedProfileRouteChildren = {
+  AuthenticatedProfilePendingRoute: AuthenticatedProfilePendingRoute,
+  AuthenticatedProfileIndexRoute: AuthenticatedProfileIndexRoute,
+}
+
+const AuthenticatedProfileRouteWithChildren =
+  AuthenticatedProfileRoute._addFileChildren(AuthenticatedProfileRouteChildren)
+
+interface AuthenticatedEventsEventIdRouteChildren {
+  AuthenticatedEventsEventIdCheckInRoute: typeof AuthenticatedEventsEventIdCheckInRoute
+  AuthenticatedEventsEventIdQrCodeRoute: typeof AuthenticatedEventsEventIdQrCodeRoute
+  AuthenticatedEventsEventIdIndexRoute: typeof AuthenticatedEventsEventIdIndexRoute
+}
+
+const AuthenticatedEventsEventIdRouteChildren: AuthenticatedEventsEventIdRouteChildren =
+  {
+    AuthenticatedEventsEventIdCheckInRoute:
+      AuthenticatedEventsEventIdCheckInRoute,
+    AuthenticatedEventsEventIdQrCodeRoute:
+      AuthenticatedEventsEventIdQrCodeRoute,
+    AuthenticatedEventsEventIdIndexRoute: AuthenticatedEventsEventIdIndexRoute,
+  }
+
+const AuthenticatedEventsEventIdRouteWithChildren =
+  AuthenticatedEventsEventIdRoute._addFileChildren(
+    AuthenticatedEventsEventIdRouteChildren,
+  )
+
+interface AuthenticatedRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
+  AuthenticatedEventsRoute: typeof AuthenticatedEventsRoute
+  AuthenticatedLeaderboardRoute: typeof AuthenticatedLeaderboardRoute
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRouteWithChildren
+  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedEventsEventIdRoute: typeof AuthenticatedEventsEventIdRouteWithChildren
+  AuthenticatedEventsCreateRoute: typeof AuthenticatedEventsCreateRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
+  AuthenticatedEventsRoute: AuthenticatedEventsRoute,
+  AuthenticatedLeaderboardRoute: AuthenticatedLeaderboardRoute,
+  AuthenticatedProfileRoute: AuthenticatedProfileRouteWithChildren,
+  AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedEventsEventIdRoute: AuthenticatedEventsEventIdRouteWithChildren,
+  AuthenticatedEventsCreateRoute: AuthenticatedEventsCreateRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
+interface UnauthenticatedRouteChildren {
+  UnauthenticatedLoginRoute: typeof UnauthenticatedLoginRoute
+}
+
+const UnauthenticatedRouteChildren: UnauthenticatedRouteChildren = {
+  UnauthenticatedLoginRoute: UnauthenticatedLoginRoute,
+}
+
+const UnauthenticatedRouteWithChildren = UnauthenticatedRoute._addFileChildren(
+  UnauthenticatedRouteChildren,
+)
+
+export interface FileRoutesByFullPath {
+  '': typeof UnauthenticatedRouteWithChildren
+  '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/events': typeof AuthenticatedEventsRoute
+  '/leaderboard': typeof AuthenticatedLeaderboardRoute
+  '/profile': typeof AuthenticatedProfileRouteWithChildren
+  '/login': typeof UnauthenticatedLoginRoute
+  '/': typeof AuthenticatedIndexRoute
+  '/events/$eventId': typeof AuthenticatedEventsEventIdRouteWithChildren
+  '/events/create': typeof AuthenticatedEventsCreateRoute
+  '/profile/pending': typeof AuthenticatedProfilePendingRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
+  '/profile/': typeof AuthenticatedProfileIndexRoute
+  '/admin/users/$userId': typeof AuthenticatedAdminUsersUserIdRouteWithChildren
+  '/events/$eventId/check-in': typeof AuthenticatedEventsEventIdCheckInRoute
+  '/events/$eventId/qr-code': typeof AuthenticatedEventsEventIdQrCodeRoute
+  '/events/$eventId/': typeof AuthenticatedEventsEventIdIndexRoute
+  '/admin/users/$userId/pending': typeof AuthenticatedAdminUsersUserIdPendingRoute
+  '/admin/users/$userId/': typeof AuthenticatedAdminUsersUserIdIndexRoute
+}
+
+export interface FileRoutesByTo {
+  '': typeof UnauthenticatedRouteWithChildren
+  '/events': typeof AuthenticatedEventsRoute
+  '/leaderboard': typeof AuthenticatedLeaderboardRoute
+  '/login': typeof UnauthenticatedLoginRoute
+  '/': typeof AuthenticatedIndexRoute
+  '/events/create': typeof AuthenticatedEventsCreateRoute
+  '/profile/pending': typeof AuthenticatedProfilePendingRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
+  '/profile': typeof AuthenticatedProfileIndexRoute
+  '/events/$eventId/check-in': typeof AuthenticatedEventsEventIdCheckInRoute
+  '/events/$eventId/qr-code': typeof AuthenticatedEventsEventIdQrCodeRoute
+  '/events/$eventId': typeof AuthenticatedEventsEventIdIndexRoute
+  '/admin/users/$userId/pending': typeof AuthenticatedAdminUsersUserIdPendingRoute
+  '/admin/users/$userId': typeof AuthenticatedAdminUsersUserIdIndexRoute
+}
+
+export interface FileRoutesById {
+  __root__: typeof rootRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/_unauthenticated': typeof UnauthenticatedRouteWithChildren
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/_authenticated/events': typeof AuthenticatedEventsRoute
+  '/_authenticated/leaderboard': typeof AuthenticatedLeaderboardRoute
+  '/_authenticated/profile': typeof AuthenticatedProfileRouteWithChildren
+  '/_unauthenticated/login': typeof UnauthenticatedLoginRoute
+  '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/events/$eventId': typeof AuthenticatedEventsEventIdRouteWithChildren
+  '/_authenticated/events/create': typeof AuthenticatedEventsCreateRoute
+  '/_authenticated/profile/pending': typeof AuthenticatedProfilePendingRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
+  '/_authenticated/profile/': typeof AuthenticatedProfileIndexRoute
+  '/_authenticated/admin/users/$userId': typeof AuthenticatedAdminUsersUserIdRouteWithChildren
+  '/_authenticated/events/$eventId/check-in': typeof AuthenticatedEventsEventIdCheckInRoute
+  '/_authenticated/events/$eventId/qr-code': typeof AuthenticatedEventsEventIdQrCodeRoute
+  '/_authenticated/events/$eventId/': typeof AuthenticatedEventsEventIdIndexRoute
+  '/_authenticated/admin/users/$userId/pending': typeof AuthenticatedAdminUsersUserIdPendingRoute
+  '/_authenticated/admin/users/$userId/': typeof AuthenticatedAdminUsersUserIdIndexRoute
+}
+
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | ''
+    | '/admin'
+    | '/events'
+    | '/leaderboard'
+    | '/profile'
+    | '/login'
+    | '/'
+    | '/events/$eventId'
+    | '/events/create'
+    | '/profile/pending'
+    | '/admin/'
+    | '/profile/'
+    | '/admin/users/$userId'
+    | '/events/$eventId/check-in'
+    | '/events/$eventId/qr-code'
+    | '/events/$eventId/'
+    | '/admin/users/$userId/pending'
+    | '/admin/users/$userId/'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | ''
+    | '/events'
+    | '/leaderboard'
+    | '/login'
+    | '/'
+    | '/events/create'
+    | '/profile/pending'
+    | '/admin'
+    | '/profile'
+    | '/events/$eventId/check-in'
+    | '/events/$eventId/qr-code'
+    | '/events/$eventId'
+    | '/admin/users/$userId/pending'
+    | '/admin/users/$userId'
+  id:
+    | '__root__'
+    | '/_authenticated'
+    | '/_unauthenticated'
+    | '/_authenticated/admin'
+    | '/_authenticated/events'
+    | '/_authenticated/leaderboard'
+    | '/_authenticated/profile'
+    | '/_unauthenticated/login'
+    | '/_authenticated/'
+    | '/_authenticated/events/$eventId'
+    | '/_authenticated/events/create'
+    | '/_authenticated/profile/pending'
+    | '/_authenticated/admin/'
+    | '/_authenticated/profile/'
+    | '/_authenticated/admin/users/$userId'
+    | '/_authenticated/events/$eventId/check-in'
+    | '/_authenticated/events/$eventId/qr-code'
+    | '/_authenticated/events/$eventId/'
+    | '/_authenticated/admin/users/$userId/pending'
+    | '/_authenticated/admin/users/$userId/'
+  fileRoutesById: FileRoutesById
+}
+
+export interface RootRouteChildren {
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  UnauthenticatedRoute: typeof UnauthenticatedRouteWithChildren
+}
+
+const rootRouteChildren: RootRouteChildren = {
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  UnauthenticatedRoute: UnauthenticatedRouteWithChildren,
+}
+
+export const routeTree = rootRoute
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
 
 /* prettier-ignore-end */
 

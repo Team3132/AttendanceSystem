@@ -28,19 +28,13 @@ export const Route = createRootRouteWithContext<{
   component: RootComponent,
 });
 
+const theme = createTheme({
+  colorSchemes: {
+    dark: true,
+  }
+});
+
 function RootComponent() {
-  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
-
-  const theme = React.useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode: prefersDarkMode ? "dark" : "light",
-        },
-      }),
-    [prefersDarkMode],
-  );
-
   return (
     <HelmetProvider>
       <ThemeProvider theme={theme}>
