@@ -1,4 +1,14 @@
 import { queryOptions, QueryOptions } from "@tanstack/react-query";
+import { eventService} from 'backend/services'
+import { createServerFn } from '@tanstack/start'
+
+const getSession = () => {
+  const { session } = await lucia.validateSession(sessionId);
+if (session && session.fresh) {
+	// set session cookie
+}
+
+}
 
 export const eventQueryKeys = {
   events: "events",
@@ -9,6 +19,16 @@ export const eventQueryKeys = {
   eventRsvp: (id: string) => [...eventQueryKeys.event(id), "rsvp"] as const, // The logged in user's RSVP
 };
 
+const getEvents = createServerFn('GET', async () => {
+
+
+  eventService.getEvents({
+    cursor: 0,
+    limit: 10,
+
+  })
+})
+
 export const eventQueries = {
   getEvent: (id: string) =>
     queryOptions({
@@ -17,4 +37,5 @@ export const eventQueries = {
         return { id, name: "My Event" };
       },
     }),
-} satisfies Record<string, (...args: string[]) => QueryOptions>;
+};
+
