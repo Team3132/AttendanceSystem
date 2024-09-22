@@ -12,7 +12,6 @@ import db, { migrate } from "./drizzle/db";
 import { userTable } from "./drizzle/schema";
 import env, { isProd } from "./env";
 import mainLogger from "./logger";
-import { registerCron } from "./registerCron";
 import appRouter, { ee, type AppRouter } from "./routers/app.router";
 import { createContext } from "./trpc/context";
 import { generateState, OAuth2RequestError } from "arctic";
