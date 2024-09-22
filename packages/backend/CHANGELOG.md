@@ -1,5 +1,11 @@
 # backend
 
+## 4.3.6
+
+### Patch Changes
+
+- [#1809](https://github.com/Team3132/AttendanceSystem/pull/1809) [`8689381`](https://github.com/Team3132/AttendanceSystem/commit/868938149e569ff1962ad8f323a0ce0f4e664f19) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Move drizzle migrations because they do not need to be compiled
+
 ## 4.3.5
 
 ## 4.3.4
