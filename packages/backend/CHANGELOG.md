@@ -1,5 +1,11 @@
 # backend
 
+## 4.3.4
+
+### Patch Changes
+
+- [#1806](https://github.com/Team3132/AttendanceSystem/pull/1806) [`4308b6b`](https://github.com/Team3132/AttendanceSystem/commit/4308b6b4684a51d3155c7335b0881184311616a4) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Update csrf.ts
+
 ## 4.3.3
 
 ### Patch Changes
