@@ -12,10 +12,6 @@ const connectionUrl = `postgres://${env.POSTGRES_USER}:${env.POSTGRES_PASSWORD}@
 export async function migrate() {
   const logger = mainLogger.child("DB");
 
-  const migrationsFolder = path.join(
-    fileURLToPath(import.meta.url),
-    "../drizzle/migrations",
-  );
   const migrationPgClient = postgres(connectionUrl, {
     max: 1,
   });
@@ -23,7 +19,7 @@ export async function migrate() {
     schema,
   });
   logger.time("Migrating database...");
-  await migrateDB(migrationClient, { migrationsFolder });
+  await migrateDB(migrationClient, { migrationsFolder: "./drizzle" });
   logger.timeEnd("Migrating database...");
 }
 

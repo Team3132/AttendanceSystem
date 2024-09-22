@@ -1,3 +1,5 @@
+"use server";
+
 import { getQueryKey } from "@trpc/react-query";
 import { TRPCError } from "@trpc/server";
 import { type Job, Queue, Worker } from "bullmq";
@@ -51,35 +53,39 @@ export const checkoutQueue = new Queue<EventCheckinJobData>(queueName, {
   },
 });
 
-new Worker(
-  queueName,
-  async (job: Job<EventCheckinJobData>) => {
-    const { eventId, rsvpId } = job.data;
+export const registerWorker = () => {
+  new Worker(
+    queueName,
+    async (job: Job<EventCheckinJobData>) => {
+      const { eventId, rsvpId } = job.data;
 
-    const currentTime = DateTime.local();
+      const currentTime = DateTime.local();
 
-    const fetchedEvent = await db.query.eventTable.findFirst({
-      where: (event, { eq }) => eq(event.id, eventId),
-    });
+      const fetchedEvent = await db.query.eventTable.findFirst({
+        where: (event, { eq }) => eq(event.id, eventId),
+      });
 
-    if (!fetchedEvent) throw new Error("Event not found");
+      if (!fetchedEvent) throw new Error("Event not found");
 
-    const eventEndTime = DateTime.fromMillis(Date.parse(fetchedEvent.endDate));
+      const eventEndTime = DateTime.fromMillis(
+        Date.parse(fetchedEvent.endDate),
+      );
 
-    const checkoutTime =
-      currentTime > eventEndTime ? eventEndTime : currentTime;
+      const checkoutTime =
+        currentTime > eventEndTime ? eventEndTime : currentTime;
 
-    await db
-      .update(rsvpTable)
-      .set({
-        checkoutTime: checkoutTime.toISO(),
-      })
-      .where(and(eq(rsvpTable.id, rsvpId), isNull(rsvpTable.checkoutTime)));
-  },
-  {
-    connection: { host: env.REDIS_HOST, port: env.REDIS_PORT, db: 2 },
-  },
-);
+      await db
+        .update(rsvpTable)
+        .set({
+          checkoutTime: checkoutTime.toISO(),
+        })
+        .where(and(eq(rsvpTable.id, rsvpId), isNull(rsvpTable.checkoutTime)));
+    },
+    {
+      connection: { host: env.REDIS_HOST, port: env.REDIS_PORT, db: 2 },
+    },
+  );
+};
 
 /**
  * Get upcoming events in the next 24 hours for the daily bot announcement

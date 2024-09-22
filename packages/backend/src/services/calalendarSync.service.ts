@@ -1,3 +1,5 @@
+"use server";
+
 import { type calendar_v3, google } from "googleapis";
 
 import { gte, inArray, lte } from "drizzle-orm";
