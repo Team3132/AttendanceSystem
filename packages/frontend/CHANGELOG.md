@@ -1,5 +1,14 @@
 # frontend
 
+## 4.3.5
+
+### Patch Changes
+
+- [`ca683a7`](https://github.com/Team3132/AttendanceSystem/commit/ca683a716e2b829b0701be320f81bee03e16f459) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Theme Switcher
+
+- Updated dependencies []:
+  - backend@4.3.5
+
 ## 4.3.4
 
 ### Patch Changes
