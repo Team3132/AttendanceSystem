@@ -11,15 +11,14 @@ import {
   CssBaseline,
   ThemeProvider,
   createTheme,
-  useMediaQuery,
 } from "@mui/material";
 import MuiAlert from "@/components/MuiAlert";
-import { trpc, trpcClient, queryClient, queryUtils } from "@/trpcClient";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import { Provider } from "react-alert";
-import { HelmetProvider } from "react-helmet-async";
+import { ScrollRestoration } from '@tanstack/react-router'
+import { Body, Head, Html, Meta, Scripts } from '@tanstack/start'
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -36,7 +35,11 @@ const theme = createTheme({
 
 function RootComponent() {
   return (
-    <HelmetProvider>
+    <Html>
+      <Head>
+        <Meta />
+      </Head>
+      <Body>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale="en-au">
@@ -45,6 +48,9 @@ function RootComponent() {
           </Provider>
         </LocalizationProvider>
       </ThemeProvider>
-    </HelmetProvider>
+      <ScrollRestoration />
+        <Scripts />
+      </Body>
+    </Html>
   );
 }

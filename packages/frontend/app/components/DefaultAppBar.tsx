@@ -1,6 +1,5 @@
 import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
 import { useColorScheme} from "@mui/material/styles";
-import { Helmet } from "react-helmet-async";
 import { FaCircleUser } from "react-icons/fa6";
 import AsChildLink from "./AsChildLink";
 import OnlineCountComponent from "./OnlineCount";
@@ -45,9 +44,6 @@ export default function DefaultAppBar({ title }: DefaultAppBarProps) {
 
   return (
     <>
-      <Helmet>
-        <title>{`${title} - Attendance System`}</title>
-      </Helmet>
       <AppBar
         position="absolute"
         sx={{
