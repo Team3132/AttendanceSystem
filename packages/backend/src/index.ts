@@ -1,6 +1,6 @@
-import env from "./env";
+import env from "../../frontend/src/server/env";
 import server from "./app";
-import mainLogger from "./logger";
+import mainLogger from "../../frontend/src/server/logger";
 import { registerCron } from "./registerCron";
 import { registerWorker } from "./services/events.service";
 

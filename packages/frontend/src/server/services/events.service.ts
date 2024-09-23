@@ -22,7 +22,6 @@ import type { z } from "zod";
 import db from "../drizzle/db";
 import { eventTable, rsvpTable } from "../drizzle/schema";
 import env from "../env";
-import { ee } from "../routers/app.router";
 import type { RSVPUserSchema, UserCheckinSchema } from "../schema";
 import type { CreateBlankUserRsvpSchema } from "../schema/CreateBlankUserRsvpSchema";
 import type { CreateEventSchema } from "../schema/CreateEventSchema";
