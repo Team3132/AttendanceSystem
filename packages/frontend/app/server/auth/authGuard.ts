@@ -1,10 +1,6 @@
-import {
-  parseCookies,
-  setCookie,
-  getCookie,
-  getHeader,
-  appendHeader,
-} from "vinxi/http";
+"use server";
+
+import { setCookie, getCookie } from "vinxi/http";
 import { lucia } from "./lucia";
 import {
   redirect,
@@ -38,6 +34,11 @@ export async function authGuard({
       sessionCookie.value,
       sessionCookie.attributes,
     );
+
+    throw redirect({
+      to: failureRedirect ?? "/",
+      statusCode: 302,
+    });
   }
 
   if (session?.fresh) {
