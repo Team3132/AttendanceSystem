@@ -1,4 +1,5 @@
 import AsChildLink from "@/components/AsChildLink";
+import { authGuard } from "@/server/auth/authGuard";
 import { trpc } from "@/trpcClient";
 import { TabItem } from "@/types/TabItem";
 import { BottomNavigation, BottomNavigationAction, Box } from "@mui/material";
@@ -12,24 +13,11 @@ import {
 } from "react-icons/fa6";
 
 export const Route = createFileRoute("/_authenticated")({
-  beforeLoad: async ({ context: { queryUtils } }) => {
-    const { isAuthenticated, isAdmin } =
-      await queryUtils.auth.status.ensureData();
-    if (!isAuthenticated) {
-      throw redirect({
-        to: "/login",
-        search: {
-          redirect: location.href,
-        },
-      });
-    }
-
-    return {
-      isAdmin,
-    };
+  beforeLoad: async () => {
+    "use server";
+    const { session, user } = await authGuard({ failureRedirect: "/login" })
+    console.log({ session, user });
   },
-  loader: async ({ context: { queryUtils } }) =>
-    queryUtils.auth.status.ensureData(),
   component: Component,
 });
 

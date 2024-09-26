@@ -2,9 +2,10 @@ import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
 import { useColorScheme} from "@mui/material/styles";
 import { FaCircleUser } from "react-icons/fa6";
 import AsChildLink from "./AsChildLink";
-import OnlineCountComponent from "./OnlineCount";
 import { useCallback, useMemo } from "react";
-import { DarkMode, LightMode, SettingsSuggest } from "@mui/icons-material";
+import SettingsSuggest from "@mui/icons-material/SettingsSuggest";
+import DarkMode from "@mui/icons-material/DarkMode";
+import LightMode from "@mui/icons-material/LightMode";
 
 interface DefaultAppBarProps {
   title: string;

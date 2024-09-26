@@ -13,17 +13,20 @@ interface AuthGuardParams {
   successRedirect?: ToPathOption<RegisteredRouter>;
 }
 
-export async function authGuard({
-  failureRedirect,
-  successRedirect,
-}: AuthGuardParams = {}) {
+export async function authGuard(params: AuthGuardParams = {}) {
+  const { failureRedirect, successRedirect } = params;
+
   const sessionId = getCookie(lucia.sessionCookieName);
 
   if (!sessionId) {
-    throw redirect({
-      to: failureRedirect ?? "/",
-      statusCode: 302,
-    });
+    if (failureRedirect) {
+      throw redirect({
+        to: failureRedirect,
+        statusCode: 302,
+      });
+    }
+
+    return { session: null, user: null };
   }
 
   const { session, user } = await lucia.validateSession(sessionId);
@@ -35,10 +38,14 @@ export async function authGuard({
       sessionCookie.attributes,
     );
 
-    throw redirect({
-      to: failureRedirect ?? "/",
-      statusCode: 302,
-    });
+    if (failureRedirect) {
+      throw redirect({
+        to: failureRedirect ?? "/",
+        statusCode: 302,
+      });
+    }
+
+    return { session: null, user: null };
   }
 
   if (session?.fresh) {

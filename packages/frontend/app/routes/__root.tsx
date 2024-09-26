@@ -22,7 +22,6 @@ import { Body, Head, Html, Meta, Scripts } from '@tanstack/start'
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
-  queryUtils: typeof queryUtils;
 }>()({
   component: RootComponent,
 });
@@ -44,7 +43,7 @@ function RootComponent() {
         <CssBaseline />
         <LocalizationProvider dateAdapter={AdapterLuxon} adapterLocale="en-au">
           <Provider template={MuiAlert} position="bottom center">
-            <Outlet />
+            {/* <Outlet /> */}
           </Provider>
         </LocalizationProvider>
       </ThemeProvider>
