@@ -8,7 +8,7 @@ import {
   type SelectChangeEvent,
   TextField,
 } from "@mui/material";
-import type { RSVPSchema } from "backend/schema";
+import type { RSVPSchema } from "@/server/schema";
 import type { z } from "zod";
 import useUpdateRsvp from "../hooks/useUpdateRsvp";
 

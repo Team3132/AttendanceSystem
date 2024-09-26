@@ -1,6 +1,6 @@
 import { trpc } from "@/trpcClient";
 import { List, Typography } from "@mui/material";
-import type { RSVPEventSchema } from "backend/schema";
+import type { RSVPEventSchema } from "@/server/schema";
 import type { z } from "zod";
 import PendingEventListItem from "./PendingEventListItem";
 

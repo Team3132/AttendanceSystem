@@ -1,6 +1,6 @@
 import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
 import { Inject, Injectable, UseGuards } from "@nestjs/common";
-import type { BuildPointUserSchema } from "backend/schema/BuildPointUserSchema";
+import type { BuildPointUserSchema } from "@/server/schema/BuildPointUserSchema";
 import {
   ActionRowBuilder,
   ButtonBuilder,

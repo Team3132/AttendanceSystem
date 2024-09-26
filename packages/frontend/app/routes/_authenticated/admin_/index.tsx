@@ -13,7 +13,7 @@ import {
 import { keepPreviousData } from "@tanstack/react-query";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { createColumnHelper } from "@tanstack/react-table";
-import { UserSchema } from "backend/schema";
+import { UserSchema } from "@/server/schema";
 import { useMemo } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import { z } from "zod";

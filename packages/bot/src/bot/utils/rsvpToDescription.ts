@@ -1,4 +1,4 @@
-import type { RSVPUserSchema } from "backend/schema";
+import type { RSVPUserSchema } from "@/server/schema";
 import type { z } from "zod";
 
 export default function rsvpToDescription(

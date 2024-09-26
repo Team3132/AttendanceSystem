@@ -6,7 +6,7 @@ import {
   ListItemText,
   Tooltip,
 } from "@mui/material";
-import type { RSVPUserSchema } from "backend/schema";
+import type { RSVPUserSchema } from "@/server/schema";
 import { DateTime } from "luxon";
 import { useAlert } from "react-alert";
 import { FaCheck, FaClock, FaGear, FaQuestion, FaXmark } from "react-icons/fa6";

@@ -3,9 +3,9 @@ import { useColorScheme} from "@mui/material/styles";
 import { FaCircleUser } from "react-icons/fa6";
 import AsChildLink from "./AsChildLink";
 import { useCallback, useMemo } from "react";
-import SettingsSuggest from "@mui/icons-material/SettingsSuggest";
-import DarkMode from "@mui/icons-material/DarkMode";
-import LightMode from "@mui/icons-material/LightMode";
+// import SettingsSuggest from "@mui/icons-material/SettingsSuggest";
+// import DarkMode from "@mui/icons-material/DarkMode";
+// import LightMode from "@mui/icons-material/LightMode";
 
 interface DefaultAppBarProps {
   title: string;
@@ -15,19 +15,19 @@ export default function DefaultAppBar({ title }: DefaultAppBarProps) {
   const { mode, setMode } = useColorScheme()
 
   const modeIcon = useMemo(() => {
-    if (mode === "dark") {
-      return <LightMode />
-    }
+    // if (mode === "dark") {
+    //   return <LightMode />
+    // }
     
-    if (mode === "light") {
-      return <DarkMode />
-    }
+    // if (mode === "light") {
+    //   return <DarkMode />
+    // }
 
-    // system mode
-    return <SettingsSuggest />
+    // // system mode
+    // return <SettingsSuggest />
       
     
-  }, [mode])
+  }, [])
 
   const handleModeChange = useCallback(() => {
     switch (mode) {
@@ -58,7 +58,7 @@ export default function DefaultAppBar({ title }: DefaultAppBarProps) {
             {title}
           </Typography>
           <IconButton onClick={handleModeChange}>
-            {modeIcon}
+            {/* {modeIcon} */}
           </IconButton>
           <AsChildLink to="/profile">
             <IconButton>
