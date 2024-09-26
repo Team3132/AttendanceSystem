@@ -3,7 +3,7 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_unauthenticated")({
   beforeLoad: async () => {
-    "use server";
+    'use server';
     const { session, user } = await authGuard({ successRedirect: "/" })
     console.log({ session, user });
   },

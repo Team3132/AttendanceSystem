@@ -4,6 +4,7 @@ import { trpc } from "@/trpcClient";
 import { TabItem } from "@/types/TabItem";
 import { BottomNavigation, BottomNavigationAction, Box } from "@mui/material";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/start";
 import { useMemo } from "react";
 import {
   FaHouse,
@@ -12,11 +13,18 @@ import {
   FaHouseLock,
 } from "react-icons/fa6";
 
+const serverAuth = async () => {
+  'use server';
+
+  const { session, user } = await authGuard({ successRedirect: "/" });
+
+  return { session, user };
+}
+
 export const Route = createFileRoute("/_authenticated")({
   beforeLoad: async () => {
-    "use server";
-    const { session, user } = await authGuard({ failureRedirect: "/login" })
-    console.log({ session, user });
+    'use server';
+    serverAuth();
   },
   component: Component,
 });
