@@ -57,8 +57,8 @@ importers:
         specifier: 1.9.2
         version: 1.9.2
       bullmq:
-        specifier: 5.17.1
-        version: 5.17.1
+        specifier: 5.18.0
+        version: 5.18.0
       cron:
         specifier: 3.1.7
         version: 3.1.7
@@ -2868,8 +2868,8 @@ packages:
   buffer@6.0.3:
     resolution: {integrity: sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==}
 
-  bullmq@5.17.1:
-    resolution: {integrity: sha512-wqjhdJptb3KLeuUO+ZfsjVHqHuPtHhhoAE2XM8zvnidk6uU/ELo16uU6CVTBhliAupgvPE9jWE7tchR0GCtsdA==}
+  bullmq@5.18.0:
+    resolution: {integrity: sha512-j7gMwvbe/un51W/JeS2V26s1q3whFrEaH98EMjlJWaJDXGgrBTcTx/iVK6Rte63dv3ZpPBhsxol/h6oPujMe6g==}
 
   bundle-require@5.0.0:
     resolution: {integrity: sha512-GuziW3fSSmopcx4KRymQEJVbZUfqlCqcq7dvs6TYwKRZiegK/2buMxQTPs6MGlNv50wms1699qYO54R8XfRX4w==}
@@ -7483,7 +7483,7 @@ snapshots:
       base64-js: 1.5.1
       ieee754: 1.2.1
 
-  bullmq@5.17.1:
+  bullmq@5.18.0:
     dependencies:
       cron-parser: 4.9.0
       ioredis: 5.4.1
