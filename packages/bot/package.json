@@ -27,7 +27,7 @@
     "@nestjs/core": "10.4.4",
     "@nestjs/platform-express": "10.4.4",
     "@nestjs/schedule": "4.1.1",
-    "@sentry/node": "8.33.1",
+    "@sentry/node": "8.34.0",
     "@sentry/tracing": "7.114.0",
     "@trpc/client": "11.0.0-rc.566",
     "backend": "workspace:*",
