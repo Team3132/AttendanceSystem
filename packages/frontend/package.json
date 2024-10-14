@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.3",
-    "@swc/plugin-emotion": "4.0.2",
+    "@swc/plugin-emotion": "4.0.3",
     "@tanstack/router-plugin": "1.65.0",
     "@trpc/client": "11.0.0-rc.571",
     "@trpc/react-query": "11.0.0-rc.571",
