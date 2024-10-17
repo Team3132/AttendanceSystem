@@ -45,7 +45,7 @@
     "zod": "3.23.8"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.3",
+    "@biomejs/biome": "1.9.4",
     "@swc/plugin-emotion": "4.0.3",
     "@tanstack/router-plugin": "1.69.1",
     "@trpc/client": "11.0.0-rc.584",
