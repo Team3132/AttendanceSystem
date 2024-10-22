@@ -121,8 +121,8 @@ importers:
         specifier: 8.5.12
         version: 8.5.12
       drizzle-kit:
-        specifier: 0.24.2
-        version: 0.24.2
+        specifier: 0.26.2
+        version: 0.26.2
       prettier:
         specifier: 3.3.3
         version: 3.3.3
@@ -3164,8 +3164,8 @@ packages:
     resolution: {integrity: sha512-IrPdXQsk2BbzvCBGBOTmmSH5SodmqZNt4ERAZDmW4CT+tL8VtvinqywuANaFu4bOMWki16nqf0e4oC0QIaDr/g==}
     engines: {node: '>=10'}
 
-  drizzle-kit@0.24.2:
-    resolution: {integrity: sha512-nXOaTSFiuIaTMhS8WJC2d4EBeIcN9OSt2A2cyFbQYBAZbi7lRsVGJNqDpEwPqYfJz38yxbY/UtbvBBahBfnExQ==}
+  drizzle-kit@0.26.2:
+    resolution: {integrity: sha512-cMq8omEKywjIy5KcqUo6LvEFxkl8/zYHsgYjFVXjmPWWtuW4blcz+YW9+oIhoaALgs2ebRjzXwsJgN9i6P49Dw==}
     hasBin: true
 
   drizzle-orm@0.35.3:
@@ -7788,7 +7788,7 @@ snapshots:
 
   dotenv@8.6.0: {}
 
-  drizzle-kit@0.24.2:
+  drizzle-kit@0.26.2:
     dependencies:
       '@drizzle-team/brocli': 0.10.1
       '@esbuild-kit/esm-loader': 2.6.5
