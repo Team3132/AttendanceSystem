@@ -69,14 +69,10 @@ function Component() {
         <Container
           sx={{
             my: 2,
-            flex: 1,
-            overflowY: "auto",
-            display: "flex",
-            flexDirection: "column",
             flexGrow: 1,
           }}
         >
-          <Stack gap={2} sx={{ height: "100%", display: "flex", flex: 1 }}>
+          <Stack gap={2} sx={{ height: "100%", display: "flex" }}>
             <Typography variant="h4">Outreach Leaderboard</Typography>
             <Datatable
               columns={columns ?? []}
@@ -92,20 +88,6 @@ function Component() {
             />
           </Stack>
         </Container>
-        <Paper
-          sx={{
-            p: 2,
-            textAlign: "center",
-            // flex: 1,
-            height: 0,
-            flexGrow: 1,
-            width: "100%",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <Outlet />
-        </Paper>
       </>
     );
   }

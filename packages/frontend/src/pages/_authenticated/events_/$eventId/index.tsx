@@ -1,41 +1,41 @@
-import DeleteEventButton from "@/features/events/components/DeleteEventButton";
-import RsvpList from "@/features/events/components/RSVPList";
-import { trpc } from "@/trpcClient";
-import { Container, Grid, Paper, Typography, Stack } from "@mui/material";
-import { createFileRoute } from "@tanstack/react-router";
-import { DateTime } from "luxon";
+import DeleteEventButton from '@/features/events/components/DeleteEventButton'
+import RsvpList from '@/features/events/components/RSVPList'
+import { trpc } from '@/trpcClient'
+import { Container, Grid, Paper, Typography, Stack } from '@mui/material'
+import { createFileRoute } from '@tanstack/react-router'
+import { DateTime } from 'luxon'
 
-export const Route = createFileRoute("/_authenticated/events/$eventId/")({
+export const Route = createFileRoute('/_authenticated/events_/$eventId/')({
   component: Component,
   loader: async ({ context: { queryUtils }, params: { eventId } }) => {
-    const initialEvent = await queryUtils.events.getEvent.ensureData(eventId);
-    const authStatus = await queryUtils.auth.status.ensureData();
+    const initialEvent = await queryUtils.events.getEvent.ensureData(eventId)
+    const authStatus = await queryUtils.auth.status.ensureData()
 
     return {
       initialEvent,
       initialAuth: authStatus,
-    };
+    }
   },
-});
+})
 
 function Component() {
-  const loaderData = Route.useLoaderData();
+  const loaderData = Route.useLoaderData()
 
   const eventQuery = trpc.events.getEvent.useQuery(loaderData.initialEvent.id, {
     initialData: loaderData.initialEvent,
-  });
+  })
 
   const authStatusQuery = trpc.auth.status.useQuery(undefined, {
     initialData: loaderData.initialAuth,
-  });
+  })
 
   return (
-    <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
+    <Container sx={{ my: 2, flex: 1, overflowY: 'auto' }}>
       <Grid container spacing={2} py={2}>
         {eventQuery.data.description ? (
           <Grid item xs={12}>
             <Paper sx={{ p: 2 }}>
-              <Typography variant="h5" textAlign={"center"}>
+              <Typography variant="h5" textAlign={'center'}>
                 Description
               </Typography>
               <Typography variant="body1">
@@ -45,7 +45,7 @@ function Component() {
           </Grid>
         ) : null}
         <Grid item xs={12} md={5}>
-          <Paper sx={{ p: 2, textAlign: "center" }}>
+          <Paper sx={{ p: 2, textAlign: 'center' }}>
             <Typography variant="h5">Start</Typography>
             <Typography variant="body1">
               {DateTime.fromMillis(
@@ -55,20 +55,20 @@ function Component() {
           </Paper>
         </Grid>
         <Grid item xs={12} md={2}>
-          <Paper sx={{ p: 2, textAlign: "center" }}>
+          <Paper sx={{ p: 2, textAlign: 'center' }}>
             <Typography variant="h5">Duration</Typography>
             <Typography variant="body1">
               {DateTime.fromMillis(Date.parse(eventQuery.data.endDate))
                 .diff(
                   DateTime.fromMillis(Date.parse(eventQuery.data.startDate)),
-                  ["hours", "minutes"],
+                  ['hours', 'minutes'],
                 )
-                .toFormat("hh:mm")}
+                .toFormat('hh:mm')}
             </Typography>
           </Paper>
         </Grid>
         <Grid xs={12} md={5} item>
-          <Paper sx={{ p: 2, textAlign: "center" }}>
+          <Paper sx={{ p: 2, textAlign: 'center' }}>
             <Typography variant="h5">End</Typography>
             <Typography variant="body1">
               {DateTime.fromMillis(
@@ -78,16 +78,16 @@ function Component() {
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Paper sx={{ p: 2, textAlign: "center" }}>
+          <Paper sx={{ p: 2, textAlign: 'center' }}>
             <Typography variant="h5">Type</Typography>
             <Typography variant="body1">{eventQuery.data.type}</Typography>
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Paper sx={{ p: 2, textAlign: "center" }}>
+          <Paper sx={{ p: 2, textAlign: 'center' }}>
             <Typography variant="h5">All Day</Typography>
             <Typography variant="body1">
-              {eventQuery.data.allDay ? "Yes" : "No"}
+              {eventQuery.data.allDay ? 'Yes' : 'No'}
             </Typography>
           </Paper>
         </Grid>
@@ -107,5 +107,5 @@ function Component() {
         </Grid>
       </Grid>
     </Container>
-  );
+  )
 }

@@ -1,26 +1,26 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute, redirect } from '@tanstack/react-router'
 
-export const Route = createFileRoute("/_authenticated/admin")({
+export const Route = createFileRoute('/_authenticated/admin_')({
   beforeLoad: async ({ context: { queryUtils } }) => {
     const { isAuthenticated, isAdmin } =
-      await queryUtils.auth.status.ensureData();
+      await queryUtils.auth.status.ensureData()
 
     if (!isAuthenticated) {
       throw redirect({
-        to: "/login",
+        to: '/login',
         search: {
           redirect: location.href,
         },
-      });
+      })
     }
 
     if (!isAdmin) {
       throw redirect({
-        to: "/",
+        to: '/',
         search: {
-          error: "You are not an admin",
+          error: 'You are not an admin',
         },
-      });
+      })
     }
   },
-});
+})
