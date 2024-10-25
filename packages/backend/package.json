@@ -61,7 +61,7 @@
     "googleapis": "144.0.0",
     "lucia": "3.2.2",
     "luxon": "3.5.0",
-    "postgres": "3.4.4",
+    "postgres": "3.4.5",
     "superjson": "2.2.1",
     "ulidx": "2.4.1",
     "uuid": "10.0.0",
