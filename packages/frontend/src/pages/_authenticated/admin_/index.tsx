@@ -4,7 +4,9 @@ import DefaultAppBar from '@/components/DefaultAppBar'
 import { trpc } from '@/trpcClient'
 import {
   Button,
+  CircularProgress,
   Container,
+  InputAdornment,
   Paper,
   Stack,
   TextField,
@@ -94,6 +96,11 @@ function Component() {
               }}
               placeholder="Search for users"
               fullWidth
+              slotProps={{
+                input: {
+                  endAdornment: usersQuery.isFetching ? <InputAdornment position='end'><CircularProgress size={"30px"} /></InputAdornment> : undefined,
+                }
+              }}
             />
             <Datatable
               columns={columns ?? []}
