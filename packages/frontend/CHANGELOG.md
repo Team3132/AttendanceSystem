@@ -1,5 +1,14 @@
 # frontend
 
+## 4.3.7
+
+### Patch Changes
+
+- [#1948](https://github.com/Team3132/AttendanceSystem/pull/1948) [`4376cf8`](https://github.com/Team3132/AttendanceSystem/commit/4376cf83cb59e2ecf42f92409daf098930abe708) Thanks [@renovate](https://github.com/apps/renovate)! - fix(frontend): Fix the styling for the outreach leaderboard
+
+- Updated dependencies []:
+  - backend@4.3.7
+
 ## 4.3.6
 
 ### Patch Changes
