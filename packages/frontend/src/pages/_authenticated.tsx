@@ -2,6 +2,7 @@ import AsChildLink from "@/components/AsChildLink";
 import { trpc } from "@/trpcClient";
 import { TabItem } from "@/types/TabItem";
 import { BottomNavigation, BottomNavigationAction, Box } from "@mui/material";
+import { useChildMatches } from "@tanstack/react-router";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 import { useMemo } from "react";
 import {
@@ -44,44 +45,52 @@ function Component() {
     () =>
       authStatusQuery.data.isAdmin
         ? ([
-            {
-              to: "/",
-              label: "Home",
-              icon: <FaHouse />,
-            },
-            {
-              to: "/leaderboard",
-              label: "Leaderboard",
-              icon: <FaPeopleGroup />,
-            },
-            {
-              to: "/events",
-              label: "Events",
-              fuzzy: true,
-              icon: <FaRegCalendar />,
-            },
-            { to: "/admin", label: "Admin", icon: <FaHouseLock /> },
-          ] as TabItem[])
+          {
+            to: "/",
+            label: "Home",
+            icon: <FaHouse />,
+          },
+          {
+            to: "/leaderboard",
+            label: "Leaderboard",
+            icon: <FaPeopleGroup />,
+          },
+          {
+            to: "/events",
+            label: "Events",
+            fuzzy: true,
+            icon: <FaRegCalendar />,
+          },
+          { to: "/admin", label: "Admin", icon: <FaHouseLock /> },
+        ] as TabItem[])
         : ([
-            {
-              to: "/",
-              label: "Home",
-              icon: <FaHouse />,
-            },
-            {
-              to: "/leaderboard",
-              label: "Leaderboard",
-              icon: <FaPeopleGroup />,
-            },
-            {
-              to: "/events",
-              fuzzy: true,
-              label: "Events",
-              icon: <FaRegCalendar />,
-            },
-          ] as TabItem[]),
+          {
+            to: "/",
+            label: "Home",
+            icon: <FaHouse />,
+          },
+          {
+            to: "/leaderboard",
+            label: "Leaderboard",
+            icon: <FaPeopleGroup />,
+          },
+          {
+            to: "/events",
+            fuzzy: true,
+            label: "Events",
+            icon: <FaRegCalendar />,
+          },
+        ] as TabItem[]),
     [authStatusQuery.data.isAdmin],
   );
+
+  const currentChildren = useChildMatches();
+
+  const matchingIndex = useMemo(() => routes.findIndex((tab) => {
+    return currentChildren.some((child) => {
+      return child.fullPath === tab.to
+    })
+  }), [currentChildren, routes])
 
   return (
     <Box
@@ -105,6 +114,7 @@ function Component() {
           left: 0,
           right: 0,
         }}
+        value={matchingIndex}
       >
         {routes.map((route, index) => (
           <AsChildLink to={route.to} params={route.params} key={route.to}>

@@ -3,7 +3,7 @@ import DefaultAppBar from '@/components/DefaultAppBar'
 import { trpc } from '@/trpcClient'
 import { TabItem } from '@/types/TabItem'
 import { Tab, Tabs } from '@mui/material'
-import { Outlet, createFileRoute } from '@tanstack/react-router'
+import { Outlet, createFileRoute, useChildMatches } from '@tanstack/react-router'
 import { DateTime } from 'luxon'
 import { useMemo } from 'react'
 
@@ -37,43 +37,51 @@ function Component() {
     () =>
       !authStatusQuery.data.isAdmin
         ? ([
-            {
-              label: 'Details',
-              to: '/events/$eventId',
-              params: {
-                eventId: eventQuery.data.id,
-              },
+          {
+            label: 'Details',
+            to: '/events/$eventId/',
+            params: {
+              eventId: eventQuery.data.id,
             },
-            {
-              label: 'Check In',
-              to: '/events/$eventId/check-in',
-            },
-          ] as TabItem[])
+          },
+          {
+            label: 'Check In',
+            to: '/events/$eventId/check-in',
+          },
+        ] as TabItem[])
         : ([
-            {
-              label: 'Details',
-              to: '/events/$eventId',
-              params: {
-                eventId: eventQuery.data.id,
-              },
+          {
+            label: 'Details',
+            to: '/events/$eventId/',
+            params: {
+              eventId: eventQuery.data.id,
             },
-            {
-              label: 'Check In',
-              to: '/events/$eventId/check-in',
-              params: {
-                eventId: eventQuery.data.id,
-              },
+          },
+          {
+            label: 'Check In',
+            to: '/events/$eventId/check-in',
+            params: {
+              eventId: eventQuery.data.id,
             },
-            {
-              label: 'QR Code',
-              to: '/events/$eventId/qr-code',
-              params: {
-                eventId: eventQuery.data.id,
-              },
+          },
+          {
+            label: 'QR Code',
+            to: '/events/$eventId/qr-code',
+            params: {
+              eventId: eventQuery.data.id,
             },
-          ] as TabItem[]),
+          },
+        ] as TabItem[]),
     [authStatusQuery.data.isAdmin, eventQuery.data.id],
   )
+
+  const currentChildren = useChildMatches();
+
+  const matchingIndex = useMemo(() => tabs.findIndex((tab) => {
+    return currentChildren.some((child) => {
+      return child.fullPath === tab.to
+    })
+  }), [currentChildren, tabs])
 
   return (
     <>
@@ -82,7 +90,7 @@ function Component() {
           Date.parse(eventQuery.data.startDate),
         ).toLocaleString(DateTime.DATE_SHORT)} - ${eventQuery.data.title}`}
       />
-      <Tabs variant="scrollable" scrollButtons="auto">
+      <Tabs variant="scrollable" scrollButtons="auto" value={matchingIndex}>
         {tabs.map((tab, index) => (
           <AsChildLink to={tab.to} params={tab.params} key={tab.label}>
             <Tab key={tab.to} label={tab.label} value={index} />
