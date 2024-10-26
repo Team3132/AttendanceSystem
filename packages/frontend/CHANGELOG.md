@@ -1,5 +1,14 @@
 # frontend
 
+## 4.3.9
+
+### Patch Changes
+
+- [`b478e49`](https://github.com/Team3132/AttendanceSystem/commit/b478e49a0b0f58d45afeced5e45461b23e338015) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Finally fix tab selection
+
+- Updated dependencies []:
+  - backend@4.3.9
+
 ## 4.3.8
 
 ### Patch Changes
