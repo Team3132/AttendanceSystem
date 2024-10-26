@@ -98,7 +98,7 @@ function Component() {
               fullWidth
               slotProps={{
                 input: {
-                  endAdornment: usersQuery.isFetching ? <InputAdornment position='end'><CircularProgress size={"30px"} /></InputAdornment> : undefined,
+                  endAdornment: usersQuery.isPending ? <InputAdornment position='end'><CircularProgress size={"30px"} /></InputAdornment> : undefined,
                 }
               }}
             />
