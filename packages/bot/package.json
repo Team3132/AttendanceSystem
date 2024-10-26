@@ -49,7 +49,7 @@
   },
   "devDependencies": {
     "@swc/cli": "0.4.0",
-    "@swc/core": "1.7.39",
+    "@swc/core": "1.7.40",
     "@types/express": "5.0.0",
     "@types/luxon": "3.4.2",
     "@types/node": "20.17.1",
