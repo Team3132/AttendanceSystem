@@ -1,5 +1,14 @@
 # frontend
 
+## 4.3.8
+
+### Patch Changes
+
+- [#1950](https://github.com/Team3132/AttendanceSystem/pull/1950) [`8e276cd`](https://github.com/Team3132/AttendanceSystem/commit/8e276cdafd3c573732fb0cee59f29f02bca7b120) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Update .env
+
+- Updated dependencies []:
+  - backend@4.3.8
+
 ## 4.3.7
 
 ### Patch Changes
