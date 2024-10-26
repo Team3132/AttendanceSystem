@@ -1,5 +1,14 @@
 # frontend
 
+## 4.3.10
+
+### Patch Changes
+
+- [`b663a4e`](https://github.com/Team3132/AttendanceSystem/commit/b663a4e90d688494e7eb92485110a65d9b9d1b32) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add loader to text field on admin page
+
+- Updated dependencies []:
+  - backend@4.3.10
+
 ## 4.3.9
 
 ### Patch Changes
