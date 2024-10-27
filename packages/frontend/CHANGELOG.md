@@ -1,5 +1,14 @@
 # frontend
 
+## 4.3.11
+
+### Patch Changes
+
+- [`482bb85`](https://github.com/Team3132/AttendanceSystem/commit/482bb856c914561443dd00185c6631a2d79703e5) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add tab highlighting everywhere
+
+- Updated dependencies []:
+  - backend@4.3.11
+
 ## 4.3.10
 
 ### Patch Changes
