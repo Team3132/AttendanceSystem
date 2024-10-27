@@ -3,7 +3,8 @@ import DefaultAppBar from "@/components/DefaultAppBar";
 import { trpc } from "@/trpcClient";
 import { TabItem } from "@/types/TabItem";
 import { Tab, Tabs } from "@mui/material";
-import { Outlet, createFileRoute } from "@tanstack/react-router";
+import { Outlet, createFileRoute, useChildMatches } from "@tanstack/react-router";
+import { useMemo } from "react";
 
 export const Route = createFileRoute("/_authenticated/profile")({
   component: Component,
@@ -29,10 +30,18 @@ function Component() {
     initialData: loaderData,
   });
 
+  const currentChildren = useChildMatches();
+
+  const matchingIndex = useMemo(() => tabs.findIndex((tab) => {
+    return currentChildren.some((child) => {
+      return child.fullPath === tab.to
+    })
+  }), [currentChildren])
+
   return (
     <>
       <DefaultAppBar title={`${userQuery.data.username}'s Profile`} />
-      <Tabs>
+      <Tabs value={matchingIndex}>
         {tabs.map((tab, index) => (
           <AsChildLink to={tab.to} params={tab.params} key={tab.label}>
             <Tab key={tab.to} label={tab.label} value={index} />
