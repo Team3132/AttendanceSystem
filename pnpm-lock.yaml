@@ -345,8 +345,8 @@ importers:
         specifier: 4.0.3
         version: 4.0.3
       '@tanstack/router-plugin':
-        specifier: 1.76.0
-        version: 1.76.0(vite@5.4.10(@types/node@20.17.1))
+        specifier: 1.76.4
+        version: 1.76.4(vite@5.4.10(@types/node@20.17.1))
       '@trpc/client':
         specifier: 11.0.0-rc.593
         version: 11.0.0-rc.593(@trpc/server@11.0.0-rc.593)
@@ -2681,8 +2681,8 @@ packages:
     resolution: {integrity: sha512-S69fXvYcL+tQsO5Fe9ju/XVa/hZvk4pCaWbtoR2MNjIgR2RmjiFKOgXYeLRMNom/IpP/HAQmQ3m1DwU9jjSUKA==}
     engines: {node: '>=12'}
 
-  '@tanstack/router-plugin@1.76.0':
-    resolution: {integrity: sha512-5JY1NeNbxi7jamTKTAWLyyC9t4Y9Ol+vFZB84h6F1K1BkxqeWQTCJuXMYCY3KawSd7xy2mVT/BgDyZ0AS5hKAA==}
+  '@tanstack/router-plugin@1.76.4':
+    resolution: {integrity: sha512-yfaDAFLOkb7WWnL/NolPzYbTjkJX/oPopYwf+wRxdnqkQeil90zh2XupGrw40N/FopM1CWBr+FOmsAEP3u8oxA==}
     engines: {node: '>=12'}
     peerDependencies:
       '@rsbuild/core': '>=1.0.2'
@@ -7319,7 +7319,7 @@ snapshots:
       tsx: 4.19.1
       zod: 3.23.8
 
-  '@tanstack/router-plugin@1.76.0(vite@5.4.10(@types/node@20.17.1))':
+  '@tanstack/router-plugin@1.76.4(vite@5.4.10(@types/node@20.17.1))':
     dependencies:
       '@babel/core': 7.25.9
       '@babel/generator': 7.25.9
