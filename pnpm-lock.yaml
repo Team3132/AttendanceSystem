@@ -102,8 +102,8 @@ importers:
         specifier: 2.4.1
         version: 2.4.1
       uuid:
-        specifier: 11.0.1
-        version: 11.0.1
+        specifier: 11.0.2
+        version: 11.0.2
       zod:
         specifier: 3.23.8
         version: 3.23.8
@@ -5028,8 +5028,8 @@ packages:
     resolution: {integrity: sha512-8XkAphELsDnEGrDxUOHB3RGvXz6TeuYSGEZBOjtTtPm2lwhGBjLgOzLHB63IUWfBpNucQjND6d3AOudO+H3RWQ==}
     hasBin: true
 
-  uuid@11.0.1:
-    resolution: {integrity: sha512-wt9UB5EcLhnboy1UvA1mvGPXkIIrHSu+3FmUksARfdVw9tuPf3CH/CohxO0Su1ApoKAeT6BVzAJIvjTuQVSmuQ==}
+  uuid@11.0.2:
+    resolution: {integrity: sha512-14FfcOJmqdjbBPdDjFQyk/SdT4NySW4eM0zcG+HqbHP5jzuH56xO3J1DGhgs/cEMCfwYi3HQI1gnTO62iaG+tQ==}
     hasBin: true
 
   uuid@9.0.1:
@@ -9693,7 +9693,7 @@ snapshots:
 
   uuid@10.0.0: {}
 
-  uuid@11.0.1: {}
+  uuid@11.0.2: {}
 
   uuid@9.0.1: {}
 
