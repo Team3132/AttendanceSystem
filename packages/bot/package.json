@@ -52,7 +52,7 @@
     "@swc/core": "1.7.40",
     "@types/express": "5.0.0",
     "@types/luxon": "3.4.2",
-    "@types/node": "20.17.2",
+    "@types/node": "22.8.2",
     "@types/uuid": "10.0.0",
     "@types/ws": "8.5.12",
     "prettier": "3.3.3",
