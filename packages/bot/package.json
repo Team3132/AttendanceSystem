@@ -54,7 +54,6 @@
     "@types/luxon": "3.4.2",
     "@types/node": "22.8.2",
     "@types/uuid": "10.0.0",
-    "@types/ws": "8.5.12",
     "prettier": "3.3.3",
     "tsconfig-paths": "4.2.0",
     "tsup": "8.3.5",

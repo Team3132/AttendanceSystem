@@ -46,7 +46,7 @@ export const optionalSessionProcedure = t.procedure.use(optionalSession);
  */
 const sessionProcessor = async (ctx: Context) => {
   const { req, res } = ctx;
-  const { headers, cookies, ws } = req;
+  const { headers, cookies } = req;
 
   // Get the bearer token session
   const sessionIdAuthorization = lucia.readBearerToken(
@@ -66,14 +66,6 @@ const sessionProcessor = async (ctx: Context) => {
     }
 
     return { user, session, req, res };
-  }
-
-  // If we're in a WebSocket context, we don't have cookies
-  if (ws || res.header === undefined) {
-    throw new TRPCError({
-      code: "METHOD_NOT_SUPPORTED",
-      message: "WebSockets not supported when using cookie authentication.",
-    });
   }
 
   // If we're in a HTTP context, we can use cookies

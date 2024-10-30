@@ -2,17 +2,14 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import fastifyCookie from "@fastify/cookie";
 import fastifyStatic from "@fastify/static";
-import ws from "@fastify/websocket";
 import { fastifyTRPCPlugin } from "@trpc/server/adapters/fastify";
-import type { TRPCReconnectNotification } from "@trpc/server/rpc";
 import fastify from "fastify";
 import { Settings } from "luxon";
-import type { WebSocket } from "ws";
 import db, { migrate } from "./drizzle/db";
 import { userTable } from "./drizzle/schema";
 import env, { isProd } from "./env";
 import mainLogger from "./logger";
-import appRouter, { ee, type AppRouter } from "./routers/app.router";
+import appRouter from "./routers/app.router";
 import { createContext } from "./trpc/context";
 import { generateState, OAuth2RequestError } from "arctic";
 import { discord, discordDesktop, lucia } from "./auth/lucia";
@@ -33,40 +30,13 @@ const server = fastify({
 
 await server.register(fastifyCookie, { secret: env.SESSION_SECRET });
 
-await server.register(ws, {
-  preClose: async (done) => {
-    const { websocketServer } = server;
-    const response: TRPCReconnectNotification = {
-      id: null,
-      method: "reconnect",
-    };
-    const data = JSON.stringify(response);
-    for (const client of websocketServer.clients) {
-      if (client.readyState === 1 /* ws.OPEN */) {
-        client.send(data);
-      }
-      client.close();
-    }
-    server.close(done);
-  },
-});
-
-server.websocketServer.on("connection", (socket: WebSocket) => {
-  console.log(`➕➕ Connection (${server.websocketServer.clients.size})`);
-  ee.emit("onlineCount", server.websocketServer.clients.size);
-  socket.once("close", () => {
-    console.log(`➖➖ Connection (${server.websocketServer.clients.size})`);
-    ee.emit("onlineCount", server.websocketServer.clients.size);
-  });
-});
-
 await server.register(csrfPlugin, {
   enabled: false,
 });
 
 await server.register(fastifyTRPCPlugin, {
   prefix: "/api/trpc",
-  useWSS: true,
+  useWSS: false,
   trpcOptions: { router: appRouter, createContext },
 });
 
