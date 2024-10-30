@@ -1,56 +1,6 @@
 {
   "version": "2.0.0",
   "tasks": [
-    {
-      "label": "Backend Dev",
-      "type": "process",
-      "options": {
-        "cwd": "${workspaceFolder}/packages/backend"
-      },
-      "command": "pnpm dev",
-      "isBackground": true,
-      "problemMatcher": {
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": "Migrating database",
-        }
-      }
-    },
-    {
-      "label": "Frontend Dev",
-      "type": "process",
-      "options": {
-        "cwd": "${workspaceFolder}/packages/frontend"
-      },
-      "command": "pnpm dev",
-      "dependsOn": [
-        "Backend Dev"
-      ],
-      "isBackground": true,
-      "problemMatcher": {
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": "ready in",
-        }
-      }
-    },
-    {
-      "label": "Bot Dev",
-      "type": "process",
-      "options": {
-        "cwd": "${workspaceFolder}/packages/bot",
-      },
-      "command": "pnpm dev",
-      "dependsOn": [
-        "Backend Dev"
-      ],
-      "isBackground": true,
-      "problemMatcher": {
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": "Bot is ready",
-        }
-      }
-    }
+
   ]
 }
