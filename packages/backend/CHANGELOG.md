@@ -1,5 +1,11 @@
 # backend
 
+## 4.4.0
+
+### Minor Changes
+
+- [`8f57bc0`](https://github.com/Team3132/AttendanceSystem/commit/8f57bc079fa1966635528ae5131139e92bdd67c3) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Remove Websocket communication
+
 ## 4.3.11
 
 ## 4.3.10
