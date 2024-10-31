@@ -27,7 +27,7 @@
     "@nestjs/core": "10.4.6",
     "@nestjs/platform-express": "10.4.6",
     "@nestjs/schedule": "4.1.1",
-    "@sentry/node": "8.35.0",
+    "@sentry/node": "8.36.0",
     "@sentry/tracing": "7.114.0",
     "@trpc/client": "11.0.0-rc.604",
     "backend": "workspace:*",
@@ -45,14 +45,14 @@
     "zod": "3.23.8"
   },
   "engines": {
-    "node": "21.7.3"
+    "node": "22.11.0"
   },
   "devDependencies": {
     "@swc/cli": "0.5.0",
     "@swc/core": "1.7.42",
     "@types/express": "5.0.0",
     "@types/luxon": "3.4.2",
-    "@types/node": "22.8.2",
+    "@types/node": "22.8.5",
     "@types/uuid": "10.0.0",
     "prettier": "3.3.3",
     "tsconfig-paths": "4.2.0",
