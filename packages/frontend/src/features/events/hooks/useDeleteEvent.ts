@@ -1,14 +1,22 @@
-import { trpc } from "@/trpcClient";
+import { eventQueryKeys } from "@/queries/events.queries";
+import { proxyClient, trpc } from "@/trpcClient";
+import { useMutation } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 
 export default function useDeleteEvent() {
-  const utils = trpc.useUtils();
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  return trpc.events.deleteEvent.useMutation({
+  return useMutation({
+    mutationFn: proxyClient.events.deleteEvent.mutate,
     onSuccess: (data) => {
-      utils.events.getEvents.invalidate();
-      utils.events.getEvent.invalidate(data.id);
+      queryClient.invalidateQueries({
+        queryKey: eventQueryKeys.eventsList,
+      });
+      queryClient.invalidateQueries({
+        queryKey: eventQueryKeys.event(data.id),
+      });
       navigate({
         to: "/events",
       });

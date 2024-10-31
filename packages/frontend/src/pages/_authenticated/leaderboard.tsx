@@ -8,6 +8,8 @@ import { useMemo } from "react";
 import { Container, Paper, Stack, Typography } from "@mui/material";
 import Datatable from "@/components/DataTable";
 import DefaultAppBar from "@/components/DefaultAppBar";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { leaderboardQueryOptions } from "@/queries/outreach.queries";
 
 type LeaderboardUser = z.infer<typeof LeaderboardUserSchema>;
 
@@ -43,14 +45,9 @@ export const Route = createFileRoute("/_authenticated/leaderboard")({
 });
 
 function Component() {
-  const leaderboardQuery = trpc.outreach.outreachLeaderboard.useInfiniteQuery(
-    {
-      limit: 10,
-    },
-    {
-      getNextPageParam: (lastPage) => lastPage.nextPage,
-    },
-  );
+  const leaderboardQuery = useInfiniteQuery(leaderboardQueryOptions({
+    limit: 10,
+  }))
 
   const flatResults = useMemo(
     () => leaderboardQuery.data?.pages.flatMap((page) => page.items),

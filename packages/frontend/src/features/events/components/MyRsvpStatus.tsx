@@ -11,6 +11,8 @@ import {
 import type { RSVPSchema } from "backend/schema";
 import type { z } from "zod";
 import useUpdateRsvp from "../hooks/useUpdateRsvp";
+import { useQuery } from "@tanstack/react-query";
+import { eventQueryOptions } from "@/queries/events.queries";
 
 interface MyRsvpStatusProps {
   eventId: string;
@@ -21,7 +23,7 @@ type RSVPStatus = NonNullable<z.infer<typeof RSVPSchema>["status"]>;
 export default function MyRsvpStatus(props: MyRsvpStatusProps) {
   const { eventId } = props;
 
-  const myRsvpStatusQuery = trpc.events.getSelfEventRsvp.useQuery(eventId);
+  const myRsvpStatusQuery = useQuery(eventQueryOptions.eventRsvp(eventId))
   const updateRsvpMutation = useUpdateRsvp();
 
   const handleChange = (event: SelectChangeEvent<RSVPStatus>) => {

@@ -1,10 +1,17 @@
-import { trpc } from "@/trpcClient";
+import { eventQueryKeys } from "@/queries/events.queries";
+import { proxyClient, trpc } from "@/trpcClient";
+import { useMutation } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function useAddUserRsvp() {
-  const utils = trpc.useUtils();
-  return trpc.events.createBlankUserRsvp.useMutation({
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: proxyClient.events.createBlankUserRsvp.mutate,
     onSuccess: (data) => {
-      utils.events.getEventRsvps.invalidate(data.eventId);
+      queryClient.invalidateQueries({
+        queryKey: eventQueryKeys.eventRsvps(data.eventId),
+      });
     },
   });
 }

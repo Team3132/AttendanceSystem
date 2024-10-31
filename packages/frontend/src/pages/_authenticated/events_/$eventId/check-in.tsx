@@ -1,6 +1,7 @@
 import ControlledTextField from '@/components/ControlledTextField'
 import useSelfCheckin from '@/features/events/hooks/useSelfCheckin'
 import useZodForm from '@/hooks/useZodForm'
+import { eventQueryOptions } from '@/queries/events.queries'
 import { isTRPCClientError } from '@/utils/trpc'
 import { LoadingButton } from '@mui/lab'
 import { Container, Stack, Paper, Typography } from '@mui/material'
@@ -12,8 +13,8 @@ export const Route = createFileRoute(
   '/_authenticated/events_/$eventId/check-in',
 )({
   component: Component,
-  loader: async ({ context: { queryUtils }, params: { eventId } }) =>
-    queryUtils.events.getEvent.ensureData(eventId),
+  loader: async ({ context: { queryUtils, queryClient }, params: { eventId } }) =>
+    queryClient.ensureQueryData(eventQueryOptions.eventDetails(eventId)),
 })
 
 function Component() {

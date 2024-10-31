@@ -1,14 +1,16 @@
 import DeleteEventButton from '@/features/events/components/DeleteEventButton'
 import RsvpList from '@/features/events/components/RSVPList'
+import { eventQueryOptions } from '@/queries/events.queries'
 import { trpc } from '@/trpcClient'
 import { Container, Grid, Paper, Typography, Stack } from '@mui/material'
+import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { DateTime } from 'luxon'
 
 export const Route = createFileRoute('/_authenticated/events_/$eventId/')({
   component: Component,
-  loader: async ({ context: { queryUtils }, params: { eventId } }) => {
-    const initialEvent = await queryUtils.events.getEvent.ensureData(eventId)
+  loader: async ({ context: { queryUtils, queryClient }, params: { eventId } }) => {
+    const initialEvent = await queryClient.ensureQueryData(eventQueryOptions.eventDetails(eventId))
     const authStatus = await queryUtils.auth.status.ensureData()
 
     return {
@@ -21,7 +23,8 @@ export const Route = createFileRoute('/_authenticated/events_/$eventId/')({
 function Component() {
   const loaderData = Route.useLoaderData()
 
-  const eventQuery = trpc.events.getEvent.useQuery(loaderData.initialEvent.id, {
+  const eventQuery = useQuery({
+    ...eventQueryOptions.eventDetails(loaderData.initialEvent.id),
     initialData: loaderData.initialEvent,
   })
 

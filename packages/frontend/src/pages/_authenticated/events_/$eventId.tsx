@@ -1,15 +1,17 @@
 import AsChildLink from '@/components/AsChildLink'
 import DefaultAppBar from '@/components/DefaultAppBar'
+import { eventQueryOptions } from '@/queries/events.queries'
 import { trpc } from '@/trpcClient'
 import { TabItem } from '@/types/TabItem'
 import { Tab, Tabs } from '@mui/material'
+import { useQuery } from '@tanstack/react-query'
 import { Outlet, createFileRoute, useChildMatches } from '@tanstack/react-router'
 import { DateTime } from 'luxon'
 import { useMemo } from 'react'
 
 export const Route = createFileRoute('/_authenticated/events_/$eventId')({
-  loader: async ({ context: { queryUtils }, params: { eventId } }) => {
-    const eventData = await queryUtils.events.getEvent.ensureData(eventId)
+  loader: async ({ context: { queryUtils, queryClient }, params: { eventId } }) => {
+    const eventData = await queryClient.ensureQueryData(eventQueryOptions.eventDetails(eventId))
     const authStatus = await queryUtils.auth.status.ensureData()
 
     return {
@@ -29,7 +31,8 @@ function Component() {
     initialData: initialAuth,
   })
 
-  const eventQuery = trpc.events.getEvent.useQuery(initialEvent.id, {
+  const eventQuery = useQuery({
+    ...eventQueryOptions.eventDetails(initialEvent.id),
     initialData: initialEvent,
   })
 

@@ -1,14 +1,22 @@
 import { proxyClient } from "@/trpcClient";
-import { queryOptions } from "@tanstack/react-query";
+import { infiniteQueryOptions } from "@tanstack/react-query";
+import { OutreachTimeSchema } from "backend/schema/OutreachTimeSchema";
+import { z } from "zod";
 
 const queryKeys = {
-  leaderboard: ["leaderboard"] as const,
+  leaderboard: (options: Options) => ["leaderboard", options] as const,
 };
 
-export const leaderboardQuery = () =>
-  queryOptions({
-    queryKey: queryKeys.leaderboard,
-    queryFn: async () => {
-      proxyClient.outreach.outreachLeaderboard.query();
-    },
+type Options = Omit<z.infer<typeof OutreachTimeSchema>, "cursor">;
+
+export const leaderboardQueryOptions = (options: Options) =>
+  infiniteQueryOptions({
+    queryKey: queryKeys.leaderboard(options),
+    queryFn: ({ pageParam }) =>
+      proxyClient.outreach.outreachLeaderboard.query({
+        ...options,
+        cursor: pageParam || undefined,
+      }),
+    initialPageParam: undefined as number | null | undefined,
+    getNextPageParam: (page) => page.nextPage,
   });

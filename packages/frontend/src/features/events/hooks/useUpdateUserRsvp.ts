@@ -1,7 +1,10 @@
-import { trpc } from "@/trpcClient";
+import { eventQueryKeys } from "@/queries/events.queries";
+import { proxyClient, trpc } from "@/trpcClient";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function useUpdateUserRsvp() {
   const utils = trpc.useUtils();
+  const queryClient = useQueryClient();
 
   // return useMutation({
   //   ...eventApi.updateUserEventRsvp,
@@ -11,9 +14,17 @@ export default function useUpdateUserRsvp() {
   //     });
   //   },
   // });
-  return trpc.events.editUserAttendance.useMutation({
+  // return trpc.events.editUserAttendance.useMutation({
+  //   onSuccess: (data) => {
+  //     utils.events.getEventRsvps.invalidate(data.eventId);
+  //   },
+  // });
+  return useMutation({
+    mutationFn: proxyClient.events.editUserAttendance.mutate,
     onSuccess: (data) => {
-      utils.events.getEventRsvps.invalidate(data.eventId);
+      queryClient.invalidateQueries({
+        queryKey: eventQueryKeys.eventRsvps(data.eventId),
+      });
     },
   });
 }

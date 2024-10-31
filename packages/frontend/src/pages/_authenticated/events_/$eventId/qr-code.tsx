@@ -1,6 +1,8 @@
 import ScaninCard from '@/features/events/components/ScaninCard'
+import { eventQueryOptions } from '@/queries/events.queries'
 import { trpc } from '@/trpcClient'
 import { Container, Stack, Paper, Typography } from '@mui/material'
+import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute(
@@ -18,9 +20,9 @@ export const Route = createFileRoute(
       }
     }
   },
-  loader: async ({ context: { queryUtils }, params: { eventId } }) => {
+  loader: async ({ context: { queryUtils, queryClient }, params: { eventId } }) => {
     const eventSecret =
-      await queryUtils.events.getEventSecret.ensureData(eventId)
+      await queryClient.ensureQueryData(eventQueryOptions.eventSecret(eventId))
 
     return {
       id: eventId,
@@ -30,9 +32,10 @@ export const Route = createFileRoute(
 })
 
 function Component() {
-  const loaderData = Route.useLoaderData()
+  const loaderData = Route.useLoaderData();
 
-  const eventSecretQuery = trpc.events.getEventSecret.useQuery(loaderData.id, {
+  const eventSecretQuery = useQuery({
+    ...eventQueryOptions.eventSecret(loaderData.id),
     initialData: loaderData.eventSecret,
   })
 

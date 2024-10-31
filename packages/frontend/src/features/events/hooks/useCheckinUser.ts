@@ -1,11 +1,16 @@
-import { trpc } from "@/trpcClient";
+import { eventQueryKeys } from "@/queries/events.queries";
+import { proxyClient, trpc } from "@/trpcClient";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function useCheckinUser() {
-  const utils = trpc.useUtils();
+  const queryClient = useQueryClient();
 
-  return trpc.events.userCheckin.useMutation({
+  return useMutation({
+    mutationFn: proxyClient.events.userCheckin.mutate,
     onSuccess: (data) => {
-      utils.events.getEventRsvps.invalidate(data.eventId);
+      queryClient.invalidateQueries({
+        queryKey: eventQueryKeys.eventRsvps(data.eventId),
+      });
     },
   });
 }

@@ -2,6 +2,7 @@ import AsChildLink from "@/components/AsChildLink";
 import DefaultAppBar from "@/components/DefaultAppBar";
 import InfiniteList from "@/components/InfiniteList";
 import UpcomingEventListItem from "@/features/events/components/UpcomingEventListItem";
+import { eventQueryOptions } from "@/queries/events.queries";
 import { trpc } from "@/trpcClient";
 import {
   Box,
@@ -18,6 +19,7 @@ import {
   Typography,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import {
   createFileRoute,
   useLocation,
@@ -45,27 +47,29 @@ export const Route = createFileRoute("/_authenticated/events")({
   validateSearch: (search) => eventsSearchSchema.parse(search),
   loaderDeps: ({ search }) => search,
   loader: async ({
-    context: { queryUtils },
+    context: { queryUtils, queryClient },
     deps: { from = defaultFrom, to = defaultTo, type, limit = defaultLimit },
   }) => {
     const authStatus = await queryUtils.auth.status.ensureData();
 
-    const eventsList = await queryUtils.events.getEvents.prefetchInfinite({
+    await queryClient.prefetchInfiniteQuery(eventQueryOptions.eventList({
       from,
       to,
       type,
       limit,
-    });
+    })
+    )
+
+
 
     return {
-      eventsList,
       authStatus,
     };
   },
 });
 
 function Component() {
-  const { authStatus, eventsList } = Route.useLoaderData();
+  const { authStatus } = Route.useLoaderData();
   const {
     from = defaultFrom,
     to = defaultTo,
@@ -78,17 +82,12 @@ function Component() {
     initialData: authStatus,
   });
 
-  const infiniteEventsQuery = trpc.events.getEvents.useInfiniteQuery(
-    {
-      from,
-      to,
-      type,
-      limit,
-    },
-    {
-      getNextPageParam: (lastPage) => lastPage.nextPage,
-    },
-  );
+  const infiniteEventsQuery = useInfiniteQuery(eventQueryOptions.eventList({
+    from,
+    to,
+    type,
+    limit,
+  }))
 
   const handleTypeChange = (event: SelectChangeEvent) => {
     navigate({
