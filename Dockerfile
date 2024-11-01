@@ -9,7 +9,9 @@ COPY . .
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 ARG VERSION
 ENV VITE_APP_VERSION=$VERSION
-RUN pnpm run -r build
+RUN pnpm run --filter backend build
+RUN pnpm run --filter frontend build
+RUN pnpm run --filter bot build
 RUN pnpm deploy --filter backend --prod /opt/backend
 # COPY /app/packages/frontend/dist /opt/backend/dist/frontend
 RUN pnpm deploy --filter bot --prod /opt/bot
