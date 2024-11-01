@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { trpcClient } from "@/trpcClient";
-=======
-import { proxyClient } from "@/trpcClient";
->>>>>>> 5fa3d80667af05e512045626e9733865eeaf59b8
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 import { UserListParamsSchema } from "backend/schema";
 import { z } from "zod";
@@ -32,11 +28,7 @@ export const usersQueryOptions = {
   userList: (params: UserListParams) =>
     infiniteQueryOptions({
       queryFn: ({ pageParam }) =>
-<<<<<<< HEAD
         trpcClient.users.getUserList.query({
-=======
-        proxyClient.users.getUserList.query({
->>>>>>> 5fa3d80667af05e512045626e9733865eeaf59b8
           ...params,
           cursor: pageParam ?? undefined,
         }),
@@ -47,61 +39,37 @@ export const usersQueryOptions = {
 
   userDetails: (id: string) =>
     queryOptions({
-<<<<<<< HEAD
       queryFn: () => trpcClient.users.getUser.query(id),
-=======
-      queryFn: () => proxyClient.users.getUser.query(id),
->>>>>>> 5fa3d80667af05e512045626e9733865eeaf59b8
       queryKey: usersQueryKeys.userDetails(id),
     }),
 
   userScancodes: (id: string) =>
     queryOptions({
-<<<<<<< HEAD
       queryFn: () => trpcClient.users.getUserScancodes.query(id),
-=======
-      queryFn: () => proxyClient.users.getUserScancodes.query(id),
->>>>>>> 5fa3d80667af05e512045626e9733865eeaf59b8
       queryKey: usersQueryKeys.userScancodes(id),
     }),
 
   userSelfDetails: () =>
     queryOptions({
-<<<<<<< HEAD
       queryFn: () => trpcClient.users.getSelf.query(),
-=======
-      queryFn: () => proxyClient.users.getSelf.query(),
->>>>>>> 5fa3d80667af05e512045626e9733865eeaf59b8
       queryKey: usersQueryKeys.userSelfDetails(),
     }),
 
   userSelfScancodes: () =>
     queryOptions({
-<<<<<<< HEAD
       queryFn: () => trpcClient.users.getSelfScancodes.query(),
-=======
-      queryFn: () => proxyClient.users.getSelfScancodes.query(),
->>>>>>> 5fa3d80667af05e512045626e9733865eeaf59b8
       queryKey: usersQueryKeys.userSelfScancodes(),
     }),
 
   userPendingRsvps: (id: string) =>
     queryOptions({
-<<<<<<< HEAD
       queryFn: () => trpcClient.users.getUserPendingRsvps.query(id),
-=======
-      queryFn: () => proxyClient.users.getUserPendingRsvps.query(id),
->>>>>>> 5fa3d80667af05e512045626e9733865eeaf59b8
       queryKey: usersQueryKeys.userPendingRsvps(id),
     }),
 
   userSelfPendingRsvps: () =>
     queryOptions({
-<<<<<<< HEAD
       queryFn: () => trpcClient.users.getSelfPendingRsvps.query(),
-=======
-      queryFn: () => proxyClient.users.getSelfPendingRsvps.query(),
->>>>>>> 5fa3d80667af05e512045626e9733865eeaf59b8
       queryKey: usersQueryKeys.userSelfPendingRsvps(),
     }),
 };
