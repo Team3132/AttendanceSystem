@@ -1,5 +1,14 @@
 # bot
 
+## 4.6.0
+
+### Patch Changes
+
+- [`1c399cd`](https://github.com/Team3132/AttendanceSystem/commit/1c399cd32f2f7db95d424978f76211b290c194ee) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix time
+
+- Updated dependencies []:
+  - backend@4.6.0
+
 ## 4.5.0
 
 ### Patch Changes
