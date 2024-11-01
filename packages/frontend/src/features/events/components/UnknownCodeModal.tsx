@@ -1,4 +1,3 @@
-import { trpc } from "@/trpcClient";
 import { LoadingButton } from "@mui/lab";
 import {
   Autocomplete,
@@ -20,6 +19,8 @@ import { z } from "zod";
 import { useDisclosure } from "../../../hooks/useDisclosure";
 import useZodForm from "../../../hooks/useZodForm";
 import useCreateUserScancode from "../../user/hooks/useCreateUserScancode";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { usersQueryOptions } from "@/queries/users.queries";
 
 interface UnknownCodeModalProps {
   code: string;
@@ -56,17 +57,14 @@ export default function UnknownCodeModal(props: UnknownCodeModalProps) {
 
   const [debouncedInputValue, setInputValue] = useDebounceValue("", 500);
 
-  const usersQuery = trpc.users.getUserList.useInfiniteQuery(
-    {
+  const usersQuery = useInfiniteQuery({
+    ...usersQueryOptions.userList({
       search: debouncedInputValue,
       limit: 10,
-    },
-    {
-      enabled: isAutocompleteOpen,
-      getNextPageParam: (lastPage) => lastPage.nextPage,
-      placeholderData: keepPreviousData,
-    },
-  );
+    }),
+    enabled: isAutocompleteOpen,
+    placeholderData: keepPreviousData,
+  });
 
   const userOption = useMemo(
     () =>

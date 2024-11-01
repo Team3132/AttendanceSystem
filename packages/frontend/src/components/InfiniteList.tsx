@@ -19,7 +19,7 @@ interface RenderRowProps<T> {
 }
 
 interface InfiniteListParams<T, IPaged extends PagedType<T> = PagedType<T>> {
-  data?: InfiniteData<IPaged, number | null | undefined>;
+  data?: InfiniteData<IPaged, number | null | undefined | unknown>;
   fetchNextPage: () => void;
   isFetching: boolean;
   fixedHeight?: number;
@@ -28,7 +28,7 @@ interface InfiniteListParams<T, IPaged extends PagedType<T> = PagedType<T>> {
 
 interface InfiniteListProps<T, IPaged extends PagedType<T> = PagedType<T>>
   extends InfiniteListParams<T, IPaged>,
-    OmittedListProps {}
+  OmittedListProps { }
 
 export default function InfiniteList<T>(props: InfiniteListProps<T>) {
   const {
@@ -102,9 +102,8 @@ export default function InfiniteList<T>(props: InfiniteListProps<T>) {
 
           const newStyle: React.CSSProperties = {
             height: `${virtualItem.size}px`,
-            transform: `translateY(${
-              virtualItem.start - index * virtualItem.size
-            }px)`,
+            transform: `translateY(${virtualItem.start - index * virtualItem.size
+              }px)`,
           };
 
           return renderRow({

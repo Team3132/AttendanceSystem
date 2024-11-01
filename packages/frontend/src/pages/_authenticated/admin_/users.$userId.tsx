@@ -1,51 +1,62 @@
-import AsChildLink from '@/components/AsChildLink'
-import DefaultAppBar from '@/components/DefaultAppBar'
-import { trpc } from '@/trpcClient'
-import { TabItem } from '@/types/TabItem'
-import { Tab, Tabs } from '@mui/material'
-import { Outlet, createFileRoute, useChildMatches } from '@tanstack/react-router'
-import { useMemo } from 'react'
+import AsChildLink from "@/components/AsChildLink";
+import DefaultAppBar from "@/components/DefaultAppBar";
+import { usersQueryOptions } from "@/queries/users.queries";
 
-export const Route = createFileRoute('/_authenticated/admin_/users/$userId')({
+import { TabItem } from "@/types/TabItem";
+import { Tab, Tabs } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import {
+  Outlet,
+  createFileRoute,
+  useChildMatches,
+} from "@tanstack/react-router";
+import { useMemo } from "react";
+
+export const Route = createFileRoute("/_authenticated/admin_/users/$userId")({
   component: Component,
-  loader: ({ params: { userId }, context: { queryUtils } }) =>
-    queryUtils.users.getUser.ensureData(userId),
-})
+  loader: ({ params: { userId }, context: { queryClient } }) =>
+    queryClient.ensureQueryData(usersQueryOptions.userDetails(userId)),
+});
 
 function Component() {
-  const loaderData = Route.useLoaderData()
+  const loaderData = Route.useLoaderData();
 
-  const userQuery = trpc.users.getUser.useQuery(loaderData.id, {
+  const userQuery = useQuery({
+    ...usersQueryOptions.userDetails(loaderData.id),
     initialData: loaderData,
-  })
+  });
 
   const tabs = useMemo<TabItem[]>(
     () => [
       {
-        label: 'Scancodes',
-        to: '/admin/users/$userId',
+        label: "Scancodes",
+        to: "/admin/users/$userId",
         params: {
           userId: userQuery.data.id,
         },
       },
       {
-        label: 'Pending',
-        to: '/admin/users/$userId/pending',
+        label: "Pending",
+        to: "/admin/users/$userId/pending",
         params: {
           userId: userQuery.data.id,
         },
       },
     ],
     [userQuery.data.id],
-  )
+  );
 
   const currentChildren = useChildMatches();
 
-  const matchingIndex = useMemo(() => tabs.findIndex((tab) => {
-    return currentChildren.some((child) => {
-      return child.fullPath === tab.to
-    })
-  }), [currentChildren, tabs])
+  const matchingIndex = useMemo(
+    () =>
+      tabs.findIndex((tab) => {
+        return currentChildren.some((child) => {
+          return child.fullPath === tab.to;
+        });
+      }),
+    [currentChildren, tabs],
+  );
 
   return (
     <>
@@ -59,5 +70,5 @@ function Component() {
       </Tabs>
       <Outlet />
     </>
-  )
+  );
 }

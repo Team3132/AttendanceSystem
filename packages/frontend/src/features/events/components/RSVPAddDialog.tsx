@@ -1,5 +1,4 @@
 import { useDisclosure } from "@/hooks/useDisclosure";
-import { trpc } from "@/trpcClient";
 import { LoadingButton } from "@mui/lab";
 import {
   Autocomplete,
@@ -20,6 +19,8 @@ import { useDebounceValue } from "usehooks-ts";
 import { z } from "zod";
 import useZodForm, { type ZodSubmitHandler } from "../../../hooks/useZodForm";
 import useAddUserRsvp from "../hooks/useAddRsvp";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { usersQueryOptions } from "@/queries/users.queries";
 
 interface RSVPAddDialogProps {
   onOpen: () => void;
@@ -44,17 +45,14 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
 
   const [debouncedInputValue, setInputValue] = useDebounceValue("", 500);
 
-  const usersQuery = trpc.users.getUserList.useInfiniteQuery(
-    {
+  const usersQuery = useInfiniteQuery({
+    ...usersQueryOptions.userList({
       search: debouncedInputValue,
       limit: 10,
-    },
-    {
-      enabled: isAutocompleteOpen,
-      getNextPageParam: (lastPage) => lastPage.nextPage,
-      placeholderData: keepPreviousData,
-    },
-  );
+    }),
+    enabled: isAutocompleteOpen,
+    placeholderData: keepPreviousData,
+  });
 
   const userOption = useMemo(
     () =>

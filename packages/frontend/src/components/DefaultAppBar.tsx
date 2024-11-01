@@ -1,9 +1,8 @@
 import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
-import { useColorScheme} from "@mui/material/styles";
+import { useColorScheme } from "@mui/material/styles";
 import { Helmet } from "react-helmet-async";
 import { FaCircleUser } from "react-icons/fa6";
 import AsChildLink from "./AsChildLink";
-import OnlineCountComponent from "./OnlineCount";
 import { useCallback, useMemo } from "react";
 import { DarkMode, LightMode, SettingsSuggest } from "@mui/icons-material";
 
@@ -12,36 +11,34 @@ interface DefaultAppBarProps {
 }
 
 export default function DefaultAppBar({ title }: DefaultAppBarProps) {
-  const { mode, setMode } = useColorScheme()
+  const { mode, setMode } = useColorScheme();
 
   const modeIcon = useMemo(() => {
     if (mode === "dark") {
-      return <LightMode />
+      return <LightMode />;
     }
-    
+
     if (mode === "light") {
-      return <DarkMode />
+      return <DarkMode />;
     }
 
     // system mode
-    return <SettingsSuggest />
-      
-    
-  }, [mode])
+    return <SettingsSuggest />;
+  }, [mode]);
 
   const handleModeChange = useCallback(() => {
     switch (mode) {
       case "light":
-        setMode("dark")
-        break
+        setMode("dark");
+        break;
       case "dark":
-        setMode("system")
-        break
+        setMode("system");
+        break;
       case "system":
-        setMode("light")
-        break
+        setMode("light");
+        break;
     }
-    }, [mode, setMode])
+  }, [mode, setMode]);
 
   return (
     <>
@@ -60,9 +57,7 @@ export default function DefaultAppBar({ title }: DefaultAppBarProps) {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {title}
           </Typography>
-          <IconButton onClick={handleModeChange}>
-            {modeIcon}
-          </IconButton>
+          <IconButton onClick={handleModeChange}>{modeIcon}</IconButton>
           <AsChildLink to="/profile">
             <IconButton>
               <FaCircleUser />

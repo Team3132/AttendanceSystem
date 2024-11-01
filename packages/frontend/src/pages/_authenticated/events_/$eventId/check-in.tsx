@@ -1,23 +1,24 @@
-import ControlledTextField from '@/components/ControlledTextField'
-import useSelfCheckin from '@/features/events/hooks/useSelfCheckin'
-import useZodForm from '@/hooks/useZodForm'
-import { isTRPCClientError } from '@/utils/trpc'
-import { LoadingButton } from '@mui/lab'
-import { Container, Stack, Paper, Typography } from '@mui/material'
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { SelfCheckinSchema } from 'backend/schema'
-import { useAlert } from 'react-alert'
+import ControlledTextField from "@/components/ControlledTextField";
+import useSelfCheckin from "@/features/events/hooks/useSelfCheckin";
+import useZodForm from "@/hooks/useZodForm";
+import { eventQueryOptions } from "@/queries/events.queries";
+import { isTRPCClientError } from "@/utils/trpc";
+import { LoadingButton } from "@mui/lab";
+import { Container, Stack, Paper, Typography } from "@mui/material";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { SelfCheckinSchema } from "backend/schema";
+import { useAlert } from "react-alert";
 
 export const Route = createFileRoute(
-  '/_authenticated/events_/$eventId/check-in',
+  "/_authenticated/events_/$eventId/check-in",
 )({
   component: Component,
-  loader: async ({ context: { queryUtils }, params: { eventId } }) =>
-    queryUtils.events.getEvent.ensureData(eventId),
-})
+  loader: async ({ context: { queryClient }, params: { eventId } }) =>
+    queryClient.ensureQueryData(eventQueryOptions.eventDetails(eventId)),
+});
 
 function Component() {
-  const loaderData = Route.useLoaderData()
+  const loaderData = Route.useLoaderData();
   const {
     handleSubmit,
     formState: { isSubmitting },
@@ -25,44 +26,44 @@ function Component() {
   } = useZodForm({
     schema: SelfCheckinSchema,
     defaultValues: {
-      secret: '',
+      secret: "",
       eventId: loaderData.id,
     },
-  })
+  });
 
-  const checkinMutation = useSelfCheckin()
+  const checkinMutation = useSelfCheckin();
 
-  const navigate = useNavigate()
-  const alert = useAlert()
+  const navigate = useNavigate();
+  const alert = useAlert();
 
   const onSubmit = handleSubmit(async (data) => {
     try {
       await checkinMutation.mutateAsync({
         secret: data.secret,
         eventId: loaderData.id,
-      })
+      });
 
-      alert.success('Successfully checked in!', { timeout: 2000 })
+      alert.success("Successfully checked in!", { timeout: 2000 });
 
       navigate({
-        to: '/',
-      })
+        to: "/",
+      });
     } catch (e) {
       if (isTRPCClientError(e)) {
-        alert.error(e.message, { timeout: 2000 })
+        alert.error(e.message, { timeout: 2000 });
       }
     }
-  })
+  });
 
   return (
-    <Container sx={{ my: 2, flex: 1, overflowY: 'auto' }}>
+    <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
       <Stack gap={2}>
-        <Paper sx={{ p: 2 }} component={'form'} onSubmit={onSubmit}>
+        <Paper sx={{ p: 2 }} component={"form"} onSubmit={onSubmit}>
           <Stack gap={2}>
-            <Typography variant="h4" textAlign={'center'}>
+            <Typography variant="h4" textAlign={"center"}>
               Event Check In
             </Typography>
-            <Typography variant="body1" textAlign={'center'}>
+            <Typography variant="body1" textAlign={"center"}>
               Check in for the event using the code displayed at the event by
               entering it below. Or, use your phone's camera to scan the QR
               code.
@@ -73,7 +74,7 @@ function Component() {
               fullWidth
               name="secret"
               control={control}
-              rules={{ required: 'This field is required' }}
+              rules={{ required: "This field is required" }}
               required
             />
             <LoadingButton
@@ -88,5 +89,5 @@ function Component() {
         </Paper>
       </Stack>
     </Container>
-  )
+  );
 }

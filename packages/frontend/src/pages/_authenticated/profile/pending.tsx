@@ -1,23 +1,23 @@
 import PendingEventListItem from "@/components/PendingEventListItem";
-import { trpc } from "@/trpcClient";
+import { usersQueryOptions } from "@/queries/users.queries";
+
 import { Container, Stack, Paper, Typography, List } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/profile/pending")({
   component: Component,
-  loader: ({ context: { queryUtils } }) =>
-    queryUtils.users.getSelfPendingRsvps.ensureData(),
+  loader: ({ context: { queryClient } }) =>
+    queryClient.ensureQueryData(usersQueryOptions.userSelfPendingRsvps()),
 });
 
 function Component() {
   const loaderData = Route.useLoaderData();
 
-  const pendingEventsQuery = trpc.users.getSelfPendingRsvps.useQuery(
-    undefined,
-    {
-      initialData: loaderData,
-    },
-  );
+  const pendingEventsQuery = useQuery({
+    ...usersQueryOptions.userSelfPendingRsvps(),
+    initialData: loaderData,
+  });
 
   return (
     <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>

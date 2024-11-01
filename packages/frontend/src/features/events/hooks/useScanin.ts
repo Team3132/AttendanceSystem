@@ -1,12 +1,23 @@
-import { trpc } from "@/trpcClient";
+import { eventQueryKeys } from "@/queries/events.queries";
+import { usersQueryKeys } from "@/queries/users.queries";
+import { proxyClient } from "@/trpcClient";
+import { useMutation } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function useScanin() {
-  const utils = trpc.useUtils();
-  return trpc.events.scanin.useMutation({
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: proxyClient.events.scanin.mutate,
     onSuccess: (data) => {
-      utils.events.getEventRsvps.invalidate(data.eventId);
-      utils.events.getSelfEventRsvp.invalidate(data.eventId);
-      utils.users.getUserPendingRsvps.invalidate();
+      queryClient.invalidateQueries({
+        queryKey: eventQueryKeys.eventRsvp(data.eventId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: eventQueryKeys.eventRsvps(data.eventId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: usersQueryKeys.userPendingRsvps(data.userId),
+      });
     },
   });
 }

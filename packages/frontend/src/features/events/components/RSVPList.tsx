@@ -1,10 +1,11 @@
-import { trpc } from "@/trpcClient";
 import { Button, List, Paper, Stack, Typography } from "@mui/material";
 import { useDisclosure } from "../../../hooks/useDisclosure";
 import AdminRSVPListItem from "./AdminRsvpListItem";
 import MyRsvpStatus from "./MyRsvpStatus";
 import RSVPAddDialog from "./RSVPAddDialog";
 import RSVPListItem from "./RSVPListItem";
+import { useQuery } from "@tanstack/react-query";
+import { eventQueryOptions } from "@/queries/events.queries";
 
 interface RsvpListProps {
   eventId: string;
@@ -12,7 +13,7 @@ interface RsvpListProps {
 }
 
 export default function RsvpList({ eventId, admin = false }: RsvpListProps) {
-  const rsvpsQuery = trpc.events.getEventRsvps.useQuery(eventId);
+  const rsvpsQuery = useQuery(eventQueryOptions.eventRsvps(eventId));
   const { getButtonProps, getDisclosureProps, isOpen } = useDisclosure();
 
   if (rsvpsQuery.data) {
