@@ -32,3 +32,4 @@ export * from "./PagedBuildPointUsersSchema";
 export * from "./BuildPointSchema";
 export * from "./UserListParamsSchema";
 export * from "./BuildPointUserSchema";
+export * from "./OutreachTimeSchema";

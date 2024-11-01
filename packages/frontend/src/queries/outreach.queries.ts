@@ -1,6 +1,6 @@
 import { proxyClient } from "@/trpcClient";
 import { infiniteQueryOptions } from "@tanstack/react-query";
-import { OutreachTimeSchema } from "backend/schema/OutreachTimeSchema";
+import { OutreachTimeSchema } from "backend/schema";
 import { z } from "zod";
 
 const queryKeys = {
