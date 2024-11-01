@@ -1,32 +1,34 @@
-import ScancodeListItem from '@/features/user/components/AdminScancodeListItem'
-import NewAdminScancodeListItem from '@/features/user/components/NewAdminScancodeForm'
-import { queryUtils, trpc } from '@/trpcClient'
-import { Container, Stack, Paper, Typography, List } from '@mui/material'
-import { createFileRoute } from '@tanstack/react-router'
+import ScancodeListItem from "@/features/user/components/AdminScancodeListItem";
+import NewAdminScancodeListItem from "@/features/user/components/NewAdminScancodeForm";
+import { usersQueryOptions } from "@/queries/users.queries";
 
-export const Route = createFileRoute('/_authenticated/admin_/users/$userId/')({
+import { Container, Stack, Paper, Typography, List } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/_authenticated/admin_/users/$userId/")({
   component: Component,
-  loader: async ({ context: { queryUtils }, params: { userId } }) => {
-    const scancodes = await queryUtils.users.getUserScancodes.ensureData(userId)
+  loader: async ({ context: { queryClient }, params: { userId } }) => {
+    const scancodes = await queryClient.ensureQueryData(
+      usersQueryOptions.userScancodes(userId),
+    );
     return {
       userId,
       scancodes,
-    }
+    };
   },
-})
+});
 
 function Component() {
-  const loaderData = Route.useLoaderData()
+  const loaderData = Route.useLoaderData();
 
-  const scancodesQuery = trpc.users.getUserScancodes.useQuery(
-    loaderData.userId,
-    {
-      initialData: loaderData.scancodes,
-    },
-  )
+  const scancodesQuery = useQuery({
+    ...usersQueryOptions.userScancodes(loaderData.userId),
+    initialData: loaderData.scancodes,
+  });
 
   return (
-    <Container sx={{ my: 2, flex: 1, overflowY: 'auto' }}>
+    <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
       <Stack py={2} gap={2}>
         <Paper sx={{ p: 2 }}>
           <Stack gap={2}>
@@ -49,5 +51,5 @@ function Component() {
         </Paper>
       </Stack>
     </Container>
-  )
+  );
 }

@@ -2,13 +2,14 @@ import { Container, Paper, Stack, Typography } from "@mui/material";
 import { RouteApi, createFileRoute } from "@tanstack/react-router";
 import ActiveEventsList from "../../components/ActiveEventsList";
 import DefaultAppBar from "../../components/DefaultAppBar";
+import { usersQueryOptions } from "@/queries/users.queries";
 
 const appVersion = import.meta.env.VITE_APP_VERSION as string | undefined;
 
 export const Route = createFileRoute("/_authenticated/")({
   component: () => <Component />,
-  loader: async ({ context: { queryUtils } }) =>
-    queryUtils.users.getSelfPendingRsvps.ensureData(),
+  loader: async ({ context: { queryClient } }) =>
+    queryClient.ensureQueryData(usersQueryOptions.userSelfPendingRsvps()),
 });
 
 export function Component() {

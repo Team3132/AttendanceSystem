@@ -14,16 +14,14 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import MuiAlert from "@/components/MuiAlert";
-import { trpc, trpcClient, queryClient, queryUtils } from "@/trpcClient";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import { Provider } from "react-alert";
 import { HelmetProvider } from "react-helmet-async";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
-  queryUtils: typeof queryUtils;
 }>()({
   component: RootComponent,
 });
@@ -31,7 +29,7 @@ export const Route = createRootRouteWithContext<{
 const theme = createTheme({
   colorSchemes: {
     dark: true,
-  }
+  },
 });
 
 function RootComponent() {

@@ -1,15 +1,21 @@
 import AsChildLink from "@/components/AsChildLink";
 import DefaultAppBar from "@/components/DefaultAppBar";
-import { trpc } from "@/trpcClient";
+import { usersQueryOptions } from "@/queries/users.queries";
+
 import { TabItem } from "@/types/TabItem";
 import { Tab, Tabs } from "@mui/material";
-import { Outlet, createFileRoute, useChildMatches } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import {
+  Outlet,
+  createFileRoute,
+  useChildMatches,
+} from "@tanstack/react-router";
 import { useMemo } from "react";
 
 export const Route = createFileRoute("/_authenticated/profile")({
   component: Component,
-  loader: async ({ context: { queryUtils } }) =>
-    queryUtils.users.getSelf.ensureData(),
+  loader: async ({ context: { queryClient } }) =>
+    queryClient.ensureQueryData(usersQueryOptions.userSelfDetails()),
 });
 
 const tabs: Array<TabItem> = [
@@ -26,17 +32,22 @@ const tabs: Array<TabItem> = [
 function Component() {
   const loaderData = Route.useLoaderData();
 
-  const userQuery = trpc.users.getSelf.useQuery(undefined, {
+  const userQuery = useQuery({
+    ...usersQueryOptions.userSelfDetails(),
     initialData: loaderData,
   });
 
   const currentChildren = useChildMatches();
 
-  const matchingIndex = useMemo(() => tabs.findIndex((tab) => {
-    return currentChildren.some((child) => {
-      return child.fullPath === tab.to
-    })
-  }), [currentChildren])
+  const matchingIndex = useMemo(
+    () =>
+      tabs.findIndex((tab) => {
+        return currentChildren.some((child) => {
+          return child.fullPath === tab.to;
+        });
+      }),
+    [currentChildren],
+  );
 
   return (
     <>

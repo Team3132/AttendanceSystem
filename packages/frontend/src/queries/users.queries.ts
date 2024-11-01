@@ -1,6 +1,6 @@
 import { proxyClient } from "@/trpcClient";
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
-import { UserListParamsSchema } from "backend/schema/UserListParamsSchema";
+import { UserListParamsSchema } from "backend/schema";
 import { z } from "zod";
 
 type UserListParams = Omit<z.infer<typeof UserListParamsSchema>, "cursor">;

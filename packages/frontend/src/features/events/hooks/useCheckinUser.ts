@@ -1,5 +1,5 @@
 import { eventQueryKeys } from "@/queries/events.queries";
-import { proxyClient, trpc } from "@/trpcClient";
+import { proxyClient } from "@/trpcClient";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function useCheckinUser() {

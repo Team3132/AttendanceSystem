@@ -1,4 +1,3 @@
-import { trpc } from "@/trpcClient";
 import {
   FormControl,
   FormHelperText,
@@ -23,7 +22,7 @@ type RSVPStatus = NonNullable<z.infer<typeof RSVPSchema>["status"]>;
 export default function MyRsvpStatus(props: MyRsvpStatusProps) {
   const { eventId } = props;
 
-  const myRsvpStatusQuery = useQuery(eventQueryOptions.eventRsvp(eventId))
+  const myRsvpStatusQuery = useQuery(eventQueryOptions.eventRsvp(eventId));
   const updateRsvpMutation = useUpdateRsvp();
 
   const handleChange = (event: SelectChangeEvent<RSVPStatus>) => {

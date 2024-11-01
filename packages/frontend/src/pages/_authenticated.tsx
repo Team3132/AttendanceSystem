@@ -1,7 +1,9 @@
 import AsChildLink from "@/components/AsChildLink";
-import { trpc } from "@/trpcClient";
+import { authQueryOptions } from "@/queries/auth.queries";
+
 import { TabItem } from "@/types/TabItem";
 import { BottomNavigation, BottomNavigationAction, Box } from "@mui/material";
+import { queryOptions, useQuery } from "@tanstack/react-query";
 import { useChildMatches } from "@tanstack/react-router";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 import { useMemo } from "react";
@@ -13,9 +15,10 @@ import {
 } from "react-icons/fa6";
 
 export const Route = createFileRoute("/_authenticated")({
-  beforeLoad: async ({ context: { queryUtils } }) => {
-    const { isAuthenticated, isAdmin } =
-      await queryUtils.auth.status.ensureData();
+  beforeLoad: async ({ context: { queryClient } }) => {
+    const { isAuthenticated, isAdmin } = await queryClient.ensureQueryData(
+      authQueryOptions.status(),
+    );
     if (!isAuthenticated) {
       throw redirect({
         to: "/login",
@@ -29,15 +32,16 @@ export const Route = createFileRoute("/_authenticated")({
       isAdmin,
     };
   },
-  loader: async ({ context: { queryUtils } }) =>
-    queryUtils.auth.status.ensureData(),
+  loader: async ({ context: { queryClient } }) =>
+    queryClient.ensureQueryData(authQueryOptions.status()),
   component: Component,
 });
 
 function Component() {
   const authStatus = Route.useLoaderData();
 
-  const authStatusQuery = trpc.auth.status.useQuery(undefined, {
+  const authStatusQuery = useQuery({
+    ...authQueryOptions.status(),
     initialData: authStatus,
   });
 
@@ -45,52 +49,56 @@ function Component() {
     () =>
       authStatusQuery.data.isAdmin
         ? ([
-          {
-            to: "/",
-            label: "Home",
-            icon: <FaHouse />,
-          },
-          {
-            to: "/leaderboard",
-            label: "Leaderboard",
-            icon: <FaPeopleGroup />,
-          },
-          {
-            to: "/events",
-            label: "Events",
-            fuzzy: true,
-            icon: <FaRegCalendar />,
-          },
-          { to: "/admin", label: "Admin", icon: <FaHouseLock /> },
-        ] as TabItem[])
+            {
+              to: "/",
+              label: "Home",
+              icon: <FaHouse />,
+            },
+            {
+              to: "/leaderboard",
+              label: "Leaderboard",
+              icon: <FaPeopleGroup />,
+            },
+            {
+              to: "/events",
+              label: "Events",
+              fuzzy: true,
+              icon: <FaRegCalendar />,
+            },
+            { to: "/admin", label: "Admin", icon: <FaHouseLock /> },
+          ] as TabItem[])
         : ([
-          {
-            to: "/",
-            label: "Home",
-            icon: <FaHouse />,
-          },
-          {
-            to: "/leaderboard",
-            label: "Leaderboard",
-            icon: <FaPeopleGroup />,
-          },
-          {
-            to: "/events",
-            fuzzy: true,
-            label: "Events",
-            icon: <FaRegCalendar />,
-          },
-        ] as TabItem[]),
+            {
+              to: "/",
+              label: "Home",
+              icon: <FaHouse />,
+            },
+            {
+              to: "/leaderboard",
+              label: "Leaderboard",
+              icon: <FaPeopleGroup />,
+            },
+            {
+              to: "/events",
+              fuzzy: true,
+              label: "Events",
+              icon: <FaRegCalendar />,
+            },
+          ] as TabItem[]),
     [authStatusQuery.data.isAdmin],
   );
 
   const currentChildren = useChildMatches();
 
-  const matchingIndex = useMemo(() => routes.findIndex((tab) => {
-    return currentChildren.some((child) => {
-      return child.fullPath === tab.to
-    })
-  }), [currentChildren, routes])
+  const matchingIndex = useMemo(
+    () =>
+      routes.findIndex((tab) => {
+        return currentChildren.some((child) => {
+          return child.fullPath === tab.to;
+        });
+      }),
+    [currentChildren, routes],
+  );
 
   return (
     <Box

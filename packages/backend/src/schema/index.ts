@@ -30,4 +30,5 @@ export * from "./PagedSchema";
 export * from "./AddBuildPointsSchema";
 export * from "./PagedBuildPointUsersSchema";
 export * from "./BuildPointSchema";
+export * from "./UserListParamsSchema";
 export * from "./BuildPointUserSchema";

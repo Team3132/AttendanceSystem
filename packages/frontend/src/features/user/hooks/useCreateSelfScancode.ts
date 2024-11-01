@@ -1,22 +1,17 @@
-import { trpc } from "@/trpcClient";
+import { usersQueryKeys } from "@/queries/users.queries";
+import { proxyClient } from "@/trpcClient";
+import { useMutation } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function useCreateSelfScancode() {
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-  // return useMutation({
-  //   ...userApi.createUserScancode,
-  //   onSuccess: (_data, variables) => {
-  //     queryClient.invalidateQueries({
-  //       queryKey: userKeys.userScancodes(variables.userId),
-  //     });
-  //   },
-  // });
-
-  const utils = trpc.useUtils();
-
-  return trpc.users.addSelfScancode.useMutation({
+  return useMutation({
+    mutationFn: proxyClient.users.addSelfScancode.mutate,
     onSuccess: () => {
-      utils.users.getSelfScancodes.invalidate();
+      queryClient.invalidateQueries({
+        queryKey: usersQueryKeys.userSelfScancodes(),
+      });
     },
   });
 }

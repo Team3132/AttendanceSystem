@@ -3,7 +3,7 @@ import { createColumnHelper } from "@tanstack/table-core";
 import { Duration } from "luxon";
 import type { LeaderBoardUser as LeaderboardUserSchema } from "backend/schema";
 import { z } from "zod";
-import { trpc } from "@/trpcClient";
+
 import { useMemo } from "react";
 import { Container, Paper, Stack, Typography } from "@mui/material";
 import Datatable from "@/components/DataTable";
@@ -45,9 +45,11 @@ export const Route = createFileRoute("/_authenticated/leaderboard")({
 });
 
 function Component() {
-  const leaderboardQuery = useInfiniteQuery(leaderboardQueryOptions({
-    limit: 10,
-  }))
+  const leaderboardQuery = useInfiniteQuery(
+    leaderboardQueryOptions({
+      limit: 10,
+    }),
+  );
 
   const flatResults = useMemo(
     () => leaderboardQuery.data?.pages.flatMap((page) => page.items),

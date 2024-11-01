@@ -1,9 +1,9 @@
 import { eventQueryKeys } from "@/queries/events.queries";
-import { proxyClient, trpc } from "@/trpcClient";
+import { usersQueryKeys } from "@/queries/users.queries";
+import { proxyClient } from "@/trpcClient";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function useSelfCheckout() {
-  const utils = trpc.useUtils();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: proxyClient.events.selfCheckout.mutate,
@@ -11,7 +11,9 @@ export default function useSelfCheckout() {
       queryClient.invalidateQueries({
         queryKey: eventQueryKeys.eventRsvps(variables),
       });
-      utils.users.getSelfPendingRsvps.invalidate();
+      queryClient.invalidateQueries({
+        queryKey: usersQueryKeys.userSelfPendingRsvps(),
+      });
     },
   });
 }

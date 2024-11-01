@@ -1,5 +1,5 @@
 import { eventQueryKeys } from "@/queries/events.queries";
-import { proxyClient, trpc } from "@/trpcClient";
+import { proxyClient } from "@/trpcClient";
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";

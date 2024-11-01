@@ -1,4 +1,3 @@
-import { trpc } from "@/trpcClient";
 import { Button, List, Paper, Stack, Typography } from "@mui/material";
 import { useDisclosure } from "../../../hooks/useDisclosure";
 import AdminRSVPListItem from "./AdminRsvpListItem";
@@ -14,7 +13,7 @@ interface RsvpListProps {
 }
 
 export default function RsvpList({ eventId, admin = false }: RsvpListProps) {
-  const rsvpsQuery = useQuery(eventQueryOptions.eventRsvps(eventId))
+  const rsvpsQuery = useQuery(eventQueryOptions.eventRsvps(eventId));
   const { getButtonProps, getDisclosureProps, isOpen } = useDisclosure();
 
   if (rsvpsQuery.data) {
@@ -30,11 +29,11 @@ export default function RsvpList({ eventId, admin = false }: RsvpListProps) {
           <List>
             {!admin
               ? rsvpsQuery.data.map((rsvp) => (
-                <RSVPListItem rsvp={rsvp} key={rsvp.id} />
-              ))
+                  <RSVPListItem rsvp={rsvp} key={rsvp.id} />
+                ))
               : rsvpsQuery.data.map((rsvp) => (
-                <AdminRSVPListItem rsvp={rsvp} key={rsvp.id} />
-              ))}
+                  <AdminRSVPListItem rsvp={rsvp} key={rsvp.id} />
+                ))}
           </List>
           {admin ? (
             <Button {...getButtonProps()} variant="contained">

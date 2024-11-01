@@ -1,7 +1,9 @@
-import AsChildLink from '@/components/AsChildLink'
-import Datatable from '@/components/DataTable'
-import DefaultAppBar from '@/components/DefaultAppBar'
-import { trpc } from '@/trpcClient'
+import AsChildLink from "@/components/AsChildLink";
+import Datatable from "@/components/DataTable";
+import DefaultAppBar from "@/components/DefaultAppBar";
+import { authQueryOptions } from "@/queries/auth.queries";
+import { usersQueryOptions } from "@/queries/users.queries";
+
 import {
   Button,
   CircularProgress,
@@ -11,26 +13,26 @@ import {
   Stack,
   TextField,
   Typography,
-} from '@mui/material'
-import { keepPreviousData } from '@tanstack/react-query'
-import { createFileRoute, redirect } from '@tanstack/react-router'
-import { createColumnHelper } from '@tanstack/react-table'
-import { UserSchema } from 'backend/schema'
-import { useMemo } from 'react'
-import { useDebounceValue } from 'usehooks-ts'
-import { z } from 'zod'
+} from "@mui/material";
+import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createColumnHelper } from "@tanstack/react-table";
+import { UserSchema } from "backend/schema";
+import { useMemo } from "react";
+import { useDebounceValue } from "usehooks-ts";
+import { z } from "zod";
 
-const columnHelper = createColumnHelper<z.infer<typeof UserSchema>>()
+const columnHelper = createColumnHelper<z.infer<typeof UserSchema>>();
 
 const columns = [
-  columnHelper.accessor('username', {
-    header: 'Username',
+  columnHelper.accessor("username", {
+    header: "Username",
   }),
   columnHelper.display({
-    header: 'Settings',
+    header: "Settings",
     cell: (row) => (
       <AsChildLink
-        to={'/admin/users/$userId'}
+        to={"/admin/users/$userId"}
         params={{
           userId: row.row.original.id,
         }}
@@ -39,57 +41,56 @@ const columns = [
       </AsChildLink>
     ),
   }),
-]
+];
 
-export const Route = createFileRoute('/_authenticated/admin_/')({
-  beforeLoad: async ({ context: { queryUtils } }) => {
-    const { isAdmin } = await queryUtils.auth.status.ensureData()
+export const Route = createFileRoute("/_authenticated/admin_/")({
+  beforeLoad: async ({ context: { queryClient } }) => {
+    const { isAdmin } = await queryClient.ensureQueryData(
+      authQueryOptions.status(),
+    );
     if (!isAdmin) {
       throw redirect({
-        to: '/',
-      })
+        to: "/",
+      });
     }
   },
   component: Component,
-})
+});
 
 function Component() {
-  const [search, setSearch] = useDebounceValue('', 500)
+  const [search, setSearch] = useDebounceValue("", 500);
 
-  const usersQuery = trpc.users.getUserList.useInfiniteQuery(
-    {
+  const usersQuery = useInfiniteQuery({
+    ...usersQueryOptions.userList({
       limit: 10,
       search: search,
-    },
-    {
-      getNextPageParam: (lastPage) => lastPage.nextPage,
-      placeholderData: keepPreviousData,
-    },
-  )
+    }),
+    placeholderData: keepPreviousData,
+  });
 
   const pagedItems = useMemo(
     () => usersQuery.data?.pages.flatMap((page) => page.items) ?? [],
     [usersQuery.data],
-  )
+  );
 
   const total = useMemo(
     () => usersQuery.data?.pages.at(-1)?.total ?? 0,
     [usersQuery.data],
-  )
+  );
 
   return (
     <>
       <DefaultAppBar title="Admin" />
-      <Container sx={{ my: 2, flex: 1, overflowY: 'auto' }}>
+      <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
         {/* <Stack gap={2}> */}
         <Paper
-          sx={{ p: 2, textAlign: 'center', height: '100%', width: '100%' }}
+          sx={{ p: 2, textAlign: "center", height: "100%", width: "100%" }}
         >
-          <Stack gap={2} sx={{ height: '100%', display: 'flex' }}>
+          <Stack gap={2} sx={{ height: "100%", display: "flex" }}>
             <Typography variant="h4">Users</Typography>
             <TextField
               onChange={(e) => setSearch(e.target.value)}
-              defaultValue={''}
+              defaultValue={""}
               label="Search"
               InputLabelProps={{
                 shrink: true,
@@ -98,8 +99,12 @@ function Component() {
               fullWidth
               slotProps={{
                 input: {
-                  endAdornment: usersQuery.isFetching ? <InputAdornment position='end'><CircularProgress size={"30px"} /></InputAdornment> : undefined,
-                }
+                  endAdornment: usersQuery.isFetching ? (
+                    <InputAdornment position="end">
+                      <CircularProgress size={"30px"} />
+                    </InputAdornment>
+                  ) : undefined,
+                },
               }}
             />
             <Datatable
@@ -120,5 +125,5 @@ function Component() {
         {/* </Stack> */}
       </Container>
     </>
-  )
+  );
 }

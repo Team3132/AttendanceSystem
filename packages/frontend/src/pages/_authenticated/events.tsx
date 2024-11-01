@@ -2,8 +2,8 @@ import AsChildLink from "@/components/AsChildLink";
 import DefaultAppBar from "@/components/DefaultAppBar";
 import InfiniteList from "@/components/InfiniteList";
 import UpcomingEventListItem from "@/features/events/components/UpcomingEventListItem";
+import { authQueryOptions } from "@/queries/auth.queries";
 import { eventQueryOptions } from "@/queries/events.queries";
-import { trpc } from "@/trpcClient";
 import {
   Box,
   Button,
@@ -19,7 +19,7 @@ import {
   Typography,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import {
   createFileRoute,
   useLocation,
@@ -47,20 +47,21 @@ export const Route = createFileRoute("/_authenticated/events")({
   validateSearch: (search) => eventsSearchSchema.parse(search),
   loaderDeps: ({ search }) => search,
   loader: async ({
-    context: { queryUtils, queryClient },
+    context: { queryClient },
     deps: { from = defaultFrom, to = defaultTo, type, limit = defaultLimit },
   }) => {
-    const authStatus = await queryUtils.auth.status.ensureData();
+    const authStatus = await queryClient.ensureQueryData(
+      authQueryOptions.status(),
+    );
 
-    await queryClient.prefetchInfiniteQuery(eventQueryOptions.eventList({
-      from,
-      to,
-      type,
-      limit,
-    })
-    )
-
-
+    await queryClient.prefetchInfiniteQuery(
+      eventQueryOptions.eventList({
+        from,
+        to,
+        type,
+        limit,
+      }),
+    );
 
     return {
       authStatus,
@@ -78,16 +79,19 @@ function Component() {
   } = useLocation({ select: (s) => s.search });
   const navigate = Route.useNavigate();
 
-  const authStatusQuery = trpc.auth.status.useQuery(undefined, {
+  const authStatusQuery = useQuery({
+    ...authQueryOptions.status(),
     initialData: authStatus,
   });
 
-  const infiniteEventsQuery = useInfiniteQuery(eventQueryOptions.eventList({
-    from,
-    to,
-    type,
-    limit,
-  }))
+  const infiniteEventsQuery = useInfiniteQuery(
+    eventQueryOptions.eventList({
+      from,
+      to,
+      type,
+      limit,
+    }),
+  );
 
   const handleTypeChange = (event: SelectChangeEvent) => {
     navigate({
