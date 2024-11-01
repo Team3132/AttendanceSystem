@@ -12,7 +12,7 @@ import mainLogger from "./logger";
 import appRouter from "./routers/app.router";
 import { createContext } from "./trpc/context";
 import { generateState, OAuth2RequestError } from "arctic";
-import { discord, discordDesktop, lucia } from "./auth/lucia";
+import { discord, lucia } from "./auth/lucia";
 import { DiscordAPIError, REST } from "@discordjs/rest";
 import { API } from "@discordjs/core";
 import { csrfPlugin } from "./auth/csrf";
