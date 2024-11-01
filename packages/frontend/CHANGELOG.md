@@ -1,5 +1,16 @@
 # frontend
 
+## 4.6.0
+
+### Minor Changes
+
+- [#1979](https://github.com/Team3132/AttendanceSystem/pull/1979) [`2639e46`](https://github.com/Team3132/AttendanceSystem/commit/2639e46e9a0a40a22fc9693e6d16df9f6bfa46f0) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Migration of TRPC React to TRPC Client + Tanstack Query
+
+### Patch Changes
+
+- Updated dependencies []:
+  - backend@4.6.0
+
 ## 4.5.0
 
 ### Minor Changes
