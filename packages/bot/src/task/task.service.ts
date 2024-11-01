@@ -79,16 +79,17 @@ export class TaskService {
     const sentMessages = await Promise.all(
       messages.map(([message, event]) =>
         fetchedChannel.send({
-          content: `${event.type === "Outreach"
+          content: `${
+            event.type === "Outreach"
               ? roleMention(ROLES.OUTREACH)
               : event.type === "Mentor"
                 ? roleMention(ROLES.MENTOR)
                 : event.type === "Social"
                   ? roleMention(ROLES.SOCIAL)
                   : roleMention(ROLES.EVERYONE)
-            } ${bold(
-              "10pm reminder",
-            )}: This channel should be used to let us know any last minute attendance changes on the day of the meeting.`,
+          } ${bold(
+            "5pm reminder",
+          )}: This channel should be used to let us know any last minute attendance changes on the day of the meeting.`,
           ...message,
         }),
       ),
