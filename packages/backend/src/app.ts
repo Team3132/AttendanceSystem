@@ -57,23 +57,6 @@ await server.get("/api/auth/discord", async (req, res) => {
     .redirect(url.toString());
 });
 
-await server.get("/api/auth/discord-desktop", async (req, res) => {
-  const state = generateState();
-  const url = await discordDesktop.createAuthorizationURL(state, {
-    scopes: ["identify", "guilds", "guilds.members.read"],
-  });
-
-  return res
-    .setCookie("discord_oauth_state", state, {
-      path: "/",
-      secure: isProd,
-      httpOnly: true,
-      maxAge: 60 * 10,
-      sameSite: "lax",
-    })
-    .redirect(url.toString());
-});
-
 interface DiscordCallbackQuerystring {
   code: string;
   state: string;
