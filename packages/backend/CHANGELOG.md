@@ -1,5 +1,7 @@
 # backend
 
+## 4.5.0
+
 ## 4.4.0
 
 ### Minor Changes
