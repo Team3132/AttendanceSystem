@@ -1,4 +1,4 @@
-import { proxyClient } from "@/trpcClient";
+import { trpcClient } from "@/trpcClient";
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 import { GetEventParamsSchema } from "backend/schema";
 import { z } from "zod";
@@ -28,7 +28,7 @@ export const eventQueryOptions = {
   eventList: (options: GetEventsParams) =>
     infiniteQueryOptions({
       queryFn: ({ pageParam }) =>
-        proxyClient.events.getEvents.query({
+        trpcClient.events.getEvents.query({
           ...options,
           cursor: pageParam ?? undefined,
         }),
@@ -39,25 +39,25 @@ export const eventQueryOptions = {
 
   eventDetails: (id: string) =>
     queryOptions({
-      queryFn: () => proxyClient.events.getEvent.query(id),
+      queryFn: () => trpcClient.events.getEvent.query(id),
       queryKey: eventQueryKeys.eventDetails(id),
     }),
 
   eventSecret: (id: string) =>
     queryOptions({
-      queryFn: () => proxyClient.events.getEventSecret.query(id),
+      queryFn: () => trpcClient.events.getEventSecret.query(id),
       queryKey: eventQueryKeys.eventSecret(id),
     }),
 
   eventRsvp: (id: string) =>
     queryOptions({
-      queryFn: () => proxyClient.events.getSelfEventRsvp.query(id),
+      queryFn: () => trpcClient.events.getSelfEventRsvp.query(id),
       queryKey: eventQueryKeys.eventRsvp(id),
     }),
 
   eventRsvps: (id: string) =>
     queryOptions({
-      queryFn: () => proxyClient.events.getEventRsvps.query(id),
+      queryFn: () => trpcClient.events.getEventRsvps.query(id),
       queryKey: eventQueryKeys.eventRsvps(id),
     }),
 };

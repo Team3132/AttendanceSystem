@@ -1,4 +1,4 @@
-import { proxyClient } from "@/trpcClient";
+import { trpcClient } from "@/trpcClient";
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 import { UserListParamsSchema } from "backend/schema";
 import { z } from "zod";
@@ -28,7 +28,7 @@ export const usersQueryOptions = {
   userList: (params: UserListParams) =>
     infiniteQueryOptions({
       queryFn: ({ pageParam }) =>
-        proxyClient.users.getUserList.query({
+        trpcClient.users.getUserList.query({
           ...params,
           cursor: pageParam ?? undefined,
         }),
@@ -39,37 +39,37 @@ export const usersQueryOptions = {
 
   userDetails: (id: string) =>
     queryOptions({
-      queryFn: () => proxyClient.users.getUser.query(id),
+      queryFn: () => trpcClient.users.getUser.query(id),
       queryKey: usersQueryKeys.userDetails(id),
     }),
 
   userScancodes: (id: string) =>
     queryOptions({
-      queryFn: () => proxyClient.users.getUserScancodes.query(id),
+      queryFn: () => trpcClient.users.getUserScancodes.query(id),
       queryKey: usersQueryKeys.userScancodes(id),
     }),
 
   userSelfDetails: () =>
     queryOptions({
-      queryFn: () => proxyClient.users.getSelf.query(),
+      queryFn: () => trpcClient.users.getSelf.query(),
       queryKey: usersQueryKeys.userSelfDetails(),
     }),
 
   userSelfScancodes: () =>
     queryOptions({
-      queryFn: () => proxyClient.users.getSelfScancodes.query(),
+      queryFn: () => trpcClient.users.getSelfScancodes.query(),
       queryKey: usersQueryKeys.userSelfScancodes(),
     }),
 
   userPendingRsvps: (id: string) =>
     queryOptions({
-      queryFn: () => proxyClient.users.getUserPendingRsvps.query(id),
+      queryFn: () => trpcClient.users.getUserPendingRsvps.query(id),
       queryKey: usersQueryKeys.userPendingRsvps(id),
     }),
 
   userSelfPendingRsvps: () =>
     queryOptions({
-      queryFn: () => proxyClient.users.getSelfPendingRsvps.query(),
+      queryFn: () => trpcClient.users.getSelfPendingRsvps.query(),
       queryKey: usersQueryKeys.userSelfPendingRsvps(),
     }),
 };

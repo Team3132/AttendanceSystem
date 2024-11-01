@@ -1,4 +1,4 @@
-import { TRPCClientError } from "@trpc/react-query";
+import { TRPCClientError } from "@trpc/client";
 import type { AppRouter } from "backend";
 
 export function isTRPCClientError(

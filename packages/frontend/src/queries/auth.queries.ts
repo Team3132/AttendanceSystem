@@ -1,4 +1,4 @@
-import { proxyClient } from "@/trpcClient";
+import { trpcClient } from "@/trpcClient";
 import { queryOptions } from "@tanstack/react-query";
 
 export const authQueryKeys = {
@@ -10,6 +10,6 @@ export const authQueryOptions = {
   status: () =>
     queryOptions({
       queryKey: authQueryKeys.status(),
-      queryFn: () => proxyClient.auth.status.query(),
+      queryFn: () => trpcClient.auth.status.query(),
     }),
 };
