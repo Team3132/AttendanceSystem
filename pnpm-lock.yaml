@@ -54,8 +54,8 @@ importers:
         specifier: 1.9.2
         version: 1.9.2
       bullmq:
-        specifier: 5.23.0
-        version: 5.23.0
+        specifier: 5.23.1
+        version: 5.23.1
       cron:
         specifier: 3.1.9
         version: 3.1.9
@@ -3013,8 +3013,8 @@ packages:
   buffer-from@1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
 
-  bullmq@5.23.0:
-    resolution: {integrity: sha512-VILKTIOwo9AopMyVqvDhQ1qyLrOtBSfu+G2bntgauQfxYzT7ETj+h2HeUe7a9i9AU/+OXJGYYm49NHJedEz7VQ==}
+  bullmq@5.23.1:
+    resolution: {integrity: sha512-WSN+EjtjjZ6n7f7YNdovc0nwVYRofhDSGjtBW4/+TjBiUwG0tv2L8FKWaLI9qVCgNI3kLra2CxrnDV0OWqTZPA==}
 
   bundle-require@5.0.0:
     resolution: {integrity: sha512-GuziW3fSSmopcx4KRymQEJVbZUfqlCqcq7dvs6TYwKRZiegK/2buMxQTPs6MGlNv50wms1699qYO54R8XfRX4w==}
@@ -4139,8 +4139,8 @@ packages:
     resolution: {integrity: sha512-P0efT1C9jIdVRefqjzOQ9Xml57zpOXnIuS+csaB4MdZbTdmGDLo8XhzBG1N7aO11gKDDkJvBLULeFTo46wwreA==}
     hasBin: true
 
-  msgpackr@1.11.0:
-    resolution: {integrity: sha512-I8qXuuALqJe5laEBYoFykChhSXLikZmUhccjGsPuSJ/7uPip2TJ7lwdIQwWSAi0jGZDXv4WOP8Qg65QZRuXxXw==}
+  msgpackr@1.11.2:
+    resolution: {integrity: sha512-F9UngXRlPyWCDEASDpTf6c9uNhGPTqnTeLVt7bN+bU1eajoR/8V9ys2BRaV5C/e5ihE6sJ9uPIKaYt6bFuO32g==}
 
   multer@1.4.4-lts.1:
     resolution: {integrity: sha512-WeSGziVj6+Z2/MwQo3GvqzgR+9Uc+qt8SwHKh3gvNPiISKfsMfG4SvCOFYlxxgkXt7yIV2i1yczehm0EOKIxIg==}
@@ -7675,11 +7675,11 @@ snapshots:
 
   buffer-from@1.1.2: {}
 
-  bullmq@5.23.0:
+  bullmq@5.23.1:
     dependencies:
       cron-parser: 4.9.0
       ioredis: 5.4.1
-      msgpackr: 1.11.0
+      msgpackr: 1.11.2
       node-abort-controller: 3.1.1
       semver: 7.6.3
       tslib: 2.8.0
@@ -8883,7 +8883,7 @@ snapshots:
       '@msgpackr-extract/msgpackr-extract-win32-x64': 3.0.3
     optional: true
 
-  msgpackr@1.11.0:
+  msgpackr@1.11.2:
     optionalDependencies:
       msgpackr-extract: 3.0.3
 
