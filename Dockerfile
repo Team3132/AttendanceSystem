@@ -32,6 +32,6 @@ ENV NODE_ENV=production
 COPY --from=build /opt/bot /app
 CMD [ "pnpm", "start" ]
 
-FROM caddy:2.8 AS frontend-runner
+FROM caddy:2.9 AS frontend-runner
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=build /app/packages/frontend/dist /usr/share/caddy
