@@ -1,5 +1,14 @@
 # frontend
 
+## 4.6.1
+
+### Patch Changes
+
+- [`fbaf30e`](https://github.com/Team3132/AttendanceSystem/commit/fbaf30e38507bb64cac8e1d1c1bda007a9f644c4) Thanks [@sebasptsch](https://github.com/sebasptsch)! - WS Live updates
+
+- Updated dependencies [[`fbaf30e`](https://github.com/Team3132/AttendanceSystem/commit/fbaf30e38507bb64cac8e1d1c1bda007a9f644c4)]:
+  - backend@4.6.1
+
 ## 4.6.0
 
 ### Minor Changes
