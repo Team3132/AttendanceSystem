@@ -22,7 +22,6 @@ import type { z } from "zod";
 import db from "../drizzle/db";
 import { eventTable, rsvpTable } from "../drizzle/schema";
 import env from "../env";
-import { ee } from "../routers/app.router";
 import type { RSVPUserSchema, UserCheckinSchema } from "../schema";
 import type { CreateBlankUserRsvpSchema } from "../schema/CreateBlankUserRsvpSchema";
 import type { CreateEventSchema } from "../schema/CreateEventSchema";
@@ -37,6 +36,8 @@ import type { ScaninSchema } from "../schema/ScaninSchema";
 import type { SelfCheckinSchema } from "../schema/SelfCheckinSchema";
 import clampDateTime from "../utils/clampDateTime";
 import randomStr from "../utils/randomStr";
+import { eventQueryKeys } from "queryKeys";
+import ee from "utils/eventEmitter";
 
 interface EventCheckinJobData {
   eventId: string;
@@ -306,7 +307,7 @@ export async function createEvent(params: z.infer<typeof CreateEventSchema>) {
 
   const { secret, ...data } = createdEvent;
 
-  // ee.emit("invalidate", getQueryKey(rtrpc.events.getEvents));
+  ee.emit("invalidate", eventQueryKeys.eventsList);
 
   return data;
 }
@@ -333,8 +334,8 @@ export async function updateEvent(
     });
   }
 
-  // ee.emit("invalidate", getQueryKey(rtrpc.events.getEvent, eventId));
-  // ee.emit("invalidate", getQueryKey(rtrpc.events.getEvents));
+  ee.emit("invalidate", eventQueryKeys.eventsList);
+  ee.emit("invalidate", eventQueryKeys.eventDetails(eventId));
 
   const { secret, ...rest } = updatedEvent;
 
@@ -358,8 +359,8 @@ export async function deleteEvent(id: string) {
     });
   }
 
-  // ee.emit("invalidate", getQueryKey(rtrpc.events.getEvent, id));
-  // ee.emit("invalidate", getQueryKey(rtrpc.events.getEvents));
+  ee.emit("invalidate", eventQueryKeys.eventsList);
+  ee.emit("invalidate", eventQueryKeys.eventDetails(id));
 
   const { secret, ...rest } = deletedEvent;
 
@@ -400,7 +401,7 @@ export async function editUserRsvpStatus(
     });
   }
 
-  // ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
+  ee.emit("invalidate", eventQueryKeys.eventRsvps(eventId));
 
   return updatedRsvp;
 }

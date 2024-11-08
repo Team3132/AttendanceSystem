@@ -2,16 +2,13 @@ import { trpcClient } from "@/trpcClient";
 import { infiniteQueryOptions } from "@tanstack/react-query";
 import { OutreachTimeSchema } from "backend/schema";
 import { z } from "zod";
-
-const queryKeys = {
-  leaderboard: (options: Options) => ["leaderboard", options] as const,
-};
+import { outreachQueryKeys } from "backend/querykeys";
 
 type Options = Omit<z.infer<typeof OutreachTimeSchema>, "cursor">;
 
 export const leaderboardQueryOptions = (options: Options) =>
   infiniteQueryOptions({
-    queryKey: queryKeys.leaderboard(options),
+    queryKey: outreachQueryKeys.leaderboard(options),
     queryFn: ({ pageParam }) =>
       trpcClient.outreach.outreachLeaderboard.query({
         ...options,

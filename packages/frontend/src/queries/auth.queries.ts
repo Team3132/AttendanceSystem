@@ -1,10 +1,6 @@
 import { trpcClient } from "@/trpcClient";
 import { queryOptions } from "@tanstack/react-query";
-
-export const authQueryKeys = {
-  auth: ["auth"] as const,
-  status: () => [...authQueryKeys.auth, "status"] as const,
-};
+import { authQueryKeys } from "backend/querykeys";
 
 export const authQueryOptions = {
   status: () =>

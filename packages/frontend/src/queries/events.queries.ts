@@ -2,27 +2,9 @@ import { trpcClient } from "@/trpcClient";
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 import { GetEventParamsSchema } from "backend/schema";
 import { z } from "zod";
+import { eventQueryKeys } from "backend/querykeys";
 
 type GetEventsParams = Omit<z.infer<typeof GetEventParamsSchema>, "cursor">;
-
-export const eventQueryKeys = {
-  events: ["events"] as const,
-  eventsList: ["events", "list"] as const,
-  /** The events list */
-  eventsListParams: (options: GetEventsParams) =>
-    [...eventQueryKeys.eventsList, options] as const,
-  /** The referenced event descriminator */
-  event: (id: string) => [...eventQueryKeys.events, id] as const,
-  /** The details of the event */
-  eventDetails: (id: string) =>
-    [...eventQueryKeys.event(id), "details"] as const,
-  eventSecret: (id: string) => [...eventQueryKeys.event(id), "secret"] as const,
-  /* The logged in user's rsvp status **/
-  eventRsvp: (id: string) => [...eventQueryKeys.event(id), "rsvp"] as const,
-  /** The RSVPs for everyone for a specific event */
-  eventRsvps: (id: string) =>
-    [...eventQueryKeys.eventRsvp(id), "list"] as const,
-};
 
 export const eventQueryOptions = {
   eventList: (options: GetEventsParams) =>

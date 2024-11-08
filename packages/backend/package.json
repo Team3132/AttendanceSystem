@@ -16,13 +16,17 @@
     "./services": {
       "import": "./dist/services/index.js",
       "types": "./dist/services/index.d.ts"
+    },
+    "./querykeys": {
+      "import": "./dist/queryKeys.js",
+      "types": "./dist/queryKeys.d.ts"
     }
   },
   "scripts": {
     "dev": "tsup --watch",
     "start": "node --enable-source-maps dist/index.js",
     "generate": "drizzle-kit generate:pg",
-    "build": "tsc && tsup",
+    "build": "tsc && NODE_OPTIONS='--max-old-space-size=16384' tsup",
     "typecheck": "tsc",
     "release": "pnpm build",
     "format": "pnpm biome format ./src --write",
