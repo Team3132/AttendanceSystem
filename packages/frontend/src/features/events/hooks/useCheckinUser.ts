@@ -1,6 +1,6 @@
-import { eventQueryKeys } from "@/queries/events.queries";
 import { trpcClient } from "@/trpcClient";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { eventQueryKeys } from "backend/querykeys";
 
 export default function useCheckinUser() {
   const queryClient = useQueryClient();

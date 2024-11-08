@@ -1,8 +1,8 @@
-import { eventQueryKeys } from "@/queries/events.queries";
 import { trpcClient } from "@/trpcClient";
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
+import { eventQueryKeys } from "backend/querykeys";
 
 export default function useDeleteEvent() {
   const queryClient = useQueryClient();

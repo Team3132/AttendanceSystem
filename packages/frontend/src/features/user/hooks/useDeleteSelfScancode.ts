@@ -1,7 +1,7 @@
-import { usersQueryKeys } from "@/queries/users.queries";
 import { trpcClient } from "@/trpcClient";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
+import { usersQueryKeys } from "backend/querykeys";
 
 export default function useDeleteSelfScancode() {
   const queryClient = useQueryClient();

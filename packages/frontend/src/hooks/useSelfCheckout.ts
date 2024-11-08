@@ -1,7 +1,6 @@
-import { eventQueryKeys } from "@/queries/events.queries";
-import { usersQueryKeys } from "@/queries/users.queries";
 import { trpcClient } from "@/trpcClient";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { eventQueryKeys, usersQueryKeys } from "backend/querykeys";
 
 export default function useSelfCheckout() {
   const queryClient = useQueryClient();
