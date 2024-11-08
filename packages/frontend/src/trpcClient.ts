@@ -1,4 +1,4 @@
-import { QueryClient } from "@tanstack/react-query";
+import { QueryClient, QueryKey } from "@tanstack/react-query";
 import { createTRPCClient, httpBatchLink } from "@trpc/client";
 import type { AppRouter } from "backend";
 import SuperJSON from "superjson";
@@ -27,3 +27,18 @@ export const queryClient = new QueryClient({
     },
   },
 });
+try {
+  // add websocket listener
+  const ws = new WebSocket(
+    `ws${backendUrl.protocol === "https:" ? "s" : ""}://${backendUrl.host}/api/ws`,
+  );
+
+  ws.addEventListener("message", (event) => {
+    const data = JSON.parse(event.data) as QueryKey;
+    queryClient.invalidateQueries({
+      queryKey: data,
+    });
+  });
+} catch (error) {
+  console.error(error);
+}
