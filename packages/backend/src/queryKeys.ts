@@ -8,9 +8,14 @@ import { z } from "zod";
 type UserListParams = Omit<z.infer<typeof UserListParamsSchema>, "cursor">;
 
 export type QueryKeyConstraint = readonly [...string[]];
+type QueryKey = ReadonlyArray<unknown>;
 
 // create a type that is a record of the key and the value can be either an array of strings or a function that returns an array of strings
 // args can possibly contain an object, string or number
+
+export interface EventTypes {
+  invalidate: [QueryKey];
+}
 
 export const usersQueryKeys = {
   users: ["users"] as const, // Root key for all user-related queries

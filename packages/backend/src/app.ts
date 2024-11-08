@@ -16,6 +16,7 @@ import { discord, lucia } from "./auth/lucia";
 import { DiscordAPIError, REST } from "@discordjs/rest";
 import { API } from "@discordjs/core";
 import { csrfPlugin } from "./auth/csrf";
+import ee from "utils/eventEmitter";
 
 Settings.defaultLocale = "en-au";
 Settings.defaultZone = "Australia/Sydney";
@@ -38,6 +39,15 @@ await server.register(fastifyTRPCPlugin, {
   prefix: "/api/trpc",
   useWSS: false,
   trpcOptions: { router: appRouter, createContext },
+});
+
+await server.register(await import("@fastify/websocket"));
+
+// ws
+await server.get("/api/ws", { websocket: true }, (socket) => {
+  ee.on("invalidate", (data) => {
+    socket.send(JSON.stringify(data));
+  });
 });
 
 await server.get("/api/auth/discord", async (req, res) => {

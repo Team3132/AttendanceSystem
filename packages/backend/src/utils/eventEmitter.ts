@@ -1,9 +1,5 @@
 import { EventEmitter } from "eventemitter3";
-type QueryKey = ReadonlyArray<unknown>;
-
-interface EventTypes {
-  invalidate: [QueryKey];
-}
+import { EventTypes } from "queryKeys";
 
 const ee = new EventEmitter<EventTypes>();
 

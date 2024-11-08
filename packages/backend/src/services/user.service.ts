@@ -6,13 +6,13 @@ import { and, count, eq, ilike, isNotNull, isNull } from "drizzle-orm";
 import type { z } from "zod";
 import db from "../drizzle/db";
 import { buildPointsTable, scancodeTable, userTable } from "../drizzle/schema";
-import { ee } from "../routers/app.router";
 import type { AddBuildPointsUserSchema, UserCreateSchema } from "../schema";
 import type { GetBuildPointsSchema } from "../schema/GetBuildPointsSchema";
 import type { PagedBuildPointsSchema } from "../schema/PagedBuildPointsSchema";
 import type { PagedUserSchema } from "../schema/PagedUserSchema";
 import type { RemoveBuildPointSchema } from "../schema/RemoveBuildPointSchema";
 import type { UserListParamsSchema } from "../schema/UserListParamsSchema";
+import ee from "utils/eventEmitter";
 
 /**
  * Gets a user from the database
@@ -145,6 +145,7 @@ export async function createUserScancode(userId: string, scancodeCode: string) {
   }
 
   // ee.emit("invalidate", getQueryKey(rtrpc.users.getUserScancodes, userId)); // Don't broadcast the user id
+  // ee.emit("invalidate", getQueryKey(getUserScancodes, userId)); // Don't broadcast the user id
 
   return createdScancode;
 }

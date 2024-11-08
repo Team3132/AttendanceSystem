@@ -475,7 +475,7 @@ export async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
     });
   }
 
-  // ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
+  ee.emit("invalidate", eventQueryKeys.eventRsvps(eventId));
 
   const timeDiff = eventEndDateTime.toMillis() - DateTime.local().toMillis();
   const delay = timeDiff > 0 ? timeDiff : 0;
@@ -604,7 +604,7 @@ export async function userCheckout(userId: string, eventId: string) {
     });
   }
 
-  // ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
+  ee.emit("invalidate", eventQueryKeys.eventRsvps(eventId));
 
   return updatedRsvp;
 }
@@ -654,8 +654,7 @@ export async function editUserAttendance(
   }
 
   // TODO: Schedule a job to check out the user after the delay
-
-  // ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
+  ee.emit("invalidate", eventQueryKeys.eventRsvps(eventId));
 
   return updatedRsvp;
 }
@@ -720,7 +719,7 @@ export async function createBlankUserRsvp(
     });
   }
 
-  // ee.emit("invalidate", getQueryKey(rtrpc.events.getEventRsvps, eventId));
+  ee.emit("invalidate", eventQueryKeys.eventRsvps(eventId));
 
   return createdRsvp;
 }
