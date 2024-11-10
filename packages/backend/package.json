@@ -53,7 +53,7 @@
     "@trpc/react-query": "11.0.0-rc.621",
     "@trpc/server": "11.0.0-rc.621",
     "arctic": "1.9.2",
-    "bullmq": "5.25.3",
+    "bullmq": "5.25.4",
     "cron": "3.1.9",
     "discord-api-types": "0.37.103",
     "dotenv": "16.4.5",
