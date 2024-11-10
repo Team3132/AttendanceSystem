@@ -3,44 +3,97 @@ import react from "@vitejs/plugin-react-swc";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 import { VitePWA } from "vite-plugin-pwa";
+import { createApp } from "vinxi";
+import { config } from "vinxi/plugins/config";
+import { apiRouter } from "@vinxi/router/api";
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [
-    TanStackRouterVite({
-      routesDirectory: "./src/pages",
-    }),
-    react(),
-    viteTsconfigPaths({
-      projects: ["./tsconfig.json"],
-    }),
-    VitePWA({
-      registerType: "autoUpdate",
-      workbox: {
-        globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
-        navigateFallbackDenylist: [/^\/api/],
-        runtimeCaching: [
-          {
-            urlPattern: ({ url }) => url.pathname.startsWith("/api"),
-            handler: "NetworkOnly",
-            options: {
-              cacheName: "api-cache",
-            },
-          },
-        ],
-      },
-    }),
-  ],
+// export default defineConfig({
+//   plugins: [
+//     TanStackRouterVite({
+//       routesDirectory: "./src/pages",
+//     }),
+//     react(),
+//     viteTsconfigPaths({
+//       projects: ["./tsconfig.json"],
+//     }),
+//     VitePWA({
+//       registerType: "autoUpdate",
+//       workbox: {
+//         globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+//         navigateFallbackDenylist: [/^\/api/],
+//         runtimeCaching: [
+//           {
+//             urlPattern: ({ url }) => url.pathname.startsWith("/api"),
+//             handler: "NetworkOnly",
+//             options: {
+//               cacheName: "api-cache",
+//             },
+//           },
+//         ],
+//       },
+//     }),
+//   ],
 
-  clearScreen: false,
-  server: {
-    port: 1420,
-    host: true,
-    proxy: {
-      "/api": {
-        target: "http://127.0.0.1:3000",
-        changeOrigin: true,
-      },
+//   clearScreen: false,
+//   server: {
+//     port: 1420,
+//     host: true,
+//     proxy: {
+//       "/api": {
+//         target: "http://127.0.0.1:3000",
+//         changeOrigin: true,
+//       },
+//     },
+//   },
+// });
+
+export default createApp({
+  routers: [
+    {
+      name: "public",
+      type: "static",
+      dir: "./public",
     },
-  },
+    apiRouter({
+      base: "/api",
+      dir: "./src/api",
+      plugins: () => [
+        viteTsconfigPaths({
+          projects: ["./tsconfig.json"],
+        }),
+      ],
+    }),
+    {
+      name: "client",
+      type: "spa",
+      handler: "./index.html",
+      base: "/client",
+      plugins: () => [
+        TanStackRouterVite({
+          routesDirectory: "./src/pages",
+        }),
+        react(),
+        viteTsconfigPaths({
+          projects: ["./tsconfig.json"],
+        }),
+        VitePWA({
+          registerType: "autoUpdate",
+          workbox: {
+            globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+            navigateFallbackDenylist: [/^\/api/],
+            runtimeCaching: [
+              {
+                urlPattern: ({ url }) => url.pathname.startsWith("/api"),
+                handler: "NetworkOnly",
+                options: {
+                  cacheName: "api-cache",
+                },
+              },
+            ],
+          },
+        }),
+      ],
+    },
+  ],
 });

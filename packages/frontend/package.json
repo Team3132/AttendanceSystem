@@ -4,9 +4,9 @@
   "version": "4.6.1",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
+    "dev": "PORT=1420 vinxi dev",
+    "build": "tsc && vinxi build",
+    "preview": "vinxi preview",
     "typecheck": "tsc",
     "format": "pnpm biome format ./src --write",
     "lint": "pnpm biome lint ./src --apply"
@@ -29,6 +29,7 @@
     "@tanstack/react-virtual": "3.10.9",
     "@tanstack/router-devtools": "1.79.0",
     "@tanstack/table-core": "8.20.5",
+    "@vinxi/router": "^0.4.4",
     "backend": "workspace:*",
     "cross-env": "7.0.3",
     "luxon": "3.5.0",
@@ -42,6 +43,7 @@
     "react-qr-code": "2.0.15",
     "superjson": "2.2.1",
     "usehooks-ts": "3.1.0",
+    "vinxi": "^0.4.3",
     "zod": "3.23.8"
   },
   "devDependencies": {
