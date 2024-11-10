@@ -23,7 +23,7 @@
     }
   },
   "scripts": {
-    "dev": "tsup --watch",
+    "dev": "NODE_OPTIONS='--max-old-space-size=16384' tsup --watch",
     "start": "node --enable-source-maps dist/index.js",
     "generate": "drizzle-kit generate:pg",
     "build": "tsc && NODE_OPTIONS='--max-old-space-size=16384' tsup",
