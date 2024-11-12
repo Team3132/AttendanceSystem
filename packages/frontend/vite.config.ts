@@ -55,20 +55,11 @@ export default createApp({
       type: "static",
       dir: "./public",
     },
-    apiRouter({
-      base: "/api",
-      dir: "./src/api",
-      plugins: () => [
-        viteTsconfigPaths({
-          projects: ["./tsconfig.json"],
-        }),
-      ],
-    }),
     {
       name: "client",
       type: "spa",
       handler: "./index.html",
-      base: "/client",
+      base: "/",
       plugins: () => [
         TanStackRouterVite({
           routesDirectory: "./src/pages",
@@ -95,5 +86,22 @@ export default createApp({
         }),
       ],
     },
+    {
+      name: "api",
+      type: "http",
+      base: "/api",
+      handler: "./src/api/hono.ts",
+      plugins: () => [
+        viteTsconfigPaths({
+          projects: ["./tsconfig.json"],
+        }),
+      ],
+      target: "server",
+    },
   ],
+  server: {
+    experimental: {
+      asyncContext: true,
+    },
+  },
 });
