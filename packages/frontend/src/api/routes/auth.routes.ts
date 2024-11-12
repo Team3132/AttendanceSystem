@@ -7,23 +7,21 @@ const StatusSchema = z.object({
   isAuthenticated: z.boolean(),
 });
 
-const statusRoute = createRoute({
-  method: "get",
-  path: "status",
-  responses: {
-    200: {
-      description: "Get the status of the user",
-      content: {
-        "application/json": {
-          schema: StatusSchema,
+const authRoutes = new OpenAPIHono<HonoEnv>().openapi(
+  createRoute({
+    method: "get",
+    path: "status",
+    responses: {
+      200: {
+        description: "Get the status of the user",
+        content: {
+          "application/json": {
+            schema: StatusSchema,
+          },
         },
       },
     },
-  },
-});
-
-const authRoutes = new OpenAPIHono<HonoEnv>().openapi(
-  statusRoute,
+  }),
   async (c) => {
     const { user } = c.var;
     return c.json({
