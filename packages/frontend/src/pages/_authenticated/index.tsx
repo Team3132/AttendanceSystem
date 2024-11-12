@@ -3,8 +3,9 @@ import { RouteApi, createFileRoute } from "@tanstack/react-router";
 import ActiveEventsList from "../../components/ActiveEventsList";
 import DefaultAppBar from "../../components/DefaultAppBar";
 import { usersQueryOptions } from "@/queries/users.queries";
+import env from "@/api/env";
 
-const appVersion = import.meta.env.VITE_APP_VERSION as string | undefined;
+const appVersion = env.VITE_PUBLIC_APP_VERSION;
 
 export const Route = createFileRoute("/_authenticated/")({
   component: () => <Component />,

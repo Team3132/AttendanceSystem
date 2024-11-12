@@ -55,7 +55,7 @@ export async function getOutreachTime(
 
     const conditionalAnd = and(
       eq(eventTable.type, "Outreach"),
-      not(arrayOverlaps(userTable.roles, [env.MENTOR_ROLE_ID])),
+      not(arrayOverlaps(userTable.roles, [env.VITE_MENTOR_ROLE_ID])),
       isNotNull(rsvpTable.checkinTime),
       isNotNull(rsvpTable.checkoutTime),
       gte(eventTable.startDate, aprilIsoDate),
@@ -146,7 +146,7 @@ export async function getBuildPoints(
   const offset = page * limit;
 
   const conditionalAnd = and(
-    not(arrayOverlaps(userTable.roles, [env.MENTOR_ROLE_ID])),
+    not(arrayOverlaps(userTable.roles, [env.VITE_MENTOR_ROLE_ID])),
     gte(buildPointsTable.createdAt, aprilIsoDate),
   );
 

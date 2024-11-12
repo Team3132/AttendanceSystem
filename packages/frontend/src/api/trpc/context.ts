@@ -1,10 +1,11 @@
-import type { CreateFastifyContextOptions } from "@trpc/server/adapters/fastify";
+import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
+import { Context } from "hono";
 
-export async function createContext({ req, res }: CreateFastifyContextOptions) {
-  return {
-    req,
-    res,
-  };
+export async function createContext(
+  _opts: FetchCreateContextFnOptions,
+  c: Context,
+) {
+  return c;
 }
 
-export type Context = Awaited<ReturnType<typeof createContext>>;
+export type TRPCContext = Awaited<ReturnType<typeof createContext>>;

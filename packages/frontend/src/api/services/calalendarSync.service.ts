@@ -13,9 +13,9 @@ import randomStr from "../utils/randomStr";
 type EventInsert = typeof eventTable.$inferInsert;
 
 const client = new google.auth.JWT(
-  env.GOOGLE_CLIENT_EMAIL,
+  env.VITE_GOOGLE_CLIENT_EMAIL,
   undefined,
-  env.GOOGLE_PRIVATE_KEY,
+  env.VITE_GOOGLE_PRIVATE_KEY,
   ["https://www.googleapis.com/auth/calendar.readonly"],
 );
 
@@ -28,7 +28,7 @@ export const getCalendarEvents = () =>
   new Promise<calendar_v3.Schema$Events>((res) => {
     calendar.events.list(
       {
-        calendarId: env.GOOGLE_CALENDAR_ID,
+        calendarId: env.VITE_GOOGLE_CALENDAR_ID,
         timeMin: DateTime.now().toISO(),
         timeMax: DateTime.now().plus({ month: 1 }).toISO(),
         orderBy: "startTime",

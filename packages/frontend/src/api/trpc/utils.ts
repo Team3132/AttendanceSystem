@@ -2,8 +2,9 @@ import { TRPCError } from "@trpc/server";
 import { t } from ".";
 import env from "../env";
 import { lucia } from "../auth/lucia";
-import { Context } from "./context";
 import { Session, User } from "lucia";
+import { createContext, TRPCContext } from "./context";
+import { getCookie, setCookie } from "hono/cookie";
 
 /**
  * Public (unauthenticated) procedure
@@ -14,7 +15,7 @@ import { Session, User } from "lucia";
  */
 export const publicProcedure = t.procedure;
 
-type OptionalSessionResult = Context &
+type OptionalSessionResult = TRPCContext &
   ({ user: null; session: null } | { user: User; session: Session });
 
 /**
@@ -26,12 +27,12 @@ type OptionalSessionResult = Context &
 const optionalSession = t.middleware<OptionalSessionResult>(
   async ({ ctx, next }) => {
     try {
-      const { user, session, req, res } = await sessionProcessor(ctx);
+      const { user, session, ...restCtx } = await sessionProcessor(ctx);
 
-      return next({ ctx: { user, session, req, res } });
+      return next({ ctx: { user, session, ...restCtx } });
     } catch (error) {
       return next({
-        ctx: { user: null, session: null, req: ctx.req, res: ctx.res },
+        ctx: { user: null, session: null, ...ctx },
       });
     }
   },
@@ -44,13 +45,12 @@ export const optionalSessionProcedure = t.procedure.use(optionalSession);
  *
  * This function processes the session data for a request, and returns the user and session data.
  */
-const sessionProcessor = async (ctx: Context) => {
-  const { req, res } = ctx;
-  const { headers, cookies } = req;
+const sessionProcessor = async (ctx: TRPCContext) => {
+  const authorizationHeader = ctx.req.raw.headers.get("authorization");
 
   // Get the bearer token session
   const sessionIdAuthorization = lucia.readBearerToken(
-    headers.authorization ?? "",
+    authorizationHeader ?? "",
   );
 
   // If the Authorization Bearer strategy is used then we skip any cookie-related logic and just return the session details
@@ -65,16 +65,21 @@ const sessionProcessor = async (ctx: Context) => {
       throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid session" });
     }
 
-    return { user, session, req, res };
+    return { user, session, ...ctx };
   }
 
   // If we're in a HTTP context, we can use cookies
-  const sessionId = cookies?.[lucia.sessionCookieName];
+  const sessionId = getCookie(ctx, lucia.sessionCookieName);
 
   // If there's no session cookie, we're not logged in so create a blank cookie
   if (!sessionId) {
     const sessionCookie = lucia.createBlankSessionCookie();
-    res.header("Set-Cookie", sessionCookie.serialize());
+    setCookie(
+      ctx,
+      sessionCookie.name,
+      sessionCookie.value,
+      sessionCookie.attributes,
+    );
 
     throw new TRPCError({ code: "UNAUTHORIZED", message: "No session" });
   }
@@ -85,7 +90,12 @@ const sessionProcessor = async (ctx: Context) => {
   if (!session) {
     const sessionCookie = lucia.createBlankSessionCookie();
 
-    res.header("Set-Cookie", sessionCookie.serialize());
+    setCookie(
+      ctx,
+      sessionCookie.name,
+      sessionCookie.value,
+      sessionCookie.attributes,
+    );
 
     throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid session" });
   }
@@ -93,11 +103,16 @@ const sessionProcessor = async (ctx: Context) => {
   // If the session is fresh, we need to update the cookie to extend the expiry
   if (session?.fresh) {
     const sessionCookie = lucia.createSessionCookie(session.id);
-    res.header("Set-Cookie", sessionCookie.serialize());
+    setCookie(
+      ctx,
+      sessionCookie.name,
+      sessionCookie.value,
+      sessionCookie.attributes,
+    );
   }
 
   // Return the user, logOut function and headers
-  return { user, session, req, res };
+  return { user, session, ...ctx };
 };
 
 /**
@@ -107,9 +122,9 @@ const sessionProcessor = async (ctx: Context) => {
  * that a user querying is authorized, and you can access user session data.
  */
 const enforceSession = t.middleware(async ({ ctx, next }) => {
-  const { user, session, req, res } = await sessionProcessor(ctx);
+  const { user, session, ...restCtx } = await sessionProcessor(ctx);
 
-  return next({ ctx: { user, session, req, res } });
+  return next({ ctx: { user, session, ...restCtx } });
 });
 
 /**
@@ -121,17 +136,17 @@ const enforceSession = t.middleware(async ({ ctx, next }) => {
 export const sessionProcedure = t.procedure.use(enforceSession);
 
 const enforceMentorSession = t.middleware(async ({ ctx, next }) => {
-  const { user, session, req, res } = await sessionProcessor(ctx);
+  const { user, session, ...restCtx } = await sessionProcessor(ctx);
 
   if (!user.roles) {
     throw new TRPCError({ code: "UNAUTHORIZED", message: "No roles" });
   }
 
-  if (!user.roles.includes(env.MENTOR_ROLE_ID)) {
+  if (!user.roles.includes(env.VITE_MENTOR_ROLE_ID)) {
     throw new TRPCError({ code: "UNAUTHORIZED", message: "Not a mentor" });
   }
 
-  return next({ ctx: { user: user, session, req, res } });
+  return next({ ctx: { user: user, session, ...restCtx } });
 });
 
 export const mentorSessionProcedure = t.procedure.use(enforceMentorSession);
@@ -140,15 +155,13 @@ export const mentorSessionProcedure = t.procedure.use(enforceMentorSession);
  * API Authenticated procedure (for the bot)
  */
 const enforceApiToken = t.middleware(({ ctx, next }) => {
-  const {
-    req: { headers },
-  } = ctx;
+  const authorizationHeader = ctx.req.raw.headers.get("authorization");
 
-  if (!headers.authorization) {
+  if (!authorizationHeader) {
     throw new TRPCError({ code: "UNAUTHORIZED", message: "API Token not set" });
   }
 
-  const envApiToken = env.BACKEND_SECRET_TOKEN;
+  const envApiToken = env.VITE_BACKEND_SECRET_TOKEN;
 
   if (!envApiToken) {
     throw new TRPCError({
@@ -157,7 +170,7 @@ const enforceApiToken = t.middleware(({ ctx, next }) => {
     });
   }
 
-  if (headers.authorization !== `Bearer ${envApiToken}`) {
+  if (authorizationHeader !== `Bearer ${envApiToken}`) {
     throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid API Token" });
   }
 

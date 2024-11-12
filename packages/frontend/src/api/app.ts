@@ -83,7 +83,7 @@ await server.route<{ Querystring: DiscordCallbackQuerystring }>({
     const discordState = req.cookies.discord_oauth_state;
 
     if (discordState !== state) {
-      res.redirect(env.FRONTEND_URL).send(); // TODO: Redirect to an error page
+      res.redirect(env.VITE_FRONTEND_URL).send(); // TODO: Redirect to an error page
     }
 
     // Clear the state cookie
@@ -100,16 +100,17 @@ await server.route<{ Querystring: DiscordCallbackQuerystring }>({
       const discordUserGuilds = await api.users.getGuilds();
 
       const validGuild =
-        discordUserGuilds.findIndex((guild) => guild.id === env.GUILD_ID) !==
-        -1;
+        discordUserGuilds.findIndex(
+          (guild) => guild.id === env.VITE_GUILD_ID,
+        ) !== -1;
 
       if (!validGuild) {
-        return res.redirect(env.FRONTEND_URL); // TODO: Redirect to an error page
+        return res.redirect(env.VITE_FRONTEND_URL); // TODO: Redirect to an error page
       }
 
       const discordUser = await api.users.get("@me");
 
-      const guildMember = await api.users.getGuildMember(env.GUILD_ID);
+      const guildMember = await api.users.getGuildMember(env.VITE_GUILD_ID);
 
       const [authedUser] = await db
         .insert(userTable)
@@ -129,7 +130,7 @@ await server.route<{ Querystring: DiscordCallbackQuerystring }>({
         .returning();
 
       if (!authedUser) {
-        res.redirect(env.FRONTEND_URL).send(); // TODO: Redirect to an error page
+        res.redirect(env.VITE_FRONTEND_URL).send(); // TODO: Redirect to an error page
       }
 
       const session = await lucia.createSession(discordUser.id, {});
@@ -137,7 +138,7 @@ await server.route<{ Querystring: DiscordCallbackQuerystring }>({
       const sessionCookie = lucia.createSessionCookie(session.id);
       res
         .header("Set-Cookie", sessionCookie.serialize())
-        .redirect(env.FRONTEND_URL)
+        .redirect(env.VITE_FRONTEND_URL)
         .send();
     } catch (error) {
       if (error instanceof OAuth2RequestError) {
@@ -150,7 +151,7 @@ await server.route<{ Querystring: DiscordCallbackQuerystring }>({
         mainLogger.error("Unknown error", error);
       }
 
-      res.redirect(env.FRONTEND_URL).send(); // TODO: Redirect to an error page
+      res.redirect(env.VITE_FRONTEND_URL).send(); // TODO: Redirect to an error page
     }
   },
 });

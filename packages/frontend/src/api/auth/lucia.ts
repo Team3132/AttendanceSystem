@@ -28,15 +28,15 @@ export const lucia = new Lucia(adapter, {
 });
 
 export const discord = new Discord(
-  env.DISCORD_CLIENT_ID,
-  env.DISCORD_CLIENT_SECRET,
-  env.DISCORD_CALLBACK_URL,
+  env.VITE_DISCORD_CLIENT_ID,
+  env.VITE_DISCORD_CLIENT_SECRET,
+  env.VITE_DISCORD_CALLBACK_URL,
 );
 
 export const discordDesktop = new Discord(
-  env.DISCORD_CLIENT_ID,
-  env.DISCORD_CLIENT_SECRET,
-  env.DISCORD_DESKTOP_CALLBACK_URL,
+  env.VITE_DISCORD_CLIENT_ID,
+  env.VITE_DISCORD_CLIENT_SECRET,
+  env.VITE_DISCORD_DESKTOP_CALLBACK_URL,
 );
 
 // IMPORTANT!

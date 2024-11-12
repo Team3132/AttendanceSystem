@@ -48,8 +48,8 @@ const queueName = "event";
 
 export const checkoutQueue = new Queue<EventCheckinJobData>(queueName, {
   connection: {
-    host: env.REDIS_HOST,
-    port: env.REDIS_PORT,
+    host: env.VITE_REDIS_HOST,
+    port: env.VITE_REDIS_PORT,
     db: 2,
   },
 });
@@ -83,7 +83,11 @@ export const registerWorker = () => {
         .where(and(eq(rsvpTable.id, rsvpId), isNull(rsvpTable.checkoutTime)));
     },
     {
-      connection: { host: env.REDIS_HOST, port: env.REDIS_PORT, db: 2 },
+      connection: {
+        host: env.VITE_REDIS_HOST,
+        port: env.VITE_REDIS_PORT,
+        db: 2,
+      },
     },
   );
 };

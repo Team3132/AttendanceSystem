@@ -17,7 +17,7 @@ export const authRouter = t.router({
    */
   status: optionalSessionProcedure.input(z.void()).query(({ ctx }) => ({
     isAuthenticated: !!ctx.user,
-    isAdmin: ctx.user?.roles?.includes(env.MENTOR_ROLE_ID) ?? false,
+    isAdmin: ctx.user?.roles?.includes(env.VITE_MENTOR_ROLE_ID) ?? false,
   })),
   /**
    * Logout the current user

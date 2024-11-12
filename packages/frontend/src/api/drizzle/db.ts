@@ -7,7 +7,7 @@ import env from "../env";
 import mainLogger from "../logger";
 import * as schema from "./schema";
 
-const connectionUrl = `postgres://${env.POSTGRES_USER}:${env.POSTGRES_PASSWORD}@${env.POSTGRES_HOST}:5432/${env.POSTGRES_DB}`;
+const connectionUrl = `postgres://${env.VITE_POSTGRES_USER}:${env.VITE_POSTGRES_PASSWORD}@${env.VITE_POSTGRES_HOST}:5432/${env.VITE_POSTGRES_DB}`;
 
 export async function migrate() {
   const logger = mainLogger.child("DB");
