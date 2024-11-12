@@ -1,8 +1,7 @@
 "use server";
 
-import { getQueryKey } from "@trpc/react-query";
 import { TRPCError } from "@trpc/server";
-import { type Job, Queue, Worker } from "bullmq";
+// import { type Job, Queue, Worker } from "bullmq";
 import {
   type SQL,
   and,
@@ -36,8 +35,8 @@ import type { ScaninSchema } from "../schema/ScaninSchema";
 import type { SelfCheckinSchema } from "../schema/SelfCheckinSchema";
 import clampDateTime from "../utils/clampDateTime";
 import randomStr from "../utils/randomStr";
-import { eventQueryKeys } from "queryKeys";
-import ee from "utils/eventEmitter";
+import { eventQueryKeys } from "../queryKeys";
+import ee from "../utils/eventEmitter";
 
 interface EventCheckinJobData {
   eventId: string;
@@ -46,51 +45,51 @@ interface EventCheckinJobData {
 
 const queueName = "event";
 
-export const checkoutQueue = new Queue<EventCheckinJobData>(queueName, {
-  connection: {
-    host: env.VITE_REDIS_HOST,
-    port: env.VITE_REDIS_PORT,
-    db: 2,
-  },
-});
+// export const checkoutQueue = new Queue<EventCheckinJobData>(queueName, {
+//   connection: {
+//     host: env.VITE_REDIS_HOST,
+//     port: env.VITE_REDIS_PORT,
+//     db: 2,
+//   },
+// });
 
-export const registerWorker = () => {
-  new Worker(
-    queueName,
-    async (job: Job<EventCheckinJobData>) => {
-      const { eventId, rsvpId } = job.data;
+// export const registerWorker = () => {
+//   new Worker(
+//     queueName,
+//     async (job: Job<EventCheckinJobData>) => {
+//       const { eventId, rsvpId } = job.data;
 
-      const currentTime = DateTime.local();
+//       const currentTime = DateTime.local();
 
-      const fetchedEvent = await db.query.eventTable.findFirst({
-        where: (event, { eq }) => eq(event.id, eventId),
-      });
+//       const fetchedEvent = await db.query.eventTable.findFirst({
+//         where: (event, { eq }) => eq(event.id, eventId),
+//       });
 
-      if (!fetchedEvent) throw new Error("Event not found");
+//       if (!fetchedEvent) throw new Error("Event not found");
 
-      const eventEndTime = DateTime.fromMillis(
-        Date.parse(fetchedEvent.endDate),
-      );
+//       const eventEndTime = DateTime.fromMillis(
+//         Date.parse(fetchedEvent.endDate),
+//       );
 
-      const checkoutTime =
-        currentTime > eventEndTime ? eventEndTime : currentTime;
+//       const checkoutTime =
+//         currentTime > eventEndTime ? eventEndTime : currentTime;
 
-      await db
-        .update(rsvpTable)
-        .set({
-          checkoutTime: checkoutTime.toISO(),
-        })
-        .where(and(eq(rsvpTable.id, rsvpId), isNull(rsvpTable.checkoutTime)));
-    },
-    {
-      connection: {
-        host: env.VITE_REDIS_HOST,
-        port: env.VITE_REDIS_PORT,
-        db: 2,
-      },
-    },
-  );
-};
+//       await db
+//         .update(rsvpTable)
+//         .set({
+//           checkoutTime: checkoutTime.toISO(),
+//         })
+//         .where(and(eq(rsvpTable.id, rsvpId), isNull(rsvpTable.checkoutTime)));
+//     },
+//     {
+//       connection: {
+//         host: env.VITE_REDIS_HOST,
+//         port: env.VITE_REDIS_PORT,
+//         db: 2,
+//       },
+//     },
+//   );
+// };
 
 /**
  * Get upcoming events in the next 24 hours for the daily bot announcement
@@ -484,11 +483,11 @@ export async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
   const timeDiff = eventEndDateTime.toMillis() - DateTime.local().toMillis();
   const delay = timeDiff > 0 ? timeDiff : 0;
 
-  await checkoutQueue.add(
-    "checkout",
-    { eventId, rsvpId: updatedRsvp.id },
-    { delay, jobId: updatedRsvp.id },
-  );
+  // await checkoutQueue.add(
+  //   "checkout",
+  //   { eventId, rsvpId: updatedRsvp.id },
+  //   { delay, jobId: updatedRsvp.id },
+  // );
 
   return updatedRsvp;
 }

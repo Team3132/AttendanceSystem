@@ -45,8 +45,8 @@ export const optionalSessionProcedure = t.procedure.use(optionalSession);
  *
  * This function processes the session data for a request, and returns the user and session data.
  */
-const sessionProcessor = async (ctx: TRPCContext) => {
-  const authorizationHeader = ctx.req.raw.headers.get("authorization");
+const sessionProcessor = async ({ c }: TRPCContext) => {
+  const authorizationHeader = c.req.raw.headers.get("authorization");
 
   // Get the bearer token session
   const sessionIdAuthorization = lucia.readBearerToken(
@@ -65,17 +65,17 @@ const sessionProcessor = async (ctx: TRPCContext) => {
       throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid session" });
     }
 
-    return { user, session, ...ctx };
+    return { user, session, ...c };
   }
 
   // If we're in a HTTP context, we can use cookies
-  const sessionId = getCookie(ctx, lucia.sessionCookieName);
+  const sessionId = getCookie(c, lucia.sessionCookieName);
 
   // If there's no session cookie, we're not logged in so create a blank cookie
   if (!sessionId) {
     const sessionCookie = lucia.createBlankSessionCookie();
     setCookie(
-      ctx,
+      c,
       sessionCookie.name,
       sessionCookie.value,
       sessionCookie.attributes,
@@ -91,7 +91,7 @@ const sessionProcessor = async (ctx: TRPCContext) => {
     const sessionCookie = lucia.createBlankSessionCookie();
 
     setCookie(
-      ctx,
+      c,
       sessionCookie.name,
       sessionCookie.value,
       sessionCookie.attributes,
@@ -104,7 +104,7 @@ const sessionProcessor = async (ctx: TRPCContext) => {
   if (session?.fresh) {
     const sessionCookie = lucia.createSessionCookie(session.id);
     setCookie(
-      ctx,
+      c,
       sessionCookie.name,
       sessionCookie.value,
       sessionCookie.attributes,
@@ -112,7 +112,7 @@ const sessionProcessor = async (ctx: TRPCContext) => {
   }
 
   // Return the user, logOut function and headers
-  return { user, session, ...ctx };
+  return { user, session, ...c };
 };
 
 /**
@@ -154,8 +154,8 @@ export const mentorSessionProcedure = t.procedure.use(enforceMentorSession);
 /**
  * API Authenticated procedure (for the bot)
  */
-const enforceApiToken = t.middleware(({ ctx, next }) => {
-  const authorizationHeader = ctx.req.raw.headers.get("authorization");
+const enforceApiToken = t.middleware(({ ctx: { c }, next }) => {
+  const authorizationHeader = c.req.raw.headers.get("authorization");
 
   if (!authorizationHeader) {
     throw new TRPCError({ code: "UNAUTHORIZED", message: "API Token not set" });

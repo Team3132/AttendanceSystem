@@ -5,7 +5,7 @@ export async function createContext(
   _opts: FetchCreateContextFnOptions,
   c: Context,
 ) {
-  return c;
+  return { c };
 }
 
 export type TRPCContext = Awaited<ReturnType<typeof createContext>>;

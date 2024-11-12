@@ -2,8 +2,11 @@ import { QueryClient, QueryKey } from "@tanstack/react-query";
 import { createTRPCClient, httpBatchLink } from "@trpc/client";
 import type { AppRouter } from "backend";
 import SuperJSON from "superjson";
+import env from "./api/env";
+import { hc } from "hono/client";
+import type { AppType } from "./api/hono";
 
-const backendUrl = new URL(`${import.meta.env.VITE_BACKEND_URL}/trpc`);
+const backendUrl = new URL(`${env.VITE_PUBLIC_BACKEND_URL}/trpc`);
 
 export const trpcClient = createTRPCClient<AppRouter>({
   links: [
@@ -42,3 +45,5 @@ try {
 } catch (error) {
   console.error(error);
 }
+
+export const appClient = hc<AppType>("http://localhost:1420/");
