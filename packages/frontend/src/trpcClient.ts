@@ -1,10 +1,10 @@
 import { QueryClient, QueryKey } from "@tanstack/react-query";
 import { createTRPCClient, httpBatchLink } from "@trpc/client";
-import type { AppRouter } from "backend";
 import SuperJSON from "superjson";
 import env from "./api/env";
 import { hc } from "hono/client";
 import type { AppType } from "./api/hono";
+import { AppRouter } from "./api";
 
 const backendUrl = new URL(`${env.VITE_PUBLIC_BACKEND_URL}/trpc`);
 

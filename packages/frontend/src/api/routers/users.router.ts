@@ -1,27 +1,18 @@
 import { z } from "zod";
-import { AddBuildPointsUserSchema, AddUserScancodeParams } from "../schema";
-import { BuildPointSchema } from "../schema/BuildPointSchema";
-import {
-  GetBuildPointsSchema,
-  GetUserBuildPointsSchema,
-} from "../schema/GetBuildPointsSchema";
-import { PagedBuildPointsSchema } from "../schema/PagedBuildPointsSchema";
+import { AddUserScancodeParams } from "../schema";
+
 import { PagedUserSchema } from "../schema/PagedUserSchema";
 import { RSVPEventSchema } from "../schema/RSVPEventSchema";
-import { RemoveBuildPointSchema } from "../schema/RemoveBuildPointSchema";
 import { ScancodeSchema } from "../schema/ScancodeSchema";
 import { UserListParamsSchema } from "../schema/UserListParamsSchema";
 import UserSchema from "../schema/UserSchema";
 import {
-  addUserBuildPoints,
   createUserScancode,
   getPendingUserRsvps,
   getUser,
-  getUserBuildPoints,
   getUserList,
   getUserScancodes,
   removeScancode,
-  removeUserBuildPoints,
 } from "../services/user.service";
 import { t } from "../trpc";
 import { mentorSessionProcedure, sessionProcedure } from "../trpc/utils";
@@ -71,22 +62,4 @@ export const userRouter = t.router({
     .input(z.string())
     .output(ScancodeSchema)
     .mutation(({ input, ctx }) => removeScancode(ctx.user.id, input)),
-  addUserBuildPoints: mentorSessionProcedure
-    .input(AddBuildPointsUserSchema)
-    .output(BuildPointSchema)
-    .mutation(({ input }) => addUserBuildPoints(input)),
-  getUserBuildPoints: mentorSessionProcedure
-    .input(GetUserBuildPointsSchema)
-    .output(PagedBuildPointsSchema)
-    .query(({ input: { userId, ...data } }) =>
-      getUserBuildPoints(userId, data),
-    ),
-  getSelfBuildPoints: sessionProcedure
-    .input(GetBuildPointsSchema)
-    .output(PagedBuildPointsSchema)
-    .query(({ ctx, input }) => getUserBuildPoints(ctx.user.id, input)),
-  removeBuildPoints: mentorSessionProcedure
-    .input(RemoveBuildPointSchema)
-    .output(BuildPointSchema)
-    .mutation(({ input }) => removeUserBuildPoints(input)),
 });

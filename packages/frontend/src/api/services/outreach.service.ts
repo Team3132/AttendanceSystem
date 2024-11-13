@@ -18,7 +18,6 @@ import db from "../drizzle/db";
 import { eventTable, rsvpTable, userTable } from "../drizzle/schema";
 import env from "../env";
 import { OutreachTimeSchema } from "../schema/OutreachTimeSchema";
-import type { PagedBuildPointUsersSchema } from "../schema/PagedBuildPointUsersSchema";
 import type { PagedLeaderboardSchema } from "../schema/PagedLeaderboardSchema";
 
 /**

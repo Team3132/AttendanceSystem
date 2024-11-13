@@ -1,6 +1,5 @@
 import { z } from "zod";
 import {
-  AddBuildPointsUserSchema,
   EditRSVPUserSchema,
   EventSchema,
   RSVPSchema,
@@ -10,10 +9,8 @@ import {
   UserCreateSchema,
   UserSchema,
 } from "../schema";
-import { BuildPointSchema } from "../schema/BuildPointSchema";
 import { EventsArraySchema } from "../schema/EventsArraySchema";
 import { OutreachTimeSchema } from "../schema/OutreachTimeSchema";
-import { PagedBuildPointUsersSchema } from "../schema/PagedBuildPointUsersSchema";
 import { PagedLeaderboardSchema } from "../schema/PagedLeaderboardSchema";
 import { SelfCheckinWithUserId } from "../schema/SelfCheckinWithUserId";
 import {
@@ -27,8 +24,8 @@ import {
   selfCheckin,
   userCheckout,
 } from "../services/events.service";
-import { getBuildPoints, getOutreachTime } from "../services/outreach.service";
-import { addUserBuildPoints, createUser } from "../services/user.service";
+import { getOutreachTime } from "../services/outreach.service";
+import { createUser } from "../services/user.service";
 import { t } from "../trpc";
 import { tokenProcedure } from "../trpc/utils";
 import { syncEvents } from "../services/calalendarSync.service";
@@ -87,14 +84,6 @@ export const botRouter = t.router({
     .input(SelfCheckinWithUserId)
     .output(RSVPSchema)
     .mutation(({ input: { userId, ...rest } }) => selfCheckin(userId, rest)),
-  addBuildPoints: tokenProcedure
-    .input(AddBuildPointsUserSchema)
-    .output(BuildPointSchema)
-    .mutation(({ input }) => addUserBuildPoints(input)),
-  buildPointsLeaderboard: tokenProcedure
-    .input(OutreachTimeSchema)
-    .output(PagedBuildPointUsersSchema)
-    .query(({ input }) => getBuildPoints(input)),
   syncEvents: tokenProcedure
     .input(z.void())
     .output(SyncResponseSchema)

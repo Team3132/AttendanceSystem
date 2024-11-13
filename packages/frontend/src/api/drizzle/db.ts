@@ -23,6 +23,8 @@ export async function migrate() {
   logger.timeEnd("Migrating database...");
 }
 
+migrate();
+
 const pgClient = postgres(connectionUrl, {
   transform: {
     value(value) {
