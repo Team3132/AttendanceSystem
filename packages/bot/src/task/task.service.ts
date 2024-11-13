@@ -4,7 +4,7 @@ import { ROLES } from "@/constants";
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Cron } from "@nestjs/schedule";
-import type { EventSchema } from "backend/schema";
+import type { EventSchema } from "../../../frontend/src/api/schema";
 import {
   type BaseMessageOptions,
   ChannelType,

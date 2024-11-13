@@ -1,5 +1,8 @@
 import { ROLES } from "@/constants";
-import type { EventSchema, RSVPUserSchema } from "backend/schema";
+import type {
+  EventSchema,
+  RSVPUserSchema,
+} from "../../../../frontend/src/api/schema";
 import {
   ActionRowBuilder,
   type BaseMessageOptions,
@@ -88,7 +91,7 @@ export default function rsvpReminderMessage(
   ).length;
 
   const comingStudentCount = otherRSVPs.filter(
-    (rsvp) => rsvp.status === "YES" || "LATE",
+    (rsvp) => rsvp.status === "YES" || rsvp.status === "LATE",
   ).length;
 
   const mentorEmbed = mentorDescription

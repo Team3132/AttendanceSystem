@@ -1,4 +1,4 @@
-import type { RSVPUserSchema } from "backend/schema";
+import type { RSVPUserSchema } from "../../../../frontend/src/api/schema";
 import type { z } from "zod";
 
 export default function rsvpToDescription(
@@ -14,6 +14,10 @@ export default function rsvpToDescription(
           ? ":white_check_mark:"
           : rsvp.status === "MAYBE"
             ? ":grey_question:"
-            : ":x:"
+            : rsvp.status === "NO"
+              ? ":x:"
+              : rsvp.status === "ATTENDED"
+                ? ":star:"
+                : ""
   }${first ? " :star:" : ""}`;
 }
