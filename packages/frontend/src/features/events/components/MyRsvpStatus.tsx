@@ -7,7 +7,7 @@ import {
   type SelectChangeEvent,
   TextField,
 } from "@mui/material";
-import type { RSVPSchema } from "@/api/schema";
+import type { RSVPSchema, RSVPStatusUpdateSchema } from "@/api/schema";
 import type { z } from "zod";
 import useUpdateRsvp from "../hooks/useUpdateRsvp";
 import { useQuery } from "@tanstack/react-query";
@@ -28,7 +28,7 @@ export default function MyRsvpStatus(props: MyRsvpStatusProps) {
   const handleChange = (event: SelectChangeEvent<RSVPStatus>) => {
     updateRsvpMutation.mutate({
       eventId,
-      status: event.target.value as RSVPStatus,
+      status: event.target.value as z.infer<typeof RSVPStatusUpdateSchema>,
       delay: 0,
     });
   };
@@ -53,6 +53,9 @@ export default function MyRsvpStatus(props: MyRsvpStatusProps) {
           <MenuItem value={"NO"}>Not Coming</MenuItem>
           <MenuItem value={"MAYBE"}>Maybe</MenuItem>
           <MenuItem value={"LATE"}>Late</MenuItem>
+          <MenuItem value={"ATTENDED"} disabled>
+            Attended
+          </MenuItem>
         </Select>
         {updateRsvpMutation.isError ? (
           <FormHelperText error>
