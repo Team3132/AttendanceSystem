@@ -443,16 +443,19 @@ export async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
     });
   }
 
+  const checkinTime = clampDateTime(
+    DateTime.local(),
+    eventStartDateTime,
+    eventEndDateTime,
+  ).toISO();
+
   const [updatedRsvp] = await db
     .insert(rsvpTable)
     .values({
       userId,
       eventId,
-      checkinTime: clampDateTime(
-        DateTime.local(),
-        eventStartDateTime,
-        eventEndDateTime,
-      ).toISO(),
+      checkinTime: checkinTime,
+      checkoutTime: checkinTime,
       updatedAt: DateTime.local().toISO(),
       createdAt: DateTime.local().toISO(),
     })
@@ -460,11 +463,8 @@ export async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
       set: {
         userId,
         eventId,
-        checkinTime: clampDateTime(
-          DateTime.local(),
-          eventStartDateTime,
-          eventEndDateTime,
-        ).toISO(),
+        checkinTime: checkinTime,
+        checkoutTime: checkinTime,
         updatedAt: DateTime.local().toISO(),
       },
       target: [rsvpTable.eventId, rsvpTable.userId],
@@ -479,15 +479,6 @@ export async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
   }
 
   ee.emit("invalidate", eventQueryKeys.eventRsvps(eventId));
-
-  const timeDiff = eventEndDateTime.toMillis() - DateTime.local().toMillis();
-  const delay = timeDiff > 0 ? timeDiff : 0;
-
-  // await checkoutQueue.add(
-  //   "checkout",
-  //   { eventId, rsvpId: updatedRsvp.id },
-  //   { delay, jobId: updatedRsvp.id },
-  // );
 
   return updatedRsvp;
 }
@@ -551,14 +542,14 @@ export async function userCheckout(userId: string, eventId: string) {
     });
   }
 
-  if (!existingRsvp.checkinTime) {
+  if (!existingRsvp.checkinTime || !existingRsvp.checkoutTime) {
     throw new TRPCError({
       code: "BAD_REQUEST",
       message: "User is not checked in",
     });
   }
 
-  if (existingRsvp.checkoutTime) {
+  if (existingRsvp.checkedOut) {
     throw new TRPCError({
       code: "BAD_REQUEST",
       message: "User is already checked out",
@@ -584,6 +575,7 @@ export async function userCheckout(userId: string, eventId: string) {
       ).toISO(),
       createdAt: DateTime.local().toISO(),
       updatedAt: DateTime.local().toISO(),
+      checkedOut: true,
     })
     .onConflictDoUpdate({
       set: {
@@ -595,6 +587,7 @@ export async function userCheckout(userId: string, eventId: string) {
           eventEndDateTime,
         ).toISO(),
         updatedAt: DateTime.local().toISO(),
+        checkedOut: true,
       },
       target: [rsvpTable.eventId, rsvpTable.userId],
     })
@@ -636,6 +629,7 @@ export async function editUserAttendance(
       checkoutTime,
       createdAt: DateTime.local().toISO(),
       updatedAt: DateTime.local().toISO(),
+      checkedOut: checkinTime !== checkoutTime,
     })
     .onConflictDoUpdate({
       set: {
@@ -644,6 +638,7 @@ export async function editUserAttendance(
         checkinTime,
         checkoutTime,
         updatedAt: DateTime.local().toISO(),
+        checkedOut: checkinTime !== checkoutTime,
       },
       target: [rsvpTable.eventId, rsvpTable.userId],
     })

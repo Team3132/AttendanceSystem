@@ -57,47 +57,7 @@ export const sessionTable = pgTable("session", {
 export const userTableRelations = relations(userTable, ({ many }) => ({
   rsvps: many(rsvpTable),
   scancodes: many(scancodeTable),
-  buildPoints: many(buildPointsTable),
 }));
-
-export const buildPointsTable = pgTable("BuildPoints", {
-  id: text("id")
-    .primaryKey()
-    .notNull()
-    .$defaultFn(() => ulid()),
-  userId: text("userId")
-    .notNull()
-    .references(() => userTable.id, {
-      onDelete: "cascade",
-      onUpdate: "cascade",
-    }),
-  points: integer("points").notNull(),
-  reason: text("reason").notNull().default(""),
-  createdAt: timestamp("createdAt", {
-    precision: 3,
-    mode: "string",
-    withTimezone: true,
-  })
-    .defaultNow()
-    .notNull(),
-  updatedAt: timestamp("updatedAt", {
-    precision: 3,
-    mode: "string",
-    withTimezone: true,
-  })
-    .defaultNow()
-    .notNull(),
-});
-
-export const buildPointsTableRelations = relations(
-  buildPointsTable,
-  ({ one }) => ({
-    user: one(userTable, {
-      fields: [buildPointsTable.userId],
-      references: [userTable.id],
-    }),
-  }),
-);
 
 export const rsvpTable = pgTable(
   "RSVP",
@@ -150,6 +110,8 @@ export const rsvpTable = pgTable(
       mode: "string",
       withTimezone: true,
     }),
+    /** If a user has checked out of the event */
+    checkedOut: boolean("checkedOut").default(false).notNull(),
   },
   (table) => {
     return {

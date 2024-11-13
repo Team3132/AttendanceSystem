@@ -15,12 +15,7 @@ import {
 import { DateTime } from "luxon";
 import type { z } from "zod";
 import db from "../drizzle/db";
-import {
-  buildPointsTable,
-  eventTable,
-  rsvpTable,
-  userTable,
-} from "../drizzle/schema";
+import { eventTable, rsvpTable, userTable } from "../drizzle/schema";
 import env from "../env";
 import { OutreachTimeSchema } from "../schema/OutreachTimeSchema";
 import type { PagedBuildPointUsersSchema } from "../schema/PagedBuildPointUsersSchema";
@@ -58,6 +53,7 @@ export async function getOutreachTime(
       not(arrayOverlaps(userTable.roles, [env.VITE_MENTOR_ROLE_ID])),
       isNotNull(rsvpTable.checkinTime),
       isNotNull(rsvpTable.checkoutTime),
+      eq(rsvpTable.checkedOut, true),
       gte(eventTable.startDate, aprilIsoDate),
     );
 
@@ -124,85 +120,6 @@ export async function getOutreachTime(
     page,
     total,
     nextPage,
-  };
-}
-
-export async function getBuildPoints(
-  params: z.infer<typeof OutreachTimeSchema>,
-): Promise<z.infer<typeof PagedBuildPointUsersSchema>> {
-  const { limit, cursor: page } = OutreachTimeSchema.parse(params);
-  const lastApril25 = getLastApril25();
-
-  if (!lastApril25) {
-    throw new Error("Could not find a valid date for last April 25th");
-  }
-
-  const aprilIsoDate = lastApril25.toISODate();
-
-  if (!aprilIsoDate) {
-    throw new Error("Could not convert last April 25th to ISO date");
-  }
-
-  const offset = page * limit;
-
-  const conditionalAnd = and(
-    not(arrayOverlaps(userTable.roles, [env.VITE_MENTOR_ROLE_ID])),
-    gte(buildPointsTable.createdAt, aprilIsoDate),
-  );
-
-  const items = await db
-    .select({
-      /** Username */
-      username: userTable.username,
-      /** UserId */
-      userId: userTable.id,
-      points: sql<string>`sum(${buildPointsTable.points})`,
-    })
-    .from(buildPointsTable)
-    .groupBy(userTable.id)
-    .having(gte(sum(buildPointsTable.points), 1))
-    .innerJoin(userTable, eq(buildPointsTable.userId, userTable.id))
-    .orderBy(desc(sum(buildPointsTable.points)))
-    .where(conditionalAnd)
-    .limit(limit)
-    .offset(offset);
-
-  const usersQuery = db
-    .select({
-      userId: userTable.id,
-    })
-    .from(buildPointsTable)
-    .groupBy(userTable.id)
-    .having(gte(sum(buildPointsTable.points), 1))
-    .innerJoin(userTable, eq(buildPointsTable.userId, userTable.id))
-    .where(conditionalAnd)
-    .as("usersQuery");
-
-  const [firstData] = await db
-    .select({
-      total: count(),
-    })
-    .from(usersQuery);
-
-  let total = 0;
-
-  if (firstData) {
-    total = firstData.total;
-  }
-
-  const result = items.map((row, index) => ({
-    ...row,
-    rank: index + 1 + offset,
-  }));
-
-  // If no next page then undefined
-  const nextPage = total > offset + limit ? page + 1 : undefined;
-
-  return {
-    items: result,
-    page,
-    nextPage,
-    total,
   };
 }
 

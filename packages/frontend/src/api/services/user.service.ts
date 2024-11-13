@@ -1,18 +1,13 @@
 "use server";
 
-import { getQueryKey } from "@trpc/react-query";
 import { TRPCError } from "@trpc/server";
-import { and, count, eq, ilike, isNotNull, isNull } from "drizzle-orm";
+import { and, count, eq, ilike, isNotNull } from "drizzle-orm";
 import type { z } from "zod";
 import db from "../drizzle/db";
-import { buildPointsTable, scancodeTable, userTable } from "../drizzle/schema";
-import type { AddBuildPointsUserSchema, UserCreateSchema } from "../schema";
-import type { GetBuildPointsSchema } from "../schema/GetBuildPointsSchema";
-import type { PagedBuildPointsSchema } from "../schema/PagedBuildPointsSchema";
+import { scancodeTable, userTable } from "../drizzle/schema";
+import type { UserCreateSchema } from "../schema";
 import type { PagedUserSchema } from "../schema/PagedUserSchema";
-import type { RemoveBuildPointSchema } from "../schema/RemoveBuildPointSchema";
 import type { UserListParamsSchema } from "../schema/UserListParamsSchema";
-import ee from "utils/eventEmitter";
 
 /**
  * Gets a user from the database
@@ -56,7 +51,8 @@ export async function getPendingUserRsvps(userId: string) {
       and(
         eq(rsvp.userId, userId),
         isNotNull(rsvp.checkinTime),
-        isNull(rsvp.checkoutTime),
+        isNotNull(rsvp.checkoutTime),
+        eq(rsvp.checkedOut, false),
       ),
     with: {
       event: {
@@ -205,96 +201,4 @@ export async function createUser(userdata: z.infer<typeof UserCreateSchema>) {
   }
 
   return dbUser;
-}
-
-export async function addUserBuildPoints(
-  params: z.infer<typeof AddBuildPointsUserSchema>,
-) {
-  const user = await db.query.userTable.findFirst({
-    where: (user) => eq(user.id, params.userId),
-  });
-
-  if (!user) {
-    throw new TRPCError({
-      code: "BAD_REQUEST",
-      message:
-        "User does not exist, cannot add build points. Please register by rsvp'ing to an event first.",
-    });
-  }
-
-  const [newBuildPoints] = await db
-    .insert(buildPointsTable)
-    .values({
-      userId: params.userId,
-      points: params.points,
-      reason: params.reason,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    })
-    .returning();
-
-  if (!newBuildPoints) {
-    throw new TRPCError({
-      code: "BAD_REQUEST",
-      message: "Failed to add build points",
-    });
-  }
-
-  return newBuildPoints;
-}
-
-export async function getUserBuildPoints(
-  userId: string,
-  params: z.infer<typeof GetBuildPointsSchema>,
-) {
-  const { limit, cursor: page } = params;
-
-  const offset = page * limit;
-
-  let total = 0;
-
-  const [totalData] = await db
-    .select({
-      total: count(),
-    })
-    .from(buildPointsTable)
-    .where(eq(buildPointsTable.userId, userId));
-
-  if (totalData) {
-    total = totalData.total;
-  }
-
-  const nextPage = total > offset + limit ? page + 1 : undefined;
-
-  const buildPointsRes = await db.query.buildPointsTable.findMany({
-    where: (buildPoints) => eq(buildPoints.userId, userId),
-    limit,
-    offset,
-  });
-
-  return {
-    items: buildPointsRes,
-    page,
-    total,
-    nextPage,
-  } satisfies z.infer<typeof PagedBuildPointsSchema>;
-}
-
-export async function removeUserBuildPoints(
-  params: z.infer<typeof RemoveBuildPointSchema>,
-) {
-  const { buildPointId } = params;
-  const [res] = await db
-    .delete(buildPointsTable)
-    .where(eq(buildPointsTable.id, buildPointId))
-    .returning();
-
-  if (!res) {
-    throw new TRPCError({
-      code: "BAD_REQUEST",
-      message: "Build point does not exist or has already been removed",
-    });
-  }
-
-  return res;
 }
