@@ -8,7 +8,7 @@ import { LoadingButton } from "@mui/lab";
 import { Container, Stack, Switch } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { CreateEventSchema } from "backend/schema";
+import { CreateEventSchema } from "@/api/schema";
 import { DateTime } from "luxon";
 import { useAlert } from "react-alert";
 import { Controller } from "react-hook-form";

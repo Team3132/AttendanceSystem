@@ -1,6 +1,6 @@
 import { trpcClient } from "@/trpcClient";
 import { infiniteQueryOptions } from "@tanstack/react-query";
-import { OutreachTimeSchema } from "backend/schema";
+import { OutreachTimeSchema } from "@/api/schema";
 import { z } from "zod";
 import { outreachQueryKeys } from "backend/querykeys";
 

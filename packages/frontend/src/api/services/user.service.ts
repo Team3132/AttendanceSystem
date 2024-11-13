@@ -1,7 +1,7 @@
 "use server";
 
 import { TRPCError } from "@trpc/server";
-import { and, count, eq, ilike, isNotNull } from "drizzle-orm";
+import { and, count, eq, ilike, isNotNull, not } from "drizzle-orm";
 import type { z } from "zod";
 import db from "../drizzle/db";
 import { scancodeTable, userTable } from "../drizzle/schema";
@@ -52,7 +52,7 @@ export async function getPendingUserRsvps(userId: string) {
         eq(rsvp.userId, userId),
         isNotNull(rsvp.checkinTime),
         isNotNull(rsvp.checkoutTime),
-        eq(rsvp.checkedOut, false),
+        not(eq(rsvp.status, "ATTENDED")),
       ),
     with: {
       event: {

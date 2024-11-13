@@ -378,6 +378,18 @@ export async function editUserRsvpStatus(
   params: z.infer<typeof EditRSVPSelfSchema>,
 ) {
   const { eventId, status, delay } = params;
+  const existingRsvp = await db.query.rsvpTable.findFirst({
+    where: (rsvp, { and }) =>
+      and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
+  });
+
+  if (existingRsvp?.status === "ATTENDED") {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "User is already checked out",
+    });
+  }
+
   const [updatedRsvp] = await db
     .insert(rsvpTable)
     .values({
@@ -549,7 +561,7 @@ export async function userCheckout(userId: string, eventId: string) {
     });
   }
 
-  if (existingRsvp.checkedOut) {
+  if (existingRsvp.status === "ATTENDED") {
     throw new TRPCError({
       code: "BAD_REQUEST",
       message: "User is already checked out",
@@ -575,7 +587,7 @@ export async function userCheckout(userId: string, eventId: string) {
       ).toISO(),
       createdAt: DateTime.local().toISO(),
       updatedAt: DateTime.local().toISO(),
-      checkedOut: true,
+      status: "ATTENDED",
     })
     .onConflictDoUpdate({
       set: {
@@ -587,7 +599,7 @@ export async function userCheckout(userId: string, eventId: string) {
           eventEndDateTime,
         ).toISO(),
         updatedAt: DateTime.local().toISO(),
-        checkedOut: true,
+        status: "ATTENDED",
       },
       target: [rsvpTable.eventId, rsvpTable.userId],
     })
@@ -629,7 +641,7 @@ export async function editUserAttendance(
       checkoutTime,
       createdAt: DateTime.local().toISO(),
       updatedAt: DateTime.local().toISO(),
-      checkedOut: checkinTime !== checkoutTime,
+      status: checkinTime === checkoutTime ? "ATTENDED" : undefined,
     })
     .onConflictDoUpdate({
       set: {
@@ -638,7 +650,7 @@ export async function editUserAttendance(
         checkinTime,
         checkoutTime,
         updatedAt: DateTime.local().toISO(),
-        checkedOut: checkinTime !== checkoutTime,
+        status: checkinTime === checkoutTime ? "ATTENDED" : undefined,
       },
       target: [rsvpTable.eventId, rsvpTable.userId],
     })

@@ -25,7 +25,7 @@ import {
   useLocation,
   useSearch,
 } from "@tanstack/react-router";
-import { EventTypeSchema } from "backend/schema";
+import { EventTypeSchema } from "@/api/schema";
 import { DateTime } from "luxon";
 import { z } from "zod";
 

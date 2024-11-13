@@ -1,5 +1,5 @@
 import { List, Typography } from "@mui/material";
-import type { RSVPEventSchema } from "backend/schema";
+import type { RSVPEventSchema } from "@/api/schema";
 import type { z } from "zod";
 import PendingEventListItem from "./PendingEventListItem";
 import { usersQueryOptions } from "@/queries/users.queries";
