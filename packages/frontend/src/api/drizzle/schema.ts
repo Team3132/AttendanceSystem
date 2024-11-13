@@ -17,7 +17,13 @@ export const eventTypes = pgEnum("EventTypes", [
   "Outreach",
   "Mentor",
 ]);
-export const rsvpStatus = pgEnum("RSVPStatus", ["LATE", "MAYBE", "NO", "YES"]);
+export const rsvpStatus = pgEnum("RSVPStatus", [
+  "LATE",
+  "MAYBE",
+  "NO",
+  "YES",
+  "ATTENDED",
+]);
 
 export const userTable = pgTable("User", {
   username: text("username").notNull(),
@@ -110,8 +116,6 @@ export const rsvpTable = pgTable(
       mode: "string",
       withTimezone: true,
     }),
-    /** If a user has checked out of the event */
-    checkedOut: boolean("checkedOut").default(false).notNull(),
   },
   (table) => {
     return {

@@ -72,6 +72,8 @@ export async function getPendingUserRsvps(userId: string) {
     },
   });
 
+  console.log(rsvps);
+
   return rsvps;
 }
 
