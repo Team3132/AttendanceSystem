@@ -22,9 +22,19 @@ export class TaskService {
     @Inject(BACKEND_TOKEN) private readonly backendClient: BackendClient,
   ) {
     // this.handleCron(); // Run once on startup
+    this.handleSync();
   }
 
   private readonly logger = new Logger(TaskService.name);
+
+  @Cron("00 23 * * *")
+  public async handleSync() {
+    try {
+      await this.backendClient.client.bot.syncEvents.mutate();
+    } catch (error) {
+      this.logger.error("Failed to sync events", error);
+    }
+  }
 
   @Cron("00 17 * * *")
   public async handleAttendanceReminder() {

@@ -1,6 +1,0 @@
-.env
-node_modules/
-secret-key
-dist/
-public/*
-!public/frontend/.gitkeep

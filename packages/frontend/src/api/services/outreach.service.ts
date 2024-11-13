@@ -52,7 +52,7 @@ export async function getOutreachTime(
       not(arrayOverlaps(userTable.roles, [env.VITE_MENTOR_ROLE_ID])),
       isNotNull(rsvpTable.checkinTime),
       isNotNull(rsvpTable.checkoutTime),
-      eq(rsvpTable.checkedOut, true),
+      eq(rsvpTable.status, "ATTENDED"),
       gte(eventTable.startDate, aprilIsoDate),
     );
 

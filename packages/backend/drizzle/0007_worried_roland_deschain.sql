@@ -1,1 +1,0 @@
-ALTER TABLE "User" ADD COLUMN "additionalOutreachHours" integer DEFAULT 0;
