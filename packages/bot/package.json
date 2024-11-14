@@ -30,7 +30,6 @@
     "@sentry/node": "8.37.1",
     "@sentry/tracing": "7.114.0",
     "@trpc/client": "11.0.0-rc.621",
-    "backend": "workspace:*",
     "class-transformer": "0.5.1",
     "class-validator": "0.14.1",
     "cron": "3.1.9",

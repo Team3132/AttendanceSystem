@@ -1,7 +1,6 @@
 "use server";
 
 import { TRPCError } from "@trpc/server";
-// import { type Job, Queue, Worker } from "bullmq";
 import {
   type SQL,
   and,
@@ -37,59 +36,6 @@ import clampDateTime from "../utils/clampDateTime";
 import randomStr from "../utils/randomStr";
 import { eventQueryKeys } from "../queryKeys";
 import ee from "../utils/eventEmitter";
-
-interface EventCheckinJobData {
-  eventId: string;
-  rsvpId: string;
-}
-
-const queueName = "event";
-
-// export const checkoutQueue = new Queue<EventCheckinJobData>(queueName, {
-//   connection: {
-//     host: env.VITE_REDIS_HOST,
-//     port: env.VITE_REDIS_PORT,
-//     db: 2,
-//   },
-// });
-
-// export const registerWorker = () => {
-//   new Worker(
-//     queueName,
-//     async (job: Job<EventCheckinJobData>) => {
-//       const { eventId, rsvpId } = job.data;
-
-//       const currentTime = DateTime.local();
-
-//       const fetchedEvent = await db.query.eventTable.findFirst({
-//         where: (event, { eq }) => eq(event.id, eventId),
-//       });
-
-//       if (!fetchedEvent) throw new Error("Event not found");
-
-//       const eventEndTime = DateTime.fromMillis(
-//         Date.parse(fetchedEvent.endDate),
-//       );
-
-//       const checkoutTime =
-//         currentTime > eventEndTime ? eventEndTime : currentTime;
-
-//       await db
-//         .update(rsvpTable)
-//         .set({
-//           checkoutTime: checkoutTime.toISO(),
-//         })
-//         .where(and(eq(rsvpTable.id, rsvpId), isNull(rsvpTable.checkoutTime)));
-//     },
-//     {
-//       connection: {
-//         host: env.VITE_REDIS_HOST,
-//         port: env.VITE_REDIS_PORT,
-//         db: 2,
-//       },
-//     },
-//   );
-// };
 
 /**
  * Get upcoming events in the next 24 hours for the daily bot announcement
@@ -535,6 +481,8 @@ export async function userCheckout(userId: string, eventId: string) {
     where: (rsvp, { and }) =>
       and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
   });
+
+  console.log({ existingRsvp, userId, eventId });
 
   const existingEvent = await db.query.eventTable.findFirst({
     where: eq(eventTable.id, eventId),

@@ -7,6 +7,7 @@ import {
   sessionProcedure,
 } from "../trpc/utils";
 import { lucia } from "../auth/lucia";
+import { setCookie } from "hono/cookie";
 
 /**
  * Auth router
@@ -27,9 +28,12 @@ export const authRouter = t.router({
     .output(z.boolean())
     .mutation(async ({ ctx }) => {
       await lucia.invalidateSession(ctx.session.id);
-      ctx.res.header(
-        "Set-Cookie",
-        lucia.createBlankSessionCookie().serialize(),
+      const blankSession = lucia.createBlankSessionCookie();
+      setCookie(
+        ctx.c,
+        blankSession.name,
+        blankSession.value,
+        blankSession.attributes,
       );
       return true;
     }),

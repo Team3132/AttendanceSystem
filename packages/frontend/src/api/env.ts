@@ -15,11 +15,6 @@ export const env = createEnv({
       .url()
       .default("postgres://postgres:postgres@localhost:5432/postgres"),
     /**
-     * Redis
-     */
-    VITE_REDIS_HOST: z.string().default("localhost"),
-    VITE_REDIS_PORT: z.coerce.number().default(6379),
-    /**
      * Auth and cookies
      */
     VITE_TBA_TOKEN: z.string(),

@@ -6,11 +6,16 @@
   "scripts": {
     "dev": "PORT=1420 vinxi dev",
     "build": "tsc && vinxi build",
-    "preview": "vinxi preview",
+    "start": "vinxi start",
     "typecheck": "tsc",
     "format": "pnpm biome format ./src --write",
     "lint": "pnpm biome lint ./src --apply"
   },
+  "files": [
+    ".output",
+    "drizzle",
+    "vite.config.ts"
+  ],
   "dependencies": {
     "@discordjs/core": "2.0.0",
     "@discordjs/rest": "2.4.0",
@@ -41,7 +46,6 @@
     "@trpc/server": "11.0.0-rc.621",
     "@vinxi/router": "^0.4.4",
     "arctic": "1.9.2",
-    "backend": "workspace:*",
     "cron": "3.1.9",
     "cross-env": "7.0.3",
     "discord-api-types": "0.37.103",
