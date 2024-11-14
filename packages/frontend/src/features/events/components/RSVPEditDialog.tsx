@@ -91,6 +91,7 @@ export default function RSVPEditDialog(props: RSVPEditDialogProps) {
                   label="Checkin Time"
                   onChange={(date) => {
                     if (date) {
+                      console.log(date.toISO());
                       onChange(date.toISO());
                     }
                   }}
@@ -119,6 +120,7 @@ export default function RSVPEditDialog(props: RSVPEditDialogProps) {
                   label="Checkout Time"
                   onChange={(date) => {
                     if (date) {
+                      console.log(date.toISO());
                       onChange(date.toISO());
                     }
                   }}
