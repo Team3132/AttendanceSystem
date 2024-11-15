@@ -16,9 +16,9 @@ import { TaskModule } from "./task/task.module";
     BackendModule,
     NecordModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
-        token: configService.getOrThrow("DISCORD_TOKEN"),
+        token: configService.getOrThrow("VITE_DISCORD_TOKEN"),
         intents: [GatewayIntentBits.GuildMembers, GatewayIntentBits.Guilds],
-        development: configService.getOrThrow("GUILD_ID"),
+        development: configService.getOrThrow("VITE_GUILD_ID"),
       }),
       inject: [ConfigService],
     }),
