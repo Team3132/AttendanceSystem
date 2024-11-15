@@ -1,5 +1,11 @@
 # frontend
 
+## 5.0.2
+
+### Patch Changes
+
+- [`3cda554`](https://github.com/Team3132/AttendanceSystem/commit/3cda554e14a017e8147591ffc2255f73157e4057) Thanks [@sebasptsch](https://github.com/sebasptsch)! - If no window then use process.env
+
 ## 5.0.1
 
 ### Patch Changes
