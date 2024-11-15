@@ -56,7 +56,7 @@ export const env = createEnv({
   runtimeEnv:
     typeof window === "undefined"
       ? process.env
-      : (import.meta as { env: Record<string, string> }).env,
+      : (import.meta as unknown as { env: Record<string, string> }).env,
   clientPrefix: "VITE_PUBLIC",
   client: {
     VITE_PUBLIC_BACKEND_URL: z.string().default("http://localhost:3000/api"),
