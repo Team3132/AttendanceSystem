@@ -299,8 +299,8 @@ importers:
         specifier: 1.9.4
         version: 1.9.4
       '@swc/plugin-emotion':
-        specifier: 6.0.0
-        version: 6.0.0
+        specifier: 7.0.1
+        version: 7.0.1
       '@tanstack/router-plugin':
         specifier: 1.81.9
         version: 1.81.9(vite@5.4.11(@types/node@22.9.0)(terser@5.36.0))
@@ -3697,8 +3697,8 @@ packages:
   '@swc/helpers@0.5.13':
     resolution: {integrity: sha512-UoKGxQ3r5kYI9dALKJapMmuK+1zWM/H17Z1+iwnNmzcJRnfFuevZs375TA5rW31pu4BS4NoSy1fRsexDXfWn5w==}
 
-  '@swc/plugin-emotion@6.0.0':
-    resolution: {integrity: sha512-7FQrDBCVnVnmM/8wXxS9e3B0IgkRBO7yuDYS/S2E5eI0UnFfQsNKCTkmnYvTtjctPyqedsh8tPfH4cZ3yC7xYg==}
+  '@swc/plugin-emotion@7.0.1':
+    resolution: {integrity: sha512-8JxpIPfSNd63wLf67s3Tch94/bYctZZCOoW5eEUjUVnBvv0w9EvZOZZB+sUdT8IJK5ajALvqdJ/o6d0fi254dg==}
 
   '@swc/types@0.1.15':
     resolution: {integrity: sha512-XKaZ+dzDIQ9Ot9o89oJQ/aluI17+VvUnIpYJTcZtvv1iYX6MzHh3Ik2CSR7MdPKpPwfZXHBeCingb2b4PoDVdw==}
@@ -10847,7 +10847,7 @@ snapshots:
       tslib: 2.8.0
     optional: true
 
-  '@swc/plugin-emotion@6.0.0':
+  '@swc/plugin-emotion@7.0.1':
     dependencies:
       '@swc/counter': 0.1.3
 
