@@ -22,7 +22,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build Backend
-        run: pnpm run --filter backend build
+        run: pnpm run --filter frontend build
       - name: Add Problem Matcher
         run: echo "::add-matcher::.github/problem-matchers/tsc.json"
       - name: Type Check Packages
