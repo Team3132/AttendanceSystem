@@ -54,13 +54,9 @@ export const env = createEnv({
     VITE_MENTOR_ROLE_ID: z.string(),
   },
   runtimeEnv:
-    window !== undefined
-      ? (
-          import.meta as unknown as {
-            env: Record<string, string | boolean | number | undefined>;
-          }
-        ).env
-      : process.env,
+    typeof window === "undefined"
+      ? process.env
+      : (import.meta as { env: Record<string, string> }).env,
   clientPrefix: "VITE_PUBLIC",
   client: {
     VITE_PUBLIC_BACKEND_URL: z.string().default("http://localhost:3000/api"),
