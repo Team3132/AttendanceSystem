@@ -26,7 +26,7 @@ const authProcessor = async (
 
     // If there's no valid session then pass the null user (fails rules)
     if (!session) {
-      throw new Response(null, { status: 401 });
+      return { user: null, session: null };
     }
 
     return { user, session };

@@ -54,7 +54,7 @@ export const env = createEnv({
     VITE_MENTOR_ROLE_ID: z.string(),
   },
   runtimeEnv:
-    typeof window === "undefined"
+    typeof window === "undefined" && !import.meta.env.SSR
       ? process.env
       : (import.meta as unknown as { env: Record<string, string> }).env,
   clientPrefix: "VITE_PUBLIC",
