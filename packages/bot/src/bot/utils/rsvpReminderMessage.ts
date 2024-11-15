@@ -1,8 +1,5 @@
 import { ROLES } from "@/constants";
-import type {
-  EventSchema,
-  RSVPUserSchema,
-} from "../../../../frontend/src/api/schema";
+import type { EventSchema, RSVPUserSchema } from "frontend/types";
 import {
   ActionRowBuilder,
   type BaseMessageOptions,

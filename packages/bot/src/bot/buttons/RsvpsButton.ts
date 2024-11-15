@@ -2,7 +2,7 @@ import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
 import { ROLES } from "@/constants";
 import { Inject, Injectable, Logger, UseGuards } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import type { RSVPStatusSchema } from "../../../../frontend/src/api/schema";
+import type { RSVPStatusUpdateSchema } from "frontend/types";
 import { GuildMember } from "discord.js";
 import { Button, type ButtonContext, ComponentParam, Context } from "necord";
 import type { z } from "zod";
@@ -24,7 +24,9 @@ export class RsvpsButton {
   public async onRsvpButton(
     @Context() [interaction]: ButtonContext,
     @ComponentParam("eventId") eventId: string,
-    @ComponentParam("rsvpStatus") rsvpStatus: z.infer<typeof RSVPStatusSchema>,
+    @ComponentParam("rsvpStatus") rsvpStatus: z.infer<
+      typeof RSVPStatusUpdateSchema
+    >,
   ) {
     const fetchedEvent =
       await this.backendClient.client.bot.getEventDetails.query(eventId);

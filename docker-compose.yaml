@@ -19,10 +19,9 @@ services:
       target: frontend-runner
     ports:
       - 3000:3000
-  env_file:
-    - packages/frontend/.env.local
-  links:
-    - postgres
+    env_file: packages/frontend/.env.local
+    links:
+      - postgres
   # bot:
   #   build:
   #     context: .

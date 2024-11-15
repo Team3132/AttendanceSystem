@@ -6,6 +6,7 @@ import { VitePWA } from "vite-plugin-pwa";
 import { createApp } from "vinxi";
 import { config } from "vinxi/plugins/config";
 import { apiRouter } from "@vinxi/router/api";
+import dts from "vite-plugin-dts";
 
 // https://vitejs.dev/config/
 // export default defineConfig({
@@ -59,6 +60,7 @@ export default createApp({
       name: "client",
       type: "spa",
       handler: "./index.html",
+
       base: "/",
       plugins: () => [
         TanStackRouterVite({
@@ -83,6 +85,11 @@ export default createApp({
               },
             ],
           },
+        }),
+        dts({
+          insertTypesEntry: true,
+          include: "./src/api/**/*.ts",
+          outDir: "dist/types",
         }),
       ],
     },

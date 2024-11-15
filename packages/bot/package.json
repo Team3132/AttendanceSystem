@@ -41,7 +41,8 @@
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.1",
     "superjson": "2.2.1",
-    "zod": "3.23.8"
+    "zod": "3.23.8",
+    "frontend": "workspace:*"
   },
   "engines": {
     "node": "22.11.0"

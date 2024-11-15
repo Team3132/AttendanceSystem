@@ -34,10 +34,8 @@ export class RsvpButton {
       if (!eventRsvps.length)
         return interaction.reply({ content: "No RSVPs", ephemeral: true });
 
-      const firstIdRsvp = eventRsvps.at(0)?.id;
-
       const description = eventRsvps
-        .map((rsvp) => rsvpToDescription(rsvp, firstIdRsvp === rsvp.id))
+        .map((rsvp) => rsvpToDescription(rsvp.user.username, rsvp.status))
         .join("\n");
 
       const rsvpEmbed = new EmbedBuilder()
