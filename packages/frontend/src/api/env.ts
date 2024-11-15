@@ -1,6 +1,10 @@
 import { z } from "zod";
 import { createEnv } from "@t3-oss/env-core";
 
+type Env = {
+  env: Record<string, string | number | boolean>;
+};
+
 export const env = createEnv({
   server: {
     /**
@@ -54,7 +58,8 @@ export const env = createEnv({
     VITE_MENTOR_ROLE_ID: z.string(),
   },
   runtimeEnv:
-    typeof window === "undefined" && !import.meta.env.SSR
+    typeof window === "undefined" &&
+    !(import.meta as unknown as { env: Record<string, string> }).env.SSR
       ? process.env
       : (import.meta as unknown as { env: Record<string, string> }).env,
   clientPrefix: "VITE_PUBLIC",
