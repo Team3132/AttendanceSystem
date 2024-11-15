@@ -48,8 +48,8 @@ importers:
         specifier: 7.114.0
         version: 7.114.0
       '@trpc/client':
-        specifier: 11.0.0-rc.637
-        version: 11.0.0-rc.637(@trpc/server@11.0.0-rc.637(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
+        specifier: 11.0.0-rc.638
+        version: 11.0.0-rc.638(@trpc/server@11.0.0-rc.638(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       class-transformer:
         specifier: 0.5.1
         version: 0.5.1
@@ -149,7 +149,7 @@ importers:
         version: 1.0.4(@hono/node-server@1.13.5(hono@4.6.9))
       '@hono/trpc-server':
         specifier: ^0.3.2
-        version: 0.3.2(@trpc/server@11.0.0-rc.637(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(hono@4.6.9)
+        version: 0.3.2(@trpc/server@11.0.0-rc.638(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(hono@4.6.9)
       '@hono/zod-openapi':
         specifier: ^0.17.0
         version: 0.17.0(hono@4.6.9)(zod@3.23.8)
@@ -205,8 +205,8 @@ importers:
         specifier: 8.20.5
         version: 8.20.5
       '@trpc/server':
-        specifier: 11.0.0-rc.637
-        version: 11.0.0-rc.637(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 11.0.0-rc.638
+        version: 11.0.0-rc.638(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@vinxi/router':
         specifier: ^0.4.4
         version: 0.4.4(typescript@5.6.3)(vinxi@0.4.3(@types/node@22.9.0)(drizzle-orm@0.36.0(@libsql/client-wasm@0.14.0)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@18.3.12)(postgres@3.4.5)(react@18.3.1))(ioredis@5.4.1)(terser@5.36.0)(typescript@5.6.3))(vite@5.4.11(@types/node@22.9.0)(terser@5.36.0))
@@ -305,8 +305,8 @@ importers:
         specifier: 1.81.9
         version: 1.81.9(vite@5.4.11(@types/node@22.9.0)(terser@5.36.0))
       '@trpc/client':
-        specifier: 11.0.0-rc.637
-        version: 11.0.0-rc.637(@trpc/server@11.0.0-rc.637(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
+        specifier: 11.0.0-rc.638
+        version: 11.0.0-rc.638(@trpc/server@11.0.0-rc.638(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@types/luxon':
         specifier: 3.4.2
         version: 3.4.2
@@ -3818,13 +3818,13 @@ packages:
   '@tokenizer/token@0.3.0':
     resolution: {integrity: sha512-OvjF+z51L3ov0OyAU0duzsYuvO01PH7x4t6DJx+guahgTnBHkhJdG7soQeTSFLWN3efnHyibZ4Z8l2EuWwJN3A==}
 
-  '@trpc/client@11.0.0-rc.637':
-    resolution: {integrity: sha512-pnU956VXpy+v88ZPt/oqCcK7Mt+uNoMLRpjJAN6stNsDurVLwt2Uc1OEx7CH5QqxdhoTAtaLB3GiXFKFhuIJoQ==}
+  '@trpc/client@11.0.0-rc.638':
+    resolution: {integrity: sha512-zKOZZwUMcF4cvm04aawG7dP6M9dCs7FEWHuiBy7xmU+RIonsgpolLMRXm7bFie5EhQOGizhLRGnhneGwjNzWMA==}
     peerDependencies:
-      '@trpc/server': 11.0.0-rc.637+19da060cb
+      '@trpc/server': 11.0.0-rc.638+09a76869e
 
-  '@trpc/server@11.0.0-rc.637':
-    resolution: {integrity: sha512-zDQbhB8F175rgHfq5h1mvicSOF8JNx0O0LNtGVIYchOeH3BxTw5bGM8WREJktmWZwAtFdFvhQEYiC0ayNw7sqg==}
+  '@trpc/server@11.0.0-rc.638':
+    resolution: {integrity: sha512-ho3sRx66UuncKTtuy7UKbYP8IB4qaPj2gmdDIIdQOftta1oYzEsQuYiBozQAIAmX9TbV5FaqAdBUl2alFBSbdg==}
 
   '@tybys/wasm-util@0.8.3':
     resolution: {integrity: sha512-Z96T/L6dUFFxgFJ+pQtkPpne9q7i6kIPYCFnQBHSgSPV9idTsKfIhCss0h5iM9irweZCatkrdeP8yi5uM1eX6Q==}
@@ -9181,9 +9181,9 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@hono/trpc-server@0.3.2(@trpc/server@11.0.0-rc.637(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(hono@4.6.9)':
+  '@hono/trpc-server@0.3.2(@trpc/server@11.0.0-rc.638(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(hono@4.6.9)':
     dependencies:
-      '@trpc/server': 11.0.0-rc.637(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@trpc/server': 11.0.0-rc.638(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       hono: 4.6.9
 
   '@hono/zod-openapi@0.17.0(hono@4.6.9)(zod@3.23.8)':
@@ -10974,11 +10974,11 @@ snapshots:
 
   '@tokenizer/token@0.3.0': {}
 
-  '@trpc/client@11.0.0-rc.637(@trpc/server@11.0.0-rc.637(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
+  '@trpc/client@11.0.0-rc.638(@trpc/server@11.0.0-rc.638(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
     dependencies:
-      '@trpc/server': 11.0.0-rc.637(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@trpc/server': 11.0.0-rc.638(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
 
-  '@trpc/server@11.0.0-rc.637(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@trpc/server@11.0.0-rc.638(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     optionalDependencies:
       '@types/aws-lambda': 8.10.145
       express: 4.21.1
