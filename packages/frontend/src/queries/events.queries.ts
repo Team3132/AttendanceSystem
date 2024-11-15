@@ -1,8 +1,8 @@
 import { trpcClient } from "@/trpcClient";
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
-import { GetEventParamsSchema } from "backend/schema";
+import { GetEventParamsSchema } from "@/api/schema";
 import { z } from "zod";
-import { eventQueryKeys } from "backend/querykeys";
+import { eventQueryKeys } from "@/api/queryKeys";
 
 type GetEventsParams = Omit<z.infer<typeof GetEventParamsSchema>, "cursor">;
 

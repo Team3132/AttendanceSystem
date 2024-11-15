@@ -1,6 +1,6 @@
 import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
 import { Inject, Injectable } from "@nestjs/common";
-import type { EventSchema } from "backend/schema";
+import type { EventSchema } from "frontend/types";
 import type { AutocompleteInteraction, CacheType } from "discord.js";
 import { DateTime } from "luxon";
 import { AutocompleteInterceptor } from "necord";

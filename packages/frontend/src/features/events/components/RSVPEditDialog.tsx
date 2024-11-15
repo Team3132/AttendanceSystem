@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers";
-import { type RSVPSchema, RSVPStatusSchema } from "backend/schema";
+import { type RSVPSchema, RSVPStatusSchema } from "@/api/schema";
 import { DateTime } from "luxon";
 import { Controller } from "react-hook-form";
 import { FaRecycle } from "react-icons/fa6";
@@ -91,6 +91,7 @@ export default function RSVPEditDialog(props: RSVPEditDialogProps) {
                   label="Checkin Time"
                   onChange={(date) => {
                     if (date) {
+                      console.log(date.toISO());
                       onChange(date.toISO());
                     }
                   }}
@@ -119,6 +120,7 @@ export default function RSVPEditDialog(props: RSVPEditDialogProps) {
                   label="Checkout Time"
                   onChange={(date) => {
                     if (date) {
+                      console.log(date.toISO());
                       onChange(date.toISO());
                     }
                   }}

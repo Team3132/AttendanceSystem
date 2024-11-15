@@ -1,6 +1,6 @@
 import { trpcClient } from "@/trpcClient";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { usersQueryKeys } from "backend/querykeys";
+import { usersQueryKeys } from "@/api/queryKeys";
 
 export default function useCreateUserScancode() {
   const queryClient = useQueryClient();

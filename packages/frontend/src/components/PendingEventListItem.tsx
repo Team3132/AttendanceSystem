@@ -1,6 +1,6 @@
 import { LoadingButton } from "@mui/lab";
 import { ListItem, ListItemText } from "@mui/material";
-import type { RSVPEventSchema } from "backend/schema";
+import type { RSVPEventSchema } from "@/api/schema";
 import { DateTime } from "luxon";
 import type { z } from "zod";
 import useSelfCheckout from "../hooks/useSelfCheckout";
@@ -15,7 +15,7 @@ export default function PendingEventListItem(props: PendingEventListItemProps) {
   const selfCheckoutMutation = useSelfCheckout();
 
   const handleClick = () => {
-    selfCheckoutMutation.mutate(rsvp.id);
+    selfCheckoutMutation.mutate(rsvp.eventId);
   };
 
   return (

@@ -6,7 +6,7 @@ import {
   ListItemText,
   Tooltip,
 } from "@mui/material";
-import type { RSVPUserSchema } from "backend/schema";
+import type { RSVPUserSchema } from "@/api/schema";
 import { DateTime } from "luxon";
 import { useAlert } from "react-alert";
 import { FaCheck, FaClock, FaGear, FaQuestion, FaXmark } from "react-icons/fa6";
@@ -76,7 +76,7 @@ export default function AdminRSVPListItem({ rsvp }: AdminRSVPListItemProps) {
             <Avatar
               sx={{
                 bgcolor:
-                  rsvp.status === "YES"
+                  rsvp.status === "YES" || rsvp.status === "ATTENDED"
                     ? "success.main"
                     : rsvp.status === "NO"
                       ? "error.main"
@@ -87,7 +87,7 @@ export default function AdminRSVPListItem({ rsvp }: AdminRSVPListItemProps) {
             >
               {rsvp.status === null ? (
                 ""
-              ) : rsvp.status === "YES" ? (
+              ) : rsvp.status === "YES" || rsvp.status === "ATTENDED" ? (
                 <FaCheck />
               ) : rsvp.status === "NO" ? (
                 <FaXmark />
@@ -102,7 +102,7 @@ export default function AdminRSVPListItem({ rsvp }: AdminRSVPListItemProps) {
         <ListItemText
           primary={rsvp.user.username}
           secondary={
-            rsvp.checkinTime && rsvp.checkoutTime
+            rsvp.checkinTime && rsvp.checkoutTime && rsvp.status === "ATTENDED"
               ? `Checked out at ${DateTime.fromMillis(
                   Date.parse(rsvp.checkoutTime),
                 ).toLocaleString(DateTime.TIME_SIMPLE)}`

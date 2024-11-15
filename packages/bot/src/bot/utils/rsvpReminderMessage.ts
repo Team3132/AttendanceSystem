@@ -1,5 +1,5 @@
 import { ROLES } from "@/constants";
-import type { EventSchema, RSVPUserSchema } from "backend/schema";
+import type { EventSchema, RSVPUserSchema } from "frontend/types";
 import {
   ActionRowBuilder,
   type BaseMessageOptions,
@@ -11,23 +11,13 @@ import {
 } from "discord.js";
 import { DateTime } from "luxon";
 import type { z } from "zod";
-import rsvpToDescription from "./rsvpToDescription";
+import { statusToEmoji } from "./rsvpToDescription";
 
 export default function rsvpReminderMessage(
   event: z.infer<typeof EventSchema>,
   rsvp: z.infer<typeof RSVPUserSchema>[],
   frontendUrl: string,
 ): BaseMessageOptions {
-  const clonedRsvp = [...rsvp];
-
-  const sortedByCreated = clonedRsvp.sort(
-    (rsvpA, rsvpB) =>
-      DateTime.fromMillis(Date.parse(rsvpB.createdAt)).toMillis() -
-      DateTime.fromMillis(Date.parse(rsvpA.createdAt)).toMillis(),
-  );
-
-  const firstId = sortedByCreated.at(-1)?.id;
-
   const mentorRSVPs = rsvp.filter((rsvpUser) =>
     rsvpUser.user.roles?.includes(ROLES.MENTOR),
   );
@@ -35,18 +25,6 @@ export default function rsvpReminderMessage(
   const otherRSVPs = rsvp.filter(
     (rsvpUser) => !rsvpUser.user.roles?.includes(ROLES.MENTOR),
   );
-
-  const mentorDescription = mentorRSVPs.length
-    ? mentorRSVPs
-        .map((rawRsvp) => rsvpToDescription(rawRsvp, rawRsvp.id === firstId))
-        .join("\n")
-    : undefined;
-
-  const otherDescription = otherRSVPs.length
-    ? otherRSVPs
-        .map((rawRsvp) => rsvpToDescription(rawRsvp, rawRsvp.id === firstId))
-        .join("\n")
-    : undefined;
 
   const meetingInfo = new EmbedBuilder({
     description: event.description.length ? event.description : undefined,
@@ -83,28 +61,6 @@ export default function rsvpReminderMessage(
     .setURL(`${frontendUrl}/events/${event.id}`)
     .setColor("Blue");
 
-  const comingMentorCount = mentorRSVPs.filter(
-    (rsvp) => rsvp.status === "YES" || rsvp.status === "LATE",
-  ).length;
-
-  const comingStudentCount = otherRSVPs.filter(
-    (rsvp) => rsvp.status === "YES" || "LATE",
-  ).length;
-
-  const mentorEmbed = mentorDescription
-    ? new EmbedBuilder()
-        .setTitle(`Mentors (${comingMentorCount})`)
-        .setDescription(mentorDescription)
-        .setColor("#ccb010")
-    : undefined;
-
-  const otherEmbed = otherDescription
-    ? new EmbedBuilder()
-        .setTitle(`Others (${comingStudentCount})`)
-        .setDescription(otherDescription)
-        .setColor("#71d11f")
-    : undefined;
-
   const messageComponent = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
       .setCustomId(`event/${event.id}/rsvp/${"YES"}`)
@@ -126,17 +82,45 @@ export default function rsvpReminderMessage(
       .setCustomId(`event/${event.id}/checkin`)
       .setStyle(ButtonStyle.Primary)
       .setLabel("Check In"),
-    // new ButtonBuilder()
-    //   .setCustomId(`event/${event.id}/checkout`)
-    //   .setStyle(ButtonStyle.Primary)
-    //   .setLabel('Check Out'),
   );
 
   const embeds: Array<EmbedBuilder> = [meetingInfo];
 
-  if (mentorEmbed) embeds.push(mentorEmbed);
+  if (mentorRSVPs.length) {
+    const content = mentorRSVPs
+      .map(
+        (rawRsvp) =>
+          `${rawRsvp.user.username} - ${statusToEmoji(rawRsvp.status)}`,
+      )
+      .join("\n");
+    const count = mentorRSVPs.filter(
+      (rsvp) => rsvp.status === "YES" || rsvp.status === "LATE",
+    ).length;
+    const mentorEmbed = new EmbedBuilder()
+      .setTitle(`Mentors (${count})`)
+      .setDescription(content)
+      .setColor("#ccb010");
 
-  if (otherEmbed) embeds.push(otherEmbed);
+    embeds.push(mentorEmbed);
+  }
+
+  if (otherRSVPs.length) {
+    const content = otherRSVPs
+      .map(
+        (rawRsvp) =>
+          `${rawRsvp.user.username} - ${statusToEmoji(rawRsvp.status)}`,
+      )
+      .join("\n");
+    const count = otherRSVPs.filter(
+      (rsvp) => rsvp.status === "YES" || rsvp.status === "LATE",
+    ).length;
+    const otherEmbed = new EmbedBuilder()
+      .setTitle(`Others (${count})`)
+      .setDescription(content)
+      .setColor("#71d11f");
+
+    embeds.push(otherEmbed);
+  }
 
   return {
     embeds: embeds,

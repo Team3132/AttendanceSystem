@@ -1,19 +1,28 @@
-import type { RSVPUserSchema } from "backend/schema";
+import type { RSVPUserSchema } from "frontend/types";
 import type { z } from "zod";
 
+export const statusToEmoji = (
+  status: z.infer<typeof RSVPUserSchema>["status"],
+) => {
+  switch (status) {
+    case "YES":
+      return ":white_check_mark:";
+    case "NO":
+      return ":x:";
+    case "MAYBE":
+      return ":grey_question:";
+    case "LATE":
+      return ":clock3:";
+    case "ATTENDED":
+      return ":star:";
+    default:
+      return "";
+  }
+};
+
 export default function rsvpToDescription(
-  rsvp: z.infer<typeof RSVPUserSchema>,
-  first = false,
+  username: string,
+  status: z.infer<typeof RSVPUserSchema>["status"],
 ) {
-  return `${rsvp.user.username ?? ""} - ${
-    rsvp.status === "LATE" && rsvp.delay !== null
-      ? `:clock3: ${rsvp.delay} minutes late`
-      : rsvp.status === "LATE"
-        ? ":clock3:"
-        : rsvp.status === "YES"
-          ? ":white_check_mark:"
-          : rsvp.status === "MAYBE"
-            ? ":grey_question:"
-            : ":x:"
-  }${first ? " :star:" : ""}`;
+  return `${username} - ${statusToEmoji(status)}`;
 }

@@ -1,8 +1,8 @@
 import { trpcClient } from "@/trpcClient";
 import { infiniteQueryOptions } from "@tanstack/react-query";
-import { OutreachTimeSchema } from "backend/schema";
+import { OutreachTimeSchema } from "@/api/schema";
 import { z } from "zod";
-import { outreachQueryKeys } from "backend/querykeys";
+import { outreachQueryKeys } from "@/api/queryKeys";
 
 type Options = Omit<z.infer<typeof OutreachTimeSchema>, "cursor">;
 

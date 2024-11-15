@@ -6,7 +6,7 @@ import {
   createTRPCClient,
   httpLink,
 } from "@trpc/client";
-import type { AppRouter } from "backend";
+import type { AppRouter } from "frontend/types";
 import SuperJSON from "superjson";
 
 export const BACKEND_TOKEN = Symbol("BACKEND_TOKEN");
@@ -53,7 +53,7 @@ export type BackendClient = { client: CreateTRPCClient<AppRouter> };
   ],
   exports: [BACKEND_TOKEN],
 })
-export class BackendModule { }
+export class BackendModule {}
 
 export function isTRPCClientError(
   cause: unknown,

@@ -47,10 +47,8 @@ export class RsvpsCommand {
     if (!fetchedRSVPs.length)
       return interaction.reply({ content: "No RSVPs", ephemeral: true });
 
-    const firstId = fetchedRSVPs.at(0)?.id;
-
     const description = fetchedRSVPs
-      .map((rsvp) => rsvpToDescription(rsvp, rsvp.id === firstId))
+      .map((rsvp) => rsvpToDescription(rsvp.user.username, rsvp.status))
       .join("\n");
 
     const rsvpEmbed = new EmbedBuilder()

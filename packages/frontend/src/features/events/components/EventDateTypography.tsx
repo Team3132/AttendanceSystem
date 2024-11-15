@@ -1,4 +1,4 @@
-import type { EventSchema } from "backend/schema";
+import type { EventSchema } from "@/api/schema";
 import { DateTime } from "luxon";
 import type { z } from "zod";
 
