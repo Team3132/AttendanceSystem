@@ -18,7 +18,7 @@ import {
 import { DateTime } from "luxon";
 import type { z } from "zod";
 import db from "../drizzle/db";
-import { eventTable, rsvpTable } from "../drizzle/schema";
+import { eventTable, rsvpTable, userTable } from "../drizzle/schema";
 import env from "../env";
 import type { RSVPUserSchema, UserCheckinSchema } from "../schema";
 import type { CreateBlankUserRsvpSchema } from "../schema/CreateBlankUserRsvpSchema";
@@ -222,15 +222,29 @@ export async function getEventRsvp(eventId: string, userId: string) {
 export async function getEventRsvps(
   eventId: string,
 ): Promise<Array<z.infer<typeof RSVPUserSchema>>> {
-  const eventRsvps = await db.query.rsvpTable.findMany({
-    where: (rsvp, { and }) => and(eq(rsvp.eventId, eventId)),
-    orderBy: (rsvp) => [asc(rsvp.updatedAt)],
-    with: {
-      user: true,
-    },
+  // const eventRsvps = await db.query.rsvpTable.findMany({
+  //   where: (rsvp, { and }) => and(eq(rsvp.eventId, eventId)),
+  //   orderBy: (rsvp) => [asc(rsvp.updatedAt)],
+  //   with: {
+  //     user: true,
+  //   },
+  // });
+
+  const eventRsvps = await db
+    .select()
+    .from(rsvpTable)
+    .innerJoin(userTable, eq(rsvpTable.userId, userTable.id))
+    .where(eq(rsvpTable.eventId, eventId))
+    .orderBy(asc(userTable.username));
+
+  const formatted = eventRsvps.map(({ User, RSVP }) => {
+    return {
+      ...RSVP,
+      user: User,
+    };
   });
 
-  return eventRsvps;
+  return formatted;
 }
 
 /**
