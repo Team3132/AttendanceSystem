@@ -1,5 +1,17 @@
 # frontend
 
+## 5.0.0
+
+### Major Changes
+
+- [#2055](https://github.com/Team3132/AttendanceSystem/pull/2055) [`684a0b2`](https://github.com/Team3132/AttendanceSystem/commit/684a0b262305a65c67a4eb1c318b94b539d586e2) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Move to Vinxi, bundling Backend in the same process as frontend
+
+  All environment variables should be prefixed with `VITE_` for server variables and `VITE_PUBLIC_` for client variables.
+
+### Minor Changes
+
+- [#2032](https://github.com/Team3132/AttendanceSystem/pull/2032) [`c21ca87`](https://github.com/Team3132/AttendanceSystem/commit/c21ca87a2076bca1aafa0a630175c5ea2d9a3a15) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add PWA
+
 ## 4.6.1
 
 ### Patch Changes
