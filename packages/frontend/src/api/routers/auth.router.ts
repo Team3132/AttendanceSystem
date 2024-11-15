@@ -1,13 +1,8 @@
 import { z } from "zod";
 import env from "../env";
 import { t } from "../trpc";
-import {
-  optionalSessionProcedure,
-  publicProcedure,
-  sessionProcedure,
-} from "../trpc/utils";
+import { optionalSessionProcedure, sessionProcedure } from "../trpc/utils";
 import { lucia } from "../auth/lucia";
-import { setCookie } from "hono/cookie";
 
 /**
  * Auth router
@@ -26,15 +21,10 @@ export const authRouter = t.router({
   logout: sessionProcedure
     .input(z.void())
     .output(z.boolean())
-    .mutation(async ({ ctx }) => {
-      await lucia.invalidateSession(ctx.session.id);
+    .mutation(async ({ ctx: { setCookie, session } }) => {
+      await lucia.invalidateSession(session.id);
       const blankSession = lucia.createBlankSessionCookie();
-      setCookie(
-        ctx.c,
-        blankSession.name,
-        blankSession.value,
-        blankSession.attributes,
-      );
+      setCookie(blankSession.name, blankSession.value, blankSession.attributes);
       return true;
     }),
 });

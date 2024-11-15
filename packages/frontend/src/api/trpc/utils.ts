@@ -3,8 +3,7 @@ import { t } from ".";
 import env from "../env";
 import { lucia } from "../auth/lucia";
 import { Session, User } from "lucia";
-import { createContext, TRPCContext } from "./context";
-import { getCookie, setCookie } from "hono/cookie";
+import { TRPCContext } from "./context";
 
 /**
  * Public (unauthenticated) procedure
@@ -45,8 +44,12 @@ export const optionalSessionProcedure = t.procedure.use(optionalSession);
  *
  * This function processes the session data for a request, and returns the user and session data.
  */
-const sessionProcessor = async ({ c }: TRPCContext) => {
-  const authorizationHeader = c.req.raw.headers.get("authorization");
+const sessionProcessor = async ({
+  headers,
+  setCookie,
+  getCookie,
+}: TRPCContext) => {
+  const authorizationHeader = headers.get("authorization");
 
   // Get the bearer token session
   const sessionIdAuthorization = lucia.readBearerToken(
@@ -65,17 +68,16 @@ const sessionProcessor = async ({ c }: TRPCContext) => {
       throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid session" });
     }
 
-    return { user, session, ...c };
+    return { user, session, headers, setCookie, getCookie };
   }
 
   // If we're in a HTTP context, we can use cookies
-  const sessionId = getCookie(c, lucia.sessionCookieName);
+  const sessionId = getCookie(lucia.sessionCookieName);
 
   // If there's no session cookie, we're not logged in so create a blank cookie
   if (!sessionId) {
     const sessionCookie = lucia.createBlankSessionCookie();
     setCookie(
-      c,
       sessionCookie.name,
       sessionCookie.value,
       sessionCookie.attributes,
@@ -91,7 +93,6 @@ const sessionProcessor = async ({ c }: TRPCContext) => {
     const sessionCookie = lucia.createBlankSessionCookie();
 
     setCookie(
-      c,
       sessionCookie.name,
       sessionCookie.value,
       sessionCookie.attributes,
@@ -104,7 +105,6 @@ const sessionProcessor = async ({ c }: TRPCContext) => {
   if (session?.fresh) {
     const sessionCookie = lucia.createSessionCookie(session.id);
     setCookie(
-      c,
       sessionCookie.name,
       sessionCookie.value,
       sessionCookie.attributes,
@@ -112,7 +112,7 @@ const sessionProcessor = async ({ c }: TRPCContext) => {
   }
 
   // Return the user, logOut function and headers
-  return { user, session, ...c };
+  return { user, session, headers, setCookie, getCookie };
 };
 
 /**
@@ -154,8 +154,8 @@ export const mentorSessionProcedure = t.procedure.use(enforceMentorSession);
 /**
  * API Authenticated procedure (for the bot)
  */
-const enforceApiToken = t.middleware(({ ctx: { c }, next }) => {
-  const authorizationHeader = c.req.raw.headers.get("authorization");
+const enforceApiToken = t.middleware(({ ctx: { headers }, next }) => {
+  const authorizationHeader = headers.get("authorization");
 
   if (!authorizationHeader) {
     throw new TRPCError({ code: "UNAUTHORIZED", message: "API Token not set" });
