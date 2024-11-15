@@ -20,9 +20,11 @@ export type BackendClient = { client: CreateTRPCClient<AppRouter> };
       provide: BACKEND_TOKEN,
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => {
-        const backendTrpcUrl = config.getOrThrow<string>("BACKEND_TRPC_URL");
+        const backendTrpcUrl = config.getOrThrow<string>(
+          "VITE_BACKEND_TRPC_URL",
+        );
         const backendSecretToken = config.getOrThrow<string>(
-          "BACKEND_SECRET_TOKEN",
+          "VITE_BACKEND_SECRET_TOKEN",
         );
 
         /** The tRPC Client that connects to the backend */

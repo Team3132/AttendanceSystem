@@ -13,7 +13,7 @@ import { GuildMemberGuard } from "../guards/GuildMemberGuard";
 import { EventAutocompleteInterceptor } from "../interceptors/event.interceptor";
 import rsvpReminderMessage from "../utils/rsvpReminderMessage";
 
-const guildId = process.env.GUILD_ID;
+const guildId = process.env.VITE_GUILD_ID;
 
 @Injectable()
 export class RequestRsvpCommand {
@@ -53,7 +53,7 @@ export class RequestRsvpCommand {
       rsvpReminderMessage(
         eventDetails,
         fetchedRSVPs,
-        this.config.getOrThrow("FRONTEND_URL"),
+        this.config.getOrThrow("VITE_FRONTEND_URL"),
       ),
     );
   }

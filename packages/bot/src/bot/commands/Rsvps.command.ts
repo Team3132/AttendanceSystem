@@ -14,7 +14,7 @@ import { GuildMemberGuard } from "../guards/GuildMemberGuard";
 import { EventAutocompleteInterceptor } from "../interceptors/event.interceptor";
 import rsvpToDescription from "../utils/rsvpToDescription";
 
-const guildId = process.env.GUILD_ID;
+const guildId = process.env.VITE_GUILD_ID;
 
 @Injectable()
 export class RsvpsCommand {
@@ -59,7 +59,9 @@ export class RsvpsCommand {
       )
       .setDescription(description)
       .setTimestamp(new Date())
-      .setURL(`${this.config.get("FRONTEND_URL")}/events/${fetchedMeeting.id}`);
+      .setURL(
+        `${this.config.get("VITE_FRONTEND_URL")}/events/${fetchedMeeting.id}`,
+      );
 
     return interaction.reply({
       embeds: [rsvpEmbed],

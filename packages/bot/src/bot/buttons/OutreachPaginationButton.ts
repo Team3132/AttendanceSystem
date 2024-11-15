@@ -48,7 +48,7 @@ function randomStr(length = 8): string {
   return result;
 }
 
-const guildId = process.env.GUILD_ID;
+const guildId = process.env.VITE_GUILD_ID;
 
 @Injectable()
 export class OutreachPaginationButton {

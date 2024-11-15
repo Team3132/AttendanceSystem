@@ -5,7 +5,7 @@ import { Context, SlashCommand, type SlashCommandContext } from "necord";
 import { PermissionFlagsBits } from "discord.js";
 import { EmbedBuilder } from "@discordjs/builders";
 
-const guildId = process.env.GUILD_ID;
+const guildId = process.env.VITE_GUILD_ID;
 
 @Injectable()
 export class SyncPlzCommand {

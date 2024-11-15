@@ -8,12 +8,12 @@ export class BotService {
   constructor(
     private readonly client: Client,
     private readonly config: ConfigService,
-  ) { }
+  ) {}
 
   private readonly logger = new Logger(BotService.name);
 
   async getGuild() {
-    const guildId = this.config.getOrThrow<string>("GUILD_ID");
+    const guildId = this.config.getOrThrow<string>("VITE_GUILD_ID");
     const cachedGuild = this.client.guilds.cache.get(guildId);
 
     if (!cachedGuild || !cachedGuild.available) {
@@ -49,7 +49,7 @@ export class BotService {
   public onReady() {
     const inviteLink = this.client.generateInvite({
       scopes: [OAuth2Scopes.Bot, OAuth2Scopes.ApplicationsCommands],
-    })
+    });
 
     this.logger.log(`Bot is ready! Invite link: ${inviteLink}`);
   }

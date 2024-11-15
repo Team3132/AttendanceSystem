@@ -46,7 +46,9 @@ export class RsvpButton {
         )
         .setDescription(description)
         .setTimestamp(new Date())
-        .setURL(`${this.config.get("FRONTEND_URL")}/event/${rsvpEvent.id}`);
+        .setURL(
+          `${this.config.get("VITE_FRONTEND_URL")}/event/${rsvpEvent.id}`,
+        );
 
       return interaction.reply({
         ephemeral: true,

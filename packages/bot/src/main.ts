@@ -17,7 +17,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = app.get(ConfigService);
 
-  const dsn = config.get<string>("SENTRY_DSN");
+  const dsn = config.get<string>("VITE_SENTRY_DSN");
   const release = config.get<string>("VERSION");
 
   if (dsn && release) {

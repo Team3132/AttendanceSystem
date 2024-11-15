@@ -79,7 +79,7 @@ export class RsvpsButton {
     const newRSVPs =
       await this.backendClient.client.bot.getEventRsvps.query(eventId);
 
-    const frontendUrl = this.config.getOrThrow("FRONTEND_URL");
+    const frontendUrl = this.config.getOrThrow("VITE_FRONTEND_URL");
 
     if (rsvpStatus === "LATE") {
       // return interaction.deferUpdate();

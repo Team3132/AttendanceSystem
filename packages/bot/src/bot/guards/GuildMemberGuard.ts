@@ -25,7 +25,7 @@ export class GuildMemberGuard implements CanActivate {
           context,
         ).getContext<"interactionCreate">();
 
-      const approvedGuildId = this.config.getOrThrow("GUILD_ID");
+      const approvedGuildId = this.config.getOrThrow("VITE_GUILD_ID");
       const guildId = interaction.guildId;
 
       if (!guildId || guildId !== approvedGuildId) return false;

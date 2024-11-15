@@ -38,7 +38,7 @@ export class TaskService {
 
   @Cron("00 17 * * *")
   public async handleAttendanceReminder() {
-    const enabled = this.config.get("REMINDER_ENABLED");
+    const enabled = this.config.get("VITE_REMINDER_ENABLED");
     if (!enabled) return;
 
     try {
@@ -50,7 +50,9 @@ export class TaskService {
     const nextEvents =
       await this.backendClient.client.bot.getEventsInNextDay.query();
 
-    const attendanceChannelId = this.config.getOrThrow("ATTENDANCE_CHANNEL");
+    const attendanceChannelId = this.config.getOrThrow(
+      "VITE_ATTENDANCE_CHANNEL",
+    );
 
     const fetchedChannel =
       await this.discordClient.channels.fetch(attendanceChannelId);
@@ -79,7 +81,7 @@ export class TaskService {
           rsvpReminderMessage(
             nextEvent,
             nextEventRsvps,
-            this.config.getOrThrow("FRONTEND_URL"),
+            this.config.getOrThrow("VITE_FRONTEND_URL"),
           ),
           nextEvent,
         ] satisfies MessageEvent;

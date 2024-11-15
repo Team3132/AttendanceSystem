@@ -56,7 +56,7 @@ export class DelayModal {
     const rsvps =
       await this.backendClient.client.bot.getEventRsvps.query(eventId);
 
-    const frontendUrl = this.config.getOrThrow("FRONTEND_URL");
+    const frontendUrl = this.config.getOrThrow("VITE_FRONTEND_URL");
 
     if (interaction.isFromMessage()) {
       return interaction.update({
