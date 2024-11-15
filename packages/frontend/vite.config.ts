@@ -90,6 +90,7 @@ export default createApp({
           insertTypesEntry: true,
           include: "./src/api/**/*.ts",
           outDir: "dist/types",
+          entryRoot: "./src/api/index.ts",
         }),
       ],
     },
