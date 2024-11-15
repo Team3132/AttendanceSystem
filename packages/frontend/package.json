@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "private": false,
-  "version": "4.6.1",
+  "version": "5.0.0",
   "type": "module",
   "scripts": {
     "dev": "PORT=1420 vinxi dev",
