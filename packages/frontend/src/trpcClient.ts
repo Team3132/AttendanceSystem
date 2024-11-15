@@ -46,4 +46,6 @@ try {
   console.error(error);
 }
 
-export const appClient = hc<AppType>("http://localhost:1420/");
+export const appClient = hc<AppType>(
+  `${backendUrl.protocol}//${backendUrl.host}/`,
+);
