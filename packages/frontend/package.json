@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "private": false,
-  "version": "5.0.3",
+  "version": "5.0.4",
   "type": "module",
   "scripts": {
     "dev": "PORT=1420 vinxi dev",
@@ -47,7 +47,7 @@
     "@tanstack/react-virtual": "3.10.9",
     "@tanstack/router-devtools": "1.81.7",
     "@tanstack/table-core": "8.20.5",
-    "@trpc/server": "11.0.0-rc.621",
+    "@trpc/server": "11.0.0-rc.633",
     "@vinxi/router": "^0.4.4",
     "arctic": "1.9.2",
     "cron": "3.1.9",
