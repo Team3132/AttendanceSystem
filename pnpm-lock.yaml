@@ -49,7 +49,7 @@ importers:
         version: 7.114.0
       '@trpc/client':
         specifier: 11.0.0-rc.638
-        version: 11.0.0-rc.638(@trpc/server@11.0.0-rc.638(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
+        version: 11.0.0-rc.638(@trpc/server@11.0.0-rc.638(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       class-transformer:
         specifier: 0.5.1
         version: 0.5.1
@@ -306,7 +306,7 @@ importers:
         version: 1.81.9(vite@5.4.11(@types/node@22.9.0)(terser@5.36.0))
       '@trpc/client':
         specifier: 11.0.0-rc.638
-        version: 11.0.0-rc.638(@trpc/server@11.0.0-rc.638(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
+        version: 11.0.0-rc.638(@trpc/server@11.0.0-rc.638(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@types/luxon':
         specifier: 3.4.2
         version: 3.4.2
@@ -10769,7 +10769,7 @@ snapshots:
 
   '@tokenizer/token@0.3.0': {}
 
-  '@trpc/client@11.0.0-rc.638(@trpc/server@11.0.0-rc.638(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
+  '@trpc/client@11.0.0-rc.638(@trpc/server@11.0.0-rc.638(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
     dependencies:
       '@trpc/server': 11.0.0-rc.638(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
 
