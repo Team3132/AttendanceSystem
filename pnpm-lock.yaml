@@ -49,7 +49,7 @@ importers:
         version: 7.114.0
       '@trpc/client':
         specifier: 11.0.0-rc.638
-        version: 11.0.0-rc.638(@trpc/server@11.0.0-rc.638(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
+        version: 11.0.0-rc.638(@trpc/server@11.0.0-rc.638(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       class-transformer:
         specifier: 0.5.1
         version: 0.5.1
@@ -190,8 +190,8 @@ importers:
         specifier: 5.60.5
         version: 5.60.5(@tanstack/react-query@5.60.5(react@18.3.1))(react@18.3.1)
       '@tanstack/react-router':
-        specifier: 1.81.14
-        version: 1.81.14(@tanstack/router-generator@1.81.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 1.82.0
+        version: 1.82.0(@tanstack/router-generator@1.81.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tanstack/react-table':
         specifier: 8.20.5
         version: 8.20.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -199,8 +199,8 @@ importers:
         specifier: 3.10.9
         version: 3.10.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tanstack/router-devtools':
-        specifier: 1.81.14
-        version: 1.81.14(@tanstack/react-router@1.81.14(@tanstack/router-generator@1.81.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(csstype@3.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 1.82.0
+        version: 1.82.0(@tanstack/react-router@1.82.0(@tanstack/router-generator@1.81.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(csstype@3.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tanstack/table-core':
         specifier: 8.20.5
         version: 8.20.5
@@ -306,7 +306,7 @@ importers:
         version: 1.81.9(vite@5.4.11(@types/node@22.9.0)(terser@5.36.0))
       '@trpc/client':
         specifier: 11.0.0-rc.638
-        version: 11.0.0-rc.638(@trpc/server@11.0.0-rc.638(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
+        version: 11.0.0-rc.638(@trpc/server@11.0.0-rc.638(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@types/luxon':
         specifier: 3.4.2
         version: 3.4.2
@@ -3632,8 +3632,8 @@ packages:
     peerDependencies:
       react: ^18 || ^19
 
-  '@tanstack/react-router@1.81.14':
-    resolution: {integrity: sha512-+pzpblWgIUGXlyYlUAfGTZv7YfNOEMKupB5cP4CY9K/qu94D1qrUipjZ6PAqwj8yAwUDcBGam/AyzOLLTSNY5w==}
+  '@tanstack/react-router@1.82.0':
+    resolution: {integrity: sha512-A4e5xXQ4B+UGYki5qi31wIJCmTDK7NE8z+Xb2ledx2zf9gmKm4G8pOJt4gdFfMbivKImkGHE8o5eLhNW86F7iA==}
     engines: {node: '>=12'}
     peerDependencies:
       '@tanstack/router-generator': 1.81.9
@@ -3662,11 +3662,11 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
 
-  '@tanstack/router-devtools@1.81.14':
-    resolution: {integrity: sha512-nigYdVDLWC22tff4Z1gBT26R/RBpW/nhBR4Vgs/0kBLqcj+/DFjZK5Q1MS/xSUUTOR4AW4J9av5zpHNqGFgEYQ==}
+  '@tanstack/router-devtools@1.82.0':
+    resolution: {integrity: sha512-H8KyRdmzvuNKYxHZhDiQLfkwq7BUVKIPv7ZmUSpE7wRe7oo2AIqCxkmH4+9hbWxz+Rea76XXhXN2Nq0AOUp1iQ==}
     engines: {node: '>=12'}
     peerDependencies:
-      '@tanstack/react-router': ^1.81.14
+      '@tanstack/react-router': ^1.82.0
       react: '>=18'
       react-dom: '>=18'
 
@@ -10686,7 +10686,7 @@ snapshots:
       '@tanstack/query-core': 5.60.5
       react: 18.3.1
 
-  '@tanstack/react-router@1.81.14(@tanstack/router-generator@1.81.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@tanstack/react-router@1.82.0(@tanstack/router-generator@1.81.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@tanstack/history': 1.81.9
       '@tanstack/react-store': 0.5.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -10717,9 +10717,9 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@tanstack/router-devtools@1.81.14(@tanstack/react-router@1.81.14(@tanstack/router-generator@1.81.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(csstype@3.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@tanstack/router-devtools@1.82.0(@tanstack/react-router@1.82.0(@tanstack/router-generator@1.81.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(csstype@3.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@tanstack/react-router': 1.81.14(@tanstack/router-generator@1.81.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@tanstack/react-router': 1.82.0(@tanstack/router-generator@1.81.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       clsx: 2.1.1
       goober: 2.1.16(csstype@3.1.3)
       react: 18.3.1
@@ -10769,7 +10769,7 @@ snapshots:
 
   '@tokenizer/token@0.3.0': {}
 
-  '@trpc/client@11.0.0-rc.638(@trpc/server@11.0.0-rc.638(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
+  '@trpc/client@11.0.0-rc.638(@trpc/server@11.0.0-rc.638(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
     dependencies:
       '@trpc/server': 11.0.0-rc.638(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
 
