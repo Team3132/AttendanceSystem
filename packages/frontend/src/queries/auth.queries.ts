@@ -6,6 +6,13 @@ export const authQueryOptions = {
   status: () =>
     queryOptions({
       queryKey: authQueryKeys.status(),
-      queryFn: () => appClient.api.auth.status.$get().then((res) => res.json()),
+      queryFn: async () => {
+        const response = await appClient.api.auth.status.$get();
+        if (response.ok) {
+          return response.json();
+        }
+
+        throw response;
+      },
     }),
 };
