@@ -98,6 +98,6 @@
     "vite-plugin-dts": "4.3.0",
     "vite-plugin-mkcert": "1.17.6",
     "vite-plugin-pwa": "0.21.0",
-    "vite-tsconfig-paths": "5.1.2"
+    "vite-tsconfig-paths": "5.1.3"
   }
 }
