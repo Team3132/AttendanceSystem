@@ -47,10 +47,7 @@ export const eventRouter = t.router({
     .input(z.string().describe("The event ID"))
     .output(EventSchema)
     .query(({ input }) => getEvent(input)),
-  getEventSecret: mentorSessionProcedure
-    .input(z.string().describe("The event ID"))
-    .output(SecretOutputSchema)
-    .query(({ input }) => getEventSecret(input)),
+
   getSelfEventRsvp: sessionProcedure
     .input(z.string().describe("The event ID"))
     .output(RSVPSchema.nullable())
@@ -59,28 +56,12 @@ export const eventRouter = t.router({
     .input(z.string().describe("The event ID"))
     .output(z.array(RSVPUserSchema))
     .query(({ input }) => getEventRsvps(input)),
-  createEvent: mentorSessionProcedure
-    .input(CreateEventSchema)
-    .output(EventSchema)
-    .mutation(({ input }) => createEvent(input)),
-  editEvent: mentorSessionProcedure
-    .input(EditEventSchema)
-    .output(EventSchema)
-    .mutation(({ input }) => updateEvent(input)),
-  deleteEvent: mentorSessionProcedure
-    .input(z.string())
-    .output(EventSchema)
-    .mutation(({ input }) => deleteEvent(input)),
+
   editSelfRsvp: sessionProcedure
     .input(EditRSVPSelfSchema)
     .output(RSVPSchema)
     .mutation(({ ctx, input }) => editUserRsvpStatus(ctx.user.id, input)),
-  editUserRsvp: mentorSessionProcedure
-    .input(EditRSVPUserSchema)
-    .output(RSVPSchema)
-    .mutation(({ input: { userId, ...data } }) =>
-      editUserRsvpStatus(userId, data),
-    ),
+
   selfCheckin: sessionProcedure
     .input(SelfCheckinSchema)
     .output(RSVPSchema)
@@ -115,4 +96,26 @@ export const eventRouter = t.router({
     .input(GetSecretUpcomingEventsSchema)
     .output(EventWithSecretArraySchema)
     .query(({ input }) => getCurrentEvents(input.leeway)),
+  editUserRsvp: mentorSessionProcedure
+    .input(EditRSVPUserSchema)
+    .output(RSVPSchema)
+    .mutation(({ input: { userId, ...data } }) =>
+      editUserRsvpStatus(userId, data),
+    ),
+  createEvent: mentorSessionProcedure
+    .input(CreateEventSchema)
+    .output(EventSchema)
+    .mutation(({ input }) => createEvent(input)),
+  editEvent: mentorSessionProcedure
+    .input(EditEventSchema)
+    .output(EventSchema)
+    .mutation(({ input }) => updateEvent(input)),
+  deleteEvent: mentorSessionProcedure
+    .input(z.string())
+    .output(EventSchema)
+    .mutation(({ input }) => deleteEvent(input)),
+  getEventSecret: mentorSessionProcedure
+    .input(z.string().describe("The event ID"))
+    .output(SecretOutputSchema)
+    .query(({ input }) => getEventSecret(input)),
 });

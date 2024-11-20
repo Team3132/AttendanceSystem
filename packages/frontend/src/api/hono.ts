@@ -28,14 +28,19 @@ import { createContext } from "./trpc/context";
 import { apiReference } from "@scalar/hono-api-reference";
 import { authRoutes } from "./routes/auth.routes";
 import { Session, User } from "lucia";
-import { authMiddleware } from "./middleware/auth.middleware";
 import { contextStorage } from "hono/context-storage";
+import { auth } from "./middleware/auth.middleware";
 
 export interface HonoEnv extends Env {
-  Variables: {
-    user: User;
-    session: Session;
-  };
+  Variables:
+    | {
+        user: User;
+        session: Session;
+      }
+    | {
+        user: null;
+        session: null;
+      };
 }
 
 const app = new OpenAPIHono<HonoEnv>()
@@ -209,7 +214,6 @@ const app = new OpenAPIHono<HonoEnv>()
   })
   .use(trimTrailingSlash())
   .use(contextStorage())
-  .use(authMiddleware())
   .use(
     "/api/trpc/*",
     trpcServer({
