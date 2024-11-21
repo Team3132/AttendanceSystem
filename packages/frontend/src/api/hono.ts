@@ -54,7 +54,7 @@ const app = new OpenAPIHono<HonoEnv>()
           description: "Server Sent Events",
           content: {
             "text/event-stream": {
-              schema: z.string(),
+              schema: z.any(),
             },
           },
         },
@@ -62,7 +62,7 @@ const app = new OpenAPIHono<HonoEnv>()
       },
     }),
     async (c) => {
-      return streamSSE(c, async (stream) => {
+      const sseRes = streamSSE(c, async (stream) => {
         ee.on("invalidate", (data) =>
           stream.writeSSE({
             data: JSON.stringify(data),
@@ -70,8 +70,14 @@ const app = new OpenAPIHono<HonoEnv>()
             id: ulid(),
           }),
         );
+
+        stream.onAbort(() => {
+          ee.off("invalidate");
+        });
         // biome-ignore lint/complexity/noBannedTypes: <explanation>
       }) as unknown as TypedResponse<{}, 200, string>;
+
+      return sseRes;
     },
   )
   .doc31("/api/docs/openapi.json", {

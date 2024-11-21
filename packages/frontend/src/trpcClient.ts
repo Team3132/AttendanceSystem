@@ -52,21 +52,6 @@ export const queryClient = new QueryClient({
     },
   },
 });
-try {
-  // add websocket listener
-  const ws = new WebSocket(
-    `ws${backendUrl.protocol === "https:" ? "s" : ""}://${backendUrl.host}/api/ws`,
-  );
-
-  ws.addEventListener("message", (event) => {
-    const data = JSON.parse(event.data) as QueryKey;
-    queryClient.invalidateQueries({
-      queryKey: data,
-    });
-  });
-} catch (error) {
-  console.error(error);
-}
 
 export const appClient = hc<AppType>(
   `${backendUrl.protocol}//${backendUrl.host}/`,
