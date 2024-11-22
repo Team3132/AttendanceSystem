@@ -93,7 +93,7 @@
     "@vitejs/plugin-react-swc": "3.7.1",
     "drizzle-kit": "0.28.1",
     "prettier": "3.3.3",
-    "typescript": "5.6.3",
+    "typescript": "5.7.2",
     "vite": "5.4.11",
     "vite-plugin-dts": "4.3.0",
     "vite-plugin-mkcert": "1.17.6",
