@@ -11,6 +11,7 @@ import { RsvpsCommand } from "./commands/Rsvps.command";
 import { CheckinModal } from "./modals/Checkin.modal";
 import { DelayModal } from "./modals/Delay.modal";
 import { SyncPlzCommand } from "./commands/SyncPlz.command";
+import { GuildJoinEvent } from "./events/GuildJoin.event";
 // import { BuildPointsPaginationButton } from './buttons/BuildPointsPaginationButton';
 
 @Module({
@@ -23,7 +24,7 @@ import { SyncPlzCommand } from "./commands/SyncPlz.command";
     RsvpsButton,
     RequestRsvpCommand,
     RsvpsCommand,
-    // LeaderBoardCommand,
+    GuildJoinEvent,
     DelayModal,
     CheckinModal,
     CheckoutButton,
