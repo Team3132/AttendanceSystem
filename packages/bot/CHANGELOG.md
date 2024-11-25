@@ -1,5 +1,14 @@
 # bot
 
+## 5.0.8
+
+### Patch Changes
+
+- [`342dfa7`](https://github.com/Team3132/AttendanceSystem/commit/342dfa761cd3cdfa2c82dfea31ca16342d9eb746) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix tRPC bundling issues
+
+- Updated dependencies [[`342dfa7`](https://github.com/Team3132/AttendanceSystem/commit/342dfa761cd3cdfa2c82dfea31ca16342d9eb746)]:
+  - frontend@5.0.8
+
 ## 5.0.7
 
 ### Patch Changes
