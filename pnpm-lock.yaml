@@ -48,8 +48,8 @@ importers:
         specifier: 7.114.0
         version: 7.114.0
       '@trpc/client':
-        specifier: 11.0.0-rc.645
-        version: 11.0.0-rc.645(@trpc/server@11.0.0-rc.645(typescript@5.7.2))(typescript@5.7.2)
+        specifier: 11.0.0-rc.621
+        version: 11.0.0-rc.621(@trpc/server@11.0.0-rc.645(typescript@5.7.2))
       class-transformer:
         specifier: 0.5.1
         version: 0.5.1
@@ -149,7 +149,7 @@ importers:
         version: 1.0.4(@hono/node-server@1.13.7(hono@4.6.12))
       '@hono/trpc-server':
         specifier: 0.3.2
-        version: 0.3.2(@trpc/server@11.0.0-rc.645(typescript@5.7.2))(hono@4.6.12)
+        version: 0.3.2(@trpc/server@11.0.0-rc.621)(hono@4.6.12)
       '@hono/zod-openapi':
         specifier: 0.17.1
         version: 0.17.1(hono@4.6.12)(zod@3.23.8)
@@ -205,8 +205,8 @@ importers:
         specifier: 8.20.5
         version: 8.20.5
       '@trpc/server':
-        specifier: 11.0.0-rc.645
-        version: 11.0.0-rc.645(typescript@5.7.2)
+        specifier: 11.0.0-rc.621
+        version: 11.0.0-rc.621
       '@vinxi/router':
         specifier: 0.4.4
         version: 0.4.4(typescript@5.7.2)(vinxi@0.4.3(@types/node@22.9.4)(drizzle-orm@0.36.3(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@18.3.12)(postgres@3.4.5)(react@18.3.1))(ioredis@5.4.1)(terser@5.36.0)(typescript@5.7.2))(vite@5.4.11(@types/node@22.9.4)(terser@5.36.0))
@@ -305,8 +305,8 @@ importers:
         specifier: 1.81.9
         version: 1.81.9(vite@5.4.11(@types/node@22.9.4)(terser@5.36.0))
       '@trpc/client':
-        specifier: 11.0.0-rc.645
-        version: 11.0.0-rc.645(@trpc/server@11.0.0-rc.645(typescript@5.7.2))(typescript@5.7.2)
+        specifier: 11.0.0-rc.621
+        version: 11.0.0-rc.621(@trpc/server@11.0.0-rc.621)
       '@types/luxon':
         specifier: 3.4.2
         version: 3.4.2
@@ -3536,11 +3536,13 @@ packages:
   '@tokenizer/token@0.3.0':
     resolution: {integrity: sha512-OvjF+z51L3ov0OyAU0duzsYuvO01PH7x4t6DJx+guahgTnBHkhJdG7soQeTSFLWN3efnHyibZ4Z8l2EuWwJN3A==}
 
-  '@trpc/client@11.0.0-rc.645':
-    resolution: {integrity: sha512-mL3frD59uwPdH4g4uWJhs3KAVv840SOlsWwmSZ8/FirBiPYhnduMtrNr48C1/e71feIoxDdsIdQiHJqpLvoPrQ==}
+  '@trpc/client@11.0.0-rc.621':
+    resolution: {integrity: sha512-RJ2D6ySdB7QXf9tn1USBMWn9QJR8dR+GHy+XAVE61z+XHQAWO0DibjlJ+WmAJu6G7xMbPi3xeWVAvqwR3WhbpA==}
     peerDependencies:
-      '@trpc/server': 11.0.0-rc.645+b25f4f627
-      typescript: '>=5.6.2'
+      '@trpc/server': 11.0.0-rc.621+87fde6297
+
+  '@trpc/server@11.0.0-rc.621':
+    resolution: {integrity: sha512-hSXWXDX6m7dptKZfALlOhpvC6SLI0TwAos2la9M3U3rJ+wozbRdOG/2hlfaEw4muODRAYu+HVkP0b9iyWZuPqA==}
 
   '@trpc/server@11.0.0-rc.645':
     resolution: {integrity: sha512-DbAp3kzYceem6getORJh55a6ZRt6gIy69xJV3cxYyZ9Xx1MV3PwL27qXGNrprPO0c+kPnnIIu/iGB0d90LSZOA==}
@@ -8712,9 +8714,9 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@hono/trpc-server@0.3.2(@trpc/server@11.0.0-rc.645(typescript@5.7.2))(hono@4.6.12)':
+  '@hono/trpc-server@0.3.2(@trpc/server@11.0.0-rc.621)(hono@4.6.12)':
     dependencies:
-      '@trpc/server': 11.0.0-rc.645(typescript@5.7.2)
+      '@trpc/server': 11.0.0-rc.621
       hono: 4.6.12
 
   '@hono/zod-openapi@0.17.1(hono@4.6.12)(zod@3.23.8)':
@@ -10307,10 +10309,15 @@ snapshots:
 
   '@tokenizer/token@0.3.0': {}
 
-  '@trpc/client@11.0.0-rc.645(@trpc/server@11.0.0-rc.645(typescript@5.7.2))(typescript@5.7.2)':
+  '@trpc/client@11.0.0-rc.621(@trpc/server@11.0.0-rc.621)':
+    dependencies:
+      '@trpc/server': 11.0.0-rc.621
+
+  '@trpc/client@11.0.0-rc.621(@trpc/server@11.0.0-rc.645(typescript@5.7.2))':
     dependencies:
       '@trpc/server': 11.0.0-rc.645(typescript@5.7.2)
-      typescript: 5.7.2
+
+  '@trpc/server@11.0.0-rc.621': {}
 
   '@trpc/server@11.0.0-rc.645(typescript@5.7.2)':
     dependencies:
