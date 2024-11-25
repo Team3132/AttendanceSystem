@@ -1,5 +1,11 @@
 # frontend
 
+## 5.0.9
+
+### Patch Changes
+
+- [`ab8ea45`](https://github.com/Team3132/AttendanceSystem/commit/ab8ea45bde03908b4d5d90fc9442184e64ac5310) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix infinite reloads
+
 ## 5.0.8
 
 ### Patch Changes
