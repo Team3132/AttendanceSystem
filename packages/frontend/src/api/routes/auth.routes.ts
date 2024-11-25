@@ -14,7 +14,7 @@ const authRoutes = new OpenAPIHono<HonoEnv>()
   .openapi(
     createRoute({
       tags: ["Authentication"],
-      middleware: auth(),
+      // middleware: auth(),
       method: "get",
       path: "status",
       responses: {
