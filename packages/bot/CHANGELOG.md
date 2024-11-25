@@ -1,5 +1,14 @@
 # bot
 
+## 5.0.7
+
+### Patch Changes
+
+- [#2078](https://github.com/Team3132/AttendanceSystem/pull/2078) [`2e7ae8e`](https://github.com/Team3132/AttendanceSystem/commit/2e7ae8e5116052e01bdd6b12b323adf4bad97fd8) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update swc monorepo
+
+- Updated dependencies []:
+  - frontend@5.0.7
+
 ## 5.0.6
 
 ### Patch Changes
