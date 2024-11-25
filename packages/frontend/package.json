@@ -36,7 +36,7 @@
     "@mui/lab": "5.0.0-alpha.173",
     "@mui/material": "6.1.8",
     "@mui/x-date-pickers": "7.22.3",
-    "@scalar/hono-api-reference": "0.5.159",
+    "@scalar/hono-api-reference": "0.5.161",
     "@t3-oss/env-core": "0.11.1",
     "@tanstack/match-sorter-utils": "8.19.4",
     "@tanstack/query-sync-storage-persister": "5.60.6",
