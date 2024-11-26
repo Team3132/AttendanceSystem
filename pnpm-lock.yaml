@@ -326,8 +326,8 @@ importers:
         specifier: 8.5.13
         version: 8.5.13
       '@vitejs/plugin-react-swc':
-        specifier: 3.7.1
-        version: 3.7.1(vite@5.4.11(@types/node@22.9.4)(terser@5.36.0))
+        specifier: 3.7.2
+        version: 3.7.2(vite@5.4.11(@types/node@22.9.4)(terser@5.36.0))
       drizzle-kit:
         specifier: 0.28.1
         version: 0.28.1
@@ -3682,10 +3682,10 @@ packages:
     peerDependencies:
       vinxi: 0.4.3
 
-  '@vitejs/plugin-react-swc@3.7.1':
-    resolution: {integrity: sha512-vgWOY0i1EROUK0Ctg1hwhtC3SdcDjZcdit4Ups4aPkDcB1jYhmo+RMYWY87cmXMhvtD5uf8lV89j2w16vkdSVg==}
+  '@vitejs/plugin-react-swc@3.7.2':
+    resolution: {integrity: sha512-y0byko2b2tSVVf5Gpng1eEhX1OvPC7x8yns1Fx8jDzlJp4LS6CMkCPfLw47cjyoMrshQDoQw4qcgjsU9VvlCew==}
     peerDependencies:
-      vite: ^4 || ^5
+      vite: ^4 || ^5 || ^6
 
   '@vladfrangu/async_event_emitter@2.4.6':
     resolution: {integrity: sha512-RaI5qZo6D2CVS6sTHFKg1v5Ohq/+Bo2LZ5gzUEwZ/WkHhwtGTCB/sVLw8ijOkAUxasZ+WshN/Rzj4ywsABJ5ZA==}
@@ -10541,7 +10541,7 @@ snapshots:
       - typescript
       - vite
 
-  '@vitejs/plugin-react-swc@3.7.1(vite@5.4.11(@types/node@22.9.4)(terser@5.36.0))':
+  '@vitejs/plugin-react-swc@3.7.2(vite@5.4.11(@types/node@22.9.4)(terser@5.36.0))':
     dependencies:
       '@swc/core': 1.9.3
       vite: 5.4.11(@types/node@22.9.4)(terser@5.36.0)
