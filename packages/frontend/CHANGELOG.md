@@ -1,5 +1,11 @@
 # frontend
 
+## 5.0.11
+
+### Patch Changes
+
+- [`f4f3b4d`](https://github.com/Team3132/AttendanceSystem/commit/f4f3b4d4259be3c4fa382d759d89171cbf219703) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Remove sw
+
 ## 5.0.10
 
 ### Patch Changes
