@@ -90,7 +90,7 @@
     "@types/react-dom": "18.3.1",
     "@types/uuid": "10.0.0",
     "@types/ws": "8.5.13",
-    "@vitejs/plugin-react-swc": "3.7.1",
+    "@vitejs/plugin-react-swc": "3.7.2",
     "drizzle-kit": "0.28.1",
     "prettier": "3.3.3",
     "typescript": "5.7.2",
