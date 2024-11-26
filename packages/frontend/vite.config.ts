@@ -70,23 +70,6 @@ export default createApp({
         viteTsconfigPaths({
           projects: ["./tsconfig.json"],
         }),
-        VitePWA({
-          selfDestroying: true,
-          registerType: "autoUpdate",
-          workbox: {
-            globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
-            navigateFallbackDenylist: [/^\/api/],
-            runtimeCaching: [
-              {
-                urlPattern: ({ url }) => url.pathname.startsWith("/api"),
-                handler: "NetworkOnly",
-                options: {
-                  cacheName: "api-cache",
-                },
-              },
-            ],
-          },
-        }),
         dts({
           insertTypesEntry: true,
           include: "./src/api/**/*.ts",
