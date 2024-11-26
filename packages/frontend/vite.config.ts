@@ -71,6 +71,7 @@ export default createApp({
           projects: ["./tsconfig.json"],
         }),
         VitePWA({
+          selfDestroying: true,
           registerType: "autoUpdate",
           workbox: {
             globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
