@@ -35,7 +35,7 @@
     "@mui/icons-material": "6.1.9",
     "@mui/lab": "5.0.0-alpha.174",
     "@mui/material": "6.1.9",
-    "@mui/x-date-pickers": "7.22.3",
+    "@mui/x-date-pickers": "7.23.0",
     "@scalar/hono-api-reference": "0.5.162",
     "@t3-oss/env-core": "0.11.1",
     "@tanstack/match-sorter-utils": "8.19.4",
