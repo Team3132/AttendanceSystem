@@ -1,5 +1,11 @@
 # frontend
 
+## 5.0.12
+
+### Patch Changes
+
+- [`679bdd4`](https://github.com/Team3132/AttendanceSystem/commit/679bdd473be4b200ad9c9fea7a3e5e4e679c45fe) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix auth issues
+
 ## 5.0.11
 
 ### Patch Changes
