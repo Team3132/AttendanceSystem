@@ -27,7 +27,7 @@
     "@nestjs/core": "10.4.12",
     "@nestjs/platform-express": "10.4.12",
     "@nestjs/schedule": "4.1.1",
-    "@sentry/node": "8.41.0",
+    "@sentry/node": "8.42.0",
     "@sentry/tracing": "7.114.0",
     "@trpc/client": "11.0.0-rc.648",
     "class-transformer": "0.5.1",
