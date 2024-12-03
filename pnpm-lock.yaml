@@ -223,8 +223,8 @@ importers:
         specifier: 0.37.110
         version: 0.37.110
       dotenv:
-        specifier: 16.4.5
-        version: 16.4.5
+        specifier: 16.4.6
+        version: 16.4.6
       drizzle-orm:
         specifier: 0.36.4
         version: 0.36.4(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@18.3.12)(postgres@3.4.5)(react@18.3.1)
@@ -4442,6 +4442,10 @@ packages:
 
   dotenv@16.4.5:
     resolution: {integrity: sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==}
+    engines: {node: '>=12'}
+
+  dotenv@16.4.6:
+    resolution: {integrity: sha512-JhcR/+KIjkkjiU8yEpaB/USlzVi3i5whwOjpIRNGi9svKEXZSe+Qp6IWAjFjv+2GViAoDRCUv/QLNziQxsLqDg==}
     engines: {node: '>=12'}
 
   dotenv@8.6.0:
@@ -10973,7 +10977,7 @@ snapshots:
       chokidar: 4.0.1
       confbox: 0.1.8
       defu: 6.1.4
-      dotenv: 16.4.5
+      dotenv: 16.4.6
       giget: 1.2.3
       jiti: 2.4.0
       mlly: 1.7.3
@@ -11340,6 +11344,8 @@ snapshots:
   dotenv-expand@10.0.0: {}
 
   dotenv@16.4.5: {}
+
+  dotenv@16.4.6: {}
 
   dotenv@8.6.0: {}
 
