@@ -1,5 +1,16 @@
 # bot
 
+## 5.0.14
+
+### Patch Changes
+
+- [`490c89a`](https://github.com/Team3132/AttendanceSystem/commit/490c89af0a03883c38e366de57deeda77d7aa62b) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix error req
+
+- [`583a64d`](https://github.com/Team3132/AttendanceSystem/commit/583a64da5e112476198c97d6b57ac5c9ab1f3d17) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix sentry
+
+- Updated dependencies []:
+  - frontend@5.0.14
+
 ## 5.0.13
 
 ### Patch Changes
