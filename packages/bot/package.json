@@ -35,7 +35,7 @@
     "cron": "3.2.1",
     "discord-api-types": "0.37.110",
     "discord.js": "14.16.3",
-    "express": "4.21.1",
+    "express": "4.21.2",
     "luxon": "3.5.0",
     "necord": "6.8.6",
     "reflect-metadata": "0.2.2",
