@@ -58,7 +58,7 @@
     "drizzle-zod": "0.5.1",
     "eventemitter3": "5.0.1",
     "googleapis": "144.0.0",
-    "hono": "4.6.12",
+    "hono": "4.6.13",
     "lucia": "3.2.2",
     "luxon": "3.5.0",
     "lz-string": "1.5.0",
