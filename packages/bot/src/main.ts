@@ -6,6 +6,7 @@ import { AppModule } from "./app.module";
 import { DiscordExceptionFilter } from "./filters/DiscordFilter";
 import { ForbiddenDiscordFilter } from "./filters/ForbiddenDiscordFilter";
 import { SentryFilter } from "./filters/SentryFilter";
+import path from "node:path";
 
 Settings.defaultLocale = "en-au";
 Settings.defaultZone = "Australia/Sydney";
@@ -25,6 +26,11 @@ async function bootstrap() {
     Sentry.init({
       dsn,
       release,
+      integrations: [
+        Sentry.rewriteFramesIntegration({
+          root: path.join(import.meta.dirname, "../"),
+        }),
+      ],
     });
 
     const { httpAdapter } = app.get(HttpAdapterHost);
