@@ -48,8 +48,8 @@ importers:
         specifier: 7.114.0
         version: 7.114.0
       '@trpc/client':
-        specifier: 11.0.0-rc.648
-        version: 11.0.0-rc.648(@trpc/server@11.0.0-rc.648(typescript@5.7.2))(typescript@5.7.2)
+        specifier: 11.0.0-rc.660
+        version: 11.0.0-rc.660(@trpc/server@11.0.0-rc.660(typescript@5.7.2))(typescript@5.7.2)
       class-transformer:
         specifier: 0.5.1
         version: 0.5.1
@@ -146,7 +146,7 @@ importers:
         version: 1.0.4(@hono/node-server@1.13.7(hono@4.6.12))
       '@hono/trpc-server':
         specifier: 0.3.4
-        version: 0.3.4(@trpc/server@11.0.0-rc.648(typescript@5.7.2))(hono@4.6.12)
+        version: 0.3.4(@trpc/server@11.0.0-rc.660(typescript@5.7.2))(hono@4.6.12)
       '@hono/zod-openapi':
         specifier: 0.18.0
         version: 0.18.0(hono@4.6.12)(zod@3.23.8)
@@ -202,8 +202,8 @@ importers:
         specifier: 8.20.5
         version: 8.20.5
       '@trpc/server':
-        specifier: 11.0.0-rc.648
-        version: 11.0.0-rc.648(typescript@5.7.2)
+        specifier: 11.0.0-rc.660
+        version: 11.0.0-rc.660(typescript@5.7.2)
       '@vinxi/router':
         specifier: 0.5.1
         version: 0.5.1(typescript@5.7.2)(vinxi@0.5.1(@types/node@22.10.1)(drizzle-orm@0.37.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@18.3.14)(postgres@3.4.5)(react@18.3.1))(ioredis@5.4.1)(jiti@2.4.1)(terser@5.37.0)(tsx@4.19.2)(typescript@5.7.2)(yaml@2.6.1))(vite@6.0.3(@types/node@22.10.1)(jiti@2.4.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.6.1))
@@ -299,8 +299,8 @@ importers:
         specifier: 1.85.3
         version: 1.85.3(vite@6.0.3(@types/node@22.10.1)(jiti@2.4.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.6.1))
       '@trpc/client':
-        specifier: 11.0.0-rc.648
-        version: 11.0.0-rc.648(@trpc/server@11.0.0-rc.648(typescript@5.7.2))(typescript@5.7.2)
+        specifier: 11.0.0-rc.660
+        version: 11.0.0-rc.660(@trpc/server@11.0.0-rc.660(typescript@5.7.2))(typescript@5.7.2)
       '@types/luxon':
         specifier: 3.4.2
         version: 3.4.2
@@ -3370,14 +3370,14 @@ packages:
   '@tokenizer/token@0.3.0':
     resolution: {integrity: sha512-OvjF+z51L3ov0OyAU0duzsYuvO01PH7x4t6DJx+guahgTnBHkhJdG7soQeTSFLWN3efnHyibZ4Z8l2EuWwJN3A==}
 
-  '@trpc/client@11.0.0-rc.648':
-    resolution: {integrity: sha512-k4FfLKvJwbosUH8KYyZkC50RJHYtIyJECi5WhRXsvaf9a6lgrTlcA+osq815zYcAHo7wEgR9E9UdSTrpLdAQFQ==}
+  '@trpc/client@11.0.0-rc.660':
+    resolution: {integrity: sha512-bNpkZEfyMGKHynYFxdLpY8nJ1n7E3JHKcd4Pe2cagmpkzOEF9tFT3kzNf+eLI8XMG8196lTRR0J0W2/1Q8/cug==}
     peerDependencies:
-      '@trpc/server': 11.0.0-rc.648+77b4d8920
+      '@trpc/server': 11.0.0-rc.660+74625d5e4
       typescript: '>=5.6.2'
 
-  '@trpc/server@11.0.0-rc.648':
-    resolution: {integrity: sha512-nKW7FNM+QZrY/CVGlX3hFNIdUvbw6pwSJ+HzEF8GIeSJDKLHK7Ke1QJGI2mRW6oF9dCKMBXfuLaYY2dXfjfn7Q==}
+  '@trpc/server@11.0.0-rc.660':
+    resolution: {integrity: sha512-QUapcZCNOpHT7ng9LceGc9ImkboWd0Go9ryrduZpL+p4jdfaC6409AQ3x4XEW6Wu3yBmZAn4CywCsDrDhjDy/w==}
     peerDependencies:
       typescript: '>=5.6.2'
 
@@ -8502,9 +8502,9 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@hono/trpc-server@0.3.4(@trpc/server@11.0.0-rc.648(typescript@5.7.2))(hono@4.6.12)':
+  '@hono/trpc-server@0.3.4(@trpc/server@11.0.0-rc.660(typescript@5.7.2))(hono@4.6.12)':
     dependencies:
-      '@trpc/server': 11.0.0-rc.648(typescript@5.7.2)
+      '@trpc/server': 11.0.0-rc.660(typescript@5.7.2)
       hono: 4.6.12
 
   '@hono/zod-openapi@0.18.0(hono@4.6.12)(zod@3.23.8)':
@@ -10079,12 +10079,12 @@ snapshots:
 
   '@tokenizer/token@0.3.0': {}
 
-  '@trpc/client@11.0.0-rc.648(@trpc/server@11.0.0-rc.648(typescript@5.7.2))(typescript@5.7.2)':
+  '@trpc/client@11.0.0-rc.660(@trpc/server@11.0.0-rc.660(typescript@5.7.2))(typescript@5.7.2)':
     dependencies:
-      '@trpc/server': 11.0.0-rc.648(typescript@5.7.2)
+      '@trpc/server': 11.0.0-rc.660(typescript@5.7.2)
       typescript: 5.7.2
 
-  '@trpc/server@11.0.0-rc.648(typescript@5.7.2)':
+  '@trpc/server@11.0.0-rc.660(typescript@5.7.2)':
     dependencies:
       typescript: 5.7.2
 
