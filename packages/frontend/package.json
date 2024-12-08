@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "private": false,
-  "version": "5.0.12",
+  "version": "5.0.13",
   "type": "module",
   "scripts": {
     "dev": "PORT=1420 vinxi dev",
@@ -48,7 +48,7 @@
     "@tanstack/router-devtools": "1.85.5",
     "@tanstack/table-core": "8.20.5",
     "@trpc/server": "11.0.0-rc.648",
-    "@vinxi/router": "0.4.4",
+    "@vinxi/router": "0.5.1",
     "arctic": "1.9.2",
     "cron": "3.2.1",
     "cross-env": "7.0.3",
@@ -92,7 +92,7 @@
     "@vitejs/plugin-react-swc": "3.7.2",
     "drizzle-kit": "0.29.1",
     "typescript": "5.7.2",
-    "vite": "5.4.11",
+    "vite": "6.0.3",
     "vite-plugin-dts": "4.3.0",
     "vite-plugin-mkcert": "1.17.6",
     "vite-plugin-pwa": "0.21.1",
