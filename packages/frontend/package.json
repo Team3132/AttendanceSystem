@@ -80,7 +80,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "@swc/plugin-emotion": "7.0.1",
+    "@swc/plugin-emotion": "7.0.3",
     "@tanstack/router-plugin": "1.85.3",
     "@trpc/client": "11.0.0-rc.648",
     "@trpc/server": "11.0.0-rc.648",
