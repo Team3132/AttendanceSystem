@@ -1,5 +1,14 @@
 # bot
 
+## 5.0.13
+
+### Patch Changes
+
+- [`ffc1ca3`](https://github.com/Team3132/AttendanceSystem/commit/ffc1ca3b91eca1e31c291a73c08795d40ad2c279) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add role select input
+
+- Updated dependencies []:
+  - frontend@5.0.13
+
 ## 5.0.12
 
 ### Patch Changes
