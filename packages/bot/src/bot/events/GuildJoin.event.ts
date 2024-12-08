@@ -29,12 +29,14 @@ import {
   type ModalContext,
   ModalParam,
   On,
+  Options,
   SelectedStrings,
   SlashCommand,
   type SlashCommandContext,
   StringSelect,
   type StringSelectContext,
 } from "necord";
+import { RoleSelectOptions } from "../dto/RoleSelectOptions";
 
 const guildId = process.env.VITE_GUILD_ID;
 
@@ -52,9 +54,11 @@ export class GuildJoinEvent {
     guilds: guildId ? [guildId] : undefined,
     dmPermission: false,
   })
-  public async spawnRoleSelect(@Context() [interaction]: SlashCommandContext) {
+  public async spawnRoleSelect(
+    @Context() [interaction]: SlashCommandContext,
+    @Options() { channel: adminChannel }: RoleSelectOptions,
+  ) {
     // get channel command was executed in
-    const adminChannel = "1309303869548789791";
 
     if (!interaction.guild || !interaction.channel) {
       return interaction.reply({
@@ -69,7 +73,7 @@ export class GuildJoinEvent {
       try {
         const rowBuilder =
           new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
-            GuildJoinEvent.createRoleSelector(adminChannel),
+            GuildJoinEvent.createRoleSelector(adminChannel.id),
           );
 
         await channel.send({
