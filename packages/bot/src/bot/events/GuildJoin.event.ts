@@ -1,5 +1,6 @@
 import { ROLES } from "@/constants";
 import {
+  EmbedBuilder,
   ModalActionRowComponentBuilder,
   ModalBuilder,
   roleMention,
@@ -239,7 +240,20 @@ export class GuildJoinEvent {
 
     // Set the user's nickname and send an access request message to the admin channel.
     if (interaction.member && interaction.member instanceof GuildMember) {
-      await interaction.member.setNickname(nickname);
+      try {
+        await interaction.member.setNickname(nickname);
+      } catch (error) {
+        console.error(error);
+        return interaction.reply({
+          content: "Failed to set your nickname.",
+          embeds: [
+            new EmbedBuilder().setDescription(
+              error instanceof Error ? error.message : "Unknown error",
+            ),
+          ],
+          ephemeral: true,
+        });
+      }
     }
 
     const accessRequestMessage = GuildJoinEvent.createAccessRequestMessage(
