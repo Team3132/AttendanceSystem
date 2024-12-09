@@ -90,7 +90,7 @@
     "@types/uuid": "10.0.0",
     "@types/ws": "8.5.13",
     "@vitejs/plugin-react-swc": "3.7.2",
-    "drizzle-kit": "0.29.1",
+    "drizzle-kit": "0.30.0",
     "typescript": "5.7.2",
     "vite": "6.0.3",
     "vite-plugin-dts": "4.3.0",
