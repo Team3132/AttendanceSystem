@@ -86,7 +86,7 @@
     "@types/luxon": "3.4.2",
     "@types/react": "18.3.14",
     "@types/react-alert": "7.0.6",
-    "@types/react-dom": "18.3.2",
+    "@types/react-dom": "18.3.3",
     "@types/uuid": "10.0.0",
     "@types/ws": "8.5.13",
     "@vitejs/plugin-react-swc": "3.7.2",
