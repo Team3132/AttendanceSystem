@@ -87,8 +87,8 @@ importers:
         specifier: 2.2.2
         version: 2.2.2
       zod:
-        specifier: 3.24.0
-        version: 3.24.0
+        specifier: 3.24.1
+        version: 3.24.1
     devDependencies:
       '@biomejs/biome':
         specifier: 1.9.4
@@ -149,7 +149,7 @@ importers:
         version: 0.3.4(@trpc/server@11.0.0-rc.660(typescript@5.7.2))(hono@4.6.13)
       '@hono/zod-openapi':
         specifier: 0.18.0
-        version: 0.18.0(hono@4.6.13)(zod@3.24.0)
+        version: 0.18.0(hono@4.6.13)(zod@3.24.1)
       '@hookform/resolvers':
         specifier: 3.9.1
         version: 3.9.1(react-hook-form@7.54.0(react@18.3.1))
@@ -173,7 +173,7 @@ importers:
         version: 0.5.163(hono@4.6.13)
       '@t3-oss/env-core':
         specifier: 0.11.1
-        version: 0.11.1(typescript@5.7.2)(zod@3.24.0)
+        version: 0.11.1(typescript@5.7.2)(zod@3.24.1)
       '@tanstack/match-sorter-utils':
         specifier: 8.19.4
         version: 8.19.4
@@ -227,7 +227,7 @@ importers:
         version: 0.38.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@18.3.15)(postgres@3.4.5)(react@18.3.1)
       drizzle-zod:
         specifier: 0.5.1
-        version: 0.5.1(drizzle-orm@0.38.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@18.3.15)(postgres@3.4.5)(react@18.3.1))(zod@3.24.0)
+        version: 0.5.1(drizzle-orm@0.38.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@18.3.15)(postgres@3.4.5)(react@18.3.1))(zod@3.24.1)
       eventemitter3:
         specifier: 5.0.1
         version: 5.0.1
@@ -289,8 +289,8 @@ importers:
         specifier: 0.5.1
         version: 0.5.1(@types/node@22.10.1)(drizzle-orm@0.38.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@18.3.15)(postgres@3.4.5)(react@18.3.1))(ioredis@5.4.1)(jiti@2.4.1)(terser@5.37.0)(tsx@4.19.2)(typescript@5.7.2)(yaml@2.6.1)
       zod:
-        specifier: 3.24.0
-        version: 3.24.0
+        specifier: 3.24.1
+        version: 3.24.1
     devDependencies:
       '@biomejs/biome':
         specifier: 1.9.4
@@ -7046,8 +7046,8 @@ packages:
     resolution: {integrity: sha512-zK7YHHz4ZXpW89AHXUPbQVGKI7uvkd3hzusTdotCg1UxyaVtg0zFJSTfW/Dq5f7OBBVnq6cZIaC8Ti4hb6dtCA==}
     engines: {node: '>= 14'}
 
-  zod@3.24.0:
-    resolution: {integrity: sha512-Hz+wiY8yD0VLA2k/+nsg2Abez674dDGTai33SwNvMPuf9uIrBC9eFgIMQxBBbHFxVXi8W+5nX9DcAh9YNSQm/w==}
+  zod@3.24.1:
+    resolution: {integrity: sha512-muH7gBL9sI1nciMZV67X5fTKKBLtwpZ5VBp1vsOQzj1MhrBZ4wlVCm3gedKZWLp0Oyel8sIGfeiz54Su+OVT+A==}
 
 snapshots:
 
@@ -7063,10 +7063,10 @@ snapshots:
       jsonpointer: 5.0.1
       leven: 3.1.0
 
-  '@asteasolutions/zod-to-openapi@7.3.0(zod@3.24.0)':
+  '@asteasolutions/zod-to-openapi@7.3.0(zod@3.24.1)':
     dependencies:
       openapi3-ts: 4.4.0
-      zod: 3.24.0
+      zod: 3.24.1
 
   '@babel/code-frame@7.26.2':
     dependencies:
@@ -8499,17 +8499,17 @@ snapshots:
       '@trpc/server': 11.0.0-rc.660(typescript@5.7.2)
       hono: 4.6.13
 
-  '@hono/zod-openapi@0.18.0(hono@4.6.13)(zod@3.24.0)':
+  '@hono/zod-openapi@0.18.0(hono@4.6.13)(zod@3.24.1)':
     dependencies:
-      '@asteasolutions/zod-to-openapi': 7.3.0(zod@3.24.0)
-      '@hono/zod-validator': 0.4.1(hono@4.6.13)(zod@3.24.0)
+      '@asteasolutions/zod-to-openapi': 7.3.0(zod@3.24.1)
+      '@hono/zod-validator': 0.4.1(hono@4.6.13)(zod@3.24.1)
       hono: 4.6.13
-      zod: 3.24.0
+      zod: 3.24.1
 
-  '@hono/zod-validator@0.4.1(hono@4.6.13)(zod@3.24.0)':
+  '@hono/zod-validator@0.4.1(hono@4.6.13)(zod@3.24.1)':
     dependencies:
       hono: 4.6.13
-      zod: 3.24.0
+      zod: 3.24.1
 
   '@hookform/resolvers@3.9.1(react-hook-form@7.54.0(react@18.3.1))':
     dependencies:
@@ -9937,9 +9937,9 @@ snapshots:
     dependencies:
       defer-to-connect: 2.0.1
 
-  '@t3-oss/env-core@0.11.1(typescript@5.7.2)(zod@3.24.0)':
+  '@t3-oss/env-core@0.11.1(typescript@5.7.2)(zod@3.24.1)':
     dependencies:
-      zod: 3.24.0
+      zod: 3.24.1
     optionalDependencies:
       typescript: 5.7.2
 
@@ -10017,7 +10017,7 @@ snapshots:
       '@tanstack/virtual-file-routes': 1.81.9
       prettier: 3.4.2
       tsx: 4.19.2
-      zod: 3.24.0
+      zod: 3.24.1
 
   '@tanstack/router-plugin@1.87.4(vite@6.0.3(@types/node@22.10.1)(jiti@2.4.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.6.1))':
     dependencies:
@@ -10038,7 +10038,7 @@ snapshots:
       babel-dead-code-elimination: 1.0.6
       chokidar: 3.6.0
       unplugin: 1.16.0
-      zod: 3.24.0
+      zod: 3.24.1
     optionalDependencies:
       vite: 6.0.3(@types/node@22.10.1)(jiti@2.4.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.6.1)
     transitivePeerDependencies:
@@ -11098,10 +11098,10 @@ snapshots:
       postgres: 3.4.5
       react: 18.3.1
 
-  drizzle-zod@0.5.1(drizzle-orm@0.38.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@18.3.15)(postgres@3.4.5)(react@18.3.1))(zod@3.24.0):
+  drizzle-zod@0.5.1(drizzle-orm@0.38.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@18.3.15)(postgres@3.4.5)(react@18.3.1))(zod@3.24.1):
     dependencies:
       drizzle-orm: 0.38.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@18.3.15)(postgres@3.4.5)(react@18.3.1)
-      zod: 3.24.0
+      zod: 3.24.1
 
   dunder-proto@1.0.0:
     dependencies:
@@ -13799,7 +13799,7 @@ snapshots:
       unenv: 1.10.0
       unstorage: 1.13.1(ioredis@5.4.1)
       vite: 6.0.3(@types/node@22.10.1)(jiti@2.4.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.6.1)
-      zod: 3.24.0
+      zod: 3.24.1
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -14153,4 +14153,4 @@ snapshots:
       compress-commons: 6.0.2
       readable-stream: 4.5.2
 
-  zod@3.24.0: {}
+  zod@3.24.1: {}
