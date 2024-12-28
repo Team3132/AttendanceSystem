@@ -48,8 +48,8 @@ importers:
         specifier: 7.114.0
         version: 7.114.0
       '@trpc/client':
-        specifier: 11.0.0-rc.666
-        version: 11.0.0-rc.666(@trpc/server@11.0.0-rc.666(typescript@5.7.2))(typescript@5.7.2)
+        specifier: 11.0.0-rc.677
+        version: 11.0.0-rc.677(@trpc/server@11.0.0-rc.677(typescript@5.7.2))(typescript@5.7.2)
       class-transformer:
         specifier: 0.5.1
         version: 0.5.1
@@ -146,7 +146,7 @@ importers:
         version: 1.0.5(@hono/node-server@1.13.7(hono@4.6.15))
       '@hono/trpc-server':
         specifier: 0.3.4
-        version: 0.3.4(@trpc/server@11.0.0-rc.666(typescript@5.7.2))(hono@4.6.15)
+        version: 0.3.4(@trpc/server@11.0.0-rc.677(typescript@5.7.2))(hono@4.6.15)
       '@hono/zod-openapi':
         specifier: 0.18.0
         version: 0.18.0(hono@4.6.15)(zod@3.24.1)
@@ -202,8 +202,8 @@ importers:
         specifier: 8.20.5
         version: 8.20.5
       '@trpc/server':
-        specifier: 11.0.0-rc.666
-        version: 11.0.0-rc.666(typescript@5.7.2)
+        specifier: 11.0.0-rc.677
+        version: 11.0.0-rc.677(typescript@5.7.2)
       '@vinxi/router':
         specifier: 0.5.1
         version: 0.5.1(typescript@5.7.2)(vinxi@0.5.1(@types/node@22.10.2)(drizzle-orm@0.38.2(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@18.3.18)(postgres@3.4.5)(react@18.3.1))(ioredis@5.4.1)(jiti@2.4.1)(terser@5.37.0)(tsx@4.19.2)(typescript@5.7.2)(yaml@2.6.1))(vite@6.0.6(@types/node@22.10.2)(jiti@2.4.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.6.1))
@@ -299,8 +299,8 @@ importers:
         specifier: 1.91.1
         version: 1.91.1(vite@6.0.6(@types/node@22.10.2)(jiti@2.4.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.6.1))
       '@trpc/client':
-        specifier: 11.0.0-rc.666
-        version: 11.0.0-rc.666(@trpc/server@11.0.0-rc.666(typescript@5.7.2))(typescript@5.7.2)
+        specifier: 11.0.0-rc.677
+        version: 11.0.0-rc.677(@trpc/server@11.0.0-rc.677(typescript@5.7.2))(typescript@5.7.2)
       '@types/luxon':
         specifier: 3.4.2
         version: 3.4.2
@@ -3531,16 +3531,16 @@ packages:
   '@tokenizer/token@0.3.0':
     resolution: {integrity: sha512-OvjF+z51L3ov0OyAU0duzsYuvO01PH7x4t6DJx+guahgTnBHkhJdG7soQeTSFLWN3efnHyibZ4Z8l2EuWwJN3A==}
 
-  '@trpc/client@11.0.0-rc.666':
-    resolution: {integrity: sha512-BP3H0bktY03m7haVT5QoPR4sn30DNJcvFHsA3Msj3uPRY8JLVE03MR4rVG6T7VbcglORKpyMlRxjpUgdRmJErA==}
+  '@trpc/client@11.0.0-rc.677':
+    resolution: {integrity: sha512-wmj3uTfiA66fY6bmOhptUQDn+t+ppMTKlHDSN8pzT7kpW0IbU/WJOBrZuuOLt7dOKZWxayZ1Mrj5lesn9/txMg==}
     peerDependencies:
-      '@trpc/server': 11.0.0-rc.666+99556c074
-      typescript: '>=5.6.2'
+      '@trpc/server': 11.0.0-rc.677+1032f4880
+      typescript: '>=5.7.2'
 
-  '@trpc/server@11.0.0-rc.666':
-    resolution: {integrity: sha512-k+jKrdH/owDRRXPR7oPKCQRTu0dOEnqdGh56863ym95sFY8qXE7BhOR8S4WqyZw1CiPZGjRkdFN0q/GsJhKsIA==}
+  '@trpc/server@11.0.0-rc.677':
+    resolution: {integrity: sha512-I2b1MCQb1jYxwbpjK3DcCe9eGXvJCQnfQ7dsyXO7uylUq5VoUOY8HB99HocRWMlvS7A1mTVH4qd5Ehkflfv83w==}
     peerDependencies:
-      typescript: '>=5.6.2'
+      typescript: '>=5.7.2'
 
   '@tybys/wasm-util@0.8.3':
     resolution: {integrity: sha512-Z96T/L6dUFFxgFJ+pQtkPpne9q7i6kIPYCFnQBHSgSPV9idTsKfIhCss0h5iM9irweZCatkrdeP8yi5uM1eX6Q==}
@@ -8751,9 +8751,9 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@hono/trpc-server@0.3.4(@trpc/server@11.0.0-rc.666(typescript@5.7.2))(hono@4.6.15)':
+  '@hono/trpc-server@0.3.4(@trpc/server@11.0.0-rc.677(typescript@5.7.2))(hono@4.6.15)':
     dependencies:
-      '@trpc/server': 11.0.0-rc.666(typescript@5.7.2)
+      '@trpc/server': 11.0.0-rc.677(typescript@5.7.2)
       hono: 4.6.15
 
   '@hono/zod-openapi@0.18.0(hono@4.6.15)(zod@3.24.1)':
@@ -10335,12 +10335,12 @@ snapshots:
 
   '@tokenizer/token@0.3.0': {}
 
-  '@trpc/client@11.0.0-rc.666(@trpc/server@11.0.0-rc.666(typescript@5.7.2))(typescript@5.7.2)':
+  '@trpc/client@11.0.0-rc.677(@trpc/server@11.0.0-rc.677(typescript@5.7.2))(typescript@5.7.2)':
     dependencies:
-      '@trpc/server': 11.0.0-rc.666(typescript@5.7.2)
+      '@trpc/server': 11.0.0-rc.677(typescript@5.7.2)
       typescript: 5.7.2
 
-  '@trpc/server@11.0.0-rc.666(typescript@5.7.2)':
+  '@trpc/server@11.0.0-rc.677(typescript@5.7.2)':
     dependencies:
       typescript: 5.7.2
 
