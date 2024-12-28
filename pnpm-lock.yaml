@@ -148,8 +148,8 @@ importers:
         specifier: 0.3.4
         version: 0.3.4(@trpc/server@11.0.0-rc.666(typescript@5.7.2))(hono@4.6.15)
       '@hono/zod-openapi':
-        specifier: 0.18.0
-        version: 0.18.0(hono@4.6.15)(zod@3.24.1)
+        specifier: 0.18.3
+        version: 0.18.3(hono@4.6.15)(zod@3.24.1)
       '@hookform/resolvers':
         specifier: 3.9.1
         version: 3.9.1(react-hook-form@7.54.2(react@18.3.1))
@@ -1980,8 +1980,8 @@ packages:
       '@trpc/server': ^10.10.0 || >11.0.0-rc
       hono: '>=4.*'
 
-  '@hono/zod-openapi@0.18.0':
-    resolution: {integrity: sha512-MNdFSbACkEq1txteKsBrVB0Mnil0zd5urOrP8eti6kUDI95CKVws+vjHQWNddRqmqlBHa5kFAcVXSInHFmcYGQ==}
+  '@hono/zod-openapi@0.18.3':
+    resolution: {integrity: sha512-bNlRDODnp7P9Fs13ZPajEOt13G0XwXKfKRHMEFCphQsFiD1Y+twzHaglpNAhNcflzR1DQwHY92ZS06b4LTPbIQ==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
       hono: '>=4.3.6'
@@ -8756,7 +8756,7 @@ snapshots:
       '@trpc/server': 11.0.0-rc.666(typescript@5.7.2)
       hono: 4.6.15
 
-  '@hono/zod-openapi@0.18.0(hono@4.6.15)(zod@3.24.1)':
+  '@hono/zod-openapi@0.18.3(hono@4.6.15)(zod@3.24.1)':
     dependencies:
       '@asteasolutions/zod-to-openapi': 7.3.0(zod@3.24.1)
       '@hono/zod-validator': 0.4.1(hono@4.6.15)(zod@3.24.1)
