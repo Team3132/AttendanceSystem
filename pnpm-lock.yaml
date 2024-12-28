@@ -143,13 +143,13 @@ importers:
         version: 5.1.0
       '@hono/node-ws':
         specifier: 1.0.5
-        version: 1.0.5(@hono/node-server@1.13.7(hono@4.6.14))
+        version: 1.0.5(@hono/node-server@1.13.7(hono@4.6.15))
       '@hono/trpc-server':
         specifier: 0.3.4
-        version: 0.3.4(@trpc/server@11.0.0-rc.666(typescript@5.7.2))(hono@4.6.14)
+        version: 0.3.4(@trpc/server@11.0.0-rc.666(typescript@5.7.2))(hono@4.6.15)
       '@hono/zod-openapi':
         specifier: 0.18.0
-        version: 0.18.0(hono@4.6.14)(zod@3.24.1)
+        version: 0.18.0(hono@4.6.15)(zod@3.24.1)
       '@hookform/resolvers':
         specifier: 3.9.1
         version: 3.9.1(react-hook-form@7.54.2(react@18.3.1))
@@ -170,7 +170,7 @@ importers:
         version: 7.23.3(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1))(@mui/material@6.3.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mui/system@6.3.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(react@18.3.1))(@types/react@18.3.18)(luxon@3.5.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@scalar/hono-api-reference':
         specifier: 0.5.165
-        version: 0.5.165(hono@4.6.14)
+        version: 0.5.165(hono@4.6.15)
       '@t3-oss/env-core':
         specifier: 0.11.1
         version: 0.11.1(typescript@5.7.2)(zod@3.24.1)
@@ -235,8 +235,8 @@ importers:
         specifier: 144.0.0
         version: 144.0.0
       hono:
-        specifier: 4.6.14
-        version: 4.6.14
+        specifier: 4.6.15
+        version: 4.6.15
       lucia:
         specifier: 3.2.2
         version: 3.2.2
@@ -5063,8 +5063,8 @@ packages:
   hoist-non-react-statics@3.3.2:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
 
-  hono@4.6.14:
-    resolution: {integrity: sha512-j4VkyUp2xazGJ8eCCLN1Vm/bxdvm/j5ZuU9AIjLu9vapn2M44p9L3Ktr9Vnb2RN2QtcR/wVjZVMlT5k7GJQgPw==}
+  hono@4.6.15:
+    resolution: {integrity: sha512-OiQwvAOAaI2JrABBH69z5rsctHDzFzIKJge0nYXgtzGJ0KftwLWcBXm1upJC23/omNRtnqM0gjRMbtXshPdqhQ==}
     engines: {node: '>=16.9.0'}
 
   hookable@5.5.3:
@@ -8739,33 +8739,33 @@ snapshots:
 
   '@fontsource/roboto@5.1.0': {}
 
-  '@hono/node-server@1.13.7(hono@4.6.14)':
+  '@hono/node-server@1.13.7(hono@4.6.15)':
     dependencies:
-      hono: 4.6.14
+      hono: 4.6.15
 
-  '@hono/node-ws@1.0.5(@hono/node-server@1.13.7(hono@4.6.14))':
+  '@hono/node-ws@1.0.5(@hono/node-server@1.13.7(hono@4.6.15))':
     dependencies:
-      '@hono/node-server': 1.13.7(hono@4.6.14)
+      '@hono/node-server': 1.13.7(hono@4.6.15)
       ws: 8.18.0
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
 
-  '@hono/trpc-server@0.3.4(@trpc/server@11.0.0-rc.666(typescript@5.7.2))(hono@4.6.14)':
+  '@hono/trpc-server@0.3.4(@trpc/server@11.0.0-rc.666(typescript@5.7.2))(hono@4.6.15)':
     dependencies:
       '@trpc/server': 11.0.0-rc.666(typescript@5.7.2)
-      hono: 4.6.14
+      hono: 4.6.15
 
-  '@hono/zod-openapi@0.18.0(hono@4.6.14)(zod@3.24.1)':
+  '@hono/zod-openapi@0.18.0(hono@4.6.15)(zod@3.24.1)':
     dependencies:
       '@asteasolutions/zod-to-openapi': 7.3.0(zod@3.24.1)
-      '@hono/zod-validator': 0.4.1(hono@4.6.14)(zod@3.24.1)
-      hono: 4.6.14
+      '@hono/zod-validator': 0.4.1(hono@4.6.15)(zod@3.24.1)
+      hono: 4.6.15
       zod: 3.24.1
 
-  '@hono/zod-validator@0.4.1(hono@4.6.14)(zod@3.24.1)':
+  '@hono/zod-validator@0.4.1(hono@4.6.15)(zod@3.24.1)':
     dependencies:
-      hono: 4.6.14
+      hono: 4.6.15
       zod: 3.24.1
 
   '@hookform/resolvers@3.9.1(react-hook-form@7.54.2(react@18.3.1))':
@@ -10050,10 +10050,10 @@ snapshots:
 
   '@sapphire/snowflake@3.5.5': {}
 
-  '@scalar/hono-api-reference@0.5.165(hono@4.6.14)':
+  '@scalar/hono-api-reference@0.5.165(hono@4.6.15)':
     dependencies:
       '@scalar/types': 0.0.25
-      hono: 4.6.14
+      hono: 4.6.15
 
   '@scalar/openapi-types@0.1.5': {}
 
@@ -12166,7 +12166,7 @@ snapshots:
     dependencies:
       react-is: 16.13.1
 
-  hono@4.6.14: {}
+  hono@4.6.15: {}
 
   hookable@5.5.3: {}
 
