@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+// import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
@@ -7,6 +7,7 @@ import { createApp } from "vinxi";
 import { config } from "vinxi/plugins/config";
 import { apiRouter } from "@vinxi/router/api";
 import dts from "vite-plugin-dts";
+import { defineConfig } from "@tanstack/start/config";
 
 // https://vitejs.dev/config/
 // export default defineConfig({
@@ -49,50 +50,59 @@ import dts from "vite-plugin-dts";
 //   },
 // });
 
-export default createApp({
-  routers: [
-    {
-      name: "public",
-      type: "static",
-      dir: "./public",
-    },
-    {
-      name: "client",
-      type: "spa",
-      handler: "./index.html",
+// export default createApp({
+//   routers: [
+//     {
+//       name: "public",
+//       type: "static",
+//       dir: "./public",
+//     },
+//     {
+//       name: "client",
+//       type: "spa",
+//       handler: "./index.html",
 
-      base: "/",
-      plugins: () => [
-        TanStackRouterVite({
-          routesDirectory: "./src/pages",
-        }),
-        react(),
-        viteTsconfigPaths({
-          projects: ["./tsconfig.json"],
-        }),
-        dts({
-          insertTypesEntry: true,
-          include: "./src/api/**/*.ts",
-          outDir: "dist/types",
-        }),
-      ],
-    },
-    {
-      name: "api",
-      type: "http",
-      base: "/api",
-      handler: "./src/api/hono.ts",
-      plugins: () => [
-        viteTsconfigPaths({
-          projects: ["./tsconfig.json"],
-        }),
-      ],
-      target: "server",
-    },
-  ],
-  server: {
-    experimental: {
-      asyncContext: true,
+//       base: "/",
+//       plugins: () => [
+//         TanStackRouterVite({
+//           routesDirectory: "./src/pages",
+//         }),
+//         react(),
+//         viteTsconfigPaths({
+//           projects: ["./tsconfig.json"],
+//         }),
+//         dts({
+//           insertTypesEntry: true,
+//           include: "./src/api/**/*.ts",
+//           outDir: "dist/types",
+//         }),
+//       ],
+//     },
+//     {
+//       name: "api",
+//       type: "http",
+//       base: "/api",
+//       handler: "./src/api/hono.ts",
+//       plugins: () => [
+//         viteTsconfigPaths({
+//           projects: ["./tsconfig.json"],
+//         }),
+//       ],
+//       target: "server",
+//     },
+//   ],
+//   server: {
+//     experimental: {
+//       asyncContext: true,
+//     },
+//   },
+// });
+
+export default defineConfig({
+  vite: {
+    plugins: [viteTsconfigPaths()],
+    ssr: {
+      noExternal: ["@mui/*"],
     },
   },
 });

@@ -8,7 +8,6 @@ import {
 } from "@mui/material";
 import type { RSVPUserSchema } from "@/api/schema";
 import { DateTime } from "luxon";
-import { useAlert } from "react-alert";
 import { FaCheck, FaClock, FaGear, FaQuestion, FaXmark } from "react-icons/fa6";
 import type { z } from "zod";
 import { useDisclosure } from "../../../hooks/useDisclosure";
@@ -24,7 +23,6 @@ export default function AdminRSVPListItem({ rsvp }: AdminRSVPListItemProps) {
   const { getButtonProps, getDisclosureProps } = useDisclosure();
   const checkoutMutation = useCheckoutUser();
   const checkinMutation = useCheckinUser();
-  const alert = useAlert();
 
   const handleCheckIn = () =>
     checkinMutation.mutate({
@@ -43,8 +41,6 @@ export default function AdminRSVPListItem({ rsvp }: AdminRSVPListItemProps) {
       handleCheckIn();
     } else if (!rsvp.checkoutTime) {
       handleCheckOut();
-    } else {
-      alert.error("User already checked out");
     }
   };
 

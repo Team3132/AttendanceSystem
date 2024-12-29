@@ -10,7 +10,6 @@ import { DateTimePicker } from "@mui/x-date-pickers";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { CreateEventSchema } from "@/api/schema";
 import { DateTime } from "luxon";
-import { useAlert } from "react-alert";
 import { Controller } from "react-hook-form";
 
 export const Route = createFileRoute("/_authenticated/events_/create")({
@@ -48,14 +47,12 @@ function Component() {
   });
 
   const navigate = useNavigate();
-  const alert = useAlert();
 
   const createEventMutation = useCreateEvent();
 
   const onSubmit = handleSubmit(async (data) => {
     try {
       const createdEvent = await createEventMutation.mutateAsync(data);
-      alert.success("Event created");
       navigate({
         to: "/events/$eventId",
         params: {

@@ -2,7 +2,6 @@ import { isTRPCClientError } from "@/utils/trpc";
 import { LoadingButton } from "@mui/lab";
 import { Paper, Stack, TextField, Typography } from "@mui/material";
 import { useCallback, useState } from "react";
-import { useAlert } from "react-alert";
 import { z } from "zod";
 import { useDisclosure } from "../../../hooks/useDisclosure";
 import useZodForm, { type ZodSubmitHandler } from "../../../hooks/useZodForm";
@@ -22,7 +21,6 @@ const ScaninSchema = z.object({
 
 export default function ScaninCard(props: ScaninCardProps) {
   const { eventId } = props;
-  const alert = useAlert();
   const [unknownCode, setUnknownCode] = useState<string | undefined>(undefined);
   const { getDisclosureProps, onOpen } = useDisclosure();
 
@@ -51,9 +49,7 @@ export default function ScaninCard(props: ScaninCardProps) {
         reset({
           code: "",
         });
-        alert.success("Scan in successful", {
-          timeout: 2000,
-        });
+
         setUnknownCode(undefined);
         setFocus("code");
       } catch (error) {

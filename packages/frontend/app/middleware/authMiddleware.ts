@@ -1,0 +1,125 @@
+import { lucia } from "@/api/auth/lucia";
+import env from "@/api/env";
+import { createMiddleware, registerGlobalMiddleware } from "@tanstack/start";
+import { getCookie, getHeader, setCookie } from "vinxi/http";
+
+/**
+ * Middleware to check if the user is authenticated and has a valid session
+ * If the user is not authenticated, a blank session is created
+ * If the user is authenticated, the session is validated and updated if required
+ * If there's any errors then session and user are set to null
+ */
+export const authBaseMiddleware = createMiddleware().server(
+  async ({ next }) => {
+    const authorizationHeader = getHeader("Authorization");
+
+    // Get the bearer token session
+    const sessionIdAuthorization = lucia.readBearerToken(
+      authorizationHeader ?? "",
+    );
+
+    // If the Authorization Bearer strategy is used then we skip any cookie-related logic and just return the session details
+    // It's the client's job to refresh the session should it be required
+    if (sessionIdAuthorization) {
+      const validSession = await lucia.validateSession(sessionIdAuthorization);
+
+      // If there's no valid session then pass the null user (fails rules)
+      return next({
+        context: validSession,
+      });
+    }
+
+    // If we're in a HTTP context, we can use cookies
+    const sessionId = getCookie(lucia.sessionCookieName);
+
+    // If there's no session cookie, we're not logged in so create a blank cookie
+    if (!sessionId) {
+      const sessionCookie = lucia.createBlankSessionCookie();
+      setCookie(
+        sessionCookie.name,
+        sessionCookie.value,
+        sessionCookie.attributes,
+      );
+
+      return next({
+        context: {
+          session: null,
+          user: null,
+        },
+      });
+    }
+
+    const { session, user } = await lucia.validateSession(sessionId); // Validate the session
+
+    // No session or invalid session so create a blank cookie
+    if (!session) {
+      const sessionCookie = lucia.createBlankSessionCookie();
+
+      setCookie(
+        sessionCookie.name,
+        sessionCookie.value,
+        sessionCookie.attributes,
+      );
+    }
+
+    // If the session is fresh, we need to update the cookie to extend the expiry
+    if (session?.fresh) {
+      const sessionCookie = lucia.createSessionCookie(session.id);
+      setCookie(
+        sessionCookie.name,
+        sessionCookie.value,
+        sessionCookie.attributes,
+      );
+    }
+
+    return next({
+      context: {
+        session,
+        user,
+      },
+    });
+  },
+);
+
+/**
+ * Middleware to check if the user is authenticated and has a valid session
+ */
+export const sessionMiddleware = createMiddleware()
+  .middleware([authBaseMiddleware])
+  .server(async ({ context, next }) => {
+    const { session, user } = context;
+
+    // If there's no session or user, we're not logged in and we should return a 401
+    if (!session || !user) {
+      throw new Response("Unauthorized", { status: 401 });
+    }
+
+    return next({
+      context: {
+        session,
+        user,
+      },
+    });
+  });
+
+/**
+ * Middleware to check the role of the user
+ */
+export const mentorMiddleware = createMiddleware()
+  .middleware([sessionMiddleware])
+  .server(async ({ context, next }) => {
+    const { user } = context;
+
+    if (!user?.roles?.includes(env.VITE_MENTOR_ROLE_ID)) {
+      throw new Response("Unauthorized", { status: 401 });
+    }
+
+    return next({
+      context,
+    });
+  });
+
+// Register the global middleware
+registerGlobalMiddleware({
+  middleware: [authBaseMiddleware, sessionMiddleware, mentorMiddleware],
+});

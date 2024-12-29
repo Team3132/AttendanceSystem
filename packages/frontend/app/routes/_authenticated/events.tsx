@@ -19,7 +19,12 @@ import {
   Typography,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useQuery,
+  useSuspenseInfiniteQuery,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import {
   createFileRoute,
   useLocation,
@@ -39,8 +44,6 @@ const eventsSearchSchema = z.object({
   type: EventTypeSchema.optional().catch(undefined),
   limit: z.number().optional().catch(defaultLimit),
 });
-
-type EventsSearch = z.infer<typeof eventsSearchSchema>;
 
 export const Route = createFileRoute("/_authenticated/events")({
   component: Component,
@@ -65,26 +68,22 @@ export const Route = createFileRoute("/_authenticated/events")({
 
     return {
       authStatus,
+      from,
+      to,
+      type,
+      limit,
     };
   },
 });
 
 function Component() {
-  const { authStatus } = Route.useLoaderData();
-  const {
-    from = defaultFrom,
-    to = defaultTo,
-    type,
-    limit = defaultLimit,
-  } = useLocation({ select: (s) => s.search });
+  const { from, to, type, limit } = Route.useLoaderData();
+
   const navigate = Route.useNavigate();
 
-  const authStatusQuery = useQuery({
-    ...authQueryOptions.status(),
-    initialData: authStatus,
-  });
+  const authStatusQuery = useSuspenseQuery(authQueryOptions.status());
 
-  const infiniteEventsQuery = useInfiniteQuery(
+  const infiniteEventsQuery = useSuspenseInfiniteQuery(
     eventQueryOptions.eventList({
       from,
       to,
@@ -95,7 +94,7 @@ function Component() {
 
   const handleTypeChange = (event: SelectChangeEvent) => {
     navigate({
-      search: (prev) => ({
+      search: (prev: any) => ({
         ...prev,
         type: event.target.value as z.infer<typeof EventTypeSchema> | undefined,
       }),
@@ -105,14 +104,14 @@ function Component() {
   const handleStartChange = (date: DateTime<true> | DateTime<false> | null) => {
     const iso = date?.toISODate();
     navigate({
-      search: (prev) => ({ ...prev, from: iso ? iso : defaultFrom }),
+      search: (prev: any) => ({ ...prev, from: iso ? iso : defaultFrom }),
     });
   };
 
   const handleEndChange = (date: DateTime<true> | DateTime<false> | null) => {
     const iso = date?.toISODate();
     navigate({
-      search: (prev) => ({ ...prev, to: iso ? iso : defaultTo }),
+      search: (prev: any) => ({ ...prev, to: iso ? iso : defaultTo }),
     });
   };
 

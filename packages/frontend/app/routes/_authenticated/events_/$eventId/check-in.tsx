@@ -7,7 +7,6 @@ import { LoadingButton } from "@mui/lab";
 import { Container, Stack, Paper, Typography } from "@mui/material";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { SelfCheckinSchema } from "@/api/schema";
-import { useAlert } from "react-alert";
 
 export const Route = createFileRoute(
   "/_authenticated/events_/$eventId/check-in",
@@ -34,7 +33,6 @@ function Component() {
   const checkinMutation = useSelfCheckin();
 
   const navigate = useNavigate();
-  const alert = useAlert();
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -43,14 +41,12 @@ function Component() {
         eventId: loaderData.id,
       });
 
-      alert.success("Successfully checked in!", { timeout: 2000 });
-
       navigate({
         to: "/",
       });
     } catch (e) {
       if (isTRPCClientError(e)) {
-        alert.error(e.message, { timeout: 2000 });
+        // alert.error(e.message, { timeout: 2000 });
       }
     }
   });
