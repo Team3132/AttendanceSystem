@@ -101,8 +101,15 @@ import { defineConfig } from "@tanstack/start/config";
 export default defineConfig({
   vite: {
     plugins: [viteTsconfigPaths()],
-    ssr: {
-      noExternal: ["@mui/*"],
+    ssr: !import.meta.dev
+      ? {
+          noExternal: ["@mui/*"],
+        }
+      : undefined,
+  },
+  react: {
+    babel: {
+      plugins: ["@emotion/babel-plugin"],
     },
   },
 });

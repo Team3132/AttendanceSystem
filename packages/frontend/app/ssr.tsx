@@ -11,4 +11,4 @@ import { createRouter } from "./router";
 export default createStartHandler({
   createRouter,
   getRouterManifest,
-})(defaultStreamHandler);
+})((test) => defaultStreamHandler(test));

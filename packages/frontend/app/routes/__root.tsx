@@ -1,19 +1,11 @@
 import * as React from "react";
 import {
-  Link,
   Outlet,
-  RouterProvider,
   ScrollRestoration,
-  createRootRoute,
   createRootRouteWithContext,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-import {
-  CssBaseline,
-  ThemeProvider,
-  createTheme,
-  useMediaQuery,
-} from "@mui/material";
+import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { QueryClient } from "@tanstack/react-query";
@@ -25,8 +17,9 @@ import roboto500 from "@fontsource/roboto/500.css?url";
 import roboto700 from "@fontsource/roboto/700.css?url";
 import appCss from "@/index.css?url";
 import createCache from "@emotion/cache";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-const emotionCache = createCache({ key: "css" });
+export const emotionCache = createCache({ key: "css" });
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -67,14 +60,6 @@ export const Route = createRootRouteWithContext<{
         href: appCss,
       },
     ],
-    scripts: import.meta.env.DEV
-      ? [
-          {
-            src: "https://unpkg.com/react-scan/dist/auto.global.js",
-            async: true,
-          },
-        ]
-      : undefined,
   }),
 });
 
@@ -99,19 +84,20 @@ function RootDocument({ children }: Readonly<{ children: React.ReactNode }>) {
         <Meta />
       </head>
       <body>
-        <CacheProvider value={emotionCache}>
-          <ThemeProvider theme={theme}>
-            <LocalizationProvider
-              adapterLocale={"en-au"}
-              dateAdapter={AdapterLuxon}
-            >
+        <LocalizationProvider
+          adapterLocale={"en-au"}
+          dateAdapter={AdapterLuxon}
+        >
+          <CacheProvider value={emotionCache}>
+            <ThemeProvider theme={theme}>
               {children}
-            </LocalizationProvider>
-            <CssBaseline />
-          </ThemeProvider>
-        </CacheProvider>
+              <CssBaseline />
+            </ThemeProvider>
+          </CacheProvider>
+        </LocalizationProvider>
         <ScrollRestoration />
         <TanStackRouterDevtools position="bottom-right" />
+        <ReactQueryDevtools buttonPosition="bottom-left" />
         <Scripts />
       </body>
     </html>
