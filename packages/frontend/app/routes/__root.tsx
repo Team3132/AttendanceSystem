@@ -19,7 +19,9 @@ import appCss from "@/index.css?url";
 import createCache from "@emotion/cache";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-export const emotionCache = createCache({ key: "css" });
+const emotionCache = createCache({ key: "css" });
+
+console.log("emotionCache", emotionCache);
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;

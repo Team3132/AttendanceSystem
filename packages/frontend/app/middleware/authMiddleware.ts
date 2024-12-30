@@ -89,7 +89,7 @@ export const sessionMiddleware = createMiddleware()
   .server(async ({ context, next }) => {
     const { session, user } = context;
 
-    // If there's no session or user, we're not logged in and we should return a 401
+    // If there's no session or user, we're not logged in and we should redirect to the login page
     if (!session || !user) {
       throw new Response("Unauthorized", { status: 401 });
     }
