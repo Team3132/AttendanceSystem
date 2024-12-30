@@ -50,7 +50,7 @@
     "@trpc/server": "11.0.0-rc.682",
     "@vinxi/router": "0.5.1",
     "arctic": "1.9.2",
-    "cron": "3.3.1",
+    "cron": "3.3.2",
     "cross-env": "7.0.3",
     "discord-api-types": "0.37.113",
     "dotenv": "16.4.7",
