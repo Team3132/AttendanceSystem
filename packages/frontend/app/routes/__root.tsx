@@ -57,9 +57,10 @@ export const Route = createRootRouteWithContext<{
         rel: "stylesheet",
         href: roboto700,
       },
+    ],
+    scripts: [
       {
-        rel: "stylesheet",
-        href: appCss,
+        src: "https://unpkg.com/react-scan/dist/auto.global.js",
       },
     ],
   }),
@@ -84,6 +85,15 @@ function RootDocument({ children }: Readonly<{ children: React.ReactNode }>) {
     <html lang="en">
       <head>
         <Meta />
+        <style>
+          {`html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+`}
+        </style>
       </head>
       <body>
         <LocalizationProvider
