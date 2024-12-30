@@ -107,9 +107,9 @@ export default defineConfig({
         }
       : undefined,
   },
-  react: {
-    babel: {
-      // plugins: ["@emotion/babel-plugin"],
+  server: {
+    experimental: {
+      openAPI: true,
     },
   },
 });
