@@ -3,29 +3,21 @@ import NewAdminScancodeListItem from "@/features/user/components/NewAdminScancod
 import { usersQueryOptions } from "@/queries/users.queries";
 
 import { Container, Stack, Paper, Typography, List } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/admin_/users/$userId/")({
   component: Component,
-  loader: async ({ context: { queryClient }, params: { userId } }) => {
-    const scancodes = await queryClient.ensureQueryData(
-      usersQueryOptions.userScancodes(userId),
-    );
-    return {
-      userId,
-      scancodes,
-    };
-  },
+  loader: async ({ context: { queryClient }, params: { userId } }) =>
+    queryClient.prefetchQuery(usersQueryOptions.userScancodes(userId)),
 });
 
 function Component() {
-  const loaderData = Route.useLoaderData();
+  const { userId } = Route.useParams();
 
-  const scancodesQuery = useQuery({
-    ...usersQueryOptions.userScancodes(loaderData.userId),
-    initialData: loaderData.scancodes,
-  });
+  const scancodesQuery = useSuspenseQuery(
+    usersQueryOptions.userScancodes(userId),
+  );
 
   return (
     <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
@@ -38,12 +30,12 @@ function Component() {
               scancode at any time.
             </Typography>
             <List>
-              <NewAdminScancodeListItem userId={loaderData.userId} />
+              <NewAdminScancodeListItem userId={userId} />
               {scancodesQuery.data.map((scancode) => (
                 <ScancodeListItem
                   scancode={scancode.code}
                   key={scancode.code}
-                  userId={loaderData.userId}
+                  userId={userId}
                 />
               ))}
             </List>

@@ -3,7 +3,7 @@ import { authQueryOptions } from "@/queries/auth.queries";
 import { eventQueryOptions } from "@/queries/events.queries";
 import {} from "@/trpcClient";
 import { Container, Stack, Paper, Typography } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute(
@@ -11,7 +11,7 @@ export const Route = createFileRoute(
 )({
   component: Component,
   beforeLoad: async ({ context: { queryClient } }) => {
-    const { isAdmin, isAuthenticated } = await queryClient.ensureQueryData(
+    const { isAdmin } = await queryClient.ensureQueryData(
       authQueryOptions.status(),
     );
     if (!isAdmin) {
@@ -23,66 +23,54 @@ export const Route = createFileRoute(
     }
   },
   loader: async ({ context: { queryClient }, params: { eventId } }) => {
-    const eventSecret = await queryClient.ensureQueryData(
-      eventQueryOptions.eventSecret(eventId),
+    const eventData = await queryClient.ensureQueryData(
+      eventQueryOptions.eventDetails(eventId),
     );
+    await queryClient.prefetchQuery(eventQueryOptions.eventSecret(eventId));
 
-    return {
-      id: eventId,
-      eventSecret: eventSecret,
-    };
+    return { eventData };
   },
+  head: (ctx) => ({
+    meta: ctx.loaderData
+      ? [{ title: `${ctx.loaderData.eventData.title} - QR Code` }]
+      : undefined,
+  }),
 });
 
 function Component() {
-  const loaderData = Route.useLoaderData();
+  const { eventId } = Route.useParams();
 
-  const eventSecretQuery = useQuery({
-    ...eventQueryOptions.eventSecret(loaderData.id),
-    initialData: loaderData.eventSecret,
-  });
-
-  if (eventSecretQuery.data) {
-    return (
-      <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
-        <Stack
-          sx={{
-            py: 2,
-          }}
-          gap={2}
-        >
-          <Paper
-            sx={{
-              p: 2,
-            }}
-          >
-            <Stack gap={2}>
-              <Typography variant="h5" textAlign={"center"}>
-                Event Code
-              </Typography>
-              <Typography
-                variant="body1"
-                textAlign={"center"}
-                fontFamily={"monospace"}
-              >
-                {eventSecretQuery.data.secret}
-              </Typography>
-            </Stack>
-          </Paper>
-          <ScaninCard eventId={loaderData.id} />
-        </Stack>
-      </Container>
-    );
-  }
+  const eventSecretQuery = useSuspenseQuery(
+    eventQueryOptions.eventSecret(eventId),
+  );
 
   return (
     <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
-      <Stack gap={2}>
-        <Paper sx={{ p: 2 }}>
-          <Typography variant="h4" textAlign={"center"}>
-            Loading...
-          </Typography>
+      <Stack
+        sx={{
+          py: 2,
+        }}
+        gap={2}
+      >
+        <Paper
+          sx={{
+            p: 2,
+          }}
+        >
+          <Stack gap={2}>
+            <Typography variant="h5" textAlign={"center"}>
+              Event Code
+            </Typography>
+            <Typography
+              variant="body1"
+              textAlign={"center"}
+              fontFamily={"monospace"}
+            >
+              {eventSecretQuery.data.secret}
+            </Typography>
+          </Stack>
         </Paper>
+        <ScaninCard eventId={eventId} />
       </Stack>
     </Container>
   );

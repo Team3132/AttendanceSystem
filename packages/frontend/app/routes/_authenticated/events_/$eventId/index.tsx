@@ -3,39 +3,35 @@ import RsvpList from "@/features/events/components/RSVPList";
 import { authQueryOptions } from "@/queries/auth.queries";
 import { eventQueryOptions } from "@/queries/events.queries";
 import { Container, Grid, Paper, Typography, Stack } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { DateTime } from "luxon";
 
 export const Route = createFileRoute("/_authenticated/events_/$eventId/")({
   component: Component,
   loader: async ({ context: { queryClient }, params: { eventId } }) => {
-    const initialEvent = await queryClient.ensureQueryData(
+    const eventData = await queryClient.ensureQueryData(
       eventQueryOptions.eventDetails(eventId),
     );
-    const authStatus = await queryClient.ensureQueryData(
-      authQueryOptions.status(),
-    );
+    await queryClient.prefetchQuery(authQueryOptions.status());
+    await queryClient.prefetchQuery(eventQueryOptions.eventRsvps(eventId));
+    await queryClient.prefetchQuery(eventQueryOptions.eventRsvp(eventId));
 
-    return {
-      initialEvent,
-      initialAuth: authStatus,
-    };
+    return { eventData };
   },
+  head: (ctx) => ({
+    meta: ctx.loaderData
+      ? [{ title: `${ctx.loaderData.eventData.title} - Details` }]
+      : undefined,
+  }),
 });
 
 function Component() {
-  const loaderData = Route.useLoaderData();
+  const { eventId } = Route.useParams();
 
-  const eventQuery = useQuery({
-    ...eventQueryOptions.eventDetails(loaderData.initialEvent.id),
-    initialData: loaderData.initialEvent,
-  });
+  const eventQuery = useSuspenseQuery(eventQueryOptions.eventDetails(eventId));
 
-  const authStatusQuery = useQuery({
-    ...authQueryOptions.status(),
-    initialData: loaderData.initialAuth,
-  });
+  const authStatusQuery = useSuspenseQuery(authQueryOptions.status());
 
   return (
     <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>

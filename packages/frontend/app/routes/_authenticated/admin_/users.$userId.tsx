@@ -4,7 +4,7 @@ import { usersQueryOptions } from "@/queries/users.queries";
 
 import { TabItem } from "@/types/TabItem";
 import { Tab, Tabs } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import {
   Outlet,
   createFileRoute,
@@ -15,16 +15,14 @@ import { useMemo } from "react";
 export const Route = createFileRoute("/_authenticated/admin_/users/$userId")({
   component: Component,
   loader: ({ params: { userId }, context: { queryClient } }) =>
-    queryClient.ensureQueryData(usersQueryOptions.userDetails(userId)),
+    queryClient.prefetchQuery(usersQueryOptions.userDetails(userId)),
 });
 
 function Component() {
   const loaderData = Route.useLoaderData();
+  const { userId } = Route.useParams();
 
-  const userQuery = useQuery({
-    ...usersQueryOptions.userDetails(loaderData.id),
-    initialData: loaderData,
-  });
+  const userQuery = useSuspenseQuery(usersQueryOptions.userDetails(userId));
 
   const tabs = useMemo<TabItem[]>(
     () => [
@@ -32,18 +30,18 @@ function Component() {
         label: "Scancodes",
         to: "/admin/users/$userId",
         params: {
-          userId: userQuery.data.id,
+          userId: userId,
         },
       },
       {
         label: "Pending",
         to: "/admin/users/$userId/pending",
         params: {
-          userId: userQuery.data.id,
+          userId: userId,
         },
       },
     ],
-    [userQuery.data.id],
+    [userId],
   );
 
   const currentChildren = useChildMatches();

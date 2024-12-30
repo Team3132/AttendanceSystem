@@ -4,22 +4,23 @@ import ScancodeListItem from "@/features/user/components/ScancodeListItem";
 import { usersQueryOptions } from "@/queries/users.queries";
 
 import { Container, Stack, Paper, Typography, List } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/profile/")({
-  loader: async ({ context: { queryClient } }) =>
-    queryClient.ensureQueryData(usersQueryOptions.userSelfScancodes()),
+  loader: async ({ context: { queryClient } }) => {
+    await queryClient.prefetchQuery(usersQueryOptions.userSelfScancodes());
+  },
+  head: () => ({
+    meta: [{ title: "Profile - Scancodes" }],
+  }),
   component: Component,
 });
 
 function Component() {
-  const loaderData = Route.useLoaderData();
-
-  const scancodesQuery = useQuery({
-    ...usersQueryOptions.userSelfScancodes(),
-    initialData: loaderData,
-  });
+  const scancodesQuery = useSuspenseQuery(
+    usersQueryOptions.userSelfScancodes(),
+  );
 
   return (
     <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>

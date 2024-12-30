@@ -14,8 +14,6 @@ import { useMemo } from "react";
 
 export const Route = createFileRoute("/_authenticated/profile")({
   component: Component,
-  loader: async ({ context: { queryClient } }) =>
-    queryClient.ensureQueryData(usersQueryOptions.userSelfDetails()),
 });
 
 const tabs: Array<TabItem> = [
@@ -30,13 +28,6 @@ const tabs: Array<TabItem> = [
 ];
 
 function Component() {
-  const loaderData = Route.useLoaderData();
-
-  const userQuery = useQuery({
-    ...usersQueryOptions.userSelfDetails(),
-    initialData: loaderData,
-  });
-
   const currentChildren = useChildMatches();
 
   const matchingIndex = useMemo(
@@ -51,7 +42,7 @@ function Component() {
 
   return (
     <>
-      <DefaultAppBar title={`${userQuery.data.username}'s Profile`} />
+      <DefaultAppBar title={"Profile"} />
       <Tabs value={matchingIndex}>
         {tabs.map((tab, index) => (
           <AsChildLink to={tab.to} params={tab.params} key={tab.label}>

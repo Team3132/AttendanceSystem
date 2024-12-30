@@ -53,6 +53,7 @@
     "@tanstack/router-devtools": "1.92.9",
     "@tanstack/start": "^1.92.10",
     "@tanstack/table-core": "8.20.5",
+    "@tanstack/zod-adapter": "^1.92.11",
     "@trpc/server": "11.0.0-rc.677",
     "@vinxi/router": "0.5.1",
     "arctic": "1.9.2",

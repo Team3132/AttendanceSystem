@@ -109,7 +109,7 @@ export default defineConfig({
   },
   react: {
     babel: {
-      plugins: ["@emotion/babel-plugin"],
+      // plugins: ["@emotion/babel-plugin"],
     },
   },
 });

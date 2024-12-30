@@ -5,7 +5,7 @@ import { eventQueryOptions } from "@/queries/events.queries";
 
 import { TabItem } from "@/types/TabItem";
 import { Tab, Tabs } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import {
   Outlet,
   createFileRoute,
@@ -16,35 +16,19 @@ import { useMemo } from "react";
 
 export const Route = createFileRoute("/_authenticated/events_/$eventId")({
   loader: async ({ context: { queryClient }, params: { eventId } }) => {
-    const eventData = await queryClient.ensureQueryData(
-      eventQueryOptions.eventDetails(eventId),
-    );
-    const authStatus = await queryClient.ensureQueryData(
-      authQueryOptions.status(),
-    );
-
-    return {
-      initialEvent: eventData,
-      initialAuth: authStatus,
-    };
+    await queryClient.prefetchQuery(eventQueryOptions.eventDetails(eventId));
+    await queryClient.prefetchQuery(authQueryOptions.status());
   },
+
   component: Component,
 });
 
 function Component() {
-  const loaderData = Route.useLoaderData();
+  const { eventId } = Route.useParams();
 
-  const { initialAuth, initialEvent } = loaderData;
+  const authStatusQuery = useSuspenseQuery(authQueryOptions.status());
 
-  const authStatusQuery = useQuery({
-    ...authQueryOptions.status(),
-    initialData: initialAuth,
-  });
-
-  const eventQuery = useQuery({
-    ...eventQueryOptions.eventDetails(initialEvent.id),
-    initialData: initialEvent,
-  });
+  const eventQuery = useSuspenseQuery(eventQueryOptions.eventDetails(eventId));
 
   const tabs = useMemo<Array<TabItem>>(
     () =>

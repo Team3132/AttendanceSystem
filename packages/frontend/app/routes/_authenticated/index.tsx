@@ -10,12 +10,10 @@ const appVersion = env.VITE_PUBLIC_APP_VERSION;
 export const Route = createFileRoute("/_authenticated/")({
   component: () => <Component />,
   loader: async ({ context: { queryClient } }) =>
-    queryClient.ensureQueryData(usersQueryOptions.userSelfPendingRsvps()),
+    queryClient.prefetchQuery(usersQueryOptions.userSelfPendingRsvps()),
 });
 
 export function Component() {
-  const loaderData = Route.useLoaderData();
-
   return (
     <>
       <DefaultAppBar title="Home" />
@@ -36,7 +34,7 @@ export function Component() {
           <Paper sx={{ p: 2, textAlign: "center" }}>
             <Stack gap={2}>
               <Typography variant="h4">Active Events</Typography>
-              <ActiveEventsList initialPendingEvents={loaderData} />
+              <ActiveEventsList />
             </Stack>
           </Paper>
           {appVersion ? (

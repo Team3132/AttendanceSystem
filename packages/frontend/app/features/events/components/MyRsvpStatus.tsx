@@ -10,7 +10,7 @@ import {
 import type { RSVPSchema, RSVPStatusUpdateSchema } from "@/api/schema";
 import type { z } from "zod";
 import useUpdateRsvp from "../hooks/useUpdateRsvp";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { eventQueryOptions } from "@/queries/events.queries";
 
 interface MyRsvpStatusProps {
@@ -22,7 +22,9 @@ type RSVPStatus = NonNullable<z.infer<typeof RSVPSchema>["status"]>;
 export default function MyRsvpStatus(props: MyRsvpStatusProps) {
   const { eventId } = props;
 
-  const myRsvpStatusQuery = useQuery(eventQueryOptions.eventRsvp(eventId));
+  const myRsvpStatusQuery = useSuspenseQuery(
+    eventQueryOptions.eventRsvp(eventId),
+  );
   const updateRsvpMutation = useUpdateRsvp();
 
   const handleChange = (event: SelectChangeEvent<RSVPStatus>) => {

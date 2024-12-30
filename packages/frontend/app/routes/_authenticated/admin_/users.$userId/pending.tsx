@@ -1,32 +1,23 @@
 import PendingEventListItem from "@/components/AdminPendingEventListItem";
 import { usersQueryOptions } from "@/queries/users.queries";
 import { Container, Stack, Paper, Typography, List } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute(
   "/_authenticated/admin_/users/$userId/pending",
 )({
   component: Component,
-  loader: async ({ context: { queryClient }, params: { userId } }) => {
-    const pendingRSVPs = await queryClient.ensureQueryData(
-      usersQueryOptions.userPendingRsvps(userId),
-    );
-
-    return {
-      userId,
-      pendingRSVPs,
-    };
-  },
+  loader: async ({ context: { queryClient }, params: { userId } }) =>
+    queryClient.prefetchQuery(usersQueryOptions.userPendingRsvps(userId)),
 });
 
 function Component() {
-  const loaderData = Route.useLoaderData();
+  const { userId } = Route.useParams();
 
-  const pendingEventsQuery = useQuery({
-    ...usersQueryOptions.userPendingRsvps(loaderData.userId),
-    initialData: loaderData.pendingRSVPs,
-  });
+  const pendingEventsQuery = useSuspenseQuery(
+    usersQueryOptions.userPendingRsvps(userId),
+  );
 
   return (
     <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
@@ -41,7 +32,7 @@ function Component() {
               {pendingEventsQuery.data.map((rsvp) => (
                 <PendingEventListItem
                   rsvp={rsvp}
-                  userId={loaderData.userId}
+                  userId={userId}
                   key={rsvp.id}
                 />
               ))}

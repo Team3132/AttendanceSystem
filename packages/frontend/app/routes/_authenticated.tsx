@@ -3,7 +3,11 @@ import { authQueryOptions } from "@/queries/auth.queries";
 
 import { TabItem } from "@/types/TabItem";
 import { BottomNavigation, BottomNavigationAction, Box } from "@mui/material";
-import { queryOptions, useQuery } from "@tanstack/react-query";
+import {
+  queryOptions,
+  useQuery,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import { useChildMatches } from "@tanstack/react-router";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 import { useMemo } from "react";
@@ -33,17 +37,12 @@ export const Route = createFileRoute("/_authenticated")({
     };
   },
   loader: async ({ context: { queryClient } }) =>
-    queryClient.ensureQueryData(authQueryOptions.status()),
+    queryClient.prefetchQuery(authQueryOptions.status()),
   component: Component,
 });
 
 function Component() {
-  const authStatus = Route.useLoaderData();
-
-  const authStatusQuery = useQuery({
-    ...authQueryOptions.status(),
-    initialData: authStatus,
-  });
+  const authStatusQuery = useSuspenseQuery(authQueryOptions.status());
 
   const routes = useMemo<TabItem[]>(
     () =>

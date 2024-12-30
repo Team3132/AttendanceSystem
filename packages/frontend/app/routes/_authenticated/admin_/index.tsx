@@ -14,13 +14,18 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useInfiniteQuery,
+  useSuspenseInfiniteQuery,
+} from "@tanstack/react-query";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { createColumnHelper } from "@tanstack/react-table";
 import { UserSchema } from "@/api/schema";
 import { useMemo } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import { z } from "zod";
+import { fallback, zodValidator } from "@tanstack/zod-adapter";
 
 const columnHelper = createColumnHelper<z.infer<typeof UserSchema>>();
 
@@ -43,7 +48,12 @@ const columns = [
   }),
 ];
 
+const searchSchema = z.object({
+  query: fallback(z.string(), "").default(""),
+});
+
 export const Route = createFileRoute("/_authenticated/admin_/")({
+  validateSearch: searchSchema,
   beforeLoad: async ({ context: { queryClient } }) => {
     const { isAdmin } = await queryClient.ensureQueryData(
       authQueryOptions.status(),
@@ -54,27 +64,36 @@ export const Route = createFileRoute("/_authenticated/admin_/")({
       });
     }
   },
+
+  loaderDeps: ({ search }) => ({ search }),
+  loader: async ({ context: { queryClient }, deps: { search } }) =>
+    queryClient.prefetchInfiniteQuery(
+      usersQueryOptions.userList({
+        limit: 10,
+        search: search.query,
+      }),
+    ),
   component: Component,
 });
 
 function Component() {
-  const [search, setSearch] = useDebounceValue("", 500);
+  const { query } = Route.useSearch();
+  const navigate = Route.useNavigate();
 
-  const usersQuery = useInfiniteQuery({
-    ...usersQueryOptions.userList({
+  const usersQuery = useSuspenseInfiniteQuery(
+    usersQueryOptions.userList({
       limit: 10,
-      search: search,
+      search: query,
     }),
-    placeholderData: keepPreviousData,
-  });
+  );
 
   const pagedItems = useMemo(
-    () => usersQuery.data?.pages.flatMap((page) => page.items) ?? [],
+    () => usersQuery.data.pages.flatMap((page) => page.items) ?? [],
     [usersQuery.data],
   );
 
   const total = useMemo(
-    () => usersQuery.data?.pages.at(-1)?.total ?? 0,
+    () => usersQuery.data.pages.at(-1)?.total ?? 0,
     [usersQuery.data],
   );
 
@@ -89,8 +108,14 @@ function Component() {
           <Stack gap={2} sx={{ height: "100%", display: "flex" }}>
             <Typography variant="h4">Users</Typography>
             <TextField
-              onChange={(e) => setSearch(e.target.value)}
-              defaultValue={""}
+              onChange={(e) =>
+                navigate({
+                  search: {
+                    query: e.target.value,
+                  },
+                })
+              }
+              defaultValue={query}
               label="Search"
               InputLabelProps={{
                 shrink: true,
@@ -110,8 +135,14 @@ function Component() {
             <Datatable
               columns={columns ?? []}
               data={pagedItems}
-              globalFilter={search}
-              setGlobalFilter={setSearch}
+              globalFilter={query}
+              setGlobalFilter={(v) =>
+                navigate({
+                  search: {
+                    query: v,
+                  },
+                })
+              }
               fetchNextPage={usersQuery.fetchNextPage}
               isFetching={usersQuery.isFetching}
               totalDBRowCount={total}

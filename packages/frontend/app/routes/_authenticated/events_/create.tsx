@@ -26,6 +26,9 @@ export const Route = createFileRoute("/_authenticated/events_/create")({
       };
     }
   },
+  head: () => ({
+    meta: [{ title: "Create Event" }],
+  }),
 });
 
 function Component() {

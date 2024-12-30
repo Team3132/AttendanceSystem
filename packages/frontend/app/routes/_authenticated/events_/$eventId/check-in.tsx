@@ -12,12 +12,21 @@ export const Route = createFileRoute(
   "/_authenticated/events_/$eventId/check-in",
 )({
   component: Component,
-  loader: async ({ context: { queryClient }, params: { eventId } }) =>
-    queryClient.ensureQueryData(eventQueryOptions.eventDetails(eventId)),
+  loader: async ({ context: { queryClient }, params: { eventId } }) => {
+    const eventData = await queryClient.ensureQueryData(
+      eventQueryOptions.eventDetails(eventId),
+    );
+    return { eventData };
+  },
+  head: (ctx) => ({
+    meta: ctx.loaderData
+      ? [{ title: `${ctx.loaderData.eventData.title} - Check In` }]
+      : undefined,
+  }),
 });
 
 function Component() {
-  const loaderData = Route.useLoaderData();
+  const { eventId } = Route.useParams();
   const {
     handleSubmit,
     formState: { isSubmitting },
@@ -26,7 +35,7 @@ function Component() {
     schema: SelfCheckinSchema,
     defaultValues: {
       secret: "",
-      eventId: loaderData.id,
+      eventId,
     },
   });
 
@@ -38,7 +47,7 @@ function Component() {
     try {
       await checkinMutation.mutateAsync({
         secret: data.secret,
-        eventId: loaderData.id,
+        eventId,
       });
 
       navigate({

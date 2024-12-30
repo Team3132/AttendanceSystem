@@ -8,7 +8,10 @@ import { useMemo } from "react";
 import { Container, Paper, Stack, Typography } from "@mui/material";
 import Datatable from "@/components/DataTable";
 import DefaultAppBar from "@/components/DefaultAppBar";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useSuspenseInfiniteQuery,
+} from "@tanstack/react-query";
 import { leaderboardQueryOptions } from "@/queries/outreach.queries";
 
 type LeaderboardUser = z.infer<typeof LeaderboardUserSchema>;
@@ -42,22 +45,30 @@ const columns = [
 
 export const Route = createFileRoute("/_authenticated/leaderboard")({
   component: Component,
+  loader: async ({ context: { queryClient } }) => {
+    await queryClient.prefetchInfiniteQuery(
+      leaderboardQueryOptions({ limit: 10 }),
+    );
+  },
+  head: () => ({
+    meta: [{ title: "Outreach Leaderboard" }],
+  }),
 });
 
 function Component() {
-  const leaderboardQuery = useInfiniteQuery(
+  const leaderboardQuery = useSuspenseInfiniteQuery(
     leaderboardQueryOptions({
       limit: 10,
     }),
   );
 
   const flatResults = useMemo(
-    () => leaderboardQuery.data?.pages.flatMap((page) => page.items),
+    () => leaderboardQuery.data.pages.flatMap((page) => page.items),
     [leaderboardQuery.data],
   );
 
   const totalRowCount = useMemo(
-    () => leaderboardQuery.data?.pages.at(-1)?.total ?? 0,
+    () => leaderboardQuery.data.pages.at(-1)?.total ?? 0,
     [leaderboardQuery.data],
   );
 

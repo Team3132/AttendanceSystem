@@ -219,6 +219,9 @@ importers:
       '@tanstack/table-core':
         specifier: 8.20.5
         version: 8.20.5
+      '@tanstack/zod-adapter':
+        specifier: ^1.92.11
+        version: 1.92.11(@tanstack/react-router@1.92.9(@tanstack/router-generator@1.87.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(zod@3.24.1)
       '@trpc/server':
         specifier: 11.0.0-rc.677
         version: 11.0.0-rc.677(typescript@5.7.2)
@@ -3624,6 +3627,13 @@ packages:
   '@tanstack/virtual-file-routes@1.87.6':
     resolution: {integrity: sha512-PTpeM8SHL7AJM0pJOacFvHribbUODS51qe9NsMqku4mogh6BWObY1EeVmeGnp9o3VngAEsf+rJMs2zqIVz3WFA==}
     engines: {node: '>=12'}
+
+  '@tanstack/zod-adapter@1.92.11':
+    resolution: {integrity: sha512-pOQKwtaeTwHdWGOcpM524nLclSoQ+AWI0HFSV1WEl1f8zZi5gjiww3GtzLyWVskoUA89zn4ExX98hyY68TmLhg==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      '@tanstack/react-router': '>=1.43.2'
+      zod: ^3.23.8
 
   '@tokenizer/token@0.3.0':
     resolution: {integrity: sha512-OvjF+z51L3ov0OyAU0duzsYuvO01PH7x4t6DJx+guahgTnBHkhJdG7soQeTSFLWN3efnHyibZ4Z8l2EuWwJN3A==}
@@ -10807,6 +10817,11 @@ snapshots:
   '@tanstack/virtual-core@3.11.2': {}
 
   '@tanstack/virtual-file-routes@1.87.6': {}
+
+  '@tanstack/zod-adapter@1.92.11(@tanstack/react-router@1.92.9(@tanstack/router-generator@1.87.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(zod@3.24.1)':
+    dependencies:
+      '@tanstack/react-router': 1.92.9(@tanstack/router-generator@1.87.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      zod: 3.24.1
 
   '@tokenizer/token@0.3.0': {}
 

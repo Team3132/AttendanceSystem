@@ -4,7 +4,7 @@ import AdminRSVPListItem from "./AdminRsvpListItem";
 import MyRsvpStatus from "./MyRsvpStatus";
 import RSVPAddDialog from "./RSVPAddDialog";
 import RSVPListItem from "./RSVPListItem";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { eventQueryOptions } from "@/queries/events.queries";
 
 interface RsvpListProps {
@@ -13,7 +13,7 @@ interface RsvpListProps {
 }
 
 export default function RsvpList({ eventId, admin = false }: RsvpListProps) {
-  const rsvpsQuery = useQuery(eventQueryOptions.eventRsvps(eventId));
+  const rsvpsQuery = useSuspenseQuery(eventQueryOptions.eventRsvps(eventId));
   const { getButtonProps, getDisclosureProps, isOpen } = useDisclosure();
 
   if (rsvpsQuery.data) {

@@ -20,42 +20,38 @@ import {
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import {
-  useInfiniteQuery,
-  useQuery,
   useSuspenseInfiniteQuery,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import {
-  createFileRoute,
-  useLocation,
-  useSearch,
-} from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { EventTypeSchema } from "@/api/schema";
 import { DateTime } from "luxon";
 import { z } from "zod";
+import { fallback } from "@tanstack/zod-adapter";
 
-const defaultTo = DateTime.now().plus({ month: 1 }).startOf("day").toISODate();
-const defaultFrom = DateTime.now().startOf("day").toISODate();
+const defaultTo = DateTime.now().plus({ month: 1 }).toISODate();
+const defaultFrom = DateTime.now().toISODate();
 const defaultLimit = 5;
 
 const eventsSearchSchema = z.object({
-  from: z.string().date().optional().catch(defaultFrom),
-  to: z.string().date().optional().catch(defaultTo),
-  type: EventTypeSchema.optional().catch(undefined),
-  limit: z.number().optional().catch(defaultLimit),
+  from: fallback(z.string().date(), defaultFrom).default(defaultFrom),
+  to: fallback(z.string().date(), defaultTo).default(defaultTo),
+  type: fallback(EventTypeSchema.optional(), undefined),
+  limit: fallback(z.number().optional(), defaultLimit),
 });
 
 export const Route = createFileRoute("/_authenticated/events")({
   component: Component,
-  validateSearch: (search) => eventsSearchSchema.parse(search),
+  validateSearch: eventsSearchSchema,
   loaderDeps: ({ search }) => search,
+  head: () => ({
+    meta: [{ title: "Events" }],
+  }),
   loader: async ({
     context: { queryClient },
     deps: { from = defaultFrom, to = defaultTo, type, limit = defaultLimit },
   }) => {
-    const authStatus = await queryClient.ensureQueryData(
-      authQueryOptions.status(),
-    );
+    await queryClient.prefetchQuery(authQueryOptions.status());
 
     await queryClient.prefetchInfiniteQuery(
       eventQueryOptions.eventList({
@@ -65,19 +61,11 @@ export const Route = createFileRoute("/_authenticated/events")({
         limit,
       }),
     );
-
-    return {
-      authStatus,
-      from,
-      to,
-      type,
-      limit,
-    };
   },
 });
 
 function Component() {
-  const { from, to, type, limit } = Route.useLoaderData();
+  const { from, to, type, limit } = Route.useSearch();
 
   const navigate = Route.useNavigate();
 
