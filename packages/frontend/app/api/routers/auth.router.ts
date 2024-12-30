@@ -3,6 +3,7 @@ import env from "../env";
 import { t } from "../trpc";
 import { optionalSessionProcedure, sessionProcedure } from "../trpc/utils";
 import { lucia } from "../auth/lucia";
+import { setCookie } from "vinxi/http";
 
 /**
  * Auth router
@@ -21,7 +22,7 @@ export const authRouter = t.router({
   logout: sessionProcedure
     .input(z.void())
     .output(z.boolean())
-    .mutation(async ({ ctx: { setCookie, session } }) => {
+    .mutation(async ({ ctx: { session } }) => {
       await lucia.invalidateSession(session.id);
       const blankSession = lucia.createBlankSessionCookie();
       setCookie(blankSession.name, blankSession.value, blankSession.attributes);

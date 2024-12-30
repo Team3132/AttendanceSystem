@@ -12,7 +12,7 @@ export default function ScancodeListItem(props: ScancodeListItemProps) {
   const deleteScancodeMutation = useDeleteSelfScancode();
 
   const handleDeleteScancode = () => {
-    deleteScancodeMutation.mutate(code);
+    deleteScancodeMutation.mutate({ data: code });
   };
 
   return (

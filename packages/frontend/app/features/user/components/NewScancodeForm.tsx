@@ -32,7 +32,7 @@ export default function NewScancodeListItem() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await createSelfScancodeMutation.mutateAsync(data.code);
+      await createSelfScancodeMutation.mutateAsync({ data: data.code });
 
       reset({
         code: "",

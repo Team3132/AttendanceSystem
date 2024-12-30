@@ -9,7 +9,7 @@ export default function DeleteEventButton(props: DeleteEventButtonProps) {
   const deleteEventMutation = useDeleteEvent();
 
   const handleDelete = () => {
-    deleteEventMutation.mutate(props.eventId);
+    deleteEventMutation.mutate({ data: props.eventId });
   };
 
   return (

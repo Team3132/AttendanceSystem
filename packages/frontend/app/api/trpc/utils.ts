@@ -3,7 +3,7 @@ import { t } from ".";
 import env from "../env";
 import { lucia } from "../auth/lucia";
 import { Session, User } from "lucia";
-import { TRPCContext } from "./context";
+import { getCookie, getHeader, setCookie } from "vinxi/http";
 
 /**
  * Public (unauthenticated) procedure
@@ -14,8 +14,9 @@ import { TRPCContext } from "./context";
  */
 export const publicProcedure = t.procedure;
 
-type OptionalSessionResult = TRPCContext &
-  ({ user: null; session: null } | { user: User; session: Session });
+type OptionalSessionResult =
+  | { user: null; session: null }
+  | { user: User; session: Session };
 
 /**
  * Optional session
@@ -26,7 +27,7 @@ type OptionalSessionResult = TRPCContext &
 const optionalSession = t.middleware<OptionalSessionResult>(
   async ({ ctx, next }) => {
     try {
-      const { user, session, ...restCtx } = await sessionProcessor(ctx);
+      const { user, session, ...restCtx } = await sessionProcessor();
 
       return next({ ctx: { user, session, ...restCtx } });
     } catch (error) {
@@ -44,12 +45,8 @@ export const optionalSessionProcedure = t.procedure.use(optionalSession);
  *
  * This function processes the session data for a request, and returns the user and session data.
  */
-const sessionProcessor = async ({
-  headers,
-  setCookie,
-  getCookie,
-}: TRPCContext) => {
-  const authorizationHeader = headers.get("authorization");
+const sessionProcessor = async () => {
+  const authorizationHeader = getHeader("authorization");
 
   // Get the bearer token session
   const sessionIdAuthorization = lucia.readBearerToken(
@@ -68,7 +65,7 @@ const sessionProcessor = async ({
       throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid session" });
     }
 
-    return { user, session, headers, setCookie, getCookie };
+    return { user, session };
   }
 
   // If we're in a HTTP context, we can use cookies
@@ -112,7 +109,7 @@ const sessionProcessor = async ({
   }
 
   // Return the user, logOut function and headers
-  return { user, session, headers, setCookie, getCookie };
+  return { user, session };
 };
 
 /**
@@ -121,10 +118,10 @@ const sessionProcessor = async ({
  * This is the base piece you use to build new queries and mutations on your tRPC API. It guarantees
  * that a user querying is authorized, and you can access user session data.
  */
-const enforceSession = t.middleware(async ({ ctx, next }) => {
-  const { user, session, ...restCtx } = await sessionProcessor(ctx);
+const enforceSession = t.middleware(async ({ next }) => {
+  const { user, session } = await sessionProcessor();
 
-  return next({ ctx: { user, session, ...restCtx } });
+  return next({ ctx: { user, session } });
 });
 
 /**
@@ -135,8 +132,8 @@ const enforceSession = t.middleware(async ({ ctx, next }) => {
  */
 export const sessionProcedure = t.procedure.use(enforceSession);
 
-const enforceMentorSession = t.middleware(async ({ ctx, next }) => {
-  const { user, session, ...restCtx } = await sessionProcessor(ctx);
+const enforceMentorSession = t.middleware(async ({ next }) => {
+  const { user, session } = await sessionProcessor();
 
   if (!user.roles) {
     throw new TRPCError({ code: "UNAUTHORIZED", message: "No roles" });
@@ -146,7 +143,7 @@ const enforceMentorSession = t.middleware(async ({ ctx, next }) => {
     throw new TRPCError({ code: "UNAUTHORIZED", message: "Not a mentor" });
   }
 
-  return next({ ctx: { user: user, session, ...restCtx } });
+  return next({ ctx: { user, session } });
 });
 
 export const mentorSessionProcedure = t.procedure.use(enforceMentorSession);
@@ -154,8 +151,8 @@ export const mentorSessionProcedure = t.procedure.use(enforceMentorSession);
 /**
  * API Authenticated procedure (for the bot)
  */
-const enforceApiToken = t.middleware(({ ctx: { headers }, next }) => {
-  const authorizationHeader = headers.get("authorization");
+const enforceApiToken = t.middleware(({ next }) => {
+  const authorizationHeader = getHeader("authorization");
 
   if (!authorizationHeader) {
     throw new TRPCError({ code: "UNAUTHORIZED", message: "API Token not set" });

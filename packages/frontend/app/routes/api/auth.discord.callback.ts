@@ -11,14 +11,13 @@ import { OAuth2RequestError } from "arctic";
 import {
   deleteCookie,
   getCookie,
-  getQuery,
   getValidatedQuery,
   setCookie,
 } from "vinxi/http";
 import { z } from "zod";
 
 export const APIRoute = createAPIFileRoute("/api/auth/discord/callback")({
-  GET: async ({ request, params }) => {
+  GET: async () => {
     const { code, state } = await getValidatedQuery(
       z.object({
         code: z.string(),

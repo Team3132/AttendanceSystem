@@ -65,7 +65,7 @@ export const Route = createRootRouteWithContext<{
 
 const theme = createTheme({
   colorSchemes: {
-    dark: true,
+    dark: false,
   },
 });
 

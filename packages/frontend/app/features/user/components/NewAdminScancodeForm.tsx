@@ -40,8 +40,10 @@ export default function NewAdminScancodeListItem(
   const onSubmit = handleSubmit(async (data) => {
     try {
       await createUserScancodeMutation.mutateAsync({
-        userId,
-        scancode: data.code,
+        data: {
+          userId,
+          scancode: data.code,
+        },
       });
 
       reset({

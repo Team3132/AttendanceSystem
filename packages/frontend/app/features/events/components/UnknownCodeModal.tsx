@@ -110,8 +110,7 @@ export default function UnknownCodeModal(props: UnknownCodeModalProps) {
 
     try {
       const createdCode = await createScancodeMutation.mutateAsync({
-        scancode: data.code,
-        userId: data.userOption?.value,
+        data: { scancode: data.code, userId: data.userOption?.value },
       });
 
       if (successCallback) {

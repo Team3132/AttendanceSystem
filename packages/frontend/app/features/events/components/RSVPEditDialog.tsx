@@ -54,10 +54,12 @@ export default function RSVPEditDialog(props: RSVPEditDialogProps) {
   const onSubmit = handleSubmit(async (data) => {
     try {
       await updateUserRsvpMutation.mutateAsync({
-        eventId: rsvp.eventId,
-        userId: rsvp.userId,
-        checkinTime: data.checkinTime ?? undefined,
-        checkoutTime: data.checkoutTime ?? undefined,
+        data: {
+          eventId: rsvp.eventId,
+          userId: rsvp.userId,
+          checkinTime: data.checkinTime ?? undefined,
+          checkoutTime: data.checkoutTime ?? undefined,
+        },
       });
       onClose();
     } catch (error) {

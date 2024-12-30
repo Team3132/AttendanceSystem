@@ -15,7 +15,7 @@ export default function PendingEventListItem(props: PendingEventListItemProps) {
   const selfCheckoutMutation = useSelfCheckout();
 
   const handleClick = () => {
-    selfCheckoutMutation.mutate(rsvp.eventId);
+    selfCheckoutMutation.mutate({ data: rsvp.eventId });
   };
 
   return (

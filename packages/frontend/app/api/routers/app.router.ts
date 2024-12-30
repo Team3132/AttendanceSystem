@@ -11,14 +11,7 @@ import { userRouter as usersRouter } from "./users.router";
  * The main router for the backend, contains all other routers
  */
 const appRouter = t.router({
-  test: publicProcedure.input(z.void()).query(() => {
-    return "Hello world!";
-  }),
   bot: botRouter,
-  auth: authRouter,
-  events: eventsRouter,
-  outreach: outreachRouter,
-  users: usersRouter,
 });
 
 export type AppRouter = typeof appRouter;

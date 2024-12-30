@@ -14,8 +14,7 @@ export default function ScancodeListItem(props: ScancodeListItemProps) {
 
   const handleDeleteScancode = () => {
     deleteScancodeMutation.mutate({
-      scancode: scancode,
-      userId,
+      data: { scancode: scancode, userId },
     });
   };
 

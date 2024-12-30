@@ -92,8 +92,10 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
       }
 
       await addUserEventRsvpMutation.mutateAsync({
-        eventId,
-        userId: userOptionVal,
+        data: {
+          eventId,
+          userId: userOptionVal,
+        },
       });
       reset();
       onClose();

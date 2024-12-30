@@ -29,9 +29,11 @@ export default function MyRsvpStatus(props: MyRsvpStatusProps) {
 
   const handleChange = (event: SelectChangeEvent<RSVPStatus>) => {
     updateRsvpMutation.mutate({
-      eventId,
-      status: event.target.value as z.infer<typeof RSVPStatusUpdateSchema>,
-      delay: 0,
+      data: {
+        eventId,
+        status: event.target.value as z.infer<typeof RSVPStatusUpdateSchema>,
+        delay: 0,
+      },
     });
   };
 

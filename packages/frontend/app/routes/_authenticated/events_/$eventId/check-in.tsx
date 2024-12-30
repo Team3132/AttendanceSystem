@@ -46,8 +46,7 @@ function Component() {
   const onSubmit = handleSubmit(async (data) => {
     try {
       await checkinMutation.mutateAsync({
-        secret: data.secret,
-        eventId,
+        data: { secret: data.secret, eventId },
       });
 
       navigate({

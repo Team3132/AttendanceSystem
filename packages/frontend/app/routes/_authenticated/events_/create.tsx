@@ -55,7 +55,7 @@ function Component() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      const createdEvent = await createEventMutation.mutateAsync(data);
+      const createdEvent = await createEventMutation.mutateAsync({ data });
       navigate({
         to: "/events/$eventId",
         params: {

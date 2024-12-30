@@ -100,7 +100,14 @@ import { defineConfig } from "@tanstack/start/config";
 
 export default defineConfig({
   vite: {
-    plugins: [viteTsconfigPaths()],
+    plugins: [
+      viteTsconfigPaths(),
+      // dts({
+      //   insertTypesEntry: true,
+      //   include: "./src/api/**/*.ts",
+      //   outDir: "dist/types",
+      // }),
+    ],
     ssr: !import.meta.dev
       ? {
           noExternal: ["@mui/*"],

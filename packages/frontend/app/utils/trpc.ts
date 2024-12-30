@@ -1,5 +1,5 @@
 import { TRPCClientError } from "@trpc/client";
-import type { AppRouter } from "../api";
+import type { AppRouter } from "../api/index";
 
 export function isTRPCClientError(
   cause: unknown,

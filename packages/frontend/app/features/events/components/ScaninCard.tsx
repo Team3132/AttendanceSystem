@@ -43,8 +43,7 @@ export default function ScaninCard(props: ScaninCardProps) {
     async (data) => {
       try {
         await scanInMutation.mutateAsync({
-          eventId,
-          scancode: data.code,
+          data: { eventId, scancode: data.code },
         });
         reset({
           code: "",
@@ -60,7 +59,7 @@ export default function ScaninCard(props: ScaninCardProps) {
         }
       }
     },
-    [alert, eventId, onOpen, reset, scanInMutation, setFocus],
+    [eventId, onOpen, reset, scanInMutation, setFocus],
   );
 
   const codeCreatedCallback = useCallback(

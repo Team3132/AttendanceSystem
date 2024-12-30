@@ -26,14 +26,18 @@ export default function AdminRSVPListItem({ rsvp }: AdminRSVPListItemProps) {
 
   const handleCheckIn = () =>
     checkinMutation.mutate({
-      eventId: rsvp.eventId,
-      userId: rsvp.userId,
+      data: {
+        eventId: rsvp.eventId,
+        userId: rsvp.userId,
+      },
     });
 
   const handleCheckOut = () =>
     checkoutMutation.mutate({
-      eventId: rsvp.eventId,
-      userId: rsvp.userId,
+      data: {
+        eventId: rsvp.eventId,
+        userId: rsvp.userId,
+      },
     });
 
   const handleCheckInOut = () => {
