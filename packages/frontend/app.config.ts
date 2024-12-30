@@ -111,5 +111,17 @@ export default defineConfig({
     experimental: {
       openAPI: true,
     },
+    openAPI: {
+      production: "runtime",
+      route: "/_docs/openapi.json",
+      ui: {
+        scalar: {
+          route: "/_docs/scalar",
+        },
+        swagger: {
+          route: "/_docs/swagger",
+        },
+      },
+    },
   },
 });
