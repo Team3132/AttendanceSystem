@@ -20,7 +20,7 @@
     "dist"
   ],
   "dependencies": {
-    "@discordjs/builders": "1.9.0",
+    "@discordjs/builders": "1.10.0",
     "@discordjs/rest": "2.4.0",
     "@nestjs/common": "10.4.15",
     "@nestjs/config": "3.3.0",
