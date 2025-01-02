@@ -2,6 +2,7 @@ import { lucia } from "@/api/auth/lucia";
 import env from "@/api/env";
 import { createMiddleware, registerGlobalMiddleware } from "@tanstack/start";
 import { getCookie, getHeader, setCookie } from "vinxi/http";
+import { redirect } from "@tanstack/react-router";
 
 /**
  * Middleware to check if the user is authenticated and has a valid session
@@ -91,7 +92,9 @@ export const sessionMiddleware = createMiddleware()
 
     // If there's no session or user, we're not logged in and we should redirect to the login page
     if (!session || !user) {
-      throw new Response("Unauthorized", { status: 401 });
+      throw redirect({
+        to: "/login",
+      });
     }
 
     return next({
@@ -111,7 +114,9 @@ export const mentorMiddleware = createMiddleware()
     const { user } = context;
 
     if (!user?.roles?.includes(env.VITE_MENTOR_ROLE_ID)) {
-      throw new Response("Unauthorized", { status: 401 });
+      throw redirect({
+        to: "/login",
+      });
     }
 
     return next({
