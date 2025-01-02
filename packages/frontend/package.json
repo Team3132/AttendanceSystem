@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@discordjs/core": "2.0.0",
-    "@discordjs/rest": "2.4.0",
+    "@discordjs/rest": "2.4.2",
     "@dynamicabot/signales": "2.1.2",
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.0",
