@@ -37,7 +37,7 @@ const eventsSearchSchema = z.object({
   from: fallback(z.string().date(), defaultFrom).default(defaultFrom),
   to: fallback(z.string().date(), defaultTo).default(defaultTo),
   type: fallback(EventTypeSchema.optional(), undefined),
-  limit: fallback(z.number().optional(), defaultLimit),
+  limit: fallback(z.number().optional(), defaultLimit).default(defaultLimit),
 });
 
 export const Route = createFileRoute("/_authenticated/events")({
@@ -82,7 +82,7 @@ function Component() {
 
   const handleTypeChange = (event: SelectChangeEvent) => {
     navigate({
-      search: (prev: any) => ({
+      search: (prev) => ({
         ...prev,
         type: event.target.value as z.infer<typeof EventTypeSchema> | undefined,
       }),
@@ -92,14 +92,14 @@ function Component() {
   const handleStartChange = (date: DateTime<true> | DateTime<false> | null) => {
     const iso = date?.toISODate();
     navigate({
-      search: (prev: any) => ({ ...prev, from: iso ? iso : defaultFrom }),
+      search: (prev) => ({ ...prev, from: iso ? iso : defaultFrom }),
     });
   };
 
   const handleEndChange = (date: DateTime<true> | DateTime<false> | null) => {
     const iso = date?.toISODate();
     navigate({
-      search: (prev: any) => ({ ...prev, to: iso ? iso : defaultTo }),
+      search: (prev) => ({ ...prev, to: iso ? iso : defaultTo }),
     });
   };
 

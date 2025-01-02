@@ -10,18 +10,11 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { QueryClient } from "@tanstack/react-query";
 import { Meta, Scripts } from "@tanstack/start";
-import { CacheProvider } from "@emotion/react";
 import roboto300 from "@fontsource/roboto/300.css?url";
 import robot400 from "@fontsource/roboto/400.css?url";
 import roboto500 from "@fontsource/roboto/500.css?url";
 import roboto700 from "@fontsource/roboto/700.css?url";
-import appCss from "@/index.css?url";
-import createCache from "@emotion/cache";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-
-const emotionCache = createCache({ key: "css" });
-
-console.log("emotionCache", emotionCache);
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -58,11 +51,13 @@ export const Route = createRootRouteWithContext<{
         href: roboto700,
       },
     ],
-    scripts: [
-      {
-        src: "https://unpkg.com/react-scan/dist/auto.global.js",
-      },
-    ],
+    scripts: import.meta.env.DEV
+      ? [
+          {
+            src: "https://unpkg.com/react-scan/dist/auto.global.js",
+          },
+        ]
+      : undefined,
   }),
 });
 
@@ -75,7 +70,12 @@ const theme = createTheme({
 function RootComponent() {
   return (
     <RootDocument>
-      <Outlet />
+      <LocalizationProvider adapterLocale={"en-au"} dateAdapter={AdapterLuxon}>
+        <ThemeProvider theme={theme}>
+          <Outlet />
+          <CssBaseline />
+        </ThemeProvider>
+      </LocalizationProvider>
     </RootDocument>
   );
 }
@@ -96,17 +96,7 @@ function RootDocument({ children }: Readonly<{ children: React.ReactNode }>) {
         </style>
       </head>
       <body>
-        <LocalizationProvider
-          adapterLocale={"en-au"}
-          dateAdapter={AdapterLuxon}
-        >
-          <CacheProvider value={emotionCache}>
-            <ThemeProvider theme={theme}>
-              {children}
-              <CssBaseline />
-            </ThemeProvider>
-          </CacheProvider>
-        </LocalizationProvider>
+        {children}
         <ScrollRestoration />
         <TanStackRouterDevtools position="bottom-right" />
         <ReactQueryDevtools buttonPosition="bottom-left" />

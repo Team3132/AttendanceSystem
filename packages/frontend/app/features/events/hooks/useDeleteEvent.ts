@@ -29,6 +29,7 @@ export default function useDeleteEvent() {
       });
       navigate({
         to: "/events",
+        search: {},
       });
     },
   });
