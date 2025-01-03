@@ -1,7 +1,6 @@
 import AsChildLink from "@/components/AsChildLink";
 import Datatable from "@/components/DataTable";
 import DefaultAppBar from "@/components/DefaultAppBar";
-import { authQueryOptions } from "@/queries/auth.queries";
 import { usersQueryOptions } from "@/queries/users.queries";
 
 import {
@@ -14,18 +13,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import {
-  keepPreviousData,
-  useInfiniteQuery,
-  useSuspenseInfiniteQuery,
-} from "@tanstack/react-query";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
 import { createColumnHelper } from "@tanstack/react-table";
 import { UserSchema } from "@/api/schema";
 import { useMemo } from "react";
-import { useDebounceValue } from "usehooks-ts";
 import { z } from "zod";
-import { fallback, zodValidator } from "@tanstack/zod-adapter";
+import { fallback } from "@tanstack/zod-adapter";
 
 const columnHelper = createColumnHelper<z.infer<typeof UserSchema>>();
 

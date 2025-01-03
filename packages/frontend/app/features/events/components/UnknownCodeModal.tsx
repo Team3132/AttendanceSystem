@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { keepPreviousData } from "@tanstack/react-query";
 import { TRPCClientError } from "@trpc/client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { Controller } from "react-hook-form";
 import { useDebounceValue } from "usehooks-ts";
 import { z } from "zod";
@@ -172,12 +172,8 @@ export default function UnknownCodeModal(props: UnknownCodeModalProps) {
                     placeholder="Select a user"
                   />
                 )}
-                onChange={(_event, data) => {
-                  onChange(data);
-                }}
-                onInputChange={(_event, value) => {
-                  setInputValue(value);
-                }}
+                onChange={(_event, data) => onChange(data)}
+                onInputChange={(_event, value) => setInputValue(value)}
                 isOptionEqualToValue={(option, value) =>
                   option.value === value.value
                 }
