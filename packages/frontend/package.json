@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "PORT=1420 vinxi dev",
-    "build": "tsc && vinxi build",
+    "build": "tsc && tsup && vinxi build",
     "start": "PORT=1420 vinxi start",
     "typecheck": "tsc",
     "format": "pnpm biome format ./src --write",
@@ -17,8 +17,13 @@
     "drizzle",
     "vite.config.ts"
   ],
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
-    "./types": "./dist/types/index.d.ts"
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
   },
   "dependencies": {
     "@discordjs/core": "2.0.1",
@@ -75,7 +80,6 @@
     "react-icons": "5.4.0",
     "react-qr-code": "2.0.15",
     "superjson": "2.2.2",
-    "tsup": "8.3.5",
     "ulidx": "2.4.1",
     "usehooks-ts": "3.1.0",
     "uuid": "11.0.3",
@@ -97,6 +101,7 @@
     "@vitejs/plugin-react-swc": "3.7.2",
     "babel-plugin-import": "^1.13.8",
     "drizzle-kit": "0.30.1",
+    "tsup": "8.3.5",
     "typescript": "5.7.2",
     "vite": "6.0.7",
     "vite-plugin-dts": "4.4.0",

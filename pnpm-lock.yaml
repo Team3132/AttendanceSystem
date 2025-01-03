@@ -285,9 +285,6 @@ importers:
       superjson:
         specifier: 2.2.2
         version: 2.2.2
-      tsup:
-        specifier: 8.3.5
-        version: 8.3.5(@microsoft/api-extractor@7.48.1(@types/node@22.10.4))(@swc/core@1.10.4)(jiti@2.4.1)(postcss@8.4.49)(tsx@4.19.2)(typescript@5.7.2)(yaml@2.6.1)
       ulidx:
         specifier: 2.4.1
         version: 2.4.1
@@ -343,6 +340,9 @@ importers:
       drizzle-kit:
         specifier: 0.30.1
         version: 0.30.1
+      tsup:
+        specifier: 8.3.5
+        version: 8.3.5(@microsoft/api-extractor@7.48.1(@types/node@22.10.4))(@swc/core@1.10.4)(jiti@2.4.1)(postcss@8.4.49)(tsx@4.19.2)(typescript@5.7.2)(yaml@2.6.1)
       typescript:
         specifier: 5.7.2
         version: 5.7.2

@@ -1,11 +1,4 @@
-// import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react-swc";
 import viteTsconfigPaths from "vite-tsconfig-paths";
-import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
-import { VitePWA } from "vite-plugin-pwa";
-import { createApp } from "vinxi";
-import { config } from "vinxi/plugins/config";
-import { apiRouter } from "@vinxi/router/api";
 import dts from "vite-plugin-dts";
 import { defineConfig } from "@tanstack/start/config";
 
@@ -102,11 +95,11 @@ export default defineConfig({
   vite: {
     plugins: [
       viteTsconfigPaths(),
-      // dts({
-      //   insertTypesEntry: true,
-      //   include: "./src/api/**/*.ts",
-      //   outDir: "dist/types",
-      // }),
+      dts({
+        insertTypesEntry: true,
+        include: "./app/api/**/*.ts",
+        outDir: "dist/types",
+      }),
     ],
     ssr: !import.meta.dev
       ? {
