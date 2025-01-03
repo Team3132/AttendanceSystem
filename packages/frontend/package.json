@@ -86,7 +86,7 @@
     "@emotion/babel-plugin": "^11.13.5",
     "@tanstack/router-plugin": "1.91.1",
     "@trpc/client": "11.0.0-rc.682",
-    "@trpc/server": "11.0.0-rc.677",
+    "@trpc/server": "11.0.0-rc.682",
     "@types/luxon": "3.4.2",
     "@types/react": "19.0.0",
     "@types/react-dom": "19.0.0",
