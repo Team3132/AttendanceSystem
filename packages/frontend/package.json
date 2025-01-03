@@ -59,7 +59,7 @@
     "arctic": "1.9.2",
     "cron": "3.3.2",
     "cross-env": "7.0.3",
-    "discord-api-types": "0.37.113",
+    "discord-api-types": "0.37.115",
     "dotenv": "16.4.7",
     "drizzle-orm": "0.38.2",
     "drizzle-zod": "0.5.1",
