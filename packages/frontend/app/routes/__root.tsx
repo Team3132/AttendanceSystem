@@ -98,8 +98,13 @@ function RootDocument({ children }: Readonly<{ children: React.ReactNode }>) {
       <body>
         {children}
         <ScrollRestoration />
-        <TanStackRouterDevtools position="bottom-right" />
-        <ReactQueryDevtools buttonPosition="bottom-left" />
+        {import.meta.env.DEV ? (
+          <>
+            <TanStackRouterDevtools position="bottom-right" />
+            <ReactQueryDevtools buttonPosition="bottom-left" />
+          </>
+        ) : null}
+
         <Scripts />
       </body>
     </html>

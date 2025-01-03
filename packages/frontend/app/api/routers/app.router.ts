@@ -1,6 +1,4 @@
-import z from "zod";
 import { t } from "../trpc";
-import { publicProcedure } from "../trpc/utils";
 import { botRouter } from "./bot.router";
 
 /**
