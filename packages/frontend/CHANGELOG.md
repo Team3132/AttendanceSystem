@@ -1,5 +1,13 @@
 # frontend
 
+## 5.1.3
+
+### Patch Changes
+
+- [`e676e64`](https://github.com/Team3132/AttendanceSystem/commit/e676e64f434fff4ea6fc169c458bf919c3818253) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix parsing of rfc3999 datetimes
+
+- [`c1b7d13`](https://github.com/Team3132/AttendanceSystem/commit/c1b7d13adbdcb4e98bacc4cbe2d64f6ca4d5f5c4) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Sync 3 months in advance
+
 ## 5.1.2
 
 ### Patch Changes
