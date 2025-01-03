@@ -51,13 +51,13 @@ export const Route = createRootRouteWithContext<{
         href: roboto700,
       },
     ],
-    scripts: import.meta.env.DEV
-      ? [
-          {
-            src: "https://unpkg.com/react-scan/dist/auto.global.js",
-          },
-        ]
-      : undefined,
+    // scripts: import.meta.env.DEV
+    //   ? [
+    //       {
+    //         src: "https://unpkg.com/react-scan/dist/auto.global.js",
+    //       },
+    //     ]
+    //   : undefined,
   }),
 });
 

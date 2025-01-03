@@ -28,6 +28,7 @@ import { EventTypeSchema } from "@/api/schema";
 import { DateTime } from "luxon";
 import { z } from "zod";
 import { fallback } from "@tanstack/zod-adapter";
+import { useCallback } from "react";
 
 const defaultTo = DateTime.now().plus({ month: 1 }).toISODate();
 const defaultFrom = DateTime.now().toISODate();
@@ -80,28 +81,39 @@ function Component() {
     }),
   );
 
-  const handleTypeChange = (event: SelectChangeEvent) => {
-    navigate({
-      search: (prev) => ({
-        ...prev,
-        type: event.target.value as z.infer<typeof EventTypeSchema> | undefined,
-      }),
-    });
-  };
+  const handleTypeChange = useCallback(
+    (event: SelectChangeEvent) => {
+      navigate({
+        search: (prev) => ({
+          ...prev,
+          type: event.target.value as
+            | z.infer<typeof EventTypeSchema>
+            | undefined,
+        }),
+      });
+    },
+    [navigate],
+  );
 
-  const handleStartChange = (date: DateTime<true> | DateTime<false> | null) => {
-    const iso = date?.toISODate();
-    navigate({
-      search: (prev) => ({ ...prev, from: iso ? iso : defaultFrom }),
-    });
-  };
+  const handleStartChange = useCallback(
+    (date: DateTime<true> | DateTime<false> | null) => {
+      const iso = date?.toISODate();
+      navigate({
+        search: (prev) => ({ ...prev, from: iso ? iso : defaultFrom }),
+      });
+    },
+    [navigate],
+  );
 
-  const handleEndChange = (date: DateTime<true> | DateTime<false> | null) => {
-    const iso = date?.toISODate();
-    navigate({
-      search: (prev) => ({ ...prev, to: iso ? iso : defaultTo }),
-    });
-  };
+  const handleEndChange = useCallback(
+    (date: DateTime<true> | DateTime<false> | null) => {
+      const iso = date?.toISODate();
+      navigate({
+        search: (prev) => ({ ...prev, to: iso ? iso : defaultTo }),
+      });
+    },
+    [navigate],
+  );
 
   return (
     <>
@@ -114,94 +126,90 @@ function Component() {
           display: "flex",
         }}
       >
-        <Paper sx={{ height: "100%", p: 2, width: "100%" }}>
-          <Stack
-            gap={2}
-            height={"100%"}
-            display={"flex"}
-            flexDirection={"column"}
-            width={"100%"}
+        <Stack
+          gap={2}
+          height={"100%"}
+          display={"flex"}
+          flexDirection={"column"}
+          width={"100%"}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              alignContent: "center",
+              justifyContent: "space-between",
+            }}
           >
-            <Box
+            <Typography
+              variant="h4"
               sx={{
-                display: "flex",
-                alignContent: "center",
-                justifyContent: "space-between",
+                flexGrow: 1,
               }}
             >
-              <Typography
-                variant="h4"
-                sx={{
-                  flexGrow: 1,
-                }}
-              >
-                Upcoming Events
-              </Typography>
-              <FormControl
-                sx={{
-                  minWidth: 120,
-                }}
-              >
-                <InputLabel id="select-event-type-label">Type</InputLabel>
-                <Select
-                  labelId="select-event-type-label"
-                  id="select-event-type"
-                  value={type ?? ""}
-                  onChange={handleTypeChange}
-                  label="Type"
-                >
-                  <MenuItem value={undefined}>All</MenuItem>
-                  <MenuItem value={"Outreach"}>Outreach</MenuItem>
-                  <MenuItem value={"Regular"}>Regular</MenuItem>
-                  <MenuItem value={"Social"}>Social</MenuItem>
-                  <MenuItem value={"Mentor"}>Mentor</MenuItem>
-                </Select>
-              </FormControl>
-            </Box>
-            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <DatePicker
-                value={DateTime.fromISO(from ?? defaultFrom)}
-                label="From"
-                onChange={handleStartChange}
-              />
-              <DatePicker
-                value={DateTime.fromISO(to ?? defaultTo)}
-                label="To"
-                onChange={handleEndChange}
-              />
-            </Box>
-            <InfiniteList
-              data={infiniteEventsQuery.data}
-              fetchNextPage={infiniteEventsQuery.fetchNextPage}
-              isFetching={infiniteEventsQuery.isFetching}
-              renderRow={({ key, row, style }) => (
-                <AsChildLink
-                  key={key}
-                  to={"/events/$eventId"}
-                  params={{
-                    eventId: row.id,
-                  }}
-                >
-                  <ListItemButton style={style}>
-                    <UpcomingEventListItem event={row} />
-                  </ListItemButton>
-                </AsChildLink>
-              )}
-              fixedHeight={72}
+              Upcoming Events
+            </Typography>
+            <FormControl
               sx={{
-                flex: 1,
-                // height: "100px",
-                // flexGrow: 1,
-                overflowY: "auto",
+                minWidth: 120,
               }}
+            >
+              <InputLabel id="select-event-type-label">Type</InputLabel>
+              <Select
+                labelId="select-event-type-label"
+                id="select-event-type"
+                value={type ?? ""}
+                onChange={handleTypeChange}
+                label="Type"
+              >
+                <MenuItem value={undefined}>All</MenuItem>
+                <MenuItem value={"Outreach"}>Outreach</MenuItem>
+                <MenuItem value={"Regular"}>Regular</MenuItem>
+                <MenuItem value={"Social"}>Social</MenuItem>
+                <MenuItem value={"Mentor"}>Mentor</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <DatePicker
+              value={DateTime.fromISO(from ?? defaultFrom)}
+              label="From"
+              onChange={handleStartChange}
             />
-            {authStatusQuery.data?.isAdmin ? (
-              <AsChildLink to="/events/create">
-                <Button variant="contained">Create Event</Button>
+            <DatePicker
+              value={DateTime.fromISO(to ?? defaultTo)}
+              label="To"
+              onChange={handleEndChange}
+            />
+          </Box>
+          <InfiniteList
+            data={infiniteEventsQuery.data}
+            fetchNextPage={infiniteEventsQuery.fetchNextPage}
+            isFetching={infiniteEventsQuery.isFetching}
+            renderRow={({ key, row, style }) => (
+              <AsChildLink
+                key={key}
+                to={"/events/$eventId"}
+                params={{
+                  eventId: row.id,
+                }}
+              >
+                <ListItemButton style={style}>
+                  <UpcomingEventListItem event={row} />
+                </ListItemButton>
               </AsChildLink>
-            ) : null}
-          </Stack>
-        </Paper>
+            )}
+            fixedHeight={72}
+            sx={{
+              flex: 1,
+              overflowY: "auto",
+            }}
+          />
+          {authStatusQuery.data.isAdmin ? (
+            <AsChildLink to="/events/create">
+              <Button variant="contained">Create Event</Button>
+            </AsChildLink>
+          ) : null}
+        </Stack>
       </Container>
     </>
   );

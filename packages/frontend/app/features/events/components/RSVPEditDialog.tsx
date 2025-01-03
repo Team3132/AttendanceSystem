@@ -18,6 +18,7 @@ import { FaRecycle } from "react-icons/fa6";
 import { z } from "zod";
 import useZodForm from "../../../hooks/useZodForm";
 import useUpdateUserRsvp from "../hooks/useUpdateUserRsvp";
+import { parseDate } from "@/utils/date";
 
 interface RSVPEditDialogProps {
   onOpen: () => void;
@@ -44,8 +45,8 @@ export default function RSVPEditDialog(props: RSVPEditDialogProps) {
     schema: UpdateRsvpSchema,
     defaultValues: {
       status: rsvp.status ?? undefined,
-      checkinTime: rsvp.checkinTime ?? undefined,
-      checkoutTime: rsvp.checkoutTime ?? undefined,
+      checkinTime: parseDate(rsvp.checkinTime) ?? undefined,
+      checkoutTime: parseDate(rsvp.checkoutTime) ?? undefined,
     },
   });
 

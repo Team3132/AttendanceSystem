@@ -14,6 +14,7 @@ import { useDisclosure } from "../../../hooks/useDisclosure";
 import useCheckinUser from "../hooks/useCheckinUser";
 import useCheckoutUser from "../hooks/useCheckoutUser";
 import RSVPEditDialog from "./RSVPEditDialog";
+import { useCallback } from "react";
 
 interface AdminRSVPListItemProps {
   rsvp: z.infer<typeof RSVPUserSchema>;
@@ -24,29 +25,35 @@ export default function AdminRSVPListItem({ rsvp }: AdminRSVPListItemProps) {
   const checkoutMutation = useCheckoutUser();
   const checkinMutation = useCheckinUser();
 
-  const handleCheckIn = () =>
-    checkinMutation.mutate({
-      data: {
-        eventId: rsvp.eventId,
-        userId: rsvp.userId,
-      },
-    });
+  const handleCheckIn = useCallback(
+    () =>
+      checkinMutation.mutate({
+        data: {
+          eventId: rsvp.eventId,
+          userId: rsvp.userId,
+        },
+      }),
+    [checkinMutation, rsvp.eventId, rsvp.userId],
+  );
 
-  const handleCheckOut = () =>
-    checkoutMutation.mutate({
-      data: {
-        eventId: rsvp.eventId,
-        userId: rsvp.userId,
-      },
-    });
+  const handleCheckOut = useCallback(
+    () =>
+      checkoutMutation.mutate({
+        data: {
+          eventId: rsvp.eventId,
+          userId: rsvp.userId,
+        },
+      }),
+    [checkoutMutation, rsvp.eventId, rsvp.userId],
+  );
 
-  const handleCheckInOut = () => {
+  const handleCheckInOut = useCallback(() => {
     if (!rsvp.checkinTime) {
       handleCheckIn();
     } else if (!rsvp.checkoutTime) {
       handleCheckOut();
     }
-  };
+  }, [handleCheckIn, handleCheckOut, rsvp.checkinTime, rsvp.checkoutTime]);
 
   return (
     <>

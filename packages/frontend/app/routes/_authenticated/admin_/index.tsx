@@ -20,6 +20,7 @@ import { UserSchema } from "@/api/schema";
 import { useMemo } from "react";
 import { z } from "zod";
 import { fallback } from "@tanstack/zod-adapter";
+import { useCallback } from "react";
 
 const columnHelper = createColumnHelper<z.infer<typeof UserSchema>>();
 
@@ -87,63 +88,55 @@ function Component() {
     [usersQuery.data],
   );
 
+  const setSearch = useCallback(
+    (v: string) =>
+      navigate({
+        search: {
+          query: v,
+        },
+      }),
+    [navigate],
+  );
+
   return (
     <>
       <DefaultAppBar title="Admin" />
       <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
-        {/* <Stack gap={2}> */}
-        <Paper
-          sx={{ p: 2, textAlign: "center", height: "100%", width: "100%" }}
-        >
-          <Stack gap={2} sx={{ height: "100%", display: "flex" }}>
-            <Typography variant="h4">Users</Typography>
-            <TextField
-              onChange={(e) =>
-                navigate({
-                  search: {
-                    query: e.target.value,
-                  },
-                })
-              }
-              defaultValue={query}
-              label="Search"
-              InputLabelProps={{
+        <Stack gap={2} sx={{ height: "100%", display: "flex" }}>
+          <Typography variant="h4">Users</Typography>
+          <TextField
+            onChange={(e) => setSearch(e.target.value)}
+            defaultValue={query}
+            label="Search"
+            placeholder="Search for users"
+            fullWidth
+            slotProps={{
+              inputLabel: {
                 shrink: true,
-              }}
-              placeholder="Search for users"
-              fullWidth
-              slotProps={{
-                input: {
-                  endAdornment: usersQuery.isFetching ? (
-                    <InputAdornment position="end">
-                      <CircularProgress size={"30px"} />
-                    </InputAdornment>
-                  ) : undefined,
-                },
-              }}
-            />
-            <Datatable
-              columns={columns ?? []}
-              data={pagedItems}
-              globalFilter={query}
-              setGlobalFilter={(v) =>
-                navigate({
-                  search: {
-                    query: v,
-                  },
-                })
-              }
-              fetchNextPage={usersQuery.fetchNextPage}
-              isFetching={usersQuery.isFetching}
-              totalDBRowCount={total}
-              fixedHeight={69.5}
-              sx={{
-                flex: 1,
-              }}
-            />
-          </Stack>
-        </Paper>
-        {/* </Stack> */}
+              },
+              input: {
+                endAdornment: usersQuery.isFetching ? (
+                  <InputAdornment position="end">
+                    <CircularProgress size={"30px"} />
+                  </InputAdornment>
+                ) : undefined,
+              },
+            }}
+          />
+          <Datatable
+            columns={columns}
+            data={pagedItems}
+            globalFilter={query}
+            setGlobalFilter={setSearch}
+            fetchNextPage={usersQuery.fetchNextPage}
+            isFetching={usersQuery.isFetching}
+            totalDBRowCount={total}
+            fixedHeight={69.5}
+            sx={{
+              flex: 1,
+            }}
+          />
+        </Stack>
       </Container>
     </>
   );
