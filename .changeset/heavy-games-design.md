@@ -1,0 +1,5 @@
+---
+"frontend": minor
+---
+
+Use SSR
