@@ -5,5 +5,5 @@ export function parseDate(date: string | null) {
   if (!date) {
     return null;
   }
-  return DateTime.fromJSDate(new Date(date)).toISO();
+  return DateTime.fromMillis(Date.parse(date)).toISO();
 }
