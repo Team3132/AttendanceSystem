@@ -72,35 +72,31 @@ function Component() {
     [leaderboardQuery.data],
   );
 
-  if (leaderboardQuery.data) {
-    return (
-      <>
-        <DefaultAppBar title="Leaderboards" />
-        <Container
-          sx={{
-            my: 2,
-            flexGrow: 1,
-          }}
-        >
-          <Stack gap={2} sx={{ height: "100%", display: "flex" }}>
-            <Typography variant="h4">Outreach Leaderboard</Typography>
-            <Datatable
-              columns={columns ?? []}
-              data={flatResults ?? []}
-              totalDBRowCount={totalRowCount}
-              fetchNextPage={leaderboardQuery.fetchNextPage}
-              isFetching={leaderboardQuery.isFetching}
-              sx={{
-                flex: 1,
-                overflowY: "scroll",
-              }}
-              fixedHeight={53}
-            />
-          </Stack>
-        </Container>
-      </>
-    );
-  }
-
-  return <Typography variant="h4">Loading...</Typography>;
+  return (
+    <>
+      <DefaultAppBar title="Leaderboards" />
+      <Container
+        sx={{
+          my: 2,
+          flexGrow: 1,
+        }}
+      >
+        <Stack gap={2} sx={{ height: "100%", display: "flex" }}>
+          <Typography variant="h4">Outreach Leaderboard</Typography>
+          <Datatable
+            columns={columns ?? []}
+            data={flatResults ?? []}
+            totalDBRowCount={totalRowCount}
+            fetchNextPage={leaderboardQuery.fetchNextPage}
+            isFetching={leaderboardQuery.isFetching}
+            sx={{
+              flex: [1, 1, "0%"],
+              overflowY: "scroll",
+            }}
+            fixedHeight={53}
+          />
+        </Stack>
+      </Container>
+    </>
+  );
 }
