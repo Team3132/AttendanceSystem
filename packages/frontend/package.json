@@ -65,7 +65,7 @@
     "cross-env": "7.0.3",
     "discord-api-types": "0.37.115",
     "dotenv": "16.4.7",
-    "drizzle-orm": "0.38.2",
+    "drizzle-orm": "0.38.3",
     "drizzle-zod": "0.5.1",
     "eventemitter3": "5.0.1",
     "googleapis": "144.0.0",
