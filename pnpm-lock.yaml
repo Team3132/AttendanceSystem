@@ -305,7 +305,7 @@ importers:
         specifier: 10.0.0
         version: 10.0.0
       '@vitejs/plugin-react':
-        specifier: ^4.3.4
+        specifier: 4.3.4
         version: 4.3.4(vite@6.0.7(@types/node@22.10.5)(jiti@2.4.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.6.1))
       drizzle-kit:
         specifier: 0.30.1
