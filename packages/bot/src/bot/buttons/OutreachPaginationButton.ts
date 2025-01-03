@@ -1,6 +1,6 @@
 import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
 import { Inject, Injectable, UseGuards } from "@nestjs/common";
-import type { LeaderBoardUser } from "frontend/types";
+import type { LeaderBoardUser } from "frontend";
 import {
   ActionRowBuilder,
   ButtonBuilder,

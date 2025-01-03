@@ -2,7 +2,7 @@ import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
 import { ROLES } from "@/constants";
 import { Inject, Injectable, Logger, UseGuards } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import type { RSVPStatusUpdateSchema } from "frontend/types";
+import type { RSVPStatusUpdateSchema } from "frontend";
 import { GuildMember } from "discord.js";
 import { Button, type ButtonContext, ComponentParam, Context } from "necord";
 import type { z } from "zod";
