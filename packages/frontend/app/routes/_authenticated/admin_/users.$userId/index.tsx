@@ -8,8 +8,19 @@ import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/admin_/users/$userId/")({
   component: Component,
-  loader: async ({ context: { queryClient }, params: { userId } }) =>
-    queryClient.prefetchQuery(usersQueryOptions.userScancodes(userId)),
+  loader: async ({ context: { queryClient }, params: { userId } }) => {
+    await queryClient.prefetchQuery(usersQueryOptions.userScancodes(userId));
+    return queryClient.ensureQueryData(usersQueryOptions.userDetails(userId));
+  },
+  head: (ctx) => ({
+    meta: ctx.loaderData
+      ? [
+          {
+            title: `${ctx.loaderData.username}'s Scancodes`,
+          },
+        ]
+      : undefined,
+  }),
 });
 
 function Component() {

@@ -20,7 +20,7 @@ import {
 
 export const Route = createFileRoute("/_authenticated")({
   beforeLoad: async ({ context: { queryClient } }) => {
-    const { isAuthenticated, isAdmin } = await queryClient.ensureQueryData(
+    const { isAuthenticated } = await queryClient.ensureQueryData(
       authQueryOptions.status(),
     );
     if (!isAuthenticated) {
@@ -31,10 +31,6 @@ export const Route = createFileRoute("/_authenticated")({
         // },
       });
     }
-
-    return {
-      isAdmin,
-    };
   },
   loader: async ({ context: { queryClient } }) =>
     queryClient.prefetchQuery(authQueryOptions.status()),

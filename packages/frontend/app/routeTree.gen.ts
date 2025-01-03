@@ -11,10 +11,10 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as UnauthenticatedImport } from './routes/_unauthenticated'
+import { Route as LoginImport } from './routes/login'
+import { Route as ErrorImport } from './routes/error'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as AuthenticatedIndexImport } from './routes/_authenticated/index'
-import { Route as UnauthenticatedLoginImport } from './routes/_unauthenticated/login'
 import { Route as AuthenticatedProfileImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedLeaderboardImport } from './routes/_authenticated/leaderboard'
 import { Route as AuthenticatedEventsImport } from './routes/_authenticated/events'
@@ -33,8 +33,15 @@ import { Route as AuthenticatedAdminUsersUserIdPendingImport } from './routes/_a
 
 // Create/Update Routes
 
-const UnauthenticatedRoute = UnauthenticatedImport.update({
-  id: '/_unauthenticated',
+const LoginRoute = LoginImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ErrorRoute = ErrorImport.update({
+  id: '/error',
+  path: '/error',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -47,12 +54,6 @@ const AuthenticatedIndexRoute = AuthenticatedIndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthenticatedRoute,
-} as any)
-
-const UnauthenticatedLoginRoute = UnauthenticatedLoginImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => UnauthenticatedRoute,
 } as any)
 
 const AuthenticatedProfileRoute = AuthenticatedProfileImport.update({
@@ -165,11 +166,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedImport
       parentRoute: typeof rootRoute
     }
-    '/_unauthenticated': {
-      id: '/_unauthenticated'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof UnauthenticatedImport
+    '/error': {
+      id: '/error'
+      path: '/error'
+      fullPath: '/error'
+      preLoaderRoute: typeof ErrorImport
+      parentRoute: typeof rootRoute
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
     '/_authenticated/admin_': {
@@ -199,13 +207,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/profile'
       preLoaderRoute: typeof AuthenticatedProfileImport
       parentRoute: typeof AuthenticatedImport
-    }
-    '/_unauthenticated/login': {
-      id: '/_unauthenticated/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof UnauthenticatedLoginImport
-      parentRoute: typeof UnauthenticatedImport
     }
     '/_authenticated/': {
       id: '/_authenticated/'
@@ -385,25 +386,14 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
   AuthenticatedRouteChildren,
 )
 
-interface UnauthenticatedRouteChildren {
-  UnauthenticatedLoginRoute: typeof UnauthenticatedLoginRoute
-}
-
-const UnauthenticatedRouteChildren: UnauthenticatedRouteChildren = {
-  UnauthenticatedLoginRoute: UnauthenticatedLoginRoute,
-}
-
-const UnauthenticatedRouteWithChildren = UnauthenticatedRoute._addFileChildren(
-  UnauthenticatedRouteChildren,
-)
-
 export interface FileRoutesByFullPath {
-  '': typeof UnauthenticatedRouteWithChildren
+  '': typeof AuthenticatedRouteWithChildren
+  '/error': typeof ErrorRoute
+  '/login': typeof LoginRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/events': typeof AuthenticatedEventsRoute
   '/leaderboard': typeof AuthenticatedLeaderboardRoute
   '/profile': typeof AuthenticatedProfileRouteWithChildren
-  '/login': typeof UnauthenticatedLoginRoute
   '/': typeof AuthenticatedIndexRoute
   '/events/$eventId': typeof AuthenticatedEventsEventIdRouteWithChildren
   '/events/create': typeof AuthenticatedEventsCreateRoute
@@ -419,10 +409,10 @@ export interface FileRoutesByFullPath {
 }
 
 export interface FileRoutesByTo {
-  '': typeof UnauthenticatedRouteWithChildren
+  '/error': typeof ErrorRoute
+  '/login': typeof LoginRoute
   '/events': typeof AuthenticatedEventsRoute
   '/leaderboard': typeof AuthenticatedLeaderboardRoute
-  '/login': typeof UnauthenticatedLoginRoute
   '/': typeof AuthenticatedIndexRoute
   '/events/create': typeof AuthenticatedEventsCreateRoute
   '/profile/pending': typeof AuthenticatedProfilePendingRoute
@@ -438,12 +428,12 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
-  '/_unauthenticated': typeof UnauthenticatedRouteWithChildren
+  '/error': typeof ErrorRoute
+  '/login': typeof LoginRoute
   '/_authenticated/admin_': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/events': typeof AuthenticatedEventsRoute
   '/_authenticated/leaderboard': typeof AuthenticatedLeaderboardRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRouteWithChildren
-  '/_unauthenticated/login': typeof UnauthenticatedLoginRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/events_/$eventId': typeof AuthenticatedEventsEventIdRouteWithChildren
   '/_authenticated/events_/create': typeof AuthenticatedEventsCreateRoute
@@ -462,11 +452,12 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | ''
+    | '/error'
+    | '/login'
     | '/admin'
     | '/events'
     | '/leaderboard'
     | '/profile'
-    | '/login'
     | '/'
     | '/events/$eventId'
     | '/events/create'
@@ -481,10 +472,10 @@ export interface FileRouteTypes {
     | '/admin/users/$userId/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | ''
+    | '/error'
+    | '/login'
     | '/events'
     | '/leaderboard'
-    | '/login'
     | '/'
     | '/events/create'
     | '/profile/pending'
@@ -498,12 +489,12 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/_authenticated'
-    | '/_unauthenticated'
+    | '/error'
+    | '/login'
     | '/_authenticated/admin_'
     | '/_authenticated/events'
     | '/_authenticated/leaderboard'
     | '/_authenticated/profile'
-    | '/_unauthenticated/login'
     | '/_authenticated/'
     | '/_authenticated/events_/$eventId'
     | '/_authenticated/events_/create'
@@ -521,12 +512,14 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
-  UnauthenticatedRoute: typeof UnauthenticatedRouteWithChildren
+  ErrorRoute: typeof ErrorRoute
+  LoginRoute: typeof LoginRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
-  UnauthenticatedRoute: UnauthenticatedRouteWithChildren,
+  ErrorRoute: ErrorRoute,
+  LoginRoute: LoginRoute,
 }
 
 export const routeTree = rootRoute
@@ -540,7 +533,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/_authenticated",
-        "/_unauthenticated"
+        "/error",
+        "/login"
       ]
     },
     "/_authenticated": {
@@ -555,11 +549,11 @@ export const routeTree = rootRoute
         "/_authenticated/events_/create"
       ]
     },
-    "/_unauthenticated": {
-      "filePath": "_unauthenticated.tsx",
-      "children": [
-        "/_unauthenticated/login"
-      ]
+    "/error": {
+      "filePath": "error.tsx"
+    },
+    "/login": {
+      "filePath": "login.tsx"
     },
     "/_authenticated/admin_": {
       "filePath": "_authenticated/admin_.tsx",
@@ -584,10 +578,6 @@ export const routeTree = rootRoute
         "/_authenticated/profile/pending",
         "/_authenticated/profile/"
       ]
-    },
-    "/_unauthenticated/login": {
-      "filePath": "_unauthenticated/login.tsx",
-      "parent": "/_unauthenticated"
     },
     "/_authenticated/": {
       "filePath": "_authenticated/index.tsx",

@@ -54,17 +54,6 @@ const searchSchema = z.object({
 
 export const Route = createFileRoute("/_authenticated/admin_/")({
   validateSearch: searchSchema,
-  beforeLoad: async ({ context: { queryClient } }) => {
-    const { isAdmin } = await queryClient.ensureQueryData(
-      authQueryOptions.status(),
-    );
-    if (!isAdmin) {
-      throw redirect({
-        to: "/",
-      });
-    }
-  },
-
   loaderDeps: ({ search }) => ({ search }),
   loader: async ({ context: { queryClient }, deps: { search } }) =>
     queryClient.prefetchInfiniteQuery(
@@ -73,6 +62,13 @@ export const Route = createFileRoute("/_authenticated/admin_/")({
         search: search.query,
       }),
     ),
+  head: () => ({
+    meta: [
+      {
+        title: "Admin",
+      },
+    ],
+  }),
   component: Component,
 });
 

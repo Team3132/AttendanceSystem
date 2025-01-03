@@ -11,6 +11,9 @@ export const Route = createFileRoute("/_authenticated/")({
   component: () => <Component />,
   loader: async ({ context: { queryClient } }) =>
     queryClient.prefetchQuery(usersQueryOptions.userSelfPendingRsvps()),
+  head: () => ({
+    meta: [{ title: "Home" }],
+  }),
 });
 
 export function Component() {

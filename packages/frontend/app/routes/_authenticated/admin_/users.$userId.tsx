@@ -19,7 +19,6 @@ export const Route = createFileRoute("/_authenticated/admin_/users/$userId")({
 });
 
 function Component() {
-  const loaderData = Route.useLoaderData();
   const { userId } = Route.useParams();
 
   const userQuery = useSuspenseQuery(usersQueryOptions.userDetails(userId));
@@ -48,11 +47,9 @@ function Component() {
 
   const matchingIndex = useMemo(
     () =>
-      tabs.findIndex((tab) => {
-        return currentChildren.some((child) => {
-          return child.fullPath === tab.to;
-        });
-      }),
+      tabs.findIndex((tab) =>
+        currentChildren.some((child) => child.fullPath === tab.to),
+      ),
     [currentChildren, tabs],
   );
 

@@ -93,7 +93,10 @@ export const sessionMiddleware = createMiddleware()
     // If there's no session or user, we're not logged in and we should redirect to the login page
     if (!session || !user) {
       throw redirect({
-        to: "/login",
+        to: "/error",
+        search: {
+          message: "You are not logged in",
+        },
       });
     }
 
@@ -115,7 +118,10 @@ export const mentorMiddleware = createMiddleware()
 
     if (!user?.roles?.includes(env.VITE_MENTOR_ROLE_ID)) {
       throw redirect({
-        to: "/login",
+        to: "/error",
+        search: {
+          message: "You are not a mentor",
+        },
       });
     }
 
@@ -126,5 +132,5 @@ export const mentorMiddleware = createMiddleware()
 
 // Register the global middleware
 registerGlobalMiddleware({
-  middleware: [authBaseMiddleware, sessionMiddleware, mentorMiddleware],
+  middleware: [authBaseMiddleware],
 });
