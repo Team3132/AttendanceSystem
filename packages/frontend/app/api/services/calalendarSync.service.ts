@@ -30,7 +30,7 @@ export const getCalendarEvents = () =>
       {
         calendarId: env.VITE_GOOGLE_CALENDAR_ID,
         timeMin: DateTime.now().toISO(),
-        timeMax: DateTime.now().plus({ month: 1 }).toISO(),
+        timeMax: DateTime.now().plus({ month: 3 }).toISO(),
         orderBy: "startTime",
         singleEvents: true,
       },
@@ -54,7 +54,7 @@ export const syncEvents = async () => {
     where: (event, { and, eq }) =>
       and(
         gte(event.startDate, DateTime.now().toISO()),
-        lte(event.endDate, DateTime.now().plus({ month: 1 }).toISO()),
+        lte(event.endDate, DateTime.now().plus({ month: 3 }).toISO()),
         eq(event.isSyncedEvent, true),
       ),
   });
