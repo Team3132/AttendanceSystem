@@ -147,15 +147,6 @@ importers:
       '@fontsource/roboto':
         specifier: 5.1.1
         version: 5.1.1
-      '@hono/node-ws':
-        specifier: 1.0.5
-        version: 1.0.5(@hono/node-server@1.13.7(hono@4.6.15))
-      '@hono/trpc-server':
-        specifier: 0.3.4
-        version: 0.3.4(@trpc/server@11.0.0-rc.682(typescript@5.7.2))(hono@4.6.15)
-      '@hono/zod-openapi':
-        specifier: 0.18.0
-        version: 0.18.0(hono@4.6.15)(zod@3.24.1)
       '@hookform/resolvers':
         specifier: 3.9.1
         version: 3.9.1(react-hook-form@7.54.2(react@19.0.0))
@@ -174,9 +165,6 @@ importers:
       '@mui/x-date-pickers':
         specifier: 7.23.3
         version: 7.23.3(uxrnvahnppb466p24taksphmmu)
-      '@scalar/hono-api-reference':
-        specifier: 0.5.165
-        version: 0.5.165(hono@4.6.15)
       '@t3-oss/env-core':
         specifier: 0.11.1
         version: 0.11.1(typescript@5.7.2)(zod@3.24.1)
@@ -252,9 +240,6 @@ importers:
       googleapis:
         specifier: 144.0.0
         version: 144.0.0
-      hono:
-        specifier: 4.6.15
-        version: 4.6.15
       lucia:
         specifier: 3.2.2
         version: 3.2.2
@@ -373,11 +358,6 @@ packages:
     engines: {node: '>=10'}
     peerDependencies:
       ajv: '>=8'
-
-  '@asteasolutions/zod-to-openapi@7.3.0':
-    resolution: {integrity: sha512-7tE/r1gXwMIvGnXVUdIqUhCU1RevEFC4Jk6Bussa0fk1ecbnnINkZzj1EOAJyE/M3AI25DnHT/zKQL1/FPFi8Q==}
-    peerDependencies:
-      zod: ^3.20.2
 
   '@babel/code-frame@7.26.2':
     resolution: {integrity: sha512-RJlIHRueQgwWitWgF8OdFYGZX328Ax5BCemNGlqHfplnRT9ESi8JkFlvaVYbS+UubVY6dpv87Fs2u5M29iNFVQ==}
@@ -2002,38 +1982,6 @@ packages:
   '@fontsource/roboto@5.1.1':
     resolution: {integrity: sha512-XwVVXtERDQIM7HPUIbyDe0FP4SRovpjF7zMI8M7pbqFp3ahLJsJTd18h+E6pkar6UbV3btbwkKjYARr5M+SQow==}
 
-  '@hono/node-server@1.13.7':
-    resolution: {integrity: sha512-kTfUMsoloVKtRA2fLiGSd9qBddmru9KadNyhJCwgKBxTiNkaAJEwkVN9KV/rS4HtmmNRtUh6P+YpmjRMl0d9vQ==}
-    engines: {node: '>=18.14.1'}
-    peerDependencies:
-      hono: ^4
-
-  '@hono/node-ws@1.0.5':
-    resolution: {integrity: sha512-p1q3Q+ThKZ28xNB0mZa2MAMPBMhX8rbk6CYs/XYbTAhLa/pccsORUoNQjEEXqTB0liRDj4WJpMaSY4qWXsAPuA==}
-    engines: {node: '>=18.14.1'}
-    peerDependencies:
-      '@hono/node-server': ^1.11.1
-
-  '@hono/trpc-server@0.3.4':
-    resolution: {integrity: sha512-xFOPjUPnII70FgicDzOJy1ufIoBTu8eF578zGiDOrYOrYN8CJe140s9buzuPkX+SwJRYK8LjEBHywqZtxdm8aA==}
-    engines: {node: '>=16.0.0'}
-    peerDependencies:
-      '@trpc/server': ^10.10.0 || >11.0.0-rc
-      hono: '>=4.*'
-
-  '@hono/zod-openapi@0.18.0':
-    resolution: {integrity: sha512-MNdFSbACkEq1txteKsBrVB0Mnil0zd5urOrP8eti6kUDI95CKVws+vjHQWNddRqmqlBHa5kFAcVXSInHFmcYGQ==}
-    engines: {node: '>=16.0.0'}
-    peerDependencies:
-      hono: '>=4.3.6'
-      zod: 3.*
-
-  '@hono/zod-validator@0.4.1':
-    resolution: {integrity: sha512-I8LyfeJfvVmC5hPjZ2Iij7RjexlgSBT7QJudZ4JvNPLxn0JQ3sqclz2zydlwISAnw21D2n4LQ0nfZdoiv9fQQA==}
-    peerDependencies:
-      hono: '>=3.9.0'
-      zod: ^3.19.1
-
   '@hookform/resolvers@3.9.1':
     resolution: {integrity: sha512-ud2HqmGBM0P0IABqoskKWI6PEf6ZDDBZkFqe2Vnl+mTHCEHzr3ISjjZyCwTjC/qpL25JC9aIDkloQejvMeq0ug==}
     peerDependencies:
@@ -3317,20 +3265,6 @@ packages:
     resolution: {integrity: sha512-xzvBr1Q1c4lCe7i6sRnrofxeO1QTP/LKQ6A6qy0iB4x5yfiSfARMEQEghojzTNALDTcv8En04qYNIco9/K9eZQ==}
     engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
 
-  '@scalar/hono-api-reference@0.5.165':
-    resolution: {integrity: sha512-UOdH9vKQxNC5wi3fQufq44g93x3oE7YoeI1bdLncbrK3Nm+XtLe4Wc0kSpz1n6gsjvqSJij/ioXmkC8OJpM5hA==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      hono: ^4.0.0
-
-  '@scalar/openapi-types@0.1.5':
-    resolution: {integrity: sha512-6geH9ehvQ/sG/xUyy3e0lyOw3BaY5s6nn22wHjEJhcobdmWyFER0O6m7AU0ZN4QTjle/gYvFJOjj552l/rsNSw==}
-    engines: {node: '>=18'}
-
-  '@scalar/types@0.0.25':
-    resolution: {integrity: sha512-sGnOFnfiSn4o23rklU/jrg81hO+630bsFIdHg8MZ/w2Nc6IoUwARA2hbe4d4Fg+D0KBu40Tan/L+WAYDXkTJQg==}
-    engines: {node: '>=18'}
-
   '@sec-ant/readable-stream@0.4.1':
     resolution: {integrity: sha512-831qok9r2t8AlxLko40y2ebgSDhenenCatLVeW/uBtnHPyhHOvG0C7TvfgecV+wHzIm5KUICgzmVpWS+IMEAeg==}
 
@@ -3789,9 +3723,6 @@ packages:
 
   '@types/ws@8.5.13':
     resolution: {integrity: sha512-osM/gWBTPKgHV8XkTunnegTRIsvF6owmf5w+JtAfOw472dptdm0dlGv4xCt6GwQRcC2XVOvvRE/0bAoQcL2QkA==}
-
-  '@unhead/schema@1.11.13':
-    resolution: {integrity: sha512-fIpQx6GCpl99l4qJXsPqkXxO7suMccuLADbhaMSkeXnVEi4ZIle+l+Ri0z+GHAEpJj17FMaQdO5n9FMSOMUxkw==}
 
   '@vercel/nft@0.27.7':
     resolution: {integrity: sha512-FG6H5YkP4bdw9Ll1qhmbxuE8KwW2E/g8fJpM183fWQLeVDGqzeywMIeJ9h2txdWZ03psgWMn6QymTxaDLmdwUg==}
@@ -5286,10 +5217,6 @@ packages:
   hoist-non-react-statics@3.3.2:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
 
-  hono@4.6.15:
-    resolution: {integrity: sha512-OiQwvAOAaI2JrABBH69z5rsctHDzFzIKJge0nYXgtzGJ0KftwLWcBXm1upJC23/omNRtnqM0gjRMbtXshPdqhQ==}
-    engines: {node: '>=16.9.0'}
-
   hookable@5.5.3:
     resolution: {integrity: sha512-Yc+BQe8SvoXH1643Qez1zqLRmbA5rCL+sSmk6TVos0LWVfNIB7PGncdlId77WzLGSIB5KaWgTaNTs2lNVEI6VQ==}
 
@@ -6115,9 +6042,6 @@ packages:
     hasBin: true
     peerDependencies:
       typescript: ^5.x
-
-  openapi3-ts@4.4.0:
-    resolution: {integrity: sha512-9asTNB9IkKEzWMcHmVZE7Ts3kC9G7AFHfs8i7caD8HbI76gEjdkId4z/AkP83xdZsH7PLAnnbl47qZkXuxpArw==}
 
   os-tmpdir@1.0.2:
     resolution: {integrity: sha512-D2FR03Vir7FIu45XBY20mTb+/ZSWB00sjU9jdQXt83gDrI4Ztz5Fs7/yy74g2N5SVQY4xY1qDr4rNddwYRVX0g==}
@@ -7528,9 +7452,6 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  zhead@2.2.4:
-    resolution: {integrity: sha512-8F0OI5dpWIA5IGG5NHUg9staDwz/ZPxZtvGVf01j7vHqSyZ0raHY+78atOVxRqb73AotX22uV1pXt3gYSstGag==}
-
   zip-stream@6.0.1:
     resolution: {integrity: sha512-zK7YHHz4ZXpW89AHXUPbQVGKI7uvkd3hzusTdotCg1UxyaVtg0zFJSTfW/Dq5f7OBBVnq6cZIaC8Ti4hb6dtCA==}
     engines: {node: '>= 14'}
@@ -7551,11 +7472,6 @@ snapshots:
       json-schema: 0.4.0
       jsonpointer: 5.0.1
       leven: 3.1.0
-
-  '@asteasolutions/zod-to-openapi@7.3.0(zod@3.24.1)':
-    dependencies:
-      openapi3-ts: 4.4.0
-      zod: 3.24.1
 
   '@babel/code-frame@7.26.2':
     dependencies:
@@ -9068,35 +8984,6 @@ snapshots:
 
   '@fontsource/roboto@5.1.1': {}
 
-  '@hono/node-server@1.13.7(hono@4.6.15)':
-    dependencies:
-      hono: 4.6.15
-
-  '@hono/node-ws@1.0.5(@hono/node-server@1.13.7(hono@4.6.15))':
-    dependencies:
-      '@hono/node-server': 1.13.7(hono@4.6.15)
-      ws: 8.18.0
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-
-  '@hono/trpc-server@0.3.4(@trpc/server@11.0.0-rc.682(typescript@5.7.2))(hono@4.6.15)':
-    dependencies:
-      '@trpc/server': 11.0.0-rc.682(typescript@5.7.2)
-      hono: 4.6.15
-
-  '@hono/zod-openapi@0.18.0(hono@4.6.15)(zod@3.24.1)':
-    dependencies:
-      '@asteasolutions/zod-to-openapi': 7.3.0(zod@3.24.1)
-      '@hono/zod-validator': 0.4.1(hono@4.6.15)(zod@3.24.1)
-      hono: 4.6.15
-      zod: 3.24.1
-
-  '@hono/zod-validator@0.4.1(hono@4.6.15)(zod@3.24.1)':
-    dependencies:
-      hono: 4.6.15
-      zod: 3.24.1
-
   '@hookform/resolvers@3.9.1(react-hook-form@7.54.2(react@19.0.0))':
     dependencies:
       react-hook-form: 7.54.2(react@19.0.0)
@@ -10423,18 +10310,6 @@ snapshots:
 
   '@sapphire/snowflake@3.5.5': {}
 
-  '@scalar/hono-api-reference@0.5.165(hono@4.6.15)':
-    dependencies:
-      '@scalar/types': 0.0.25
-      hono: 4.6.15
-
-  '@scalar/openapi-types@0.1.5': {}
-
-  '@scalar/types@0.0.25':
-    dependencies:
-      '@scalar/openapi-types': 0.1.5
-      '@unhead/schema': 1.11.13
-
   '@sec-ant/readable-stream@0.4.1': {}
 
   '@sentry-internal/tracing@7.114.0':
@@ -11005,11 +10880,6 @@ snapshots:
   '@types/ws@8.5.13':
     dependencies:
       '@types/node': 22.10.4
-
-  '@unhead/schema@1.11.13':
-    dependencies:
-      hookable: 5.5.3
-      zhead: 2.2.4
 
   '@vercel/nft@0.27.7(rollup@4.28.1)':
     dependencies:
@@ -12836,8 +12706,6 @@ snapshots:
     dependencies:
       react-is: 16.13.1
 
-  hono@4.6.15: {}
-
   hookable@5.5.3: {}
 
   html-tokenize@2.0.1:
@@ -13685,10 +13553,6 @@ snapshots:
       yargs-parser: 21.1.1
     transitivePeerDependencies:
       - encoding
-
-  openapi3-ts@4.4.0:
-    dependencies:
-      yaml: 2.6.1
 
   os-tmpdir@1.0.2: {}
 
@@ -15196,7 +15060,8 @@ snapshots:
 
   yaml@1.10.2: {}
 
-  yaml@2.6.1: {}
+  yaml@2.6.1:
+    optional: true
 
   yargs-parser@21.1.1: {}
 
@@ -15217,8 +15082,6 @@ snapshots:
 
   yocto-queue@0.1.0:
     optional: true
-
-  zhead@2.2.4: {}
 
   zip-stream@6.0.1:
     dependencies:

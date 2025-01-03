@@ -7,7 +7,6 @@
     "baseUrl": "app",
     "paths": {
       "@/*": ["./*"],
-      "hono": ["../node_modules/hono"]
     }
   },
   "include": ["app"]
