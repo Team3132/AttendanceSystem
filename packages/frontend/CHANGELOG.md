@@ -1,5 +1,11 @@
 # frontend
 
+## 5.1.0
+
+### Minor Changes
+
+- [#2259](https://github.com/Team3132/AttendanceSystem/pull/2259) [`e706eea`](https://github.com/Team3132/AttendanceSystem/commit/e706eeaaae15fa77b28fb8e5519119008cc148e0) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Use SSR
+
 ## 5.0.14
 
 ## 5.0.13
