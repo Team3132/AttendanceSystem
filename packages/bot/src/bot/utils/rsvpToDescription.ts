@@ -1,4 +1,4 @@
-import type { RSVPUserSchema } from "frontend";
+import type { RSVPUserSchema } from "frontend/types";
 import type { z } from "zod";
 
 export const statusToEmoji = (
