@@ -1,5 +1,11 @@
 # frontend
 
+## 5.1.12
+
+### Patch Changes
+
+- [`426f596`](https://github.com/Team3132/AttendanceSystem/commit/426f5964c589ad30dcc3477cddb4e46dc76d26a6) Thanks [@sebasptsch](https://github.com/sebasptsch)! - New RSVP Presets and editing
+
 ## 5.1.11
 
 ### Patch Changes
