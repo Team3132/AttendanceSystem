@@ -46,17 +46,19 @@ export default function AdminRSVPListItem({ rsvp }: AdminRSVPListItemProps) {
 
   const message = useMemo(() => {
     if (isSameDay && checkin && checkout) {
+      const hours = checkout.diff(checkin, "hours").hours;
       // If the checkin and checkout are on the same day, show the time range
       return `${checkin.toLocaleString(
         DateTime.TIME_SIMPLE,
-      )} - ${checkout.toLocaleString(DateTime.TIME_SIMPLE)}`;
+      )} - ${checkout.toLocaleString(DateTime.TIME_SIMPLE)} (${hours} hours)`;
     }
 
     if (checkin && checkout) {
+      const hours = checkout.diff(checkin, "hours").hours;
       // If the checkin and checkout are not on the same day, show the date range
       return `${checkin.toLocaleString(
         DateTime.DATETIME_MED,
-      )} - ${checkout.toLocaleString(DateTime.DATETIME_MED)}`;
+      )} - ${checkout.toLocaleString(DateTime.DATETIME_MED)} (${hours} hours)`;
     }
 
     if (checkin) {
