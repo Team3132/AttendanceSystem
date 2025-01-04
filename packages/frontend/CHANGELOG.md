@@ -1,5 +1,11 @@
 # frontend
 
+## 5.1.6
+
+### Patch Changes
+
+- [`5ac12a3`](https://github.com/Team3132/AttendanceSystem/commit/5ac12a314817f85098c3e2df22a5cde3374cab72) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix infinite scroll for leaderboard
+
 ## 5.1.5
 
 ### Patch Changes
