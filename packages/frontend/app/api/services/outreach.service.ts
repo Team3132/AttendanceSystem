@@ -90,7 +90,7 @@ export async function getOutreachTime(
         duration: baseQuery.duration,
       })
       .from(baseQuery)
-      .orderBy(desc(baseQuery.duration))
+      .orderBy(desc(baseQuery.duration), baseQuery.username)
       .offset(offset)
       .limit(limit);
 
