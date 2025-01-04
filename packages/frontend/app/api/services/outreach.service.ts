@@ -47,56 +47,57 @@ export async function getOutreachTime(
   const { items, total } = await db.transaction(async (tx) => {
     await tx.execute(sql`SET LOCAL intervalstyle = 'iso_8601'`); // set the interval style to iso_8601
 
-    const conditionalAnd = and(
-      eq(eventTable.type, "Outreach"),
-      not(arrayOverlaps(userTable.roles, [env.VITE_MENTOR_ROLE_ID])),
-      isNotNull(rsvpTable.checkinTime),
-      isNotNull(rsvpTable.checkoutTime),
-      eq(rsvpTable.status, "ATTENDED"),
-      gte(eventTable.startDate, aprilIsoDate),
-    );
-
-    const items = await tx
+    const baseQuery = tx
       .select({
         /** Username */
         username: userTable.username,
         /** UserId */
         userId: userTable.id,
         /** Duration (in ISO8601 format) */
-        duration: sql<string>`sum(${rsvpTable.checkoutTime} - ${rsvpTable.checkinTime})`,
+        duration:
+          sql<string>`sum(${rsvpTable.checkoutTime} - ${rsvpTable.checkinTime})`.as(
+            "duration",
+          ),
       })
       .from(rsvpTable)
-      .groupBy(userTable.id)
       .innerJoin(eventTable, eq(rsvpTable.eventId, eventTable.id))
       .innerJoin(userTable, eq(rsvpTable.userId, userTable.id))
-      .orderBy(
-        sql<string>`sum(${rsvpTable.checkoutTime} - ${rsvpTable.checkinTime}) DESC`,
+      .groupBy(userTable.id)
+      .where(
+        and(
+          eq(eventTable.type, "Outreach"),
+          not(arrayOverlaps(userTable.roles, [env.VITE_MENTOR_ROLE_ID])),
+          isNotNull(rsvpTable.checkinTime),
+          isNotNull(rsvpTable.checkoutTime),
+          eq(rsvpTable.status, "ATTENDED"),
+          gte(eventTable.startDate, aprilIsoDate),
+        ),
       )
-      .where(conditionalAnd)
-      .limit(limit)
-      .offset(offset);
+      .as("baseQuery");
 
-    const usersQuery = tx
+    const [leaderboardCount] = await tx
       .select({
-        userId: userTable.id,
+        count: count(),
       })
-      .from(rsvpTable)
-      .groupBy(userTable.id)
-      .innerJoin(eventTable, eq(rsvpTable.eventId, eventTable.id))
-      .innerJoin(userTable, eq(rsvpTable.userId, userTable.id))
-      .where(conditionalAnd)
-      .as("usersQuery");
+      .from(baseQuery);
 
-    const [firstData] = await tx
+    const offset = page * limit;
+
+    const items = await tx
       .select({
-        total: count(),
+        username: baseQuery.username,
+        userId: baseQuery.userId,
+        duration: baseQuery.duration,
       })
-      .from(usersQuery);
+      .from(baseQuery)
+      .orderBy(desc(baseQuery.duration))
+      .offset(offset)
+      .limit(limit);
 
     let total = 0;
 
-    if (firstData) {
-      total = firstData.total;
+    if (leaderboardCount) {
+      total = leaderboardCount.count;
     }
 
     return {
