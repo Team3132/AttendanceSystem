@@ -302,6 +302,7 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
             name="status"
             label="Status"
             placeholder="Select a status"
+            helperText="Select the status of the RSVP"
             options={[
               { label: "", value: "" },
               { label: "No", value: "NO" },
