@@ -1,5 +1,11 @@
 # frontend
 
+## 5.1.7
+
+### Patch Changes
+
+- [`b641ae0`](https://github.com/Team3132/AttendanceSystem/commit/b641ae0b21ee9f4f56762bfada8918388771c41b) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix change
+
 ## 5.1.6
 
 ### Patch Changes
