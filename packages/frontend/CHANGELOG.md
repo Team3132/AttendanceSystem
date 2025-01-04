@@ -1,5 +1,11 @@
 # frontend
 
+## 5.1.4
+
+### Patch Changes
+
+- [`5997f74`](https://github.com/Team3132/AttendanceSystem/commit/5997f746c4abad1761cea2131536456570f2d17e) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Rework outreach query
+
 ## 5.1.3
 
 ### Patch Changes
