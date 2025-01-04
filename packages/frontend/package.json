@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "PORT=1420 vinxi dev",
-    "build": "tsc && buildtypes && vinxi build",
+    "build": "tsc && tsup && vinxi build",
     "buildtypes": "tsup",
     "start": "PORT=1420 vinxi start",
     "typecheck": "tsc",
