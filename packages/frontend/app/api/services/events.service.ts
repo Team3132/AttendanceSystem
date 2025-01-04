@@ -594,6 +594,15 @@ export async function editUserAttendance(
     });
   }
 
+  if (checkinTime && checkoutTime) {
+    if (DateTime.fromISO(checkinTime) > DateTime.fromISO(checkoutTime)) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Checkin time must be before checkout time",
+      });
+    }
+  }
+
   const [updatedRsvp] = await db
     .insert(rsvpTable)
     .values({

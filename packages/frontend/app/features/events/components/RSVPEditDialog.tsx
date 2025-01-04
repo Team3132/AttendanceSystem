@@ -27,11 +27,25 @@ interface RSVPEditDialogProps {
   rsvp: z.infer<typeof RSVPSchema>;
 }
 
-const UpdateRsvpSchema = z.object({
-  status: RSVPStatusSchema.optional(),
-  checkinTime: z.string().nullable().optional(),
-  checkoutTime: z.string().nullable().optional(),
-});
+const UpdateRsvpSchema = z
+  .object({
+    status: RSVPStatusSchema.optional(),
+    checkinTime: z.string().nullable().optional(),
+    checkoutTime: z.string().nullable().optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.checkinTime && data.checkoutTime) {
+      if (
+        DateTime.fromISO(data.checkinTime) > DateTime.fromISO(data.checkoutTime)
+      ) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["checkinTime"],
+          message: "Checkin time must be before checkout time",
+        });
+      }
+    }
+  });
 
 export default function RSVPEditDialog(props: RSVPEditDialogProps) {
   const { onClose, open, rsvp } = props;
@@ -75,7 +89,7 @@ export default function RSVPEditDialog(props: RSVPEditDialogProps) {
       component={"form"}
       onSubmit={onSubmit}
     >
-      <DialogTitle>Register new code</DialogTitle>
+      <DialogTitle>Edit RSVP Time</DialogTitle>
       <DialogContent>
         <DialogContentText>Edit an RSVP.</DialogContentText>
         <Stack
