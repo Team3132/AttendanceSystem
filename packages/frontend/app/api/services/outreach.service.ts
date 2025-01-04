@@ -44,7 +44,7 @@ export async function getOutreachTime(
   }
 
   const offset = page * limit;
-  const { items, total } = await db.transaction(async (tx) => {
+  const { paginatedItems, total } = await db.transaction(async (tx) => {
     await tx.execute(sql`SET LOCAL intervalstyle = 'iso_8601'`); // set the interval style to iso_8601
 
     const baseQuery = tx
@@ -83,7 +83,7 @@ export async function getOutreachTime(
 
     const offset = page * limit;
 
-    const items = await tx
+    const paginatedItems = await tx
       .select({
         username: baseQuery.username,
         userId: baseQuery.userId,
@@ -101,13 +101,13 @@ export async function getOutreachTime(
     }
 
     return {
-      items,
+      paginatedItems,
       total,
     };
   });
 
   // add rank to the result
-  const result = items.map((row, index) => ({
+  const items = paginatedItems.map((row, index) => ({
     ...row,
     rank: index + 1 + offset,
   }));
@@ -116,7 +116,7 @@ export async function getOutreachTime(
   const nextPage = total > offset + limit ? page + 1 : undefined;
 
   return {
-    items: result,
+    items,
     page,
     total,
     nextPage,
