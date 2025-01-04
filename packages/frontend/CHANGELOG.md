@@ -1,5 +1,13 @@
 # frontend
 
+## 5.1.11
+
+### Patch Changes
+
+- [`d7fabb3`](https://github.com/Team3132/AttendanceSystem/commit/d7fabb3be9fd9a708d6db3dc766ee09545cda502) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Better add dialog
+
+- [`1bf1a0a`](https://github.com/Team3132/AttendanceSystem/commit/1bf1a0ad5c395dd6fa3beec19c6878625c00fdcd) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add catch
+
 ## 5.1.10
 
 ### Patch Changes
