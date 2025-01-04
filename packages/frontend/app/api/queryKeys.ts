@@ -60,6 +60,9 @@ export const eventQueryKeys = {
   /* The logged in user's rsvp status **/
   eventRsvp: (id: string) => [...eventQueryKeys.event(id), "rsvp"] as const,
   /** The RSVPs for everyone for a specific event */
+  eventUserRsvp: (eventId: string, userId: string) =>
+    [...eventQueryKeys.eventRsvp(eventId), "details", userId] as const,
+
   eventRsvps: (id: string) =>
     [...eventQueryKeys.eventRsvp(id), "list"] as const,
 };

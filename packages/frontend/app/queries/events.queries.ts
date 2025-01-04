@@ -42,6 +42,18 @@ const getEventRsvpsFn = createServerFn({ method: "GET" })
   .validator(z.string().describe("The event ID"))
   .handler(async ({ data }) => getEventRsvps(data));
 
+const getUserRsvpFn = createServerFn({ method: "GET" })
+  .middleware([sessionMiddleware])
+  .validator(
+    z.object({
+      eventId: z.string().describe("The event ID"),
+      userId: z.string().describe("The user ID"),
+    }),
+  )
+  .handler(async ({ data, context }) =>
+    getEventRsvp(data.eventId, data.userId),
+  );
+
 export const eventQueryOptions = {
   eventList: (options: GetEventsParams) =>
     infiniteQueryOptions({
@@ -76,5 +88,11 @@ export const eventQueryOptions = {
     queryOptions({
       queryFn: () => getEventRsvpsFn({ data: id }),
       queryKey: eventQueryKeys.eventRsvps(id),
+    }),
+
+  userRsvp: (eventId: string, userId: string) =>
+    queryOptions({
+      queryFn: () => getUserRsvpFn({ data: { eventId, userId } }),
+      queryKey: eventQueryKeys.eventUserRsvp(eventId, userId),
     }),
 };

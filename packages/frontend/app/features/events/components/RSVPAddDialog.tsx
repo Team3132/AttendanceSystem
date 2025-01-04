@@ -81,7 +81,7 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
   );
 
   const {
-    formState: { isSubmitting, errors },
+    formState: { isSubmitting },
     handleSubmit,
     control,
     reset,

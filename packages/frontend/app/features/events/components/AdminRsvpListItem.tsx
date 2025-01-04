@@ -1,9 +1,12 @@
 import {
   Avatar,
+  Divider,
   IconButton,
   ListItem,
   ListItemAvatar,
   ListItemText,
+  Menu,
+  MenuItem,
   Tooltip,
 } from "@mui/material";
 import type { RSVPUserSchema } from "@/api/schema";
@@ -11,71 +14,24 @@ import { DateTime } from "luxon";
 import { FaCheck, FaClock, FaGear, FaQuestion, FaXmark } from "react-icons/fa6";
 import type { z } from "zod";
 import { useDisclosure } from "../../../hooks/useDisclosure";
-import useCheckinUser from "../hooks/useCheckinUser";
-import useCheckoutUser from "../hooks/useCheckoutUser";
-import RSVPEditDialog from "./RSVPEditDialog";
-import { useCallback } from "react";
+import { MdEdit } from "react-icons/md";
+import { useCallback, useId, useRef } from "react";
+import useAddUserRsvp from "../hooks/useAddRsvp";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { eventQueryOptions } from "@/queries/events.queries";
+import { parseDate } from "@/utils/date";
+import RSVPActionsButton from "./RSVPActionsButton";
 
 interface AdminRSVPListItemProps {
   rsvp: z.infer<typeof RSVPUserSchema>;
 }
 
 export default function AdminRSVPListItem({ rsvp }: AdminRSVPListItemProps) {
-  const { getButtonProps, getDisclosureProps } = useDisclosure();
-  const checkoutMutation = useCheckoutUser();
-  const checkinMutation = useCheckinUser();
-
-  const handleCheckIn = useCallback(
-    () =>
-      checkinMutation.mutate({
-        data: {
-          eventId: rsvp.eventId,
-          userId: rsvp.userId,
-        },
-      }),
-    [checkinMutation, rsvp.eventId, rsvp.userId],
-  );
-
-  const handleCheckOut = useCallback(
-    () =>
-      checkoutMutation.mutate({
-        data: {
-          eventId: rsvp.eventId,
-          userId: rsvp.userId,
-        },
-      }),
-    [checkoutMutation, rsvp.eventId, rsvp.userId],
-  );
-
-  const handleCheckInOut = useCallback(() => {
-    if (!rsvp.checkinTime) {
-      handleCheckIn();
-    } else if (!rsvp.checkoutTime) {
-      handleCheckOut();
-    }
-  }, [handleCheckIn, handleCheckOut, rsvp.checkinTime, rsvp.checkoutTime]);
-
   return (
     <>
       <ListItem
         secondaryAction={
-          <>
-            <Tooltip title="Check in/out">
-              <IconButton
-                onClick={handleCheckInOut}
-                disabled={
-                  checkinMutation.isPending || checkoutMutation.isPending
-                }
-              >
-                <FaClock />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Edit">
-              <IconButton {...getButtonProps()}>
-                <FaGear />
-              </IconButton>
-            </Tooltip>
-          </>
+          <RSVPActionsButton eventId={rsvp.eventId} userId={rsvp.userId} />
         }
       >
         <Tooltip title={rsvp.status ?? "No response"}>
@@ -121,7 +77,6 @@ export default function AdminRSVPListItem({ rsvp }: AdminRSVPListItemProps) {
           }
         />
       </ListItem>
-      <RSVPEditDialog rsvp={rsvp} {...getDisclosureProps()} />
     </>
   );
 }
