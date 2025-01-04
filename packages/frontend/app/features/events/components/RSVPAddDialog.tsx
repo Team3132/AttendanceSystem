@@ -8,10 +8,11 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  FormHelperText,
   Stack,
   TextField,
 } from "@mui/material";
-import { keepPreviousData } from "@tanstack/react-query";
+import { keepPreviousData, useSuspenseQuery } from "@tanstack/react-query";
 import { TRPCClientError } from "@trpc/client";
 import { useMemo } from "react";
 import { Controller } from "react-hook-form";
@@ -21,6 +22,13 @@ import useZodForm, { type ZodSubmitHandler } from "../../../hooks/useZodForm";
 import useAddUserRsvp from "../hooks/useAddRsvp";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { usersQueryOptions } from "@/queries/users.queries";
+import { RSVPStatusUpdateSchema } from "@/api/index";
+import { DateTimePicker } from "@mui/x-date-pickers";
+import { DateTime } from "luxon";
+import ControlledSelect from "@/components/ControlledSelect";
+import { eventQueryKeys } from "@/api/queryKeys";
+import { eventQueryOptions } from "@/queries/events.queries";
+import { parseDate } from "@/utils/date";
 
 interface RSVPAddDialogProps {
   onOpen: () => void;
@@ -36,6 +44,9 @@ const UserOptionSchema = z.object({
 
 const AddUserRsvpSchema = z.object({
   userOption: UserOptionSchema.nullable().default(null),
+  checkinTime: z.string().nullable().optional(),
+  checkoutTime: z.string().nullable().optional(),
+  status: z.union([RSVPStatusUpdateSchema, z.literal("")]).default(""),
 });
 
 export default function RSVPAddDialog(props: RSVPAddDialogProps) {
@@ -53,6 +64,10 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
     enabled: isAutocompleteOpen,
     placeholderData: keepPreviousData,
   });
+  const eventRSVPs = useSuspenseQuery(eventQueryOptions.eventRsvps(eventId));
+  const eventDetails = useSuspenseQuery(
+    eventQueryOptions.eventDetails(eventId),
+  );
 
   const userOption = useMemo(
     () =>
@@ -66,15 +81,20 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
   );
 
   const {
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
     handleSubmit,
     control,
     reset,
     setError,
+    setValue,
+    getValues,
   } = useZodForm({
     schema: AddUserRsvpSchema,
     defaultValues: {
       userOption: null,
+      checkinTime: null,
+      checkoutTime: null,
+      status: "",
     },
   });
 
@@ -82,7 +102,8 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
 
   const onSubmit: ZodSubmitHandler<typeof AddUserRsvpSchema> = async (data) => {
     try {
-      const userOptionVal = data.userOption?.value;
+      const { userOption, status, ...rest } = data;
+      const userOptionVal = userOption?.value;
 
       if (!userOptionVal) {
         setError("userOption", {
@@ -95,6 +116,8 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
         data: {
           eventId,
           userId: userOptionVal,
+          status: status === "" ? undefined : status,
+          ...rest,
         },
       });
       reset();
@@ -119,11 +142,11 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
       component={"form"}
       onSubmit={handleSubmit(onSubmit)}
     >
-      <DialogTitle>Add an empty RSVP for a user</DialogTitle>
+      <DialogTitle>Add or Update an RSVP</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          This will add an empty RSVP for a user. This is useful if you want to
-          add a user to the event, but they haven&apos;t RSVP&apos;d yet.
+          This will create or update an RSVP for the event for the selected
+          user.
         </DialogContentText>
         <Stack
           gap={2}
@@ -160,6 +183,36 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
                 )}
                 onChange={(_event, data) => {
                   onChange(data);
+                  const selectedUserId = data?.value;
+                  const existingUserRsvp = eventRSVPs.data?.find(
+                    (u) => u.userId === selectedUserId,
+                  );
+                  if (selectedUserId && existingUserRsvp) {
+                    const existingValues = getValues();
+                    if (
+                      !existingValues.checkinTime &&
+                      existingUserRsvp.checkinTime
+                    ) {
+                      setValue(
+                        "checkinTime",
+                        parseDate(existingUserRsvp.checkinTime),
+                      );
+                    }
+                    if (!existingValues.checkoutTime) {
+                      setValue(
+                        "checkoutTime",
+                        parseDate(existingUserRsvp.checkoutTime),
+                      );
+                    }
+
+                    if (
+                      !existingValues.status &&
+                      existingUserRsvp.status !== "ATTENDED"
+                    ) {
+                      setValue("status", existingUserRsvp.status ?? undefined);
+                    }
+                    return;
+                  }
                 }}
                 isOptionEqualToValue={(option, value) =>
                   option.value === value.value
@@ -168,12 +221,107 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
               />
             )}
           />
+          <Stack direction="row" gap={2}>
+            <Controller
+              control={control}
+              name="checkinTime"
+              render={({ field: { value, onChange, ...rest } }) => (
+                <DateTimePicker
+                  value={value ? DateTime.fromISO(value) : null}
+                  label="Checkin Time"
+                  onChange={(date) => {
+                    onChange(date?.toISO());
+                  }}
+                  {...rest}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="checkoutTime"
+              render={({ field: { value, onChange, ...rest } }) => (
+                <DateTimePicker
+                  value={value ? DateTime.fromISO(value) : null}
+                  label="Checkout Time"
+                  onChange={(date) => {
+                    onChange(date?.toISO());
+                  }}
+                  {...rest}
+                />
+              )}
+            />
+          </Stack>
+          {/* Time Presets */}
+          <Stack direction="row" gap={2} justifyContent={"space-evenly"}>
+            {/* Set start and end to event */}
+            <Button
+              onClick={() => {
+                setValue(
+                  "checkinTime",
+                  parseDate(eventDetails.data?.startDate),
+                );
+                setValue("checkoutTime", parseDate(eventDetails.data?.endDate));
+              }}
+            >
+              Set to Event
+            </Button>
+            {/* Set start to now */}
+            <Button
+              onClick={() => {
+                setValue("checkinTime", DateTime.now().toISO());
+              }}
+            >
+              Set Start to Now
+            </Button>
+            {/* Set end to now (start to event start if undef) */}
+            <Button
+              onClick={() => {
+                if (!getValues().checkinTime) {
+                  setValue(
+                    "checkinTime",
+                    parseDate(eventDetails.data?.startDate),
+                  );
+                }
+                setValue("checkoutTime", DateTime.now().toISO());
+              }}
+            >
+              Set End to Now
+            </Button>
+            {/* Clear */}
+            <Button
+              onClick={() => {
+                setValue("checkinTime", null);
+                setValue("checkoutTime", null);
+              }}
+            >
+              Clear
+            </Button>
+          </Stack>
+          <ControlledSelect
+            control={control}
+            name="status"
+            label="Status"
+            placeholder="Select a status"
+            options={[
+              { label: "", value: "" },
+              { label: "No", value: "NO" },
+              { label: "Maybe", value: "MAYBE" },
+              { label: "Yes", value: "YES" },
+              { label: "Late", value: "LATE" },
+            ]}
+          />
+          {errors.checkinTime ? (
+            <FormHelperText error>{errors.checkinTime.message}</FormHelperText>
+          ) : null}
+          {errors.checkoutTime ? (
+            <FormHelperText error>{errors.checkoutTime.message}</FormHelperText>
+          ) : null}
         </Stack>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
         <LoadingButton type="submit" disabled={isSubmitting}>
-          Add
+          Save
         </LoadingButton>
       </DialogActions>
     </Dialog>

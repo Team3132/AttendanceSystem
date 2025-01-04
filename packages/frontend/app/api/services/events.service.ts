@@ -21,7 +21,7 @@ import db from "../drizzle/db";
 import { eventTable, rsvpTable, userTable } from "../drizzle/schema";
 import env from "../env";
 import type { RSVPUserSchema, UserCheckinSchema } from "../schema";
-import type { CreateBlankUserRsvpSchema } from "../schema/CreateBlankUserRsvpSchema";
+import type { CreateUserRsvpSchema } from "../schema/CreateBlankUserRsvpSchema";
 import type { CreateEventSchema } from "../schema/CreateEventSchema";
 import type { EditEventSchema } from "../schema/EditEventSchema";
 import type { EditRSVPSelfSchema } from "../schema/EditRSVPSelfSchema";
@@ -671,10 +671,27 @@ export async function selfCheckin(
   return updatedRSVP;
 }
 
-export async function createBlankUserRsvp(
-  params: z.infer<typeof CreateBlankUserRsvpSchema>,
+export async function createUserRsvp(
+  params: z.infer<typeof CreateUserRsvpSchema>,
 ) {
-  const { userId, eventId } = params;
+  const { userId, eventId, checkinTime, checkoutTime, status } = params;
+
+  if (checkoutTime && !checkinTime) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "Cannot check out without checking in",
+    });
+  }
+
+  if (checkinTime && checkoutTime) {
+    if (DateTime.fromISO(checkinTime) > DateTime.fromISO(checkoutTime)) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Checkin time must be before checkout time",
+      });
+    }
+  }
+
   const [createdRsvp] = await db
     .insert(rsvpTable)
     .values({
@@ -682,12 +699,18 @@ export async function createBlankUserRsvp(
       eventId,
       createdAt: DateTime.local().toISO(),
       updatedAt: DateTime.local().toISO(),
+      checkinTime,
+      checkoutTime,
+      status: checkinTime ? "ATTENDED" : status,
     })
     .onConflictDoUpdate({
       set: {
         userId,
         eventId,
         updatedAt: DateTime.local().toISO(),
+        checkinTime,
+        checkoutTime,
+        status: checkinTime ? "ATTENDED" : status,
       },
       target: [rsvpTable.eventId, rsvpTable.userId],
     })

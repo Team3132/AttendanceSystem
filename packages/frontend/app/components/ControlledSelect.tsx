@@ -43,6 +43,7 @@ type ControlledSelectProps<
     helperText?: string;
     /** The options for the select */
     options: Array<PathValueOption<TFieldValues, TName>>;
+    placeholder?: string;
   };
 
 /**
@@ -99,6 +100,11 @@ export default function ControlledSelect<
         id={selectId}
         labelId={rest.label ? labelId : undefined}
         aria-describedby={helperTextShown ? helperTextId : undefined}
+        slotProps={{
+          input: {
+            placeholder: rest.placeholder,
+          },
+        }}
       >
         {options.map((option) => (
           <MenuItem key={option.value} value={option.value}>
