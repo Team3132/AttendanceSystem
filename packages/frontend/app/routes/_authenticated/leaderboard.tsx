@@ -74,26 +74,19 @@ function Component() {
 
   return (
     <>
-      <DefaultAppBar title="Leaderboards" />
-      <Container
-        sx={{
-          my: 2,
-          flexGrow: 1,
-        }}
-      >
+      <DefaultAppBar title="Outreach Leaderboard" />
+      <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
         <Stack gap={2} sx={{ height: "100%", display: "flex" }}>
-          <Typography variant="h4">Outreach Leaderboard</Typography>
           <Datatable
-            columns={columns ?? []}
-            data={flatResults ?? []}
-            totalDBRowCount={totalRowCount}
+            columns={columns}
+            data={flatResults}
             fetchNextPage={leaderboardQuery.fetchNextPage}
             isFetching={leaderboardQuery.isFetching}
-            sx={{
-              flex: [1, 1, "0%"],
-              overflowY: "scroll",
-            }}
+            totalDBRowCount={totalRowCount}
             fixedHeight={53}
+            sx={{
+              flex: 1,
+            }}
           />
         </Stack>
       </Container>
