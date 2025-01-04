@@ -60,7 +60,7 @@ export const Route = createFileRoute("/_authenticated/admin_/")({
   head: () => ({
     meta: [
       {
-        title: "Admin",
+        title: "Admin - Users",
       },
     ],
   }),
@@ -100,10 +100,9 @@ function Component() {
 
   return (
     <>
-      <DefaultAppBar title="Admin" />
+      <DefaultAppBar title="Admin - Users" />
       <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
         <Stack gap={2} sx={{ height: "100%", display: "flex" }}>
-          <Typography variant="h4">Users</Typography>
           <TextField
             onChange={(e) => setSearch(e.target.value)}
             defaultValue={query}
