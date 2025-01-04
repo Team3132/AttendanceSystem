@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "PORT=1420 vinxi dev",
-    "build": "tsc && tsup && vinxi build",
+    "build": "tsc && buildtypes && vinxi build",
+    "buildtypes": "tsup",
     "start": "PORT=1420 vinxi start",
     "typecheck": "tsc",
     "format": "pnpm biome format ./src --write",
