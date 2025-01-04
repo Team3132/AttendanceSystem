@@ -15,6 +15,7 @@ import robot400 from "@fontsource/roboto/400.css?url";
 import roboto500 from "@fontsource/roboto/500.css?url";
 import roboto700 from "@fontsource/roboto/700.css?url";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -63,7 +64,11 @@ export const Route = createRootRouteWithContext<{
 
 const theme = createTheme({
   colorSchemes: {
-    dark: false,
+    dark: true,
+    light: true,
+  },
+  cssVariables: {
+    colorSchemeSelector: "class",
   },
 });
 
@@ -82,7 +87,7 @@ function RootComponent() {
 
 function RootDocument({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <Meta />
         <style>
@@ -96,6 +101,7 @@ function RootDocument({ children }: Readonly<{ children: React.ReactNode }>) {
         </style>
       </head>
       <body>
+        <InitColorSchemeScript attribute="class" />
         {children}
         <ScrollRestoration />
         {import.meta.env.DEV ? (
