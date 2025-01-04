@@ -1,5 +1,11 @@
 # frontend
 
+## 5.1.5
+
+### Patch Changes
+
+- [`fc612e8`](https://github.com/Team3132/AttendanceSystem/commit/fc612e8d2003faaded7752a14896c768da080222) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix builtypes
+
 ## 5.1.4
 
 ### Patch Changes
