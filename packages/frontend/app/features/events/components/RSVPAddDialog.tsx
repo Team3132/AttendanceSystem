@@ -225,12 +225,21 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
             <Controller
               control={control}
               name="checkinTime"
-              render={({ field: { value, onChange, ...rest } }) => (
+              render={({
+                field: { value, onChange, ...rest },
+                fieldState: { error },
+              }) => (
                 <DateTimePicker
                   value={value ? DateTime.fromISO(value) : null}
                   label="Checkin Time"
                   onChange={(date) => {
                     onChange(date?.toISO());
+                  }}
+                  slotProps={{
+                    textField: {
+                      error: error !== undefined,
+                      helperText: error?.message,
+                    },
                   }}
                   {...rest}
                 />
@@ -239,12 +248,21 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
             <Controller
               control={control}
               name="checkoutTime"
-              render={({ field: { value, onChange, ...rest } }) => (
+              render={({
+                field: { value, onChange, ...rest },
+                fieldState: { error },
+              }) => (
                 <DateTimePicker
                   value={value ? DateTime.fromISO(value) : null}
                   label="Checkout Time"
                   onChange={(date) => {
                     onChange(date?.toISO());
+                  }}
+                  slotProps={{
+                    textField: {
+                      error: error !== undefined,
+                      helperText: error?.message,
+                    },
                   }}
                   {...rest}
                 />
@@ -311,12 +329,6 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
               { label: "Late", value: "LATE" },
             ]}
           />
-          {errors.checkinTime ? (
-            <FormHelperText error>{errors.checkinTime.message}</FormHelperText>
-          ) : null}
-          {errors.checkoutTime ? (
-            <FormHelperText error>{errors.checkoutTime.message}</FormHelperText>
-          ) : null}
         </Stack>
       </DialogContent>
       <DialogActions>

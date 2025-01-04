@@ -37,7 +37,7 @@ export default function RsvpList({ eventId, admin = false }: RsvpListProps) {
           </List>
           {admin ? (
             <Button {...getButtonProps()} variant="contained">
-              Add Empty RSVP
+              Create or Edit RSVP
             </Button>
           ) : null}
           {admin && isOpen ? (
