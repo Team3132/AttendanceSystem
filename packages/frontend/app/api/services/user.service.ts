@@ -233,53 +233,25 @@ export async function attendanceSummary(
     .filter(([, value]) => value)
     .map(([key]) => key) as z.infer<typeof EventTypeSchema>[];
 
-  const txRes = await db.transaction(async (tx) => {
-    if (includeEmptyEvents) {
-      const rsvpsQuery = await tx
-        .select({
-          eventName: eventTable.title,
-          eventId: eventTable.id,
-          eventStart: eventTable.startDate,
-          eventEnd: eventTable.endDate,
-          eventType: eventTable.type,
-          rsvpStart: rsvpTable.checkinTime,
-          rsvpEnd: rsvpTable.checkoutTime,
-          rsvpStatus: rsvpTable.status,
-        })
-        .from(eventTable)
-        .leftJoin(rsvpTable, eq(eventTable.id, rsvpTable.eventId))
-        .where(
-          and(
-            eq(rsvpTable.userId, userId),
-            gte(eventTable.startDate, startDate),
-            lte(eventTable.endDate, endDate),
-            inArray(eventTable.type, selectedEventTypes),
-          ),
-        );
-    } else {
-      const rsvpsQuery = await tx
-        .select({
-          eventName: eventTable.title,
-          eventId: eventTable.id,
-          eventStart: eventTable.startDate,
-          eventEnd: eventTable.endDate,
-          eventType: eventTable.type,
-          rsvpStart: rsvpTable.checkinTime,
-          rsvpEnd: rsvpTable.checkoutTime,
-          rsvpStatus: rsvpTable.status,
-        })
-        .from(eventTable)
-        .innerJoin(rsvpTable, eq(eventTable.id, rsvpTable.eventId))
-        .where(
-          and(
-            eq(rsvpTable.userId, userId),
-            gte(eventTable.startDate, startDate),
-            lte(eventTable.endDate, endDate),
-            inArray(eventTable.type, selectedEventTypes),
-          ),
-        );
-
-      return rsvpsQuery;
-    }
-  });
+  const rsvpsQuery = await db
+    .select({
+      eventName: eventTable.title,
+      eventId: eventTable.id,
+      eventStart: eventTable.startDate,
+      eventEnd: eventTable.endDate,
+      eventType: eventTable.type,
+      rsvpStart: rsvpTable.checkinTime,
+      rsvpEnd: rsvpTable.checkoutTime,
+      rsvpStatus: rsvpTable.status,
+    })
+    .from(eventTable)
+    .leftJoin(rsvpTable, eq(eventTable.id, rsvpTable.eventId))
+    .where(
+      and(
+        eq(rsvpTable.userId, userId),
+        gte(eventTable.startDate, startDate),
+        lte(eventTable.endDate, endDate),
+        inArray(eventTable.type, selectedEventTypes),
+      ),
+    );
 }
