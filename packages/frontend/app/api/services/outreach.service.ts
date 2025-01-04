@@ -44,9 +44,16 @@ export async function getOutreachTime(
   }
 
   const offset = page * limit;
+
   const { paginatedItems, total } = await db.transaction(async (tx) => {
     await tx.execute(sql`SET LOCAL intervalstyle = 'iso_8601'`); // set the interval style to iso_8601
 
+    /**
+     * Base query to get the sum of the difference between the start and end dates of all
+     * events that have been attended by a user and that are outreach events as an iso duration
+     * Filters out events that have not been attended, and events that are not outreach events
+     * and every event before the last 25th of the last april
+     */
     const baseQuery = tx
       .select({
         /** Username */
@@ -75,14 +82,19 @@ export async function getOutreachTime(
       )
       .as("baseQuery");
 
-    const [leaderboardCount] = await tx
+    /**
+     * Count the number of rows in the base query
+     */
+    const [{ total }] = await tx
       .select({
-        count: count(),
+        total: count(),
       })
       .from(baseQuery);
 
-    const offset = page * limit;
-
+    /**
+     * Get the paginated items, ordered by duration in descending order and username in ascending order
+     * and offset by the offset and limited by the limit
+     */
     const paginatedItems = await tx
       .select({
         username: baseQuery.username,
@@ -93,12 +105,6 @@ export async function getOutreachTime(
       .orderBy(desc(baseQuery.duration), baseQuery.username)
       .offset(offset)
       .limit(limit);
-
-    let total = 0;
-
-    if (leaderboardCount) {
-      total = leaderboardCount.count;
-    }
 
     return {
       paginatedItems,
