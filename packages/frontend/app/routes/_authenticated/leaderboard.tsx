@@ -90,7 +90,7 @@ function Component() {
             fetchNextPage={leaderboardQuery.fetchNextPage}
             isFetching={leaderboardQuery.isFetching}
             sx={{
-              flex: [1, 1, 0],
+              flex: [1, 1, "0%"],
               overflowY: "scroll",
             }}
             fixedHeight={53}
