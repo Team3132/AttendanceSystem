@@ -1,13 +1,31 @@
 "use server";
 
 import { TRPCError } from "@trpc/server";
-import { and, count, eq, ilike, isNotNull, isNull, not } from "drizzle-orm";
+import {
+  and,
+  count,
+  eq,
+  gte,
+  ilike,
+  inArray,
+  isNotNull,
+  isNull,
+  lte,
+  not,
+} from "drizzle-orm";
 import type { z } from "zod";
 import db from "../drizzle/db";
-import { scancodeTable, userTable } from "../drizzle/schema";
-import type { UserCreateSchema } from "../schema";
+import {
+  eventTable,
+  rsvpStatus,
+  rsvpTable,
+  scancodeTable,
+  userTable,
+} from "../drizzle/schema";
+import type { EventTypeSchema, UserCreateSchema } from "../schema";
 import type { PagedUserSchema } from "../schema/PagedUserSchema";
 import type { UserListParamsSchema } from "../schema/UserListParamsSchema";
+import { RSVPSummaryParams } from "../schema/RSVPSummaryParams";
 
 /**
  * Gets a user from the database
@@ -200,4 +218,68 @@ export async function createUser(userdata: z.infer<typeof UserCreateSchema>) {
   }
 
   return dbUser;
+}
+
+export async function attendanceSummary(
+  userId: string,
+  params: z.infer<typeof RSVPSummaryParams>,
+  includeEmptyEvents = false,
+) {
+  const { types, startDate, endDate } = params;
+
+  const eventTypeEntries = Object.entries(types);
+
+  const selectedEventTypes = eventTypeEntries
+    .filter(([, value]) => value)
+    .map(([key]) => key) as z.infer<typeof EventTypeSchema>[];
+
+  const txRes = await db.transaction(async (tx) => {
+    if (includeEmptyEvents) {
+      const rsvpsQuery = await tx
+        .select({
+          eventName: eventTable.title,
+          eventId: eventTable.id,
+          eventStart: eventTable.startDate,
+          eventEnd: eventTable.endDate,
+          eventType: eventTable.type,
+          rsvpStart: rsvpTable.checkinTime,
+          rsvpEnd: rsvpTable.checkoutTime,
+          rsvpStatus: rsvpTable.status,
+        })
+        .from(eventTable)
+        .leftJoin(rsvpTable, eq(eventTable.id, rsvpTable.eventId))
+        .where(
+          and(
+            eq(rsvpTable.userId, userId),
+            gte(eventTable.startDate, startDate),
+            lte(eventTable.endDate, endDate),
+            inArray(eventTable.type, selectedEventTypes),
+          ),
+        );
+    } else {
+      const rsvpsQuery = await tx
+        .select({
+          eventName: eventTable.title,
+          eventId: eventTable.id,
+          eventStart: eventTable.startDate,
+          eventEnd: eventTable.endDate,
+          eventType: eventTable.type,
+          rsvpStart: rsvpTable.checkinTime,
+          rsvpEnd: rsvpTable.checkoutTime,
+          rsvpStatus: rsvpTable.status,
+        })
+        .from(eventTable)
+        .innerJoin(rsvpTable, eq(eventTable.id, rsvpTable.eventId))
+        .where(
+          and(
+            eq(rsvpTable.userId, userId),
+            gte(eventTable.startDate, startDate),
+            lte(eventTable.endDate, endDate),
+            inArray(eventTable.type, selectedEventTypes),
+          ),
+        );
+
+      return rsvpsQuery;
+    }
+  });
 }
