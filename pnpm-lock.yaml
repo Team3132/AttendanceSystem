@@ -271,8 +271,8 @@ importers:
         specifier: 3.1.0
         version: 3.1.0(react@19.0.0)
       uuid:
-        specifier: 11.0.3
-        version: 11.0.3
+        specifier: 11.0.4
+        version: 11.0.4
       vinxi:
         specifier: 0.5.1
         version: 0.5.1(@types/node@22.10.5)(drizzle-orm@0.38.3(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@19.0.2)(postgres@3.4.5)(react@19.0.0))(ioredis@5.4.1)(jiti@2.4.1)(terser@5.37.0)(tsx@4.19.2)(typescript@5.7.2)(yaml@2.6.1)
@@ -5972,6 +5972,10 @@ packages:
 
   uuid@11.0.3:
     resolution: {integrity: sha512-d0z310fCWv5dJwnX1Y/MncBAqGMKEzlBb1AOf7z9K8ALnd0utBX/msg/fA0+sbyN1ihbMsLhrBlnl1ak7Wa0rg==}
+    hasBin: true
+
+  uuid@11.0.4:
+    resolution: {integrity: sha512-IzL6VtTTYcAhA/oghbFJ1Dkmqev+FpQWnCBaKq/gUluLxliWvO8DPFWfIviRmYbtaavtSQe4WBL++rFjdcGWEg==}
     hasBin: true
 
   uuid@9.0.1:
@@ -11806,6 +11810,8 @@ snapshots:
   utils-merge@1.0.1: {}
 
   uuid@11.0.3: {}
+
+  uuid@11.0.4: {}
 
   uuid@9.0.1: {}
 
