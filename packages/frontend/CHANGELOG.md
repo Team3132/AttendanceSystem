@@ -1,5 +1,11 @@
 # frontend
 
+## 5.1.13
+
+### Patch Changes
+
+- [`50b4bd9`](https://github.com/Team3132/AttendanceSystem/commit/50b4bd99f96dde2253ea9cda8d4fa36bbed0709e) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add hour count
+
 ## 5.1.12
 
 ### Patch Changes
