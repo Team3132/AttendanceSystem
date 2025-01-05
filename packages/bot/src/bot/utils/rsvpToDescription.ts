@@ -14,7 +14,7 @@ export const statusToEmoji = (
     case "LATE":
       return ":clock3:";
     case "ATTENDED":
-      return ":star:";
+      return ":ok:";
     default:
       return "";
   }
