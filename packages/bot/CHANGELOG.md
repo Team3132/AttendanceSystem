@@ -1,5 +1,12 @@
 # bot
 
+## 5.1.13
+
+### Patch Changes
+
+- Updated dependencies [[`50b4bd9`](https://github.com/Team3132/AttendanceSystem/commit/50b4bd99f96dde2253ea9cda8d4fa36bbed0709e)]:
+  - frontend@5.1.13
+
 ## 5.1.12
 
 ### Patch Changes
