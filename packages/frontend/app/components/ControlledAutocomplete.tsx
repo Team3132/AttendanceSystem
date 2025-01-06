@@ -1,6 +1,7 @@
 import {
   Autocomplete,
   type AutocompleteProps,
+  AutocompleteValue,
   type ChipTypeMap,
   TextField,
 } from "@mui/material";
@@ -28,6 +29,9 @@ type ControlledAutocompleteProps<
     placeholder?: string;
     helperText?: string;
     required?: boolean;
+    onChange?: (
+      value: AutocompleteValue<Value, Multiple, DisableClearable, FreeSolo>,
+    ) => void;
   };
 
 export default function ControlledAutocomplete<

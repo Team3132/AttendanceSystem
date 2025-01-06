@@ -29,6 +29,8 @@ import ControlledSelect from "@/components/ControlledSelect";
 import { eventQueryKeys } from "@/api/queryKeys";
 import { eventQueryOptions } from "@/queries/events.queries";
 import { parseDate } from "@/utils/date";
+import ControlledDateTime from "@/components/ControlledDateTime";
+import ControlledAutocomplete from "@/components/ControlledAutocomplete";
 
 interface RSVPAddDialogProps {
   onOpen: () => void;
@@ -135,6 +137,30 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
     }
   };
 
+  const handleSelect = (
+    data: {
+      value: string;
+    } | null,
+  ) => {
+    const selectedUserId = data?.value;
+    const existingUserRsvp = eventRSVPs.data?.find(
+      (u) => u.userId === selectedUserId,
+    );
+    if (selectedUserId && existingUserRsvp) {
+      const existingValues = getValues();
+      if (!existingValues.checkinTime && existingUserRsvp.checkinTime) {
+        setValue("checkinTime", parseDate(existingUserRsvp.checkinTime));
+      }
+      if (!existingValues.checkoutTime) {
+        setValue("checkoutTime", parseDate(existingUserRsvp.checkoutTime));
+      }
+
+      if (!existingValues.status && existingUserRsvp.status !== "ATTENDED") {
+        setValue("status", existingUserRsvp.status ?? undefined);
+      }
+    }
+  };
+
   return (
     <Dialog
       open={open}
@@ -183,36 +209,6 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
                 )}
                 onChange={(_event, data) => {
                   onChange(data);
-                  const selectedUserId = data?.value;
-                  const existingUserRsvp = eventRSVPs.data?.find(
-                    (u) => u.userId === selectedUserId,
-                  );
-                  if (selectedUserId && existingUserRsvp) {
-                    const existingValues = getValues();
-                    if (
-                      !existingValues.checkinTime &&
-                      existingUserRsvp.checkinTime
-                    ) {
-                      setValue(
-                        "checkinTime",
-                        parseDate(existingUserRsvp.checkinTime),
-                      );
-                    }
-                    if (!existingValues.checkoutTime) {
-                      setValue(
-                        "checkoutTime",
-                        parseDate(existingUserRsvp.checkoutTime),
-                      );
-                    }
-
-                    if (
-                      !existingValues.status &&
-                      existingUserRsvp.status !== "ATTENDED"
-                    ) {
-                      setValue("status", existingUserRsvp.status ?? undefined);
-                    }
-                    return;
-                  }
                 }}
                 isOptionEqualToValue={(option, value) =>
                   option.value === value.value
@@ -221,52 +217,28 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
               />
             )}
           />
+          <ControlledAutocomplete
+            control={control}
+            name="userOption"
+            label="User"
+            placeholder="Select a user"
+            helperText="Select the user to RSVP for"
+            options={userOption}
+            onInputChange={(_, value) => setInputValue(value)}
+            loading={usersQuery.isFetching}
+            required
+            {...getDisclosureProps()}
+          />
           <Stack direction="row" gap={2}>
-            <Controller
+            <ControlledDateTime
               control={control}
               name="checkinTime"
-              render={({
-                field: { value, onChange, ...rest },
-                fieldState: { error },
-              }) => (
-                <DateTimePicker
-                  value={value ? DateTime.fromISO(value) : null}
-                  label="Checkin Time"
-                  onChange={(date) => {
-                    onChange(date?.toISO());
-                  }}
-                  slotProps={{
-                    textField: {
-                      error: error !== undefined,
-                      helperText: error?.message,
-                    },
-                  }}
-                  {...rest}
-                />
-              )}
+              label="Checkin Time"
             />
-            <Controller
+            <ControlledDateTime
               control={control}
               name="checkoutTime"
-              render={({
-                field: { value, onChange, ...rest },
-                fieldState: { error },
-              }) => (
-                <DateTimePicker
-                  value={value ? DateTime.fromISO(value) : null}
-                  label="Checkout Time"
-                  onChange={(date) => {
-                    onChange(date?.toISO());
-                  }}
-                  slotProps={{
-                    textField: {
-                      error: error !== undefined,
-                      helperText: error?.message,
-                    },
-                  }}
-                  {...rest}
-                />
-              )}
+              label="Checkout Time"
             />
           </Stack>
           {/* Time Presets */}
