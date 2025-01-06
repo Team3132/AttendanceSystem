@@ -185,15 +185,15 @@ function Component() {
             data={infiniteEventsQuery.data}
             fetchNextPage={infiniteEventsQuery.fetchNextPage}
             isFetching={infiniteEventsQuery.isFetching}
-            renderRow={({ key, row, style }) => (
+            renderRow={({ row, style, ref, index }) => (
               <AsChildLink
-                key={key}
+                key={index}
                 to={"/events/$eventId"}
                 params={{
                   eventId: row.id,
                 }}
               >
-                <ListItemButton style={style}>
+                <ListItemButton style={style} ref={ref} data-index={index}>
                   <UpcomingEventListItem event={row} />
                 </ListItemButton>
               </AsChildLink>

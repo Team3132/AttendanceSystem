@@ -201,9 +201,10 @@ export default function Datatable<Data extends object>({
               return (
                 <TableRow
                   key={row.id}
+                  ref={(node) => virtualizer.measureElement(node)}
                   component="tr"
+                  data-index={virtualRow.index}
                   style={{
-                    height: `${virtualRow.size}px`,
                     transform: `translateY(${
                       virtualRow.start - index * virtualRow.size
                     }px)`,
@@ -212,7 +213,13 @@ export default function Datatable<Data extends object>({
                   {row.getVisibleCells().map((cell) => {
                     //   const meta: any = cell.column.columnDef.meta;
                     return (
-                      <TableCell key={cell.id} component="td">
+                      <TableCell
+                        key={cell.id}
+                        component="td"
+                        style={{
+                          width: cell.column.getSize(),
+                        }}
+                      >
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext(),

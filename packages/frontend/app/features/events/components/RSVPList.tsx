@@ -13,8 +13,6 @@ interface RsvpListProps {
 }
 
 export default function RsvpList({ eventId, admin = false }: RsvpListProps) {
-  const { getButtonProps, getDisclosureProps, isOpen } = useDisclosure();
-
   return (
     <Paper
       sx={{
@@ -29,16 +27,28 @@ export default function RsvpList({ eventId, admin = false }: RsvpListProps) {
         ) : (
           <RSVPList eventId={eventId} />
         )}
-        {admin ? (
-          <Button {...getButtonProps()} variant="contained">
-            Create or Edit RSVP
-          </Button>
-        ) : null}
-        {admin && isOpen ? (
-          <RSVPAddDialog eventId={eventId} {...getDisclosureProps()} />
-        ) : null}
+        {admin ? <RSVPAddButton eventId={eventId} /> : null}
       </Stack>
     </Paper>
+  );
+}
+
+interface RSVPAddButtonProps {
+  eventId: string;
+}
+
+function RSVPAddButton(props: RSVPAddButtonProps) {
+  const { getButtonProps, getDisclosureProps, isOpen } = useDisclosure();
+
+  return (
+    <>
+      <Button {...getButtonProps()} variant="contained">
+        Create or Edit RSVP
+      </Button>
+      {isOpen ? (
+        <RSVPAddDialog eventId={props.eventId} {...getDisclosureProps()} />
+      ) : null}
+    </>
   );
 }
 

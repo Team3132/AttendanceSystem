@@ -14,8 +14,13 @@ import {
 } from "@mui/material";
 import { keepPreviousData, useSuspenseQuery } from "@tanstack/react-query";
 import { TRPCClientError } from "@trpc/client";
-import { useMemo } from "react";
-import { Controller } from "react-hook-form";
+import { useCallback, useMemo } from "react";
+import {
+  Controller,
+  FieldPath,
+  FieldValues,
+  UseControllerProps,
+} from "react-hook-form";
 import { useDebounceValue } from "usehooks-ts";
 import { z } from "zod";
 import useZodForm, { type ZodSubmitHandler } from "../../../hooks/useZodForm";
@@ -54,32 +59,9 @@ const AddUserRsvpSchema = z.object({
 export default function RSVPAddDialog(props: RSVPAddDialogProps) {
   const { onClose, open, eventId } = props;
 
-  const { getDisclosureProps, isOpen: isAutocompleteOpen } = useDisclosure();
-
-  const [debouncedInputValue, setInputValue] = useDebounceValue("", 500);
-
-  const usersQuery = useInfiniteQuery({
-    ...usersQueryOptions.userList({
-      search: debouncedInputValue,
-      limit: 10,
-    }),
-    enabled: isAutocompleteOpen,
-    placeholderData: keepPreviousData,
-  });
   const eventRSVPs = useSuspenseQuery(eventQueryOptions.eventRsvps(eventId));
   const eventDetails = useSuspenseQuery(
     eventQueryOptions.eventDetails(eventId),
-  );
-
-  const userOption = useMemo(
-    () =>
-      usersQuery.data?.pages
-        ?.flatMap((page) => page.items)
-        .map((user) => ({
-          label: user.username,
-          value: user.id,
-        })) ?? [],
-    [usersQuery.data],
   );
 
   const {
@@ -137,29 +119,36 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
     }
   };
 
-  const handleSelect = (
-    data: {
-      value: string;
-    } | null,
-  ) => {
-    const selectedUserId = data?.value;
-    const existingUserRsvp = eventRSVPs.data?.find(
-      (u) => u.userId === selectedUserId,
-    );
-    if (selectedUserId && existingUserRsvp) {
-      const existingValues = getValues();
-      if (!existingValues.checkinTime && existingUserRsvp.checkinTime) {
-        setValue("checkinTime", parseDate(existingUserRsvp.checkinTime));
-      }
-      if (!existingValues.checkoutTime) {
-        setValue("checkoutTime", parseDate(existingUserRsvp.checkoutTime));
-      }
+  /**
+   * Handle the user selection
+   * Restores existing values from the user's RSVP if it exists and it's not already set
+   */
+  const handleSelect = useCallback(
+    (
+      data: {
+        value: string;
+      } | null,
+    ) => {
+      const selectedUserId = data?.value;
+      const existingUserRsvp = eventRSVPs.data?.find(
+        (u) => u.userId === selectedUserId,
+      );
+      if (selectedUserId && existingUserRsvp) {
+        const existingValues = getValues();
+        if (!existingValues.checkinTime && existingUserRsvp.checkinTime) {
+          setValue("checkinTime", parseDate(existingUserRsvp.checkinTime));
+        }
+        if (!existingValues.checkoutTime) {
+          setValue("checkoutTime", parseDate(existingUserRsvp.checkoutTime));
+        }
 
-      if (!existingValues.status && existingUserRsvp.status !== "ATTENDED") {
-        setValue("status", existingUserRsvp.status ?? undefined);
+        if (!existingValues.status && existingUserRsvp.status !== "ATTENDED") {
+          setValue("status", existingUserRsvp.status ?? undefined);
+        }
       }
-    }
-  };
+    },
+    [eventRSVPs.data, getValues, setValue],
+  );
 
   return (
     <Dialog
@@ -180,18 +169,10 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
             mt: 2,
           }}
         >
-          <ControlledAutocomplete
+          <SearchingAutocomplete
             control={control}
             name="userOption"
-            label="User"
-            placeholder="Select a user"
-            helperText="Select the user to RSVP for"
-            options={userOption}
-            onInputChange={(_, value) => setInputValue(value)}
-            loading={usersQuery.isFetching}
-            required
-            onChange={handleSelect}
-            {...getDisclosureProps()}
+            handleSelect={handleSelect}
           />
           <Stack direction="row" gap={2}>
             <ControlledDateTime
@@ -269,10 +250,64 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <LoadingButton type="submit" disabled={isSubmitting}>
+        <LoadingButton type="submit" loading={isSubmitting}>
           Save
         </LoadingButton>
       </DialogActions>
     </Dialog>
+  );
+}
+
+type SearchingTextFieldProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> = UseControllerProps<TFieldValues, TName> & {
+  handleSelect: (data: { value: string } | null) => void;
+};
+
+function SearchingAutocomplete<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>(props: SearchingTextFieldProps<TFieldValues, TName>) {
+  const { control, name, handleSelect } = props;
+
+  const { getDisclosureProps, isOpen: isAutocompleteOpen } = useDisclosure();
+
+  const [debouncedInputValue, setInputValue] = useDebounceValue("", 500);
+
+  const usersQuery = useInfiniteQuery({
+    ...usersQueryOptions.userList({
+      search: debouncedInputValue,
+      limit: 10,
+    }),
+    enabled: isAutocompleteOpen,
+    placeholderData: keepPreviousData,
+  });
+
+  const userOption = useMemo(
+    () =>
+      usersQuery.data?.pages
+        ?.flatMap((page) => page.items)
+        .map((user) => ({
+          label: user.username,
+          value: user.id,
+        })) ?? [],
+    [usersQuery.data],
+  );
+
+  return (
+    <ControlledAutocomplete
+      control={control}
+      name={name}
+      label="User"
+      placeholder="Select a user"
+      helperText="Select the user to RSVP for"
+      options={userOption}
+      onInputChange={(_, value) => setInputValue(value)}
+      loading={usersQuery.isFetching}
+      required
+      onChange={handleSelect}
+      {...getDisclosureProps()}
+    />
   );
 }

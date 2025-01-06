@@ -13,9 +13,10 @@ type PagedType<T> = {
 };
 
 interface RenderRowProps<T> {
-  key: number;
   row: T;
   style: React.CSSProperties;
+  ref: (node: Element | null | undefined) => void;
+  index: number;
 }
 
 interface InfiniteListParams<T, IPaged extends PagedType<T> = PagedType<T>> {
@@ -28,7 +29,7 @@ interface InfiniteListParams<T, IPaged extends PagedType<T> = PagedType<T>> {
 
 interface InfiniteListProps<T, IPaged extends PagedType<T> = PagedType<T>>
   extends InfiniteListParams<T, IPaged>,
-  OmittedListProps { }
+    OmittedListProps {}
 
 export default function InfiniteList<T>(props: InfiniteListProps<T>) {
   const {
@@ -94,22 +95,23 @@ export default function InfiniteList<T>(props: InfiniteListProps<T>) {
       <div
         style={{
           height: `${virtualizer.getTotalSize()}px`,
+          position: "relative",
         }}
       >
-        {virtualizer.getVirtualItems().map((virtualItem, index) => {
+        {virtualizer.getVirtualItems().map((virtualItem) => {
           const item = flatData[virtualItem.index] as T;
-          const key = virtualItem.index;
 
           const newStyle: React.CSSProperties = {
-            height: `${virtualItem.size}px`,
-            transform: `translateY(${virtualItem.start - index * virtualItem.size
-              }px)`,
+            transform: `translateY(${virtualItem.start}px)`,
+            position: "absolute",
+            width: "100%",
           };
 
           return renderRow({
-            key,
             row: item,
             style: newStyle,
+            ref: (node) => virtualizer.measureElement(node),
+            index: virtualItem.index,
           });
         })}
       </div>
