@@ -180,43 +180,6 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
             mt: 2,
           }}
         >
-          <Controller
-            control={control}
-            name="userOption"
-            render={({
-              field: { onChange, ...rest },
-              fieldState: { error },
-            }) => (
-              <Autocomplete
-                options={userOption}
-                onInputChange={(_event, value) => {
-                  setInputValue(value);
-                }}
-                loading={usersQuery.isFetching}
-                {...getDisclosureProps()}
-                renderInput={(props) => (
-                  <TextField
-                    {...props}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    required
-                    label="User"
-                    helperText={error?.message}
-                    error={!!error}
-                    placeholder="Select a user"
-                  />
-                )}
-                onChange={(_event, data) => {
-                  onChange(data);
-                }}
-                isOptionEqualToValue={(option, value) =>
-                  option.value === value.value
-                }
-                {...rest}
-              />
-            )}
-          />
           <ControlledAutocomplete
             control={control}
             name="userOption"
@@ -227,6 +190,7 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
             onInputChange={(_, value) => setInputValue(value)}
             loading={usersQuery.isFetching}
             required
+            onChange={handleSelect}
             {...getDisclosureProps()}
           />
           <Stack direction="row" gap={2}>
