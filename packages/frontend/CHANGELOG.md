@@ -1,5 +1,11 @@
 # frontend
 
+## 5.1.14
+
+### Patch Changes
+
+- [`da8cd2a`](https://github.com/Team3132/AttendanceSystem/commit/da8cd2a09ab1ffcb9037ec69bdda6e3fb7bfd3d1) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add quick checkin button
+
 ## 5.1.13
 
 ### Patch Changes

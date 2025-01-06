@@ -7,6 +7,7 @@ import {
   ListItemText,
   Menu,
   MenuItem,
+  Stack,
   Tooltip,
 } from "@mui/material";
 import type { RSVPUserSchema } from "@/api/schema";
@@ -22,6 +23,7 @@ import { eventQueryOptions } from "@/queries/events.queries";
 import { parseDate } from "@/utils/date";
 import RSVPActionsButton from "./RSVPActionsButton";
 import { check } from "drizzle-orm/pg-core";
+import RSVPEventButton from "./RSVPEventButton";
 
 interface AdminRSVPListItemProps {
   rsvp: z.infer<typeof RSVPUserSchema>;
@@ -73,7 +75,10 @@ export default function AdminRSVPListItem({ rsvp }: AdminRSVPListItemProps) {
   return (
     <ListItem
       secondaryAction={
-        <RSVPActionsButton eventId={rsvp.eventId} userId={rsvp.userId} />
+        <Stack direction={"row"} spacing={1}>
+          <RSVPEventButton eventId={rsvp.eventId} userId={rsvp.userId} />
+          <RSVPActionsButton eventId={rsvp.eventId} userId={rsvp.userId} />
+        </Stack>
       }
     >
       <Tooltip title={rsvp.status ?? "No response"}>

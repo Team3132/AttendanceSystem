@@ -1,5 +1,14 @@
 # bot
 
+## 5.1.14
+
+### Patch Changes
+
+- [`1b876e8`](https://github.com/Team3132/AttendanceSystem/commit/1b876e85776236ee840820f3b093dacea4012acc) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Change star to okay
+
+- Updated dependencies [[`da8cd2a`](https://github.com/Team3132/AttendanceSystem/commit/da8cd2a09ab1ffcb9037ec69bdda6e3fb7bfd3d1)]:
+  - frontend@5.1.14
+
 ## 5.1.13
 
 ### Patch Changes
