@@ -67,14 +67,4 @@ export const env = createEnv({
 	},
 });
 
-// const EnvSchema = z.object({});
-
-// export type Env = z.infer<typeof EnvSchema>;
-// console.log(import.meta.env);
-// export const env = EnvSchema.parse(process.env ?? import.meta.env);
-
-export const isDev = process.env.NODE_ENV === "development";
-
-export const isProd = process.env.NODE_ENV === "production";
-
 export default env;
