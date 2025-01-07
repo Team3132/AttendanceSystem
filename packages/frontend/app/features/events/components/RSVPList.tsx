@@ -12,16 +12,12 @@ interface RsvpListProps {
 	eventId: string;
 }
 
-const PaddedPaper = styled(Paper)({
-	padding: 2,
-});
-
 export default function RsvpList({ eventId }: RsvpListProps) {
 	const authStatusQuery = useSuspenseQuery(authQueryOptions.status());
 
 	return (
-		<PaddedPaper>
-			<Stack spacing={2}>
+		<Paper>
+			<Stack spacing={2} m={2}>
 				<Typography variant="h5">RSVPs</Typography>
 				<MyRsvpStatus eventId={eventId} />
 				{authStatusQuery.data.isAdmin ? (
@@ -33,7 +29,7 @@ export default function RsvpList({ eventId }: RsvpListProps) {
 					<RSVPAddButton eventId={eventId} />
 				) : null}
 			</Stack>
-		</PaddedPaper>
+		</Paper>
 	);
 }
 

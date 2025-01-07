@@ -13,7 +13,12 @@ import {
 import { keepPreviousData } from "@tanstack/react-query";
 import { TRPCClientError } from "@trpc/client";
 import { useEffect, useMemo } from "react";
-import { Controller } from "react-hook-form";
+import {
+	Controller,
+	type FieldPath,
+	type FieldValues,
+	type UseControllerProps,
+} from "react-hook-form";
 import { useDebounceValue } from "usehooks-ts";
 import { z } from "zod";
 import { useDisclosure } from "../../../hooks/useDisclosure";
@@ -21,6 +26,7 @@ import useZodForm from "../../../hooks/useZodForm";
 import useCreateUserScancode from "../../user/hooks/useCreateUserScancode";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { usersQueryOptions } from "@/queries/users.queries";
+import ControlledAutocomplete from "@/components/ControlledAutocomplete";
 
 interface UnknownCodeModalProps {
 	code: string;
@@ -149,40 +155,7 @@ export default function UnknownCodeModal(props: UnknownCodeModalProps) {
 						mt: 2,
 					}}
 				>
-					<Controller
-						control={control}
-						name="userOption"
-						render={({
-							field: { onChange, ...rest },
-							fieldState: { error },
-						}) => (
-							<Autocomplete
-								options={userOption}
-								loading={usersQuery.isFetching}
-								renderInput={(props) => (
-									<TextField
-										{...props}
-										InputLabelProps={{
-											shrink: true,
-										}}
-										required
-										label="User"
-										helperText={error?.message}
-										error={!!error}
-										placeholder="Select a user"
-									/>
-								)}
-								onChange={(_event, data) => onChange(data)}
-								onInputChange={(_event, value) => setInputValue(value)}
-								isOptionEqualToValue={(option, value) =>
-									option.value === value.value
-								}
-								{...getAutocompleteDisclosureProps()}
-								{...rest}
-							/>
-						)}
-					/>
-
+					<SearchingAutocomplete control={control} name="userOption" />
 					<TextField
 						{...register("code")}
 						label="Code"
@@ -201,5 +174,59 @@ export default function UnknownCodeModal(props: UnknownCodeModalProps) {
 				</LoadingButton>
 			</DialogActions>
 		</Dialog>
+	);
+}
+
+type SearchingTextFieldProps<
+	TFieldValues extends FieldValues = FieldValues,
+	TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> = UseControllerProps<TFieldValues, TName> & {
+	handleSelect?: (data: { value: string } | null) => void;
+};
+
+function SearchingAutocomplete<
+	TFieldValues extends FieldValues = FieldValues,
+	TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>(props: SearchingTextFieldProps<TFieldValues, TName>) {
+	const { control, name, handleSelect } = props;
+
+	const { getDisclosureProps, isOpen: isAutocompleteOpen } = useDisclosure();
+
+	const [debouncedInputValue, setInputValue] = useDebounceValue("", 500);
+
+	const usersQuery = useInfiniteQuery({
+		...usersQueryOptions.userList({
+			search: debouncedInputValue,
+			limit: 10,
+		}),
+		enabled: isAutocompleteOpen,
+		placeholderData: keepPreviousData,
+	});
+
+	const userOption = useMemo(
+		() =>
+			usersQuery.data?.pages
+				?.flatMap((page) => page.items)
+				.map((user) => ({
+					label: user.username,
+					value: user.id,
+				})) ?? [],
+		[usersQuery.data],
+	);
+
+	return (
+		<ControlledAutocomplete
+			control={control}
+			name={name}
+			label="User"
+			placeholder="Select a user"
+			helperText="Select the user to add the code to"
+			options={userOption}
+			onInputChange={(_, value) => setInputValue(value)}
+			loading={usersQuery.isFetching}
+			required
+			onChange={handleSelect}
+			{...getDisclosureProps()}
+		/>
 	);
 }

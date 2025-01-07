@@ -27,3 +27,5 @@ dist-ssr
 .vinxi
 
 app.config.timestamp*
+
+trace

@@ -87,7 +87,8 @@ export default function ControlledAutocomplete<
 		required = false,
 		...rest
 	} = props;
-	const { field, fieldState } = useController({
+
+	const { field, fieldState } = useController<TFieldValues, TName>({
 		control,
 		name,
 		defaultValue,
@@ -119,9 +120,8 @@ export default function ControlledAutocomplete<
 					}}
 				/>
 			)}
-			value={field.value}
+			{...field}
 			onChange={(_, value) => field.onChange(value)}
-			onBlur={field.onBlur}
 			disabled={disabled}
 		/>
 	);
