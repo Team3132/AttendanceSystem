@@ -12,6 +12,26 @@ import {
 	useController,
 } from "react-hook-form";
 
+type BaseAutocompleteProps<
+	Value,
+	Multiple extends boolean | undefined,
+	DisableClearable extends boolean | undefined,
+	FreeSolo extends boolean | undefined,
+	ChipComponent extends React.ElementType,
+> = Omit<
+	AutocompleteProps<Value, Multiple, DisableClearable, FreeSolo, ChipComponent>,
+	"onChange" | "value" | "defaultValue" | "renderInput" | "onBlur" | "error"
+>;
+
+type OnChangeValue<
+	Value,
+	Multiple extends boolean | undefined,
+	DisableClearable extends boolean | undefined,
+	FreeSolo extends boolean | undefined,
+> = (
+	value: AutocompleteValue<Value, Multiple, DisableClearable, FreeSolo>,
+) => void;
+
 type ControlledAutocompleteProps<
 	Value,
 	TFieldValues extends FieldValues = FieldValues,
@@ -20,18 +40,19 @@ type ControlledAutocompleteProps<
 	DisableClearable extends boolean | undefined = false,
 	FreeSolo extends boolean | undefined = false,
 	ChipComponent extends React.ElementType = ChipTypeMap["defaultComponent"],
-> = Omit<
-	AutocompleteProps<Value, Multiple, DisableClearable, FreeSolo, ChipComponent>,
-	"onChange" | "value" | "defaultValue" | "renderInput" | "onBlur" | "error"
+> = BaseAutocompleteProps<
+	Value,
+	Multiple,
+	DisableClearable,
+	FreeSolo,
+	ChipComponent
 > &
 	UseControllerProps<TFieldValues, TName> & {
 		label?: string;
 		placeholder?: string;
 		helperText?: string;
 		required?: boolean;
-		onChange?: (
-			value: AutocompleteValue<Value, Multiple, DisableClearable, FreeSolo>,
-		) => void;
+		onChange?: OnChangeValue<Value, Multiple, DisableClearable, FreeSolo>;
 	};
 
 export default function ControlledAutocomplete<
@@ -76,8 +97,14 @@ export default function ControlledAutocomplete<
 	});
 
 	return (
-		<Autocomplete
-			{...rest}
+		<Autocomplete<Value, Multiple, DisableClearable, FreeSolo, ChipComponent>
+			{...(rest as AutocompleteProps<
+				Value,
+				Multiple,
+				DisableClearable,
+				FreeSolo,
+				ChipComponent
+			>)}
 			renderInput={(params) => (
 				<TextField
 					{...params}
@@ -93,9 +120,7 @@ export default function ControlledAutocomplete<
 				/>
 			)}
 			value={field.value}
-			onChange={(_, value) => {
-				field.onChange(value);
-			}}
+			onChange={(_, value) => field.onChange(value)}
 			onBlur={field.onBlur}
 			disabled={disabled}
 		/>

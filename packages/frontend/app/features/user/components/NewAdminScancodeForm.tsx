@@ -75,9 +75,6 @@ export default function NewAdminScancodeListItem(
 				type={"submit"}
 				variant="contained"
 				size="large"
-				sx={{
-					ml: 2,
-				}}
 			>
 				Create
 			</LoadingButton>

@@ -4,6 +4,7 @@ import { TRPCClientError } from "@trpc/client";
 import { z } from "zod";
 import useZodForm from "../../../hooks/useZodForm";
 import useCreateSelfScancode from "../hooks/useCreateSelfScancode";
+import ControlledTextField from "@/components/ControlledTextField";
 
 const NewScancodeSchema = z.object({
 	code: z
@@ -21,6 +22,7 @@ export default function NewScancodeListItem() {
 		formState: { errors, isSubmitting },
 		setError,
 		reset,
+		control,
 	} = useZodForm({
 		schema: NewScancodeSchema,
 		defaultValues: {
@@ -48,24 +50,20 @@ export default function NewScancodeListItem() {
 
 	return (
 		<ListItem component={"form"} onSubmit={onSubmit}>
-			<TextField
+			<ControlledTextField
 				required
 				label={"New Scancode"}
-				{...register("code", {
-					required: "Event code cannot be empty",
-				})}
-				fullWidth
-				error={!!errors.code}
-				helperText={errors.code?.message}
+				control={control}
+				name={"code"}
+				rules={{
+					required: "Event code is required",
+				}}
 			/>
 			<LoadingButton
 				loading={isSubmitting}
 				type={"submit"}
 				variant="contained"
 				size="large"
-				sx={{
-					ml: 2,
-				}}
 			>
 				Create
 			</LoadingButton>
