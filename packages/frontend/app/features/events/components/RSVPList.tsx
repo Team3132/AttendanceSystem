@@ -9,81 +9,81 @@ import { eventQueryOptions } from "@/queries/events.queries";
 import { authQueryOptions } from "@/queries/auth.queries";
 
 interface RsvpListProps {
-  eventId: string;
+	eventId: string;
 }
 
 const PaddedPaper = styled(Paper)({
-  padding: 2,
+	padding: 2,
 });
 
 export default function RsvpList({ eventId }: RsvpListProps) {
-  const authStatusQuery = useSuspenseQuery(authQueryOptions.status());
+	const authStatusQuery = useSuspenseQuery(authQueryOptions.status());
 
-  return (
-    <PaddedPaper>
-      <Stack spacing={2}>
-        <Typography variant="h5">RSVPs</Typography>
-        <MyRsvpStatus eventId={eventId} />
-        {authStatusQuery.data.isAdmin ? (
-          <AdminRSVPList eventId={eventId} />
-        ) : (
-          <RSVPList eventId={eventId} />
-        )}
-        {authStatusQuery.data.isAdmin ? (
-          <RSVPAddButton eventId={eventId} />
-        ) : null}
-      </Stack>
-    </PaddedPaper>
-  );
+	return (
+		<PaddedPaper>
+			<Stack spacing={2}>
+				<Typography variant="h5">RSVPs</Typography>
+				<MyRsvpStatus eventId={eventId} />
+				{authStatusQuery.data.isAdmin ? (
+					<AdminRSVPList eventId={eventId} />
+				) : (
+					<RSVPList eventId={eventId} />
+				)}
+				{authStatusQuery.data.isAdmin ? (
+					<RSVPAddButton eventId={eventId} />
+				) : null}
+			</Stack>
+		</PaddedPaper>
+	);
 }
 
 interface RSVPAddButtonProps {
-  eventId: string;
+	eventId: string;
 }
 
 function RSVPAddButton(props: RSVPAddButtonProps) {
-  const { getButtonProps, getDisclosureProps, isOpen } = useDisclosure();
+	const { getButtonProps, getDisclosureProps, isOpen } = useDisclosure();
 
-  return (
-    <>
-      <Button {...getButtonProps()} variant="contained">
-        Create or Edit RSVP
-      </Button>
-      {isOpen ? (
-        <RSVPAddDialog eventId={props.eventId} {...getDisclosureProps()} />
-      ) : null}
-    </>
-  );
+	return (
+		<>
+			<Button {...getButtonProps()} variant="contained">
+				Create or Edit RSVP
+			</Button>
+			{isOpen ? (
+				<RSVPAddDialog eventId={props.eventId} {...getDisclosureProps()} />
+			) : null}
+		</>
+	);
 }
 
 interface RSVPListProps {
-  eventId: string;
+	eventId: string;
 }
 
 function AdminRSVPList(props: RSVPListProps) {
-  const rsvpsQuery = useSuspenseQuery(
-    eventQueryOptions.eventRsvps(props.eventId),
-  );
+	const rsvpsQuery = useSuspenseQuery(
+		eventQueryOptions.eventRsvps(props.eventId),
+	);
 
-  return (
-    <List>
-      {rsvpsQuery.data.map((rsvp) => (
-        <AdminRSVPListItem rsvp={rsvp} key={rsvp.id} />
-      ))}
-    </List>
-  );
+	return (
+		<List>
+			{rsvpsQuery.data.map((rsvp) => (
+				<AdminRSVPListItem rsvp={rsvp} key={rsvp.id} />
+			))}
+		</List>
+	);
 }
 
 function RSVPList(props: RSVPListProps) {
-  const rsvpsQuery = useSuspenseQuery(
-    eventQueryOptions.eventRsvps(props.eventId),
-  );
+	const rsvpsQuery = useSuspenseQuery(
+		eventQueryOptions.eventRsvps(props.eventId),
+	);
 
-  return (
-    <List>
-      {rsvpsQuery.data.map((rsvp) => (
-        <RSVPListItem rsvp={rsvp} key={rsvp.id} />
-      ))}
-    </List>
-  );
+	return (
+		<List>
+			{rsvpsQuery.data.map((rsvp) => (
+				<RSVPListItem rsvp={rsvp} key={rsvp.id} />
+			))}
+		</List>
+	);
 }

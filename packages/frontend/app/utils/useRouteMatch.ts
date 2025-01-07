@@ -6,17 +6,17 @@ import { useMatchRoute } from "@tanstack/react-router";
  * @param patterns An array of LinkOptions including a `to` and `params` property
  */
 export default function useRouteMatch(patterns: readonly TabItem[]) {
-  const matchRoute = useMatchRoute();
+	const matchRoute = useMatchRoute();
 
-  const matchedIndex = patterns.findIndex(
-    (pattern) =>
-      matchRoute({
-        to: pattern.to,
-        params: pattern.params,
-        fuzzy: pattern.fuzzy ?? false,
-        pending: true,
-      }) !== false,
-  );
+	const matchedIndex = patterns.findIndex(
+		(pattern) =>
+			matchRoute({
+				to: pattern.to,
+				params: pattern.params,
+				fuzzy: pattern.fuzzy ?? false,
+				pending: true,
+			}) !== false,
+	);
 
-  return matchedIndex === -1 ? undefined : matchedIndex;
+	return matchedIndex === -1 ? undefined : matchedIndex;
 }

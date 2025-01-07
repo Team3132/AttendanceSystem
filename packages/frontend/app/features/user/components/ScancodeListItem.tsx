@@ -3,31 +3,31 @@ import { FaTrash } from "react-icons/fa6";
 import useDeleteSelfScancode from "../hooks/useDeleteSelfScancode";
 
 interface ScancodeListItemProps {
-  code: string;
+	code: string;
 }
 
 export default function ScancodeListItem(props: ScancodeListItemProps) {
-  const { code } = props;
+	const { code } = props;
 
-  const deleteScancodeMutation = useDeleteSelfScancode();
+	const deleteScancodeMutation = useDeleteSelfScancode();
 
-  const handleDeleteScancode = () => {
-    deleteScancodeMutation.mutate({ data: code });
-  };
+	const handleDeleteScancode = () => {
+		deleteScancodeMutation.mutate({ data: code });
+	};
 
-  return (
-    <ListItem
-      secondaryAction={
-        <IconButton
-          edge="end"
-          disabled={deleteScancodeMutation.isPending}
-          onClick={handleDeleteScancode}
-        >
-          <FaTrash />
-        </IconButton>
-      }
-    >
-      <ListItemText primary={code} />
-    </ListItem>
-  );
+	return (
+		<ListItem
+			secondaryAction={
+				<IconButton
+					edge="end"
+					disabled={deleteScancodeMutation.isPending}
+					onClick={handleDeleteScancode}
+				>
+					<FaTrash />
+				</IconButton>
+			}
+		>
+			<ListItemText primary={code} />
+		</ListItem>
+	);
 }

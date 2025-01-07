@@ -6,21 +6,21 @@ import { mentorMiddleware } from "@/middleware/authMiddleware";
 import { userCheckin } from "@/server/services/events.service";
 
 const userCheckinFn = createServerFn({
-  method: "POST",
+	method: "POST",
 })
-  .middleware([mentorMiddleware])
-  .validator(UserCheckinSchema)
-  .handler(async ({ data }) => userCheckin(data));
+	.middleware([mentorMiddleware])
+	.validator(UserCheckinSchema)
+	.handler(async ({ data }) => userCheckin(data));
 
 export default function useCheckinUser() {
-  const queryClient = useQueryClient();
+	const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: userCheckinFn,
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({
-        queryKey: eventQueryKeys.eventRsvps(data.eventId),
-      });
-    },
-  });
+	return useMutation({
+		mutationFn: userCheckinFn,
+		onSuccess: (data) => {
+			queryClient.invalidateQueries({
+				queryKey: eventQueryKeys.eventRsvps(data.eventId),
+			});
+		},
+	});
 }

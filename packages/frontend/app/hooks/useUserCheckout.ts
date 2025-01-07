@@ -7,23 +7,23 @@ import { createServerFn } from "@tanstack/start";
 import { userCheckout } from "@/server/services/events.service";
 
 const userCheckoutFn = createServerFn({
-  method: "POST",
+	method: "POST",
 })
-  .middleware([mentorMiddleware])
-  .validator(UserCheckoutSchema)
-  .handler(async ({ data }) => userCheckout(data.userId, data.eventId));
+	.middleware([mentorMiddleware])
+	.validator(UserCheckoutSchema)
+	.handler(async ({ data }) => userCheckout(data.userId, data.eventId));
 
 export default function useUserCheckout() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: userCheckoutFn,
-    onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: eventQueryKeys.eventRsvps(variables.data.eventId),
-      });
-      queryClient.invalidateQueries({
-        queryKey: usersQueryKeys.userPendingRsvps(variables.data.userId),
-      });
-    },
-  });
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: userCheckoutFn,
+		onSuccess: (_data, variables) => {
+			queryClient.invalidateQueries({
+				queryKey: eventQueryKeys.eventRsvps(variables.data.eventId),
+			});
+			queryClient.invalidateQueries({
+				queryKey: usersQueryKeys.userPendingRsvps(variables.data.userId),
+			});
+		},
+	});
 }

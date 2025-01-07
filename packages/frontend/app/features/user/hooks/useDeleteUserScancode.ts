@@ -7,21 +7,21 @@ import { removeScancode } from "@/server/services/user.service";
 import { AddUserScancodeParams } from "@/server/schema/AddUserScancodeParams";
 
 const removeUserScancodeFn = createServerFn({
-  method: "POST",
+	method: "POST",
 })
-  .middleware([mentorMiddleware])
-  .validator(AddUserScancodeParams)
-  .handler(async ({ data }) => removeScancode(data.userId, data.scancode));
+	.middleware([mentorMiddleware])
+	.validator(AddUserScancodeParams)
+	.handler(async ({ data }) => removeScancode(data.userId, data.scancode));
 
 export default function useDeleteUserScancode() {
-  const queryClient = useQueryClient();
+	const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: removeUserScancodeFn,
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({
-        queryKey: usersQueryKeys.userScancodes(data.userId),
-      });
-    },
-  });
+	return useMutation({
+		mutationFn: removeUserScancodeFn,
+		onSuccess: (data) => {
+			queryClient.invalidateQueries({
+				queryKey: usersQueryKeys.userScancodes(data.userId),
+			});
+		},
+	});
 }

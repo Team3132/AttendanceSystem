@@ -6,21 +6,21 @@ import { editUserAttendance } from "@/server/services/events.service";
 import { EditUserAttendanceSchema } from "@/server/schema/EditUserAttendanceSchema";
 
 const editUserAttendanceFn = createServerFn({
-  method: "POST",
+	method: "POST",
 })
-  .middleware([mentorMiddleware])
-  .validator(EditUserAttendanceSchema)
-  .handler(async ({ data }) => editUserAttendance(data));
+	.middleware([mentorMiddleware])
+	.validator(EditUserAttendanceSchema)
+	.handler(async ({ data }) => editUserAttendance(data));
 
 export default function useUpdateUserRsvp() {
-  const queryClient = useQueryClient();
+	const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: editUserAttendanceFn,
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({
-        queryKey: eventQueryKeys.eventRsvps(data.eventId),
-      });
-    },
-  });
+	return useMutation({
+		mutationFn: editUserAttendanceFn,
+		onSuccess: (data) => {
+			queryClient.invalidateQueries({
+				queryKey: eventQueryKeys.eventRsvps(data.eventId),
+			});
+		},
+	});
 }

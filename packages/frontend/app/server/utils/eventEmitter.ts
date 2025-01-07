@@ -1,5 +1,5 @@
 import { EventEmitter } from "eventemitter3";
-import { EventTypes } from "../queryKeys";
+import type { EventTypes } from "../queryKeys";
 
 const ee = new EventEmitter<EventTypes>();
 
