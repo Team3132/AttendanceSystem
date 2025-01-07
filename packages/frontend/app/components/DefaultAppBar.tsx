@@ -1,4 +1,11 @@
-import { AppBar, IconButton, Stack, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  IconButton,
+  Stack,
+  styled,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import { FaCircleUser } from "react-icons/fa6";
 import AsChildLink from "./AsChildLink";
 import ModeSwitchButton from "./ModeSwitchButton";
@@ -7,13 +14,17 @@ interface DefaultAppBarProps {
   title: string;
 }
 
+const GrowingTypography = styled(Typography)({
+  flexGrow: 1,
+});
+
 export default function DefaultAppBar({ title }: DefaultAppBarProps) {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <GrowingTypography variant="h6" as="div">
           {title}
-        </Typography>
+        </GrowingTypography>
         <Stack direction="row" spacing={1}>
           <ModeSwitchButton />
           <AsChildLink to="/profile">

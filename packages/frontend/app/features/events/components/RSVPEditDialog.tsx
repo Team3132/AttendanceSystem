@@ -92,12 +92,7 @@ export default function RSVPEditDialog(props: RSVPEditDialogProps) {
       <DialogTitle>Edit RSVP Time</DialogTitle>
       <DialogContent>
         <DialogContentText>Edit an RSVP.</DialogContentText>
-        <Stack
-          gap={2}
-          sx={{
-            mt: 2,
-          }}
-        >
+        <Stack gap={2} mt={2}>
           <Stack direction="row" gap={2}>
             <Controller
               control={control}

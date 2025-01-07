@@ -1,4 +1,4 @@
-import { Button, List, Paper, Stack, Typography } from "@mui/material";
+import { Button, List, Paper, Stack, styled, Typography } from "@mui/material";
 import { useDisclosure } from "../../../hooks/useDisclosure";
 import AdminRSVPListItem from "./AdminRsvpListItem";
 import MyRsvpStatus from "./MyRsvpStatus";
@@ -12,15 +12,15 @@ interface RsvpListProps {
   eventId: string;
 }
 
+const PaddedPaper = styled(Paper)({
+  padding: 2,
+});
+
 export default function RsvpList({ eventId }: RsvpListProps) {
   const authStatusQuery = useSuspenseQuery(authQueryOptions.status());
 
   return (
-    <Paper
-      sx={{
-        p: 2,
-      }}
-    >
+    <PaddedPaper>
       <Stack spacing={2}>
         <Typography variant="h5">RSVPs</Typography>
         <MyRsvpStatus eventId={eventId} />
@@ -33,7 +33,7 @@ export default function RsvpList({ eventId }: RsvpListProps) {
           <RSVPAddButton eventId={eventId} />
         ) : null}
       </Stack>
-    </Paper>
+    </PaddedPaper>
   );
 }
 

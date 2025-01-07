@@ -163,12 +163,7 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
           This will create or update an RSVP for the event for the selected
           user.
         </DialogContentText>
-        <Stack
-          gap={2}
-          sx={{
-            mt: 2,
-          }}
-        >
+        <Stack gap={2} mt={2}>
           <SearchingAutocomplete
             control={control}
             name="userOption"

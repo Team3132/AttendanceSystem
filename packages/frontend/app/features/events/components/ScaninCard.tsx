@@ -1,6 +1,6 @@
 import { isTRPCClientError } from "@/utils/trpc";
 import { LoadingButton } from "@mui/lab";
-import { Paper, Stack, TextField, Typography } from "@mui/material";
+import { Paper, Stack, styled, TextField, Typography } from "@mui/material";
 import { useCallback, useState } from "react";
 import { z } from "zod";
 import { useDisclosure } from "../../../hooks/useDisclosure";
@@ -17,6 +17,10 @@ const ScaninSchema = z.object({
     .string()
     .nonempty()
     .regex(/^[a-zA-Z0-9]+$/),
+});
+
+const PaddedPaper = styled(Paper)({
+  padding: 2,
 });
 
 export default function ScaninCard(props: ScaninCardProps) {
@@ -72,7 +76,7 @@ export default function ScaninCard(props: ScaninCardProps) {
   );
 
   return (
-    <Paper sx={{ p: 2 }}>
+    <PaddedPaper>
       <Stack gap={2} component={"form"} onSubmit={handleSubmit(onSubmit)}>
         <Typography variant="h5" textAlign={"center"}>
           Scan In
@@ -110,6 +114,6 @@ export default function ScaninCard(props: ScaninCardProps) {
           successCallback={codeCreatedCallback}
         />
       ) : null}
-    </Paper>
+    </PaddedPaper>
   );
 }
