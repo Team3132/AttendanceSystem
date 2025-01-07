@@ -204,13 +204,19 @@ function Component() {
               overflowY: "auto",
             }}
           />
-          {authStatusQuery.data.isAdmin ? (
-            <AsChildLink to="/events/create">
-              <Button variant="contained">Create Event</Button>
-            </AsChildLink>
-          ) : null}
+          <CreateEventButton />
         </Stack>
       </Container>
     </>
   );
+}
+
+function CreateEventButton() {
+  const authStatusQuery = useSuspenseQuery(authQueryOptions.status());
+
+  return authStatusQuery.data.isAdmin ? (
+    <AsChildLink to="/events/create">
+      <Button variant="contained">Create Event</Button>
+    </AsChildLink>
+  ) : null;
 }

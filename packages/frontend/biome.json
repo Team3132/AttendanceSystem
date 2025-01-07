@@ -4,6 +4,9 @@
     "../../biome.json"
   ],
   "linter": {
+    "rules": {
+      "recommended": true
+    },
     "ignore": [
       "./src/routeTree.gen.ts"
     ]

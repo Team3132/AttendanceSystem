@@ -6,13 +6,15 @@ import RSVPAddDialog from "./RSVPAddDialog";
 import RSVPListItem from "./RSVPListItem";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { eventQueryOptions } from "@/queries/events.queries";
+import { authQueryOptions } from "@/queries/auth.queries";
 
 interface RsvpListProps {
   eventId: string;
-  admin?: boolean;
 }
 
-export default function RsvpList({ eventId, admin = false }: RsvpListProps) {
+export default function RsvpList({ eventId }: RsvpListProps) {
+  const authStatusQuery = useSuspenseQuery(authQueryOptions.status());
+
   return (
     <Paper
       sx={{
@@ -22,12 +24,14 @@ export default function RsvpList({ eventId, admin = false }: RsvpListProps) {
       <Stack spacing={2}>
         <Typography variant="h5">RSVPs</Typography>
         <MyRsvpStatus eventId={eventId} />
-        {admin ? (
+        {authStatusQuery.data.isAdmin ? (
           <AdminRSVPList eventId={eventId} />
         ) : (
           <RSVPList eventId={eventId} />
         )}
-        {admin ? <RSVPAddButton eventId={eventId} /> : null}
+        {authStatusQuery.data.isAdmin ? (
+          <RSVPAddButton eventId={eventId} />
+        ) : null}
       </Stack>
     </Paper>
   );
