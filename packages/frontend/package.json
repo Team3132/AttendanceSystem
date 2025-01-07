@@ -10,7 +10,11 @@
     "start": "PORT=1420 vinxi start",
     "typecheck": "tsc",
     "format": "pnpm biome format ./src --write",
-    "lint": "pnpm biome lint ./src --apply"
+    "lint": "pnpm biome lint ./src --apply",
+    "trace:gen": "tsc --noEmit --generateTrace ./trace",
+    "trace:analyze": "pnpm dlx @typescript/analyze-trace ./trace",
+    "trace:clean": "rm -rf ./trace",
+    "trace": "pnpm trace:gen && pnpm trace:analyze; pnpm trace:clean"
   },
   "files": [
     ".output",
