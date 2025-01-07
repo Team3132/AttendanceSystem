@@ -1,0 +1,5 @@
+---
+"frontend": patch
+---
+
+Misc optimisations
