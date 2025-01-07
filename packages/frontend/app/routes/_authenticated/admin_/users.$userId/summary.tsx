@@ -1,4 +1,4 @@
-import { EventTypeSchema } from "@/api/index";
+import { EventTypeSchema } from "@/server";
 import {
   Container,
   Stack,

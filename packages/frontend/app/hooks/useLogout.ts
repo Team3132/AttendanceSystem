@@ -1,4 +1,4 @@
-import { lucia } from "@/api/auth/lucia";
+import { lucia } from "@/server/auth/lucia";
 import { authBaseMiddleware } from "@/middleware/authMiddleware";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { redirect } from "@tanstack/react-router";

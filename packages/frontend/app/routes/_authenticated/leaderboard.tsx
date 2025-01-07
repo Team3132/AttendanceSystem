@@ -1,7 +1,7 @@
 import { Outlet, createFileRoute } from "@tanstack/react-router";
 import { createColumnHelper } from "@tanstack/table-core";
 import { Duration } from "luxon";
-import type { LeaderBoardUser as LeaderboardUserSchema } from "@/api/schema";
+import type { LeaderBoardUser as LeaderboardUserSchema } from "@/server/schema";
 import { z } from "zod";
 
 import { useMemo } from "react";

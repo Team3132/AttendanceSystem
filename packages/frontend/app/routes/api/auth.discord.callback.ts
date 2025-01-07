@@ -1,8 +1,8 @@
-import { discord, lucia } from "@/api/auth/lucia";
-import db from "@/api/drizzle/db";
-import { userTable } from "@/api/drizzle/schema";
-import env from "@/api/env";
-import mainLogger from "@/api/logger";
+import { discord, lucia } from "@/server/auth/lucia";
+import db from "@/server/drizzle/db";
+import { userTable } from "@/server/drizzle/schema";
+import env from "@/server/env";
+import mainLogger from "@/server/logger";
 import { API } from "@discordjs/core";
 import { DiscordAPIError, REST } from "@discordjs/rest";
 import { json } from "@tanstack/start";

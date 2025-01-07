@@ -7,7 +7,7 @@ import {
   type SelectChangeEvent,
   TextField,
 } from "@mui/material";
-import type { RSVPSchema, RSVPStatusUpdateSchema } from "@/api/schema";
+import type { RSVPSchema, RSVPStatusUpdateSchema } from "@/server/schema";
 import type { z } from "zod";
 import useUpdateRsvp from "../hooks/useUpdateRsvp";
 import { useQuery, useSuspenseQuery } from "@tanstack/react-query";

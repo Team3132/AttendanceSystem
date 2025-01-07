@@ -6,7 +6,7 @@ import { isTRPCClientError } from "@/utils/trpc";
 import { LoadingButton } from "@mui/lab";
 import { Container, Stack, Paper, Typography } from "@mui/material";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { SelfCheckinSchema } from "@/api/schema";
+import { SelfCheckinSchema } from "@/server/schema";
 
 export const Route = createFileRoute(
   "/_authenticated/events_/$eventId/check-in",

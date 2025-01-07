@@ -1,5 +1,5 @@
-import { EventTypeSchema } from "@/api/index";
-import { RSVPSummaryParams } from "@/api/schema/RSVPSummaryParams";
+import { EventTypeSchema } from "@/server";
+import { RSVPSummaryParams } from "@/server/schema/RSVPSummaryParams";
 import { json } from "@tanstack/start";
 import { createAPIFileRoute } from "@tanstack/start/api";
 import { getValidatedQuery } from "vinxi/http";

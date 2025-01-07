@@ -1,4 +1,4 @@
-import { discord } from "@/api/auth/lucia";
+import { discord } from "@/server/auth/lucia";
 import { redirect } from "@tanstack/react-router";
 import { json } from "@tanstack/start";
 import { createAPIFileRoute } from "@tanstack/start/api";

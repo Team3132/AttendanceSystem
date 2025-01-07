@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers";
-import { type RSVPSchema, RSVPStatusSchema } from "@/api/schema";
+import { type RSVPSchema, RSVPStatusSchema } from "@/server/schema";
 import { DateTime } from "luxon";
 import { Controller } from "react-hook-form";
 import { FaRecycle } from "react-icons/fa6";

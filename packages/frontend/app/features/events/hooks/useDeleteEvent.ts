@@ -1,11 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { eventQueryKeys } from "@/api/queryKeys";
+import { eventQueryKeys } from "@/server/queryKeys";
 import { createServerFn } from "@tanstack/start";
 import { mentorMiddleware } from "@/middleware/authMiddleware";
 import { z } from "zod";
-import { deleteEvent } from "@/api/services/events.service";
+import { deleteEvent } from "@/server/services/events.service";
 
 const deleteEventFn = createServerFn({
   method: "POST",

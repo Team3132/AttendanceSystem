@@ -3,7 +3,7 @@ import { RouteApi, createFileRoute } from "@tanstack/react-router";
 import ActiveEventsList from "../../components/ActiveEventsList";
 import DefaultAppBar from "../../components/DefaultAppBar";
 import { usersQueryOptions } from "@/queries/users.queries";
-import env from "@/api/env";
+import env from "@/server/env";
 
 const appVersion = env.VITE_PUBLIC_APP_VERSION;
 

@@ -24,7 +24,7 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { EventTypeSchema } from "@/api/schema";
+import { EventTypeSchema } from "@/server/schema";
 import { DateTime } from "luxon";
 import { z } from "zod";
 import { fallback } from "@tanstack/zod-adapter";

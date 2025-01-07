@@ -1,10 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
-import { eventQueryKeys } from "@/api/queryKeys";
+import { eventQueryKeys } from "@/server/queryKeys";
 import { createServerFn } from "@tanstack/start";
 import { mentorMiddleware } from "@/middleware/authMiddleware";
-import { CreateUserRsvpSchema } from "@/api/schema/CreateBlankUserRsvpSchema";
-import { createUserRsvp } from "@/api/services/events.service";
+import { CreateUserRsvpSchema } from "@/server/schema/CreateBlankUserRsvpSchema";
+import { createUserRsvp } from "@/server/services/events.service";
 
 const createUserRsvpFn = createServerFn({
   method: "POST",

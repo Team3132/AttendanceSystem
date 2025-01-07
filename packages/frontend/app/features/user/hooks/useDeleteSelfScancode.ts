@@ -1,10 +1,10 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
-import { usersQueryKeys } from "@/api/queryKeys";
+import { usersQueryKeys } from "@/server/queryKeys";
 import { createServerFn } from "@tanstack/start";
 import { z } from "zod";
 import { sessionMiddleware } from "@/middleware/authMiddleware";
-import { removeScancode } from "@/api/services/user.service";
+import { removeScancode } from "@/server/services/user.service";
 
 const deleteSelfScancodeFn = createServerFn({
   method: "POST",

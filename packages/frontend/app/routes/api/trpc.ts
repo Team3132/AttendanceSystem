@@ -1,4 +1,4 @@
-import appRouter from "@/api/routers/app.router";
+import appRouter from "@/server/routers/app.router";
 import { json } from "@tanstack/start";
 import { createAPIFileRoute } from "@tanstack/start/api";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";

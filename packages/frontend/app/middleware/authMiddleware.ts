@@ -1,5 +1,5 @@
-import { lucia } from "@/api/auth/lucia";
-import env from "@/api/env";
+import { lucia } from "@/server/auth/lucia";
+import env from "@/server/env";
 import { createMiddleware, registerGlobalMiddleware } from "@tanstack/start";
 import { getCookie, getHeader, setCookie } from "vinxi/http";
 import { redirect } from "@tanstack/react-router";

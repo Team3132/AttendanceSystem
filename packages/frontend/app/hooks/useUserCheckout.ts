@@ -1,10 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
-import { eventQueryKeys, usersQueryKeys } from "@/api/queryKeys";
+import { eventQueryKeys, usersQueryKeys } from "@/server/queryKeys";
 import { mentorMiddleware } from "@/middleware/authMiddleware";
-import { UserCheckoutSchema } from "@/api/schema/UserCheckoutSchema";
+import { UserCheckoutSchema } from "@/server/schema/UserCheckoutSchema";
 import { createServerFn } from "@tanstack/start";
-import { userCheckout } from "@/api/services/events.service";
+import { userCheckout } from "@/server/services/events.service";
 
 const userCheckoutFn = createServerFn({
   method: "POST",

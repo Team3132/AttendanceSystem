@@ -1,7 +1,7 @@
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
-import { GetEventParamsSchema } from "@/api/schema";
+import { GetEventParamsSchema } from "@/server/schema";
 import { z } from "zod";
-import { eventQueryKeys } from "@/api/queryKeys";
+import { eventQueryKeys } from "@/server/queryKeys";
 import { createServerFn } from "@tanstack/start";
 import {
   mentorMiddleware,
@@ -13,7 +13,7 @@ import {
   getEventRsvps,
   getEvents,
   getEventSecret,
-} from "@/api/services/events.service";
+} from "@/server/services/events.service";
 
 type GetEventsParams = Omit<z.infer<typeof GetEventParamsSchema>, "cursor">;
 

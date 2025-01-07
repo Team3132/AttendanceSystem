@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { usersQueryKeys } from "@/api/queryKeys";
+import { usersQueryKeys } from "@/server/queryKeys";
 import { createServerFn } from "@tanstack/start";
 import { mentorMiddleware } from "@/middleware/authMiddleware";
-import { createUserScancode } from "@/api/services/user.service";
-import { AddUserScancodeParams } from "@/api/schema/AddUserScancodeParams";
+import { createUserScancode } from "@/server/services/user.service";
+import { AddUserScancodeParams } from "@/server/schema/AddUserScancodeParams";
 
 const addUserScanCodeFn = createServerFn({
   method: "POST",

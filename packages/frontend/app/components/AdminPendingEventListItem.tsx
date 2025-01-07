@@ -1,6 +1,6 @@
 import { LoadingButton } from "@mui/lab";
 import { ListItem, ListItemText } from "@mui/material";
-import type { RSVPEventSchema } from "@/api/schema";
+import type { RSVPEventSchema } from "@/server/schema";
 import { DateTime } from "luxon";
 import type { z } from "zod";
 import useUserCheckout from "../hooks/useUserCheckout";

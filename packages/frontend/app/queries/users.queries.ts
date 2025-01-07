@@ -1,7 +1,7 @@
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
-import { UserListParamsSchema } from "@/api/schema";
+import { UserListParamsSchema } from "@/server/schema";
 import { z } from "zod";
-import { usersQueryKeys } from "@/api/queryKeys";
+import { usersQueryKeys } from "@/server/queryKeys";
 import { createServerFn } from "@tanstack/start";
 import {
   mentorMiddleware,
@@ -12,7 +12,7 @@ import {
   getUser,
   getUserList,
   getUserScancodes,
-} from "@/api/services/user.service";
+} from "@/server/services/user.service";
 
 type UserListParams = Omit<z.infer<typeof UserListParamsSchema>, "cursor">;
 

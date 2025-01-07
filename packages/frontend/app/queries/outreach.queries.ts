@@ -1,9 +1,9 @@
 import { infiniteQueryOptions } from "@tanstack/react-query";
-import { OutreachTimeSchema } from "@/api/schema";
+import { OutreachTimeSchema } from "@/server/schema";
 import { z } from "zod";
-import { outreachQueryKeys } from "@/api/queryKeys";
+import { outreachQueryKeys } from "@/server/queryKeys";
 import { sessionMiddleware } from "@/middleware/authMiddleware";
-import { getOutreachTime } from "@/api/services/outreach.service";
+import { getOutreachTime } from "@/server/services/outreach.service";
 import { createServerFn } from "@tanstack/start";
 
 type Options = Omit<z.infer<typeof OutreachTimeSchema>, "cursor">;
