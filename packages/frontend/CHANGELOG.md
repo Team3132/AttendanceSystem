@@ -1,5 +1,11 @@
 # frontend
 
+## 5.1.16
+
+### Patch Changes
+
+- [`ec473bb`](https://github.com/Team3132/AttendanceSystem/commit/ec473bb264e650e48d6baca8539f8a6170a5f261) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Misc optimisations
+
 ## 5.1.15
 
 ### Patch Changes
