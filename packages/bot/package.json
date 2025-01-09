@@ -45,7 +45,7 @@
     "frontend": "workspace:*"
   },
   "engines": {
-    "node": "22.12.0"
+    "node": "22.13.0"
   },
   "devDependencies": {
     "@swc/cli": "0.5.2",
