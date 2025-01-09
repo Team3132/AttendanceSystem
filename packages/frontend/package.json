@@ -59,7 +59,7 @@
     "@tanstack/zod-adapter": "1.95.1",
     "@trpc/server": "11.0.0-rc.688",
     "arctic": "1.9.2",
-    "cron": "3.3.2",
+    "cron": "3.4.0",
     "cross-env": "7.0.3",
     "discord-api-types": "0.37.115",
     "dotenv": "16.4.7",
