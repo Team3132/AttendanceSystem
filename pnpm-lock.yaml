@@ -45,8 +45,8 @@ importers:
         specifier: 7.120.3
         version: 7.120.3
       '@trpc/client':
-        specifier: 11.0.0-rc.688
-        version: 11.0.0-rc.688(@trpc/server@11.0.0-rc.688(typescript@5.7.3))(typescript@5.7.3)
+        specifier: 11.0.0-rc.694
+        version: 11.0.0-rc.694(@trpc/server@11.0.0-rc.694(typescript@5.7.3))(typescript@5.7.3)
       class-transformer:
         specifier: 0.5.1
         version: 0.5.1
@@ -199,8 +199,8 @@ importers:
         specifier: 1.95.3
         version: 1.95.3(@tanstack/react-router@1.95.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(zod@3.24.1)
       '@trpc/server':
-        specifier: 11.0.0-rc.688
-        version: 11.0.0-rc.688(typescript@5.7.3)
+        specifier: 11.0.0-rc.694
+        version: 11.0.0-rc.694(typescript@5.7.3)
       arctic:
         specifier: 1.9.2
         version: 1.9.2
@@ -287,8 +287,8 @@ importers:
         specifier: 1.95.3
         version: 1.95.3(@tanstack/react-router@1.95.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(vite@6.0.7(@types/node@22.10.5)(jiti@2.4.2)(terser@5.37.0)(tsx@4.19.2)(yaml@2.7.0))
       '@trpc/client':
-        specifier: 11.0.0-rc.688
-        version: 11.0.0-rc.688(@trpc/server@11.0.0-rc.688(typescript@5.7.3))(typescript@5.7.3)
+        specifier: 11.0.0-rc.694
+        version: 11.0.0-rc.694(@trpc/server@11.0.0-rc.694(typescript@5.7.3))(typescript@5.7.3)
       '@types/luxon':
         specifier: 3.4.2
         version: 3.4.2
@@ -2773,14 +2773,14 @@ packages:
   '@tokenizer/token@0.3.0':
     resolution: {integrity: sha512-OvjF+z51L3ov0OyAU0duzsYuvO01PH7x4t6DJx+guahgTnBHkhJdG7soQeTSFLWN3efnHyibZ4Z8l2EuWwJN3A==}
 
-  '@trpc/client@11.0.0-rc.688':
-    resolution: {integrity: sha512-e+2efSrqMrBjtAK6DxVvtkwX0kj+5ww7eZSyxHcoC0rjP1CYXl8HUUcWrSHpzOZEYt1Ey9E9o/zFlKKNeTGKWg==}
+  '@trpc/client@11.0.0-rc.694':
+    resolution: {integrity: sha512-e3HwqeNT1VkIn1juC8dwY2a/gWuSWZw6jbYGzVInib45LuIhUKA0Bokky1KRbDGCnwC4Ii2l3wa1Zgd3Fy0/qA==}
     peerDependencies:
-      '@trpc/server': 11.0.0-rc.688+87ea49ed1
+      '@trpc/server': 11.0.0-rc.694+3d80a2221
       typescript: '>=5.7.2'
 
-  '@trpc/server@11.0.0-rc.688':
-    resolution: {integrity: sha512-nv1uJFMWFnD5Y+pt2rECXTYZ2J8WZMKesNU3DbPxZYUcmLXo18sKRYTlJGjVr5amJ58L3Z5F4JNrFO3GV0DsEQ==}
+  '@trpc/server@11.0.0-rc.694':
+    resolution: {integrity: sha512-LkgryLrKHWP0bk7uFPDeZuUKMP3o7zXx9hzTZbIK263ZARV41urPVFciwBv0cvASRc4ylKJYqiic71+Xv+awSg==}
     peerDependencies:
       typescript: '>=5.7.2'
 
@@ -8136,12 +8136,12 @@ snapshots:
 
   '@tokenizer/token@0.3.0': {}
 
-  '@trpc/client@11.0.0-rc.688(@trpc/server@11.0.0-rc.688(typescript@5.7.3))(typescript@5.7.3)':
+  '@trpc/client@11.0.0-rc.694(@trpc/server@11.0.0-rc.694(typescript@5.7.3))(typescript@5.7.3)':
     dependencies:
-      '@trpc/server': 11.0.0-rc.688(typescript@5.7.3)
+      '@trpc/server': 11.0.0-rc.694(typescript@5.7.3)
       typescript: 5.7.3
 
-  '@trpc/server@11.0.0-rc.688(typescript@5.7.3)':
+  '@trpc/server@11.0.0-rc.694(typescript@5.7.3)':
     dependencies:
       typescript: 5.7.3
 
