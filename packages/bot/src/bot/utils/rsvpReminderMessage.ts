@@ -54,7 +54,7 @@ export default function rsvpReminderMessage(
       },
       {
         name: "End Time",
-        value: time(DateTime.fromMillis(Date.parse(event.endDate)).toJSDate()),
+        value: time(DateTime.fromMillis(Date.parse(event.endDate)).toJSDate(), "F"),
         inline: true,
       },
     )
