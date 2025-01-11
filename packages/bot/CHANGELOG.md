@@ -1,5 +1,14 @@
 # bot
 
+## 5.1.18
+
+### Patch Changes
+
+- [`3ce26f3`](https://github.com/Team3132/AttendanceSystem/commit/3ce26f3f436fdbe9036893f9caf9dadd33a54b06) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Forgot to F both
+
+- Updated dependencies []:
+  - frontend@5.1.18
+
 ## 5.1.17
 
 ### Patch Changes

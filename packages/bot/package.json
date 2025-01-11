@@ -1,6 +1,6 @@
 {
   "name": "bot",
-  "version": "5.1.17",
+  "version": "5.1.18",
   "description": "",
   "author": "",
   "private": false,
@@ -29,7 +29,7 @@
     "@nestjs/schedule": "4.1.2",
     "@sentry/node": "8.48.0",
     "@sentry/tracing": "7.120.3",
-    "@trpc/client": "11.0.0-rc.694",
+    "@trpc/client": "11.0.0-rc.695",
     "class-transformer": "0.5.1",
     "class-validator": "0.14.1",
     "cron": "3.5.0",
