@@ -61,18 +61,18 @@ export const APIRoute = createAPIFileRoute("/api/auth/discord/callback")({
 				});
 			}
 
-			const discordUser = await api.users.get("@me");
+			const { id, username } = await api.users.get("@me");
 
-			const guildMember = await api.users.getGuildMember(env.VITE_GUILD_ID);
+			const { nick, roles } = await api.users.getGuildMember(env.VITE_GUILD_ID);
 
 			const { accessToken, refreshToken, accessTokenExpiresAt } = tokens
 
 			const [authedUser] = await db
 				.insert(userTable)
 				.values({
-					id: discordUser.id,
-					username: guildMember.nick || discordUser.username,
-					roles: guildMember.roles,
+					id,
+					username: nick || username,
+					roles: roles,
 					accessToken,
 					refreshToken,
 					accessTokenExpiresAt,
@@ -80,8 +80,8 @@ export const APIRoute = createAPIFileRoute("/api/auth/discord/callback")({
 				.onConflictDoUpdate({
 					target: userTable.id,
 					set: {
-						username: guildMember.nick || discordUser.username,
-						roles: guildMember.roles,
+						username: nick || username,
+						roles: roles,
 						updatedAt: new Date().toISOString(),
 						accessToken,
 						refreshToken,
@@ -99,7 +99,7 @@ export const APIRoute = createAPIFileRoute("/api/auth/discord/callback")({
 				});
 			}
 
-			const session = await lucia.createSession(discordUser.id, {});
+			const session = await lucia.createSession(id, {});
 
 			const sessionCookie = lucia.createSessionCookie(session.id);
 			setCookie(
