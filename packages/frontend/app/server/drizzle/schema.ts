@@ -42,6 +42,13 @@ export const userTable = pgTable("User", {
 		.notNull(),
 	id: text("id").primaryKey().notNull(),
 	roles: text("roles").array(),
+	accessToken: text("accessToken"),
+	refreshToken: text("refreshToken"),
+	accessTokenExpiresAt: timestamp("accessTokenExpiresAt", {
+		precision: 3,
+		mode: "date",
+		withTimezone: true,
+	}),
 	defaultStatus: rsvpStatus("defaultStatus"),
 	additionalOutreachHours: integer("additionalOutreachHours")
 		.default(0)

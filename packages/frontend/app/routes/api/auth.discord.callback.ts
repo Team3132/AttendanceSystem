@@ -65,12 +65,17 @@ export const APIRoute = createAPIFileRoute("/api/auth/discord/callback")({
 
 			const guildMember = await api.users.getGuildMember(env.VITE_GUILD_ID);
 
+			const { accessToken, refreshToken, accessTokenExpiresAt } = tokens
+
 			const [authedUser] = await db
 				.insert(userTable)
 				.values({
 					id: discordUser.id,
 					username: guildMember.nick || discordUser.username,
 					roles: guildMember.roles,
+					accessToken,
+					refreshToken,
+					accessTokenExpiresAt,
 				})
 				.onConflictDoUpdate({
 					target: userTable.id,
@@ -78,6 +83,9 @@ export const APIRoute = createAPIFileRoute("/api/auth/discord/callback")({
 						username: guildMember.nick || discordUser.username,
 						roles: guildMember.roles,
 						updatedAt: new Date().toISOString(),
+						accessToken,
+						refreshToken,
+						accessTokenExpiresAt,
 					},
 				})
 				.returning();
