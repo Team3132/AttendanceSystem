@@ -91,7 +91,7 @@
     "@trpc/client": "11.0.0-rc.700",
     "@trpc/server": "11.0.0-rc.700",
     "@types/luxon": "3.4.2",
-    "@types/react": "19.0.5",
+    "@types/react": "19.0.6",
     "@types/react-dom": "19.0.3",
     "@types/uuid": "10.0.0",
     "@vitejs/plugin-react": "4.3.4",
