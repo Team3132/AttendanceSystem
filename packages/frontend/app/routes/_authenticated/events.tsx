@@ -22,34 +22,40 @@ import {
 	useSuspenseInfiniteQuery,
 	useSuspenseQuery,
 } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, stripSearchParams } from "@tanstack/react-router";
 import { EventTypeSchema } from "@/server/schema";
 import { DateTime } from "luxon";
 import { z } from "zod";
 import { fallback } from "@tanstack/zod-adapter";
 import { useCallback } from "react";
 
-const defaultTo = DateTime.now().plus({ month: 1 }).toISODate();
-const defaultFrom = DateTime.now().toISODate();
-const defaultLimit = 5;
+const defaultValues = {
+	from: DateTime.now().toISODate(),
+	to: DateTime.now().plus({ month: 1 }).toISODate(),
+	type: undefined,
+	limit: 5,
+}
 
 const eventsSearchSchema = z.object({
-	from: fallback(z.string().date(), defaultFrom).default(defaultFrom),
-	to: fallback(z.string().date(), defaultTo).default(defaultTo),
-	type: fallback(EventTypeSchema.optional(), undefined),
-	limit: fallback(z.number().optional(), defaultLimit).default(defaultLimit),
+	from: z.string().default(defaultValues.from),
+	to: z.string().date().default(defaultValues.to),
+	type: EventTypeSchema.optional(),
+	limit: z.number().default(defaultValues.limit),
 });
 
 export const Route = createFileRoute("/_authenticated/events")({
 	component: Component,
 	validateSearch: eventsSearchSchema,
+	search: {
+		middlewares: [stripSearchParams(defaultValues)]
+	},
 	loaderDeps: ({ search }) => search,
 	head: () => ({
 		meta: [{ title: "Events" }],
 	}),
 	loader: async ({
 		context: { queryClient },
-		deps: { from = defaultFrom, to = defaultTo, type, limit = defaultLimit },
+		deps: { from, to, type, limit },
 	}) => {
 		await queryClient.prefetchQuery(authQueryOptions.status());
 
@@ -96,7 +102,7 @@ function Component() {
 		(date: DateTime<true> | DateTime<false> | null) => {
 			const iso = date?.toISODate();
 			navigate({
-				search: (prev) => ({ ...prev, from: iso ? iso : defaultFrom }),
+				search: (prev) => ({ ...prev, from: iso ? iso : defaultValues.from }),
 			});
 		},
 		[navigate],
@@ -106,7 +112,7 @@ function Component() {
 		(date: DateTime<true> | DateTime<false> | null) => {
 			const iso = date?.toISODate();
 			navigate({
-				search: (prev) => ({ ...prev, to: iso ? iso : defaultTo }),
+				search: (prev) => ({ ...prev, to: iso ? iso : defaultValues.to }),
 			});
 		},
 		[navigate],
@@ -168,12 +174,12 @@ function Component() {
 					</Box>
 					<Box sx={{ display: "flex", justifyContent: "space-between" }}>
 						<DatePicker
-							value={DateTime.fromISO(from ?? defaultFrom)}
+							value={DateTime.fromISO(from ?? defaultValues.from)}
 							label="From"
 							onChange={handleStartChange}
 						/>
 						<DatePicker
-							value={DateTime.fromISO(to ?? defaultTo)}
+							value={DateTime.fromISO(to ?? defaultValues.to)}
 							label="To"
 							onChange={handleEndChange}
 						/>

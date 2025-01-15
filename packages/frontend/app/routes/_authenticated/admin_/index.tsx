@@ -12,7 +12,7 @@ import {
 	TextField,
 } from "@mui/material";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, stripSearchParams } from "@tanstack/react-router";
 import { createColumnHelper } from "@tanstack/react-table";
 import type { UserSchema } from "@/server/schema";
 import { useMemo } from "react";
@@ -41,12 +41,20 @@ const columns = [
 	}),
 ];
 
+const defaultValues = {
+	query: "",
+}
+
 const searchSchema = z.object({
-	query: fallback(z.string(), "").default(""),
+	query: z.string().default(defaultValues.query),
 });
+
 
 export const Route = createFileRoute("/_authenticated/admin_/")({
 	validateSearch: searchSchema,
+	search: {
+		middlewares: [stripSearchParams(defaultValues)],
+	},
 	loaderDeps: ({ search }) => ({ search }),
 	loader: async ({ context: { queryClient }, deps: { search } }) =>
 		queryClient.prefetchInfiniteQuery(
