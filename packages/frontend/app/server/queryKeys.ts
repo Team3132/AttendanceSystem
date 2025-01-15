@@ -71,3 +71,9 @@ export const authQueryKeys = {
 	auth: ["auth"] as const,
 	status: () => [...authQueryKeys.auth, "status"] as const,
 };
+
+export const adminQueryKeys = {
+	admin: ["admin"] as const,
+	apiKeys: ["admin", "apiKeys"] as const,
+	parsingRules: ["admin", "parsingRules"] as const,
+};

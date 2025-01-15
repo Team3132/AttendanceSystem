@@ -113,6 +113,13 @@
       "when": 1736559100263,
       "tag": "0015_chilly_silver_samurai",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1736983757923,
+      "tag": "0016_legal_blade",
+      "breakpoints": true
     }
   ]
 }

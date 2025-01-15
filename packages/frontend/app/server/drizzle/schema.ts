@@ -9,6 +9,7 @@ import {
 	uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { v4 } from "uuid";
+import { ulid } from "ulidx"
 
 export const eventTypes = pgEnum("EventTypes", [
 	"Social",
@@ -69,6 +70,7 @@ export const sessionTable = pgTable("session", {
 export const userTableRelations = relations(userTable, ({ many }) => ({
 	rsvps: many(rsvpTable),
 	scancodes: many(scancodeTable),
+	apiKeys: many(apiKeyTable),
 }));
 
 export const rsvpTable = pgTable(
@@ -210,3 +212,45 @@ export const scancodeTableRelations = relations(scancodeTable, ({ one }) => ({
 		references: [userTable.id],
 	}),
 }));
+
+// API Key
+export const apiKeyTable = pgTable("ApiKey", {
+	id: text("id").primaryKey().notNull().$default(() => ulid()),
+	createdBy: text("createdBy").references(() => userTable.id),
+	createdAt: timestamp("createdAt", {
+		precision: 3,
+		mode: "date",
+		withTimezone: true,
+	}).notNull().defaultNow(),
+	updatedAt: timestamp("updatedAt", {
+		precision: 3,
+		mode: "date",
+		withTimezone: true,
+	}).notNull().defaultNow(),
+});
+
+export const apiKeyTableRelations = relations(apiKeyTable, ({ one }) => ({
+	createdBy: one(userTable, {
+		fields: [apiKeyTable.createdBy],
+		references: [userTable.id],
+	}),
+}))
+
+/** Parsing rules for event names */
+export const eventParsingRuleTable = pgTable("EventParsingRule", {
+	id: text("id").primaryKey().notNull().$default(() => ulid()),
+	createdAt: timestamp("createdAt", {
+		precision: 3,
+		mode: "date",
+		withTimezone: true,
+	}).notNull().defaultNow(),
+	updatedAt: timestamp("updatedAt", {
+		precision: 3,
+		mode: "date",
+		withTimezone: true,
+	}).notNull().defaultNow(),
+	name: text("name").notNull(),
+	regex: text("regex").notNull().default(""),
+	rolesIds: text("roles").array().notNull().default([]),
+	channelId: text("channelId").notNull(),
+});
