@@ -77,3 +77,9 @@ export const adminQueryKeys = {
 	apiKeys: ["admin", "apiKeys"] as const,
 	parsingRules: ["admin", "parsingRules"] as const,
 };
+
+export const discordQueryKeys = {
+	discord: ["discord"] as const,
+	serverRoles: ["discord", "serverRoles"] as const,
+	serverChannels: ["discord", "serverChannels"] as const,
+}
