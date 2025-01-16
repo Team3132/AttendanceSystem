@@ -64,7 +64,7 @@
     "discord-api-types": "0.37.116",
     "dotenv": "16.4.7",
     "drizzle-orm": "0.38.4",
-    "drizzle-zod": "0.5.1",
+    "drizzle-zod": "0.6.1",
     "eventemitter3": "5.0.1",
     "googleapis": "144.0.0",
     "lucia": "3.2.2",
