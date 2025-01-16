@@ -57,14 +57,13 @@ export const Route = createRootRouteWithContext<{
         href: "/favicon.ico",
       },
     ],
-    scripts:
-      import.meta.env.DEV && false
-        ? [
-            {
-              src: "https://unpkg.com/react-scan/dist/auto.global.js",
-            },
-          ]
-        : undefined,
+    scripts: import.meta.env.DEV
+      ? [
+          {
+            src: "https://unpkg.com/react-scan/dist/auto.global.js",
+          },
+        ]
+      : undefined,
   }),
 });
 

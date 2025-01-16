@@ -2,11 +2,16 @@ import AsChildLink from "@/components/AsChildLink";
 import { authQueryOptions } from "@/queries/auth.queries";
 
 import type { TabItem } from "@/types/TabItem";
-import { BottomNavigation, BottomNavigationAction, Box } from "@mui/material";
+import {
+  BottomNavigation,
+  BottomNavigationAction,
+  type BottomNavigationActionProps,
+  Box,
+} from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useChildMatches } from "@tanstack/react-router";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
-import { useMemo } from "react";
+import { Suspense, useMemo } from "react";
 import {
   FaHouse,
   FaPeopleGroup,
@@ -42,7 +47,9 @@ function Component() {
         height: "100%",
       }}
     >
-      <Outlet />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Outlet />
+      </Suspense>
       <BottomBar />
     </Box>
   );
@@ -109,14 +116,40 @@ function BottomBar() {
   return (
     <BottomNavigation showLabels value={matchingIndex}>
       {routes.map((route, index) => (
-        <AsChildLink to={route.to} params={route.params} key={route.to}>
-          <BottomNavigationAction
-            label={route.label}
-            icon={route.icon}
-            value={index}
-          />
-        </AsChildLink>
+        <BottomNavigationLink
+          label={route.label}
+          icon={route.icon}
+          value={index}
+          to={route.to}
+          params={route.params}
+          key={route.label}
+        />
       ))}
     </BottomNavigation>
   );
 }
+
+import * as React from "react";
+import { createLink, type LinkComponent } from "@tanstack/react-router";
+
+interface MUIBottomNavigationProps
+  extends Omit<BottomNavigationActionProps, "href"> {
+  // Add any additional props you want to pass to the button
+}
+
+const MUIBottomNavigationLinkComponent = React.forwardRef<
+  HTMLAnchorElement,
+  MUIBottomNavigationProps
+>((props, ref) => {
+  return <BottomNavigationAction component={"a"} ref={ref} {...props} />;
+});
+
+const CreateBottomNavigationLinkComponent = createLink(
+  MUIBottomNavigationLinkComponent
+);
+
+export const BottomNavigationLink: LinkComponent<
+  typeof MUIBottomNavigationLinkComponent
+> = (props) => {
+  return <CreateBottomNavigationLinkComponent preload={"intent"} {...props} />;
+};
