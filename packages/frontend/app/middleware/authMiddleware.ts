@@ -4,6 +4,11 @@ import { createMiddleware, registerGlobalMiddleware } from "@tanstack/start";
 import { getCookie, getHeader, setCookie } from "vinxi/http";
 import { redirect } from "@tanstack/react-router";
 
+const nullSession = {
+	session: null,
+	user: null,
+}
+
 /**
  * Middleware to check if the user is authenticated and has a valid session
  * If the user is not authenticated, a blank session is created
@@ -24,6 +29,8 @@ export const authBaseMiddleware = createMiddleware().server(
 		if (sessionIdAuthorization) {
 			const validSession = await lucia.validateSession(sessionIdAuthorization);
 
+			
+
 			// If there's no valid session then pass the null user (fails rules)
 			return next({
 				context: validSession,
@@ -43,17 +50,14 @@ export const authBaseMiddleware = createMiddleware().server(
 			);
 
 			return next({
-				context: {
-					session: null,
-					user: null,
-				},
+				context: nullSession
 			});
 		}
 
-		const { session, user } = await lucia.validateSession(sessionId); // Validate the session
+		const validSession = await lucia.validateSession(sessionId); // Validate the session
 
 		// No session or invalid session so create a blank cookie
-		if (!session) {
+		if (!validSession.session) {
 			const sessionCookie = lucia.createBlankSessionCookie();
 
 			setCookie(
@@ -64,8 +68,8 @@ export const authBaseMiddleware = createMiddleware().server(
 		}
 
 		// If the session is fresh, we need to update the cookie to extend the expiry
-		if (session?.fresh) {
-			const sessionCookie = lucia.createSessionCookie(session.id);
+		if (validSession.session?.fresh) {
+			const sessionCookie = lucia.createSessionCookie(validSession.session.id);
 			setCookie(
 				sessionCookie.name,
 				sessionCookie.value,
@@ -74,10 +78,7 @@ export const authBaseMiddleware = createMiddleware().server(
 		}
 
 		return next({
-			context: {
-				session,
-				user,
-			},
+			context: validSession,
 		});
 	},
 );
@@ -89,6 +90,7 @@ export const sessionMiddleware = createMiddleware()
 	.middleware([authBaseMiddleware])
 	.server(async ({ context, next }) => {
 		const { session, user } = context;
+
 
 		// If there's no session or user, we're not logged in and we should redirect to the login page
 		if (!session || !user) {
