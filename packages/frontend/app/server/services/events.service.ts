@@ -494,8 +494,6 @@ export async function userCheckout(userId: string, eventId: string) {
 			and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
 	});
 
-	console.log({ existingRsvp, userId, eventId });
-
 	const existingEvent = await db.query.eventTable.findFirst({
 		where: eq(eventTable.id, eventId),
 	});
