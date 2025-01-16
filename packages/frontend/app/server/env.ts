@@ -30,6 +30,7 @@ export const env = createEnv({
 		VITE_DISCORD_DESKTOP_CALLBACK_URL: z
 			.string()
 			.default("http://localhost:3000/api/auth/discord-desktop/callback"),
+		VITE_DISCORD_TOKEN: z.string(),
 		/**
 		 * Misc
 		 */
