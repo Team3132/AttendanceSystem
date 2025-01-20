@@ -2,7 +2,11 @@ import type { z } from "zod";
 import type { RSVPUserSchema } from "../schema";
 import db from "../drizzle/db";
 import { eq } from "drizzle-orm";
-import { eventParsingRuleTable, rsvpTable } from "../drizzle/schema";
+import {
+	eventParsingRuleTable,
+	eventTable,
+	rsvpTable,
+} from "../drizzle/schema";
 import env from "../env";
 import {
 	ActionRowBuilder,
@@ -70,33 +74,28 @@ export async function generateMessage(
 	});
 
 	const eventData = await db.query.eventTable.findFirst({
-		where: eq(eventParsingRuleTable.id, eventId),
+		where: eq(eventTable, eventId),
 	});
 
 	if (!eventData) {
 		throw new Error("Event not found");
 	}
 
-	const { title } = eventData;
+	const { ruleId } = eventData;
 
-	// get parsing rules
-	const parsingRules = await db
-		.select({
-			id: eventParsingRuleTable.id,
-			regex: eventParsingRuleTable.regex,
-			rolesIds: eventParsingRuleTable.rolesIds,
-		})
-		.from(eventParsingRuleTable);
+	let roleIds: string[] = [];
 
-	// each parsing rule contains a regex and a list of role ids, if the regex matches the title, we use the role ids
-	const passedRules = parsingRules.filter((rule) =>
-		new RegExp(rule.regex).test(title),
-	);
-
-	// if no rules match, we default to everyone
-	const roleIds = passedRules.length
-		? passedRules.flatMap((rule) => rule.rolesIds)
-		: [env.VITE_GUILD_ID];
+	if (ruleId === null) {
+		roleIds = [env.VITE_GUILD_ID];
+	} else {
+		const eventRule = await db.query.eventParsingRuleTable.findFirst({
+			where: eq(eventParsingRuleTable, ruleId),
+		});
+		if (!eventRule) {
+			throw new Error("Event Rule not found");
+		}
+		roleIds = eventRule.rolesIds;
+	}
 
 	const mentorRSVPs = eventRSVPs.filter((rsvpUser) =>
 		rsvpUser.user.roles?.includes(env.VITE_MENTOR_ROLE_ID),

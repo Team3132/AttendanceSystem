@@ -170,6 +170,7 @@ export const eventTable = pgTable(
 		secret: text("secret").notNull(),
 		isSyncedEvent: boolean("isSyncedEvent").default(false).notNull(),
 		isPosted: boolean("isPosted").default(false).notNull(),
+		ruleId: text("ruleId").references(() => eventParsingRuleTable.id),
 	},
 	(table) => {
 		return {
@@ -178,8 +179,9 @@ export const eventTable = pgTable(
 	},
 );
 
-export const eventTableRelations = relations(eventTable, ({ many }) => ({
+export const eventTableRelations = relations(eventTable, ({ many, one }) => ({
 	rsvps: many(rsvpTable),
+	rule: one(eventParsingRuleTable),
 }));
 
 export const scancodeTable = pgTable("Scancode", {
@@ -277,3 +279,10 @@ export const eventParsingRuleTable = pgTable("EventParsingRule", {
 	/** Cron schedule */
 	schedule: text("schedule").notNull().default(""),
 });
+
+export const eventParsingRuleTableRelations = relations(
+	eventParsingRuleTable,
+	({ many }) => ({
+		events: many(eventTable),
+	}),
+);
