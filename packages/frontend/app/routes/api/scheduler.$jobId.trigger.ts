@@ -21,9 +21,6 @@ export const APIRoute = createAPIFileRoute("/api/scheduler/$jobId/trigger")({
 
 			const botAPI = getDiscordBotAPI();
 
-			// get events for the next day
-			const nextEvents = await eventService.getNextEvents();
-
 			const channel = await botAPI.channels.get(job.channelId);
 
 			if (channel.type !== ChannelType.GuildText) {
