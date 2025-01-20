@@ -9,7 +9,7 @@ import {
 	uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { v4 } from "uuid";
-import { ulid } from "ulidx"
+import { ulid } from "ulidx";
 
 export const eventTypes = pgEnum("EventTypes", [
 	"Social",
@@ -215,18 +215,25 @@ export const scancodeTableRelations = relations(scancodeTable, ({ one }) => ({
 
 // API Key
 export const apiKeyTable = pgTable("ApiKey", {
-	id: text("id").primaryKey().notNull().$default(() => ulid()),
+	id: text("id")
+		.primaryKey()
+		.notNull()
+		.$default(() => ulid()),
 	createdBy: text("createdBy").references(() => userTable.id),
 	createdAt: timestamp("createdAt", {
 		precision: 3,
 		mode: "date",
 		withTimezone: true,
-	}).notNull().defaultNow(),
+	})
+		.notNull()
+		.defaultNow(),
 	updatedAt: timestamp("updatedAt", {
 		precision: 3,
 		mode: "date",
 		withTimezone: true,
-	}).notNull().defaultNow(),
+	})
+		.notNull()
+		.defaultNow(),
 });
 
 export const apiKeyTableRelations = relations(apiKeyTable, ({ one }) => ({
@@ -234,23 +241,39 @@ export const apiKeyTableRelations = relations(apiKeyTable, ({ one }) => ({
 		fields: [apiKeyTable.createdBy],
 		references: [userTable.id],
 	}),
-}))
+}));
 
 /** Parsing rules for event names */
 export const eventParsingRuleTable = pgTable("EventParsingRule", {
-	id: text("id").primaryKey().notNull().$default(() => ulid()),
+	/** The Id of the rule */
+	id: text("id")
+		.primaryKey()
+		.notNull()
+		.$default(() => ulid()),
+	/** The date the rule was created */
 	createdAt: timestamp("createdAt", {
 		precision: 3,
 		mode: "date",
 		withTimezone: true,
-	}).notNull().defaultNow(),
+	})
+		.notNull()
+		.defaultNow(),
+	/** The last time the rule was updated */
 	updatedAt: timestamp("updatedAt", {
 		precision: 3,
 		mode: "date",
 		withTimezone: true,
-	}).notNull().defaultNow(),
-	name: text("name").notNull(),
+	})
+		.notNull()
+		.defaultNow(),
+	/** The name of the rule */
+	name: text("name").unique().notNull(),
+	/** The title to match */
 	regex: text("regex").notNull().default(""),
+	/** The roles to ping */
 	rolesIds: text("roles").array().notNull().default([]),
+	/** The channel Id to make the announcement in */
 	channelId: text("channelId").notNull(),
+	/** Cron schedule */
+	schedule: text("schedule").notNull().default(""),
 });

@@ -54,6 +54,10 @@ export const env = createEnv({
 		 * Roles
 		 */
 		VITE_MENTOR_ROLE_ID: z.string(),
+		/**
+		 * Kronos cron job connection url
+		 */
+		VITE_KRONOS_URL: z.string().optional(),
 	},
 	runtimeEnv: {
 		...((import.meta as unknown as { env: Record<string, string> }).env ?? {}),
