@@ -6,12 +6,11 @@ import {
   TextInputBuilder,
 } from "@discordjs/builders";
 import { Inject, Injectable, UseGuards } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
+import type { ConfigService } from "@nestjs/config";
 import { TextInputStyle } from "discord.js";
 import { Ctx, Modal, type ModalContext, ModalParam } from "necord";
 import { z } from "zod";
 import { GuildMemberGuard } from "../guards/GuildMemberGuard";
-import rsvpReminderMessage from "../utils/rsvpReminderMessage";
 
 @Injectable()
 export class DelayModal {
@@ -50,22 +49,20 @@ export class DelayModal {
       delay: value.data,
     });
 
-    const fetchEvent =
-      await this.backendClient.client.bot.getEventDetails.query(eventId);
-
-    const rsvps =
-      await this.backendClient.client.bot.getEventRsvps.query(eventId);
-
-    const frontendUrl = this.config.getOrThrow("VITE_FRONTEND_URL");
+    const reminderMessage = await this.backendClient.client.bot.getEventReminder.query(eventId);
 
     if (interaction.isFromMessage()) {
       return interaction.update({
-        ...rsvpReminderMessage(fetchEvent, rsvps, frontendUrl),
+        content: reminderMessage.content,
+        components: reminderMessage.components,
+        embeds: reminderMessage.embeds,
       });
     }
     return interaction.reply({
       ephemeral: true,
-      ...rsvpReminderMessage(fetchEvent, rsvps, frontendUrl),
+      content: reminderMessage.content,
+      components: reminderMessage.components,
+      embeds: reminderMessage.embeds,
     });
   }
 

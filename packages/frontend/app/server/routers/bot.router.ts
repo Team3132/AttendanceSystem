@@ -30,6 +30,7 @@ import { t } from "../trpc";
 import { tokenProcedure } from "../trpc/utils";
 import { syncEvents } from "../services/calalendarSync.service";
 import { SyncResponseSchema } from "../schema/SyncResponseSchema";
+import { generateMessage } from "../services/botService";
 
 /**
  * A router than the bot uses to communicate with the backend
@@ -54,6 +55,9 @@ export const botRouter = t.router({
 		.input(z.string())
 		.output(z.array(RSVPUserSchema))
 		.query(({ input }) => getEventRsvps(input)),
+	getEventReminder: tokenProcedure
+		.input(z.string())
+		.query(({ input }) => generateMessage({ eventId: input })),
 	getEventDetails: tokenProcedure
 		.input(z.string())
 		.output(EventSchema)

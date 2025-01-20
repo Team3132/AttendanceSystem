@@ -1,6 +1,6 @@
 import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
 import { Inject, Injectable, UseGuards, UseInterceptors } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
+import type { ConfigService } from "@nestjs/config";
 import { PermissionFlagsBits } from "discord.js";
 import {
   Context,
@@ -8,10 +8,9 @@ import {
   SlashCommand,
   type SlashCommandContext,
 } from "necord";
-import { RequestRSVPDto } from "../dto/requestRSVP.dto";
+import type { RequestRSVPDto } from "../dto/requestRSVP.dto";
 import { GuildMemberGuard } from "../guards/GuildMemberGuard";
 import { EventAutocompleteInterceptor } from "../interceptors/event.interceptor";
-import rsvpReminderMessage from "../utils/rsvpReminderMessage";
 
 const guildId = process.env.VITE_GUILD_ID;
 
@@ -44,17 +43,15 @@ export class RequestRsvpCommand {
         content: "No meeting with that Id",
       });
 
-    const fetchedRSVPs =
-      await this.backendClient.client.bot.getEventRsvps.query(meeting);
-
     await this.backendClient.client.bot.markEventPosted.mutate(meeting);
 
-    return interaction.reply(
-      rsvpReminderMessage(
-        eventDetails,
-        fetchedRSVPs,
-        this.config.getOrThrow("VITE_FRONTEND_URL"),
-      ),
+      const reminderMessage = await this.backendClient.client.bot.getEventReminder.query(meeting)
+
+    return interaction.reply({
+      content: reminderMessage.content,
+      components: reminderMessage.components,
+      embeds: reminderMessage.embeds
+    }
     );
   }
 }

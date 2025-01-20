@@ -42,6 +42,7 @@ export const APIRoute = createAPIFileRoute("/api/scheduler/$jobId/trigger")({
 
 			const matchingEventIds = matchingEvents.map((event) => event.id);
 
+			// generate messages for each event (this fetches RSVPs and the event details)
 			const notificationMessages = await Promise.all(
 				matchingEventIds.map((eventId) => generateMessage({ eventId })),
 			);
