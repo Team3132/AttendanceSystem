@@ -37,7 +37,7 @@
     "discord.js": "14.17.3",
     "express": "4.21.2",
     "luxon": "3.5.0",
-    "necord": "6.8.6",
+    "necord": "6.8.7",
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.1",
     "superjson": "2.2.2",
