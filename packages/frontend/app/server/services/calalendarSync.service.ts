@@ -24,7 +24,7 @@ const calendar = google.calendar({
 	auth: client,
 });
 
-export const getCalendarEvents = () =>
+const getCalendarEvents = () =>
 	new Promise<calendar_v3.Schema$Events>((res) => {
 		calendar.events.list(
 			{

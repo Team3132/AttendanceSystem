@@ -62,7 +62,7 @@ export const useDisclosure = (props?: DefaultProps): DisclosureReturnType => {
 	};
 };
 
-export interface DisclosureReturnType {
+interface DisclosureReturnType {
 	isOpen: boolean;
 	onClose: () => void;
 	onOpen: () => void;

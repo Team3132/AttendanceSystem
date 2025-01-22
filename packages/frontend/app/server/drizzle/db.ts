@@ -7,7 +7,7 @@ import * as schema from "./schema";
 
 const connectionUrl = `postgres://${env.VITE_POSTGRES_USER}:${env.VITE_POSTGRES_PASSWORD}@${env.VITE_POSTGRES_HOST}:5432/${env.VITE_POSTGRES_DB}`;
 
-export async function migrate() {
+async function migrate() {
 	const logger = mainLogger.child("DB");
 
 	const migrationPgClient = postgres(connectionUrl, {

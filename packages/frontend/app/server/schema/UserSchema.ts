@@ -8,6 +8,4 @@ export const UserSchema = createSelectSchema(userTable, {
 	accessToken: true,
 	refreshToken: true,
 	accessTokenExpiresAt: true,
-})
-
-export default UserSchema;
+});
