@@ -29,8 +29,7 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 import React, { useMemo, useRef, useState } from "react";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa6";
 
-export interface DatatableProps<Data extends object>
-  extends TableContainerProps {
+interface DatatableProps<Data extends object> extends TableContainerProps {
   data: Data[];
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   columns: ColumnDef<Data, any>[];

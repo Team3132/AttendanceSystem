@@ -33,12 +33,6 @@ export const discord = new Discord(
 	env.VITE_DISCORD_CALLBACK_URL,
 );
 
-export const discordDesktop = new Discord(
-	env.VITE_DISCORD_CLIENT_ID,
-	env.VITE_DISCORD_CLIENT_SECRET,
-	env.VITE_DISCORD_DESKTOP_CALLBACK_URL,
-);
-
 // IMPORTANT!
 declare module "lucia" {
 	interface Register {

@@ -217,39 +217,3 @@ export async function createUser(userdata: z.infer<typeof UserCreateSchema>) {
 
 	return dbUser;
 }
-
-export async function attendanceSummary(
-	userId: string,
-	params: z.infer<typeof RSVPSummaryParams>,
-	// includeEmptyEvents = false,
-) {
-	const { types, startDate, endDate } = params;
-
-	const eventTypeEntries = Object.entries(types);
-
-	const selectedEventTypes = eventTypeEntries
-		.filter(([, value]) => value)
-		.map(([key]) => key) as z.infer<typeof EventTypeSchema>[];
-
-	const _rsvpsQuery = await db
-		.select({
-			eventName: eventTable.title,
-			eventId: eventTable.id,
-			eventStart: eventTable.startDate,
-			eventEnd: eventTable.endDate,
-			eventType: eventTable.type,
-			rsvpStart: rsvpTable.checkinTime,
-			rsvpEnd: rsvpTable.checkoutTime,
-			rsvpStatus: rsvpTable.status,
-		})
-		.from(eventTable)
-		.leftJoin(rsvpTable, eq(eventTable.id, rsvpTable.eventId))
-		.where(
-			and(
-				eq(rsvpTable.userId, userId),
-				gte(eventTable.startDate, startDate),
-				lte(eventTable.endDate, endDate),
-				inArray(eventTable.type, selectedEventTypes),
-			),
-		);
-}

@@ -1,4 +1,5 @@
 import AsChildLink from "@/components/AsChildLink";
+import { BottomNavigationLink } from "@/components/BottomNavigationLink";
 import { authQueryOptions } from "@/queries/auth.queries";
 
 import type { TabItem } from "@/types/TabItem";
@@ -128,28 +129,3 @@ function BottomBar() {
     </BottomNavigation>
   );
 }
-
-import * as React from "react";
-import { createLink, type LinkComponent } from "@tanstack/react-router";
-
-interface MUIBottomNavigationProps
-  extends Omit<BottomNavigationActionProps, "href"> {
-  // Add any additional props you want to pass to the button
-}
-
-const MUIBottomNavigationLinkComponent = React.forwardRef<
-  HTMLAnchorElement,
-  MUIBottomNavigationProps
->((props, ref) => {
-  return <BottomNavigationAction component={"a"} ref={ref} {...props} />;
-});
-
-const CreateBottomNavigationLinkComponent = createLink(
-  MUIBottomNavigationLinkComponent
-);
-
-export const BottomNavigationLink: LinkComponent<
-  typeof MUIBottomNavigationLinkComponent
-> = (props) => {
-  return <CreateBottomNavigationLinkComponent preload={"intent"} {...props} />;
-};

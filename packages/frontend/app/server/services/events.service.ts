@@ -24,7 +24,7 @@ import type { CreateEventSchema } from "../schema/CreateEventSchema";
 import type { EditEventSchema } from "../schema/EditEventSchema";
 import type { EditRSVPSelfSchema } from "../schema/EditRSVPSelfSchema";
 import type { EditUserAttendanceSchema } from "../schema/EditUserAttendanceSchema";
-import type EventSchema from "../schema/EventSchema";
+import type { EventSchema } from "../schema/EventSchema";
 import type { EventWithSecretArraySchema } from "../schema/EventWithSecretArraySchema";
 import type { GetEventParamsSchema } from "../schema/GetEventParamsSchema";
 import type { PagedEventsSchema } from "../schema/PagedEventsSchema";
@@ -274,36 +274,6 @@ export async function createEvent(params: z.infer<typeof CreateEventSchema>) {
 }
 
 /**
- * Update an event
- * @param params The update parameters
- * @returns The updated event
- */
-export async function updateEvent(
-	params: z.infer<typeof EditEventSchema>,
-): Promise<z.infer<typeof EventSchema>> {
-	const { id: eventId, ...data } = params;
-	const [updatedEvent] = await db
-		.update(eventTable)
-		.set(data)
-		.where(eq(eventTable.id, eventId))
-		.returning();
-
-	if (!updatedEvent) {
-		throw new TRPCError({
-			code: "INTERNAL_SERVER_ERROR",
-			message: "Failed to update event",
-		});
-	}
-
-	ee.emit("invalidate", eventQueryKeys.eventsList);
-	ee.emit("invalidate", eventQueryKeys.eventDetails(eventId));
-
-	const { secret, ...rest } = updatedEvent;
-
-	return rest;
-}
-
-/**
  * Delete an event
  * @param id The id of the event
  */
@@ -385,7 +355,7 @@ export async function editUserRsvpStatus(
  * @param params The checkin parameters
  * @returns The updated rsvp
  */
-export async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
+async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
 	const { eventId, userId } = params;
 	const dbEvent = await db.query.eventTable.findFirst({
 		where: eq(eventTable.id, eventId),
@@ -575,67 +545,6 @@ export async function userCheckout(userId: string, eventId: string) {
 	return updatedRsvp;
 }
 
-/**
- * Edit a user's event attendance
- */
-export async function editUserAttendance(
-	params: z.infer<typeof EditUserAttendanceSchema>,
-) {
-	const { userId, eventId, checkinTime, checkoutTime } = params;
-
-	if (checkoutTime && !checkinTime) {
-		throw new TRPCError({
-			code: "BAD_REQUEST",
-			message: "Cannot check out without checking in",
-		});
-	}
-
-	if (checkinTime && checkoutTime) {
-		if (DateTime.fromISO(checkinTime) > DateTime.fromISO(checkoutTime)) {
-			throw new TRPCError({
-				code: "BAD_REQUEST",
-				message: "Checkin time must be before checkout time",
-			});
-		}
-	}
-
-	const [updatedRsvp] = await db
-		.insert(rsvpTable)
-		.values({
-			userId,
-			eventId,
-			checkinTime,
-			checkoutTime,
-			createdAt: DateTime.local().toISO(),
-			updatedAt: DateTime.local().toISO(),
-			status: checkinTime ? "ATTENDED" : undefined,
-		})
-		.onConflictDoUpdate({
-			set: {
-				userId,
-				eventId,
-				checkinTime,
-				checkoutTime,
-				updatedAt: DateTime.local().toISO(),
-				status: checkinTime ? "ATTENDED" : undefined,
-			},
-			target: [rsvpTable.eventId, rsvpTable.userId],
-		})
-		.returning();
-
-	if (!updatedRsvp) {
-		throw new TRPCError({
-			code: "INTERNAL_SERVER_ERROR",
-			message: "Failed to update RSVP",
-		});
-	}
-
-	// TODO: Schedule a job to check out the user after the delay
-	ee.emit("invalidate", eventQueryKeys.eventRsvps(eventId));
-
-	return updatedRsvp;
-}
-
 export async function selfCheckin(
 	userId: string,
 	params: z.infer<typeof SelfCheckinSchema>,
@@ -746,18 +655,6 @@ export async function getAutocompleteEvents(like?: string) {
 		},
 		orderBy: (event) => [asc(event.startDate)],
 		limit: 10,
-	});
-
-	return events;
-}
-
-export async function getCurrentEvents(
-	leewayMinutes = 5,
-): Promise<z.infer<typeof EventWithSecretArraySchema>> {
-	const now = DateTime.now().minus({ minutes: leewayMinutes }).toISO();
-
-	const events = await db.query.eventTable.findMany({
-		where: (event) => and(gte(event.startDate, now), lte(event.endDate, now)),
 	});
 
 	return events;

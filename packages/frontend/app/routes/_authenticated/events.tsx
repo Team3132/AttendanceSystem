@@ -28,6 +28,7 @@ import { DateTime } from "luxon";
 import { z } from "zod";
 import { fallback } from "@tanstack/zod-adapter";
 import { useCallback } from "react";
+import { LinkButton } from "@/components/LinkButton";
 
 const defaultValues = {
 	from: DateTime.now().toISODate(),
@@ -218,8 +219,8 @@ function CreateEventButton() {
 	const authStatusQuery = useSuspenseQuery(authQueryOptions.status());
 
 	return authStatusQuery.data.isAdmin ? (
-		<AsChildLink to="/events/create">
-			<Button variant="contained">Create Event</Button>
-		</AsChildLink>
+		<LinkButton to="/events/create" variant="contained">
+			Create Event
+		</LinkButton>
 	) : null;
 }
