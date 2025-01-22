@@ -1,0 +1,17 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "workspaces": {
+    "packages/bot": {
+      "entry": "src/main.ts"
+    },
+    "packages/frontend": {
+      "entry": [
+        "app/ssr.tsx",
+        "app/client.tsx",
+        "app/api.ts",
+        "app/api/*.ts",
+        "app/routes/*.ts"
+      ]
+    }
+  }
+}
