@@ -25,32 +25,6 @@ interface MessageParams {
 	eventId: string;
 }
 
-export const statusToEmoji = (
-	status: z.infer<typeof RSVPUserSchema>["status"],
-) => {
-	switch (status) {
-		case "YES":
-			return ":white_check_mark:";
-		case "NO":
-			return ":x:";
-		case "MAYBE":
-			return ":grey_question:";
-		case "LATE":
-			return ":clock3:";
-		case "ATTENDED":
-			return ":ok:";
-		default:
-			return "";
-	}
-};
-
-export function rsvpToDescription(
-	username: string,
-	status: z.infer<typeof RSVPUserSchema>["status"],
-) {
-	return `${username} - ${statusToEmoji(status)}`;
-}
-
 /**
  * Generates an announcement message for an event
  * @param data The data to generate the message with

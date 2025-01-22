@@ -7,7 +7,7 @@ import {
   Injectable,
   Logger,
 } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
+import type { ConfigService } from "@nestjs/config";
 import { GuildMember } from "discord.js";
 import { NecordExecutionContext } from "necord";
 
