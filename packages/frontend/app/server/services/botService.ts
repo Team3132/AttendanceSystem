@@ -56,9 +56,7 @@ export function rsvpToDescription(
  * @param data The data to generate the message with
  * @returns The message data
  */
-export async function generateMessage(
-	data: MessageParams,
-): Promise<RESTPostAPIChannelMessageJSONBody> {
+export async function generateMessage(data: MessageParams) {
 	const { eventId } = data;
 
 	const eventRSVPs = await db.query.rsvpTable.findMany({
@@ -205,5 +203,5 @@ export async function generateMessage(
 		content: `Please RSVP (${roleMentionList})`,
 		embeds: embeds.map((embed) => embed.toJSON()),
 		components: [messageComponent.toJSON()],
-	};
+	} satisfies RESTPostAPIChannelMessageJSONBody;
 }
