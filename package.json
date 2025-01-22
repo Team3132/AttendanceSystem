@@ -15,8 +15,9 @@
 		"typecheck": "pnpm run -r typecheck",
 		"typecheck:watch": "pnpm run -r typecheck --watch",
 		"dev": "pnpm run -r dev",
-		"format": "pnpm biome format --write ./",
-		"lint": "pnpm biome lint --write ./",
+		"format": "pnpm biome format ./",
+		"lint": "pnpm biome lint ./",
+		"check": "pnpm biome check ./",
 		"knip": "knip"
 	},
 	"devDependencies": {
