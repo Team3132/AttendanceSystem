@@ -1,5 +1,5 @@
 import { ROLES } from "@/constants";
-import type { EventSchema, RSVPUserSchema } from "frontend";
+import { EventSchema, RSVPUserSchema } from "frontend";
 import {
   ActionRowBuilder,
   type BaseMessageOptions,
@@ -10,7 +10,7 @@ import {
   time,
 } from "discord.js";
 import { DateTime } from "luxon";
-import type { z } from "zod";
+import { z } from "zod";
 import { statusToEmoji } from "./rsvpToDescription";
 
 export default function rsvpReminderMessage(

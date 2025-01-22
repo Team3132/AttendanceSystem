@@ -1,5 +1,5 @@
-import type { RSVPUserSchema } from "frontend";
-import type { z } from "zod";
+import { RSVPUserSchema } from "frontend";
+import { z } from "zod";
 
 export const statusToEmoji = (
   status: z.infer<typeof RSVPUserSchema>["status"],

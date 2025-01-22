@@ -1,4 +1,4 @@
-import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
+import { BACKEND_TOKEN, BackendClient } from "@/backend/backend.module";
 import { ROLES } from "@/constants";
 import {
   type CanActivate,
@@ -7,7 +7,7 @@ import {
   Injectable,
   Logger,
 } from "@nestjs/common";
-import type { ConfigService } from "@nestjs/config";
+import { ConfigService } from "@nestjs/config";
 import { GuildMember } from "discord.js";
 import { NecordExecutionContext } from "necord";
 

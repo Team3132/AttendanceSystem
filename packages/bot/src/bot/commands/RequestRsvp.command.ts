@@ -1,6 +1,6 @@
-import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
+import { BACKEND_TOKEN, BackendClient } from "@/backend/backend.module";
 import { Inject, Injectable, UseGuards, UseInterceptors } from "@nestjs/common";
-import type { ConfigService } from "@nestjs/config";
+import { ConfigService } from "@nestjs/config";
 import { PermissionFlagsBits } from "discord.js";
 import {
   Context,
@@ -8,7 +8,7 @@ import {
   SlashCommand,
   type SlashCommandContext,
 } from "necord";
-import type { RequestRSVPDto } from "../dto/requestRSVP.dto";
+import { RequestRSVPDto } from "../dto/requestRSVP.dto";
 import { GuildMemberGuard } from "../guards/GuildMemberGuard";
 import { EventAutocompleteInterceptor } from "../interceptors/event.interceptor";
 

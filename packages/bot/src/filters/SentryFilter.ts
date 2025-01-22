@@ -1,5 +1,5 @@
-import { type ArgumentsHost, Catch, type HttpServer } from "@nestjs/common";
-import { type AbstractHttpAdapter, BaseExceptionFilter } from "@nestjs/core";
+import { ArgumentsHost, Catch, HttpServer } from "@nestjs/common";
+import { AbstractHttpAdapter, BaseExceptionFilter } from "@nestjs/core";
 import * as Sentry from "@sentry/node";
 
 @Catch()

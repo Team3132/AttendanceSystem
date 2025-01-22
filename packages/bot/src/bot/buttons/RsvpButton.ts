@@ -7,7 +7,7 @@ import { Inject, Injectable, UseGuards } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { EmbedBuilder } from "discord.js";
 import { DateTime } from "luxon";
-import { Button, type ButtonContext, ComponentParam, Context } from "necord";
+import { Button, ButtonContext, ComponentParam, Context } from "necord";
 import { GuildMemberGuard } from "../guards/GuildMemberGuard";
 import rsvpToDescription from "../utils/rsvpToDescription";
 

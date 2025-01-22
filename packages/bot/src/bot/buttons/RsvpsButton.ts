@@ -1,11 +1,11 @@
-import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
+import { BACKEND_TOKEN, BackendClient } from "@/backend/backend.module";
 import { ROLES } from "@/constants";
 import { Inject, Injectable, Logger, UseGuards } from "@nestjs/common";
-import type { ConfigService } from "@nestjs/config";
-import type { RSVPStatusUpdateSchema } from "frontend";
+import { ConfigService } from "@nestjs/config";
+import { RSVPStatusUpdateSchema } from "frontend";
 import { ActionRow, GuildMember } from "discord.js";
-import { Button, type ButtonContext, ComponentParam, Context } from "necord";
-import type { z } from "zod";
+import { Button, ButtonContext, ComponentParam, Context } from "necord";
+import { z } from "zod";
 import { GuildMemberGuard } from "../guards/GuildMemberGuard";
 import { DelayModal } from "../modals/Delay.modal";
 

@@ -1,7 +1,7 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Client, OAuth2Scopes } from "discord.js";
-import { Context, type ContextOf, On } from "necord";
+import { Context, ContextOf, On } from "necord";
 
 @Injectable()
 export class BotService {

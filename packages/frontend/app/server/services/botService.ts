@@ -18,10 +18,29 @@ import {
   ButtonStyle,
   type RESTPostAPIChannelMessageJSONBody,
 } from "@discordjs/core";
+import type { RSVPUserSchema } from "../schema";
+import type { z } from "zod";
 
 interface MessageParams {
   eventId: string;
 }
+
+const statusToEmoji = (status: z.infer<typeof RSVPUserSchema>["status"]) => {
+  switch (status) {
+    case "YES":
+      return ":white_check_mark:";
+    case "NO":
+      return ":x:";
+    case "MAYBE":
+      return ":grey_question:";
+    case "LATE":
+      return ":clock3:";
+    case "ATTENDED":
+      return ":ok:";
+    default:
+      return "";
+  }
+};
 
 /**
  * Generates an announcement message for an event

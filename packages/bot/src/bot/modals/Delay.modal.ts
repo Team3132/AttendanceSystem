@@ -1,4 +1,4 @@
-import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
+import { BACKEND_TOKEN, BackendClient } from "@/backend/backend.module";
 import {
   ActionRowBuilder,
   type ModalActionRowComponentBuilder,
@@ -6,9 +6,9 @@ import {
   TextInputBuilder,
 } from "@discordjs/builders";
 import { Inject, Injectable, UseGuards } from "@nestjs/common";
-import type { ConfigService } from "@nestjs/config";
+import { ConfigService } from "@nestjs/config";
 import { TextInputStyle } from "discord.js";
-import { Ctx, Modal, type ModalContext, ModalParam } from "necord";
+import { Ctx, Modal, ModalContext, ModalParam } from "necord";
 import { z } from "zod";
 import { GuildMemberGuard } from "../guards/GuildMemberGuard";
 
