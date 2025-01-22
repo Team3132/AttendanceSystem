@@ -1,36 +1,36 @@
+import { mentorMiddleware } from "@/middleware/authMiddleware";
+import { eventQueryKeys } from "@/server/queryKeys";
+import { deleteEvent } from "@/server/services/events.service";
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { eventQueryKeys } from "@/server/queryKeys";
 import { createServerFn } from "@tanstack/start";
-import { mentorMiddleware } from "@/middleware/authMiddleware";
 import { z } from "zod";
-import { deleteEvent } from "@/server/services/events.service";
 
 const deleteEventFn = createServerFn({
-	method: "POST",
+  method: "POST",
 })
-	.validator(z.string())
-	.middleware([mentorMiddleware])
-	.handler(async ({ data }) => deleteEvent(data));
+  .validator(z.string())
+  .middleware([mentorMiddleware])
+  .handler(async ({ data }) => deleteEvent(data));
 
 export default function useDeleteEvent() {
-	const queryClient = useQueryClient();
-	const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
-	return useMutation({
-		mutationFn: deleteEventFn,
-		onSuccess: (data) => {
-			queryClient.invalidateQueries({
-				queryKey: eventQueryKeys.eventsList,
-			});
-			queryClient.invalidateQueries({
-				queryKey: eventQueryKeys.event(data.id),
-			});
-			navigate({
-				to: "/events",
-				search: {},
-			});
-		},
-	});
+  return useMutation({
+    mutationFn: deleteEventFn,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: eventQueryKeys.eventsList,
+      });
+      queryClient.invalidateQueries({
+        queryKey: eventQueryKeys.event(data.id),
+      });
+      navigate({
+        to: "/events",
+        search: {},
+      });
+    },
+  });
 }

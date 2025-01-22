@@ -1,5 +1,4 @@
 import { ROLES } from "@/constants";
-import type { EventSchema, RSVPUserSchema } from "frontend";
 import {
   ActionRowBuilder,
   type BaseMessageOptions,
@@ -9,8 +8,9 @@ import {
   roleMention,
   time,
 } from "discord.js";
+import { EventSchema, RSVPUserSchema } from "frontend";
 import { DateTime } from "luxon";
-import type { z } from "zod";
+import { z } from "zod";
 import { statusToEmoji } from "./rsvpToDescription";
 
 export default function rsvpReminderMessage(
@@ -48,13 +48,17 @@ export default function rsvpReminderMessage(
       {
         name: "Start Time",
         value: time(
-          DateTime.fromMillis(Date.parse(event.startDate)).toJSDate(), "F"
+          DateTime.fromMillis(Date.parse(event.startDate)).toJSDate(),
+          "F",
         ),
         inline: true,
       },
       {
         name: "End Time",
-        value: time(DateTime.fromMillis(Date.parse(event.endDate)).toJSDate(), "F"),
+        value: time(
+          DateTime.fromMillis(Date.parse(event.endDate)).toJSDate(),
+          "F",
+        ),
         inline: true,
       },
     )

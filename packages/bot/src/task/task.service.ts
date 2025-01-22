@@ -1,18 +1,18 @@
-import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
+import { BACKEND_TOKEN, BackendClient } from "@/backend/backend.module";
 import rsvpReminderMessage from "@/bot/utils/rsvpReminderMessage";
 import { ROLES } from "@/constants";
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Cron } from "@nestjs/schedule";
-import type { EventSchema } from "frontend";
 import {
   type BaseMessageOptions,
   ChannelType,
-  Client,
+  type Client,
   bold,
   roleMention,
 } from "discord.js";
-import type { z } from "zod";
+import { EventSchema } from "frontend";
+import { z } from "zod";
 
 @Injectable()
 export class TaskService {
@@ -73,38 +73,19 @@ export class TaskService {
       event: z.infer<typeof EventSchema>,
     ];
 
-    const messages = await Promise.all(
-      nextEvents.map(async (nextEvent) => {
-        const nextEventRsvps =
-          await this.backendClient.client.bot.getEventRsvps.query(nextEvent.id);
-        return [
-          rsvpReminderMessage(
-            nextEvent,
-            nextEventRsvps,
-            this.config.getOrThrow("VITE_FRONTEND_URL"),
-          ),
-          nextEvent,
-        ] satisfies MessageEvent;
-      }),
+    const upcomingEvents =
+      await this.backendClient.client.bot.getEventsInNextDay.query();
+
+    const eventIds = upcomingEvents.map((event) => event.id);
+
+    const eventReminderRequests = eventIds.map((eventId) =>
+      this.backendClient.client.bot.getEventReminder.query(eventId),
     );
 
+    const eventReminders = await Promise.all(eventReminderRequests);
+
     const sentMessages = await Promise.all(
-      messages.map(([message, event]) =>
-        fetchedChannel.send({
-          content: `${
-            event.type === "Outreach"
-              ? roleMention(ROLES.OUTREACH)
-              : event.type === "Mentor"
-                ? roleMention(ROLES.MENTOR)
-                : event.type === "Social"
-                  ? roleMention(ROLES.SOCIAL)
-                  : roleMention(ROLES.EVERYONE)
-          } ${bold(
-            "5pm reminder",
-          )}: This channel should be used to let us know any last minute attendance changes on the day of the meeting.`,
-          ...message,
-        }),
-      ),
+      eventReminders.map((message) => fetchedChannel.send(message)),
     );
 
     this.logger.debug(`${sentMessages.length} reminder messages sent`);

@@ -6,7 +6,7 @@ import {
   createTRPCClient,
   httpLink,
 } from "@trpc/client";
-import type { AppRouter } from "frontend";
+import { AppRouter } from "frontend";
 import SuperJSON from "superjson";
 
 export const BACKEND_TOKEN = Symbol("BACKEND_TOKEN");

@@ -1,4 +1,4 @@
-import type { Role } from "discord.js";
+import { Role } from "discord.js";
 import { RoleOption, StringOption } from "necord";
 
 export class AttendanceDto {

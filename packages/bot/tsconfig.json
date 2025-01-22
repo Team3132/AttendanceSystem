@@ -1,14 +1,14 @@
 {
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "useDefineForClassFields": true,
-    "lib": ["ES2023", "DOM", "DOM.Iterable"],
-    "strictPropertyInitialization": false,
-    "baseUrl": "./src",
-    "paths": {
-      "@/*": ["./*"]
-    }
-  }
+	"extends": "../../tsconfig.json",
+	"compilerOptions": {
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"useDefineForClassFields": true,
+		"lib": ["ES2023", "DOM", "DOM.Iterable"],
+		"strictPropertyInitialization": false,
+		"baseUrl": "./src",
+		"paths": {
+			"@/*": ["./*"]
+		}
+	}
 }

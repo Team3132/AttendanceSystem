@@ -1,0 +1,1 @@
+ALTER TABLE "EventParsingRule" ADD COLUMN "schedule" text DEFAULT '' NOT NULL;

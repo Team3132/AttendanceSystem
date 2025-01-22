@@ -1,21 +1,21 @@
-import type * as React from "react";
+import roboto300 from "@fontsource/roboto/300.css?url";
+import robot400 from "@fontsource/roboto/400.css?url";
+import roboto500 from "@fontsource/roboto/500.css?url";
+import roboto700 from "@fontsource/roboto/700.css?url";
+import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
+import type { QueryClient } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
   Outlet,
   ScrollRestoration,
   createRootRouteWithContext,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
-import type { QueryClient } from "@tanstack/react-query";
 import { Meta, Scripts } from "@tanstack/start";
-import roboto300 from "@fontsource/roboto/300.css?url";
-import robot400 from "@fontsource/roboto/400.css?url";
-import roboto500 from "@fontsource/roboto/500.css?url";
-import roboto700 from "@fontsource/roboto/700.css?url";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
+import type * as React from "react";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;

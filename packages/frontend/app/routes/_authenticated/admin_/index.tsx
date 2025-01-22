@@ -3,6 +3,7 @@ import Datatable from "@/components/DataTable";
 import DefaultAppBar from "@/components/DefaultAppBar";
 import { usersQueryOptions } from "@/queries/users.queries";
 
+import type { UserSchema } from "@/server/schema";
 import {
   Button,
   CircularProgress,
@@ -14,11 +15,9 @@ import {
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { createFileRoute, stripSearchParams } from "@tanstack/react-router";
 import { createColumnHelper } from "@tanstack/react-table";
-import type { UserSchema } from "@/server/schema";
 import { useMemo } from "react";
-import { z } from "zod";
-import { fallback } from "@tanstack/zod-adapter";
 import { useCallback } from "react";
+import { z } from "zod";
 
 const columnHelper = createColumnHelper<z.infer<typeof UserSchema>>();
 
@@ -60,7 +59,7 @@ export const Route = createFileRoute("/_authenticated/admin_/")({
       usersQueryOptions.userList({
         limit: 10,
         search: search.query,
-      })
+      }),
     ),
   head: () => ({
     meta: [
@@ -91,17 +90,17 @@ function UserTable() {
     usersQueryOptions.userList({
       limit: 10,
       search: query,
-    })
+    }),
   );
 
   const pagedItems = useMemo(
     () => usersQuery.data.pages.flatMap((page) => page.items) ?? [],
-    [usersQuery.data]
+    [usersQuery.data],
   );
 
   const total = useMemo(
     () => usersQuery.data.pages.at(-1)?.total ?? 0,
-    [usersQuery.data]
+    [usersQuery.data],
   );
 
   const setSearch = useCallback(
@@ -111,7 +110,7 @@ function UserTable() {
           query: v,
         },
       }),
-    [navigate]
+    [navigate],
   );
 
   return (

@@ -7,114 +7,114 @@ import { useCallback, useEffect, useMemo, useRef } from "react";
 type OmittedListProps = Omit<ListProps, "children" | "ref" | "component">;
 
 type PagedType<T> = {
-	items: T[];
-	total: number;
-	nextCursor?: string | null | undefined;
+  items: T[];
+  total: number;
+  nextCursor?: string | null | undefined;
 };
 
 interface RenderRowProps<T> {
-	row: T;
-	style: React.CSSProperties;
-	ref: (node: Element | null | undefined) => void;
-	index: number;
+  row: T;
+  style: React.CSSProperties;
+  ref: (node: Element | null | undefined) => void;
+  index: number;
 }
 
 interface InfiniteListParams<T, IPaged extends PagedType<T> = PagedType<T>> {
-	data?: InfiniteData<IPaged, number | null | undefined | unknown>;
-	fetchNextPage: () => void;
-	isFetching: boolean;
-	fixedHeight?: number;
-	renderRow: (row: RenderRowProps<T>) => React.ReactNode;
+  data?: InfiniteData<IPaged, number | null | undefined | unknown>;
+  fetchNextPage: () => void;
+  isFetching: boolean;
+  fixedHeight?: number;
+  renderRow: (row: RenderRowProps<T>) => React.ReactNode;
 }
 
 interface InfiniteListProps<T, IPaged extends PagedType<T> = PagedType<T>>
-	extends InfiniteListParams<T, IPaged>,
-		OmittedListProps {}
+  extends InfiniteListParams<T, IPaged>,
+    OmittedListProps {}
 
 export default function InfiniteList<T>(props: InfiniteListProps<T>) {
-	const {
-		data,
-		fetchNextPage,
-		isFetching,
-		fixedHeight,
-		renderRow,
-		...listProps
-	} = props;
+  const {
+    data,
+    fetchNextPage,
+    isFetching,
+    fixedHeight,
+    renderRow,
+    ...listProps
+  } = props;
 
-	const total = useMemo(() => data?.pages.at(-1)?.total ?? 0, [data?.pages]);
+  const total = useMemo(() => data?.pages.at(-1)?.total ?? 0, [data?.pages]);
 
-	const currentTotal = useMemo(
-		() => data?.pages?.reduce((acc, page) => acc + page.items.length, 0) ?? 0,
-		[data?.pages],
-	);
+  const currentTotal = useMemo(
+    () => data?.pages?.reduce((acc, page) => acc + page.items.length, 0) ?? 0,
+    [data?.pages],
+  );
 
-	const flatData = useMemo(
-		() => data?.pages?.flatMap((page) => page.items) ?? [],
-		[data?.pages],
-	);
+  const flatData = useMemo(
+    () => data?.pages?.flatMap((page) => page.items) ?? [],
+    [data?.pages],
+  );
 
-	const tableContainerRef = useRef<HTMLUListElement>(null);
+  const tableContainerRef = useRef<HTMLUListElement>(null);
 
-	const virtualizer = useVirtualizer({
-		getScrollElement: () => tableContainerRef.current,
-		count: currentTotal,
-		estimateSize: () => fixedHeight || 48,
-		overscan: 10,
-	});
+  const virtualizer = useVirtualizer({
+    getScrollElement: () => tableContainerRef.current,
+    count: currentTotal,
+    estimateSize: () => fixedHeight || 48,
+    overscan: 10,
+  });
 
-	const fetchMoreOnBottomReached = useCallback(
-		(containerRefElement?: HTMLUListElement | null) => {
-			if (containerRefElement && fetchNextPage && total !== undefined) {
-				const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
-				//once the user has scrolled within 300px of the bottom of the table, fetch more data if there is any
-				if (
-					scrollHeight - scrollTop - clientHeight < 300 &&
-					!isFetching &&
-					currentTotal < total
-				) {
-					fetchNextPage();
-				}
-			}
-		},
-		[fetchNextPage, isFetching, currentTotal, total],
-	);
+  const fetchMoreOnBottomReached = useCallback(
+    (containerRefElement?: HTMLUListElement | null) => {
+      if (containerRefElement && fetchNextPage && total !== undefined) {
+        const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
+        //once the user has scrolled within 300px of the bottom of the table, fetch more data if there is any
+        if (
+          scrollHeight - scrollTop - clientHeight < 300 &&
+          !isFetching &&
+          currentTotal < total
+        ) {
+          fetchNextPage();
+        }
+      }
+    },
+    [fetchNextPage, isFetching, currentTotal, total],
+  );
 
-	useEffect(() => {
-		fetchMoreOnBottomReached(tableContainerRef.current);
-	}, [fetchMoreOnBottomReached]);
+  useEffect(() => {
+    fetchMoreOnBottomReached(tableContainerRef.current);
+  }, [fetchMoreOnBottomReached]);
 
-	return (
-		<List
-			component={"ul"}
-			{...listProps}
-			ref={tableContainerRef}
-			onScroll={(e) => {
-				fetchMoreOnBottomReached(e.target as HTMLUListElement);
-			}}
-		>
-			<div
-				style={{
-					height: `${virtualizer.getTotalSize()}px`,
-					position: "relative",
-				}}
-			>
-				{virtualizer.getVirtualItems().map((virtualItem) => {
-					const item = flatData[virtualItem.index] as T;
+  return (
+    <List
+      component={"ul"}
+      {...listProps}
+      ref={tableContainerRef}
+      onScroll={(e) => {
+        fetchMoreOnBottomReached(e.target as HTMLUListElement);
+      }}
+    >
+      <div
+        style={{
+          height: `${virtualizer.getTotalSize()}px`,
+          position: "relative",
+        }}
+      >
+        {virtualizer.getVirtualItems().map((virtualItem) => {
+          const item = flatData[virtualItem.index] as T;
 
-					const newStyle: React.CSSProperties = {
-						transform: `translateY(${virtualItem.start}px)`,
-						position: "absolute",
-						width: "100%",
-					};
+          const newStyle: React.CSSProperties = {
+            transform: `translateY(${virtualItem.start}px)`,
+            position: "absolute",
+            width: "100%",
+          };
 
-					return renderRow({
-						row: item,
-						style: newStyle,
-						ref: (node) => virtualizer.measureElement(node),
-						index: virtualItem.index,
-					});
-				})}
-			</div>
-		</List>
-	);
+          return renderRow({
+            row: item,
+            style: newStyle,
+            ref: (node) => virtualizer.measureElement(node),
+            index: virtualItem.index,
+          });
+        })}
+      </div>
+    </List>
+  );
 }

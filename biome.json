@@ -1,0 +1,68 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+	"vcs": {
+		"enabled": false,
+		"clientKind": "git",
+		"useIgnoreFile": true
+	},
+	"files": {
+		"ignoreUnknown": false,
+		"ignore": [
+			"./packages/frontend/app/routeTree.gen.ts",
+			"./packages/frontend/.output/**",
+			"./packages/frontend/.vinxi/**",
+			"./packages/frontend/dist/**",
+			"./packages/bot/dist/**"
+		]
+	},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab"
+	},
+	"organizeImports": {
+		"enabled": true
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true
+		}
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "double",
+			"indentStyle": "space"
+		}
+	},
+
+	"overrides": [
+		{
+			"include": ["./packages/bot/**"],
+			"linter": {
+				"rules": {
+					"style": {
+						"useImportType": "off"
+					}
+				}
+			},
+			"javascript": {
+				"parser": {
+					"unsafeParameterDecoratorsEnabled": true
+				}
+			}
+		},
+		{
+			"include": ["./packages/frontend/**"],
+			"linter": {
+				"rules": {
+					"recommended": true,
+					"correctness": {
+						"noUnknownMediaFeatureName": "off",
+						"noUnusedImports": "warn",
+						"noUnusedVariables": "error"
+					}
+				}
+			}
+		}
+	]
+}

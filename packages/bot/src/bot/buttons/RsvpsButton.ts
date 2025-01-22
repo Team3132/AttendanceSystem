@@ -1,14 +1,13 @@
-import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
+import { BACKEND_TOKEN, BackendClient } from "@/backend/backend.module";
 import { ROLES } from "@/constants";
 import { Inject, Injectable, Logger, UseGuards } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import type { RSVPStatusUpdateSchema } from "frontend";
-import { GuildMember } from "discord.js";
-import { Button, type ButtonContext, ComponentParam, Context } from "necord";
-import type { z } from "zod";
+import { ActionRow, GuildMember } from "discord.js";
+import { RSVPStatusUpdateSchema } from "frontend";
+import { Button, ButtonContext, ComponentParam, Context } from "necord";
+import { z } from "zod";
 import { GuildMemberGuard } from "../guards/GuildMemberGuard";
 import { DelayModal } from "../modals/Delay.modal";
-import rsvpReminderMessage from "../utils/rsvpReminderMessage";
 
 @Injectable()
 export class RsvpsButton {
@@ -76,17 +75,18 @@ export class RsvpsButton {
 
     this.logger.debug(`${username} RSVP'd ${rsvpStatus} to ${eventId}`);
 
-    const newRSVPs =
-      await this.backendClient.client.bot.getEventRsvps.query(eventId);
-
-    const frontendUrl = this.config.getOrThrow("VITE_FRONTEND_URL");
-
     if (rsvpStatus === "LATE") {
       // return interaction.deferUpdate();
       return interaction.showModal(DelayModal.build(eventId));
     }
+
+    const generatedMessage =
+      await this.backendClient.client.bot.getEventReminder.query(eventId);
+
     return interaction.update({
-      ...rsvpReminderMessage(fetchedEvent, newRSVPs, frontendUrl),
+      content: generatedMessage.content,
+      components: generatedMessage.components,
+      embeds: generatedMessage.embeds,
     });
   }
 }

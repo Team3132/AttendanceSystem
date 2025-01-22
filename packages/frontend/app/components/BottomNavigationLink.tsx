@@ -1,9 +1,9 @@
-import * as React from "react";
-import { createLink, type LinkComponent } from "@tanstack/react-router";
 import {
   BottomNavigationAction,
   type BottomNavigationActionProps,
 } from "@mui/material";
+import { type LinkComponent, createLink } from "@tanstack/react-router";
+import * as React from "react";
 
 interface MUIBottomNavigationProps
   extends Omit<BottomNavigationActionProps, "href"> {
@@ -18,7 +18,7 @@ const MUIBottomNavigationLinkComponent = React.forwardRef<
 });
 
 const CreateBottomNavigationLinkComponent = createLink(
-  MUIBottomNavigationLinkComponent
+  MUIBottomNavigationLinkComponent,
 );
 
 export const BottomNavigationLink: LinkComponent<

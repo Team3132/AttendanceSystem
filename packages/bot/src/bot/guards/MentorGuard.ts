@@ -1,4 +1,4 @@
-import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
+import { BACKEND_TOKEN, BackendClient } from "@/backend/backend.module";
 import { ROLES } from "@/constants";
 import {
   type CanActivate,
