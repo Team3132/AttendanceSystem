@@ -20,6 +20,8 @@ jobs:
           cache: "pnpm"
       - name: Install Dependancies
         run: pnpm install --frozen-lockfile
+      - name: Build Backend
+        run: pnpm run --filter frontend buildtypes
       - name: Lint & Format Packages
         run: pnpm check --reporter=github
   typecheck:
