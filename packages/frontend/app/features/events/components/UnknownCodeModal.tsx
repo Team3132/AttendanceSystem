@@ -1,6 +1,5 @@
 import { LoadingButton } from "@mui/lab";
 import {
-  Autocomplete,
   Button,
   Dialog,
   DialogActions,
@@ -13,11 +12,10 @@ import {
 import { keepPreviousData } from "@tanstack/react-query";
 import { TRPCClientError } from "@trpc/client";
 import { useEffect, useMemo } from "react";
-import {
-  Controller,
-  type FieldPath,
-  type FieldValues,
-  type UseControllerProps,
+import type {
+  FieldPath,
+  FieldValues,
+  UseControllerProps,
 } from "react-hook-form";
 import { useDebounceValue } from "usehooks-ts";
 import { z } from "zod";
@@ -56,32 +54,6 @@ const RegisterNewCodeFormSchema = z.object({
 
 export default function UnknownCodeModal(props: UnknownCodeModalProps) {
   const { code, open, onClose, successCallback } = props;
-  const {
-    getDisclosureProps: getAutocompleteDisclosureProps,
-    isOpen: isAutocompleteOpen,
-  } = useDisclosure();
-
-  const [debouncedInputValue, setInputValue] = useDebounceValue("", 500);
-
-  const usersQuery = useInfiniteQuery({
-    ...usersQueryOptions.userList({
-      search: debouncedInputValue,
-      limit: 10,
-    }),
-    enabled: isAutocompleteOpen,
-    placeholderData: keepPreviousData,
-  });
-
-  const userOption = useMemo(
-    () =>
-      usersQuery.data?.pages
-        ?.flatMap((page) => page.items)
-        .map((user) => ({
-          label: user.username,
-          value: user.id,
-        })) ?? [],
-    [usersQuery.data],
-  );
 
   const {
     register,
@@ -211,7 +183,7 @@ function SearchingAutocomplete<
           label: user.username,
           value: user.id,
         })) ?? [],
-    [usersQuery.data],
+    [usersQuery.data]
   );
 
   return (

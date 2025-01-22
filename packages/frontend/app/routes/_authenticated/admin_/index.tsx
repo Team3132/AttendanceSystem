@@ -17,7 +17,6 @@ import { createColumnHelper } from "@tanstack/react-table";
 import type { UserSchema } from "@/server/schema";
 import { useMemo } from "react";
 import { z } from "zod";
-import { fallback } from "@tanstack/zod-adapter";
 import { useCallback } from "react";
 
 const columnHelper = createColumnHelper<z.infer<typeof UserSchema>>();

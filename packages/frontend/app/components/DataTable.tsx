@@ -15,7 +15,6 @@ import {
   type FilterFn,
   type OnChangeFn,
   type Row,
-  RowData,
   type RowSelectionState,
   type SortingState,
   type VisibilityState,

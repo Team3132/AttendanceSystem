@@ -1,29 +1,13 @@
 "use server";
 
 import { TRPCError } from "@trpc/server";
-import {
-  and,
-  count,
-  eq,
-  gte,
-  ilike,
-  inArray,
-  isNotNull,
-  isNull,
-  lte,
-} from "drizzle-orm";
+import { and, count, eq, ilike, isNotNull, isNull } from "drizzle-orm";
 import type { z } from "zod";
 import db from "../drizzle/db";
-import {
-  eventTable,
-  rsvpTable,
-  scancodeTable,
-  userTable,
-} from "../drizzle/schema";
-import type { EventTypeSchema, UserCreateSchema } from "../schema";
+import { scancodeTable, userTable } from "../drizzle/schema";
+import type { UserCreateSchema } from "../schema";
 import type { PagedUserSchema } from "../schema/PagedUserSchema";
 import type { UserListParamsSchema } from "../schema/UserListParamsSchema";
-import type { RSVPSummaryParams } from "../schema/RSVPSummaryParams";
 
 /**
  * Gets a user from the database

@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { NewEventParsingRuleSchema } from "./NewEventParsingRuleSchema";
 
 export const UpdateEventParsingRuleSchema = z.object({
   channelId: z.string().optional(),

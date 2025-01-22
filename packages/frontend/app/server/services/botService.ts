@@ -1,5 +1,3 @@
-import type { z } from "zod";
-import type { RSVPUserSchema } from "../schema";
 import db from "../drizzle/db";
 import { eq } from "drizzle-orm";
 import {

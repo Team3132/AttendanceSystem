@@ -1,9 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { t } from ".";
 import env from "../env";
-import { lucia } from "../auth/lucia";
-import type { Session, User } from "lucia";
-import { getCookie, getHeader, setCookie } from "vinxi/http";
+import { getHeader } from "vinxi/http";
 
 /**
  * API Authenticated procedure (for the bot)

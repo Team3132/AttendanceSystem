@@ -1,4 +1,4 @@
-import { Button, List, Paper, Stack, styled, Typography } from "@mui/material";
+import { Button, List, Paper, Stack, Typography } from "@mui/material";
 import { useDisclosure } from "../../../hooks/useDisclosure";
 import AdminRSVPListItem from "./AdminRsvpListItem";
 import MyRsvpStatus from "./MyRsvpStatus";

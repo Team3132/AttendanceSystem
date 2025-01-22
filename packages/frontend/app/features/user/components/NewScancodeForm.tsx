@@ -1,5 +1,5 @@
 import { LoadingButton } from "@mui/lab";
-import { ListItem, TextField } from "@mui/material";
+import { ListItem } from "@mui/material";
 import { TRPCClientError } from "@trpc/client";
 import { z } from "zod";
 import useZodForm from "../../../hooks/useZodForm";
@@ -17,9 +17,8 @@ const NewScancodeSchema = z.object({
 
 export default function NewScancodeListItem() {
   const {
-    register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
     setError,
     reset,
     control,

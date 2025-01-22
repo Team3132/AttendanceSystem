@@ -6,7 +6,6 @@ import { authQueryOptions } from "@/queries/auth.queries";
 import { eventQueryOptions } from "@/queries/events.queries";
 import {
   Box,
-  Button,
   Container,
   FormControl,
   InputLabel,
@@ -26,7 +25,6 @@ import { createFileRoute, stripSearchParams } from "@tanstack/react-router";
 import { EventTypeSchema } from "@/server/schema";
 import { DateTime } from "luxon";
 import { z } from "zod";
-import { fallback } from "@tanstack/zod-adapter";
 import { useCallback } from "react";
 import { LinkButton } from "@/components/LinkButton";
 

@@ -1,14 +1,8 @@
-import AsChildLink from "@/components/AsChildLink";
 import { BottomNavigationLink } from "@/components/BottomNavigationLink";
 import { authQueryOptions } from "@/queries/auth.queries";
 
 import type { TabItem } from "@/types/TabItem";
-import {
-  BottomNavigation,
-  BottomNavigationAction,
-  type BottomNavigationActionProps,
-  Box,
-} from "@mui/material";
+import { BottomNavigation, Box } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useChildMatches } from "@tanstack/react-router";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";

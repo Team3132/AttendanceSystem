@@ -10,7 +10,7 @@ import { DateTime } from "luxon";
 import mainLogger from "@/server/logger";
 
 export const APIRoute = createAPIFileRoute("/api/scheduler/$jobId/trigger")({
-  GET: async ({ request, params }) => {
+  GET: async ({ params }) => {
     try {
       const job = await db.query.eventParsingRuleTable.findFirst({
         where: eq(eventParsingRuleTable.id, params.jobId),

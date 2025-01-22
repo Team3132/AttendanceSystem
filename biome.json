@@ -3,11 +3,17 @@
 	"vcs": {
 		"enabled": false,
 		"clientKind": "git",
-		"useIgnoreFile": false
+		"useIgnoreFile": true
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"ignore": []
+		"ignore": [
+			"./packages/frontend/app/routeTree.gen.ts",
+			"./packages/frontend/.output/**",
+			"./packages/frontend/.vinxi/**",
+			"./packages/frontend/dist/**",
+			"./packages/bot/dist/**"
+		]
 	},
 	"formatter": {
 		"enabled": true,
@@ -28,9 +34,10 @@
 			"indentStyle": "space"
 		}
 	},
+
 	"overrides": [
 		{
-			"include": ["packages/bot/**"],
+			"include": ["./packages/bot/**"],
 			"linter": {
 				"rules": {
 					"style": {
@@ -45,8 +52,7 @@
 			}
 		},
 		{
-			"include": ["packages/frontend/**"],
-			"ignore": ["packages/frontend/app/routeTree.gen.ts"],
+			"include": ["./packages/frontend/**"],
 			"linter": {
 				"rules": {
 					"recommended": true,
