@@ -45,13 +45,13 @@ export class RequestRsvpCommand {
 
     await this.backendClient.client.bot.markEventPosted.mutate(meeting);
 
-      const reminderMessage = await this.backendClient.client.bot.getEventReminder.query(meeting)
+    const reminderMessage =
+      await this.backendClient.client.bot.getEventReminder.query(meeting);
 
     return interaction.reply({
       content: reminderMessage.content,
       components: reminderMessage.components,
-      embeds: reminderMessage.embeds
-    }
-    );
+      embeds: reminderMessage.embeds,
+    });
   }
 }

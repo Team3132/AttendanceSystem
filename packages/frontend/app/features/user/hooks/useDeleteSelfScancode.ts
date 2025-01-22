@@ -7,21 +7,21 @@ import { sessionMiddleware } from "@/middleware/authMiddleware";
 import { removeScancode } from "@/server/services/user.service";
 
 const deleteSelfScancodeFn = createServerFn({
-	method: "POST",
+  method: "POST",
 })
-	.middleware([sessionMiddleware])
-	.validator(z.string())
-	.handler(async ({ data, context }) => removeScancode(context.user.id, data));
+  .middleware([sessionMiddleware])
+  .validator(z.string())
+  .handler(async ({ data, context }) => removeScancode(context.user.id, data));
 
 export default function useDeleteSelfScancode() {
-	const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-	return useMutation({
-		mutationFn: deleteSelfScancodeFn,
-		onSuccess: () => {
-			queryClient.invalidateQueries({
-				queryKey: usersQueryKeys.userSelfScancodes(),
-			});
-		},
-	});
+  return useMutation({
+    mutationFn: deleteSelfScancodeFn,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: usersQueryKeys.userSelfScancodes(),
+      });
+    },
+  });
 }

@@ -49,7 +49,8 @@ export class DelayModal {
       delay: value.data,
     });
 
-    const reminderMessage = await this.backendClient.client.bot.getEventReminder.query(eventId);
+    const reminderMessage =
+      await this.backendClient.client.bot.getEventReminder.query(eventId);
 
     if (interaction.isFromMessage()) {
       return interaction.update({

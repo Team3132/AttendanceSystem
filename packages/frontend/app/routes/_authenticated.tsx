@@ -23,7 +23,7 @@ import {
 export const Route = createFileRoute("/_authenticated")({
   beforeLoad: async ({ context: { queryClient } }) => {
     const { isAuthenticated } = await queryClient.ensureQueryData(
-      authQueryOptions.status()
+      authQueryOptions.status(),
     );
     if (!isAuthenticated) {
       throw redirect({
@@ -99,7 +99,7 @@ function BottomBar() {
               icon: <FaRegCalendar />,
             },
           ] as TabItem[]),
-    [authStatusQuery.data.isAdmin]
+    [authStatusQuery.data.isAdmin],
   );
 
   const currentChildren = useChildMatches();
@@ -111,7 +111,7 @@ function BottomBar() {
           return child.fullPath === tab.to;
         });
       }),
-    [currentChildren, routes]
+    [currentChildren, routes],
   );
 
   return (

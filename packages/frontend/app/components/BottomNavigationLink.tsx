@@ -18,7 +18,7 @@ const MUIBottomNavigationLinkComponent = React.forwardRef<
 });
 
 const CreateBottomNavigationLinkComponent = createLink(
-  MUIBottomNavigationLinkComponent
+  MUIBottomNavigationLinkComponent,
 );
 
 export const BottomNavigationLink: LinkComponent<

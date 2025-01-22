@@ -4,7 +4,7 @@
 import type { TRPCClientError } from "@trpc/client";
 
 declare module "@tanstack/react-query" {
-	interface Register {
-		defaultError: TRPCClientError;
-	}
+  interface Register {
+    defaultError: TRPCClientError;
+  }
 }

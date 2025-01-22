@@ -73,7 +73,8 @@ export class TaskService {
       event: z.infer<typeof EventSchema>,
     ];
 
-    const upcomingEvents = await this.backendClient.client.bot.getEventsInNextDay.query();
+    const upcomingEvents =
+      await this.backendClient.client.bot.getEventsInNextDay.query();
 
     const eventIds = upcomingEvents.map((event) => event.id);
 
@@ -83,11 +84,8 @@ export class TaskService {
 
     const eventReminders = await Promise.all(eventReminderRequests);
 
-    const sentMessages = await Promise.all(eventReminders.map((message) =>
-        fetchedChannel.send(
-          message
-        )
-      )
+    const sentMessages = await Promise.all(
+      eventReminders.map((message) => fetchedChannel.send(message)),
     );
 
     this.logger.debug(`${sentMessages.length} reminder messages sent`);

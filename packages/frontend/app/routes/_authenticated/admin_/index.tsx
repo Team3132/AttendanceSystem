@@ -60,7 +60,7 @@ export const Route = createFileRoute("/_authenticated/admin_/")({
       usersQueryOptions.userList({
         limit: 10,
         search: search.query,
-      })
+      }),
     ),
   head: () => ({
     meta: [
@@ -91,17 +91,17 @@ function UserTable() {
     usersQueryOptions.userList({
       limit: 10,
       search: query,
-    })
+    }),
   );
 
   const pagedItems = useMemo(
     () => usersQuery.data.pages.flatMap((page) => page.items) ?? [],
-    [usersQuery.data]
+    [usersQuery.data],
   );
 
   const total = useMemo(
     () => usersQuery.data.pages.at(-1)?.total ?? 0,
-    [usersQuery.data]
+    [usersQuery.data],
   );
 
   const setSearch = useCallback(
@@ -111,7 +111,7 @@ function UserTable() {
           query: v,
         },
       }),
-    [navigate]
+    [navigate],
   );
 
   return (

@@ -5,32 +5,32 @@ import { createServerFn } from "@tanstack/start";
 import { setCookie } from "vinxi/http";
 
 const logoutFn = createServerFn({
-	method: "POST",
+  method: "POST",
 })
-	.middleware([authBaseMiddleware])
-	.handler(async ({ context: { session } }) => {
-		if (session) {
-			await lucia.invalidateSession(session.id);
-			// Clear the session cookie
-			const blankCookie = lucia.createBlankSessionCookie();
-			setCookie(blankCookie.name, blankCookie.value, blankCookie.attributes);
+  .middleware([authBaseMiddleware])
+  .handler(async ({ context: { session } }) => {
+    if (session) {
+      await lucia.invalidateSession(session.id);
+      // Clear the session cookie
+      const blankCookie = lucia.createBlankSessionCookie();
+      setCookie(blankCookie.name, blankCookie.value, blankCookie.attributes);
 
-			// throw redirect({
-			//   to: "/login",
-			// });
-			return { success: true };
-		}
+      // throw redirect({
+      //   to: "/login",
+      // });
+      return { success: true };
+    }
 
-		return { success: false };
-	});
+    return { success: false };
+  });
 
 export default function useLogout() {
-	const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-	return useMutation({
-		mutationFn: () => logoutFn(),
-		onSuccess: () => {
-			queryClient.clear();
-		},
-	});
+  return useMutation({
+    mutationFn: () => logoutFn(),
+    onSuccess: () => {
+      queryClient.clear();
+    },
+  });
 }

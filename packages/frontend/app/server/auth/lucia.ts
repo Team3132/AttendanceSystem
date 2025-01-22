@@ -10,33 +10,33 @@ const adapter = new DrizzlePostgreSQLAdapter(db, sessionTable, userTable); // yo
 type DatabaseUser = typeof userTable.$inferSelect;
 
 export const lucia = new Lucia(adapter, {
-	sessionCookie: {
-		name: "l-session",
-		attributes: {
-			// set to `true` when using HTTPS
-			secure: process.env.NODE_ENV === "production",
-		},
-	},
-	getUserAttributes: (attributes) => ({
-		username: attributes.username,
-		createdAt: attributes.createdAt,
-		updatedAt: attributes.updatedAt,
-		roles: attributes.roles,
-		defaultStatus: attributes.defaultStatus,
-		additionalOutreachHours: attributes.additionalOutreachHours,
-	}),
+  sessionCookie: {
+    name: "l-session",
+    attributes: {
+      // set to `true` when using HTTPS
+      secure: process.env.NODE_ENV === "production",
+    },
+  },
+  getUserAttributes: (attributes) => ({
+    username: attributes.username,
+    createdAt: attributes.createdAt,
+    updatedAt: attributes.updatedAt,
+    roles: attributes.roles,
+    defaultStatus: attributes.defaultStatus,
+    additionalOutreachHours: attributes.additionalOutreachHours,
+  }),
 });
 
 export const discord = new Discord(
-	env.VITE_DISCORD_CLIENT_ID,
-	env.VITE_DISCORD_CLIENT_SECRET,
-	env.VITE_DISCORD_CALLBACK_URL,
+  env.VITE_DISCORD_CLIENT_ID,
+  env.VITE_DISCORD_CLIENT_SECRET,
+  env.VITE_DISCORD_CALLBACK_URL,
 );
 
 // IMPORTANT!
 declare module "lucia" {
-	interface Register {
-		Lucia: typeof lucia;
-		DatabaseUserAttributes: Omit<DatabaseUser, "id">;
-	}
+  interface Register {
+    Lucia: typeof lucia;
+    DatabaseUserAttributes: Omit<DatabaseUser, "id">;
+  }
 }

@@ -7,23 +7,23 @@ import { SelfCheckinSchema } from "@/server/schema/SelfCheckinSchema";
 import { selfCheckin } from "@/server/services/events.service";
 
 const selfCheckinFn = createServerFn({
-	method: "POST",
+  method: "POST",
 })
-	.middleware([sessionMiddleware])
-	.validator(SelfCheckinSchema)
-	.handler(async ({ data, context }) => selfCheckin(context.user.id, data));
+  .middleware([sessionMiddleware])
+  .validator(SelfCheckinSchema)
+  .handler(async ({ data, context }) => selfCheckin(context.user.id, data));
 
 export default function useSelfCheckin() {
-	const queryClient = useQueryClient();
-	return useMutation({
-		mutationFn: selfCheckinFn,
-		onSuccess: (data) => {
-			queryClient.invalidateQueries({
-				queryKey: eventQueryKeys.eventRsvps(data.eventId),
-			});
-			queryClient.invalidateQueries({
-				queryKey: usersQueryKeys.userSelfPendingRsvps(),
-			});
-		},
-	});
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: selfCheckinFn,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: eventQueryKeys.eventRsvps(data.eventId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: usersQueryKeys.userSelfPendingRsvps(),
+      });
+    },
+  });
 }

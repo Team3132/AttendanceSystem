@@ -145,7 +145,7 @@ export default function Datatable<Data extends object>({
         }
       }
     },
-    [fetchNextPage, isFetching, totalFetched, totalDBRowCount]
+    [fetchNextPage, isFetching, totalFetched, totalDBRowCount],
   );
 
   React.useEffect(() => {
@@ -180,7 +180,7 @@ export default function Datatable<Data extends object>({
                         <b>
                           {flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                           {{
                             asc: <FaArrowUp fontSize={"small"} />,
@@ -222,7 +222,7 @@ export default function Datatable<Data extends object>({
                       >
                         {flexRender(
                           cell.column.columnDef.cell,
-                          cell.getContext()
+                          cell.getContext(),
                         )}
                       </TableCell>
                     );

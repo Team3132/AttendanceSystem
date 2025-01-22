@@ -48,13 +48,17 @@ export default function rsvpReminderMessage(
       {
         name: "Start Time",
         value: time(
-          DateTime.fromMillis(Date.parse(event.startDate)).toJSDate(), "F"
+          DateTime.fromMillis(Date.parse(event.startDate)).toJSDate(),
+          "F",
         ),
         inline: true,
       },
       {
         name: "End Time",
-        value: time(DateTime.fromMillis(Date.parse(event.endDate)).toJSDate(), "F"),
+        value: time(
+          DateTime.fromMillis(Date.parse(event.endDate)).toJSDate(),
+          "F",
+        ),
         inline: true,
       },
     )

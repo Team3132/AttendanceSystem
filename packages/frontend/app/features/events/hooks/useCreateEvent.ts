@@ -6,20 +6,20 @@ import { CreateEventSchema } from "@/server/schema/CreateEventSchema";
 import { createEvent } from "@/server/services/events.service";
 
 const createEventFn = createServerFn({
-	method: "POST",
+  method: "POST",
 })
-	.middleware([mentorMiddleware])
-	.validator(CreateEventSchema)
-	.handler(async ({ data }) => createEvent(data));
+  .middleware([mentorMiddleware])
+  .validator(CreateEventSchema)
+  .handler(async ({ data }) => createEvent(data));
 
 export default function useCreateEvent() {
-	const queryClient = useQueryClient();
-	return useMutation({
-		mutationFn: createEventFn,
-		onSuccess: () => {
-			queryClient.invalidateQueries({
-				queryKey: eventQueryKeys.eventsList,
-			});
-		},
-	});
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: createEventFn,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: eventQueryKeys.eventsList,
+      });
+    },
+  });
 }

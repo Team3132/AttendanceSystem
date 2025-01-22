@@ -10,72 +10,72 @@ import { DateTime } from "luxon";
 import mainLogger from "@/server/logger";
 
 export const APIRoute = createAPIFileRoute("/api/scheduler/$jobId/trigger")({
-	GET: async ({ request, params }) => {
-		try {
-			const job = await db.query.eventParsingRuleTable.findFirst({
-				where: eq(eventParsingRuleTable.id, params.jobId),
-			});
+  GET: async ({ request, params }) => {
+    try {
+      const job = await db.query.eventParsingRuleTable.findFirst({
+        where: eq(eventParsingRuleTable.id, params.jobId),
+      });
 
-			if (!job) {
-				throw new Error("Job not found");
-			}
+      if (!job) {
+        throw new Error("Job not found");
+      }
 
-			const startNextDay = DateTime.now().plus({ day: 1 }).startOf("day");
+      const startNextDay = DateTime.now().plus({ day: 1 }).startOf("day");
 
-			const endNextDay = startNextDay.endOf("day");
+      const endNextDay = startNextDay.endOf("day");
 
-			// events in the next day and that match the rule
-			const matchingEvents = await db
-				.select({ id: eventTable.id })
-				.from(eventTable)
-				.where(
-					and(
-						eq(eventTable.ruleId, job.id),
-						between(
-							eventTable.startDate,
-							startNextDay.toISO(),
-							endNextDay.toISO(),
-						),
-						not(eventTable.isPosted),
-					),
-				);
+      // events in the next day and that match the rule
+      const matchingEvents = await db
+        .select({ id: eventTable.id })
+        .from(eventTable)
+        .where(
+          and(
+            eq(eventTable.ruleId, job.id),
+            between(
+              eventTable.startDate,
+              startNextDay.toISO(),
+              endNextDay.toISO(),
+            ),
+            not(eventTable.isPosted),
+          ),
+        );
 
-			const matchingEventIds = matchingEvents.map((event) => event.id);
+      const matchingEventIds = matchingEvents.map((event) => event.id);
 
-			// generate messages for each event (this fetches RSVPs and the event details)
-			const notificationMessages = await Promise.all(
-				matchingEventIds.map((eventId) => generateMessage({ eventId })),
-			);
+      // generate messages for each event (this fetches RSVPs and the event details)
+      const notificationMessages = await Promise.all(
+        matchingEventIds.map((eventId) => generateMessage({ eventId })),
+      );
 
-			const botAPI = getDiscordBotAPI();
+      const botAPI = getDiscordBotAPI();
 
-			const channel = await botAPI.channels.get(job.channelId);
+      const channel = await botAPI.channels.get(job.channelId);
 
-			if (channel.type !== ChannelType.GuildText) {
-				throw new Error("Channel is not a text channel");
-			}
+      if (channel.type !== ChannelType.GuildText) {
+        throw new Error("Channel is not a text channel");
+      }
 
-			const messagedEvents = await Promise.allSettled(
-				notificationMessages.map((message) =>
-					botAPI.channels.createMessage(channel.id, message),
-				),
-			);
+      const messagedEvents = await Promise.allSettled(
+        notificationMessages.map((message) =>
+          botAPI.channels.createMessage(channel.id, message),
+        ),
+      );
 
-			// mark events as posted
-			const fullSuccess =
-				messagedEvents.filter((p) => p.status === "fulfilled").length ===
-				matchingEventIds.length;
+      // mark events as posted
+      const fullSuccess =
+        messagedEvents.filter((p) => p.status === "fulfilled").length ===
+        matchingEventIds.length;
 
-			// log the events that were not posted
-			mainLogger.error(
-				`Events not posted: ${messagedEvents.filter((p) => p.status === "rejected").map((p) => p.reason)}`,
-			);
+      // log the events that were not posted
+      mainLogger.error(
+        `Events not posted: ${messagedEvents.filter((p) => p.status === "rejected").map((p) => p.reason)}`,
+      );
 
-			return json({ success: fullSuccess });
-		} catch (error) {
-			const errorMessage =
-				error instanceof Error ? error.message : "An error occurred";
-			return json({ success: false, error: errorMessage });
-		}
-	},
+      return json({ success: fullSuccess });
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "An error occurred";
+      return json({ success: false, error: errorMessage });
+    }
+  },
 });

@@ -1,7 +1,7 @@
 {
-  "editor.codeActionsOnSave": {
-    "quickfix.biome": "explicit"
-  },
-  "editor.formatOnSave": true,
-  "git.openRepositoryInParentFolders": "always"
+	"editor.codeActionsOnSave": {
+		"quickfix.biome": "explicit"
+	},
+	"editor.formatOnSave": true,
+	"git.openRepositoryInParentFolders": "always"
 }

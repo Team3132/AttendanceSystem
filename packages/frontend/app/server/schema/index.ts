@@ -29,6 +29,6 @@ export * from "./PagedEventsSchema";
 export * from "./PagedSchema";
 export * from "./UserListParamsSchema";
 export * from "./OutreachTimeSchema";
-export * from "./NewEventParsingRuleSchema"
-export * from "./EventParsingRuleSchema"
-export * from "./UpdateEventParsingRuleSchema"
+export * from "./NewEventParsingRuleSchema";
+export * from "./EventParsingRuleSchema";
+export * from "./UpdateEventParsingRuleSchema";

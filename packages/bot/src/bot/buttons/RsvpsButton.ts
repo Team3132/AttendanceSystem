@@ -74,13 +74,14 @@ export class RsvpsButton {
     });
 
     this.logger.debug(`${username} RSVP'd ${rsvpStatus} to ${eventId}`);
-    
+
     if (rsvpStatus === "LATE") {
       // return interaction.deferUpdate();
       return interaction.showModal(DelayModal.build(eventId));
     }
 
-    const generatedMessage = await this.backendClient.client.bot.getEventReminder.query(eventId);
+    const generatedMessage =
+      await this.backendClient.client.bot.getEventReminder.query(eventId);
 
     return interaction.update({
       content: generatedMessage.content,

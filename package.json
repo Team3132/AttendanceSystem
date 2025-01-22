@@ -1,32 +1,30 @@
 {
-  "name": "AttendanceSystem",
-  "version": "3.9.28",
-  "main": "index.js",
-  "repository": "git@github.com:Team3132/AttendanceSystem.git",
-  "author": "Sebastian Pietschner <sebastian.pietschner@gmail.com>",
-  "license": "MIT",
-  "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
-  "scripts": {
-    "bot": "pnpm run --filter bot",
-    "frontend": "pnpm run --filter frontend",
-    "desktop": "pnpm run --filter desktop",
-    "build": "pnpm run -r build",
-    "typecheck": "pnpm run -r typecheck",
-    "typecheck:watch": "pnpm run -r typecheck --watch",
-    "dev": "pnpm run -r dev",
-    "format": "pnpm run -r format",
-    "lint": "pnpm run -r lint",
-    "knip": "knip"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "1.9.4",
-    "@changesets/changelog-github": "0.5.0",
-    "@changesets/cli": "2.27.11",
-    "@types/node": "22.10.7",
-    "knip": "^5.42.3",
-    "typescript": "5.7.3"
-  }
+	"name": "AttendanceSystem",
+	"version": "3.9.28",
+	"main": "index.js",
+	"repository": "git@github.com:Team3132/AttendanceSystem.git",
+	"author": "Sebastian Pietschner <sebastian.pietschner@gmail.com>",
+	"license": "MIT",
+	"private": true,
+	"workspaces": ["packages/*"],
+	"scripts": {
+		"bot": "pnpm run --filter bot",
+		"frontend": "pnpm run --filter frontend",
+		"desktop": "pnpm run --filter desktop",
+		"build": "pnpm run -r build",
+		"typecheck": "pnpm run -r typecheck",
+		"typecheck:watch": "pnpm run -r typecheck --watch",
+		"dev": "pnpm run -r dev",
+		"format": "pnpm biome format --write ./",
+		"lint": "pnpm biome lint --write ./",
+		"knip": "knip"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
+		"@changesets/changelog-github": "0.5.0",
+		"@changesets/cli": "2.27.11",
+		"@types/node": "22.10.7",
+		"knip": "^5.42.3",
+		"typescript": "5.7.3"
+	}
 }

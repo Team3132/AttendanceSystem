@@ -3,8 +3,8 @@ import db from "../drizzle/db";
 import { apiKeyTable, eventParsingRuleTable } from "../drizzle/schema";
 import type { z } from "zod";
 import type {
-	NewEventParsingRuleSchema,
-	UpdateEventParsingRuleSchema,
+  NewEventParsingRuleSchema,
+  UpdateEventParsingRuleSchema,
 } from "../schema";
 import { TRPCError } from "@trpc/server";
 
@@ -13,9 +13,9 @@ import { TRPCError } from "@trpc/server";
  * @returns A list of all API keys
  */
 export async function getApiKeys() {
-	const apiKeys = await db.query.apiKeyTable.findMany();
+  const apiKeys = await db.query.apiKeyTable.findMany();
 
-	return apiKeys;
+  return apiKeys;
 }
 
 /**
@@ -24,12 +24,12 @@ export async function getApiKeys() {
  * @returns The deleted API key
  */
 export async function deleteApiKey(id: string) {
-	const [deleted] = await db
-		.delete(apiKeyTable)
-		.where(eq(apiKeyTable.id, id))
-		.returning();
+  const [deleted] = await db
+    .delete(apiKeyTable)
+    .where(eq(apiKeyTable.id, id))
+    .returning();
 
-	return deleted;
+  return deleted;
 }
 
 /**
@@ -38,14 +38,14 @@ export async function deleteApiKey(id: string) {
  * @returns The created API key
  */
 export async function createApiKey(userId: string) {
-	const [apiKey] = await db
-		.insert(apiKeyTable)
-		.values({
-			createdBy: userId,
-		})
-		.returning();
+  const [apiKey] = await db
+    .insert(apiKeyTable)
+    .values({
+      createdBy: userId,
+    })
+    .returning();
 
-	return apiKey;
+  return apiKey;
 }
 
 /**
@@ -54,27 +54,27 @@ export async function createApiKey(userId: string) {
  * @returns The created parsing rule
  */
 export async function createParsingRule(
-	data: z.infer<typeof NewEventParsingRuleSchema>,
+  data: z.infer<typeof NewEventParsingRuleSchema>,
 ) {
-	const { channelId, name, regex, rolesIds } = data;
-	// Create a new parsing rule
-	const [parsingRule] = await db
-		.insert(eventParsingRuleTable)
-		.values({
-			channelId,
-			name,
-			regex,
-			rolesIds,
-		})
-		.returning();
+  const { channelId, name, regex, rolesIds } = data;
+  // Create a new parsing rule
+  const [parsingRule] = await db
+    .insert(eventParsingRuleTable)
+    .values({
+      channelId,
+      name,
+      regex,
+      rolesIds,
+    })
+    .returning();
 
-	if (!parsingRule) {
-		throw new TRPCError({
-			code: "INTERNAL_SERVER_ERROR",
-		});
-	}
+  if (!parsingRule) {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+    });
+  }
 
-	return parsingRule;
+  return parsingRule;
 }
 
 /**
@@ -82,9 +82,9 @@ export async function createParsingRule(
  * @returns A list of all parsing rules
  */
 export async function getParsingRules() {
-	const parsingRules = await db.query.eventParsingRuleTable.findMany();
+  const parsingRules = await db.query.eventParsingRuleTable.findMany();
 
-	return parsingRules;
+  return parsingRules;
 }
 
 /**
@@ -93,12 +93,12 @@ export async function getParsingRules() {
  * @returns The deleted parsing rule
  */
 export async function deleteParsingRule(id: string) {
-	const [deleted] = await db
-		.delete(eventParsingRuleTable)
-		.where(eq(eventParsingRuleTable.id, id))
-		.returning();
+  const [deleted] = await db
+    .delete(eventParsingRuleTable)
+    .where(eq(eventParsingRuleTable.id, id))
+    .returning();
 
-	return deleted;
+  return deleted;
 }
 
 /**
@@ -108,27 +108,27 @@ export async function deleteParsingRule(id: string) {
  * @returns The updated parsing rule
  */
 export async function updateParsingRule(
-	id: string,
-	data: z.infer<typeof UpdateEventParsingRuleSchema>,
+  id: string,
+  data: z.infer<typeof UpdateEventParsingRuleSchema>,
 ) {
-	const { channelId, name, regex, rolesIds } = data;
-	const [updated] = await db
-		.update(eventParsingRuleTable)
-		.set({
-			channelId,
-			name,
-			regex,
-			rolesIds,
-		})
-		.where(eq(eventParsingRuleTable.id, id))
-		.returning();
+  const { channelId, name, regex, rolesIds } = data;
+  const [updated] = await db
+    .update(eventParsingRuleTable)
+    .set({
+      channelId,
+      name,
+      regex,
+      rolesIds,
+    })
+    .where(eq(eventParsingRuleTable.id, id))
+    .returning();
 
-	if (!updated) {
-		throw new TRPCError({
-			code: "NOT_FOUND",
-			message: "Parsing rule not found",
-		});
-	}
+  if (!updated) {
+    throw new TRPCError({
+      code: "NOT_FOUND",
+      message: "Parsing rule not found",
+    });
+  }
 
-	return updated;
+  return updated;
 }

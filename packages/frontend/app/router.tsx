@@ -6,22 +6,22 @@ import { routerWithQueryClient } from "@tanstack/react-router-with-query";
 import SuperJSON from "superjson";
 
 export function createRouter() {
-	const queryClient = new QueryClient();
+  const queryClient = new QueryClient();
 
-	const router = routerWithQueryClient(
-		createTanStackRouter({
-			routeTree,
-			context: { queryClient },
-			defaultPreload: "intent",
-		}),
-		queryClient,
-	);
+  const router = routerWithQueryClient(
+    createTanStackRouter({
+      routeTree,
+      context: { queryClient },
+      defaultPreload: "intent",
+    }),
+    queryClient,
+  );
 
-	return router;
+  return router;
 }
 
 declare module "@tanstack/react-router" {
-	interface Register {
-		router: ReturnType<typeof createRouter>;
-	}
+  interface Register {
+    router: ReturnType<typeof createRouter>;
+  }
 }
