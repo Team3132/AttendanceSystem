@@ -1,9 +1,9 @@
+import type { z } from "zod";
 import type {
   GetEventParamsSchema,
   OutreachTimeSchema,
   UserListParamsSchema,
 } from "./schema";
-import type { z } from "zod";
 
 type UserListParams = Omit<z.infer<typeof UserListParamsSchema>, "cursor">;
 

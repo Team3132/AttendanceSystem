@@ -1,10 +1,10 @@
-import { useMutation } from "@tanstack/react-query";
-import { useQueryClient } from "@tanstack/react-query";
-import { eventQueryKeys } from "@/server/queryKeys";
-import { createServerFn } from "@tanstack/start";
 import { sessionMiddleware } from "@/middleware/authMiddleware";
+import { eventQueryKeys } from "@/server/queryKeys";
 import { EditRSVPSelfSchema } from "@/server/schema/EditRSVPSelfSchema";
 import { editUserRsvpStatus } from "@/server/services/events.service";
+import { useMutation } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
+import { createServerFn } from "@tanstack/start";
 
 const editSelfRsvpFn = createServerFn({
   method: "POST",

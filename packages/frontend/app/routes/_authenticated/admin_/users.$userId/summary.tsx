@@ -1,11 +1,11 @@
 import { EventTypeSchema } from "@/server";
 import {
   Container,
-  Stack,
-  Paper,
-  Typography,
   List,
   ListItem,
+  Paper,
+  Stack,
+  Typography,
 } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
 import { fallback } from "@tanstack/zod-adapter";

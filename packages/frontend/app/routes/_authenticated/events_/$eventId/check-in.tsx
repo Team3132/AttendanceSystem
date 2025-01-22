@@ -2,11 +2,11 @@ import ControlledTextField from "@/components/ControlledTextField";
 import useSelfCheckin from "@/features/events/hooks/useSelfCheckin";
 import useZodForm from "@/hooks/useZodForm";
 import { eventQueryOptions } from "@/queries/events.queries";
+import { SelfCheckinSchema } from "@/server/schema";
 import { isTRPCClientError } from "@/utils/trpc";
 import { LoadingButton } from "@mui/lab";
-import { Container, Stack, Paper, Typography } from "@mui/material";
+import { Container, Paper, Stack, Typography } from "@mui/material";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { SelfCheckinSchema } from "@/server/schema";
 
 export const Route = createFileRoute(
   "/_authenticated/events_/$eventId/check-in",

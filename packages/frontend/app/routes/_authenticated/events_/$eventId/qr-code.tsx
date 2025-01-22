@@ -1,7 +1,7 @@
 import ScaninCard from "@/features/events/components/ScaninCard";
 import { authQueryOptions } from "@/queries/auth.queries";
 import { eventQueryOptions } from "@/queries/events.queries";
-import { Container, Stack, Paper, Typography } from "@mui/material";
+import { Container, Paper, Stack, Typography } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 

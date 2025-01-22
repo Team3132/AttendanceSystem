@@ -2,7 +2,7 @@ import ScancodeListItem from "@/features/user/components/AdminScancodeListItem";
 import NewAdminScancodeListItem from "@/features/user/components/NewAdminScancodeForm";
 import { usersQueryOptions } from "@/queries/users.queries";
 
-import { Container, Stack, Paper, Typography, List } from "@mui/material";
+import { Container, List, Paper, Stack, Typography } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 

@@ -1,3 +1,4 @@
+import path from "node:path";
 import { Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { HttpAdapterHost, NestFactory } from "@nestjs/core";
@@ -6,7 +7,6 @@ import { AppModule } from "./app.module";
 import { DiscordExceptionFilter } from "./filters/DiscordFilter";
 import { ForbiddenDiscordFilter } from "./filters/ForbiddenDiscordFilter";
 import { SentryFilter } from "./filters/SentryFilter";
-import path from "node:path";
 
 Settings.defaultLocale = "en-au";
 Settings.defaultZone = "Australia/Sydney";

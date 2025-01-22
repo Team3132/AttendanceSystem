@@ -1,12 +1,12 @@
+import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
+import type { z } from "zod";
 import db from "../drizzle/db";
 import { apiKeyTable, eventParsingRuleTable } from "../drizzle/schema";
-import type { z } from "zod";
 import type {
   NewEventParsingRuleSchema,
   UpdateEventParsingRuleSchema,
 } from "../schema";
-import { TRPCError } from "@trpc/server";
 
 /**
  * Get all API keys

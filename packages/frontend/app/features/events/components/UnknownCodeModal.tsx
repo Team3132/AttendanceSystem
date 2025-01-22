@@ -1,3 +1,5 @@
+import ControlledAutocomplete from "@/components/ControlledAutocomplete";
+import { usersQueryOptions } from "@/queries/users.queries";
 import { LoadingButton } from "@mui/lab";
 import {
   Button,
@@ -10,6 +12,7 @@ import {
   TextField,
 } from "@mui/material";
 import { keepPreviousData } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { TRPCClientError } from "@trpc/client";
 import { useEffect, useMemo } from "react";
 import type {
@@ -22,9 +25,6 @@ import { z } from "zod";
 import { useDisclosure } from "../../../hooks/useDisclosure";
 import useZodForm from "../../../hooks/useZodForm";
 import useCreateUserScancode from "../../user/hooks/useCreateUserScancode";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { usersQueryOptions } from "@/queries/users.queries";
-import ControlledAutocomplete from "@/components/ControlledAutocomplete";
 
 interface UnknownCodeModalProps {
   code: string;
@@ -183,7 +183,7 @@ function SearchingAutocomplete<
           label: user.username,
           value: user.id,
         })) ?? [],
-    [usersQuery.data]
+    [usersQuery.data],
   );
 
   return (

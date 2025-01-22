@@ -1,10 +1,10 @@
 import { useDisclosure } from "@/hooks/useDisclosure";
 import { eventQueryOptions } from "@/queries/events.queries";
 import { parseDate } from "@/utils/date";
-import { IconButton, Menu, MenuItem, Divider } from "@mui/material";
+import { Divider, IconButton, Menu, MenuItem } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { DateTime } from "luxon";
-import { useId, useRef, useCallback } from "react";
+import { useCallback, useId, useRef } from "react";
 import { MdEdit } from "react-icons/md";
 import useAddUserRsvp from "../hooks/useAddRsvp";
 

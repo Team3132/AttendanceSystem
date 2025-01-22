@@ -1,10 +1,10 @@
+import ControlledTextField from "@/components/ControlledTextField";
 import { LoadingButton } from "@mui/lab";
 import { ListItem } from "@mui/material";
 import { TRPCClientError } from "@trpc/client";
 import { z } from "zod";
 import useZodForm from "../../../hooks/useZodForm";
 import useCreateSelfScancode from "../hooks/useCreateSelfScancode";
-import ControlledTextField from "@/components/ControlledTextField";
 
 const NewScancodeSchema = z.object({
   code: z

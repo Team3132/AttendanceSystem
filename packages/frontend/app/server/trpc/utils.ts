@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server";
+import { getHeader } from "vinxi/http";
 import { t } from ".";
 import env from "../env";
-import { getHeader } from "vinxi/http";
 
 /**
  * API Authenticated procedure (for the bot)

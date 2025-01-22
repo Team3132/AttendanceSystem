@@ -1,15 +1,15 @@
+import type { LeaderBoardUser as LeaderboardUserSchema } from "@/server/schema";
 import { createFileRoute } from "@tanstack/react-router";
 import { createColumnHelper } from "@tanstack/table-core";
 import { Duration } from "luxon";
-import type { LeaderBoardUser as LeaderboardUserSchema } from "@/server/schema";
 import type { z } from "zod";
 
-import { useMemo } from "react";
-import { Container, Stack } from "@mui/material";
 import Datatable from "@/components/DataTable";
 import DefaultAppBar from "@/components/DefaultAppBar";
-import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { leaderboardQueryOptions } from "@/queries/outreach.queries";
+import { Container, Stack } from "@mui/material";
+import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 
 type LeaderboardUser = z.infer<typeof LeaderboardUserSchema>;
 

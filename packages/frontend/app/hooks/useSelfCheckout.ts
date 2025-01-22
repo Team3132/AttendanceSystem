@@ -1,9 +1,9 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { eventQueryKeys, usersQueryKeys } from "@/server/queryKeys";
-import { createServerFn } from "@tanstack/start";
 import { sessionMiddleware } from "@/middleware/authMiddleware";
-import { z } from "zod";
+import { eventQueryKeys, usersQueryKeys } from "@/server/queryKeys";
 import { userCheckout } from "@/server/services/events.service";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createServerFn } from "@tanstack/start";
+import { z } from "zod";
 
 const selfCheckoutFn = createServerFn({
   method: "POST",

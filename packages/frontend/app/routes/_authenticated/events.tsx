@@ -1,9 +1,11 @@
 import AsChildLink from "@/components/AsChildLink";
 import DefaultAppBar from "@/components/DefaultAppBar";
 import InfiniteList from "@/components/InfiniteList";
+import { LinkButton } from "@/components/LinkButton";
 import UpcomingEventListItem from "@/features/events/components/UpcomingEventListItem";
 import { authQueryOptions } from "@/queries/auth.queries";
 import { eventQueryOptions } from "@/queries/events.queries";
+import { EventTypeSchema } from "@/server/schema";
 import {
   Box,
   Container,
@@ -22,11 +24,9 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createFileRoute, stripSearchParams } from "@tanstack/react-router";
-import { EventTypeSchema } from "@/server/schema";
 import { DateTime } from "luxon";
-import { z } from "zod";
 import { useCallback } from "react";
-import { LinkButton } from "@/components/LinkButton";
+import { z } from "zod";
 
 const defaultValues = {
   from: DateTime.now().toISODate(),

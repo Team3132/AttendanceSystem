@@ -1,5 +1,5 @@
-import { ListItem, ListItemAvatar, ListItemText, Tooltip } from "@mui/material";
 import type { RSVPUserSchema } from "@/server/schema";
+import { ListItem, ListItemAvatar, ListItemText, Tooltip } from "@mui/material";
 import { DateTime } from "luxon";
 import type { z } from "zod";
 import StatusAvatar from "./StatusAvatar";

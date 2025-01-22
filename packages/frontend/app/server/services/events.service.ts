@@ -18,6 +18,7 @@ import { DateTime } from "luxon";
 import type { z } from "zod";
 import db from "../drizzle/db";
 import { eventTable, rsvpTable, userTable } from "../drizzle/schema";
+import { eventQueryKeys } from "../queryKeys";
 import type { RSVPUserSchema, UserCheckinSchema } from "../schema";
 import type { CreateUserRsvpSchema } from "../schema/CreateBlankUserRsvpSchema";
 import type { CreateEventSchema } from "../schema/CreateEventSchema";
@@ -28,9 +29,8 @@ import type { PagedEventsSchema } from "../schema/PagedEventsSchema";
 import type { ScaninSchema } from "../schema/ScaninSchema";
 import type { SelfCheckinSchema } from "../schema/SelfCheckinSchema";
 import clampDateTime from "../utils/clampDateTime";
-import randomStr from "../utils/randomStr";
-import { eventQueryKeys } from "../queryKeys";
 import ee from "../utils/eventEmitter";
+import randomStr from "../utils/randomStr";
 
 /**
  * Get upcoming events in the next 24 hours for the daily bot announcement

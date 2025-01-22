@@ -1,9 +1,9 @@
+import { usersQueryOptions } from "@/queries/users.queries";
+import env from "@/server/env";
 import { Container, Paper, Stack, Typography } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
 import ActiveEventsList from "../../components/ActiveEventsList";
 import DefaultAppBar from "../../components/DefaultAppBar";
-import { usersQueryOptions } from "@/queries/users.queries";
-import env from "@/server/env";
 
 const appVersion = env.VITE_PUBLIC_APP_VERSION;
 

@@ -1,5 +1,5 @@
-import { ListItemText, Typography } from "@mui/material";
 import type { EventSchema } from "@/server/schema";
+import { ListItemText, Typography } from "@mui/material";
 import { DateTime } from "luxon";
 import type { z } from "zod";
 import EventDateText from "./EventDateTypography";

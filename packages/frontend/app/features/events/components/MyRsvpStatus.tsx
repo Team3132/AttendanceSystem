@@ -1,3 +1,5 @@
+import { eventQueryOptions } from "@/queries/events.queries";
+import type { RSVPSchema, RSVPStatusUpdateSchema } from "@/server/schema";
 import {
   FormControl,
   FormHelperText,
@@ -7,11 +9,9 @@ import {
   type SelectChangeEvent,
   TextField,
 } from "@mui/material";
-import type { RSVPSchema, RSVPStatusUpdateSchema } from "@/server/schema";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import type { z } from "zod";
 import useUpdateRsvp from "../hooks/useUpdateRsvp";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { eventQueryOptions } from "@/queries/events.queries";
 
 interface MyRsvpStatusProps {
   eventId: string;

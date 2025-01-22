@@ -1,12 +1,12 @@
+import { authQueryOptions } from "@/queries/auth.queries";
+import { eventQueryOptions } from "@/queries/events.queries";
 import { Button, List, Paper, Stack, Typography } from "@mui/material";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useDisclosure } from "../../../hooks/useDisclosure";
 import AdminRSVPListItem from "./AdminRsvpListItem";
 import MyRsvpStatus from "./MyRsvpStatus";
 import RSVPAddDialog from "./RSVPAddDialog";
 import RSVPListItem from "./RSVPListItem";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { eventQueryOptions } from "@/queries/events.queries";
-import { authQueryOptions } from "@/queries/auth.queries";
 
 interface RsvpListProps {
   eventId: string;

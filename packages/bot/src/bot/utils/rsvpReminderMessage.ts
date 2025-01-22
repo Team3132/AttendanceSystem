@@ -1,5 +1,4 @@
 import { ROLES } from "@/constants";
-import { EventSchema, RSVPUserSchema } from "frontend";
 import {
   ActionRowBuilder,
   type BaseMessageOptions,
@@ -9,6 +8,7 @@ import {
   roleMention,
   time,
 } from "discord.js";
+import { EventSchema, RSVPUserSchema } from "frontend";
 import { DateTime } from "luxon";
 import { z } from "zod";
 import { statusToEmoji } from "./rsvpToDescription";

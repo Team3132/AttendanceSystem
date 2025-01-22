@@ -1,9 +1,9 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { eventQueryKeys } from "@/server/queryKeys";
-import { createServerFn } from "@tanstack/start";
 import { mentorMiddleware } from "@/middleware/authMiddleware";
+import { eventQueryKeys } from "@/server/queryKeys";
 import { CreateEventSchema } from "@/server/schema/CreateEventSchema";
 import { createEvent } from "@/server/services/events.service";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createServerFn } from "@tanstack/start";
 
 const createEventFn = createServerFn({
   method: "POST",

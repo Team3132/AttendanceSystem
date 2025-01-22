@@ -4,11 +4,11 @@ import DefaultAppBar from "@/components/DefaultAppBar";
 import useCreateEvent from "@/features/events/hooks/useCreateEvent";
 import useZodForm from "@/hooks/useZodForm";
 import { authQueryOptions } from "@/queries/auth.queries";
+import { CreateEventSchema } from "@/server/schema";
 import { LoadingButton } from "@mui/lab";
 import { Container, Stack, Switch } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { CreateEventSchema } from "@/server/schema";
 import { DateTime } from "luxon";
 import { Controller } from "react-hook-form";
 

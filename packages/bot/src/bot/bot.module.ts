@@ -8,10 +8,10 @@ import { RsvpButton } from "./buttons/RsvpButton";
 import { RsvpsButton } from "./buttons/RsvpsButton";
 import { RequestRsvpCommand } from "./commands/RequestRsvp.command";
 import { RsvpsCommand } from "./commands/Rsvps.command";
-import { CheckinModal } from "./modals/Checkin.modal";
-import { DelayModal } from "./modals/Delay.modal";
 import { SyncPlzCommand } from "./commands/SyncPlz.command";
 import { GuildJoinEvent } from "./events/GuildJoin.event";
+import { CheckinModal } from "./modals/Checkin.modal";
+import { DelayModal } from "./modals/Delay.modal";
 // import { BuildPointsPaginationButton } from './buttons/BuildPointsPaginationButton';
 
 @Module({

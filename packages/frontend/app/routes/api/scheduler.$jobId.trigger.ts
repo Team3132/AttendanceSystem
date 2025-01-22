@@ -1,13 +1,13 @@
 import db from "@/server/drizzle/db";
 import { eventParsingRuleTable, eventTable } from "@/server/drizzle/schema";
+import mainLogger from "@/server/logger";
+import { generateMessage } from "@/server/services/botService";
+import { getDiscordBotAPI } from "@/server/services/discordService";
+import { ChannelType } from "@discordjs/core";
 import { json } from "@tanstack/start";
 import { createAPIFileRoute } from "@tanstack/start/api";
 import { and, between, eq, not } from "drizzle-orm";
-import { ChannelType } from "@discordjs/core";
-import { getDiscordBotAPI } from "@/server/services/discordService";
-import { generateMessage } from "@/server/services/botService";
 import { DateTime } from "luxon";
-import mainLogger from "@/server/logger";
 
 export const APIRoute = createAPIFileRoute("/api/scheduler/$jobId/trigger")({
   GET: async ({ params }) => {

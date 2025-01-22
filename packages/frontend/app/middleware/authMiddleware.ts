@@ -1,8 +1,8 @@
 import { lucia } from "@/server/auth/lucia";
 import env from "@/server/env";
+import { redirect } from "@tanstack/react-router";
 import { createMiddleware, registerGlobalMiddleware } from "@tanstack/start";
 import { getCookie, getHeader, setCookie } from "vinxi/http";
-import { redirect } from "@tanstack/react-router";
 
 const nullSession = {
   session: null,

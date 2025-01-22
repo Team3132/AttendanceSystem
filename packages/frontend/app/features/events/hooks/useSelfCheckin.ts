@@ -1,10 +1,10 @@
-import { useMutation } from "@tanstack/react-query";
-import { useQueryClient } from "@tanstack/react-query";
-import { eventQueryKeys, usersQueryKeys } from "@/server/queryKeys";
-import { createServerFn } from "@tanstack/start";
 import { sessionMiddleware } from "@/middleware/authMiddleware";
+import { eventQueryKeys, usersQueryKeys } from "@/server/queryKeys";
 import { SelfCheckinSchema } from "@/server/schema/SelfCheckinSchema";
 import { selfCheckin } from "@/server/services/events.service";
+import { useMutation } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
+import { createServerFn } from "@tanstack/start";
 
 const selfCheckinFn = createServerFn({
   method: "POST",

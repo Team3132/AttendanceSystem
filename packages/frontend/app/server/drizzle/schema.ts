@@ -8,8 +8,8 @@ import {
   timestamp,
   uniqueIndex,
 } from "drizzle-orm/pg-core";
-import { v4 } from "uuid";
 import { ulid } from "ulidx";
+import { v4 } from "uuid";
 
 export const eventTypes = pgEnum("EventTypes", [
   "Social",

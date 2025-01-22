@@ -1,12 +1,12 @@
 import { BACKEND_TOKEN, BackendClient } from "@/backend/backend.module";
 import { Inject, Injectable, UseGuards } from "@nestjs/common";
-import { LeaderBoardUser } from "frontend";
 import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
   EmbedBuilder,
 } from "discord.js";
+import { LeaderBoardUser } from "frontend";
 import { Duration } from "luxon";
 import {
   Button,

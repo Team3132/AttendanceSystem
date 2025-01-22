@@ -9,9 +9,9 @@ import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 import { Suspense, useMemo } from "react";
 import {
   FaHouse,
+  FaHouseLock,
   FaPeopleGroup,
   FaRegCalendar,
-  FaHouseLock,
 } from "react-icons/fa6";
 
 export const Route = createFileRoute("/_authenticated")({

@@ -1,5 +1,5 @@
-import { lucia } from "@/server/auth/lucia";
 import { authBaseMiddleware } from "@/middleware/authMiddleware";
+import { lucia } from "@/server/auth/lucia";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
 import { setCookie } from "vinxi/http";

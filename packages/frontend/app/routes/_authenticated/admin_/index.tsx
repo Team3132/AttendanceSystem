@@ -3,6 +3,7 @@ import Datatable from "@/components/DataTable";
 import DefaultAppBar from "@/components/DefaultAppBar";
 import { usersQueryOptions } from "@/queries/users.queries";
 
+import type { UserSchema } from "@/server/schema";
 import {
   Button,
   CircularProgress,
@@ -14,10 +15,9 @@ import {
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { createFileRoute, stripSearchParams } from "@tanstack/react-router";
 import { createColumnHelper } from "@tanstack/react-table";
-import type { UserSchema } from "@/server/schema";
 import { useMemo } from "react";
-import { z } from "zod";
 import { useCallback } from "react";
+import { z } from "zod";
 
 const columnHelper = createColumnHelper<z.infer<typeof UserSchema>>();
 

@@ -1,10 +1,10 @@
+import { sessionMiddleware } from "@/middleware/authMiddleware";
+import { usersQueryKeys } from "@/server/queryKeys";
+import { createUserScancode } from "@/server/services/user.service";
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
-import { usersQueryKeys } from "@/server/queryKeys";
 import { createServerFn } from "@tanstack/start";
-import { sessionMiddleware } from "@/middleware/authMiddleware";
 import { z } from "zod";
-import { createUserScancode } from "@/server/services/user.service";
 
 const createSelfScancodeFn = createServerFn({
   method: "POST",

@@ -4,7 +4,6 @@ import { ROLES } from "@/constants";
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Cron } from "@nestjs/schedule";
-import { EventSchema } from "frontend";
 import {
   type BaseMessageOptions,
   ChannelType,
@@ -12,6 +11,7 @@ import {
   bold,
   roleMention,
 } from "discord.js";
+import { EventSchema } from "frontend";
 import { z } from "zod";
 
 @Injectable()

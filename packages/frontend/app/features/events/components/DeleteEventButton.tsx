@@ -1,8 +1,8 @@
-import { LoadingButton } from "@mui/lab";
-import useDeleteEvent from "../hooks/useDeleteEvent";
-import { useCallback } from "react";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { authQueryOptions } from "@/queries/auth.queries";
+import { LoadingButton } from "@mui/lab";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useCallback } from "react";
+import useDeleteEvent from "../hooks/useDeleteEvent";
 
 interface DeleteEventButtonProps {
   eventId: string;

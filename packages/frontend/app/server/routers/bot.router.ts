@@ -13,6 +13,9 @@ import { EventsArraySchema } from "../schema/EventsArraySchema";
 import { OutreachTimeSchema } from "../schema/OutreachTimeSchema";
 import { PagedLeaderboardSchema } from "../schema/PagedLeaderboardSchema";
 import { SelfCheckinWithUserId } from "../schema/SelfCheckinWithUserId";
+import { SyncResponseSchema } from "../schema/SyncResponseSchema";
+import { generateMessage } from "../services/botService";
+import { syncEvents } from "../services/calalendarSync.service";
 import {
   editUserRsvpStatus,
   getAutocompleteEvents,
@@ -28,9 +31,6 @@ import { getOutreachTime } from "../services/outreach.service";
 import { createUser } from "../services/user.service";
 import { t } from "../trpc";
 import { tokenProcedure } from "../trpc/utils";
-import { syncEvents } from "../services/calalendarSync.service";
-import { SyncResponseSchema } from "../schema/SyncResponseSchema";
-import { generateMessage } from "../services/botService";
 
 /**
  * A router than the bot uses to communicate with the backend

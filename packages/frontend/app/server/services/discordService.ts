@@ -1,10 +1,10 @@
 import { API } from "@discordjs/core";
 import { REST } from "@discordjs/rest";
-import env from "../env";
+import { TRPCError } from "@trpc/server";
+import { eq } from "drizzle-orm";
 import db from "../drizzle/db";
 import { userTable } from "../drizzle/schema";
-import { eq } from "drizzle-orm";
-import { TRPCError } from "@trpc/server";
+import env from "../env";
 
 /**
  * Get the API instance for the current user

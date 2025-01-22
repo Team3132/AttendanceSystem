@@ -1,7 +1,7 @@
-import { List, Typography } from "@mui/material";
-import PendingEventListItem from "./PendingEventListItem";
 import { usersQueryOptions } from "@/queries/users.queries";
+import { List, Typography } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import PendingEventListItem from "./PendingEventListItem";
 
 export default function ActiveEventsList() {
   const pendingEventsQuery = useSuspenseQuery(
