@@ -58,7 +58,7 @@
     "@tanstack/start": "1.97.3",
     "@tanstack/table-core": "8.20.5",
     "@tanstack/zod-adapter": "1.97.3",
-    "@trpc/server": "11.0.0-rc.700",
+    "@trpc/server": "11.0.0-rc.708",
     "arctic": "1.9.2",
     "cron": "3.5.0",
     "cross-env": "7.0.3",
@@ -89,8 +89,8 @@
     "@emotion/babel-plugin": "11.13.5",
     "@mui/lab": "6.0.0-beta.23",
     "@tanstack/router-plugin": "1.97.3",
-    "@trpc/client": "11.0.0-rc.700",
-    "@trpc/server": "11.0.0-rc.700",
+    "@trpc/client": "11.0.0-rc.708",
+    "@trpc/server": "11.0.0-rc.708",
     "@types/luxon": "3.4.2",
     "@types/react": "19.0.7",
     "@types/react-dom": "19.0.3",
@@ -99,7 +99,7 @@
     "drizzle-kit": "0.30.2",
     "tsup": "8.3.5",
     "typescript": "5.7.3",
-    "vite": "6.0.7",
+    "vite": "6.0.11",
     "vite-tsconfig-paths": "5.1.4"
   }
 }
