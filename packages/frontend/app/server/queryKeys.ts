@@ -7,7 +7,6 @@ import type { z } from "zod";
 
 type UserListParams = Omit<z.infer<typeof UserListParamsSchema>, "cursor">;
 
-export type QueryKeyConstraint = readonly [...string[]];
 type QueryKey = ReadonlyArray<unknown>;
 
 // create a type that is a record of the key and the value can be either an array of strings or a function that returns an array of strings
@@ -82,4 +81,4 @@ export const discordQueryKeys = {
 	discord: ["discord"] as const,
 	serverRoles: ["discord", "serverRoles"] as const,
 	serverChannels: ["discord", "serverChannels"] as const,
-}
+};
