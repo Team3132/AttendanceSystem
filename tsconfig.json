@@ -7,6 +7,7 @@
 		"esModuleInterop": true,
 		"resolveJsonModule": true,
 		/* Emit */
+		"checkJs": true,
 		"noEmit": false,
 		"skipLibCheck": true,
 		"strict": true,
@@ -16,7 +17,8 @@
 		"declarationMap": true,
 		"emitDeclarationOnly": true,
 		"paths": {
-			"frontend/*": ["./packages/frontend/app/*"]
+			"frontend": ["./packages/frontend/app/server"]
 		}
-	}
+	},
+	"include": ["./scripts/getViteAliases.js"]
 }

@@ -16,11 +16,11 @@
 	},
 	"files": [".output", "dist", "drizzle", "vite.config.ts"],
 	"module": "dist/index.js",
-	"types": "dist/index.d.ts",
+	"types": "dist-ts/app/server/index.d.ts",
 	"exports": {
 		".": {
 			"import": "./dist/index.js",
-			"types": "./dist/index.d.ts"
+			"types": "./dist-ts/app/server/index.d.ts"
 		}
 	},
 	"dependencies": {
