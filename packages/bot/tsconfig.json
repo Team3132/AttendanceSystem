@@ -6,6 +6,8 @@
 		"useDefineForClassFields": true,
 		"lib": ["ES2023", "DOM", "DOM.Iterable"],
 		"strictPropertyInitialization": false,
+		"moduleResolution": "bundler",
+		"outDir": "./dist-ts",
 		"baseUrl": "./src",
 		"paths": {
 			"@/*": ["./*"]

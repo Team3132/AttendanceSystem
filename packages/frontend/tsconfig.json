@@ -5,9 +5,11 @@
 		"jsx": "react-jsx",
 		/* Linting */
 		"baseUrl": "app",
+		"moduleResolution": "bundler",
 		"paths": {
 			"@/*": ["./*"]
-		}
+		},
+		"outDir": "./dist-ts"
 	},
 	"include": ["app"]
 }
