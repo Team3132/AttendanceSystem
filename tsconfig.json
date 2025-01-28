@@ -16,7 +16,7 @@
 		"declarationMap": true,
 		"emitDeclarationOnly": true,
 		"paths": {
-			"frontend": ["./packages/frontend/app/server/index.ts"]
+			"frontend/*": ["./packages/frontend/app/*"]
 		}
 	}
 }

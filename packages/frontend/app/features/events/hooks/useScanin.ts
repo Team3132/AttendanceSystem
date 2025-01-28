@@ -2,6 +2,7 @@ import { mentorMiddleware } from "@/middleware/authMiddleware";
 import { eventQueryKeys, usersQueryKeys } from "@/server/queryKeys";
 import { ScaninSchema } from "@/server/schema/ScaninSchema";
 import { userScanin } from "@/server/services/events.service";
+import type { SimpleServerFn } from "@/types/SimpleServerFn";
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
@@ -11,7 +12,10 @@ const scaninFn = createServerFn({
 })
   .middleware([mentorMiddleware])
   .validator(ScaninSchema)
-  .handler(async ({ data }) => userScanin(data));
+  .handler(async ({ data }) => userScanin(data)) as SimpleServerFn<
+  typeof ScaninSchema,
+  typeof userScanin
+>;
 
 export default function useScanin() {
   const queryClient = useQueryClient();

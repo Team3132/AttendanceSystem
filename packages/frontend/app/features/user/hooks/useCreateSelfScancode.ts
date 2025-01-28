@@ -1,10 +1,11 @@
 import { sessionMiddleware } from "@/middleware/authMiddleware";
 import { usersQueryKeys } from "@/server/queryKeys";
 import { createUserScancode } from "@/server/services/user.service";
+import type { SimpleServerFn } from "@/types/SimpleServerFn";
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
-import { z } from "zod";
+import { z, type ZodString } from "zod";
 
 const createSelfScancodeFn = createServerFn({
   method: "POST",
@@ -13,7 +14,7 @@ const createSelfScancodeFn = createServerFn({
   .validator(z.string())
   .handler(async ({ data, context }) =>
     createUserScancode(context.user.id, data),
-  );
+  ) as SimpleServerFn<ZodString, typeof createUserScancode>;
 
 export default function useCreateSelfScancode() {
   const queryClient = useQueryClient();

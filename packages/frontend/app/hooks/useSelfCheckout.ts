@@ -1,6 +1,7 @@
 import { sessionMiddleware } from "@/middleware/authMiddleware";
 import { eventQueryKeys, usersQueryKeys } from "@/server/queryKeys";
 import { userCheckout } from "@/server/services/events.service";
+import type { SimpleServerFn } from "@/types/SimpleServerFn";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
 import { z } from "zod";
@@ -10,7 +11,9 @@ const selfCheckoutFn = createServerFn({
 })
   .middleware([sessionMiddleware])
   .validator(z.string())
-  .handler(async ({ data, context }) => userCheckout(context.user.id, data));
+  .handler(async ({ data, context }) =>
+    userCheckout(context.user.id, data),
+  ) as SimpleServerFn<z.ZodString, typeof userCheckout>;
 
 export default function useSelfCheckout() {
   const queryClient = useQueryClient();

@@ -2,16 +2,21 @@ import { mentorMiddleware } from "@/middleware/authMiddleware";
 import { eventQueryKeys } from "@/server/queryKeys";
 import { CreateUserRsvpSchema } from "@/server/schema/CreateBlankUserRsvpSchema";
 import { createUserRsvp } from "@/server/services/events.service";
+import type { SimpleServerFn } from "@/types/SimpleServerFn";
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
+import type {} from "zod";
 
 const createUserRsvpFn = createServerFn({
   method: "POST",
 })
   .middleware([mentorMiddleware])
   .validator(CreateUserRsvpSchema)
-  .handler(async ({ data }) => createUserRsvp(data));
+  .handler(async ({ data }) => createUserRsvp(data)) as SimpleServerFn<
+  typeof CreateUserRsvpSchema,
+  typeof createUserRsvp
+>;
 
 export default function useAddUserRsvp() {
   const queryClient = useQueryClient();
