@@ -8,7 +8,7 @@ import {
 import { Inject, Injectable, UseGuards } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { TextInputStyle } from "discord.js";
-import { Ctx, Modal, ModalContext, ModalParam } from "necord";
+import { Ctx, Modal, type ModalContext, ModalParam } from "necord";
 import { z } from "zod";
 import { GuildMemberGuard } from "../guards/GuildMemberGuard";
 

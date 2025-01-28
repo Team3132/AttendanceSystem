@@ -7,9 +7,16 @@
 		"esModuleInterop": true,
 		"resolveJsonModule": true,
 		/* Emit */
-		"noEmit": true,
+		"noEmit": false,
 		"skipLibCheck": true,
 		"strict": true,
-		"allowSyntheticDefaultImports": true
+		"allowSyntheticDefaultImports": true,
+		/* Workspace */
+		"composite": true,
+		"declarationMap": true,
+		"emitDeclarationOnly": true,
+		"paths": {
+			"frontend": ["../../packages/frontend/app/server"]
+		}
 	}
 }

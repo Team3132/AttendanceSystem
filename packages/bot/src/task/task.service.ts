@@ -4,13 +4,7 @@ import { ROLES } from "@/constants";
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Cron } from "@nestjs/schedule";
-import {
-  type BaseMessageOptions,
-  ChannelType,
-  type Client,
-  bold,
-  roleMention,
-} from "discord.js";
+import { type BaseMessageOptions, ChannelType, Client } from "discord.js";
 import { EventSchema } from "frontend";
 import { z } from "zod";
 

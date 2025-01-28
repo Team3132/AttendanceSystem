@@ -1,5 +1,5 @@
 import path from "node:path";
-import { Logger } from "@nestjs/common";
+import { INestApplication, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { HttpAdapterHost, NestFactory } from "@nestjs/core";
 import { Settings } from "luxon";
@@ -10,9 +10,36 @@ import { SentryFilter } from "./filters/SentryFilter";
 
 Settings.defaultLocale = "en-au";
 Settings.defaultZone = "Australia/Sydney";
+const logger = new Logger("Main");
 
-async function bootstrap() {
-  const logger = new Logger("Main");
+const applySentry = async (
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  app: INestApplication<any>,
+  dsn: string,
+  release: string,
+) => {
+  const Sentry = await import("@sentry/node");
+  Sentry.init({
+    dsn,
+    release,
+    integrations: [
+      Sentry.rewriteFramesIntegration({
+        root: path.join(import.meta.dirname, "../"),
+      }),
+    ],
+  });
+
+  const { httpAdapter } = app.get(HttpAdapterHost);
+  app.useGlobalFilters(
+    new DiscordExceptionFilter(),
+    new ForbiddenDiscordFilter(),
+    new SentryFilter(httpAdapter),
+  );
+
+  logger.log("Sentry enabled");
+};
+
+const setupApp = async () => {
   logger.log("Node Env:", process.env.NODE_ENV);
 
   const app = await NestFactory.create(AppModule);
@@ -22,25 +49,7 @@ async function bootstrap() {
   const release = config.get<string>("VERSION");
 
   if (dsn && release) {
-    const Sentry = await import("@sentry/node");
-    Sentry.init({
-      dsn,
-      release,
-      integrations: [
-        Sentry.rewriteFramesIntegration({
-          root: path.join(import.meta.dirname, "../"),
-        }),
-      ],
-    });
-
-    const { httpAdapter } = app.get(HttpAdapterHost);
-    app.useGlobalFilters(
-      new DiscordExceptionFilter(),
-      new ForbiddenDiscordFilter(),
-      new SentryFilter(httpAdapter),
-    );
-
-    logger.log("Sentry enabled");
+    await applySentry(app, dsn, release);
   } else {
     logger.warn("Sentry disabled");
     app.useGlobalFilters(
@@ -49,6 +58,17 @@ async function bootstrap() {
     );
   }
 
-  await app.listen(3001); // This is required for nestjs to work
+  return app;
+};
+
+if (import.meta.env.PROD) {
+  async function bootstrap() {
+    const app = await setupApp();
+
+    await app.listen(3001); // This is required for nestjs to work
+  }
+
+  bootstrap();
 }
-bootstrap();
+
+export const viteNodeApp = setupApp();

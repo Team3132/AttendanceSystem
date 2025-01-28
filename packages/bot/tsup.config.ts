@@ -8,6 +8,7 @@ export default defineConfig(({ watch }) => ({
   bundle: true,
   clean: true,
   sourcemap: true,
+
   // target: 'esnext',
   onSuccess: watch
     ? "node --enable-source-maps dist/main.js --inspect"

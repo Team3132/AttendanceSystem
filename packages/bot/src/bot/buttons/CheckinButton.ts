@@ -1,5 +1,5 @@
 import { Injectable, UseGuards } from "@nestjs/common";
-import { Button, ButtonContext, ComponentParam, Context } from "necord";
+import { Button, type ButtonContext, ComponentParam, Context } from "necord";
 import { GuildMemberGuard } from "../guards/GuildMemberGuard";
 import { CheckinModal } from "../modals/Checkin.modal";
 

@@ -7,7 +7,7 @@ import {
 } from "@discordjs/builders";
 import { Inject, Injectable, UseGuards } from "@nestjs/common";
 import { GuildMember, TextInputStyle } from "discord.js";
-import { Ctx, Modal, ModalContext, ModalParam } from "necord";
+import { Ctx, Modal, type ModalContext, ModalParam } from "necord";
 import { GuildMemberGuard } from "../guards/GuildMemberGuard";
 
 @Injectable()

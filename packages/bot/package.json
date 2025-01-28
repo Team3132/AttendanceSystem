@@ -14,7 +14,9 @@
 	},
 	"type": "module",
 	"main": "./dist/main.js",
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"dependencies": {
 		"@discordjs/builders": "1.10.0",
 		"@nestjs/common": "11.0.3",
@@ -42,12 +44,17 @@
 		"node": "22.13.1"
 	},
 	"devDependencies": {
+		"@rollup/plugin-swc": "^0.4.0",
 		"@swc/cli": "0.6.0",
 		"@swc/core": "1.10.9",
 		"@types/express": "5.0.0",
 		"@types/luxon": "3.4.2",
 		"@types/node": "22.10.7",
 		"tsup": "8.3.5",
-		"typescript": "5.7.3"
+		"typescript": "5.7.3",
+		"vite": "6.0.11",
+		"vite-plugin-externalize-deps": "^0.9.0",
+		"vite-plugin-node": "^4.0.0",
+		"vite-tsconfig-paths": "5.1.4"
 	}
 }

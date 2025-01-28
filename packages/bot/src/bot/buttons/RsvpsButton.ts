@@ -4,7 +4,7 @@ import { Inject, Injectable, Logger, UseGuards } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { ActionRow, GuildMember } from "discord.js";
 import { RSVPStatusUpdateSchema } from "frontend";
-import { Button, ButtonContext, ComponentParam, Context } from "necord";
+import { Button, type ButtonContext, ComponentParam, Context } from "necord";
 import { z } from "zod";
 import { GuildMemberGuard } from "../guards/GuildMemberGuard";
 import { DelayModal } from "../modals/Delay.modal";
