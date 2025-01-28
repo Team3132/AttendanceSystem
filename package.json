@@ -8,10 +8,7 @@
 	"private": true,
 	"workspaces": ["packages/*"],
 	"scripts": {
-		"bot": "pnpm run --filter bot",
-		"frontend": "pnpm run --filter frontend",
-		"desktop": "pnpm run --filter desktop",
-		"build": "pnpm run -r build",
+		"build": "pnpm tsc -b && pnpm run -r build",
 		"typecheck": "pnpm run -r typecheck",
 		"typecheck:watch": "pnpm run -r typecheck --watch",
 		"dev": "pnpm run -r dev",

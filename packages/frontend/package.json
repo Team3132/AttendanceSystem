@@ -5,16 +5,10 @@
 	"type": "module",
 	"scripts": {
 		"dev": "PORT=1420 vinxi dev",
-		"build": "tsc && tsup && vinxi build",
-		"buildtypes": "tsup",
-		"start": "PORT=1420 vinxi start",
-		"typecheck": "tsc",
-		"trace:gen": "tsc --noEmit --generateTrace ./trace",
-		"trace:analyze": "pnpm dlx @typescript/analyze-trace ./trace",
-		"trace:clean": "rm -rf ./trace",
-		"trace": "pnpm trace:gen && pnpm trace:analyze; pnpm trace:clean"
+		"build": "tsup && vinxi build",
+		"start": "PORT=1420 vinxi start"
 	},
-	"files": [".output", "dist", "drizzle", "vite.config.ts"],
+	"files": [".output", "dist", "dist-ts", "drizzle", "vite.config.ts"],
 	"module": "dist/index.js",
 	"types": "dist-ts/app/server/index.d.ts",
 	"exports": {

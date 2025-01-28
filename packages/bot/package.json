@@ -6,15 +6,14 @@
 	"private": false,
 	"license": "UNLICENSED",
 	"scripts": {
-		"build": "tsc && vite build",
+		"build": "vite build",
 		"start": "node --enable-source-maps dist/main.js --inspect",
 		"dev": "vite",
-		"typecheck": "tsc --noEmit",
 		"release": "pnpm build"
 	},
 	"type": "module",
 	"main": "./dist/main.js",
-	"files": ["dist"],
+	"files": ["dist", "dist-ts"],
 	"dependencies": {
 		"@discordjs/builders": "1.10.0",
 		"@nestjs/common": "11.0.3",
