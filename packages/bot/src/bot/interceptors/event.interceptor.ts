@@ -1,4 +1,4 @@
-import { BACKEND_TOKEN, BackendClient } from "@/backend/backend.module";
+import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
 import { Inject, Injectable } from "@nestjs/common";
 import { AutocompleteInteraction, CacheType } from "discord.js";
 import { EventSchema } from "frontend";

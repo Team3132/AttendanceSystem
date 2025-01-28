@@ -61,9 +61,11 @@ const setupApp = async () => {
   return app;
 };
 
+const promisedApp = setupApp();
+
 if (import.meta.env.PROD) {
   async function bootstrap() {
-    const app = await setupApp();
+    const app = await promisedApp;
 
     await app.listen(3001); // This is required for nestjs to work
   }
@@ -71,4 +73,4 @@ if (import.meta.env.PROD) {
   bootstrap();
 }
 
-export const viteNodeApp = setupApp();
+export const viteNodeApp = promisedApp;

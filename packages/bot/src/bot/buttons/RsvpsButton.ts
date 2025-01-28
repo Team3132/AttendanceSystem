@@ -1,4 +1,4 @@
-import { BACKEND_TOKEN, BackendClient } from "@/backend/backend.module";
+import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
 import { ROLES } from "@/constants";
 import { Inject, Injectable, Logger, UseGuards } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
