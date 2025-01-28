@@ -34,3 +34,5 @@ dist-ssr
 **/app.config.timestamp*
 
 trace
+
+dist-ts

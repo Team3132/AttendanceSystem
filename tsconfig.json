@@ -14,6 +14,7 @@
 		"allowSyntheticDefaultImports": true,
 		/* Workspace */
 		"composite": true,
+		"outDir": "dist-ts",
 		"declarationMap": true,
 		"emitDeclarationOnly": true,
 		"paths": {

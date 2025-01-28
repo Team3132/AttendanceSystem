@@ -13,6 +13,7 @@
 	},
 	"type": "module",
 	"main": "./dist/main.js",
+	"types": "./dist-ts/src/main.d.ts",
 	"files": ["dist", "dist-ts"],
 	"dependencies": {
 		"@discordjs/builders": "1.10.0",
