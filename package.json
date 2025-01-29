@@ -8,9 +8,10 @@
 	"private": true,
 	"workspaces": ["packages/*"],
 	"scripts": {
-		"build": "pnpm tsc -b && pnpm run -r build",
-		"typecheck": "pnpm run -r typecheck",
-		"typecheck:watch": "pnpm run -r typecheck --watch",
+		"build": "pnpm buildtypes && pnpm run -r build",
+		"buildtypes:bot": "pnpm tsc -b packages/bot",
+		"buildtypes:frontend": "pnpm tsc -b packages/frontend",
+		"buildtypes": "pnpm buildtypes:bot && pnpm buildtypes:frontend",
 		"dev": "pnpm run -r dev",
 		"format": "pnpm biome format ./",
 		"lint": "pnpm biome lint ./",
