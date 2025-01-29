@@ -38,7 +38,7 @@ export class RequestRsvpCommand {
     @Options() { meeting }: RequestRSVPDto,
   ) {
     const eventDetails =
-      await this.backendClient.client.bot.getEventDetails.query(meeting);
+      await this.backendClient.client.getEventDetails.query(meeting);
 
     if (!eventDetails)
       return interaction.reply({
@@ -46,10 +46,10 @@ export class RequestRsvpCommand {
         content: "No meeting with that Id",
       });
 
-    await this.backendClient.client.bot.markEventPosted.mutate(meeting);
+    await this.backendClient.client.markEventPosted.mutate(meeting);
 
     const reminderMessage =
-      await this.backendClient.client.bot.getEventReminder.query(meeting);
+      await this.backendClient.client.getEventReminder.query(meeting);
 
     return interaction.reply({
       content: reminderMessage.content,

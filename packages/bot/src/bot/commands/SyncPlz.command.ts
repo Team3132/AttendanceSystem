@@ -27,7 +27,7 @@ export class SyncPlzCommand {
   public async onRequestRSVP(@Context() [interaction]: SlashCommandContext) {
     await interaction.deferReply();
 
-    const response = await this.backendClient.client.bot.syncEvents.mutate();
+    const response = await this.backendClient.client.syncEvents.mutate();
 
     const embed = new EmbedBuilder()
       .setColor([0, 255, 0])

@@ -46,7 +46,7 @@ export class MentorGuard implements CanActivate {
 
       const username = fetchedUser.nickname ?? fetchedUser.user.username;
 
-      const user = await this.backendClient.client.bot.findOrCreateUser.mutate({
+      const user = await this.backendClient.client.findOrCreateUser.mutate({
         id: fetchedUser.id,
         username,
         roles: userRoles,

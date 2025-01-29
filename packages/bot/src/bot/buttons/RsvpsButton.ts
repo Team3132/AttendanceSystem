@@ -31,7 +31,7 @@ export class RsvpsButton {
     >,
   ) {
     const fetchedEvent =
-      await this.backendClient.client.bot.getEventDetails.query(eventId);
+      await this.backendClient.client.getEventDetails.query(eventId);
 
     if (!fetchedEvent)
       return interaction.reply({
@@ -55,7 +55,7 @@ export class RsvpsButton {
 
     const username = fetchedUser.nickname ?? fetchedUser.user.username;
 
-    await this.backendClient.client.bot.findOrCreateUser.mutate({
+    await this.backendClient.client.findOrCreateUser.mutate({
       id: userId,
       username,
       roles: userRoles,
@@ -70,7 +70,7 @@ export class RsvpsButton {
       });
     }
 
-    await this.backendClient.client.bot.setEventRsvp.mutate({
+    await this.backendClient.client.setEventRsvp.mutate({
       eventId,
       userId,
       status: rsvpStatus,
@@ -84,7 +84,7 @@ export class RsvpsButton {
     }
 
     const generatedMessage =
-      await this.backendClient.client.bot.getEventReminder.query(eventId);
+      await this.backendClient.client.getEventReminder.query(eventId);
 
     return interaction.update({
       content: generatedMessage.content,

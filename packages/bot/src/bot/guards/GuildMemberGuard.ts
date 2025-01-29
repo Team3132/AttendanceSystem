@@ -45,7 +45,7 @@ export class GuildMemberGuard implements CanActivate {
 
       const username = fetchedUser.nickname ?? fetchedUser.user.username;
 
-      await this.backendClient.client.bot.findOrCreateUser.mutate({
+      await this.backendClient.client.findOrCreateUser.mutate({
         id: fetchedUser.id,
         username,
         roles: userRoles,

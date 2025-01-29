@@ -1,12 +1,9 @@
-import { t } from "../trpc";
 import { botRouter } from "./bot.router";
 
 /**
  * The main router for the backend, contains all other routers
  */
-const appRouter = t.router({
-  bot: botRouter,
-});
+const appRouter = botRouter;
 
 export type AppRouter = typeof appRouter;
 

@@ -95,7 +95,7 @@ export class OutreachPaginationButton {
     const perPage = 10;
 
     const { items: leaderBoardData, total } =
-      await this.backendClient.client.bot.outreachLeaderboard.query({
+      await this.backendClient.client.outreachLeaderboard.query({
         cursor: page - 1,
         limit: perPage,
       });

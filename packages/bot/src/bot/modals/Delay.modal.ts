@@ -45,7 +45,7 @@ export class DelayModal {
 
     const userId = interaction.user.id;
 
-    await this.backendClient.client.bot.setEventRsvp.mutate({
+    await this.backendClient.client.setEventRsvp.mutate({
       eventId,
       userId,
       status: "LATE",
@@ -53,7 +53,7 @@ export class DelayModal {
     });
 
     const reminderMessage =
-      await this.backendClient.client.bot.getEventReminder.query(eventId);
+      await this.backendClient.client.getEventReminder.query(eventId);
 
     if (interaction.isFromMessage()) {
       return interaction.update({

@@ -24,7 +24,7 @@ export class TaskService {
   @Cron("00 23 * * *")
   public async handleSync() {
     try {
-      await this.backendClient.client.bot.syncEvents.mutate();
+      await this.backendClient.client.syncEvents.mutate();
     } catch (error) {
       this.logger.error("Failed to sync events", error);
     }
@@ -36,13 +36,13 @@ export class TaskService {
     if (!enabled) return;
 
     try {
-      await this.backendClient.client.bot.syncEvents.mutate();
+      await this.backendClient.client.syncEvents.mutate();
     } catch (error) {
       this.logger.error("Failed to sync events", error);
     }
 
     const nextEvents =
-      await this.backendClient.client.bot.getEventsInNextDay.query();
+      await this.backendClient.client.getEventsInNextDay.query();
 
     const attendanceChannelId = this.config.getOrThrow(
       "VITE_ATTENDANCE_CHANNEL",
@@ -68,12 +68,12 @@ export class TaskService {
     ];
 
     const upcomingEvents =
-      await this.backendClient.client.bot.getEventsInNextDay.query();
+      await this.backendClient.client.getEventsInNextDay.query();
 
     const eventIds = upcomingEvents.map((event) => event.id);
 
     const eventReminderRequests = eventIds.map((eventId) =>
-      this.backendClient.client.bot.getEventReminder.query(eventId),
+      this.backendClient.client.getEventReminder.query(eventId),
     );
 
     const eventReminders = await Promise.all(eventReminderRequests);

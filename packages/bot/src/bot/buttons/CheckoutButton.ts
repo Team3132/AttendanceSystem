@@ -21,7 +21,7 @@ export class CheckoutButton {
   ) {
     const userId = interaction.user.id;
     try {
-      await this.backendClient.client.bot.checkout.mutate({
+      await this.backendClient.client.checkout.mutate({
         eventId,
         userId,
       });
