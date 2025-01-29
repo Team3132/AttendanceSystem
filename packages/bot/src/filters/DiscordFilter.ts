@@ -1,4 +1,4 @@
-import { isTRPCClientError } from "@/backend/backend.module";
+import { isTRPCClientError } from "../backend/backend.module";
 import {
   type ArgumentsHost,
   Catch,
