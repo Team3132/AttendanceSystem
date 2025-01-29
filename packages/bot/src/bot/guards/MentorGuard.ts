@@ -1,5 +1,8 @@
-import { BACKEND_TOKEN, type BackendClient } from "@/backend/backend.module";
-import { ROLES } from "@/constants";
+import {
+  BACKEND_TOKEN,
+  type BackendClient,
+} from "../../backend/backend.module";
+import { ROLES } from "../../constants";
 import {
   type CanActivate,
   type ExecutionContext,

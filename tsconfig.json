@@ -17,6 +17,7 @@
 		"outDir": "dist-ts",
 		"declarationMap": true,
 		"emitDeclarationOnly": true,
+		"rootDir": ".",
 		"paths": {
 			"frontend": ["./packages/frontend/app/server"]
 		}

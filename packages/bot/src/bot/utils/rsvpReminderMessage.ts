@@ -1,4 +1,4 @@
-import { ROLES } from "@/constants";
+import { ROLES } from "../../constants";
 import {
   ActionRowBuilder,
   type BaseMessageOptions,

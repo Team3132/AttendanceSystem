@@ -32,6 +32,9 @@
 		"formatter": {
 			"quoteStyle": "double",
 			"indentStyle": "space"
+		},
+		"parser": {
+			"unsafeParameterDecoratorsEnabled": true
 		}
 	},
 
