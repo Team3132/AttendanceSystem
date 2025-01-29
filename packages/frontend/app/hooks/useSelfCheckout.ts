@@ -6,14 +6,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
 import { z } from "zod";
 
-const selfCheckoutFn = createServerFn({
-  method: "POST",
-})
-  .middleware([sessionMiddleware])
-  .validator(z.string())
-  .handler(async ({ data, context }) =>
-    userCheckout(context.user.id, data),
-  ) as SimpleServerFn<z.ZodString, typeof userCheckout>;
+const selfCheckoutFn: SimpleServerFn<z.ZodString, typeof userCheckout> =
+  createServerFn({
+    method: "POST",
+  })
+    .middleware([sessionMiddleware])
+    .validator(z.string())
+    .handler(async ({ data, context }) => userCheckout(context.user.id, data));
 
 export default function useSelfCheckout() {
   const queryClient = useQueryClient();

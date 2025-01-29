@@ -8,14 +8,14 @@ import { useQueryClient } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
 import type { ZodUndefined } from "zod";
 
-const selfCheckinFn = createServerFn({
+const selfCheckinFn: SimpleServerFn<ZodUndefined, typeof selfCheckin> = createServerFn({
   method: "POST",
 })
   .middleware([sessionMiddleware])
   .validator(SelfCheckinSchema)
   .handler(async ({ data, context }) =>
     selfCheckin(context.user.id, data),
-  ) as SimpleServerFn<ZodUndefined, typeof selfCheckin>;
+  );
 
 export default function useSelfCheckin() {
   const queryClient = useQueryClient();

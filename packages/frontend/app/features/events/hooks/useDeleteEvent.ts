@@ -8,15 +8,13 @@ import { useNavigate } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/start";
 import { z, type ZodString } from "zod";
 
-const deleteEventFn = createServerFn({
-  method: "POST",
-})
-  .validator(z.string())
-  .middleware([mentorMiddleware])
-  .handler(async ({ data }) => deleteEvent(data)) as SimpleServerFn<
-  typeof ZodString,
-  typeof deleteEvent
->;
+const deleteEventFn: SimpleServerFn<typeof ZodString, typeof deleteEvent> =
+  createServerFn({
+    method: "POST",
+  })
+    .validator(z.string())
+    .middleware([mentorMiddleware])
+    .handler(async ({ data }) => deleteEvent(data));
 
 export default function useDeleteEvent() {
   const queryClient = useQueryClient();

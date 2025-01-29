@@ -6,14 +6,15 @@ import type { SimpleServerFn } from "@/types/SimpleServerFn";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
 
-const addUserScanCodeFn = createServerFn({
+const addUserScanCodeFn: SimpleServerFn<
+  typeof AddUserScancodeParams,
+  typeof createUserScancode
+> = createServerFn({
   method: "POST",
 })
   .middleware([mentorMiddleware])
   .validator(AddUserScancodeParams)
-  .handler(async ({ data }) =>
-    createUserScancode(data.userId, data.scancode),
-  ) as SimpleServerFn<typeof AddUserScancodeParams, typeof createUserScancode>;
+  .handler(async ({ data }) => createUserScancode(data.userId, data.scancode));
 
 export default function useCreateUserScancode() {
   const queryClient = useQueryClient();

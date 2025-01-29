@@ -7,14 +7,15 @@ import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
 
-const removeUserScancodeFn = createServerFn({
+const removeUserScancodeFn: SimpleServerFn<
+  typeof AddUserScancodeParams,
+  typeof removeScancode
+> = createServerFn({
   method: "POST",
 })
   .middleware([mentorMiddleware])
   .validator(AddUserScancodeParams)
-  .handler(async ({ data }) =>
-    removeScancode(data.userId, data.scancode),
-  ) as SimpleServerFn<typeof AddUserScancodeParams, typeof removeScancode>;
+  .handler(async ({ data }) => removeScancode(data.userId, data.scancode));
 
 export default function useDeleteUserScancode() {
   const queryClient = useQueryClient();

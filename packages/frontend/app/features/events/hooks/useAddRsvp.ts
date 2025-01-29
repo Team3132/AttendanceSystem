@@ -8,15 +8,15 @@ import { useQueryClient } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
 import type {} from "zod";
 
-const createUserRsvpFn = createServerFn({
+const createUserRsvpFn: SimpleServerFn<
+typeof CreateUserRsvpSchema,
+typeof createUserRsvp
+> = createServerFn({
   method: "POST",
 })
   .middleware([mentorMiddleware])
   .validator(CreateUserRsvpSchema)
-  .handler(async ({ data }) => createUserRsvp(data)) as SimpleServerFn<
-  typeof CreateUserRsvpSchema,
-  typeof createUserRsvp
->;
+  .handler(async ({ data }) => createUserRsvp(data));
 
 export default function useAddUserRsvp() {
   const queryClient = useQueryClient();

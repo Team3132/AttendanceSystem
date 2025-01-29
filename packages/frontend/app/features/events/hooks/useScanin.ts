@@ -7,15 +7,13 @@ import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
 
-const scaninFn = createServerFn({
-  method: "POST",
-})
-  .middleware([mentorMiddleware])
-  .validator(ScaninSchema)
-  .handler(async ({ data }) => userScanin(data)) as SimpleServerFn<
-  typeof ScaninSchema,
-  typeof userScanin
->;
+const scaninFn: SimpleServerFn<typeof ScaninSchema, typeof userScanin> =
+  createServerFn({
+    method: "POST",
+  })
+    .middleware([mentorMiddleware])
+    .validator(ScaninSchema)
+    .handler(async ({ data }) => userScanin(data));
 
 export default function useScanin() {
   const queryClient = useQueryClient();

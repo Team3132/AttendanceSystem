@@ -7,14 +7,15 @@ import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
 
-const userCheckoutFn = createServerFn({
+const userCheckoutFn: SimpleServerFn<
+  typeof UserCheckoutSchema,
+  typeof userCheckout
+> = createServerFn({
   method: "POST",
 })
   .middleware([mentorMiddleware])
   .validator(UserCheckoutSchema)
-  .handler(async ({ data }) =>
-    userCheckout(data.userId, data.eventId),
-  ) as SimpleServerFn<typeof UserCheckoutSchema, typeof userCheckout>;
+  .handler(async ({ data }) => userCheckout(data.userId, data.eventId));
 
 export default function useUserCheckout() {
   const queryClient = useQueryClient();
