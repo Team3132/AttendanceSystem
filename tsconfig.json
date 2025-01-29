@@ -22,5 +22,13 @@
 			"frontend": ["./packages/frontend/app/server"]
 		}
 	},
+	"references": [
+		{
+			"path": "./packages/frontend"
+		},
+		{
+			"path": "./packages/bot"
+		}
+	],
 	"include": ["./scripts/getViteAliases.js"]
 }
