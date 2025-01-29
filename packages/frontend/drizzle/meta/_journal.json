@@ -127,6 +127,13 @@
 			"when": 1737339393212,
 			"tag": "0017_lovely_talon",
 			"breakpoints": true
+		},
+		{
+			"idx": 18,
+			"version": "7",
+			"when": 1738144705485,
+			"tag": "0018_quick_lucky_pierre",
+			"breakpoints": true
 		}
 	]
 }
