@@ -6,7 +6,9 @@
 	"author": "Sebastian Pietschner <sebastian.pietschner@gmail.com>",
 	"license": "MIT",
 	"private": true,
-	"workspaces": ["packages/*"],
+	"workspaces": [
+		"packages/*"
+	],
 	"scripts": {
 		"build": "pnpm tsc -b && pnpm run -r build",
 		"typecheck": "pnpm run -r typecheck",
@@ -23,6 +25,7 @@
 		"@changesets/cli": "2.27.11",
 		"@types/node": "22.10.7",
 		"knip": "^5.42.3",
+		"lefthook": "^1.10.10",
 		"typescript": "5.7.3"
 	}
 }

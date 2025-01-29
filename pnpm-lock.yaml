@@ -23,6 +23,9 @@ importers:
       knip:
         specifier: ^5.42.3
         version: 5.42.3(@types/node@22.10.7)(typescript@5.7.3)
+      lefthook:
+        specifier: ^1.10.10
+        version: 1.10.10
       typescript:
         specifier: 5.7.3
         version: 5.7.3
@@ -4477,6 +4480,60 @@ packages:
   lazystream@1.0.1:
     resolution: {integrity: sha512-b94GiNHQNy6JNTrt5w6zNyffMrNkXZb3KTkCZJb2V1xaEGCk093vkZ2jk3tpaeP33/OiXC+WvK9AxUebnf5nbw==}
     engines: {node: '>= 0.6.3'}
+
+  lefthook-darwin-arm64@1.10.10:
+    resolution: {integrity: sha512-hEypKdwWpmNSl4Q8eJxgmlGb2ybJj1+W5/v13Mxc+ApEmjbpNiJzPcdjC9zyaMEpPK4EybiHy8g5ZC0dLOwkpA==}
+    cpu: [arm64]
+    os: [darwin]
+
+  lefthook-darwin-x64@1.10.10:
+    resolution: {integrity: sha512-9xNbeE78i4Amz+uOheg9dcy7X/6X12h98SUMrYWk7fONvjW/Bp9h6nPGIGxI5krHp9iRB8rhmo33ljVDVtTlyg==}
+    cpu: [x64]
+    os: [darwin]
+
+  lefthook-freebsd-arm64@1.10.10:
+    resolution: {integrity: sha512-GT9wYxPxkvO1rtIAmctayT9xQIVII5xUIG3Pv6gZo+r6yEyle0EFTLFDbmVje7p7rQNCsvJ8XzCNdnyDrva90g==}
+    cpu: [arm64]
+    os: [freebsd]
+
+  lefthook-freebsd-x64@1.10.10:
+    resolution: {integrity: sha512-2BB/HRhEb9wGpk5K38iNkHtMPnn+TjXDtFG6C/AmUPLXLNhGnNiYp+v2uhUE8quWzxJx7QzfnU7Ga+/gzJcIcw==}
+    cpu: [x64]
+    os: [freebsd]
+
+  lefthook-linux-arm64@1.10.10:
+    resolution: {integrity: sha512-GJ7GALKJ1NcMnNZG9uY+zJR3yS8q7/MgcHFWSJhBl+w4KTiiD/RAdSl5ALwEK2+UX36Eo+7iQA7AXzaRdAii4w==}
+    cpu: [arm64]
+    os: [linux]
+
+  lefthook-linux-x64@1.10.10:
+    resolution: {integrity: sha512-dWUvPM9YTIJ3+X9dB+8iOnzoVHbnNmpscmUqEOKSeizgBrvuuIYKZJGDyjEtw65Qnmn1SJ7ouSaKK93p5c7SkQ==}
+    cpu: [x64]
+    os: [linux]
+
+  lefthook-openbsd-arm64@1.10.10:
+    resolution: {integrity: sha512-KnwDyxOvbvGSBTbEF/OxkynZRPLowd3mIXUKHtkg3ABcQ4UREalX+Sh0nWU2dNjQbINx7Eh6B42TxNC7h+qXEg==}
+    cpu: [arm64]
+    os: [openbsd]
+
+  lefthook-openbsd-x64@1.10.10:
+    resolution: {integrity: sha512-49nnG886CI3WkrzVJ71D1M2KWpUYN1BP9LMKNzN11cmZ0j6dUK4hj3nbW+NcrKXxgYzzyLU3FFwrc51OVy2eKA==}
+    cpu: [x64]
+    os: [openbsd]
+
+  lefthook-windows-arm64@1.10.10:
+    resolution: {integrity: sha512-9ni0Tsnk+O5oL7EBfKj9C5ZctD1mrTyHCtiu1zQJBbREReJtPjIM9DwWzecfbuVfrIlpbviVQvx5mjZ44bqlWw==}
+    cpu: [arm64]
+    os: [win32]
+
+  lefthook-windows-x64@1.10.10:
+    resolution: {integrity: sha512-gkKWYrlay4iecFfY1Ris5VcRYa0BaNJKMk0qE/wZmIpMgu4GvNg+f9BEwTMflkQIanABduT9lrECaL1lX5ClKw==}
+    cpu: [x64]
+    os: [win32]
+
+  lefthook@1.10.10:
+    resolution: {integrity: sha512-YW0fTONgOXsephvXq2gIFbegCW19MHCyKYX7JDWmzVF1ZiVMnDBYUL/SP3i0RtFvlCmqENl4SgKwYYQGUMnvig==}
+    hasBin: true
 
   libphonenumber-js@1.11.17:
     resolution: {integrity: sha512-Jr6v8thd5qRlOlc6CslSTzGzzQW03uiscab7KHQZX1Dfo4R6n6FDhZ0Hri6/X7edLIDv9gl4VMZXhxTjLnl0VQ==}
@@ -10728,6 +10785,49 @@ snapshots:
   lazystream@1.0.1:
     dependencies:
       readable-stream: 2.3.8
+
+  lefthook-darwin-arm64@1.10.10:
+    optional: true
+
+  lefthook-darwin-x64@1.10.10:
+    optional: true
+
+  lefthook-freebsd-arm64@1.10.10:
+    optional: true
+
+  lefthook-freebsd-x64@1.10.10:
+    optional: true
+
+  lefthook-linux-arm64@1.10.10:
+    optional: true
+
+  lefthook-linux-x64@1.10.10:
+    optional: true
+
+  lefthook-openbsd-arm64@1.10.10:
+    optional: true
+
+  lefthook-openbsd-x64@1.10.10:
+    optional: true
+
+  lefthook-windows-arm64@1.10.10:
+    optional: true
+
+  lefthook-windows-x64@1.10.10:
+    optional: true
+
+  lefthook@1.10.10:
+    optionalDependencies:
+      lefthook-darwin-arm64: 1.10.10
+      lefthook-darwin-x64: 1.10.10
+      lefthook-freebsd-arm64: 1.10.10
+      lefthook-freebsd-x64: 1.10.10
+      lefthook-linux-arm64: 1.10.10
+      lefthook-linux-x64: 1.10.10
+      lefthook-openbsd-arm64: 1.10.10
+      lefthook-openbsd-x64: 1.10.10
+      lefthook-windows-arm64: 1.10.10
+      lefthook-windows-x64: 1.10.10
 
   libphonenumber-js@1.11.17: {}
 
