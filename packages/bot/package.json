@@ -20,7 +20,7 @@
 		"@nestjs/config": "3.3.0",
 		"@nestjs/core": "11.0.6",
 		"@nestjs/platform-express": "11.0.6",
-		"@nestjs/schedule": "4.1.2",
+		"@nestjs/schedule": "5.0.1",
 		"@sentry/node": "8.50.0",
 		"@trpc/client": "11.0.0-rc.730",
 		"class-transformer": "0.5.1",
