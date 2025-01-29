@@ -27,8 +27,8 @@
 		"@fontsource/roboto": "5.1.1",
 		"@hookform/resolvers": "3.10.0",
 		"@lucia-auth/adapter-drizzle": "1.1.0",
-		"@mui/icons-material": "6.4.1",
-		"@mui/material": "6.4.1",
+		"@mui/icons-material": "6.4.2",
+		"@mui/material": "6.4.2",
 		"@mui/x-date-pickers": "7.24.1",
 		"@t3-oss/env-core": "0.12.0",
 		"@tanstack/match-sorter-utils": "8.19.4",
@@ -63,7 +63,7 @@
 		"zod": "3.24.1"
 	},
 	"devDependencies": {
-		"@mui/lab": "6.0.0-beta.24",
+		"@mui/lab": "6.0.0-beta.25",
 		"@tanstack/router-plugin": "1.98.0",
 		"@trpc/client": "11.0.0-rc.730",
 		"@trpc/server": "11.0.0-rc.730",
