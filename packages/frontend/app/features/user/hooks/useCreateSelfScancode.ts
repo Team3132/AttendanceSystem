@@ -5,7 +5,7 @@ import type { SimpleServerFn } from "@/types/SimpleServerFn";
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
-import { z, type ZodString } from "zod";
+import { type ZodString, z } from "zod";
 
 const createSelfScancodeFn: SimpleServerFn<
   ZodString,

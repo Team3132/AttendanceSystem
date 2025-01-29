@@ -1,6 +1,6 @@
-import { type BackendClient } from "../../backend/backend.module";
 import { ConfigService } from "@nestjs/config";
 import { type ButtonContext } from "necord";
+import { type BackendClient } from "../../backend/backend.module";
 export declare class RsvpButton {
   private readonly config;
   private readonly backendClient;

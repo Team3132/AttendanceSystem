@@ -1,10 +1,10 @@
+import { Inject, Injectable, UseGuards } from "@nestjs/common";
+import { Button, type ButtonContext, ComponentParam, Context } from "necord";
 import {
   BACKEND_TOKEN,
   type BackendClient,
   isTRPCClientError,
 } from "../../backend/backend.module";
-import { Inject, Injectable, UseGuards } from "@nestjs/common";
-import { Button, type ButtonContext, ComponentParam, Context } from "necord";
 import { GuildMemberGuard } from "../guards/GuildMemberGuard";
 
 @Injectable()

@@ -1,13 +1,13 @@
-import {
-  BACKEND_TOKEN,
-  type BackendClient,
-  isTRPCClientError,
-} from "../../backend/backend.module";
 import { Inject, Injectable, UseGuards } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { EmbedBuilder } from "discord.js";
 import { DateTime } from "luxon";
 import { Button, type ButtonContext, ComponentParam, Context } from "necord";
+import {
+  BACKEND_TOKEN,
+  type BackendClient,
+  isTRPCClientError,
+} from "../../backend/backend.module";
 import { GuildMemberGuard } from "../guards/GuildMemberGuard";
 import rsvpToDescription from "../utils/rsvpToDescription";
 

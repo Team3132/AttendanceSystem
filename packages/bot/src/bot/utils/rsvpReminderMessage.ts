@@ -1,4 +1,3 @@
-import { ROLES } from "../../constants";
 import {
   ActionRowBuilder,
   type BaseMessageOptions,
@@ -11,6 +10,7 @@ import {
 import { EventSchema, RSVPUserSchema } from "frontend";
 import { DateTime } from "luxon";
 import { z } from "zod";
+import { ROLES } from "../../constants";
 import { statusToEmoji } from "./rsvpToDescription";
 
 export default function rsvpReminderMessage(

@@ -5,16 +5,17 @@ import type { SimpleServerFn } from "@/types/SimpleServerFn";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
-import { z, type ZodString } from "zod";
+import { type ZodString, z } from "zod";
 
-const deleteSelfScancodeFn: SimpleServerFn<ZodString, typeof removeScancode> = createServerFn({
-  method: "POST",
-})
-  .middleware([sessionMiddleware])
-  .validator(z.string())
-  .handler(async ({ data, context }) =>
-    removeScancode(context.user.id, data),
-  )
+const deleteSelfScancodeFn: SimpleServerFn<ZodString, typeof removeScancode> =
+  createServerFn({
+    method: "POST",
+  })
+    .middleware([sessionMiddleware])
+    .validator(z.string())
+    .handler(async ({ data, context }) =>
+      removeScancode(context.user.id, data),
+    );
 
 export default function useDeleteSelfScancode() {
   const queryClient = useQueryClient();

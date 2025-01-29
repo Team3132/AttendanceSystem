@@ -1,9 +1,4 @@
 import {
-  BACKEND_TOKEN,
-  type BackendClient,
-} from "../../backend/backend.module";
-import { ROLES } from "../../constants";
-import {
   type CanActivate,
   type ExecutionContext,
   Inject,
@@ -13,6 +8,11 @@ import {
 import { ConfigService } from "@nestjs/config";
 import { GuildMember } from "discord.js";
 import { NecordExecutionContext } from "necord";
+import {
+  BACKEND_TOKEN,
+  type BackendClient,
+} from "../../backend/backend.module";
+import { ROLES } from "../../constants";
 
 @Injectable()
 export class MentorGuard implements CanActivate {

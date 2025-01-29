@@ -1,4 +1,3 @@
-import { isTRPCClientError } from "../backend/backend.module";
 import {
   type ArgumentsHost,
   Catch,
@@ -8,6 +7,7 @@ import {
 import * as Sentry from "@sentry/node";
 import { EmbedBuilder, InteractionType, codeBlock } from "discord.js";
 import { NecordArgumentsHost } from "necord";
+import { isTRPCClientError } from "../backend/backend.module";
 
 @Catch()
 export class DiscordExceptionFilter implements ExceptionFilter {

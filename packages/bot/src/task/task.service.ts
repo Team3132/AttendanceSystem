@@ -1,12 +1,12 @@
-import { BACKEND_TOKEN, type BackendClient } from "../backend/backend.module";
-import rsvpReminderMessage from "../bot/utils/rsvpReminderMessage";
-import { ROLES } from "../constants";
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Cron } from "@nestjs/schedule";
 import { type BaseMessageOptions, ChannelType, Client } from "discord.js";
 import { EventSchema } from "frontend";
 import { z } from "zod";
+import { BACKEND_TOKEN, type BackendClient } from "../backend/backend.module";
+import rsvpReminderMessage from "../bot/utils/rsvpReminderMessage";
+import { ROLES } from "../constants";
 
 @Injectable()
 export class TaskService {

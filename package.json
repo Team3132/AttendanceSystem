@@ -1,5 +1,5 @@
 {
-	"name": "AttendanceSystem",
+	"name": "attendance-system",
 	"version": "3.9.28",
 	"main": "index.js",
 	"repository": "git@github.com:Team3132/AttendanceSystem.git",

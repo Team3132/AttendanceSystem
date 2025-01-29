@@ -6,7 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/start";
-import { z, type ZodString } from "zod";
+import { type ZodString, z } from "zod";
 
 const deleteEventFn: SimpleServerFn<typeof ZodString, typeof deleteEvent> =
   createServerFn({

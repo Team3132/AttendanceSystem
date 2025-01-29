@@ -1,5 +1,5 @@
-import { BackendModule } from "../backend/backend.module";
 import { Module } from "@nestjs/common";
+import { BackendModule } from "../backend/backend.module";
 import { BotService } from "./bot.service";
 import { CheckinButton } from "./buttons/CheckinButton";
 import { CheckoutButton } from "./buttons/CheckoutButton";

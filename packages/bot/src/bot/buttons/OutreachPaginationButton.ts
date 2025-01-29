@@ -1,7 +1,3 @@
-import {
-  BACKEND_TOKEN,
-  type BackendClient,
-} from "../../backend/backend.module";
 import { Inject, Injectable, UseGuards } from "@nestjs/common";
 import {
   ActionRowBuilder,
@@ -20,6 +16,10 @@ import {
   type SlashCommandContext,
 } from "necord";
 import { z } from "zod";
+import {
+  BACKEND_TOKEN,
+  type BackendClient,
+} from "../../backend/backend.module";
 import { GuildMemberGuard } from "../guards/GuildMemberGuard";
 
 const roundDuration = (duration: Duration) => {

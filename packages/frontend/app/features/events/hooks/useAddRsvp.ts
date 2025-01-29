@@ -9,8 +9,8 @@ import { createServerFn } from "@tanstack/start";
 import type {} from "zod";
 
 const createUserRsvpFn: SimpleServerFn<
-typeof CreateUserRsvpSchema,
-typeof createUserRsvp
+  typeof CreateUserRsvpSchema,
+  typeof createUserRsvp
 > = createServerFn({
   method: "POST",
 })

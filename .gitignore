@@ -35,4 +35,4 @@ dist-ssr
 
 trace
 
-dist-ts
+**/dist-ts

@@ -7,14 +7,14 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
 
 export const createEventFn: SimpleServerFn<
-typeof CreateEventSchema,
-typeof createEvent
+  typeof CreateEventSchema,
+  typeof createEvent
 > = createServerFn({
   method: "POST",
 })
   .middleware([mentorMiddleware])
   .validator(CreateEventSchema)
-  .handler(async ({ data }) => createEvent(data))
+  .handler(async ({ data }) => createEvent(data));
 
 export default function useCreateEvent() {
   const queryClient = useQueryClient();

@@ -1,11 +1,11 @@
-import {
-  BACKEND_TOKEN,
-  type BackendClient,
-} from "../../backend/backend.module";
 import { EmbedBuilder } from "@discordjs/builders";
 import { Inject, Injectable, UseGuards } from "@nestjs/common";
 import { PermissionFlagsBits } from "discord.js";
 import { Context, SlashCommand, type SlashCommandContext } from "necord";
+import {
+  BACKEND_TOKEN,
+  type BackendClient,
+} from "../../backend/backend.module";
 import { GuildMemberGuard } from "../guards/GuildMemberGuard";
 
 const guildId = process.env.VITE_GUILD_ID;

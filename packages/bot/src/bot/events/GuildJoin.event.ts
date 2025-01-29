@@ -1,4 +1,3 @@
-import { ROLES } from "../../constants";
 import {
   EmbedBuilder,
   ModalActionRowComponentBuilder,
@@ -37,6 +36,7 @@ import {
   StringSelect,
   type StringSelectContext,
 } from "necord";
+import { ROLES } from "../../constants";
 import { RoleSelectOptions } from "../dto/RoleSelectOptions";
 
 const guildId = process.env.VITE_GUILD_ID;

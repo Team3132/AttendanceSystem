@@ -1,8 +1,4 @@
 import {
-  BACKEND_TOKEN,
-  type BackendClient,
-} from "../../backend/backend.module";
-import {
   ActionRowBuilder,
   type ModalActionRowComponentBuilder,
   ModalBuilder,
@@ -11,6 +7,10 @@ import {
 import { Inject, Injectable, UseGuards } from "@nestjs/common";
 import { GuildMember, TextInputStyle } from "discord.js";
 import { Ctx, Modal, type ModalContext, ModalParam } from "necord";
+import {
+  BACKEND_TOKEN,
+  type BackendClient,
+} from "../../backend/backend.module";
 import { GuildMemberGuard } from "../guards/GuildMemberGuard";
 
 @Injectable()
