@@ -17,7 +17,7 @@
 	"files": ["dist", "dist-ts"],
 	"dependencies": {
 		"@nestjs/common": "11.0.6",
-		"@nestjs/config": "3.3.0",
+		"@nestjs/config": "4.0.0",
 		"@nestjs/core": "11.0.6",
 		"@nestjs/platform-express": "11.0.6",
 		"@nestjs/schedule": "5.0.1",
