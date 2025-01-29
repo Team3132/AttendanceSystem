@@ -1,11 +1,11 @@
+import { Inject, Injectable, UseGuards } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import {
   ActionRowBuilder,
   type ModalActionRowComponentBuilder,
   ModalBuilder,
   TextInputBuilder,
-} from "@discordjs/builders";
-import { Inject, Injectable, UseGuards } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
+} from "discord.js";
 import { TextInputStyle } from "discord.js";
 import { Ctx, Modal, type ModalContext, ModalParam } from "necord";
 import { z } from "zod";

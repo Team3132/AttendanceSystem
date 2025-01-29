@@ -1,5 +1,5 @@
-import { EmbedBuilder } from "@discordjs/builders";
 import { Inject, Injectable, UseGuards } from "@nestjs/common";
+import { EmbedBuilder } from "discord.js";
 import { PermissionFlagsBits } from "discord.js";
 import { Context, SlashCommand, type SlashCommandContext } from "necord";
 import {

@@ -1,3 +1,5 @@
+import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import {
   EmbedBuilder,
   ModalActionRowComponentBuilder,
@@ -5,9 +7,7 @@ import {
   TextInputBuilder,
   roleMention,
   userMention,
-} from "@discordjs/builders";
-import { Injectable } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
+} from "discord.js";
 import {
   ActionRowBuilder,
   ButtonBuilder,
