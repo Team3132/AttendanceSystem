@@ -21,7 +21,7 @@ jobs:
       - name: Install Dependancies
         run: pnpm install --frozen-lockfile
       - name: Build Backend
-        run: pnpm run --filter frontend buildtypes
+        run: pnpm run buildtypes
       - name: Lint & Format Packages
         run: pnpm check --reporter=github
   typecheck:
@@ -40,13 +40,11 @@ jobs:
           cache: "pnpm"
       - name: Install Dependancies
         run: pnpm install --frozen-lockfile
-
-      - name: Build Backend
-        run: pnpm run --filter frontend buildtypes
       - name: Add Problem Matcher
         run: echo "::add-matcher::.github/problem-matchers/tsc.json"
-      - name: Type Check Packages
-        run: pnpm typecheck
+      - name: Build Backend
+        run: pnpm run buildtypes
+
   knip:
     name: Knip
     runs-on: ubuntu-latest
@@ -65,7 +63,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build Backend
-        run: pnpm run --filter frontend buildtypes
+        run: pnpm run buildtypes
 
       - name: Knip
         run: pnpm run knip

@@ -16,7 +16,6 @@
 	"types": "./dist-ts/src/main.d.ts",
 	"files": ["dist", "dist-ts"],
 	"dependencies": {
-		"@discordjs/builders": "1.10.0",
 		"@nestjs/common": "11.0.3",
 		"@nestjs/config": "3.3.0",
 		"@nestjs/core": "11.0.3",
@@ -42,7 +41,6 @@
 		"node": "22.13.1"
 	},
 	"devDependencies": {
-		"@rollup/plugin-swc": "^0.4.0",
 		"@swc/cli": "0.6.0",
 		"@swc/core": "1.10.9",
 		"@types/express": "5.0.0",
