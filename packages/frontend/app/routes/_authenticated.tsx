@@ -6,7 +6,7 @@ import { BottomNavigation, Box } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useChildMatches } from "@tanstack/react-router";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
-import { Suspense, useMemo } from "react";
+import { useMemo } from "react";
 import {
   FaHouse,
   FaHouseLock,
@@ -42,9 +42,7 @@ function Component() {
         height: "100%",
       }}
     >
-      <Suspense fallback={<div>Loading...</div>}>
-        <Outlet />
-      </Suspense>
+      <Outlet />
       <BottomBar />
     </Box>
   );
