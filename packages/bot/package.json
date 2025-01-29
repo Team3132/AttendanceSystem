@@ -16,10 +16,10 @@
 	"types": "./dist-ts/src/main.d.ts",
 	"files": ["dist", "dist-ts"],
 	"dependencies": {
-		"@nestjs/common": "11.0.3",
+		"@nestjs/common": "11.0.6",
 		"@nestjs/config": "3.3.0",
-		"@nestjs/core": "11.0.3",
-		"@nestjs/platform-express": "11.0.3",
+		"@nestjs/core": "11.0.6",
+		"@nestjs/platform-express": "11.0.6",
 		"@nestjs/schedule": "4.1.2",
 		"@sentry/node": "8.50.0",
 		"@trpc/client": "11.0.0-rc.730",
