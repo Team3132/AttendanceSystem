@@ -1,6 +1,7 @@
 import db from "@/server/drizzle/db";
 import { eventParsingRuleTable, eventTable } from "@/server/drizzle/schema";
 import mainLogger from "@/server/logger";
+import type { EventParsingRuleMetadataSchema } from "@/server/services/adminService";
 import { generateMessage } from "@/server/services/botService";
 import { getDiscordBotAPI } from "@/server/services/discordService";
 import { ChannelType } from "@discordjs/core";
@@ -8,18 +9,20 @@ import { json } from "@tanstack/start";
 import { createAPIFileRoute } from "@tanstack/start/api";
 import { and, between, eq, not } from "drizzle-orm";
 import { DateTime } from "luxon";
+import type { z } from "zod";
 
-export const APIRoute = createAPIFileRoute(
-  "/api/scheduler/reminder/$jobId/trigger",
-)({
-  GET: async ({ params }) => {
+export const APIRoute = createAPIFileRoute("/api/scheduler/reminder/trigger")({
+  GET: async ({ request }) => {
     try {
-      const job = await db.query.eventParsingRuleTable.findFirst({
-        where: eq(eventParsingRuleTable.id, params.jobId),
+      const { ruleId }: z.infer<typeof EventParsingRuleMetadataSchema> =
+        await request.json();
+
+      const rule = await db.query.eventParsingRuleTable.findFirst({
+        where: eq(eventParsingRuleTable.id, ruleId),
       });
 
-      if (!job) {
-        throw new Error("Job not found");
+      if (!rule) {
+        throw new Error("Rule not found");
       }
 
       const startNextDay = DateTime.now().plus({ day: 1 }).startOf("day");
@@ -32,7 +35,7 @@ export const APIRoute = createAPIFileRoute(
         .from(eventTable)
         .where(
           and(
-            eq(eventTable.ruleId, params.jobId),
+            eq(eventTable.ruleId, ruleId),
             between(
               eventTable.startDate,
               startNextDay.toISO(),
@@ -51,7 +54,7 @@ export const APIRoute = createAPIFileRoute(
 
       const botAPI = getDiscordBotAPI();
 
-      const channel = await botAPI.channels.get(job.channelId);
+      const channel = await botAPI.channels.get(rule.channelId);
 
       if (channel.type !== ChannelType.GuildText) {
         throw new Error("Channel is not a text channel");

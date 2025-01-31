@@ -248,36 +248,16 @@ export const apiKeyTableRelations = relations(apiKeyTable, ({ one }) => ({
 /** Parsing rules for event names */
 export const eventParsingRuleTable = pgTable("EventParsingRule", {
   /** The Id of the rule */
-  id: text("id")
-    .primaryKey()
-    .notNull()
-    .$default(() => ulid()),
-  /** The date the rule was created */
-  createdAt: timestamp("createdAt", {
-    precision: 3,
-    mode: "date",
-    withTimezone: true,
-  })
-    .notNull()
-    .defaultNow(),
-  /** The last time the rule was updated */
-  updatedAt: timestamp("updatedAt", {
-    precision: 3,
-    mode: "date",
-    withTimezone: true,
-  })
-    .notNull()
-    .defaultNow(),
-  /** The name of the rule */
-  name: text("name").unique().notNull(),
+  id: text("id").primaryKey().notNull(),
+  /** Name */
+  /** Kronos Id */
+  kronosId: text("kronosId").notNull(),
   /** The title to match */
   regex: text("regex").notNull().default(""),
-  /** The roles to ping */
-  rolesIds: text("roles").array().notNull().default([]),
-  /** The channel Id to make the announcement in */
+  /** Channel Id */
   channelId: text("channelId").notNull(),
-  /** Cron schedule */
-  schedule: text("schedule").notNull().default(""),
+  /** Role Ids */
+  roleIds: text("rolesIds").array().notNull(),
 });
 
 export const eventParsingRuleTableRelations = relations(

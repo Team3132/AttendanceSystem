@@ -2,7 +2,6 @@ import { z } from "zod";
 
 export const UpdateEventParsingRuleSchema = z.object({
   channelId: z.string().optional(),
-  name: z.string().optional(),
   regex: z
     .string()
     .refine((v) => {
@@ -14,5 +13,5 @@ export const UpdateEventParsingRuleSchema = z.object({
       }
     })
     .optional(),
-  rolesIds: z.array(z.string()).optional(),
+  roleIds: z.array(z.string()).optional(),
 });

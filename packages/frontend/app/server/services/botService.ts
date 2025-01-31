@@ -87,7 +87,7 @@ export async function generateMessage(data: MessageParams) {
     if (!eventRule) {
       throw new Error("Event Rule not found");
     }
-    roleIds.push(...eventRule.rolesIds);
+    roleIds.push(...eventRule.roleIds);
   }
 
   const mentorRSVPs = eventRSVPs.filter((rsvpUser) =>

@@ -11,5 +11,6 @@ export const NewEventParsingRuleSchema = z.object({
       return false;
     }
   }),
-  rolesIds: z.array(z.string()),
+  roleIds: z.array(z.string()),
+  cronExpr: z.string(),
 });

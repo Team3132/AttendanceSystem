@@ -1,0 +1,1 @@
+ALTER TABLE "EventParsingRule" ADD COLUMN "kronosId" text NOT NULL;
