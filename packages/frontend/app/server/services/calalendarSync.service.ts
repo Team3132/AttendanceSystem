@@ -5,7 +5,7 @@ import { type calendar_v3, google } from "googleapis";
 import { gte, inArray, lte } from "drizzle-orm";
 import { DateTime } from "luxon";
 import db from "../drizzle/db";
-import { eventTable } from "../drizzle/schema";
+import { eventParsingRuleTable, eventTable } from "../drizzle/schema";
 import env from "../env";
 import mainLogger from "../logger";
 import randomStr from "../utils/randomStr";
@@ -81,29 +81,28 @@ export const syncEvents = async () => {
 
   let updatedEvents = 0;
 
+  const filters = await db
+    .select({
+      id: eventParsingRuleTable.id,
+      regex: eventParsingRuleTable.regex,
+    })
+    .from(eventParsingRuleTable);
+
   for (const gcalEvent of eventItems) {
     try {
-      const secret = randomStr(8);
+      const secret = randomStr(8); // Generate a random secret for the event (used for on-device sign-in)
 
-      const isMentorEvent = gcalEvent.summary
-        ? gcalEvent.summary.toLowerCase().includes("mentor")
-        : false;
+      const matchedParsingRuleId =
+        filters.find((filter) => {
+          const matchedTitle = new RegExp(filter.regex).test(
+            gcalEvent.summary ?? "",
+          );
+          const matchedDescription = new RegExp(filter.regex).test(
+            gcalEvent.description ?? "",
+          );
 
-      const isOutreachEvent = gcalEvent.summary
-        ? gcalEvent.summary.toLowerCase().includes("outreach")
-        : false;
-
-      const isSocialEvent = gcalEvent.summary
-        ? gcalEvent.summary.toLowerCase().includes("social")
-        : false;
-
-      const eventType = isOutreachEvent
-        ? "Outreach"
-        : isMentorEvent
-          ? "Mentor"
-          : isSocialEvent
-            ? "Social"
-            : "Regular";
+          return matchedTitle || matchedDescription;
+        })?.id ?? null; // Find the first matching rule
 
       const startDate = gcalEvent.start?.dateTime
         ? gcalEvent.start.dateTime
@@ -111,7 +110,7 @@ export const syncEvents = async () => {
           ? DateTime.fromMillis(Date.parse(gcalEvent.end.date))
               .startOf("day")
               .toISO()
-          : null;
+          : null; // If the event is an all-day event, set the start date to the start of the day
 
       const endDate = gcalEvent.end?.dateTime
         ? gcalEvent.end.dateTime
@@ -119,9 +118,9 @@ export const syncEvents = async () => {
           ? DateTime.fromMillis(Date.parse(gcalEvent.end.date))
               .endOf("day")
               .toISO()
-          : null;
+          : null; // If the event is an all-day event, set the end date to the end of the day
 
-      const eventId = gcalEvent.id ?? null;
+      const eventId = gcalEvent.id ?? null; // If the event does not have an ID, skip it
 
       const title = gcalEvent.summary ?? null;
 
@@ -138,7 +137,8 @@ export const syncEvents = async () => {
         startDate,
         endDate,
         description: gcalEvent.description ?? "",
-        type: eventType,
+        type: "Regular",
+        ruleId: matchedParsingRuleId,
         isSyncedEvent: true,
         secret,
       } satisfies EventInsert;
@@ -149,8 +149,9 @@ export const syncEvents = async () => {
         startDate,
         endDate,
         description: gcalEvent.description ?? "",
-        type: eventType,
+        type: "Regular",
         isSyncedEvent: true,
+        ruleId: matchedParsingRuleId,
       } satisfies Partial<EventInsert>;
 
       await db
