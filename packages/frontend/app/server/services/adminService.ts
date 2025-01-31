@@ -88,7 +88,7 @@ export async function createParsingRule(
         // Create a new schedule in Kronos
         title: name,
         description: `Parsing rule for ${name}`,
-        url: `${env.VITE_FRONTEND_URL}/api/scheduler/parsingRule/trigger`,
+        url: `${env.VITE_FRONTEND_URL}/api/scheduler/reminder/trigger`,
         isRecurring: true,
         cronExpr,
         metadata: JSON.stringify(scheduleMetadata),
@@ -258,7 +258,7 @@ export async function duplicateParsingRule(id: string) {
     const { id: kronosId } = await kronosClient.createSchedule({
       title: `${prevRule.title} (Copy)`,
       description: `Parsing rule for ${prevRule.title} (Copy)`,
-      url: `${env.VITE_FRONTEND_URL}/api/scheduler/parsingRule/trigger`,
+      url: `${env.VITE_FRONTEND_URL}/api/scheduler/reminder/trigger`,
       isRecurring: true,
       cronExpr: prevRule.cronExpr,
       metadata: JSON.stringify(scheduleMetadata),
