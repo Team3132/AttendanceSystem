@@ -8,11 +8,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import type { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import {
-  Outlet,
-  ScrollRestoration,
-  createRootRouteWithContext,
-} from "@tanstack/react-router";
+import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { Meta, Scripts } from "@tanstack/start";
 import type * as React from "react";
@@ -108,7 +104,6 @@ function RootDocument({ children }: Readonly<{ children: React.ReactNode }>) {
       <body>
         <InitColorSchemeScript attribute="class" />
         {children}
-        <ScrollRestoration />
         {import.meta.env.DEV ? (
           <>
             <TanStackRouterDevtools position="bottom-right" />
