@@ -75,7 +75,11 @@ export async function generateMessage(data: MessageParams) {
   let roleIds: string[] = [];
 
   if (ruleId === null) {
-    roleIds = [env.VITE_GUILD_ID];
+    roleIds.push(env.VITE_GUILD_ID);
+
+    if (eventData.type === "Mentor") {
+      roleIds.push(env.VITE_MENTOR_ROLE_ID);
+    }
   } else {
     const eventRule = await db.query.eventParsingRuleTable.findFirst({
       where: eq(eventParsingRuleTable, ruleId),
