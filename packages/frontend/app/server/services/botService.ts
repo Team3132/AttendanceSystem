@@ -72,7 +72,7 @@ export async function generateMessage(data: MessageParams) {
 
   const { ruleId } = eventData;
 
-  let roleIds: string[] = [];
+  const roleIds: string[] = [];
 
   if (ruleId === null) {
     roleIds.push(env.VITE_GUILD_ID);
@@ -87,7 +87,7 @@ export async function generateMessage(data: MessageParams) {
     if (!eventRule) {
       throw new Error("Event Rule not found");
     }
-    roleIds = eventRule.rolesIds;
+    roleIds.push(...eventRule.rolesIds);
   }
 
   const mentorRSVPs = eventRSVPs.filter((rsvpUser) =>
