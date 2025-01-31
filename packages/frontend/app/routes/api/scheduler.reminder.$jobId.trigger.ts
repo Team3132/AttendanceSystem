@@ -9,7 +9,9 @@ import { createAPIFileRoute } from "@tanstack/start/api";
 import { and, between, eq, not } from "drizzle-orm";
 import { DateTime } from "luxon";
 
-export const APIRoute = createAPIFileRoute("/api/scheduler/$jobId/trigger")({
+export const APIRoute = createAPIFileRoute(
+  "/api/scheduler/reminder/$jobId/trigger",
+)({
   GET: async ({ params }) => {
     try {
       const job = await db.query.eventParsingRuleTable.findFirst({
@@ -30,7 +32,7 @@ export const APIRoute = createAPIFileRoute("/api/scheduler/$jobId/trigger")({
         .from(eventTable)
         .where(
           and(
-            eq(eventTable.ruleId, job.id),
+            eq(eventTable.ruleId, params.jobId),
             between(
               eventTable.startDate,
               startNextDay.toISO(),
