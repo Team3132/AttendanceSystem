@@ -1,4 +1,4 @@
-import { API } from "@discordjs/core";
+import { API, ChannelType } from "@discordjs/core";
 import { REST } from "@discordjs/rest";
 import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
@@ -124,6 +124,10 @@ export const getServerChannels = async () => {
 
   const guild = await api.guilds.getChannels(guildId);
 
+  const textChannels = guild.filter(
+    (channel) => channel.type === ChannelType.GuildText,
+  );
+
   // return in name, id format
-  return guild.map(({ name, id }) => ({ name, id }));
+  return textChannels.map(({ name, id }) => ({ name, id }));
 };

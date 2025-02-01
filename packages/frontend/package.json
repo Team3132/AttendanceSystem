@@ -44,6 +44,7 @@
 		"@tanstack/zod-adapter": "1.98.3",
 		"@trpc/server": "11.0.0-rc.730",
 		"arctic": "1.9.2",
+		"cron-validate": "^1.4.5",
 		"drizzle-orm": "0.39.1",
 		"drizzle-zod": "0.7.0",
 		"eventemitter3": "5.0.1",

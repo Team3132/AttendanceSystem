@@ -1,5 +1,16 @@
-export type SimpleServerFn<
-  ZodInput extends ZodType,
-  // biome-ignore lint/suspicious/noExplicitAny: any is needed here to allow for any function signature
-  HandlerFn extends (...args: any[]) => any,
-> = ({ data }: { data: z.infer<ZodInput> }) => ReturnType<HandlerFn>;
+/**
+ * ({
+   data,
+ }: { data: z.infer<typeof NewEventParsingRuleSchema> }) => ReturnType<
+   typeof createParsingRule
+ >  
+
+ Convert to generic type that given two generics, T and U returns the function signature above
+ */
+type UnpackAlt<T> = {
+  [K in keyof T]: UnpackAlt<T[K]>;
+};
+
+export type SimpleServerFn<T, U> = ({
+  data,
+}: { data: UnpackAlt<z.infer<T>> }) => ReturnType<U>;

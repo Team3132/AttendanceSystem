@@ -75,6 +75,10 @@ export const adminQueryKeys = {
   admin: ["admin"] as const,
   apiKeys: ["admin", "apiKeys"] as const,
   parsingRules: ["admin", "parsingRules"] as const,
+  parsingRuleList: () => [...adminQueryKeys.parsingRules, "list"] as const,
+  parsingRule: (id: string) => [...adminQueryKeys.parsingRules, id] as const,
+  parsingRuleDetails: (id: string) =>
+    [...adminQueryKeys.parsingRule(id), "detail"] as const,
 };
 
 export const discordQueryKeys = {

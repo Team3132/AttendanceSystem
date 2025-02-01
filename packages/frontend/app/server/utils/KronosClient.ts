@@ -5,7 +5,7 @@ export interface Schedule {
   description: string;
   cronExpr?: string;
   url: string;
-  metadata: string;
+  metadata: Record<string, string>;
   isRecurring: boolean;
   createdAt: string;
   runAt: string;
@@ -36,13 +36,14 @@ export default class KronosClient {
    * @returns The created schedule
    **/
   async createSchedule(params: NewSchedule): Promise<Schedule> {
-    const response = await fetch(`${this.kronosURL}/schedules`, {
+    const response = await fetch(`${this.kronosURL}/api/v1/schedules`, {
       method: "POST",
       body: JSON.stringify(params),
     });
 
     if (!response.ok) {
-      throw new Error("Error creating Kronos job");
+      const textResponse = await response.text();
+      throw new Error(`Error creating Kronos job: ${textResponse}`);
     }
 
     return response.json();
@@ -54,7 +55,7 @@ export default class KronosClient {
    * @returns The schedule
    */
   async deleteSchedule(id: string): Promise<Schedule> {
-    const response = await fetch(`${this.kronosURL}/schedules/${id}`, {
+    const response = await fetch(`${this.kronosURL}/api/v1/schedules/${id}`, {
       method: "DELETE",
     });
 
@@ -71,10 +72,12 @@ export default class KronosClient {
    * @returns The schedule
    */
   async getSchedule(id: string): Promise<Schedule> {
-    const response = await fetch(`${this.kronosURL}/schedules/${id}`);
+    const response = await fetch(`${this.kronosURL}/api/v1/schedules/${id}`);
 
     if (!response.ok) {
-      throw new Error("Error getting Kronos job");
+      const responseText = await response.text();
+
+      throw new Error(`Error getting Kronos job ${responseText}`);
     }
 
     return response.json() as Promise<Schedule>;
@@ -86,9 +89,12 @@ export default class KronosClient {
    * @returns The schedule
    */
   async pauseSchedule(id: string): Promise<Schedule> {
-    const response = await fetch(`${this.kronosURL}/schedules/${id}/pause`, {
-      method: "POST",
-    });
+    const response = await fetch(
+      `${this.kronosURL}/api/v1/schedules/${id}/pause`,
+      {
+        method: "POST",
+      },
+    );
 
     if (!response.ok) {
       throw new Error("Error pausing Kronos job");
@@ -98,9 +104,12 @@ export default class KronosClient {
   }
 
   async resumeSchedule(id: string): Promise<Schedule> {
-    const response = await fetch(`${this.kronosURL}/schedules/${id}/resume`, {
-      method: "POST",
-    });
+    const response = await fetch(
+      `${this.kronosURL}/api/v1/schedules/${id}/resume`,
+      {
+        method: "POST",
+      },
+    );
 
     if (!response.ok) {
       throw new Error("Error resuming Kronos job");
@@ -110,9 +119,12 @@ export default class KronosClient {
   }
 
   async triggerSchedule(id: string): Promise<Schedule> {
-    const response = await fetch(`${this.kronosURL}/schedules/${id}/trigger`, {
-      method: "POST",
-    });
+    const response = await fetch(
+      `${this.kronosURL}/api/v1/schedules/${id}/trigger`,
+      {
+        method: "POST",
+      },
+    );
 
     if (!response.ok) {
       throw new Error("Error triggering Kronos job");

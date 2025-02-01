@@ -76,54 +76,41 @@ export async function createParsingRule(
 
   const kronosClient = new KronosClient(kronosURL);
 
-  const dbTransaction = await db.transaction(async (tx) => {
-    try {
-      const ruleId = ulid();
+  const ruleId = ulid();
 
-      const scheduleMetadata: z.infer<typeof EventParsingRuleMetadataSchema> = {
-        ruleId,
-      };
+  const scheduleMetadata: z.infer<typeof EventParsingRuleMetadataSchema> = {
+    ruleId,
+  };
 
-      const { id: kronosId } = await kronosClient.createSchedule({
-        // Create a new schedule in Kronos
-        title: name,
-        description: `Parsing rule for ${name}`,
-        url: `${env.VITE_FRONTEND_URL}/api/scheduler/reminder/trigger`,
-        isRecurring: true,
-        cronExpr,
-        metadata: JSON.stringify(scheduleMetadata),
-      });
-
-      // Create a new parsing rule
-      const [parsingRule] = await tx
-        .insert(eventParsingRuleTable)
-        .values({
-          id: ruleId,
-          kronosId,
-          regex,
-          channelId,
-          roleIds,
-        })
-        .returning();
-
-      if (!parsingRule) {
-        throw new Error("Error creating parsing rule");
-      }
-
-      return parsingRule;
-    } catch (_error) {
-      tx.rollback();
-      throw new Error("Error creating parsing rule");
-    }
+  const { id: kronosId } = await kronosClient.createSchedule({
+    // Create a new schedule in Kronos
+    title: name,
+    description: `Parsing rule for ${name}`,
+    url: `${env.VITE_FRONTEND_URL}/api/scheduler/reminder/trigger`,
+    isRecurring: true,
+    cronExpr,
+    metadata: scheduleMetadata,
   });
 
-  if (!dbTransaction) {
+  // Create a new parsing rule
+  const [parsingRule] = await db
+    .insert(eventParsingRuleTable)
+    .values({
+      id: ruleId,
+      kronosId,
+      regex,
+      channelId,
+      roleIds,
+    })
+    .returning();
+
+  if (!parsingRule) {
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
     });
   }
 
-  return dbTransaction;
+  return parsingRule;
 }
 
 /**
@@ -133,7 +120,29 @@ export async function createParsingRule(
 export async function getParsingRules() {
   const parsingRules = await db.query.eventParsingRuleTable.findMany();
 
-  return parsingRules;
+  const promisedKronos = parsingRules.map(async (rule) => {
+    if (!env.VITE_KRONOS_URL) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Kronos URL not set",
+      });
+    }
+
+    const kronosClient = new KronosClient(env.VITE_KRONOS_URL);
+
+    try {
+      const kronosRule = await kronosClient.getSchedule(rule.kronosId);
+
+      return {
+        ...rule,
+        kronosRule,
+      };
+    } catch {
+      deleteParsingRule(rule.id);
+    }
+  });
+
+  return Promise.all(promisedKronos);
 }
 
 /**
@@ -151,39 +160,32 @@ export async function deleteParsingRule(id: string) {
 
   const kronosClient = new KronosClient(env.VITE_KRONOS_URL);
 
-  const deletedRule = await db.transaction(async (tx) => {
-    const [rule] = await tx
-      .select()
-      .from(eventParsingRuleTable)
-      .where(eq(eventParsingRuleTable.id, id));
+  const [rule] = await db
+    .select()
+    .from(eventParsingRuleTable)
+    .where(eq(eventParsingRuleTable.id, id));
 
-    if (!rule) {
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Parsing rule not found",
-      });
-    }
+  if (!rule) {
+    throw new TRPCError({
+      code: "NOT_FOUND",
+      message: "Parsing rule not found",
+    });
+  }
+  try {
+    await kronosClient.deleteSchedule(rule.kronosId);
+  } catch {
+    console.log("Error");
+  }
 
-    await tx
+  try {
+    await db
       .delete(eventParsingRuleTable)
       .where(eq(eventParsingRuleTable.id, id));
+  } catch {
+    console.log("error");
+  }
 
-    try {
-      await kronosClient.deleteSchedule(rule.kronosId);
-    } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Error deleting parsing rule";
-      tx.rollback();
-      throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
-        message,
-      });
-    }
-
-    return rule;
-  });
-
-  return deletedRule;
+  return rule;
 }
 
 /**
@@ -241,49 +243,45 @@ export async function duplicateParsingRule(id: string) {
 
   const kronosClient = new KronosClient(env.VITE_KRONOS_URL);
 
-  const newRule = await db.transaction(async (tx) => {
-    const scheduleMetadata: z.infer<typeof EventParsingRuleMetadataSchema> = {
-      ruleId: newRuleId,
-    };
+  const scheduleMetadata: z.infer<typeof EventParsingRuleMetadataSchema> = {
+    ruleId: newRuleId,
+  };
 
-    const prevRule = await kronosClient.getSchedule(rule.kronosId);
+  const prevRule = await kronosClient.getSchedule(rule.kronosId);
 
-    if (!prevRule) {
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Parsing rule not found in Kronos",
-      });
-    }
-
-    const { id: kronosId } = await kronosClient.createSchedule({
-      title: `${prevRule.title} (Copy)`,
-      description: `Parsing rule for ${prevRule.title} (Copy)`,
-      url: `${env.VITE_FRONTEND_URL}/api/scheduler/reminder/trigger`,
-      isRecurring: true,
-      cronExpr: prevRule.cronExpr,
-      metadata: JSON.stringify(scheduleMetadata),
+  if (!prevRule) {
+    throw new TRPCError({
+      code: "NOT_FOUND",
+      message: "Parsing rule not found in Kronos",
     });
+  }
 
-    const [newlyCreatedRule] = await tx
-      .insert(eventParsingRuleTable)
-      .values({
-        id: newRuleId,
-        regex: rule.regex,
-        channelId: rule.channelId,
-        roleIds: rule.roleIds,
-        kronosId,
-      })
-      .returning();
-
-    if (!newRule) {
-      throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error duplicating parsing rule",
-      });
-    }
-
-    return newlyCreatedRule;
+  const { id: kronosId } = await kronosClient.createSchedule({
+    title: `${prevRule.title} (Copy)`,
+    description: `Parsing rule for ${prevRule.title} (Copy)`,
+    url: `${env.VITE_FRONTEND_URL}/api/scheduler/reminder/trigger`,
+    isRecurring: true,
+    cronExpr: prevRule.cronExpr,
+    metadata: scheduleMetadata,
   });
 
-  return newRule;
+  const [newlyCreatedRule] = await db
+    .insert(eventParsingRuleTable)
+    .values({
+      id: newRuleId,
+      regex: rule.regex,
+      channelId: rule.channelId,
+      roleIds: rule.roleIds,
+      kronosId,
+    })
+    .returning();
+
+  if (!newlyCreatedRule) {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error duplicating parsing rule",
+    });
+  }
+
+  return newlyCreatedRule;
 }

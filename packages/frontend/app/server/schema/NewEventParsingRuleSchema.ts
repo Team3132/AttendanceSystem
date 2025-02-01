@@ -1,3 +1,4 @@
+import cron from "cron-validate";
 import { z } from "zod";
 
 export const NewEventParsingRuleSchema = z.object({
@@ -12,5 +13,7 @@ export const NewEventParsingRuleSchema = z.object({
     }
   }),
   roleIds: z.array(z.string()),
-  cronExpr: z.string(),
+  cronExpr: z.string().refine((v) => cron(v).isValid(), {
+    message: "Invalid cron expression",
+  }),
 });
