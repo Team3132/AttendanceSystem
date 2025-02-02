@@ -15,7 +15,7 @@ const getEventParsingRulesFn = createServerFn({ method: "GET" })
 export const adminQueries = {
   eventParsingRules: queryOptions({
     queryFn: () => getEventParsingRulesFn(),
-    queryKey: adminQueryKeys.parsingRules,
+    queryKey: adminQueryKeys.parsingRuleList(),
   }),
   apiKeys: queryOptions({
     queryFn: () => getAPIKeysFn(),

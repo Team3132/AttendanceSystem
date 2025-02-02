@@ -1,24 +1,38 @@
-export interface Schedule {
-  id: string;
-  title: string;
-  status: ScheduleStatus;
-  description: string;
-  cronExpr?: string;
-  url: string;
-  metadata: Record<string, string>;
-  isRecurring: boolean;
-  createdAt: string;
-  runAt: string;
-  startAt: string;
-  endAt: string;
-}
+import { z } from "zod";
 
-export type ScheduleStatus = "not_started" | "active" | "paused" | "expired";
+export const ScheduleStatusSchema = z.enum([
+  "not_started",
+  "active",
+  "paused",
+  "expired",
+]);
 
-export type NewSchedule = Omit<
-  Partial<Schedule>,
-  "id" | "status" | "createdAt"
->;
+export type ScheduleStatus = z.infer<typeof ScheduleStatusSchema>;
+
+export const ScheduleSchema = z.object({
+  id: z.number(),
+  title: z.string(),
+  status: ScheduleStatusSchema,
+  description: z.string(),
+  cronExpr: z.string().optional(),
+  url: z.string(),
+  metadata: z.record(z.string()),
+  isRecurring: z.boolean(),
+  createdAt: z.string(),
+  runAt: z.string(),
+  startAt: z.string(),
+  endAt: z.string(),
+});
+
+export type Schedule = z.infer<typeof ScheduleSchema>;
+
+export const NewScheduleSchema = ScheduleSchema.partial().omit({
+  id: true,
+  status: true,
+  createdAt: true,
+});
+
+export type NewSchedule = z.infer<typeof NewScheduleSchema>;
 
 /**
  * Kronos API client
@@ -54,7 +68,7 @@ export default class KronosClient {
    * @param id The Id of the schedule
    * @returns The schedule
    */
-  async deleteSchedule(id: string): Promise<Schedule> {
+  async deleteSchedule(id: number): Promise<Schedule> {
     const response = await fetch(`${this.kronosURL}/api/v1/schedules/${id}`, {
       method: "DELETE",
     });
@@ -71,7 +85,7 @@ export default class KronosClient {
    * @param id The Id of the schedule
    * @returns The schedule
    */
-  async getSchedule(id: string): Promise<Schedule> {
+  async getSchedule(id: number): Promise<Schedule> {
     const response = await fetch(`${this.kronosURL}/api/v1/schedules/${id}`);
 
     if (!response.ok) {
@@ -88,7 +102,7 @@ export default class KronosClient {
    * @param id The Id of the schedule
    * @returns The schedule
    */
-  async pauseSchedule(id: string): Promise<Schedule> {
+  async pauseSchedule(id: number): Promise<Schedule> {
     const response = await fetch(
       `${this.kronosURL}/api/v1/schedules/${id}/pause`,
       {
@@ -103,7 +117,7 @@ export default class KronosClient {
     return response.json();
   }
 
-  async resumeSchedule(id: string): Promise<Schedule> {
+  async resumeSchedule(id: number): Promise<Schedule> {
     const response = await fetch(
       `${this.kronosURL}/api/v1/schedules/${id}/resume`,
       {
@@ -118,7 +132,7 @@ export default class KronosClient {
     return response.json();
   }
 
-  async triggerSchedule(id: string): Promise<Schedule> {
+  async triggerSchedule(id: number): Promise<Schedule> {
     const response = await fetch(
       `${this.kronosURL}/api/v1/schedules/${id}/trigger`,
       {

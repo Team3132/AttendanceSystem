@@ -1,22 +1,30 @@
 import db from "@/server/drizzle/db";
 import { eventParsingRuleTable, eventTable } from "@/server/drizzle/schema";
 import mainLogger from "@/server/logger";
-import type { EventParsingRuleMetadataSchema } from "@/server/services/adminService";
 import { generateMessage } from "@/server/services/botService";
 import { getDiscordBotAPI } from "@/server/services/discordService";
+import { ScheduleSchema } from "@/server/utils/KronosClient";
 import { ChannelType } from "@discordjs/core";
 import { json } from "@tanstack/start";
 import { createAPIFileRoute } from "@tanstack/start/api";
 import { and, between, eq, not } from "drizzle-orm";
 import { DateTime } from "luxon";
-import type { z } from "zod";
 
 export const APIRoute = createAPIFileRoute("/api/scheduler/reminder/trigger")({
   GET: async ({ request }) => {
-    try {
-      const { ruleId }: z.infer<typeof EventParsingRuleMetadataSchema> =
-        await request.json();
+    console.log("GET /api/scheduler/reminder/trigger");
+    const body = await request.json();
+    const validatedBody = await ScheduleSchema.safeParseAsync(body);
 
+    console.log({ validatedBody });
+
+    if (!validatedBody.success) {
+      return json({ success: false, error: "Invalid schedule" });
+    }
+
+    const { ruleId } = validatedBody.data.metadata;
+
+    try {
       const rule = await db.query.eventParsingRuleTable.findFirst({
         where: eq(eventParsingRuleTable.id, ruleId),
       });

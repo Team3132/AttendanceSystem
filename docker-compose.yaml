@@ -12,9 +12,7 @@ services:
       - 5432:5432
   kronos:
     image: ghcr.io/ostafen/kronos
-    ports:
-      - '9175:9175'
-      - '9091:9091'
+    network_mode: host
     environment:
       - PORT=9175 # configuration properties can be overridden through environment variables
       - STORE_PATH=/data/kronos.bolt

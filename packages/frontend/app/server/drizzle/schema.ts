@@ -251,7 +251,7 @@ export const eventParsingRuleTable = pgTable("EventParsingRule", {
   id: text("id").primaryKey().notNull(),
   /** Name */
   /** Kronos Id */
-  kronosId: text("kronosId").notNull(),
+  kronosId: integer("kronosId").notNull(),
   /** The title to match */
   regex: text("regex").notNull().default(""),
   /** Channel Id */
