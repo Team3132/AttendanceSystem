@@ -1,5 +1,11 @@
 # frontend
 
+## 5.2.10
+
+### Patch Changes
+
+- [`3026b8b`](https://github.com/Team3132/AttendanceSystem/commit/3026b8b44e752b1c02ce5bc3417a9a81c4ea7c8f) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add button to sync calendar
+
 ## 5.2.9
 
 ### Patch Changes
