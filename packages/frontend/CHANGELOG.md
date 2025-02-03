@@ -1,5 +1,11 @@
 # frontend
 
+## 5.2.4
+
+### Patch Changes
+
+- [`67080d9`](https://github.com/Team3132/AttendanceSystem/commit/67080d96e237fec3ab59d9fe753c6a9d33a667b8) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix tsc build command
+
 ## 5.2.3
 
 ### Patch Changes
