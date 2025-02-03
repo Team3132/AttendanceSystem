@@ -6,7 +6,7 @@
 	"private": false,
 	"license": "UNLICENSED",
 	"scripts": {
-		"build": "tsc && tsup",
+		"build": "tsc -b && tsup",
 		"start": "node --enable-source-maps dist/main.js --inspect",
 		"dev": "tsup --watch",
 		"release": "pnpm build"
