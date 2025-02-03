@@ -23,7 +23,7 @@ async function migrate() {
 
 console.log("SSR Mode", import.meta.env.SSR);
 
-await migrate();
+migrate();
 
 const pgClient = postgres(connectionUrl, {
   transform: {
