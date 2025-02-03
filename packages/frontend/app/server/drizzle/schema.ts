@@ -256,7 +256,7 @@ export const eventParsingRuleTable = pgTable("EventParsingRule", {
   /** Role Ids */
   roleIds: text("rolesIds").array().notNull(),
   /** Priority */
-  priority: integer("priority").notNull().default(100),
+  priority: integer("priority").notNull().default(0),
 });
 
 export const eventParsingRuleTableRelations = relations(

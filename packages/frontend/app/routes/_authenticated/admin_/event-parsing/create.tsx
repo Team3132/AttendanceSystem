@@ -109,7 +109,7 @@ function RouteComponent() {
       roles: searchParams.roleIds
         ? roleOptions.filter((r) => searchParams.roleIds?.includes(r.value))
         : [],
-      priority: searchParams.priority ?? 100,
+      priority: searchParams.priority ?? 0,
     },
   });
 

@@ -3,7 +3,14 @@ import { LinkIconButton } from "@/components/LinkIconButton";
 import useDeleteRule from "@/features/admin/hooks/useDeleteRule";
 import useTriggerRule from "@/features/admin/hooks/useTriggerRule";
 import { adminQueries } from "@/queries/adminQueries";
-import { Container, IconButton, List, ListItem, Stack } from "@mui/material";
+import {
+  Container,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Stack,
+} from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { FaCopy, FaPen, FaPlay, FaTrash } from "react-icons/fa6";
@@ -79,7 +86,10 @@ function RouteComponent() {
                 </Stack>
               }
             >
-              {rule.kronosRule.title}
+              <ListItemText
+                primary={rule.kronosRule.title}
+                secondary={rule.priority}
+              />
             </ListItem>
           ))}
         </List>
