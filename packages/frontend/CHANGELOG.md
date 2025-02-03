@@ -1,5 +1,11 @@
 # frontend
 
+## 5.2.3
+
+### Patch Changes
+
+- [`1054136`](https://github.com/Team3132/AttendanceSystem/commit/1054136fb644a2e8a3dd3a42723a54c38e2bb38a) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix top level await
+
 ## 5.2.2
 
 ### Patch Changes
