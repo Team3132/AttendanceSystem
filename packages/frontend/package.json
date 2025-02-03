@@ -1,14 +1,20 @@
 {
 	"name": "frontend",
 	"private": false,
-	"version": "5.1.19",
+	"version": "5.2.0",
 	"type": "module",
 	"scripts": {
 		"dev": "PORT=1420 vinxi dev",
 		"build": "tsup && vinxi build",
 		"start": "PORT=1420 vinxi start"
 	},
-	"files": [".output", "dist", "dist-ts", "drizzle", "vite.config.ts"],
+	"files": [
+		".output",
+		"dist",
+		"dist-ts",
+		"drizzle",
+		"vite.config.ts"
+	],
 	"module": "dist/index.js",
 	"types": "dist-ts/app/server/index.d.ts",
 	"exports": {
