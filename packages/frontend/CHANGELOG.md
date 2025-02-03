@@ -1,5 +1,11 @@
 # frontend
 
+## 5.2.5
+
+### Patch Changes
+
+- [`edf7525`](https://github.com/Team3132/AttendanceSystem/commit/edf7525d5c220b058036c3459ab6ad0a97378bd9) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Using fix
+
 ## 5.2.4
 
 ### Patch Changes
