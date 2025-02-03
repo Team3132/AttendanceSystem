@@ -3,7 +3,7 @@ import { json } from "@tanstack/start";
 import { createAPIFileRoute } from "@tanstack/start/api";
 
 export const APIRoute = createAPIFileRoute("/api/scheduler/calendar/trigger")({
-  GET: async () => {
+  POST: async () => {
     try {
       const result = await syncEvents();
 

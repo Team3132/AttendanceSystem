@@ -26,7 +26,6 @@ export const APIRoute = createAPIFileRoute("/api/scheduler/reminder/trigger")({
       const rule = await db.query.eventParsingRuleTable.findFirst({
         where: eq(eventParsingRuleTable.id, ruleId),
       });
-      console.log("After rule", rule);
 
       if (!rule) {
         // attempt to delete the kronos schedule
@@ -61,7 +60,6 @@ export const APIRoute = createAPIFileRoute("/api/scheduler/reminder/trigger")({
             not(eventTable.isPosted),
           ),
         );
-      console.log("After matchingEvents", matchingEvents);
 
       const matchingEventIds = matchingEvents.map((event) => event.id);
 
@@ -72,7 +70,6 @@ export const APIRoute = createAPIFileRoute("/api/scheduler/reminder/trigger")({
             [eventId, await generateMessage({ eventId })] as const,
         ),
       );
-      console.log("After notificationMessages", notificationMessages);
 
       const botAPI = getDiscordBotAPI();
 
