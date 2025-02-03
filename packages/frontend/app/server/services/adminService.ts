@@ -65,7 +65,7 @@ const parsingRuleWebhookUrl = `${env.VITE_FRONTEND_URL}/api/scheduler/reminder/t
 export async function createParsingRule(
   data: z.infer<typeof NewEventParsingRuleSchema>,
 ) {
-  const { name, regex, cronExpr, channelId, roleIds } = data;
+  const { name, regex, cronExpr, channelId, roleIds, priority } = data;
 
   const kronosURL = env.VITE_KRONOS_URL;
 
@@ -103,6 +103,7 @@ export async function createParsingRule(
       regex,
       channelId,
       roleIds,
+      priority,
     })
     .returning();
 
@@ -262,73 +263,6 @@ export async function updateParsingRule(
   }
 
   return updated;
-}
-
-export async function duplicateParsingRule(id: string) {
-  if (!env.VITE_KRONOS_URL) {
-    throw new TRPCError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Kronos URL not set",
-    });
-  }
-
-  const [rule] = await db
-    .select()
-    .from(eventParsingRuleTable)
-    .where(eq(eventParsingRuleTable.id, id));
-
-  if (!rule) {
-    throw new TRPCError({
-      code: "NOT_FOUND",
-      message: "Parsing rule not found",
-    });
-  }
-
-  const newRuleId = ulid();
-
-  const kronosClient = new KronosClient(env.VITE_KRONOS_URL);
-
-  const scheduleMetadata: z.infer<typeof EventParsingRuleMetadataSchema> = {
-    ruleId: newRuleId,
-  };
-
-  const prevRule = await kronosClient.getSchedule(rule.kronosId);
-
-  if (!prevRule) {
-    throw new TRPCError({
-      code: "NOT_FOUND",
-      message: "Parsing rule not found in Kronos",
-    });
-  }
-
-  const { id: kronosId } = await kronosClient.createSchedule({
-    title: `${prevRule.title} (Copy)`,
-    description: `Parsing rule for ${prevRule.title} (Copy)`,
-    url: parsingRuleWebhookUrl,
-    isRecurring: true,
-    cronExpr: prevRule.cronExpr,
-    metadata: scheduleMetadata,
-  });
-
-  const [newlyCreatedRule] = await db
-    .insert(eventParsingRuleTable)
-    .values({
-      id: newRuleId,
-      regex: rule.regex,
-      channelId: rule.channelId,
-      roleIds: rule.roleIds,
-      kronosId,
-    })
-    .returning();
-
-  if (!newlyCreatedRule) {
-    throw new TRPCError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Error duplicating parsing rule",
-    });
-  }
-
-  return newlyCreatedRule;
 }
 
 export const triggerRule = async (id: string) => {

@@ -29,6 +29,7 @@ const OptionSchema = z.object({
 
 const NewEventParsingRuleFormSchema = z.object({
   channel: OptionSchema.nullable(),
+  priority: z.number().int().min(0).max(100),
   regex: z
     .string()
     .min(3)
@@ -79,6 +80,7 @@ function RouteComponent() {
   } = useZodForm({
     schema: NewEventParsingRuleFormSchema,
     defaultValues: {
+      priority: parsingRuleQuery.data?.priority,
       channel: channelOptions.find(
         (c) => c.value === parsingRuleQuery.data?.channelId,
       ),
@@ -144,6 +146,13 @@ function RouteComponent() {
           label="Roles"
           options={roleOptions}
           multiple
+        />
+        <ControlledTextField
+          control={control}
+          name="priority"
+          label="Priority"
+          type="number"
+          helperText="The higher the number, the higher the priority"
         />
         <LoadingButton
           type="submit"

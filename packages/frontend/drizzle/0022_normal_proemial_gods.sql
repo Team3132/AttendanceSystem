@@ -1,0 +1,1 @@
+ALTER TABLE "EventParsingRule" ADD COLUMN "priority" integer DEFAULT 100 NOT NULL;

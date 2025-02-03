@@ -5,6 +5,7 @@ import { strToRegex } from "../utils/regexBuilder";
 export const NewEventParsingRuleSchema = z.object({
   channelId: z.string(),
   name: z.string(),
+  priority: z.number().int().min(0).max(100),
   regex: z.string().refine((v) => {
     try {
       strToRegex(v);

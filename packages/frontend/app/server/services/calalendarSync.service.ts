@@ -86,6 +86,7 @@ export const syncEvents = async () => {
     .select({
       id: eventParsingRuleTable.id,
       regex: eventParsingRuleTable.regex,
+      priority: eventParsingRuleTable.priority,
     })
     .from(eventParsingRuleTable);
 
@@ -94,16 +95,31 @@ export const syncEvents = async () => {
       const secret = randomStr(8); // Generate a random secret for the event (used for on-device sign-in)
 
       const matchedParsingRuleId =
-        filters.find((filter) => {
-          const matchedTitle = strToRegex(filter.regex).test(
-            gcalEvent.summary ?? "",
-          );
-          const matchedDescription = strToRegex(filter.regex).test(
-            gcalEvent.description ?? "",
-          );
+        filters
+          .sort((a, b) => {
+            const { priority: aPriority } = a;
+            const { priority: bPriority } = b;
 
-          return matchedTitle || matchedDescription;
-        })?.id ?? null; // Find the first matching rule
+            if (aPriority < bPriority) {
+              return -1; // Move a to the front
+            }
+
+            if (aPriority > bPriority) {
+              return 1; // Move b to the front
+            }
+
+            return 0; // Do not change the order
+          })
+          .find((filter) => {
+            const matchedTitle = strToRegex(filter.regex).test(
+              gcalEvent.summary ?? "",
+            );
+            const matchedDescription = strToRegex(filter.regex).test(
+              gcalEvent.description ?? "",
+            );
+
+            return matchedTitle || matchedDescription;
+          })?.id ?? null; // Find the first matching rule
 
       const startDate = gcalEvent.start?.dateTime
         ? gcalEvent.start.dateTime

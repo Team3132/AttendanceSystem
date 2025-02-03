@@ -20,6 +20,7 @@ export const Route = createFileRoute(
   validateSearch: z.object({
     name: z.string().optional(),
     channelId: z.string().optional(),
+    priority: z.number().int().max(100).min(0).optional(),
     regex: z
       .string()
       .refine((v) => {
@@ -49,6 +50,7 @@ const OptionSchema = z.object({
 const NewEventParsingRuleFormSchema = z.object({
   channel: OptionSchema.nullable(),
   name: z.string().min(1),
+  priority: z.number().int().min(0).max(100),
   regex: z
     .string()
     .min(3)
@@ -107,6 +109,7 @@ function RouteComponent() {
       roles: searchParams.roleIds
         ? roleOptions.filter((r) => searchParams.roleIds?.includes(r.value))
         : [],
+      priority: searchParams.priority ?? 100,
     },
   });
 
@@ -184,6 +187,13 @@ function RouteComponent() {
           options={roleOptions}
           multiple
           helperText="The roles that will be pinged when the event reminder is posted"
+        />
+        <ControlledTextField
+          control={control}
+          name="priority"
+          label="Priority"
+          type="number"
+          helperText="The higher the number, the higher the priority"
         />
         <LoadingButton
           type="submit"
