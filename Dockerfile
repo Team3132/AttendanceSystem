@@ -3,6 +3,7 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 WORKDIR /app
 RUN corepack enable
+ENV COREPACK_INTEGRITY_KEYS=0
 
 FROM base AS build
 COPY . .
