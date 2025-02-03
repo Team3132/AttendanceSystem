@@ -9,8 +9,8 @@
 		"ignoreUnknown": false,
 		"ignore": [
 			"./packages/frontend/app/routeTree.gen.ts",
-			"./packages/frontend/packages.json",
-			"./packages/bot/packages.json",
+			"./packages/frontend/package.json",
+			"./packages/bot/package.json",
 			"./packages/frontend/.output/**",
 			"./packages/frontend/.vinxi/**",
 			"./packages/frontend/dist/**",
