@@ -29,7 +29,7 @@ const OptionSchema = z.object({
 
 const NewEventParsingRuleFormSchema = z.object({
   channel: OptionSchema.nullable(),
-  priority: z.number().int().min(0).max(100),
+  priority: z.coerce.number().int().min(0).max(100),
   regex: z
     .string()
     .min(3)

@@ -20,7 +20,7 @@ export const Route = createFileRoute(
   validateSearch: z.object({
     name: z.string().optional(),
     channelId: z.string().optional(),
-    priority: z.number().int().max(100).min(0).optional(),
+    priority: z.coerce.number().int().max(100).min(0).optional(),
     regex: z
       .string()
       .refine((v) => {
