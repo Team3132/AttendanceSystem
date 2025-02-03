@@ -1,9 +1,11 @@
 import DefaultAppBar from "@/components/DefaultAppBar";
 import { LinkIconButton } from "@/components/LinkIconButton";
 import useDeleteRule from "@/features/admin/hooks/useDeleteRule";
+import useSyncCalendar from "@/features/admin/hooks/useSyncCalendar";
 import useTriggerRule from "@/features/admin/hooks/useTriggerRule";
 import { adminQueries } from "@/queries/adminQueries";
 import {
+  Button,
   Container,
   IconButton,
   List,
@@ -46,11 +48,15 @@ function RouteComponent() {
     });
   };
 
+  const syncEventsMutation = useSyncCalendar();
+
   const handleDeleteRule = (id: string) =>
     deleteRuleMutation.mutate({ data: id });
 
   const handleTriggerRule = (id: string) =>
     triggerRuleMutation.mutate({ data: id });
+
+  const syncEvents = () => syncEventsMutation.mutate();
 
   return (
     <>
@@ -93,6 +99,15 @@ function RouteComponent() {
             </ListItem>
           ))}
         </List>
+        <Stack direction={"row"} gap={2}>
+          <Button
+            onClick={syncEvents}
+            loading={syncEventsMutation.isPending}
+            variant="contained"
+          >
+            Sync Events
+          </Button>
+        </Stack>
       </Container>
     </>
   );

@@ -147,19 +147,6 @@ export const syncEvents = async () => {
         throw new Error("Event start or end date is null");
       }
 
-      const newEvent = {
-        id: eventId,
-        title: title,
-        allDay: !gcalEvent.start?.dateTime && !gcalEvent.end?.dateTime,
-        startDate,
-        endDate,
-        description: gcalEvent.description ?? "",
-        type: "Regular",
-        ruleId: matchedParsingRuleId,
-        isSyncedEvent: true,
-        secret,
-      } satisfies EventInsert;
-
       const updatedEvent = {
         title,
         allDay,
@@ -170,6 +157,12 @@ export const syncEvents = async () => {
         isSyncedEvent: true,
         ruleId: matchedParsingRuleId,
       } satisfies Partial<EventInsert>;
+
+      const newEvent = {
+        id: eventId,
+        secret,
+        ...updatedEvent,
+      } satisfies EventInsert;
 
       await db
         .insert(eventTable)
