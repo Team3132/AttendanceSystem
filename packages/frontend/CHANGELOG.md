@@ -1,5 +1,11 @@
 # frontend
 
+## 5.2.2
+
+### Patch Changes
+
+- [`4d7397d`](https://github.com/Team3132/AttendanceSystem/commit/4d7397dc55176a5070213d9efc1197294d208625) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Disable integrity check for corepack
+
 ## 5.2.1
 
 ### Patch Changes
