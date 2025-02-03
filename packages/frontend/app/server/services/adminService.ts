@@ -55,8 +55,7 @@ export const EventParsingRuleMetadataSchema = z.object({
   ruleId: z.string(),
 });
 
-const parsingRuleWebhookUrl =
-  "http://localhost:1420/api/scheduler/reminder/trigger";
+const parsingRuleWebhookUrl = `${env.VITE_FRONTEND_URL}/api/scheduler/reminder/trigger`;
 
 /**
  * Create a new parsing rule
