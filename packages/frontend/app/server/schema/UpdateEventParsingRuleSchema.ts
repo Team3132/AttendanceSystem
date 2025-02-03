@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { strToRegex } from "../utils/regexBuilder";
 
 export const UpdateEventParsingRuleSchema = z.object({
   channelId: z.string().optional(),
@@ -6,7 +7,7 @@ export const UpdateEventParsingRuleSchema = z.object({
     .string()
     .refine((v) => {
       try {
-        new RegExp(v);
+        strToRegex(v);
         return true;
       } catch {
         return false;

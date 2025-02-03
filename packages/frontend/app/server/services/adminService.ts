@@ -55,6 +55,9 @@ export const EventParsingRuleMetadataSchema = z.object({
   ruleId: z.string(),
 });
 
+const parsingRuleWebhookUrl =
+  "http://localhost:1420/api/scheduler/reminder/trigger";
+
 /**
  * Create a new parsing rule
  * @param data The data to create a new parsing rule
@@ -86,7 +89,7 @@ export async function createParsingRule(
     // Create a new schedule in Kronos
     title: name,
     description: `Parsing rule for ${name}`,
-    url: "http://localhost:1420/api/scheduler/reminder/trigger",
+    url: parsingRuleWebhookUrl,
     isRecurring: true,
     cronExpr,
     metadata: scheduleMetadata,
@@ -139,11 +142,54 @@ export async function getParsingRules() {
       };
     } catch {
       deleteParsingRule(rule.id);
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Error getting parsing rule from Kronos",
+      });
     }
   });
 
   return Promise.all(promisedKronos);
 }
+
+/**
+ * Get a parsing rule
+ * @param id The ID of the parsing rule to get
+ * @returns The parsing rule
+ */
+export const getParsingRule = async (id: string) => {
+  const [rule] = await db
+    .select()
+    .from(eventParsingRuleTable)
+    .where(eq(eventParsingRuleTable.id, id));
+
+  if (!rule) {
+    throw new TRPCError({
+      code: "NOT_FOUND",
+      message: "Parsing rule not found",
+    });
+  }
+
+  if (!env.VITE_KRONOS_URL) {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Kronos URL not set",
+    });
+  }
+
+  const kronosClient = new KronosClient(env.VITE_KRONOS_URL);
+
+  try {
+    const kronosRule = await kronosClient.getSchedule(rule.kronosId);
+
+    return {
+      ...rule,
+      kronosRule,
+    };
+  } catch {
+    deleteParsingRule(rule.id);
+  }
+};
 
 /**
  * Delete a parsing rule
@@ -259,7 +305,7 @@ export async function duplicateParsingRule(id: string) {
   const { id: kronosId } = await kronosClient.createSchedule({
     title: `${prevRule.title} (Copy)`,
     description: `Parsing rule for ${prevRule.title} (Copy)`,
-    url: "http://localhost:1420/api/scheduler/reminder/trigger",
+    url: parsingRuleWebhookUrl,
     isRecurring: true,
     cronExpr: prevRule.cronExpr,
     metadata: scheduleMetadata,
@@ -285,3 +331,37 @@ export async function duplicateParsingRule(id: string) {
 
   return newlyCreatedRule;
 }
+
+export const triggerRule = async (id: string) => {
+  const [rule] = await db
+    .select()
+    .from(eventParsingRuleTable)
+    .where(eq(eventParsingRuleTable.id, id));
+
+  if (!rule) {
+    throw new TRPCError({
+      code: "NOT_FOUND",
+      message: "Parsing rule not found",
+    });
+  }
+
+  if (!env.VITE_KRONOS_URL) {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Kronos URL not set",
+    });
+  }
+
+  const kronosClient = new KronosClient(env.VITE_KRONOS_URL);
+
+  try {
+    await kronosClient.triggerSchedule(rule.kronosId);
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Error triggering parsing rule";
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message,
+    });
+  }
+};

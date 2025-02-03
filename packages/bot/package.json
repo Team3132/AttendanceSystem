@@ -6,9 +6,9 @@
 	"private": false,
 	"license": "UNLICENSED",
 	"scripts": {
-		"build": "vite build",
+		"build": "tsup",
 		"start": "node --enable-source-maps dist/main.js --inspect",
-		"dev": "vite",
+		"dev": "tsup --watch",
 		"release": "pnpm build"
 	},
 	"type": "module",
@@ -35,6 +35,7 @@
 		"reflect-metadata": "0.2.2",
 		"rxjs": "7.8.1",
 		"superjson": "2.2.2",
+		"tsup": "8.3.6",
 		"zod": "3.24.1"
 	},
 	"engines": {

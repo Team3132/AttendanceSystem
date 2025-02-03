@@ -1,35 +1,44 @@
 import db from "@/server/drizzle/db";
 import { eventParsingRuleTable, eventTable } from "@/server/drizzle/schema";
+import env from "@/server/env";
 import mainLogger from "@/server/logger";
 import { generateMessage } from "@/server/services/botService";
 import { getDiscordBotAPI } from "@/server/services/discordService";
-import { ScheduleSchema } from "@/server/utils/KronosClient";
+import KronosClient, { ScheduleSchema } from "@/server/utils/KronosClient";
 import { ChannelType } from "@discordjs/core";
 import { json } from "@tanstack/start";
 import { createAPIFileRoute } from "@tanstack/start/api";
-import { and, between, eq, not } from "drizzle-orm";
+import { and, between, eq, inArray, not } from "drizzle-orm";
 import { DateTime } from "luxon";
 
 export const APIRoute = createAPIFileRoute("/api/scheduler/reminder/trigger")({
-  GET: async ({ request }) => {
-    console.log("GET /api/scheduler/reminder/trigger");
-    const body = await request.json();
-    const validatedBody = await ScheduleSchema.safeParseAsync(body);
-
-    console.log({ validatedBody });
-
-    if (!validatedBody.success) {
-      return json({ success: false, error: "Invalid schedule" });
-    }
-
-    const { ruleId } = validatedBody.data.metadata;
-
+  POST: async ({ request }) => {
     try {
+      const body = await request.json();
+      const validatedBody = await ScheduleSchema.safeParseAsync(body);
+
+      if (!validatedBody.success) {
+        return json({ success: false, error: "Invalid schedule" });
+      }
+
+      const { ruleId } = validatedBody.data.metadata;
+
       const rule = await db.query.eventParsingRuleTable.findFirst({
         where: eq(eventParsingRuleTable.id, ruleId),
       });
+      console.log("After rule", rule);
 
       if (!rule) {
+        // attempt to delete the kronos schedule
+        if (env.VITE_KRONOS_URL) {
+          const kronosClient = new KronosClient(env.VITE_KRONOS_URL);
+          try {
+            await kronosClient.deleteSchedule(validatedBody.data.id);
+          } catch {
+            console.error("Failed to delete schedule");
+          }
+        }
+
         throw new Error("Rule not found");
       }
 
@@ -52,13 +61,18 @@ export const APIRoute = createAPIFileRoute("/api/scheduler/reminder/trigger")({
             not(eventTable.isPosted),
           ),
         );
+      console.log("After matchingEvents", matchingEvents);
 
       const matchingEventIds = matchingEvents.map((event) => event.id);
 
       // generate messages for each event (this fetches RSVPs and the event details)
       const notificationMessages = await Promise.all(
-        matchingEventIds.map((eventId) => generateMessage({ eventId })),
+        matchingEventIds.map(
+          async (eventId) =>
+            [eventId, await generateMessage({ eventId })] as const,
+        ),
       );
+      console.log("After notificationMessages", notificationMessages);
 
       const botAPI = getDiscordBotAPI();
 
@@ -69,8 +83,12 @@ export const APIRoute = createAPIFileRoute("/api/scheduler/reminder/trigger")({
       }
 
       const messagedEvents = await Promise.allSettled(
-        notificationMessages.map((message) =>
-          botAPI.channels.createMessage(channel.id, message),
+        notificationMessages.map(
+          async ([eventId, message]) =>
+            [
+              eventId,
+              await botAPI.channels.createMessage(channel.id, message),
+            ] as const,
         ),
       );
 
@@ -80,14 +98,37 @@ export const APIRoute = createAPIFileRoute("/api/scheduler/reminder/trigger")({
         matchingEventIds.length;
 
       // log the events that were not posted
-      mainLogger.error(
-        `Events not posted: ${messagedEvents.filter((p) => p.status === "rejected").map((p) => p.reason)}`,
+      const rejectedEventsMessages = messagedEvents
+        .filter((p) => p.status === "rejected")
+        .map((p) => p.reason);
+
+      if (rejectedEventsMessages.length > 0) {
+        mainLogger.error(
+          `Events not posted: ${rejectedEventsMessages.join(", ")}`,
+        );
+      }
+
+      mainLogger.success(
+        `Posted ${matchingEventIds.length} events for rule ${ruleId}`,
       );
+
+      const successfullyPostedEvents = messagedEvents
+        .filter((p) => p.status === "fulfilled")
+        .map((p) => p.value[0]);
+
+      await db
+        .update(eventTable)
+        .set({
+          isPosted: true,
+        })
+        .where(inArray(eventTable.id, successfullyPostedEvents));
 
       return json({ success: fullSuccess });
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "An error occurred";
+
+      mainLogger.error("Error triggering reminders", error);
       return json({ success: false, error: errorMessage });
     }
   },

@@ -4,10 +4,11 @@ import DefaultAppBar from "@/components/DefaultAppBar";
 import useCreateRule from "@/features/admin/hooks/useCreateRule";
 import useZodForm from "@/hooks/useZodForm";
 import { discordQueryOptions } from "@/queries/discord.queries";
+import { strToRegex } from "@/server/utils/regexBuilder";
 import { LoadingButton } from "@mui/lab";
-import { Container } from "@mui/material";
+import { Container, Divider, Typography } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import cron from "cron-validate";
 import { useMemo } from "react";
 import { z } from "zod";
@@ -16,6 +17,28 @@ export const Route = createFileRoute(
   "/_authenticated/admin_/event-parsing/create",
 )({
   component: RouteComponent,
+  validateSearch: z.object({
+    name: z.string().optional(),
+    channelId: z.string().optional(),
+    regex: z
+      .string()
+      .refine((v) => {
+        try {
+          strToRegex(v);
+          return true;
+        } catch {
+          return false;
+        }
+      })
+      .optional(),
+    roleIds: z.array(z.string()).optional(),
+    cronExpr: z
+      .string()
+      .refine((v) => cron(v).isValid(), {
+        message: "Invalid cron expression",
+      })
+      .optional(),
+  }),
 });
 
 const OptionSchema = z.object({
@@ -31,7 +54,7 @@ const NewEventParsingRuleFormSchema = z.object({
     .min(3)
     .refine((v) => {
       try {
-        new RegExp(v);
+        strToRegex(v);
         return true;
       } catch {
         return false;
@@ -44,32 +67,7 @@ const NewEventParsingRuleFormSchema = z.object({
 });
 
 function RouteComponent() {
-  const {
-    control,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useZodForm({
-    schema: NewEventParsingRuleFormSchema,
-    defaultValues: {
-      channel: null,
-      cronExpr: "",
-      name: "",
-      regex: "",
-      roles: [],
-    },
-  });
-
-  const createRuleMutation = useCreateRule();
-
-  const onSubmit = handleSubmit(async (data) =>
-    createRuleMutation.mutateAsync({
-      data: {
-        ...data,
-        channelId: data.channel?.value as string,
-        roleIds: data.roles.map((r) => r.value),
-      },
-    }),
-  );
+  const searchParams = Route.useSearch();
 
   const channelsQuery = useSuspenseQuery(discordQueryOptions.serverChannels());
 
@@ -93,6 +91,46 @@ function RouteComponent() {
     [rolesQuery.data],
   );
 
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useZodForm({
+    schema: NewEventParsingRuleFormSchema,
+    defaultValues: {
+      channel: searchParams.channelId
+        ? channelOptions.find((c) => c.value === searchParams.channelId)
+        : null,
+      cronExpr: searchParams.cronExpr ?? "",
+      name: searchParams.name ?? "",
+      regex: searchParams.regex ?? "",
+      roles: searchParams.roleIds
+        ? roleOptions.filter((r) => searchParams.roleIds?.includes(r.value))
+        : [],
+    },
+  });
+
+  const createRuleMutation = useCreateRule();
+
+  const navigate = useNavigate();
+
+  const onSubmit = handleSubmit(async (data) => {
+    const newRule = await createRuleMutation.mutateAsync({
+      data: {
+        ...data,
+        channelId: data.channel?.value as string,
+        roleIds: data.roles.map((r) => r.value),
+      },
+    });
+
+    navigate({
+      to: "/admin/event-parsing/$ruleId",
+      params: {
+        ruleId: newRule.id,
+      },
+    });
+  });
+
   return (
     <>
       <DefaultAppBar title="Admin - Event Parsing" />
@@ -108,18 +146,36 @@ function RouteComponent() {
         component={"form"}
         onSubmit={onSubmit}
       >
-        <ControlledTextField control={control} name="name" label="Name" />
-        <ControlledTextField control={control} name="regex" label="Regex" />
+        <Typography variant="h4">Create Event Parsing Rule</Typography>
+        <Typography>
+          Create a rule that matches a regex and posts a reminder in a channel
+          pinging specific roles
+        </Typography>
+        <Divider />
+        <ControlledTextField
+          control={control}
+          name="name"
+          label="Name"
+          helperText="The name of the rule (purely aesthetic)"
+        />
+        <ControlledTextField
+          control={control}
+          name="regex"
+          label="Regex"
+          helperText="Get a software student to help write a text-matching rule"
+        />
         <ControlledTextField
           control={control}
           name="cronExpr"
           label="Cron Expression"
+          helperText="Use https://crontab.guru/ to help you create a cron expression, this is the schedule for when the rule will run"
         />
         <ControlledAutocomplete
           control={control}
           name="channel"
           label="Channel"
           options={channelOptions}
+          helperText="The channel where event reminders matching the regex will be posted"
         />
         <ControlledAutocomplete
           control={control}
@@ -127,6 +183,7 @@ function RouteComponent() {
           label="Roles"
           options={roleOptions}
           multiple
+          helperText="The roles that will be pinged when the event reminder is posted"
         />
         <LoadingButton
           type="submit"

@@ -141,7 +141,9 @@ export default class KronosClient {
     );
 
     if (!response.ok) {
-      throw new Error("Error triggering Kronos job");
+      const message = await response.text();
+
+      throw new Error(`Error triggering Kronos job: ${message}`);
     }
 
     return response.json();

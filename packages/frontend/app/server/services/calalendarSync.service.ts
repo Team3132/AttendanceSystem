@@ -9,6 +9,7 @@ import { eventParsingRuleTable, eventTable } from "../drizzle/schema";
 import env from "../env";
 import mainLogger from "../logger";
 import randomStr from "../utils/randomStr";
+import { strToRegex } from "../utils/regexBuilder";
 
 type EventInsert = typeof eventTable.$inferInsert;
 
@@ -94,10 +95,10 @@ export const syncEvents = async () => {
 
       const matchedParsingRuleId =
         filters.find((filter) => {
-          const matchedTitle = new RegExp(filter.regex).test(
+          const matchedTitle = strToRegex(filter.regex).test(
             gcalEvent.summary ?? "",
           );
-          const matchedDescription = new RegExp(filter.regex).test(
+          const matchedDescription = strToRegex(filter.regex).test(
             gcalEvent.description ?? "",
           );
 

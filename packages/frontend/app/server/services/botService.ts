@@ -63,7 +63,7 @@ export async function generateMessage(data: MessageParams) {
   });
 
   const eventData = await db.query.eventTable.findFirst({
-    where: eq(eventTable, eventId),
+    where: eq(eventTable.id, eventId),
   });
 
   if (!eventData) {
@@ -82,7 +82,7 @@ export async function generateMessage(data: MessageParams) {
     }
   } else {
     const eventRule = await db.query.eventParsingRuleTable.findFirst({
-      where: eq(eventParsingRuleTable, ruleId),
+      where: eq(eventParsingRuleTable.id, ruleId),
     });
     if (!eventRule) {
       throw new Error("Event Rule not found");
@@ -99,7 +99,10 @@ export async function generateMessage(data: MessageParams) {
   );
 
   /** A list of role mentionds seperated by commas and "and" at the end */
-  const roleMentionList = `${roleIds.slice(0, -1).map(roleMention).join(", ")} and ${roleMention(roleIds[roleIds.length - 1])}`;
+  const roleMentionList =
+    roleIds.length > 1
+      ? `${roleIds.slice(0, -1).map(roleMention).join(", ")} and ${roleMention(roleIds[roleIds.length - 1])}`
+      : roleMention(roleIds[0]);
 
   const meetingInfo = new EmbedBuilder({
     description: eventData.description.length

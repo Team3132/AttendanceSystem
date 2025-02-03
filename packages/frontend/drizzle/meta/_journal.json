@@ -148,6 +148,13 @@
 			"when": 1738376118542,
 			"tag": "0020_strange_captain_cross",
 			"breakpoints": true
+		},
+		{
+			"idx": 21,
+			"version": "7",
+			"when": 1738545926072,
+			"tag": "0021_greedy_rafael_vega",
+			"breakpoints": true
 		}
 	]
 }

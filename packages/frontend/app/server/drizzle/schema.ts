@@ -6,6 +6,7 @@ import {
   pgTable,
   text,
   timestamp,
+  unique,
   uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { ulid } from "ulidx";
@@ -172,11 +173,7 @@ export const eventTable = pgTable(
     isPosted: boolean("isPosted").default(false).notNull(),
     ruleId: text("ruleId").references(() => eventParsingRuleTable.id),
   },
-  (table) => {
-    return {
-      secretKey: uniqueIndex("Event_secret_key").on(table.secret),
-    };
-  },
+  (table) => [unique("Event_secret_key").on(table.secret)],
 );
 
 export const eventTableRelations = relations(eventTable, ({ many, one }) => ({

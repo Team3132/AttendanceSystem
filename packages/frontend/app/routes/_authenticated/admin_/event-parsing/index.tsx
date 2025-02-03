@@ -1,11 +1,12 @@
 import DefaultAppBar from "@/components/DefaultAppBar";
+import { LinkIconButton } from "@/components/LinkIconButton";
 import useDeleteRule from "@/features/admin/hooks/useDeleteRule";
-import useDuplicateRule from "@/features/admin/hooks/useDuplicateRule";
+import useTriggerRule from "@/features/admin/hooks/useTriggerRule";
 import { adminQueries } from "@/queries/adminQueries";
 import { Container, IconButton, List, ListItem, Stack } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { FaCopy, FaTrash } from "react-icons/fa6";
+import { FaCopy, FaPen, FaPlay, FaTrash } from "react-icons/fa6";
 
 export const Route = createFileRoute("/_authenticated/admin_/event-parsing/")({
   loader: ({ context: { queryClient } }) => {
@@ -16,15 +17,33 @@ export const Route = createFileRoute("/_authenticated/admin_/event-parsing/")({
 
 function RouteComponent() {
   const parsingRulesQuery = useSuspenseQuery(adminQueries.eventParsingRules);
+  const navigate = Route.useNavigate();
 
-  const duplicateRuleMutation = useDuplicateRule();
   const deleteRuleMutation = useDeleteRule();
+  const triggerRuleMutation = useTriggerRule();
 
-  const handleDuplicateRule = (id: string) =>
-    duplicateRuleMutation.mutate({ data: id });
+  const handleDuplicateRule = (id: string) => {
+    const rule = parsingRulesQuery.data.find((r) => r.id === id);
+
+    if (!rule) return;
+
+    navigate({
+      to: "/admin/event-parsing/create",
+      search: {
+        name: `${rule.kronosRule.title} (Copy)`,
+        regex: rule.regex,
+        roleIds: rule.roleIds,
+        cronExpr: rule.kronosRule.cronExpr,
+        channelId: rule.channelId,
+      },
+    });
+  };
 
   const handleDeleteRule = (id: string) =>
     deleteRuleMutation.mutate({ data: id });
+
+  const handleTriggerRule = (id: string) =>
+    triggerRuleMutation.mutate({ data: id });
 
   return (
     <>
@@ -43,6 +62,20 @@ function RouteComponent() {
                   <IconButton onClick={() => handleDuplicateRule(rule.id)}>
                     <FaCopy />
                   </IconButton>
+                  <IconButton
+                    onClick={() => handleTriggerRule(rule.id)}
+                    disabled={triggerRuleMutation.isPending}
+                  >
+                    <FaPlay />
+                  </IconButton>
+                  <LinkIconButton
+                    to="/admin/event-parsing/$ruleId"
+                    params={{
+                      ruleId: rule.id,
+                    }}
+                  >
+                    <FaPen />
+                  </LinkIconButton>
                 </Stack>
               }
             >

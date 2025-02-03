@@ -1,12 +1,13 @@
 import cron from "cron-validate";
 import { z } from "zod";
+import { strToRegex } from "../utils/regexBuilder";
 
 export const NewEventParsingRuleSchema = z.object({
   channelId: z.string(),
   name: z.string(),
   regex: z.string().refine((v) => {
     try {
-      new RegExp(v);
+      strToRegex(v);
       return true;
     } catch {
       return false;

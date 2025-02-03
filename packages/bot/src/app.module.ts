@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { ScheduleModule } from "@nestjs/schedule";
 import { GatewayIntentBits } from "discord.js";
 import { NecordModule } from "necord";
+import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { BackendModule } from "./backend/backend.module";
 import { BotModule } from "./bot/bot.module";
@@ -26,7 +27,7 @@ import { TaskModule } from "./task/task.module";
     BotModule,
     TaskModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [AppService, BotService],
 })
 export class AppModule {}
