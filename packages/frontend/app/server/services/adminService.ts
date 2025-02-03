@@ -244,13 +244,14 @@ export async function updateParsingRule(
   id: string,
   data: z.infer<typeof UpdateEventParsingRuleSchema>,
 ) {
-  const { channelId, regex, roleIds } = data;
+  const { channelId, regex, roleIds, priority } = data;
   const [updated] = await db
     .update(eventParsingRuleTable)
     .set({
       channelId,
       regex,
       roleIds,
+      priority,
     })
     .where(eq(eventParsingRuleTable.id, id))
     .returning();

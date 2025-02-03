@@ -20,7 +20,7 @@ export const Route = createFileRoute(
   validateSearch: z.object({
     name: z.string().optional(),
     channelId: z.string().optional(),
-    priority: z.coerce.number().int().max(100).min(0).optional(),
+    priority: z.number().int().max(100).min(0).optional(),
     regex: z
       .string()
       .refine((v) => {
@@ -50,7 +50,7 @@ const OptionSchema = z.object({
 const NewEventParsingRuleFormSchema = z.object({
   channel: OptionSchema.nullable(),
   name: z.string().min(1),
-  priority: z.number().int().min(0).max(100),
+  priority: z.coerce.number().int().min(0).max(100),
   regex: z
     .string()
     .min(3)
@@ -193,6 +193,7 @@ function RouteComponent() {
           name="priority"
           label="Priority"
           type="number"
+          rules={{}}
           helperText="The higher the number, the higher the priority"
         />
         <LoadingButton
