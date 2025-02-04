@@ -211,7 +211,7 @@ importers:
         specifier: 1.4.5
         version: 1.4.5
       discord-interactions:
-        specifier: ^4.1.1
+        specifier: 4.1.1
         version: 4.1.1
       drizzle-orm:
         specifier: 0.39.1
