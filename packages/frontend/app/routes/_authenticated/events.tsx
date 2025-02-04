@@ -30,14 +30,12 @@ import { z } from "zod";
 
 const defaultValues = {
   from: DateTime.now().toISODate(),
-  to: DateTime.now().plus({ month: 1 }).toISODate(),
   type: undefined,
   limit: 5,
 };
 
 const eventsSearchSchema = z.object({
   from: z.string().default(defaultValues.from),
-  to: z.string().date().default(defaultValues.to),
   type: EventTypeSchema.optional(),
   limit: z.number().default(defaultValues.limit),
 });
@@ -52,16 +50,12 @@ export const Route = createFileRoute("/_authenticated/events")({
   head: () => ({
     meta: [{ title: "Events" }],
   }),
-  loader: async ({
-    context: { queryClient },
-    deps: { from, to, type, limit },
-  }) => {
+  loader: async ({ context: { queryClient }, deps: { from, type, limit } }) => {
     await queryClient.prefetchQuery(authQueryOptions.status());
 
     await queryClient.prefetchInfiniteQuery(
       eventQueryOptions.eventList({
         from,
-        to,
         type,
         limit,
       }),
@@ -70,14 +64,13 @@ export const Route = createFileRoute("/_authenticated/events")({
 });
 
 function Component() {
-  const { from, to, type, limit } = Route.useSearch();
+  const { from, type, limit } = Route.useSearch();
 
   const navigate = Route.useNavigate();
 
   const infiniteEventsQuery = useSuspenseInfiniteQuery(
     eventQueryOptions.eventList({
       from,
-      to,
       type,
       limit,
     }),
@@ -102,16 +95,6 @@ function Component() {
       const iso = date?.toISODate();
       navigate({
         search: (prev) => ({ ...prev, from: iso ? iso : defaultValues.from }),
-      });
-    },
-    [navigate],
-  );
-
-  const handleEndChange = useCallback(
-    (date: DateTime<true> | DateTime<false> | null) => {
-      const iso = date?.toISODate();
-      navigate({
-        search: (prev) => ({ ...prev, to: iso ? iso : defaultValues.to }),
       });
     },
     [navigate],
@@ -176,11 +159,6 @@ function Component() {
               value={DateTime.fromISO(from ?? defaultValues.from)}
               label="From"
               onChange={handleStartChange}
-            />
-            <DatePicker
-              value={DateTime.fromISO(to ?? defaultValues.to)}
-              label="To"
-              onChange={handleEndChange}
             />
           </Box>
           <InfiniteList
