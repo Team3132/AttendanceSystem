@@ -1,5 +1,13 @@
 # frontend
 
+## 5.2.14
+
+### Patch Changes
+
+- [`e44c44c`](https://github.com/Team3132/AttendanceSystem/commit/e44c44cc01d279cbc4f294c2af3ab18deeb66207) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix delay
+
+- [`fdd2a3b`](https://github.com/Team3132/AttendanceSystem/commit/fdd2a3bda70c45cab5488e95eaa0433bde458a59) Thanks [@sebasptsch](https://github.com/sebasptsch)! - remove to
+
 ## 5.2.13
 
 ### Patch Changes
