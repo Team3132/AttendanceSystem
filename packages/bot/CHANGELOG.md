@@ -1,5 +1,14 @@
 # bot
 
+## 5.2.11
+
+### Patch Changes
+
+- [`7c31bcb`](https://github.com/Team3132/AttendanceSystem/commit/7c31bcbe3eba1430b383841510a2af47da7977da) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Remove rsvps command
+
+- Updated dependencies []:
+  - frontend@5.2.11
+
 ## 5.2.10
 
 ### Patch Changes
