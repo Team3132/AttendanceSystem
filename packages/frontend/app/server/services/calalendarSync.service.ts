@@ -52,13 +52,26 @@ let memorySyncToken: string | undefined;
  * Generator function to get all calendar events
  */
 async function* getCalendarEvents() {
+  // if skipSyncToken is true, we want to ignore the sync token and fetch all events
+
   const params: calendar_v3.Params$Resource$Events$List = {
     calendarId: env.VITE_GOOGLE_CALENDAR_ID,
     singleEvents: true,
-    syncToken: memorySyncToken,
   };
 
-  const initialData = await promiseifiedCalEventsList(params);
+  let initialData: calendar_v3.Schema$Events;
+  try {
+    if (memorySyncToken) {
+      eventLogger.info("Syncing events using sync token");
+    }
+    initialData = await promiseifiedCalEventsList({
+      ...params,
+      syncToken: memorySyncToken,
+    });
+  } catch {
+    eventLogger.info("Sync token is presumed invalid, fetching all events");
+    initialData = await promiseifiedCalEventsList(params);
+  }
 
   for (const item of initialData.items ?? []) {
     yield item;
