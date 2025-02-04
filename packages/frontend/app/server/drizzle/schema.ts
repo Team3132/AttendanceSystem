@@ -11,6 +11,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { ulid } from "ulidx";
 import { v4 } from "uuid";
+import randomStr from "../utils/randomStr";
 
 export const eventTypes = pgEnum("EventTypes", [
   "Social",
@@ -168,7 +169,9 @@ export const eventTable = pgTable(
     }).notNull(),
     allDay: boolean("allDay").default(false).notNull(),
     type: eventTypes("type").default("Regular").notNull(),
-    secret: text("secret").notNull(),
+    secret: text("secret")
+      .notNull()
+      .$defaultFn(() => randomStr(8)),
     isSyncedEvent: boolean("isSyncedEvent").default(false).notNull(),
     isPosted: boolean("isPosted").default(false).notNull(),
     ruleId: text("ruleId").references(() => eventParsingRuleTable.id),

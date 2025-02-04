@@ -1,15 +1,21 @@
 import { TRPCError } from "@trpc/server";
-import { eq } from "drizzle-orm";
+import { and, asc, eq, gte, not } from "drizzle-orm";
 import { ulid } from "ulidx";
 import { z } from "zod";
 import db from "../drizzle/db";
-import { apiKeyTable, eventParsingRuleTable } from "../drizzle/schema";
+import {
+  apiKeyTable,
+  eventParsingRuleTable,
+  eventTable,
+} from "../drizzle/schema";
 import env from "../env";
+import mainLogger from "../logger";
 import type {
   NewEventParsingRuleSchema,
   UpdateEventParsingRuleSchema,
 } from "../schema";
 import KronosClient from "../utils/KronosClient";
+import { strToRegex } from "../utils/regexBuilder";
 
 /**
  * Get all API keys
@@ -112,6 +118,8 @@ export async function createParsingRule(
       code: "INTERNAL_SERVER_ERROR",
     });
   }
+
+  await reapplyRules();
 
   return parsingRule;
 }
@@ -231,6 +239,8 @@ export async function deleteParsingRule(id: string) {
     console.log("error");
   }
 
+  await reapplyRules();
+
   return rule;
 }
 
@@ -262,6 +272,8 @@ export async function updateParsingRule(
       message: "Parsing rule not found",
     });
   }
+
+  await reapplyRules();
 
   return updated;
 }
@@ -297,5 +309,67 @@ export const triggerRule = async (id: string) => {
       code: "INTERNAL_SERVER_ERROR",
       message,
     });
+  }
+};
+
+export const reapplyRules = async () => {
+  try {
+    const futureEvents = await db
+      .select({
+        id: eventTable.id,
+        title: eventTable.title,
+        description: eventTable.description,
+        existingRuleId: eventTable.ruleId,
+      })
+      .from(eventTable)
+      .where(
+        and(
+          gte(eventTable.startDate, new Date().toISOString()),
+          not(eventTable.isPosted),
+        ),
+      );
+
+    const filters = await db
+      .select({
+        id: eventParsingRuleTable.id,
+        regex: eventParsingRuleTable.regex,
+        priority: eventParsingRuleTable.priority,
+      })
+      .from(eventParsingRuleTable)
+      .orderBy(asc(eventParsingRuleTable.priority));
+
+    const updatedEvents = [];
+    for (const event of futureEvents) {
+      let newRuleId: null | string = null;
+
+      for (const filter of filters) {
+        const reg = strToRegex(filter.regex);
+
+        if (reg.test(event.title) || reg.test(event.description)) {
+          newRuleId = filter.id;
+        }
+      }
+
+      if (newRuleId !== event.existingRuleId) {
+        updatedEvents.push({
+          id: event.id,
+          ruleId: newRuleId,
+        });
+      }
+    }
+
+    for (const event of updatedEvents) {
+      await db
+        .update(eventTable)
+        .set({
+          ruleId: event.ruleId,
+        })
+        .where(eq(eventTable.id, event.id));
+    }
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Error reapplying parsing rules";
+
+    mainLogger.error(message);
   }
 };
