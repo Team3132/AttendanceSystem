@@ -27,28 +27,42 @@ export class SyncPlzCommand {
   public async onRequestRSVP(@Context() [interaction]: SlashCommandContext) {
     await interaction.deferReply();
 
-    const response = await this.backendClient.client.syncEvents.mutate();
+    try {
+      const response = await this.backendClient.client.syncEvents.mutate();
 
-    const embed = new EmbedBuilder()
-      .setColor([0, 255, 0])
-      .setTitle("Calendar Synced")
-      .setDescription("Calendar synced successfully")
-      .setFields([
-        {
-          name: "Deleted Events",
-          value: response.deletedEventCount.toString(),
-          inline: true,
-        },
-        {
-          name: "Updated/Created Events",
-          value: response.updatedEvents.toString(),
-          inline: true,
-        },
-      ]);
+      const embed = new EmbedBuilder()
+        .setColor([0, 255, 0])
+        .setTitle("Calendar Synced")
+        .setDescription("Calendar synced successfully")
+        .setFields([
+          {
+            name: "Deleted Events",
+            value: response.deletedEventCount.toString(),
+            inline: true,
+          },
+          {
+            name: "Updated/Created Events",
+            value: response.updatedEvents.toString(),
+            inline: true,
+          },
+        ]);
 
-    return interaction.editReply({
-      content: "Calendar synced",
-      embeds: [embed],
-    });
+      return interaction.editReply({
+        content: "Calendar synced",
+        embeds: [embed],
+      });
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "An error occurred";
+      const errorEmbed = new EmbedBuilder()
+        .setColor([255, 0, 0])
+        .setTitle("Error")
+        .setDescription(message);
+
+      return interaction.editReply({
+        content: "An error occurred",
+        embeds: [errorEmbed],
+      });
+    }
   }
 }

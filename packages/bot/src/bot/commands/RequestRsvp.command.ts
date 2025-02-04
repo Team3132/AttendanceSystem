@@ -1,6 +1,6 @@
 import { Inject, Injectable, UseGuards, UseInterceptors } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { PermissionFlagsBits } from "discord.js";
+import { EmbedBuilder, PermissionFlagsBits } from "discord.js";
 import {
   Context,
   Options,
@@ -37,24 +37,34 @@ export class RequestRsvpCommand {
     @Context() [interaction]: SlashCommandContext,
     @Options() { meeting }: RequestRSVPDto,
   ) {
-    const eventDetails =
-      await this.backendClient.client.getEventDetails.query(meeting);
+    try {
+      await this.backendClient.client.markEventPosted.mutate(meeting);
 
-    if (!eventDetails)
+      const reminderMessage =
+        await this.backendClient.client.getEventReminder.query(meeting);
       return interaction.reply({
-        ephemeral: true,
-        content: "No meeting with that Id",
+        content: reminderMessage.content,
+        components: reminderMessage.components,
+        embeds: reminderMessage.embeds,
       });
-
-    await this.backendClient.client.markEventPosted.mutate(meeting);
-
-    const reminderMessage =
-      await this.backendClient.client.getEventReminder.query(meeting);
-
-    return interaction.reply({
-      content: reminderMessage.content,
-      components: reminderMessage.components,
-      embeds: reminderMessage.embeds,
-    });
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "An error occurred";
+      const errorEmbed = new EmbedBuilder()
+        .setColor([255, 0, 0])
+        .setTitle("Error")
+        .setDescription(message);
+      if (interaction.replied) {
+        await interaction.followUp({
+          content: "An error occurred",
+          embeds: [errorEmbed],
+        });
+      } else {
+        await interaction.reply({
+          content: "An error occurred",
+          embeds: [errorEmbed],
+        });
+      }
+    }
   }
 }

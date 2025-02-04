@@ -1,6 +1,10 @@
 import { Inject, Injectable, Logger, UseGuards } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { ActionRow, GuildMember } from "discord.js";
+import {
+  ActionRow,
+  ChatInputCommandInteraction,
+  GuildMember,
+} from "discord.js";
 import { RSVPStatusUpdateSchema } from "frontend";
 import { Button, type ButtonContext, ComponentParam, Context } from "necord";
 import { z } from "zod";
@@ -60,7 +64,6 @@ export class RsvpsButton {
       username,
       roles: userRoles,
     });
-
     // const fetchedUser = fetchedUsers.at(0);
 
     if (fetchedEvent.type === "Mentor" && !userRoles.includes(ROLES.MENTOR)) {

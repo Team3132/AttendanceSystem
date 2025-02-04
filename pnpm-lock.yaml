@@ -210,6 +210,9 @@ importers:
       cron-validate:
         specifier: 1.4.5
         version: 1.4.5
+      discord-interactions:
+        specifier: ^4.1.1
+        version: 4.1.1
       drizzle-orm:
         specifier: 0.39.1
         version: 0.39.1(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@19.0.8)(postgres@3.4.5)(react@19.0.0)
@@ -3598,6 +3601,10 @@ packages:
 
   discord-api-types@0.37.119:
     resolution: {integrity: sha512-WasbGFXEB+VQWXlo6IpW3oUv73Yuau1Ig4AZF/m13tXcTKnMpc/mHjpztIlz4+BM9FG9BHQkEXiPto3bKduQUg==}
+
+  discord-interactions@4.1.1:
+    resolution: {integrity: sha512-dCrdJFSHQrEHXB8tk+LpIhAL7/+/UXCFDzooYmB6jj7b/zuhdbETpcZXLYQpSfcSRpF5wjmnu1XwuHlvdF1KpQ==}
+    engines: {node: '>=18.4.0'}
 
   discord.js@14.17.3:
     resolution: {integrity: sha512-8/j8udc3CU7dz3Eqch64UaSHoJtUT6IXK4da5ixjbav4NAXJicloWswD/iwn1ImZEMoAV3LscsdO0zhBh6H+0Q==}
@@ -9699,6 +9706,8 @@ snapshots:
       path-type: 4.0.0
 
   discord-api-types@0.37.119: {}
+
+  discord-interactions@4.1.1: {}
 
   discord.js@14.17.3:
     dependencies:
