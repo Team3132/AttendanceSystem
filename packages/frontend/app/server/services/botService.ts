@@ -25,7 +25,10 @@ interface MessageParams {
   eventId: string;
 }
 
-const statusToEmoji = (status: z.infer<typeof RSVPUserSchema>["status"]) => {
+const statusToEmoji = (
+  status: z.infer<typeof RSVPUserSchema>["status"],
+  delay?: number,
+) => {
   switch (status) {
     case "YES":
       return ":white_check_mark:";
@@ -34,7 +37,7 @@ const statusToEmoji = (status: z.infer<typeof RSVPUserSchema>["status"]) => {
     case "MAYBE":
       return ":grey_question:";
     case "LATE":
-      return ":clock3:";
+      return delay ? `:clock3: - ${delay}m late` : ":clock3:";
     case "ATTENDED":
       return ":ok:";
     default:
@@ -165,7 +168,7 @@ export async function generateMessage(data: MessageParams) {
     const content = mentorRSVPs
       .map(
         (rawRsvp) =>
-          `${rawRsvp.user.username} - ${statusToEmoji(rawRsvp.status)}`,
+          `${rawRsvp.user.username} - ${statusToEmoji(rawRsvp.status, rawRsvp.delay ?? undefined)}`,
       )
       .join("\n");
     const count = mentorRSVPs.filter(
