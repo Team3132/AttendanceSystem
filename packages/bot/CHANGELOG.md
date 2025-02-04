@@ -1,5 +1,14 @@
 # bot
 
+## 5.2.12
+
+### Patch Changes
+
+- [`515421b`](https://github.com/Team3132/AttendanceSystem/commit/515421bb2abcb7a2a43fcfebe1acb5b013169076) Thanks [@sebasptsch](https://github.com/sebasptsch)! - PNPM version in pkg json
+
+- Updated dependencies [[`515421b`](https://github.com/Team3132/AttendanceSystem/commit/515421bb2abcb7a2a43fcfebe1acb5b013169076)]:
+  - frontend@5.2.12
+
 ## 5.2.11
 
 ### Patch Changes
