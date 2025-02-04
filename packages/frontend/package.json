@@ -5,7 +5,8 @@
 	"type": "module",
 	"scripts": {
 		"dev": "PORT=1420 vinxi dev",
-		"build": "tsc -b && tsup && vinxi build",
+		"build": "pnpm run buildpkg && vinxi build",
+		"buildpkg": "tsc -b && tsup",
 		"start": "PORT=1420 vinxi start"
 	},
 	"files": [
