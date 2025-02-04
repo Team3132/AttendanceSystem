@@ -56,6 +56,7 @@ async function* getCalendarEvents() {
 
   const params: calendar_v3.Params$Resource$Events$List = {
     calendarId: env.VITE_GOOGLE_CALENDAR_ID,
+    showDeleted: true,
     singleEvents: true,
   };
 
