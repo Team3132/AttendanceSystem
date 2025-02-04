@@ -202,4 +202,6 @@ export const syncEvents = async () => {
   eventLogger.timeEnd("Sync Events");
   eventLogger.info(`Deleted ${deletedCount} events`);
   eventLogger.info(`Inserted ${insertedCount} events`);
+
+  return { updatedEvents: insertedCount, deletedEventCount: deletedCount };
 };
