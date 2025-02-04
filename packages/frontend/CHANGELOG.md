@@ -1,5 +1,11 @@
 # frontend
 
+## 5.2.13
+
+### Patch Changes
+
+- [`1af497e`](https://github.com/Team3132/AttendanceSystem/commit/1af497e6f84784cfb2abe626fdeb7b62aa622fd1) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Full calendar sync
+
 ## 5.2.12
 
 ### Patch Changes
