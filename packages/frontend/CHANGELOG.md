@@ -1,5 +1,11 @@
 # frontend
 
+## 5.2.15
+
+### Patch Changes
+
+- [`8b1606d`](https://github.com/Team3132/AttendanceSystem/commit/8b1606d8b11c3ce49cb1f81a6a2e3b91c23da7f9) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add Links to all admin sections
+
 ## 5.2.14
 
 ### Patch Changes
