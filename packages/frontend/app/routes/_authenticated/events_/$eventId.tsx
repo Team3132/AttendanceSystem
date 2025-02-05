@@ -1,10 +1,10 @@
-import AsChildLink from "@/components/AsChildLink";
 import DefaultAppBar from "@/components/DefaultAppBar";
+import { LinkTab } from "@/components/LinkTab";
 import { authQueryOptions } from "@/queries/auth.queries";
 import { eventQueryOptions } from "@/queries/events.queries";
 
 import type { TabItem } from "@/types/TabItem";
-import { Tab, Tabs } from "@mui/material";
+import { Tabs } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import {
   Outlet,
@@ -93,9 +93,13 @@ function Component() {
       />
       <Tabs variant="scrollable" scrollButtons="auto" value={matchingIndex}>
         {tabs.map((tab, index) => (
-          <AsChildLink to={tab.to} params={tab.params} key={tab.label}>
-            <Tab key={tab.to} label={tab.label} value={index} />
-          </AsChildLink>
+          <LinkTab
+            to={tab.to}
+            params={tab.params}
+            key={tab.label}
+            label={tab.label}
+            value={index}
+          />
         ))}
       </Tabs>
       <Outlet />

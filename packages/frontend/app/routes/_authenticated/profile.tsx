@@ -1,8 +1,8 @@
-import AsChildLink from "@/components/AsChildLink";
 import DefaultAppBar from "@/components/DefaultAppBar";
+import { LinkTab } from "@/components/LinkTab";
 
 import type { TabItem } from "@/types/TabItem";
-import { Tab, Tabs } from "@mui/material";
+import { Tabs } from "@mui/material";
 import {
   Outlet,
   createFileRoute,
@@ -43,9 +43,13 @@ function Component() {
       <DefaultAppBar title={"Profile"} />
       <Tabs value={matchingIndex}>
         {tabs.map((tab, index) => (
-          <AsChildLink to={tab.to} params={tab.params} key={tab.label}>
-            <Tab key={tab.to} label={tab.label} value={index} />
-          </AsChildLink>
+          <LinkTab
+            to={tab.to}
+            params={tab.params}
+            key={tab.label}
+            label={tab.label}
+            value={index}
+          />
         ))}
       </Tabs>
       <Outlet />

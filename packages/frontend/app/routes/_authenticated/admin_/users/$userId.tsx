@@ -1,9 +1,9 @@
-import AsChildLink from "@/components/AsChildLink";
 import DefaultAppBar from "@/components/DefaultAppBar";
+import { LinkTab } from "@/components/LinkTab";
 import { usersQueryOptions } from "@/queries/users.queries";
 
 import type { TabItem } from "@/types/TabItem";
-import { Tab, Tabs } from "@mui/material";
+import { Tabs } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import {
   Outlet,
@@ -58,9 +58,13 @@ function Component() {
       <DefaultAppBar title={`${userQuery.data.username}'s Profile`} />
       <Tabs value={matchingIndex}>
         {tabs.map((tab, index) => (
-          <AsChildLink to={tab.to} params={tab.params} key={tab.to}>
-            <Tab key={tab.to} label={tab.label} value={index} />
-          </AsChildLink>
+          <LinkTab
+            to={tab.to}
+            params={tab.params}
+            key={tab.to}
+            label={tab.label}
+            value={index}
+          />
         ))}
       </Tabs>
       <Outlet />

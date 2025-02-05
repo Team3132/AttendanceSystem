@@ -1,11 +1,10 @@
-import AsChildLink from "@/components/AsChildLink";
 import Datatable from "@/components/DataTable";
 import DefaultAppBar from "@/components/DefaultAppBar";
+import { LinkButton } from "@/components/LinkButton";
 import { usersQueryOptions } from "@/queries/users.queries";
 
 import type { UserSchema } from "@/server/schema";
 import {
-  Button,
   CircularProgress,
   Container,
   InputAdornment,
@@ -28,14 +27,15 @@ const columns = [
   columnHelper.display({
     header: "Settings",
     cell: (row) => (
-      <AsChildLink
+      <LinkButton
+        variant="outlined"
         to={"/admin/users/$userId"}
         params={{
           userId: row.row.original.id,
         }}
       >
-        <Button variant="outlined">Settings</Button>
-      </AsChildLink>
+        Settings
+      </LinkButton>
     ),
   }),
 ];

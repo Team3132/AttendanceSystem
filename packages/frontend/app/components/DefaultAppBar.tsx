@@ -1,13 +1,6 @@
-import {
-  AppBar,
-  IconButton,
-  Stack,
-  Toolbar,
-  Typography,
-  styled,
-} from "@mui/material";
+import { AppBar, Stack, Toolbar, Typography, styled } from "@mui/material";
 import { FaCircleUser } from "react-icons/fa6";
-import AsChildLink from "./AsChildLink";
+import { LinkIconButton } from "./LinkIconButton";
 import ModeSwitchButton from "./ModeSwitchButton";
 
 interface DefaultAppBarProps {
@@ -27,11 +20,9 @@ export default function DefaultAppBar({ title }: DefaultAppBarProps) {
         </GrowingTypography>
         <Stack direction="row" spacing={1}>
           <ModeSwitchButton />
-          <AsChildLink to="/profile">
-            <IconButton color="inherit">
-              <FaCircleUser />
-            </IconButton>
-          </AsChildLink>
+          <LinkIconButton to="/profile" color="inherit">
+            <FaCircleUser />
+          </LinkIconButton>
         </Stack>
       </Toolbar>
     </AppBar>
