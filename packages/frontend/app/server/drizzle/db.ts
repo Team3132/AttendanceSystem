@@ -21,8 +21,6 @@ async function migrate() {
   logger.timeEnd("Migrating database...");
 }
 
-console.log("SSR Mode", import.meta.env.SSR);
-
 migrate();
 
 const pgClient = postgres(connectionUrl, {

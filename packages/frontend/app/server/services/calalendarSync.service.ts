@@ -5,6 +5,7 @@ import { type calendar_v3, google } from "googleapis";
 import { asc, eq } from "drizzle-orm";
 import { DateTime } from "luxon";
 import db from "../drizzle/db";
+import { kv } from "../drizzle/kv";
 import { eventParsingRuleTable, eventTable } from "../drizzle/schema";
 import env from "../env";
 import mainLogger from "../logger";
@@ -46,8 +47,6 @@ const promiseifiedCalEventsList = (
     });
   });
 
-let memorySyncToken: string | undefined;
-
 /**
  * Generator function to get all calendar events
  */
@@ -62,12 +61,13 @@ async function* getCalendarEvents() {
 
   let initialData: calendar_v3.Schema$Events;
   try {
-    if (memorySyncToken) {
+    const kvSyncToken = await kv.get<string>("syncToken");
+    if (kvSyncToken) {
       eventLogger.info("Syncing events using sync token");
     }
     initialData = await promiseifiedCalEventsList({
       ...params,
-      syncToken: memorySyncToken,
+      syncToken: kvSyncToken,
     });
   } catch {
     eventLogger.info("Sync token is presumed invalid, fetching all events");
@@ -78,7 +78,7 @@ async function* getCalendarEvents() {
     yield item;
   }
 
-  let { nextPageToken } = initialData;
+  let { nextPageToken, nextSyncToken } = initialData;
 
   while (nextPageToken) {
     const data = await promiseifiedCalEventsList({
@@ -91,7 +91,13 @@ async function* getCalendarEvents() {
     }
 
     nextPageToken = data.nextPageToken;
-    memorySyncToken = data.nextSyncToken ?? undefined;
+    nextSyncToken = data.nextSyncToken;
+  }
+
+  if (nextSyncToken) {
+    await kv.set("syncToken", nextSyncToken);
+  } else {
+    await kv.delete("syncToken");
   }
 }
 
