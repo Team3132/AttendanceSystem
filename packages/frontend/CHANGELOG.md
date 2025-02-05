@@ -1,5 +1,13 @@
 # frontend
 
+## 5.2.16
+
+### Patch Changes
+
+- [`51c3ddf`](https://github.com/Team3132/AttendanceSystem/commit/51c3ddff1c16031fd66a3000581c5e0eb44266fb) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Change from class based themes to data attributes
+
+- [`05f5803`](https://github.com/Team3132/AttendanceSystem/commit/05f5803db5db852aa4993879f4d1a9de041ea9ad) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add KV store
+
 ## 5.2.15
 
 ### Patch Changes
