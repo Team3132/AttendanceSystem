@@ -4,8 +4,7 @@ import useZodForm from "@/hooks/useZodForm";
 import { eventQueryOptions } from "@/queries/events.queries";
 import { SelfCheckinSchema } from "@/server/schema";
 import { isTRPCClientError } from "@/utils/trpc";
-import { LoadingButton } from "@mui/lab";
-import { Container, Paper, Stack, Typography } from "@mui/material";
+import { Button, Container, Paper, Stack, Typography } from "@mui/material";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute(
@@ -81,14 +80,14 @@ function Component() {
               rules={{ required: "This field is required" }}
               required
             />
-            <LoadingButton
+            <Button
               variant="contained"
               color="primary"
               type="submit"
               loading={isSubmitting}
             >
               Check In
-            </LoadingButton>
+            </Button>
           </Stack>
         </Paper>
       </Stack>

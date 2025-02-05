@@ -46,10 +46,11 @@ export async function deleteApiKey(id: string) {
  * @param userId The ID of the user creating the API key
  * @returns The created API key
  */
-export async function createApiKey(userId: string) {
+export async function createApiKey(userId: string, name: string) {
   const [apiKey] = await db
     .insert(apiKeyTable)
     .values({
+      name,
       createdBy: userId,
     })
     .returning();
@@ -312,7 +313,7 @@ export const triggerRule = async (id: string) => {
   }
 };
 
-export const reapplyRules = async () => {
+const reapplyRules = async () => {
   try {
     const futureEvents = await db
       .select({

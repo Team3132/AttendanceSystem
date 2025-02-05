@@ -1,6 +1,5 @@
 import ControlledAutocomplete from "@/components/ControlledAutocomplete";
 import { usersQueryOptions } from "@/queries/users.queries";
-import { LoadingButton } from "@mui/lab";
 import {
   Button,
   Dialog,
@@ -141,9 +140,9 @@ export default function UnknownCodeModal(props: UnknownCodeModalProps) {
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <LoadingButton type="submit" disabled={isSubmitting}>
+        <Button type="submit" loading={isSubmitting}>
           Register
-        </LoadingButton>
+        </Button>
       </DialogActions>
     </Dialog>
   );

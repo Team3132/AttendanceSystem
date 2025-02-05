@@ -1,6 +1,5 @@
 import ControlledTextField from "@/components/ControlledTextField";
-import { LoadingButton } from "@mui/lab";
-import { ListItem } from "@mui/material";
+import { Button, ListItem } from "@mui/material";
 import { TRPCClientError } from "@trpc/client";
 import { z } from "zod";
 import useZodForm from "../../../hooks/useZodForm";
@@ -58,14 +57,14 @@ export default function NewScancodeListItem() {
           required: "Event code is required",
         }}
       />
-      <LoadingButton
+      <Button
         loading={isSubmitting}
         type={"submit"}
         variant="contained"
         size="large"
       >
         Create
-      </LoadingButton>
+      </Button>
     </ListItem>
   );
 }

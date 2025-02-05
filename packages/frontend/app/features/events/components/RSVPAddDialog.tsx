@@ -6,7 +6,6 @@ import { eventQueryOptions } from "@/queries/events.queries";
 import { usersQueryOptions } from "@/queries/users.queries";
 import { RSVPStatusUpdateSchema } from "@/server";
 import { parseDate } from "@/utils/date";
-import { LoadingButton } from "@mui/lab";
 import {
   Button,
   Dialog,
@@ -239,9 +238,9 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <LoadingButton type="submit" loading={isSubmitting}>
+        <Button type="submit" loading={isSubmitting}>
           Save
-        </LoadingButton>
+        </Button>
       </DialogActions>
     </Dialog>
   );

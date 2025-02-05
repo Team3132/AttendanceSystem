@@ -1,5 +1,5 @@
 import { authQueryOptions } from "@/queries/auth.queries";
-import { LoadingButton } from "@mui/lab";
+import { Button } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 import useDeleteEvent from "../hooks/useDeleteEvent";
@@ -21,11 +21,8 @@ export default function DeleteEventButton(props: DeleteEventButtonProps) {
   }
 
   return (
-    <LoadingButton
-      onClick={handleDelete}
-      loading={deleteEventMutation.isPending}
-    >
+    <Button onClick={handleDelete} loading={deleteEventMutation.isPending}>
       Delete Event
-    </LoadingButton>
+    </Button>
   );
 }

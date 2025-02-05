@@ -169,6 +169,13 @@
 			"when": 1738572517702,
 			"tag": "0023_gigantic_wild_child",
 			"breakpoints": true
+		},
+		{
+			"idx": 24,
+			"version": "7",
+			"when": 1738742839007,
+			"tag": "0024_tranquil_thunderbolts",
+			"breakpoints": true
 		}
 	]
 }

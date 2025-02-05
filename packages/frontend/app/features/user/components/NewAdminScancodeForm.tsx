@@ -1,5 +1,4 @@
-import { LoadingButton } from "@mui/lab";
-import { ListItem, TextField } from "@mui/material";
+import { Button, ListItem, TextField } from "@mui/material";
 import { TRPCClientError } from "@trpc/client";
 import { z } from "zod";
 import useZodForm from "../../../hooks/useZodForm";
@@ -70,14 +69,14 @@ export default function NewAdminScancodeListItem(
         error={!!errors.code}
         helperText={errors.code?.message}
       />
-      <LoadingButton
+      <Button
         loading={isSubmitting}
         type={"submit"}
         variant="contained"
         size="large"
       >
         Create
-      </LoadingButton>
+      </Button>
     </ListItem>
   );
 }

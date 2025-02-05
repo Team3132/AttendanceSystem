@@ -221,6 +221,7 @@ export const apiKeyTable = pgTable("ApiKey", {
     .primaryKey()
     .notNull()
     .$default(() => ulid()),
+  name: text("name").notNull(),
   createdBy: text("createdBy").references(() => userTable.id),
   createdAt: timestamp("createdAt", {
     precision: 3,

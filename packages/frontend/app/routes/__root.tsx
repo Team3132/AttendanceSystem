@@ -8,7 +8,11 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import type { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
+import {
+  ErrorComponent,
+  Outlet,
+  createRootRouteWithContext,
+} from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { Meta, Scripts } from "@tanstack/start";
 import type * as React from "react";
@@ -53,6 +57,7 @@ export const Route = createRootRouteWithContext<{
         href: "/favicon.ico",
       },
     ],
+
     // scripts: import.meta.env.DEV
     //   ? [
     //       {
@@ -61,6 +66,7 @@ export const Route = createRootRouteWithContext<{
     //     ]
     //   : undefined,
   }),
+  errorComponent: ErrorComponent,
 });
 
 const theme = createTheme({

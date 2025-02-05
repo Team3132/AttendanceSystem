@@ -45,13 +45,13 @@ function Component() {
 
   const currentChildren = useChildMatches();
 
-  const matchingIndex = useMemo(
-    () =>
-      tabs.findIndex((tab) =>
-        currentChildren.some((child) => child.fullPath === tab.to),
-      ),
-    [currentChildren, tabs],
-  );
+  const matchingIndex = useMemo(() => {
+    const currentTabIndex = tabs.findIndex((tab) =>
+      currentChildren.some((child) => child.fullPath === tab.to),
+    );
+
+    return currentTabIndex === -1 ? 0 : currentTabIndex;
+  }, [currentChildren, tabs]);
 
   return (
     <>

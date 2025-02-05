@@ -5,8 +5,7 @@ import useCreateRule from "@/features/admin/hooks/useCreateRule";
 import useZodForm from "@/hooks/useZodForm";
 import { discordQueryOptions } from "@/queries/discord.queries";
 import { strToRegex } from "@/server/utils/regexBuilder";
-import { LoadingButton } from "@mui/lab";
-import { Container, Divider, Typography } from "@mui/material";
+import { Button, Container, Divider, Typography } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import cron from "cron-validate";
@@ -196,14 +195,14 @@ function RouteComponent() {
           rules={{}}
           helperText="The higher the number, the higher the priority"
         />
-        <LoadingButton
+        <Button
           type="submit"
           variant="contained"
           color="primary"
           loading={isSubmitting}
         >
           Submit
-        </LoadingButton>
+        </Button>
       </Container>
     </>
   );

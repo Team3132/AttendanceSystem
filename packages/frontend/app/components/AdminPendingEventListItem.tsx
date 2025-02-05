@@ -1,6 +1,5 @@
 import type { RSVPEventSchema } from "@/server/schema";
-import { LoadingButton } from "@mui/lab";
-import { ListItem, ListItemText } from "@mui/material";
+import { Button, ListItem, ListItemText } from "@mui/material";
 import { DateTime } from "luxon";
 import type { z } from "zod";
 import useUserCheckout from "../hooks/useUserCheckout";
@@ -31,14 +30,14 @@ export default function PendingEventListItem(props: PendingEventListItemProps) {
             : "Unknown"
         }`}
       />
-      <LoadingButton
+      <Button
         variant="contained"
         color="primary"
         loading={userCheckoutMutation.isPending}
         onClick={handleClick}
       >
         Checkout
-      </LoadingButton>
+      </Button>
     </ListItem>
   );
 }

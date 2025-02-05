@@ -18,5 +18,5 @@
 			"ignoreDependencies": ["@tanstack/router-plugin", "@vitejs/plugin-react"]
 		}
 	},
-	"ignoreDependencies": ["@biomejs/biome", "@changesets/cli", "@swc/cli"]
+	"ignoreDependencies": ["@changesets/cli", "@swc/cli"]
 }

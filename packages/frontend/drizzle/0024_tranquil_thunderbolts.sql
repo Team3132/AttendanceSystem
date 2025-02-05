@@ -1,0 +1,1 @@
+ALTER TABLE "ApiKey" ADD COLUMN "name" text NOT NULL;

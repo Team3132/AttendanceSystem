@@ -1,6 +1,12 @@
 import { isTRPCClientError } from "@/utils/trpc";
-import { LoadingButton } from "@mui/lab";
-import { Paper, Stack, TextField, Typography, styled } from "@mui/material";
+import {
+  Button,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+  styled,
+} from "@mui/material";
 import { useCallback, useState } from "react";
 import { z } from "zod";
 import { useDisclosure } from "../../../hooks/useDisclosure";
@@ -97,14 +103,14 @@ export default function ScaninCard(props: ScaninCardProps) {
             helperText={errors.code?.message ?? scanInMutation.error?.message}
             autoFocus
           />
-          <LoadingButton
+          <Button
             type="submit"
             variant="contained"
             color="primary"
             loading={isSubmitting}
           >
             Scan In
-          </LoadingButton>
+          </Button>
         </Stack>
       </Stack>
       {unknownCode ? (

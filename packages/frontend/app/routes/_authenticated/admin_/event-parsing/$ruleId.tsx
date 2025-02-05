@@ -6,8 +6,7 @@ import useZodForm from "@/hooks/useZodForm";
 import { adminQueries } from "@/queries/adminQueries";
 import { discordQueryOptions } from "@/queries/discord.queries";
 import { strToRegex } from "@/server/utils/regexBuilder";
-import { LoadingButton } from "@mui/lab";
-import { Container, TextField, Typography } from "@mui/material";
+import { Button, Container, TextField, Typography } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo } from "react";
@@ -154,14 +153,14 @@ function RouteComponent() {
           type="number"
           helperText="The higher the number, the higher the priority"
         />
-        <LoadingButton
+        <Button
           type="submit"
           variant="contained"
           color="primary"
           loading={isSubmitting}
         >
           Save
-        </LoadingButton>
+        </Button>
       </Container>
     </>
   );

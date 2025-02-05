@@ -5,8 +5,7 @@ import useCreateEvent from "@/features/events/hooks/useCreateEvent";
 import useZodForm from "@/hooks/useZodForm";
 import { authQueryOptions } from "@/queries/auth.queries";
 import { CreateEventSchema } from "@/server/schema";
-import { LoadingButton } from "@mui/lab";
-import { Container, Stack, Switch } from "@mui/material";
+import { Button, Container, Stack, Switch } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { DateTime } from "luxon";
@@ -117,9 +116,9 @@ function Component() {
               { label: "Social", value: "Social" },
             ]}
           />
-          <LoadingButton loading={isSubmitting} type="submit">
+          <Button loading={isSubmitting} type="submit">
             Create
-          </LoadingButton>
+          </Button>
         </Stack>
       </Container>
     </>

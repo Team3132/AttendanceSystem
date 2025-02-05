@@ -6,7 +6,7 @@ import type { SimpleServerFn } from "@/types/SimpleServerFn";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
 
-export const createEventFn: SimpleServerFn<
+const createEventFn: SimpleServerFn<
   typeof CreateEventSchema,
   typeof createEvent
 > = createServerFn({

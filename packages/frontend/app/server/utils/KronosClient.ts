@@ -1,13 +1,11 @@
 import { z } from "zod";
 
-export const ScheduleStatusSchema = z.enum([
+const ScheduleStatusSchema = z.enum([
   "not_started",
   "active",
   "paused",
   "expired",
 ]);
-
-export type ScheduleStatus = z.infer<typeof ScheduleStatusSchema>;
 
 export const ScheduleSchema = z.object({
   id: z.number(),
@@ -24,15 +22,15 @@ export const ScheduleSchema = z.object({
   endAt: z.string(),
 });
 
-export type Schedule = z.infer<typeof ScheduleSchema>;
+type Schedule = z.infer<typeof ScheduleSchema>;
 
-export const NewScheduleSchema = ScheduleSchema.partial().omit({
+const NewScheduleSchema = ScheduleSchema.partial().omit({
   id: true,
   status: true,
   createdAt: true,
 });
 
-export type NewSchedule = z.infer<typeof NewScheduleSchema>;
+type NewSchedule = z.infer<typeof NewScheduleSchema>;
 
 /**
  * Kronos API client
