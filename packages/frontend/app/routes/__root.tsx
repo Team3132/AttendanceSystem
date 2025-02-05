@@ -75,13 +75,14 @@ const theme = createTheme({
     light: true,
   },
   cssVariables: {
-    colorSchemeSelector: "class",
+    colorSchemeSelector: "data",
   },
 });
 
 function RootComponent() {
   return (
     <RootDocument>
+      <InitColorSchemeScript attribute="data" />
       <LocalizationProvider adapterLocale={"en-au"} dateAdapter={AdapterLuxon}>
         <ThemeProvider theme={theme}>
           <Outlet />
@@ -108,7 +109,6 @@ function RootDocument({ children }: Readonly<{ children: React.ReactNode }>) {
         </style>
       </head>
       <body>
-        <InitColorSchemeScript attribute="class" />
         {children}
         {import.meta.env.DEV ? (
           <>
