@@ -3,5 +3,14 @@
 		"quickfix.biome": "explicit"
 	},
 	"editor.formatOnSave": true,
-	"git.openRepositoryInParentFolders": "always"
+	"git.openRepositoryInParentFolders": "always",
+  "files.watcherExclude": {
+    "**/routeTree.gen.ts": true
+  },
+  "search.exclude": {
+    "**/routeTree.gen.ts": true
+  },
+  "files.readonlyInclude": {
+    "**/routeTree.gen.ts": true
+}
 }
