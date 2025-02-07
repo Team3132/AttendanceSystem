@@ -72,7 +72,8 @@ const parsingRuleWebhookUrl = `${env.VITE_FRONTEND_URL}/api/scheduler/reminder/t
 export async function createParsingRule(
   data: z.infer<typeof NewEventParsingRuleSchema>,
 ) {
-  const { name, regex, cronExpr, channelId, roleIds, priority } = data;
+  const { name, regex, cronExpr, channelId, roleIds, priority, isOutreach } =
+    data;
 
   const kronosURL = env.VITE_KRONOS_URL;
 
@@ -111,6 +112,7 @@ export async function createParsingRule(
       channelId,
       roleIds,
       priority,
+      isOutreach,
     })
     .returning();
 
@@ -255,7 +257,7 @@ export async function updateParsingRule(
   id: string,
   data: z.infer<typeof UpdateEventParsingRuleSchema>,
 ) {
-  const { channelId, regex, roleIds, priority } = data;
+  const { channelId, regex, roleIds, priority, isOutreach } = data;
   const [updated] = await db
     .update(eventParsingRuleTable)
     .set({
@@ -263,6 +265,7 @@ export async function updateParsingRule(
       regex,
       roleIds,
       priority,
+      isOutreach,
     })
     .where(eq(eventParsingRuleTable.id, id))
     .returning();

@@ -1,4 +1,5 @@
 import ControlledAutocomplete from "@/components/ControlledAutocomplete";
+import ControlledCheckbox from "@/components/ControlledCheckbox";
 import ControlledTextField from "@/components/ControlledTextField";
 import DefaultAppBar from "@/components/DefaultAppBar";
 import useUpdateRule from "@/features/admin/hooks/useUpdateRule";
@@ -41,6 +42,7 @@ const NewEventParsingRuleFormSchema = z.object({
       }
     }),
   roles: z.array(OptionSchema).min(1),
+  isOutreach: z.boolean(),
 });
 
 function RouteComponent() {
@@ -87,6 +89,7 @@ function RouteComponent() {
       roles: roleOptions.filter((r) =>
         parsingRuleQuery.data?.roleIds.includes(r.value),
       ),
+      isOutreach: parsingRuleQuery.data?.isOutreach,
     },
   });
 
@@ -152,6 +155,11 @@ function RouteComponent() {
           label="Priority"
           type="number"
           helperText="The higher the number, the higher the priority"
+        />
+        <ControlledCheckbox
+          control={control}
+          name="isOutreach"
+          label="Counts for Outreach?"
         />
         <Button
           type="submit"

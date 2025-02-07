@@ -17,7 +17,7 @@ type ControlledCheckboxProps<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = Omit<
   FormControlLabelProps,
-  "onChange" | "value" | "defaultValue" | "onBlur" | "error"
+  "onChange" | "value" | "defaultValue" | "onBlur" | "error" | "control"
 > &
   UseControllerProps<TFieldValues, TName>;
 
@@ -35,7 +35,7 @@ export default function ControlledCheckbox<
     ...rest
   } = props;
 
-  const { field, fieldState } = useController({
+  const { field, fieldState } = useController<TFieldValues, TName>({
     control,
     name,
     defaultValue,

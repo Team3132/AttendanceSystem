@@ -1,4 +1,5 @@
 import ControlledAutocomplete from "@/components/ControlledAutocomplete";
+import ControlledCheckbox from "@/components/ControlledCheckbox";
 import ControlledTextField from "@/components/ControlledTextField";
 import DefaultAppBar from "@/components/DefaultAppBar";
 import useCreateRule from "@/features/admin/hooks/useCreateRule";
@@ -38,6 +39,7 @@ export const Route = createFileRoute(
         message: "Invalid cron expression",
       })
       .optional(),
+    isOutreach: z.boolean().optional(),
   }),
 });
 
@@ -65,6 +67,7 @@ const NewEventParsingRuleFormSchema = z.object({
   cronExpr: z.string().refine((v) => cron(v).isValid(), {
     message: "Invalid cron expression",
   }),
+  isOutreach: z.boolean(),
 });
 
 function RouteComponent() {
@@ -109,6 +112,7 @@ function RouteComponent() {
         ? roleOptions.filter((r) => searchParams.roleIds?.includes(r.value))
         : [],
       priority: searchParams.priority ?? 0,
+      isOutreach: searchParams.isOutreach ?? false,
     },
   });
 
@@ -194,6 +198,11 @@ function RouteComponent() {
           type="number"
           rules={{}}
           helperText="The higher the number, the higher the priority"
+        />
+        <ControlledCheckbox
+          control={control}
+          name="isOutreach"
+          label="Counts for Outreach?"
         />
         <Button
           type="submit"

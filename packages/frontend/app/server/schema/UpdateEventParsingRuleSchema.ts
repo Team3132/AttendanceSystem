@@ -16,4 +16,5 @@ export const UpdateEventParsingRuleSchema = z.object({
     .optional(),
   roleIds: z.array(z.string()).optional(),
   priority: z.number().int().min(0).max(100).optional(),
+  isOutreach: z.boolean().optional(),
 });

@@ -261,6 +261,8 @@ export const eventParsingRuleTable = pgTable("EventParsingRule", {
   roleIds: text("rolesIds").array().notNull(),
   /** Priority */
   priority: integer("priority").notNull().default(0),
+  /** Counts for outreach */
+  isOutreach: boolean("isOutreach").notNull().default(false),
 });
 
 export const eventParsingRuleTableRelations = relations(

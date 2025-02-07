@@ -18,4 +18,5 @@ export const NewEventParsingRuleSchema = z.object({
   cronExpr: z.string().refine((v) => cron(v).isValid(), {
     message: "Invalid cron expression",
   }),
+  isOutreach: z.boolean(),
 });
