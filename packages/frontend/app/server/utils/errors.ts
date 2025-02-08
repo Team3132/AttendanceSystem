@@ -17,13 +17,19 @@ const ErrorSchema = z.object({
 interface ServerErrorOptions {
   code: z.infer<typeof ErrorLiteral>;
   message: string;
+  stack?: string;
 }
 
-export const createServerError = ({ code, message }: ServerErrorOptions) => {
+export const createServerError = ({
+  code,
+  message,
+  stack,
+}: ServerErrorOptions) => {
   return json(
     {
       code,
       message,
+      stack: import.meta.env.DEV ? stack : undefined,
     },
     {
       status: 500,
