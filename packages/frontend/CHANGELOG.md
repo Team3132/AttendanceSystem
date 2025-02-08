@@ -1,5 +1,11 @@
 # frontend
 
+## 5.2.17
+
+### Patch Changes
+
+- [#2437](https://github.com/Team3132/AttendanceSystem/pull/2437) [`1246b9f`](https://github.com/Team3132/AttendanceSystem/commit/1246b9f84af1dc640d07b67efb1f35f0c19439fc) Thanks [@renovate](https://github.com/apps/renovate)! - fix(deps): update dependency vinxi to v0.5.2
+
 ## 5.2.16
 
 ### Patch Changes
