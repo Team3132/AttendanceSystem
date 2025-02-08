@@ -1,4 +1,5 @@
 import ControlledAutocomplete from "@/components/ControlledAutocomplete";
+import ControlledTextField from "@/components/ControlledTextField";
 import { usersQueryOptions } from "@/queries/users.queries";
 import { isServerError } from "@/server/utils/errors";
 import {
@@ -9,7 +10,6 @@ import {
   DialogContentText,
   DialogTitle,
   Stack,
-  TextField,
 } from "@mui/material";
 import { keepPreviousData } from "@tanstack/react-query";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -55,17 +55,17 @@ export default function UnknownCodeModal(props: UnknownCodeModalProps) {
   const { code, open, onClose, successCallback } = props;
 
   const {
-    register,
-    formState: { isSubmitting, errors },
+    formState: { isSubmitting },
     handleSubmit,
     control,
     reset,
     setError,
   } = useZodForm({
     schema: RegisterNewCodeFormSchema,
-    defaultValues: RegisterNewCodeFormSchema.parse({
-      code,
-    }),
+    defaultValues: {
+      code: "",
+      userOption: null,
+    },
   });
 
   useEffect(() => {
@@ -127,14 +127,11 @@ export default function UnknownCodeModal(props: UnknownCodeModalProps) {
           }}
         >
           <SearchingAutocomplete control={control} name="userOption" />
-          <TextField
-            {...register("code")}
+          <ControlledTextField
+            control={control}
+            name="code"
             label="Code"
             required
-            helperText={
-              errors.code?.message ?? "Scan the card you want to add."
-            }
-            error={!!errors.code}
           />
         </Stack>
       </DialogContent>
