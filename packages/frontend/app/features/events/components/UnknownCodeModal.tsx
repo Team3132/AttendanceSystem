@@ -124,6 +124,7 @@ export default function UnknownCodeModal(props: UnknownCodeModalProps) {
           gap={2}
           sx={{
             mt: 2,
+            justifyItems: "start",
           }}
         >
           <SearchingAutocomplete control={control} name="userOption" />
