@@ -108,10 +108,10 @@ export default function InfiniteList<T>(props: InfiniteListProps<T>) {
           };
 
           return renderRow({
+            index: virtualItem.index,
             row: item,
             style: newStyle,
             ref: (node) => virtualizer.measureElement(node),
-            index: virtualItem.index,
           });
         })}
       </div>

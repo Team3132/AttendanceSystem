@@ -1,12 +1,6 @@
-import { isTRPCClientError } from "@/utils/trpc";
-import {
-  Button,
-  Paper,
-  Stack,
-  TextField,
-  Typography,
-  styled,
-} from "@mui/material";
+import ControlledTextField from "@/components/ControlledTextField";
+import { isServerError } from "@/server/utils/errors";
+import { Button, Paper, Stack, Typography, styled } from "@mui/material";
 import { useCallback, useState } from "react";
 import { z } from "zod";
 import { useDisclosure } from "../../../hooks/useDisclosure";
@@ -35,9 +29,9 @@ export default function ScaninCard(props: ScaninCardProps) {
   const { getDisclosureProps, onOpen } = useDisclosure();
 
   const {
-    register,
     setFocus,
-    formState: { errors, isSubmitting },
+    control,
+    formState: { isSubmitting },
     handleSubmit,
     reset,
   } = useZodForm({
@@ -62,8 +56,7 @@ export default function ScaninCard(props: ScaninCardProps) {
         setUnknownCode(undefined);
         setFocus("code");
       } catch (error) {
-        if (isTRPCClientError(error) && error.data?.code === "NOT_FOUND") {
-          console.log(error);
+        if (isServerError(error) && error.code === "NOT_FOUND") {
           setUnknownCode(data.code);
           onOpen();
         }
@@ -94,14 +87,11 @@ export default function ScaninCard(props: ScaninCardProps) {
             justifyContent: "center",
           }}
         >
-          <TextField
-            {...register("code")}
-            label="Scan In Code"
-            variant="outlined"
-            disabled={isSubmitting}
-            error={!!errors.code || scanInMutation.isError}
-            helperText={errors.code?.message ?? scanInMutation.error?.message}
-            autoFocus
+          <ControlledTextField
+            control={control}
+            name="code"
+            label="Code"
+            helperText={"Enter a code to scan in"}
           />
           <Button
             type="submit"

@@ -1,6 +1,3 @@
-"use server";
-
-import { TRPCError } from "@trpc/server";
 import { and, count, eq, ilike, isNotNull, isNull } from "drizzle-orm";
 import type { z } from "zod";
 import db from "../drizzle/db";
@@ -8,6 +5,7 @@ import { scancodeTable, userTable } from "../drizzle/schema";
 import type { UserCreateSchema } from "../schema";
 import type { PagedUserSchema } from "../schema/PagedUserSchema";
 import type { UserListParamsSchema } from "../schema/UserListParamsSchema";
+import { createServerError } from "../utils/errors";
 
 /**
  * Gets a user from the database
@@ -20,7 +18,7 @@ export async function getUser(userId: string) {
   });
 
   if (!dbUser) {
-    throw new TRPCError({
+    throw createServerError({
       code: "NOT_FOUND",
       message: "User not found",
     });
@@ -119,7 +117,7 @@ export async function createUserScancode(userId: string, scancodeCode: string) {
     .limit(1);
 
   if (dbScancode) {
-    throw new TRPCError({
+    throw createServerError({
       code: "BAD_REQUEST",
       message: "Scancode already exists",
     });
@@ -134,7 +132,7 @@ export async function createUserScancode(userId: string, scancodeCode: string) {
     .returning();
 
   if (!createdScancode) {
-    throw new TRPCError({
+    throw createServerError({
       code: "BAD_REQUEST",
       message: "Scancode does not exist",
     });
@@ -154,7 +152,7 @@ export async function removeScancode(userId: string, code: string) {
     .limit(1);
 
   if (!dbScancode) {
-    throw new TRPCError({
+    throw createServerError({
       code: "BAD_REQUEST",
       message: "Scancode does not exist",
     });
@@ -166,7 +164,7 @@ export async function removeScancode(userId: string, code: string) {
     .returning();
 
   // if (!deletedScancode) {
-  //   throw new TRPCError({
+  //   throw createServerError({
   //     code: "BAD_REQUEST",
   //     message: "Scancode does not exist",
   //   });
@@ -194,7 +192,7 @@ export async function createUser(userdata: z.infer<typeof UserCreateSchema>) {
     .returning();
 
   if (!dbUser) {
-    throw new TRPCError({
+    throw createServerError({
       code: "BAD_REQUEST",
       message: "User does not exist",
     });

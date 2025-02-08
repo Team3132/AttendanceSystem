@@ -10,7 +10,10 @@ const enforceApiToken = t.middleware(({ next }) => {
   const authorizationHeader = getHeader("authorization");
 
   if (!authorizationHeader) {
-    throw new TRPCError({ code: "UNAUTHORIZED", message: "API Token not set" });
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "API Token not set",
+    });
   }
 
   const envApiToken = env.VITE_BACKEND_SECRET_TOKEN;
@@ -23,7 +26,10 @@ const enforceApiToken = t.middleware(({ next }) => {
   }
 
   if (authorizationHeader !== `Bearer ${envApiToken}`) {
-    throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid API Token" });
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "Invalid API Token",
+    });
   }
 
   return next();

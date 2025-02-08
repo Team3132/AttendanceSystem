@@ -1,5 +1,6 @@
 import ControlledAutocomplete from "@/components/ControlledAutocomplete";
 import { usersQueryOptions } from "@/queries/users.queries";
+import { isServerError } from "@/server/utils/errors";
 import {
   Button,
   Dialog,
@@ -12,7 +13,6 @@ import {
 } from "@mui/material";
 import { keepPreviousData } from "@tanstack/react-query";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { TRPCClientError } from "@trpc/client";
 import { useEffect, useMemo } from "react";
 import type {
   FieldPath,
@@ -96,7 +96,7 @@ export default function UnknownCodeModal(props: UnknownCodeModalProps) {
 
       onClose();
     } catch (error) {
-      if (error instanceof TRPCClientError) {
+      if (isServerError(error)) {
         setError("code", {
           message: error.message,
         });

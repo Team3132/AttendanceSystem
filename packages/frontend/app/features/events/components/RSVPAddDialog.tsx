@@ -5,6 +5,7 @@ import { useDisclosure } from "@/hooks/useDisclosure";
 import { eventQueryOptions } from "@/queries/events.queries";
 import { usersQueryOptions } from "@/queries/users.queries";
 import { RSVPStatusUpdateSchema } from "@/server";
+import { isServerError } from "@/server/utils/errors";
 import { parseDate } from "@/utils/date";
 import {
   Button,
@@ -17,7 +18,6 @@ import {
 } from "@mui/material";
 import { keepPreviousData, useSuspenseQuery } from "@tanstack/react-query";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { TRPCClientError } from "@trpc/client";
 import { DateTime } from "luxon";
 import { useCallback, useMemo } from "react";
 import type {
@@ -100,7 +100,7 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
       reset();
       onClose();
     } catch (error) {
-      if (error instanceof TRPCClientError) {
+      if (isServerError(error)) {
         setError("userOption", {
           message: error.message,
         });

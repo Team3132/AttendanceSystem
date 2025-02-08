@@ -1,4 +1,3 @@
-import { TRPCError } from "@trpc/server";
 import { and, asc, eq, gte, not } from "drizzle-orm";
 import { ulid } from "ulidx";
 import { z } from "zod";
@@ -15,6 +14,7 @@ import type {
   UpdateEventParsingRuleSchema,
 } from "../schema";
 import KronosClient from "../utils/KronosClient";
+import { createServerError } from "../utils/errors";
 import { strToRegex } from "../utils/regexBuilder";
 
 /**
@@ -78,7 +78,7 @@ export async function createParsingRule(
   const kronosURL = env.VITE_KRONOS_URL;
 
   if (!kronosURL) {
-    throw new TRPCError({
+    throw createServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Kronos URL not set",
     });
@@ -117,8 +117,9 @@ export async function createParsingRule(
     .returning();
 
   if (!parsingRule) {
-    throw new TRPCError({
+    throw createServerError({
       code: "INTERNAL_SERVER_ERROR",
+      message: "Error creating parsing rule",
     });
   }
 
@@ -136,7 +137,7 @@ export async function getParsingRules() {
 
   const promisedKronos = parsingRules.map(async (rule) => {
     if (!env.VITE_KRONOS_URL) {
-      throw new TRPCError({
+      throw createServerError({
         code: "INTERNAL_SERVER_ERROR",
         message: "Kronos URL not set",
       });
@@ -153,7 +154,7 @@ export async function getParsingRules() {
       };
     } catch {
       deleteParsingRule(rule.id);
-      throw new TRPCError({
+      throw createServerError({
         code: "INTERNAL_SERVER_ERROR",
         message: "Error getting parsing rule from Kronos",
       });
@@ -175,14 +176,14 @@ export const getParsingRule = async (id: string) => {
     .where(eq(eventParsingRuleTable.id, id));
 
   if (!rule) {
-    throw new TRPCError({
+    throw createServerError({
       code: "NOT_FOUND",
       message: "Parsing rule not found",
     });
   }
 
   if (!env.VITE_KRONOS_URL) {
-    throw new TRPCError({
+    throw createServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Kronos URL not set",
     });
@@ -209,7 +210,7 @@ export const getParsingRule = async (id: string) => {
  */
 export async function deleteParsingRule(id: string) {
   if (!env.VITE_KRONOS_URL) {
-    throw new TRPCError({
+    throw createServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Kronos URL not set",
     });
@@ -223,7 +224,7 @@ export async function deleteParsingRule(id: string) {
     .where(eq(eventParsingRuleTable.id, id));
 
   if (!rule) {
-    throw new TRPCError({
+    throw createServerError({
       code: "NOT_FOUND",
       message: "Parsing rule not found",
     });
@@ -271,7 +272,7 @@ export async function updateParsingRule(
     .returning();
 
   if (!updated) {
-    throw new TRPCError({
+    throw createServerError({
       code: "NOT_FOUND",
       message: "Parsing rule not found",
     });
@@ -289,14 +290,14 @@ export const triggerRule = async (id: string) => {
     .where(eq(eventParsingRuleTable.id, id));
 
   if (!rule) {
-    throw new TRPCError({
+    throw createServerError({
       code: "NOT_FOUND",
       message: "Parsing rule not found",
     });
   }
 
   if (!env.VITE_KRONOS_URL) {
-    throw new TRPCError({
+    throw createServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Kronos URL not set",
     });
@@ -309,7 +310,7 @@ export const triggerRule = async (id: string) => {
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Error triggering parsing rule";
-    throw new TRPCError({
+    throw createServerError({
       code: "INTERNAL_SERVER_ERROR",
       message,
     });

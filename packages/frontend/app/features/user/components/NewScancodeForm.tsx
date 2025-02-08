@@ -1,6 +1,6 @@
 import ControlledTextField from "@/components/ControlledTextField";
+import { isServerError } from "@/server/utils/errors";
 import { Button, ListItem } from "@mui/material";
-import { TRPCClientError } from "@trpc/client";
 import { z } from "zod";
 import useZodForm from "../../../hooks/useZodForm";
 import useCreateSelfScancode from "../hooks/useCreateSelfScancode";
@@ -38,7 +38,7 @@ export default function NewScancodeListItem() {
         code: "",
       });
     } catch (error) {
-      if (error instanceof TRPCClientError) {
+      if (isServerError(error)) {
         setError("code", {
           message: error.message,
         });

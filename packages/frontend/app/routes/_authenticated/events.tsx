@@ -6,18 +6,7 @@ import UpcomingEventListItem from "@/features/events/components/UpcomingEventLis
 import { authQueryOptions } from "@/queries/auth.queries";
 import { eventQueryOptions } from "@/queries/events.queries";
 import { EventTypeSchema } from "@/server/schema";
-import {
-  Box,
-  Container,
-  FormControl,
-  InputLabel,
-  ListItemButton,
-  MenuItem,
-  Select,
-  type SelectChangeEvent,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Container, ListItemButton, Stack } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import {
   useSuspenseInfiniteQuery,
@@ -50,51 +39,31 @@ export const Route = createFileRoute("/_authenticated/events")({
   head: () => ({
     meta: [{ title: "Events" }],
   }),
-  loader: async ({ context: { queryClient }, deps: { from, type, limit } }) => {
-    await queryClient.prefetchQuery(authQueryOptions.status());
+  loader: ({ context: { queryClient }, deps }) => {
+    queryClient.prefetchQuery(authQueryOptions.status());
 
-    await queryClient.prefetchInfiniteQuery(
-      eventQueryOptions.eventList({
-        from,
-        type,
-        limit,
-      }),
-    );
+    queryClient.prefetchInfiniteQuery(eventQueryOptions.eventList(deps));
   },
 });
 
 function Component() {
-  const { from, type, limit } = Route.useSearch();
+  const { from, limit, type } = Route.useSearch();
 
   const navigate = Route.useNavigate();
 
   const infiniteEventsQuery = useSuspenseInfiniteQuery(
     eventQueryOptions.eventList({
       from,
-      type,
       limit,
+      type,
     }),
-  );
-
-  const handleTypeChange = useCallback(
-    (event: SelectChangeEvent) => {
-      navigate({
-        search: (prev) => ({
-          ...prev,
-          type: event.target.value as
-            | z.infer<typeof EventTypeSchema>
-            | undefined,
-        }),
-      });
-    },
-    [navigate],
   );
 
   const handleStartChange = useCallback(
     (date: DateTime<true> | DateTime<false> | null) => {
       const iso = date?.toISODate();
       navigate({
-        search: (prev) => ({ ...prev, from: iso ? iso : defaultValues.from }),
+        search: (prev) => ({ ...prev, from: iso ?? defaultValues.from }),
       });
     },
     [navigate],
@@ -118,42 +87,6 @@ function Component() {
           flexDirection={"column"}
           width={"100%"}
         >
-          <Box
-            sx={{
-              display: "flex",
-              alignContent: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <Typography
-              variant="h4"
-              sx={{
-                flexGrow: 1,
-              }}
-            >
-              Upcoming Events
-            </Typography>
-            <FormControl
-              sx={{
-                minWidth: 120,
-              }}
-            >
-              <InputLabel id="select-event-type-label">Type</InputLabel>
-              <Select
-                labelId="select-event-type-label"
-                id="select-event-type"
-                value={type ?? ""}
-                onChange={handleTypeChange}
-                label="Type"
-              >
-                <MenuItem value={undefined}>All</MenuItem>
-                <MenuItem value={"Outreach"}>Outreach</MenuItem>
-                <MenuItem value={"Regular"}>Regular</MenuItem>
-                <MenuItem value={"Social"}>Social</MenuItem>
-                <MenuItem value={"Mentor"}>Mentor</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <DatePicker
               value={DateTime.fromISO(from ?? defaultValues.from)}

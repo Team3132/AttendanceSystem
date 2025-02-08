@@ -1,5 +1,5 @@
+import { isServerError } from "@/server/utils/errors";
 import { Button, ListItem, TextField } from "@mui/material";
-import { TRPCClientError } from "@trpc/client";
 import { z } from "zod";
 import useZodForm from "../../../hooks/useZodForm";
 import useCreateUserScancode from "../hooks/useCreateUserScancode";
@@ -49,7 +49,7 @@ export default function NewAdminScancodeListItem(
         code: "",
       });
     } catch (error) {
-      if (error instanceof TRPCClientError) {
+      if (isServerError(error)) {
         setError("code", {
           message: error.message,
         });

@@ -3,7 +3,7 @@ import useSelfCheckin from "@/features/events/hooks/useSelfCheckin";
 import useZodForm from "@/hooks/useZodForm";
 import { eventQueryOptions } from "@/queries/events.queries";
 import { SelfCheckinSchema } from "@/server/schema";
-import { isTRPCClientError } from "@/utils/trpc";
+import { isServerError } from "@/server/utils/errors";
 import { Button, Container, Paper, Stack, Typography } from "@mui/material";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 
@@ -52,8 +52,8 @@ function Component() {
         to: "/",
       });
     } catch (e) {
-      if (isTRPCClientError(e)) {
-        // alert.error(e.message, { timeout: 2000 });
+      if (isServerError(e)) {
+        console.error(e);
       }
     }
   });
