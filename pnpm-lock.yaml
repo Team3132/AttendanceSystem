@@ -265,8 +265,8 @@ importers:
         specifier: 11.0.5
         version: 11.0.5
       vinxi:
-        specifier: 0.5.2
-        version: 0.5.2(@types/node@22.13.1)(db0@0.2.3(drizzle-orm@0.39.2(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@19.0.8)(pg@8.13.1)(postgres@3.4.5)(react@19.0.0)))(drizzle-orm@0.39.2(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@19.0.8)(pg@8.13.1)(postgres@3.4.5)(react@19.0.0))(ioredis@5.4.2)(jiti@2.4.2)(terser@5.37.0)(tsx@4.19.2)(typescript@5.7.3)
+        specifier: 0.5.3
+        version: 0.5.3(@types/node@22.13.1)(db0@0.2.3(drizzle-orm@0.39.2(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@19.0.8)(pg@8.13.1)(postgres@3.4.5)(react@19.0.0)))(drizzle-orm@0.39.2(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@19.0.8)(pg@8.13.1)(postgres@3.4.5)(react@19.0.0))(ioredis@5.4.2)(jiti@2.4.2)(terser@5.37.0)(tsx@4.19.2)(typescript@5.7.3)
       zod:
         specifier: 3.24.1
         version: 3.24.1
@@ -5959,8 +5959,8 @@ packages:
     resolution: {integrity: sha512-jvl2hJ0fyWwfDVQdDDHCJiVxqU4k0A6kFAnljS0kIjrGfhdTvKEWIoj0bcJgMyrKhxNMoZZGmHZsstQgjDIL3g==}
     hasBin: true
 
-  vinxi@0.5.2:
-    resolution: {integrity: sha512-An+ilEY9Vo55KNxsES9qDe8vpyXguV+7vWNAql755T8JSWT5UXL4FSugoUxmql5/uH5n/6GEVzfQY43OGe8Ztg==}
+  vinxi@0.5.3:
+    resolution: {integrity: sha512-4sL2SMrRzdzClapP44oXdGjCE1oq7/DagsbjY5A09EibmoIO4LP8ScRVdh03lfXxKRk7nCWK7n7dqKvm+fp/9w==}
     hasBin: true
 
   vite-plugin-externalize-deps@0.9.0:
@@ -8433,7 +8433,7 @@ snapshots:
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
       tiny-invariant: 1.3.3
-      vinxi: 0.5.2(@types/node@22.13.1)(db0@0.2.3(drizzle-orm@0.39.2(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@19.0.8)(pg@8.13.1)(postgres@3.4.5)(react@19.0.0)))(drizzle-orm@0.39.2(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@19.0.8)(pg@8.13.1)(postgres@3.4.5)(react@19.0.0))(ioredis@5.4.2)(jiti@2.4.2)(terser@5.37.0)(tsx@4.19.2)(typescript@5.7.3)
+      vinxi: 0.5.3(@types/node@22.13.1)(db0@0.2.3(drizzle-orm@0.39.2(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@19.0.8)(pg@8.13.1)(postgres@3.4.5)(react@19.0.0)))(drizzle-orm@0.39.2(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@19.0.8)(pg@8.13.1)(postgres@3.4.5)(react@19.0.0))(ioredis@5.4.2)(jiti@2.4.2)(terser@5.37.0)(tsx@4.19.2)(typescript@5.7.3)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -12318,7 +12318,7 @@ snapshots:
       - xml2js
       - yaml
 
-  vinxi@0.5.2(@types/node@22.13.1)(db0@0.2.3(drizzle-orm@0.39.2(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@19.0.8)(pg@8.13.1)(postgres@3.4.5)(react@19.0.0)))(drizzle-orm@0.39.2(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@19.0.8)(pg@8.13.1)(postgres@3.4.5)(react@19.0.0))(ioredis@5.4.2)(jiti@2.4.2)(terser@5.37.0)(tsx@4.19.2)(typescript@5.7.3):
+  vinxi@0.5.3(@types/node@22.13.1)(db0@0.2.3(drizzle-orm@0.39.2(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@19.0.8)(pg@8.13.1)(postgres@3.4.5)(react@19.0.0)))(drizzle-orm@0.39.2(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(@types/react@19.0.8)(pg@8.13.1)(postgres@3.4.5)(react@19.0.0))(ioredis@5.4.2)(jiti@2.4.2)(terser@5.37.0)(tsx@4.19.2)(typescript@5.7.3):
     dependencies:
       '@babel/core': 7.26.7
       '@babel/plugin-syntax-jsx': 7.25.9(@babel/core@7.26.7)
