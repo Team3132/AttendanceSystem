@@ -20,6 +20,9 @@ import { useCallback } from "react";
 import { FaCopy, FaPen, FaPlay, FaTrash } from "react-icons/fa6";
 
 export const Route = createFileRoute("/_authenticated/admin_/event-parsing/")({
+  beforeLoad: () => ({
+    getTitle: () => "Admin - Event Parsing",
+  }),
   loader: ({ context: { queryClient } }) => {
     queryClient.prefetchQuery(adminQueries.eventParsingRules);
   },

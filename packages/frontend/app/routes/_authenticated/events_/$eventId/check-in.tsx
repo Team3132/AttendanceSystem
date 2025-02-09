@@ -11,17 +11,20 @@ export const Route = createFileRoute(
   "/_authenticated/events_/$eventId/check-in",
 )({
   component: Component,
+  beforeLoad: ({ context: { queryClient }, params: { eventId } }) => ({
+    getTitle: async () => {
+      const eventData = await queryClient.ensureQueryData(
+        eventQueryOptions.eventDetails(eventId),
+      );
+      return `${eventData.title} - Check In`;
+    },
+  }),
   loader: async ({ context: { queryClient }, params: { eventId } }) => {
     const eventData = await queryClient.ensureQueryData(
       eventQueryOptions.eventDetails(eventId),
     );
     return { eventData };
   },
-  head: (ctx) => ({
-    meta: ctx.loaderData
-      ? [{ title: `${ctx.loaderData.eventData.title} - Check In` }]
-      : undefined,
-  }),
 });
 
 function Component() {

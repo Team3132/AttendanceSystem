@@ -16,7 +16,6 @@ import { z } from "zod";
 export const Route = createFileRoute(
   "/_authenticated/admin_/event-parsing/create",
 )({
-  component: RouteComponent,
   validateSearch: z.object({
     name: z.string().optional(),
     channelId: z.string().optional(),
@@ -41,6 +40,10 @@ export const Route = createFileRoute(
       .optional(),
     isOutreach: z.boolean().optional(),
   }),
+  beforeLoad: () => ({
+    getTitle: () => "Admin - Create Rule",
+  }),
+  component: RouteComponent,
 });
 
 const OptionSchema = z.object({

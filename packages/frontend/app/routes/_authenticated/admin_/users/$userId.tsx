@@ -1,10 +1,8 @@
-import DefaultAppBar from "@/components/DefaultAppBar";
 import { LinkTab } from "@/components/LinkTab";
 import { usersQueryOptions } from "@/queries/users.queries";
 
 import type { TabItem } from "@/types/TabItem";
 import { Tabs } from "@mui/material";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import {
   Outlet,
   createFileRoute,
@@ -13,6 +11,16 @@ import {
 import { useMemo } from "react";
 
 export const Route = createFileRoute("/_authenticated/admin_/users/$userId")({
+  beforeLoad: ({ params: { userId }, context: { queryClient } }) => {
+    return {
+      getTitle: async () => {
+        const user = await queryClient.ensureQueryData(
+          usersQueryOptions.userDetails(userId),
+        );
+        return `${user.username}'s Profile`;
+      },
+    };
+  },
   component: Component,
   loader: ({ params: { userId }, context: { queryClient } }) =>
     queryClient.prefetchQuery(usersQueryOptions.userDetails(userId)),
@@ -20,8 +28,6 @@ export const Route = createFileRoute("/_authenticated/admin_/users/$userId")({
 
 function Component() {
   const { userId } = Route.useParams();
-
-  const userQuery = useSuspenseQuery(usersQueryOptions.userDetails(userId));
 
   const tabs = useMemo<TabItem[]>(
     () => [
@@ -55,7 +61,6 @@ function Component() {
 
   return (
     <>
-      <DefaultAppBar title={`${userQuery.data.username}'s Profile`} />
       <Tabs value={matchingIndex}>
         {tabs.map((tab, index) => (
           <LinkTab

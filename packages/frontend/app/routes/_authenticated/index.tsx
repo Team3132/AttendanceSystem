@@ -13,9 +13,6 @@ export const Route = createFileRoute("/_authenticated/")({
   loader: ({ context: { queryClient } }) => {
     queryClient.prefetchQuery(usersQueryOptions.userSelfPendingRsvps());
   },
-  head: () => ({
-    meta: [{ title: "Home" }],
-  }),
   component: Component,
 });
 

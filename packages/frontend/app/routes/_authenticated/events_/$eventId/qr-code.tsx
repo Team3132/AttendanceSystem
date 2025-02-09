@@ -3,23 +3,34 @@ import { authQueryOptions } from "@/queries/auth.queries";
 import { eventQueryOptions } from "@/queries/events.queries";
 import { Container, Paper, Stack, Typography } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute(
   "/_authenticated/events_/$eventId/qr-code",
 )({
   component: Component,
-  beforeLoad: async ({ context: { queryClient } }) => {
+  beforeLoad: async ({ context: { queryClient }, params: { eventId } }) => {
     const { isAdmin } = await queryClient.ensureQueryData(
       authQueryOptions.status(),
     );
+
     if (!isAdmin) {
-      return {
-        redirect: {
-          to: "/",
+      throw redirect({
+        to: "/error",
+        search: {
+          message: "You are not an admin",
         },
-      };
+      });
     }
+
+    return {
+      getTitle: async () => {
+        const eventData = await queryClient.ensureQueryData(
+          eventQueryOptions.eventDetails(eventId),
+        );
+        return `${eventData.title} - QR Code`;
+      },
+    };
   },
   loader: async ({ context: { queryClient }, params: { eventId } }) => {
     const eventData = await queryClient.ensureQueryData(
@@ -29,11 +40,6 @@ export const Route = createFileRoute(
 
     return { eventData };
   },
-  head: (ctx) => ({
-    meta: ctx.loaderData
-      ? [{ title: `${ctx.loaderData.eventData.title} - QR Code` }]
-      : undefined,
-  }),
 });
 
 function Component() {

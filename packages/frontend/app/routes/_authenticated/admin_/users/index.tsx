@@ -1,12 +1,10 @@
 import Datatable from "@/components/DataTable";
-import DefaultAppBar from "@/components/DefaultAppBar";
 import { LinkButton } from "@/components/LinkButton";
 import { usersQueryOptions } from "@/queries/users.queries";
 
 import type { UserSchema } from "@/server/schema";
 import {
   CircularProgress,
-  Container,
   InputAdornment,
   Stack,
   TextField,
@@ -49,6 +47,9 @@ const searchSchema = z.object({
 });
 
 export const Route = createFileRoute("/_authenticated/admin_/users/")({
+  beforeLoad: () => ({
+    getTitle: () => "Admin - Users",
+  }),
   validateSearch: searchSchema,
   search: {
     middlewares: [stripSearchParams(defaultValues)],
@@ -61,25 +62,11 @@ export const Route = createFileRoute("/_authenticated/admin_/users/")({
         search: search.query,
       }),
     ),
-  head: () => ({
-    meta: [
-      {
-        title: "Admin - Users",
-      },
-    ],
-  }),
   component: Component,
 });
 
 function Component() {
-  return (
-    <>
-      <DefaultAppBar title="Admin - Users" />
-      <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
-        <UserTable />
-      </Container>
-    </>
-  );
+  return <UserTable />;
 }
 
 function UserTable() {

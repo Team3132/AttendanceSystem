@@ -7,12 +7,12 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/profile/")({
+  beforeLoad: () => ({
+    getTitle: () => "Profile",
+  }),
   loader: async ({ context: { queryClient } }) => {
     await queryClient.prefetchQuery(usersQueryOptions.userSelfScancodes());
   },
-  head: () => ({
-    meta: [{ title: "Profile - Scancodes" }],
-  }),
   component: Component,
 });
 

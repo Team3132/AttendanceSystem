@@ -5,9 +5,8 @@ import { Duration } from "luxon";
 import type { z } from "zod";
 
 import Datatable from "@/components/DataTable";
-import DefaultAppBar from "@/components/DefaultAppBar";
 import { leaderboardQueryOptions } from "@/queries/outreach.queries";
-import { Container, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
@@ -42,14 +41,14 @@ const columns = [
 
 export const Route = createFileRoute("/_authenticated/leaderboard")({
   component: Component,
+  beforeLoad: () => ({
+    getTitle: () => "Outreach Leaderboard",
+  }),
   loader: async ({ context: { queryClient } }) => {
     await queryClient.prefetchInfiniteQuery(
       leaderboardQueryOptions({ limit: 10 }),
     );
   },
-  head: () => ({
-    meta: [{ title: "Outreach Leaderboard" }],
-  }),
 });
 
 function Component() {
@@ -70,23 +69,18 @@ function Component() {
   );
 
   return (
-    <>
-      <DefaultAppBar title="Outreach Leaderboard" />
-      <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
-        <Stack gap={2} sx={{ height: "100%", display: "flex" }}>
-          <Datatable
-            columns={columns}
-            data={flatResults}
-            fetchNextPage={leaderboardQuery.fetchNextPage}
-            isFetching={leaderboardQuery.isFetching}
-            totalDBRowCount={totalRowCount}
-            fixedHeight={53}
-            sx={{
-              flex: 1,
-            }}
-          />
-        </Stack>
-      </Container>
-    </>
+    <Stack gap={2} sx={{ height: "100%", display: "flex" }}>
+      <Datatable
+        columns={columns}
+        data={flatResults}
+        fetchNextPage={leaderboardQuery.fetchNextPage}
+        isFetching={leaderboardQuery.isFetching}
+        totalDBRowCount={totalRowCount}
+        fixedHeight={53}
+        sx={{
+          flex: 1,
+        }}
+      />
+    </Stack>
   );
 }

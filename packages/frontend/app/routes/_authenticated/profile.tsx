@@ -1,4 +1,3 @@
-import DefaultAppBar from "@/components/DefaultAppBar";
 import { LinkTab } from "@/components/LinkTab";
 
 import type { TabItem } from "@/types/TabItem";
@@ -28,19 +27,17 @@ const tabs: Array<TabItem> = [
 function Component() {
   const currentChildren = useChildMatches();
 
-  const matchingIndex = useMemo(
-    () =>
-      tabs.findIndex((tab) => {
-        return currentChildren.some((child) => {
-          return child.fullPath === tab.to;
-        });
-      }),
-    [currentChildren],
-  );
+  const matchingIndex = useMemo(() => {
+    const tabIndex = tabs.findIndex((tab) => {
+      return currentChildren.some((child) => {
+        return child.fullPath === tab.to;
+      });
+    });
+    return tabIndex === -1 ? 0 : tabIndex;
+  }, [currentChildren]);
 
   return (
     <>
-      <DefaultAppBar title={"Profile"} />
       <Tabs value={matchingIndex}>
         {tabs.map((tab, index) => (
           <LinkTab

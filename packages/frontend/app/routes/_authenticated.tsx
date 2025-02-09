@@ -2,13 +2,13 @@ import BottomBar from "@/components/BottomBar";
 import DefaultAppBar from "@/components/DefaultAppBar";
 import { authQueryOptions } from "@/queries/auth.queries";
 import { Box, Container } from "@mui/material";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import {
   Outlet,
   createFileRoute,
   redirect,
   useRouterState,
 } from "@tanstack/react-router";
-import { useMemo } from "react";
 
 export const Route = createFileRoute("/_authenticated")({
   beforeLoad: async ({ context: { queryClient } }) => {
@@ -42,9 +42,6 @@ function Component() {
           my: 2,
           flex: 1,
           overflowY: "auto",
-          gap: 2,
-          display: "flex",
-          flexDir: "column",
         }}
       >
         <Outlet />
@@ -57,17 +54,19 @@ function Component() {
 function TitledAppBar() {
   const matches = useRouterState({ select: (s) => s.matches });
 
-  const title = useMemo(() => {
-    const matchWithTitle = [...matches]
-      .reverse()
-      .find((d) => d.context.getTitle);
+  const getTitleQuery = useQuery({
+    queryKey: ["getTitle", matches],
+    queryFn: async () => {
+      const matchWithTitle = [...matches]
+        .reverse()
+        .find((d) => d.context.getTitle);
 
-    if (matchWithTitle?.context.getTitle) {
-      return matchWithTitle.context.getTitle();
-    }
+      return matchWithTitle?.context.getTitle
+        ? await matchWithTitle?.context.getTitle()
+        : "My App";
+    },
+    placeholderData: keepPreviousData,
+  });
 
-    return "Attendance System";
-  }, [matches]);
-
-  return <DefaultAppBar title={title} />;
+  return <DefaultAppBar title={getTitleQuery.data ?? "My App"} />;
 }

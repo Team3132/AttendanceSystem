@@ -6,8 +6,13 @@ import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
-import type { QueryClient } from "@tanstack/react-query";
+import {
+  type QueryClient,
+  keepPreviousData,
+  useQuery,
+} from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { useRouterState } from "@tanstack/react-router";
 import {
   ErrorComponent,
   Outlet,
@@ -17,9 +22,11 @@ import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { Meta, Scripts } from "@tanstack/start";
 import type * as React from "react";
 
+type Awaitable<T> = T | Promise<T>;
+
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
-  getTitle?: () => string;
+  getTitle?: () => Awaitable<string>;
 }>()({
   component: RootComponent,
   head: () => ({
@@ -30,9 +37,6 @@ export const Route = createRootRouteWithContext<{
       {
         name: "viewport",
         content: "width=device-width, initial-scale=1",
-      },
-      {
-        title: "TDU Attendance System",
       },
     ],
     links: [
@@ -95,10 +99,27 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: Readonly<{ children: React.ReactNode }>) {
+  const matches = useRouterState({ select: (s) => s.matches });
+
+  const getTitleQuery = useQuery({
+    queryKey: ["getTitle", matches],
+    queryFn: async () => {
+      const matchWithTitle = [...matches]
+        .reverse()
+        .find((d) => d.context.getTitle);
+
+      return matchWithTitle?.context.getTitle
+        ? await matchWithTitle?.context.getTitle()
+        : "My App";
+    },
+    placeholderData: keepPreviousData,
+  });
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
         <Meta />
+        <title>{getTitleQuery.data || "Loading..."}</title>
         <style>
           {`html, body, #root {
   margin: 0;

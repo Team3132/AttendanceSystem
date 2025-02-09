@@ -1,12 +1,6 @@
+import { usersQueryOptions } from "@/queries/users.queries";
 import { EventTypeSchema } from "@/server";
-import {
-  Container,
-  List,
-  ListItem,
-  Paper,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { List, ListItem, Paper, Stack, Typography } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
 import { fallback } from "@tanstack/zod-adapter";
 import { z } from "zod";
@@ -22,6 +16,14 @@ const QuerySchema = z.object({
 export const Route = createFileRoute(
   "/_authenticated/admin_/users/$userId/summary",
 )({
+  beforeLoad: ({ context: { queryClient }, params: { userId } }) => ({
+    getTitle: async () => {
+      const user = await queryClient.ensureQueryData(
+        usersQueryOptions.userDetails(userId),
+      );
+      return `${user.username}'s Summary`;
+    },
+  }),
   validateSearch: QuerySchema,
   loaderDeps: ({ search }) => search,
   component: RouteComponent,
@@ -36,18 +38,16 @@ export const Route = createFileRoute(
 
 function RouteComponent() {
   return (
-    <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
-      <Stack py={2} gap={2}>
-        <Typography variant="h4">Summary</Typography>
-        <Paper sx={{ p: 2 }}>
-          <Typography variant="h5">Stats</Typography>
-          <List>
-            <ListItem>Percentage of events attended</ListItem>
-            <ListItem>Total hours attended</ListItem>
-            <ListItem>Percentage of total event time attended</ListItem>
-          </List>
-        </Paper>
-      </Stack>
-    </Container>
+    <Stack py={2} gap={2}>
+      <Typography variant="h4">Summary</Typography>
+      <Paper sx={{ p: 2 }}>
+        <Typography variant="h5">Stats</Typography>
+        <List>
+          <ListItem>Percentage of events attended</ListItem>
+          <ListItem>Total hours attended</ListItem>
+          <ListItem>Percentage of total event time attended</ListItem>
+        </List>
+      </Paper>
+    </Stack>
   );
 }

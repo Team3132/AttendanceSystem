@@ -9,10 +9,6 @@ const modes = ["light", "dark", "system"] as const;
 export default function ModeSwitchButton() {
   const { mode, setMode } = useColorScheme();
 
-  if (!mode) {
-    return null;
-  }
-
   const modeIcon = useMemo(() => {
     if (mode === "light") {
       return <LightMode />;
@@ -26,9 +22,17 @@ export default function ModeSwitchButton() {
   }, [mode]);
 
   const handleModeChange = useCallback(() => {
+    if (!mode) {
+      return;
+    }
+
     const nextMode = modes[(modes.indexOf(mode) + 1) % modes.length];
     setMode(nextMode);
   }, [mode, setMode]);
+
+  if (!mode) {
+    return null;
+  }
 
   return (
     <IconButton onClick={handleModeChange} color="inherit">

@@ -1,13 +1,12 @@
 import ControlledAutocomplete from "@/components/ControlledAutocomplete";
 import ControlledCheckbox from "@/components/ControlledCheckbox";
 import ControlledTextField from "@/components/ControlledTextField";
-import DefaultAppBar from "@/components/DefaultAppBar";
 import useUpdateRule from "@/features/admin/hooks/useUpdateRule";
 import useZodForm from "@/hooks/useZodForm";
 import { adminQueries } from "@/queries/adminQueries";
 import { discordQueryOptions } from "@/queries/discord.queries";
 import { strToRegex } from "@/server/utils/regexBuilder";
-import { Button, Container, TextField, Typography } from "@mui/material";
+import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo } from "react";
@@ -16,10 +15,13 @@ import { z } from "zod";
 export const Route = createFileRoute(
   "/_authenticated/admin_/event-parsing/$ruleId",
 )({
-  component: RouteComponent,
+  beforeLoad: () => ({
+    getTitle: () => "Admin - Edit Rule",
+  }),
   loader: ({ context: { queryClient }, params: { ruleId } }) => {
     queryClient.prefetchQuery(adminQueries.eventParsingRule(ruleId));
   },
+  component: RouteComponent,
 });
 
 const OptionSchema = z.object({
@@ -107,69 +109,55 @@ function RouteComponent() {
   );
 
   return (
-    <>
-      <DefaultAppBar title="Admin - Event Parsing" />
-      <Container
-        sx={{
-          my: 2,
-          flex: 1,
-          overflowY: "auto",
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-        }}
-        component={"form"}
-        onSubmit={onSubmit}
+    <Stack gap={2} component="form" onSubmit={onSubmit}>
+      <Typography variant="h4">Edit Rule</Typography>
+
+      <TextField
+        value={parsingRuleQuery.data?.kronosRule.title}
+        label="Name"
+        disabled
+      />
+      <ControlledTextField control={control} name="regex" label="Regex" />
+      <TextField
+        disabled
+        value={parsingRuleQuery.data?.kronosRule.cronExpr}
+        label="Cron Expression"
+        helperText="Create a new rule to change this"
+      />
+
+      <ControlledAutocomplete
+        control={control}
+        name="channel"
+        label="Channel"
+        options={channelOptions}
+      />
+      <ControlledAutocomplete
+        control={control}
+        name="roles"
+        label="Roles"
+        options={roleOptions}
+        multiple
+      />
+      <ControlledTextField
+        control={control}
+        name="priority"
+        label="Priority"
+        type="number"
+        helperText="The higher the number, the higher the priority"
+      />
+      <ControlledCheckbox
+        control={control}
+        name="isOutreach"
+        label="Counts for Outreach?"
+      />
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        loading={isSubmitting}
       >
-        <Typography variant="h4">Edit Rule</Typography>
-
-        <TextField
-          value={parsingRuleQuery.data?.kronosRule.title}
-          label="Name"
-          disabled
-        />
-        <ControlledTextField control={control} name="regex" label="Regex" />
-        <TextField
-          disabled
-          value={parsingRuleQuery.data?.kronosRule.cronExpr}
-          label="Cron Expression"
-          helperText="Create a new rule to change this"
-        />
-
-        <ControlledAutocomplete
-          control={control}
-          name="channel"
-          label="Channel"
-          options={channelOptions}
-        />
-        <ControlledAutocomplete
-          control={control}
-          name="roles"
-          label="Roles"
-          options={roleOptions}
-          multiple
-        />
-        <ControlledTextField
-          control={control}
-          name="priority"
-          label="Priority"
-          type="number"
-          helperText="The higher the number, the higher the priority"
-        />
-        <ControlledCheckbox
-          control={control}
-          name="isOutreach"
-          label="Counts for Outreach?"
-        />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          loading={isSubmitting}
-        >
-          Save
-        </Button>
-      </Container>
-    </>
+        Save
+      </Button>
+    </Stack>
   );
 }

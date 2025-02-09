@@ -10,7 +10,7 @@ export function createRouter() {
   const router = routerWithQueryClient(
     createTanStackRouter({
       routeTree,
-      context: { queryClient, getTitle: () => "TDU Attendance System" },
+      context: { queryClient },
       defaultPreload: "intent",
     }),
     queryClient,

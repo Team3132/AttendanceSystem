@@ -7,6 +7,14 @@ import { DateTime } from "luxon";
 
 export const Route = createFileRoute("/_authenticated/events_/$eventId/")({
   component: Component,
+  beforeLoad: ({ context: { queryClient }, params: { eventId } }) => ({
+    getTitle: async () => {
+      const eventData = await queryClient.ensureQueryData(
+        eventQueryOptions.eventDetails(eventId),
+      );
+      return `${eventData.title} - Details`;
+    },
+  }),
   loader: async ({ context: { queryClient }, params: { eventId } }) => {
     const [eventData] = await Promise.all([
       await queryClient.ensureQueryData(
@@ -18,11 +26,6 @@ export const Route = createFileRoute("/_authenticated/events_/$eventId/")({
 
     return { eventData };
   },
-  head: (ctx) => ({
-    meta: ctx.loaderData
-      ? [{ title: `${ctx.loaderData.eventData.title} - Details` }]
-      : undefined,
-  }),
 });
 
 const StyledContainer = styled(Container)({

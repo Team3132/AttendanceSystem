@@ -6,12 +6,12 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/profile/pending")({
+  beforeLoad: () => ({
+    getTitle: () => "Profile",
+  }),
   component: Component,
   loader: ({ context: { queryClient } }) =>
     queryClient.prefetchQuery(usersQueryOptions.userSelfPendingRsvps()),
-  head: () => ({
-    meta: [{ title: "Profile - Pending Events" }],
-  }),
 });
 
 function Component() {
