@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { useCallback } from "react";
 import { FaCopy, FaPen, FaPlay, FaTrash } from "react-icons/fa6";
 
 export const Route = createFileRoute("/_authenticated/admin_/event-parsing/")({
@@ -32,35 +33,37 @@ function RouteComponent() {
   const deleteRuleMutation = useDeleteRule();
   const triggerRuleMutation = useTriggerRule();
 
-  const handleDuplicateRule = (id: string) => {
-    const rule = parsingRulesQuery.data.find((r) => r.id === id);
+  const handleDuplicateRule = useCallback(
+    (id: string) => {
+      const rule = parsingRulesQuery.data.find((r) => r.id === id);
 
-    if (!rule) return;
+      if (!rule) return;
 
-    navigate({
-      to: "/admin/event-parsing/create",
-      search: {
-        name: `${rule.kronosRule.title} (Copy)`,
-        regex: rule.regex,
-        roleIds: rule.roleIds,
-        cronExpr: rule.kronosRule.cronExpr,
-        channelId: rule.channelId,
-      },
-    });
-  };
+      navigate({
+        to: "/admin/event-parsing/create",
+        search: {
+          name: `${rule.kronosRule.title} (Copy)`,
+          regex: rule.regex,
+          roleIds: rule.roleIds,
+          cronExpr: rule.kronosRule.cronExpr,
+          channelId: rule.channelId,
+          priority: rule.priority,
+          isOutreach: rule.isOutreach,
+        },
+      });
+    },
+    [navigate, parsingRulesQuery.data],
+  );
 
-  const syncEventsMutation = useSyncCalendar();
-  const syncEventsFullMutation = useSyncCalendarFull();
+  const handleDeleteRule = useCallback(
+    (id: string) => deleteRuleMutation.mutate({ data: id }),
+    [deleteRuleMutation.mutate],
+  );
 
-  const handleDeleteRule = (id: string) =>
-    deleteRuleMutation.mutate({ data: id });
-
-  const handleTriggerRule = (id: string) =>
-    triggerRuleMutation.mutate({ data: id });
-
-  const syncEvents = () => syncEventsMutation.mutate();
-
-  const syncEventsFull = () => syncEventsFullMutation.mutate();
+  const handleTriggerRule = useCallback(
+    (id: string) => triggerRuleMutation.mutate({ data: id }),
+    [triggerRuleMutation.mutate],
+  );
 
   return (
     <>
@@ -104,22 +107,41 @@ function RouteComponent() {
           ))}
         </List>
         <Stack direction={"row"} gap={2}>
-          <Button
-            onClick={syncEvents}
-            loading={syncEventsMutation.isPending}
-            variant="contained"
-          >
-            Sync Events
-          </Button>
-          <Button
-            onClick={syncEventsFull}
-            loading={syncEventsFullMutation.isPending}
-            variant="contained"
-          >
-            Sync Events Full
-          </Button>
+          <SyncEventsButton />
+          <SyncEventsFullButton />
         </Stack>
       </Container>
     </>
+  );
+}
+
+function SyncEventsButton() {
+  const syncEventsMutation = useSyncCalendar();
+  const syncEvents = () => syncEventsMutation.mutate();
+
+  return (
+    <Button
+      onClick={syncEvents}
+      loading={syncEventsMutation.isPending}
+      variant="contained"
+    >
+      Sync Events
+    </Button>
+  );
+}
+
+function SyncEventsFullButton() {
+  const syncEventsFullMutation = useSyncCalendarFull();
+  const syncEventsFull = () => syncEventsFullMutation.mutate();
+
+  return (
+    <Button
+      onClick={syncEventsFull}
+      loading={syncEventsFullMutation.isPending}
+      variant="contained"
+      color="warning"
+    >
+      Sync Events Full
+    </Button>
   );
 }

@@ -19,6 +19,7 @@ import type * as React from "react";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
+  getTitle?: () => string;
 }>()({
   component: RootComponent,
   head: () => ({

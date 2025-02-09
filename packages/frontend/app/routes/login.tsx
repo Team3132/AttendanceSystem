@@ -8,58 +8,60 @@ export const Route = createFileRoute("/login")({
   loader: async ({ context: { queryClient } }) =>
     await queryClient.prefetchQuery(authQueryOptions.status()),
 
-  component: () => {
-    const authStatusQuery = useSuspenseQuery(authQueryOptions.status());
+  component: Component,
+});
 
-    const logoutMutation = useLogout();
+function Component() {
+  const authStatusQuery = useSuspenseQuery(authQueryOptions.status());
 
-    return (
-      <Container
+  const logoutMutation = useLogout();
+
+  return (
+    <Container
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignContent: "center",
+        justifyContent: "center",
+        height: "100%",
+        overflow: "auto",
+      }}
+    >
+      <Paper
+        elevation={3}
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignContent: "center",
-          justifyContent: "center",
-          height: "100%",
-          overflow: "auto",
+          p: 2,
+          justifySelf: "center",
         }}
       >
-        <Paper
-          elevation={3}
-          sx={{
-            p: 2,
-            justifySelf: "center",
-          }}
-        >
-          <Stack gap={2}>
-            <Typography variant="h4" textAlign={"center"}>
+        <Stack gap={2}>
+          <Typography variant="h4" textAlign={"center"}>
+            Login
+          </Typography>
+          <Typography variant="body1" textAlign={"center"}>
+            In order to use the attendance system, you must login with the same
+            discord account that you use for the team Discord server.
+          </Typography>
+          <Stack gap={2} direction="row" justifyContent="center">
+            <Button
+              variant="contained"
+              color="primary"
+              href="/api/auth/discord"
+            >
               Login
-            </Typography>
-            <Typography variant="body1" textAlign={"center"}>
-              In order to use the attendance system, you must login with the
-              same discord account that you use for the team Discord server.
-            </Typography>
-            <Stack gap={2} direction="row" justifyContent="center">
+            </Button>
+            {authStatusQuery.data.isAuthenticated ? (
               <Button
                 variant="contained"
-                color="primary"
-                href="/api/auth/discord"
+                color="secondary"
+                onClick={() => logoutMutation.mutate()}
               >
-                Login
+                Logout
               </Button>
-              {authStatusQuery.data.isAuthenticated ? (
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={() => logoutMutation.mutate()}
-                >
-                  Logout
-                </Button>
-              ) : null}
-            </Stack>
+            ) : null}
           </Stack>
-        </Paper>
-      </Container>
-    );
-  },
-});
+        </Stack>
+      </Paper>
+    </Container>
+  );
+}

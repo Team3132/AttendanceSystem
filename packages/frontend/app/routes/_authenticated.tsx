@@ -1,18 +1,14 @@
-import { BottomNavigationLink } from "@/components/BottomNavigationLink";
+import BottomBar from "@/components/BottomBar";
+import DefaultAppBar from "@/components/DefaultAppBar";
 import { authQueryOptions } from "@/queries/auth.queries";
-
-import type { TabItem } from "@/types/TabItem";
-import { BottomNavigation, Box } from "@mui/material";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { useChildMatches } from "@tanstack/react-router";
-import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
-import { useMemo } from "react";
+import { Box, Container } from "@mui/material";
 import {
-  FaHouse,
-  FaHouseLock,
-  FaPeopleGroup,
-  FaRegCalendar,
-} from "react-icons/fa6";
+  Outlet,
+  createFileRoute,
+  redirect,
+  useRouterState,
+} from "@tanstack/react-router";
+import { useMemo } from "react";
 
 export const Route = createFileRoute("/_authenticated")({
   beforeLoad: async ({ context: { queryClient } }) => {
@@ -22,14 +18,12 @@ export const Route = createFileRoute("/_authenticated")({
     if (!isAuthenticated) {
       throw redirect({
         to: "/login",
-        // search: {
-        //   redirect: location.href,
-        // },
       });
     }
   },
-  loader: async ({ context: { queryClient } }) =>
-    queryClient.prefetchQuery(authQueryOptions.status()),
+  loader: async ({ context: { queryClient } }) => {
+    queryClient.prefetchQuery(authQueryOptions.status());
+  },
   component: Component,
 });
 
@@ -42,82 +36,38 @@ function Component() {
         height: "100%",
       }}
     >
-      <Outlet />
+      <TitledAppBar />
+      <Container
+        sx={{
+          my: 2,
+          flex: 1,
+          overflowY: "auto",
+          gap: 2,
+          display: "flex",
+          flexDir: "column",
+        }}
+      >
+        <Outlet />
+      </Container>
       <BottomBar />
     </Box>
   );
 }
 
-function BottomBar() {
-  const authStatusQuery = useSuspenseQuery(authQueryOptions.status());
+function TitledAppBar() {
+  const matches = useRouterState({ select: (s) => s.matches });
 
-  const routes = useMemo<TabItem[]>(
-    () =>
-      authStatusQuery.data.isAdmin
-        ? ([
-            {
-              to: "/",
-              label: "Home",
-              icon: <FaHouse />,
-            },
-            {
-              to: "/leaderboard",
-              label: "Leaderboard",
-              icon: <FaPeopleGroup />,
-            },
-            {
-              to: "/events",
-              label: "Events",
-              fuzzy: true,
-              icon: <FaRegCalendar />,
-            },
-            { to: "/admin", label: "Admin", icon: <FaHouseLock /> },
-          ] as TabItem[])
-        : ([
-            {
-              to: "/",
-              label: "Home",
-              icon: <FaHouse />,
-            },
-            {
-              to: "/leaderboard",
-              label: "Leaderboard",
-              icon: <FaPeopleGroup />,
-            },
-            {
-              to: "/events",
-              fuzzy: true,
-              label: "Events",
-              icon: <FaRegCalendar />,
-            },
-          ] as TabItem[]),
-    [authStatusQuery.data.isAdmin],
-  );
+  const title = useMemo(() => {
+    const matchWithTitle = [...matches]
+      .reverse()
+      .find((d) => d.context.getTitle);
 
-  const currentChildren = useChildMatches();
+    if (matchWithTitle?.context.getTitle) {
+      return matchWithTitle.context.getTitle();
+    }
 
-  const matchingIndex = useMemo(
-    () =>
-      routes.findIndex((tab) => {
-        return currentChildren.some((child) => {
-          return child.fullPath === tab.to;
-        });
-      }),
-    [currentChildren, routes],
-  );
+    return "Attendance System";
+  }, [matches]);
 
-  return (
-    <BottomNavigation showLabels value={matchingIndex}>
-      {routes.map((route, index) => (
-        <BottomNavigationLink
-          label={route.label}
-          icon={route.icon}
-          value={index}
-          to={route.to}
-          params={route.params}
-          key={route.label}
-        />
-      ))}
-    </BottomNavigation>
-  );
+  return <DefaultAppBar title={title} />;
 }
