@@ -1,5 +1,11 @@
 # frontend
 
+## 5.2.19
+
+### Patch Changes
+
+- [`4ab296f`](https://github.com/Team3132/AttendanceSystem/commit/4ab296f9e19a7ab79c403fec9aa298dc2ffd24f6) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Full sync button
+
 ## 5.2.18
 
 ### Patch Changes
