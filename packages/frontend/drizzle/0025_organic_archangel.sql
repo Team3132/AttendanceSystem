@@ -1,0 +1,1 @@
+ALTER TABLE "EventParsingRule" ADD COLUMN "isOutreach" boolean DEFAULT false NOT NULL;
