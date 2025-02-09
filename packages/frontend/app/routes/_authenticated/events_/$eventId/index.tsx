@@ -1,4 +1,3 @@
-import DeleteEventButton from "@/features/events/components/DeleteEventButton";
 import RsvpList from "@/features/events/components/RSVPList";
 import { eventQueryOptions } from "@/queries/events.queries";
 import { Container, Grid, Paper, Typography, styled } from "@mui/material";
@@ -40,7 +39,6 @@ function Component() {
   return (
     <StyledContainer>
       <EventData eventId={eventId} />
-      <DeleteEventButton eventId={eventId} />
       <RsvpList eventId={eventId} />
     </StyledContainer>
   );

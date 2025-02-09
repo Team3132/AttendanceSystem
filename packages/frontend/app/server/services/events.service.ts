@@ -269,31 +269,6 @@ export async function createEvent(params: z.infer<typeof CreateEventSchema>) {
 }
 
 /**
- * Delete an event
- * @param id The id of the event
- */
-export async function deleteEvent(id: string) {
-  const [deletedEvent] = await db
-    .delete(eventTable)
-    .where(eq(eventTable.id, id))
-    .returning();
-
-  if (!deletedEvent) {
-    throw createServerError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Failed to delete event",
-    });
-  }
-
-  ee.emit("invalidate", eventQueryKeys.eventsList);
-  ee.emit("invalidate", eventQueryKeys.eventDetails(id));
-
-  const { secret, ...rest } = deletedEvent;
-
-  return rest;
-}
-
-/**
  * Edit user rsvp status
  */
 export async function editUserRsvpStatus(

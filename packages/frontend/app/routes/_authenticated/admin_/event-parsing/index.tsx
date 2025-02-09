@@ -2,6 +2,7 @@ import DefaultAppBar from "@/components/DefaultAppBar";
 import { LinkIconButton } from "@/components/LinkIconButton";
 import useDeleteRule from "@/features/admin/hooks/useDeleteRule";
 import useSyncCalendar from "@/features/admin/hooks/useSyncCalendar";
+import useSyncCalendarFull from "@/features/admin/hooks/useSyncCalendarFull";
 import useTriggerRule from "@/features/admin/hooks/useTriggerRule";
 import { adminQueries } from "@/queries/adminQueries";
 import {
@@ -49,6 +50,7 @@ function RouteComponent() {
   };
 
   const syncEventsMutation = useSyncCalendar();
+  const syncEventsFullMutation = useSyncCalendarFull();
 
   const handleDeleteRule = (id: string) =>
     deleteRuleMutation.mutate({ data: id });
@@ -57,6 +59,8 @@ function RouteComponent() {
     triggerRuleMutation.mutate({ data: id });
 
   const syncEvents = () => syncEventsMutation.mutate();
+
+  const syncEventsFull = () => syncEventsFullMutation.mutate();
 
   return (
     <>
@@ -106,6 +110,13 @@ function RouteComponent() {
             variant="contained"
           >
             Sync Events
+          </Button>
+          <Button
+            onClick={syncEventsFull}
+            loading={syncEventsFullMutation.isPending}
+            variant="contained"
+          >
+            Sync Events Full
           </Button>
         </Stack>
       </Container>

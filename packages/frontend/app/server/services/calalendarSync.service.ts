@@ -209,3 +209,8 @@ export const syncEvents = async () => {
 
   return { updatedEvents: insertedCount, deletedEventCount: deletedCount };
 };
+
+export const fullSyncEvents = async () => {
+  await kv.delete("syncToken");
+  return syncEvents();
+};
