@@ -55,6 +55,15 @@ const adminTabs = (eventId: string): TabItem[] =>
   ]);
 
 function Component() {
+  return (
+    <>
+      <ProfileTabs />
+      <Outlet />
+    </>
+  );
+}
+
+function ProfileTabs() {
   const { eventId } = Route.useParams();
 
   const authStatusQuery = useSuspenseQuery(authQueryOptions.status());
@@ -76,21 +85,17 @@ function Component() {
     });
     return tabIndex === -1 ? 0 : tabIndex;
   }, [currentChildren, tabs]);
-
   return (
-    <>
-      <Tabs variant="scrollable" scrollButtons="auto" value={matchingIndex}>
-        {tabs.map((tab, index) => (
-          <LinkTab
-            to={tab.to}
-            params={tab.params}
-            key={tab.label}
-            label={tab.label}
-            value={index}
-          />
-        ))}
-      </Tabs>
-      <Outlet />
-    </>
+    <Tabs variant="scrollable" scrollButtons="auto" value={matchingIndex}>
+      {tabs.map((tab, index) => (
+        <LinkTab
+          to={tab.to}
+          params={tab.params}
+          key={tab.label}
+          label={tab.label}
+          value={index}
+        />
+      ))}
+    </Tabs>
   );
 }

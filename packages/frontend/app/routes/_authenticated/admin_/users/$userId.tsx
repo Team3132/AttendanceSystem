@@ -27,6 +27,15 @@ export const Route = createFileRoute("/_authenticated/admin_/users/$userId")({
 });
 
 function Component() {
+  return (
+    <>
+      <ProfileTabs />
+      <Outlet />
+    </>
+  );
+}
+
+function ProfileTabs() {
   const { userId } = Route.useParams();
 
   const tabs = useMemo<TabItem[]>(
@@ -58,21 +67,17 @@ function Component() {
 
     return currentTabIndex === -1 ? 0 : currentTabIndex;
   }, [currentChildren, tabs]);
-
   return (
-    <>
-      <Tabs value={matchingIndex}>
-        {tabs.map((tab, index) => (
-          <LinkTab
-            to={tab.to}
-            params={tab.params}
-            key={tab.to}
-            label={tab.label}
-            value={index}
-          />
-        ))}
-      </Tabs>
-      <Outlet />
-    </>
+    <Tabs value={matchingIndex}>
+      {tabs.map((tab, index) => (
+        <LinkTab
+          to={tab.to}
+          params={tab.params}
+          key={tab.to}
+          label={tab.label}
+          value={index}
+        />
+      ))}
+    </Tabs>
   );
 }

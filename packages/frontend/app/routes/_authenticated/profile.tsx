@@ -25,6 +25,15 @@ const tabs: Array<TabItem> = [
 ];
 
 function Component() {
+  return (
+    <>
+      <ProfileTabs />
+      <Outlet />
+    </>
+  );
+}
+
+function ProfileTabs() {
   const currentChildren = useChildMatches();
 
   const matchingIndex = useMemo(() => {
@@ -37,19 +46,16 @@ function Component() {
   }, [currentChildren]);
 
   return (
-    <>
-      <Tabs value={matchingIndex}>
-        {tabs.map((tab, index) => (
-          <LinkTab
-            to={tab.to}
-            params={tab.params}
-            key={tab.label}
-            label={tab.label}
-            value={index}
-          />
-        ))}
-      </Tabs>
-      <Outlet />
-    </>
+    <Tabs value={matchingIndex}>
+      {tabs.map((tab, index) => (
+        <LinkTab
+          to={tab.to}
+          params={tab.params}
+          key={tab.label}
+          label={tab.label}
+          value={index}
+        />
+      ))}
+    </Tabs>
   );
 }
