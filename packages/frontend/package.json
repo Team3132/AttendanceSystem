@@ -54,7 +54,7 @@
 		"arctic": "1.9.2",
 		"cron-validate": "1.4.5",
 		"discord-interactions": "4.1.1",
-		"drizzle-orm": "0.39.2",
+		"drizzle-orm": "0.39.3",
 		"drizzle-zod": "0.7.0",
 		"eventemitter3": "5.0.1",
 		"googleapis": "144.0.0",
