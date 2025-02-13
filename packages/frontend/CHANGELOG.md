@@ -1,5 +1,13 @@
 # frontend
 
+## 5.2.21
+
+### Patch Changes
+
+- [`783c25d`](https://github.com/Team3132/AttendanceSystem/commit/783c25d92aa55cc7da259d73d517cde85c6c012e) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Optimisation time
+
+- [`783c25d`](https://github.com/Team3132/AttendanceSystem/commit/783c25d92aa55cc7da259d73d517cde85c6c012e) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Currently happening
+
 ## 5.2.20
 
 ### Patch Changes
