@@ -13,7 +13,7 @@ export function createRouter() {
       context: { queryClient },
       scrollToTopSelectors: ["#main-area"],
       defaultPreload: "intent",
-      scrollRestoration: true,
+      scrollRestoration: !import.meta.env.SSR,
     }),
     queryClient,
   );
