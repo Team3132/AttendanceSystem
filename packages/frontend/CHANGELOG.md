@@ -1,5 +1,11 @@
 # frontend
 
+## 5.2.22
+
+### Patch Changes
+
+- [`a292afb`](https://github.com/Team3132/AttendanceSystem/commit/a292afbc2597e095f8c62cb0ac8eded1c75ecf53) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Root title component
+
 ## 5.2.21
 
 ### Patch Changes
