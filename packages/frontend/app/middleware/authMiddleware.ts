@@ -2,12 +2,25 @@ import { lucia } from "@/server/auth/lucia";
 import env from "@/server/env";
 import { redirect } from "@tanstack/react-router";
 import { createMiddleware, registerGlobalMiddleware } from "@tanstack/start";
+import type { Session, User } from "lucia";
 import { getCookie, getHeader, setCookie } from "vinxi/http";
 
 const nullSession = {
   session: null,
   user: null,
 };
+
+type FilledSession = {
+  session: Session;
+  user: User;
+};
+
+type NullSession = {
+  session: null;
+  user: null;
+};
+
+type SessionContext = FilledSession | NullSession;
 
 /**
  * Middleware to check if the user is authenticated and has a valid session
@@ -31,7 +44,7 @@ export const authBaseMiddleware = createMiddleware().server(
 
       // If there's no valid session then pass the null user (fails rules)
       return next({
-        context: validSession,
+        context: validSession as SessionContext,
       });
     }
 
@@ -48,7 +61,7 @@ export const authBaseMiddleware = createMiddleware().server(
       );
 
       return next({
-        context: nullSession,
+        context: nullSession as SessionContext,
       });
     }
 
@@ -76,7 +89,7 @@ export const authBaseMiddleware = createMiddleware().server(
     }
 
     return next({
-      context: validSession,
+      context: validSession as SessionContext,
     });
   },
 );
