@@ -1,5 +1,11 @@
 # frontend
 
+## 5.2.23
+
+### Patch Changes
+
+- [`9ea278f`](https://github.com/Team3132/AttendanceSystem/commit/9ea278f66c1244e3df9c9eacef87ca315f70af29) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Scroll restoration
+
 ## 5.2.22
 
 ### Patch Changes
