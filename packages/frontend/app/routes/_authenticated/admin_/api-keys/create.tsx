@@ -33,7 +33,10 @@ function RouteComponent() {
   const navigate = Route.useNavigate();
 
   const onSubmit = handleSubmit(async (data) => {
-    await createApiKeyMutation.mutateAsync({ data: data.name });
+    const result = await createApiKeyMutation.mutateAsync({ data: data.name });
+
+    prompt("API Key", result.id);
+
     navigate({
       to: "/admin/api-keys",
     });

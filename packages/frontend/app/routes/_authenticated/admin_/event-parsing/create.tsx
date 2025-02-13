@@ -1,12 +1,11 @@
 import ControlledAutocomplete from "@/components/ControlledAutocomplete";
 import ControlledCheckbox from "@/components/ControlledCheckbox";
 import ControlledTextField from "@/components/ControlledTextField";
-import DefaultAppBar from "@/components/DefaultAppBar";
 import useCreateRule from "@/features/admin/hooks/useCreateRule";
 import useZodForm from "@/hooks/useZodForm";
 import { discordQueryOptions } from "@/queries/discord.queries";
 import { strToRegex } from "@/server/utils/regexBuilder";
-import { Button, Container, Divider, Typography } from "@mui/material";
+import { Button, Divider, Stack, Typography } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import cron from "cron-validate";
@@ -142,19 +141,7 @@ function RouteComponent() {
 
   return (
     <>
-      <DefaultAppBar title="Admin - Event Parsing" />
-      <Container
-        sx={{
-          my: 2,
-          flex: 1,
-          overflowY: "auto",
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-        }}
-        component={"form"}
-        onSubmit={onSubmit}
-      >
+      <Stack component={"form"} gap={2} onSubmit={onSubmit}>
         <Typography variant="h4">Create Event Parsing Rule</Typography>
         <Typography>
           Create a rule that matches a regex and posts a reminder in a channel
@@ -215,7 +202,7 @@ function RouteComponent() {
         >
           Submit
         </Button>
-      </Container>
+      </Stack>
     </>
   );
 }

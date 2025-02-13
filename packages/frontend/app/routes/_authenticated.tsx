@@ -1,14 +1,8 @@
 import BottomBar from "@/components/BottomBar";
-import DefaultAppBar from "@/components/DefaultAppBar";
+import TopBar from "@/components/TopBar";
 import { authQueryOptions } from "@/queries/auth.queries";
-import { Box, Container } from "@mui/material";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import {
-  Outlet,
-  createFileRoute,
-  redirect,
-  useRouterState,
-} from "@tanstack/react-router";
+import { Box, Container, styled } from "@mui/material";
+import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated")({
   beforeLoad: async ({ context: { queryClient } }) => {
@@ -27,46 +21,26 @@ export const Route = createFileRoute("/_authenticated")({
   component: Component,
 });
 
+const RootWrapper = styled(Box)({
+  display: "flex",
+  flexDirection: "column",
+  height: "100%",
+});
+
+const RootContainer = styled(Container)({
+  my: 2,
+  flex: 1,
+  overflowY: "auto",
+});
+
 function Component() {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-      }}
-    >
-      <TitledAppBar />
-      <Container
-        sx={{
-          my: 2,
-          flex: 1,
-          overflowY: "auto",
-        }}
-      >
+    <RootWrapper>
+      <TopBar />
+      <RootContainer>
         <Outlet />
-      </Container>
+      </RootContainer>
       <BottomBar />
-    </Box>
+    </RootWrapper>
   );
-}
-
-function TitledAppBar() {
-  const matches = useRouterState({ select: (s) => s.matches });
-
-  const getTitleQuery = useQuery({
-    queryKey: ["getTitle", matches],
-    queryFn: async () => {
-      const matchWithTitle = [...matches]
-        .reverse()
-        .find((d) => d.context.getTitle);
-
-      return matchWithTitle?.context.getTitle
-        ? await matchWithTitle?.context.getTitle()
-        : "My App";
-    },
-    placeholderData: keepPreviousData,
-  });
-
-  return <DefaultAppBar title={getTitleQuery.data ?? "My App"} />;
 }

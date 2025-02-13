@@ -1,4 +1,3 @@
-import DefaultAppBar from "@/components/DefaultAppBar";
 import { LinkIconButton } from "@/components/LinkIconButton";
 import useDeleteRule from "@/features/admin/hooks/useDeleteRule";
 import useSyncCalendar from "@/features/admin/hooks/useSyncCalendar";
@@ -7,7 +6,6 @@ import useTriggerRule from "@/features/admin/hooks/useTriggerRule";
 import { adminQueries } from "@/queries/adminQueries";
 import {
   Button,
-  Container,
   IconButton,
   List,
   ListItem,
@@ -70,50 +68,47 @@ function RouteComponent() {
 
   return (
     <>
-      <DefaultAppBar title="Admin - Event Parsing" />
-      <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
-        <List>
-          {parsingRulesQuery.data.map((rule) => (
-            <ListItem
-              disablePadding
-              key={rule.id}
-              secondaryAction={
-                <Stack direction={"row"} gap={2}>
-                  <IconButton onClick={() => handleDeleteRule(rule.id)}>
-                    <FaTrash />
-                  </IconButton>
-                  <IconButton onClick={() => handleDuplicateRule(rule.id)}>
-                    <FaCopy />
-                  </IconButton>
-                  <IconButton
-                    onClick={() => handleTriggerRule(rule.id)}
-                    disabled={triggerRuleMutation.isPending}
-                  >
-                    <FaPlay />
-                  </IconButton>
-                  <LinkIconButton
-                    to="/admin/event-parsing/$ruleId"
-                    params={{
-                      ruleId: rule.id,
-                    }}
-                  >
-                    <FaPen />
-                  </LinkIconButton>
-                </Stack>
-              }
-            >
-              <ListItemText
-                primary={rule.kronosRule.title}
-                secondary={rule.priority}
-              />
-            </ListItem>
-          ))}
-        </List>
-        <Stack direction={"row"} gap={2}>
-          <SyncEventsButton />
-          <SyncEventsFullButton />
-        </Stack>
-      </Container>
+      <List>
+        {parsingRulesQuery.data.map((rule) => (
+          <ListItem
+            disablePadding
+            key={rule.id}
+            secondaryAction={
+              <Stack direction={"row"} gap={2}>
+                <IconButton onClick={() => handleDeleteRule(rule.id)}>
+                  <FaTrash />
+                </IconButton>
+                <IconButton onClick={() => handleDuplicateRule(rule.id)}>
+                  <FaCopy />
+                </IconButton>
+                <IconButton
+                  onClick={() => handleTriggerRule(rule.id)}
+                  disabled={triggerRuleMutation.isPending}
+                >
+                  <FaPlay />
+                </IconButton>
+                <LinkIconButton
+                  to="/admin/event-parsing/$ruleId"
+                  params={{
+                    ruleId: rule.id,
+                  }}
+                >
+                  <FaPen />
+                </LinkIconButton>
+              </Stack>
+            }
+          >
+            <ListItemText
+              primary={rule.kronosRule.title}
+              secondary={rule.priority}
+            />
+          </ListItem>
+        ))}
+      </List>
+      <Stack direction={"row"} gap={2}>
+        <SyncEventsButton />
+        <SyncEventsFullButton />
+      </Stack>
     </>
   );
 }
