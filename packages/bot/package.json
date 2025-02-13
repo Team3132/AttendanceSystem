@@ -25,7 +25,7 @@
 		"@nestjs/platform-express": "11.0.9",
 		"@nestjs/schedule": "5.0.1",
 		"@sentry/node": "9.0.1",
-		"@trpc/client": "11.0.0-rc.764",
+		"@trpc/client": "11.0.0-rc.768",
 		"class-transformer": "0.5.1",
 		"class-validator": "0.14.1",
 		"cron": "3.5.0",
