@@ -11,6 +11,7 @@ export function createRouter() {
     createTanStackRouter({
       routeTree,
       context: { queryClient },
+      scrollToTopSelectors: ["#main-area"],
       defaultPreload: "intent",
       scrollRestoration: true,
     }),

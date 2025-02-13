@@ -37,7 +37,7 @@ function Component() {
   return (
     <RootWrapper>
       <TopBar />
-      <RootContainer>
+      <RootContainer id="main-area">
         <Outlet />
       </RootContainer>
       <BottomBar />
