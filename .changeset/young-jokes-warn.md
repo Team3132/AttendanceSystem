@@ -1,5 +1,0 @@
----
-"frontend": patch
----
-
-Scroll restoration
