@@ -2,7 +2,7 @@ import { AppBar, IconButton, Toolbar, Typography, styled } from "@mui/material";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useRouterState } from "@tanstack/react-router";
 import { useCanGoBack, useRouter } from "@tanstack/react-router";
-import { useCallback, useMemo } from "react";
+import { Fragment, useCallback, useMemo } from "react";
 import { FaArrowLeft, FaCircleUser } from "react-icons/fa6";
 import { LinkIconButton } from "./LinkIconButton";
 import ModeSwitchButton from "./ModeSwitchButton";
@@ -42,11 +42,11 @@ function BackArrow() {
   const canGoBack = useCanGoBack();
 
   if (!canGoBack) {
-    return null;
+    return <Fragment />;
   }
 
   const handleBack = useCallback(() => {
-    router.history.back();
+    router?.history?.back();
   }, [router]);
 
   return (
