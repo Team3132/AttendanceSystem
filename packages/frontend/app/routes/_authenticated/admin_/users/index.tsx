@@ -123,6 +123,7 @@ function UserTable() {
           }}
         />
         <Datatable
+          scrollRestorationId="users"
           columns={columns}
           data={pagedItems}
           globalFilter={query}

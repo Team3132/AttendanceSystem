@@ -71,6 +71,7 @@ function Component() {
   return (
     <Stack gap={2} sx={{ height: "100%", display: "flex" }}>
       <Datatable
+        scrollRestorationId="leaderboard"
         columns={columns}
         data={flatResults}
         fetchNextPage={leaderboardQuery.fetchNextPage}

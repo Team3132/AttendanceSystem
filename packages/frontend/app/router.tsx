@@ -12,6 +12,7 @@ export function createRouter() {
       routeTree,
       context: { queryClient },
       defaultPreload: "intent",
+      scrollRestoration: true,
     }),
     queryClient,
   );

@@ -82,6 +82,7 @@ function Component() {
         data={infiniteEventsQuery.data}
         fetchNextPage={infiniteEventsQuery.fetchNextPage}
         isFetching={infiniteEventsQuery.isFetching}
+        scrollRestorationId="events"
         renderRow={({ row, style, ref, index }) => (
           <AsChildLink
             key={index}

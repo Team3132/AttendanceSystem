@@ -10,6 +10,7 @@ import {
   TableRow,
 } from "@mui/material";
 import { type RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
+import { useElementScrollRestoration } from "@tanstack/react-router";
 import {
   type ColumnDef,
   type FilterFn,
@@ -43,6 +44,7 @@ interface DatatableProps<Data extends object> extends TableContainerProps {
   totalDBRowCount?: number;
   fixedHeight?: number;
   onRowSelect?: (row: Row<Data>) => void;
+  scrollRestorationId?: string;
 }
 
 declare module "@tanstack/table-core" {
@@ -82,6 +84,7 @@ export default function Datatable<Data extends object>({
   fixedHeight,
   isFetching,
   totalDBRowCount,
+  scrollRestorationId = "datatable",
   ...tableContainerProps
 }: DatatableProps<Data>) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -115,11 +118,17 @@ export default function Datatable<Data extends object>({
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
   const { rows } = table.getRowModel();
+
+  const scrollEntry = useElementScrollRestoration({
+    id: scrollRestorationId,
+  });
+
   const virtualizer = useVirtualizer({
     getScrollElement: () => tableContainerRef.current,
     count: rows.length,
     estimateSize: () => fixedHeight || 48,
     overscan: 10,
+    initialOffset: scrollEntry?.scrollY,
   });
 
   const totalFetched = useMemo(() => {
@@ -155,6 +164,7 @@ export default function Datatable<Data extends object>({
     <TableContainer
       component={Paper}
       ref={tableContainerRef}
+      data-scroll-restoration-id={scrollRestorationId}
       // biome-ignore lint/suspicious/noExplicitAny: Weird type intersection if there's no any
       onScroll={(e: any) =>
         fetchMoreOnBottomReached(e.target as HTMLDivElement)

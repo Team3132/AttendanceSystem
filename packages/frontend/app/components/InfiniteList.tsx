@@ -1,5 +1,6 @@
 import { List, type ListProps } from "@mui/material";
 import type { InfiniteData } from "@tanstack/react-query";
+import { useElementScrollRestoration } from "@tanstack/react-router";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import type React from "react";
 import { useCallback, useEffect, useMemo, useRef } from "react";
@@ -24,6 +25,7 @@ interface InfiniteListParams<T, IPaged extends PagedType<T> = PagedType<T>> {
   fetchNextPage: () => void;
   isFetching: boolean;
   fixedHeight?: number;
+  scrollRestorationId?: string;
   renderRow: (row: RenderRowProps<T>) => React.ReactNode;
 }
 
@@ -38,6 +40,7 @@ export default function InfiniteList<T>(props: InfiniteListProps<T>) {
     isFetching,
     fixedHeight,
     renderRow,
+    scrollRestorationId = "infinite-list",
     ...listProps
   } = props;
 
@@ -53,6 +56,10 @@ export default function InfiniteList<T>(props: InfiniteListProps<T>) {
     [data?.pages],
   );
 
+  const scrollEntry = useElementScrollRestoration({
+    id: scrollRestorationId,
+  });
+
   const tableContainerRef = useRef<HTMLUListElement>(null);
 
   const virtualizer = useVirtualizer({
@@ -60,6 +67,7 @@ export default function InfiniteList<T>(props: InfiniteListProps<T>) {
     count: currentTotal,
     estimateSize: () => fixedHeight || 48,
     overscan: 10,
+    initialOffset: scrollEntry?.scrollY,
   });
 
   const fetchMoreOnBottomReached = useCallback(
@@ -88,6 +96,7 @@ export default function InfiniteList<T>(props: InfiniteListProps<T>) {
       component={"ul"}
       {...listProps}
       ref={tableContainerRef}
+      data-scroll-restoration-id={scrollRestorationId}
       onScroll={(e) => {
         fetchMoreOnBottomReached(e.target as HTMLUListElement);
       }}
