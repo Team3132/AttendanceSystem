@@ -98,7 +98,7 @@ function RootComponent() {
   );
 }
 
-function RootDocument({ children }: Readonly<{ children: React.ReactNode }>) {
+function RootTitle() {
   const matches = useRouterState({ select: (s) => s.matches });
 
   const getTitleQuery = useQuery({
@@ -115,11 +115,15 @@ function RootDocument({ children }: Readonly<{ children: React.ReactNode }>) {
     placeholderData: keepPreviousData,
   });
 
+  return <title>{getTitleQuery.data || "Loading..."}</title>;
+}
+
+function RootDocument({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
         <Meta />
-        <title>{getTitleQuery.data || "Loading..."}</title>
+        <RootTitle />
         <style>
           {`html, body, #root {
   margin: 0;
