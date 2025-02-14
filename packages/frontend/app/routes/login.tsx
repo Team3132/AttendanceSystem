@@ -8,7 +8,6 @@ export const Route = createFileRoute("/login")({
   loader: ({ context: { queryClient } }) => {
     queryClient.prefetchQuery(authQueryOptions.status());
   },
-
   component: Component,
 });
 

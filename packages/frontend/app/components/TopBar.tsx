@@ -1,9 +1,8 @@
-import { AppBar, IconButton, Toolbar, Typography, styled } from "@mui/material";
+import { AppBar, Toolbar, Typography, styled } from "@mui/material";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useRouterState } from "@tanstack/react-router";
-import { useCanGoBack, useRouter } from "@tanstack/react-router";
-import { Fragment, useCallback, useMemo } from "react";
-import { FaArrowLeft, FaCircleUser } from "react-icons/fa6";
+import { useMemo } from "react";
+import { FaCircleUser } from "react-icons/fa6";
 import { LinkIconButton } from "./LinkIconButton";
 import ModeSwitchButton from "./ModeSwitchButton";
 
@@ -37,25 +36,6 @@ function TitleTypography() {
   );
 }
 
-function BackArrow() {
-  const router = useRouter();
-  const canGoBack = useCanGoBack();
-
-  if (!canGoBack) {
-    return <Fragment />;
-  }
-
-  const handleBack = useCallback(() => {
-    router?.history?.back();
-  }, [router]);
-
-  return (
-    <IconButton onClick={handleBack}>
-      <FaArrowLeft />
-    </IconButton>
-  );
-}
-
 const SpacedToolbar = styled(Toolbar)(({ theme }) => ({
   gap: theme.spacing(1),
 }));
@@ -64,7 +44,6 @@ export default function TopBar() {
   return (
     <AppBar position="static">
       <SpacedToolbar>
-        <BackArrow />
         <TitleTypography />
         <ModeSwitchButton />
         <LinkIconButton to="/profile" color="inherit">

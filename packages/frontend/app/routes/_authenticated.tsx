@@ -28,7 +28,6 @@ const RootWrapper = styled(Box)({
 });
 
 const RootContainer = styled(Container)({
-  my: 2,
   flex: 1,
   overflowY: "auto",
 });

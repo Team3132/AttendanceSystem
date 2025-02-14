@@ -19,7 +19,7 @@ import { z } from "zod";
 const defaultValues = {
   from: DateTime.now().toISODate(),
   type: undefined,
-  limit: 5,
+  limit: 10,
 };
 
 const eventsSearchSchema = z.object({
