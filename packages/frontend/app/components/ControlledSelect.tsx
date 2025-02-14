@@ -26,6 +26,8 @@ type PathValueOption<
   label: React.ReactNode;
   /** The value of the option, may be any valid value */
   value: PathValue<TFieldValues, TName>;
+  /** Disabled */
+  disabled?: boolean;
 };
 
 /**
@@ -107,7 +109,11 @@ export default function ControlledSelect<
         }}
       >
         {options.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
+          <MenuItem
+            key={option.value}
+            value={option.value}
+            disabled={option.disabled}
+          >
             {option.label}
           </MenuItem>
         ))}

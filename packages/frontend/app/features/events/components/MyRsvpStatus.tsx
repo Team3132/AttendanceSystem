@@ -1,23 +1,20 @@
+import ControlledSelect from "@/components/ControlledSelect";
+import useZodForm from "@/hooks/useZodForm";
 import { eventQueryOptions } from "@/queries/events.queries";
-import type { RSVPSchema, RSVPStatusUpdateSchema } from "@/server/schema";
-import {
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  Select,
-  type SelectChangeEvent,
-  TextField,
-} from "@mui/material";
+import { RSVPStatusSchema } from "@/server/schema";
+import {} from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import type { z } from "zod";
+import { useEffect, useMemo } from "react";
+import { z } from "zod";
 import useUpdateRsvp from "../hooks/useUpdateRsvp";
 
 interface MyRsvpStatusProps {
   eventId: string;
 }
 
-type RSVPStatus = NonNullable<z.infer<typeof RSVPSchema>["status"]>;
+const FormSchema = z.object({
+  status: RSVPStatusSchema.nullable(),
+});
 
 export default function MyRsvpStatus(props: MyRsvpStatusProps) {
   const { eventId } = props;
@@ -27,59 +24,63 @@ export default function MyRsvpStatus(props: MyRsvpStatusProps) {
   );
   const updateRsvpMutation = useUpdateRsvp();
 
-  const handleChange = (event: SelectChangeEvent<RSVPStatus>) => {
-    updateRsvpMutation.mutate({
+  const {
+    control,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { isSubmitting },
+  } = useZodForm({
+    schema: FormSchema,
+    defaultValues: {
+      status: myRsvpStatusQuery.data?.status ?? null,
+    },
+  });
+
+  const onSubmit = handleSubmit((data) =>
+    updateRsvpMutation.mutateAsync({
       data: {
         eventId,
-        status: event.target.value as z.infer<typeof RSVPStatusUpdateSchema>,
-        delay: 0,
+        status: data.status,
       },
-    });
-  };
+    }),
+  );
 
-  if (myRsvpStatusQuery.data !== undefined) {
-    return (
-      <FormControl
-        disabled={updateRsvpMutation.isPending}
-        error={updateRsvpMutation.isError}
-      >
-        <InputLabel id="select-rsvp-status-label">My Status</InputLabel>
-        <Select
-          labelId="select-rsvp-status-label"
-          id="select-rsvp-status"
-          //   value={age}
-          value={myRsvpStatusQuery.data?.status ?? ""}
-          onChange={handleChange}
-          label="My Status"
-          displayEmpty={true}
-        >
-          <MenuItem value={"YES"}>Coming</MenuItem>
-          <MenuItem value={"NO"}>Not Coming</MenuItem>
-          <MenuItem value={"MAYBE"}>Maybe</MenuItem>
-          <MenuItem value={"LATE"}>Late</MenuItem>
-          <MenuItem value={"ATTENDED"} disabled>
-            Attended
-          </MenuItem>
-        </Select>
-        {updateRsvpMutation.isError ? (
-          <FormHelperText error>
-            {updateRsvpMutation.error.message}
-          </FormHelperText>
-        ) : null}
-      </FormControl>
-    );
-  }
+  useEffect(() => {
+    if (myRsvpStatusQuery.data) {
+      reset({
+        status: myRsvpStatusQuery.data.status,
+      });
+    }
+  }, [reset, myRsvpStatusQuery.data]);
 
-  if (myRsvpStatusQuery.isError) {
-    return (
-      <TextField
-        label={"My Status"}
-        disabled
-        error
-        helperText={myRsvpStatusQuery.error.message}
-      />
-    );
-  }
+  useEffect(() => {
+    const subscription = watch(() => onSubmit());
 
-  return <TextField label="Loading" disabled />;
+    return () => subscription.unsubscribe();
+  }, [watch, onSubmit]);
+
+  const disabled = useMemo(
+    () => myRsvpStatusQuery.data?.status === "ATTENDED" || isSubmitting,
+    [myRsvpStatusQuery.data?.status, isSubmitting],
+  );
+
+  return (
+    <ControlledSelect
+      control={control}
+      name="status"
+      label="RSVP Status"
+      disabled={disabled}
+      options={[
+        {
+          value: "LATE",
+          label: "Late",
+        },
+        { value: "MAYBE", label: "Maybe" },
+        { value: "NO", label: "No" },
+        { value: "YES", label: "Yes" },
+        { value: "ATTENDED", label: "Attended", disabled: true },
+      ]}
+    />
+  );
 }
