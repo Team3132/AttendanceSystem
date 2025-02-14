@@ -10,8 +10,8 @@ export const Route = createFileRoute("/_authenticated/profile/")({
   beforeLoad: () => ({
     getTitle: () => "Profile",
   }),
-  loader: async ({ context: { queryClient } }) => {
-    await queryClient.prefetchQuery(usersQueryOptions.userSelfScancodes());
+  loader: ({ context: { queryClient } }) => {
+    queryClient.prefetchQuery(usersQueryOptions.userSelfScancodes());
   },
   component: Component,
 });

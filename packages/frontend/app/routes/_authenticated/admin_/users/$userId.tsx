@@ -1,13 +1,8 @@
-import { LinkTab } from "@/components/LinkTab";
+import LinkTabs from "@/components/LinkTabs";
 import { usersQueryOptions } from "@/queries/users.queries";
 
 import type { TabItem } from "@/types/TabItem";
-import { Tabs } from "@mui/material";
-import {
-  Outlet,
-  createFileRoute,
-  useChildMatches,
-} from "@tanstack/react-router";
+import { Outlet, createFileRoute } from "@tanstack/react-router";
 import { useMemo } from "react";
 
 export const Route = createFileRoute("/_authenticated/admin_/users/$userId")({
@@ -22,8 +17,9 @@ export const Route = createFileRoute("/_authenticated/admin_/users/$userId")({
     };
   },
   component: Component,
-  loader: ({ params: { userId }, context: { queryClient } }) =>
-    queryClient.prefetchQuery(usersQueryOptions.userDetails(userId)),
+  loader: ({ params: { userId }, context: { queryClient } }) => {
+    queryClient.prefetchQuery(usersQueryOptions.userDetails(userId));
+  },
 });
 
 function Component() {
@@ -58,26 +54,5 @@ function ProfileTabs() {
     [userId],
   );
 
-  const currentChildren = useChildMatches();
-
-  const matchingIndex = useMemo(() => {
-    const currentTabIndex = tabs.findIndex((tab) =>
-      currentChildren.some((child) => child.fullPath === tab.to),
-    );
-
-    return currentTabIndex === -1 ? 0 : currentTabIndex;
-  }, [currentChildren, tabs]);
-  return (
-    <Tabs value={matchingIndex}>
-      {tabs.map((tab, index) => (
-        <LinkTab
-          to={tab.to}
-          params={tab.params}
-          key={tab.to}
-          label={tab.label}
-          value={index}
-        />
-      ))}
-    </Tabs>
-  );
+  return <LinkTabs tabs={tabs} />;
 }

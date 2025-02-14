@@ -5,8 +5,9 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/login")({
-  loader: async ({ context: { queryClient } }) =>
-    await queryClient.prefetchQuery(authQueryOptions.status()),
+  loader: ({ context: { queryClient } }) => {
+    queryClient.prefetchQuery(authQueryOptions.status());
+  },
 
   component: Component,
 });

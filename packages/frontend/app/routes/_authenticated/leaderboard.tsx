@@ -44,10 +44,8 @@ export const Route = createFileRoute("/_authenticated/leaderboard")({
   beforeLoad: () => ({
     getTitle: () => "Outreach Leaderboard",
   }),
-  loader: async ({ context: { queryClient } }) => {
-    await queryClient.prefetchInfiniteQuery(
-      leaderboardQueryOptions({ limit: 10 }),
-    );
+  loader: ({ context: { queryClient } }) => {
+    queryClient.prefetchInfiniteQuery(leaderboardQueryOptions({ limit: 10 }));
   },
 });
 

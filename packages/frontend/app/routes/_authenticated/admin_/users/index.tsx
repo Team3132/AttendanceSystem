@@ -55,13 +55,14 @@ export const Route = createFileRoute("/_authenticated/admin_/users/")({
     middlewares: [stripSearchParams(defaultValues)],
   },
   loaderDeps: ({ search }) => ({ search }),
-  loader: async ({ context: { queryClient }, deps: { search } }) =>
+  loader: ({ context: { queryClient }, deps: { search } }) => {
     queryClient.prefetchInfiniteQuery(
       usersQueryOptions.userList({
         limit: 10,
         search: search.query,
       }),
-    ),
+    );
+  },
   component: Component,
 });
 

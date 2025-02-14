@@ -1,15 +1,10 @@
-import { LinkTab } from "@/components/LinkTab";
+import LinkTabs from "@/components/LinkTabs";
 import { authQueryOptions } from "@/queries/auth.queries";
 import { eventQueryOptions } from "@/queries/events.queries";
 
 import type { TabItem } from "@/types/TabItem";
-import { Tabs } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import {
-  Outlet,
-  createFileRoute,
-  useChildMatches,
-} from "@tanstack/react-router";
+import { Outlet, createFileRoute } from "@tanstack/react-router";
 import { DateTime } from "luxon";
 import { useMemo } from "react";
 
@@ -24,9 +19,9 @@ export const Route = createFileRoute("/_authenticated/events_/$eventId")({
       ).toLocaleString(DateTime.DATE_SHORT)} - ${eventData.title}`;
     },
   }),
-  loader: async ({ context: { queryClient }, params: { eventId } }) => {
-    await queryClient.prefetchQuery(eventQueryOptions.eventDetails(eventId));
-    await queryClient.prefetchQuery(authQueryOptions.status());
+  loader: ({ context: { queryClient }, params: { eventId } }) => {
+    queryClient.prefetchQuery(eventQueryOptions.eventDetails(eventId));
+    queryClient.prefetchQuery(authQueryOptions.status());
   },
 
   component: Component,
@@ -75,27 +70,5 @@ function ProfileTabs() {
     [eventId, authStatusQuery.data.isAdmin],
   );
 
-  const currentChildren = useChildMatches();
-
-  const matchingIndex = useMemo(() => {
-    const tabIndex = tabs.findIndex((tab) => {
-      return currentChildren.some((child) => {
-        return child.fullPath === tab.to;
-      });
-    });
-    return tabIndex === -1 ? 0 : tabIndex;
-  }, [currentChildren, tabs]);
-  return (
-    <Tabs variant="scrollable" scrollButtons="auto" value={matchingIndex}>
-      {tabs.map((tab, index) => (
-        <LinkTab
-          to={tab.to}
-          params={tab.params}
-          key={tab.label}
-          label={tab.label}
-          value={index}
-        />
-      ))}
-    </Tabs>
-  );
+  return <LinkTabs variant="scrollable" scrollButtons="auto" tabs={tabs} />;
 }

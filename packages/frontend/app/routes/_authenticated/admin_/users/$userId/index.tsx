@@ -16,9 +16,9 @@ export const Route = createFileRoute("/_authenticated/admin_/users/$userId/")({
       return `${user.username}'s Scancodes`;
     },
   }),
-  loader: async ({ context: { queryClient }, params: { userId } }) => {
-    await queryClient.prefetchQuery(usersQueryOptions.userScancodes(userId));
-    return queryClient.ensureQueryData(usersQueryOptions.userDetails(userId));
+  loader: ({ context: { queryClient }, params: { userId } }) => {
+    queryClient.prefetchQuery(usersQueryOptions.userScancodes(userId));
+    queryClient.ensureQueryData(usersQueryOptions.userDetails(userId));
   },
 });
 

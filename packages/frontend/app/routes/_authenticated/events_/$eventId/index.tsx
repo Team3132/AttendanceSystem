@@ -15,16 +15,10 @@ export const Route = createFileRoute("/_authenticated/events_/$eventId/")({
       return `${eventData.title} - Details`;
     },
   }),
-  loader: async ({ context: { queryClient }, params: { eventId } }) => {
-    const [eventData] = await Promise.all([
-      await queryClient.ensureQueryData(
-        eventQueryOptions.eventDetails(eventId),
-      ),
-      await queryClient.prefetchQuery(eventQueryOptions.eventRsvps(eventId)),
-      await queryClient.prefetchQuery(eventQueryOptions.eventRsvp(eventId)),
-    ]);
-
-    return { eventData };
+  loader: ({ context: { queryClient }, params: { eventId } }) => {
+    queryClient.ensureQueryData(eventQueryOptions.eventDetails(eventId));
+    queryClient.prefetchQuery(eventQueryOptions.eventRsvps(eventId));
+    queryClient.prefetchQuery(eventQueryOptions.eventRsvp(eventId));
   },
 });
 

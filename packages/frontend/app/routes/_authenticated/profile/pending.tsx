@@ -10,8 +10,9 @@ export const Route = createFileRoute("/_authenticated/profile/pending")({
     getTitle: () => "Profile",
   }),
   component: Component,
-  loader: ({ context: { queryClient } }) =>
-    queryClient.prefetchQuery(usersQueryOptions.userSelfPendingRsvps()),
+  loader: ({ context: { queryClient } }) => {
+    queryClient.prefetchQuery(usersQueryOptions.userSelfPendingRsvps());
+  },
 });
 
 function Component() {

@@ -20,7 +20,7 @@ export const Route = createFileRoute("/_authenticated/admin_/api-keys/")({
   beforeLoad: () => ({
     getTitle: () => "Admin - API Keys",
   }),
-  loader: async ({ context: { queryClient } }) => {
+  loader: ({ context: { queryClient } }) => {
     queryClient.prefetchQuery(adminQueries.apiKeys);
   },
   component: RouteComponent,

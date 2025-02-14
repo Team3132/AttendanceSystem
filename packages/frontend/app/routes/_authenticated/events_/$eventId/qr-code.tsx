@@ -32,13 +32,9 @@ export const Route = createFileRoute(
       },
     };
   },
-  loader: async ({ context: { queryClient }, params: { eventId } }) => {
-    const eventData = await queryClient.ensureQueryData(
-      eventQueryOptions.eventDetails(eventId),
-    );
-    await queryClient.prefetchQuery(eventQueryOptions.eventSecret(eventId));
-
-    return { eventData };
+  loader: ({ context: { queryClient }, params: { eventId } }) => {
+    queryClient.ensureQueryData(eventQueryOptions.eventDetails(eventId));
+    queryClient.prefetchQuery(eventQueryOptions.eventSecret(eventId));
   },
 });
 
