@@ -9,7 +9,7 @@
 	"workspaces": ["packages/*"],
 	"packageManager": "pnpm@9.15.5",
 	"engines": {
-		"node": "23.7.0"
+		"node": "23.8.0"
 	},
 	"scripts": {
 		"build": "pnpm buildtypes && pnpm run -r build",
