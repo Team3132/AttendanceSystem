@@ -8,7 +8,7 @@ import { Outlet, createFileRoute } from "@tanstack/react-router";
 import { DateTime } from "luxon";
 import { useMemo } from "react";
 
-export const Route = createFileRoute("/_authenticated/events_/$eventId")({
+export const Route = createFileRoute("/_authenticated/events/$eventId")({
   beforeLoad: ({ context: { queryClient }, params: { eventId } }) => ({
     getTitle: async () => {
       const eventData = await queryClient.ensureQueryData(

@@ -10,7 +10,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { DateTime } from "luxon";
 import { Controller } from "react-hook-form";
 
-export const Route = createFileRoute("/_authenticated/events_/create")({
+export const Route = createFileRoute("/_authenticated/events/create")({
   component: Component,
   beforeLoad: async ({ context: { queryClient } }) => {
     const { isAdmin } = await queryClient.ensureQueryData(

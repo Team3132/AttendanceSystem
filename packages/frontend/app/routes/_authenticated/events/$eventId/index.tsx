@@ -5,7 +5,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { DateTime } from "luxon";
 
-export const Route = createFileRoute("/_authenticated/events_/$eventId/")({
+export const Route = createFileRoute("/_authenticated/events/$eventId/")({
   component: Component,
   beforeLoad: ({ context: { queryClient }, params: { eventId } }) => ({
     getTitle: async () => {

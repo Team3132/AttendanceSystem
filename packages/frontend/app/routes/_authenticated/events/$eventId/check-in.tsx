@@ -8,7 +8,7 @@ import { Button, Container, Paper, Stack, Typography } from "@mui/material";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute(
-  "/_authenticated/events_/$eventId/check-in",
+  "/_authenticated/events/$eventId/check-in",
 )({
   component: Component,
   beforeLoad: ({ context: { queryClient }, params: { eventId } }) => ({

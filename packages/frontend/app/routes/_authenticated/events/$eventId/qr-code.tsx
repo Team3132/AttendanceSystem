@@ -5,38 +5,38 @@ import { Container, Paper, Stack, Typography } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
-export const Route = createFileRoute(
-  "/_authenticated/events_/$eventId/qr-code",
-)({
-  component: Component,
-  beforeLoad: async ({ context: { queryClient }, params: { eventId } }) => {
-    const { isAdmin } = await queryClient.ensureQueryData(
-      authQueryOptions.status(),
-    );
+export const Route = createFileRoute("/_authenticated/events/$eventId/qr-code")(
+  {
+    component: Component,
+    beforeLoad: async ({ context: { queryClient }, params: { eventId } }) => {
+      const { isAdmin } = await queryClient.ensureQueryData(
+        authQueryOptions.status(),
+      );
 
-    if (!isAdmin) {
-      throw redirect({
-        to: "/error",
-        search: {
-          message: "You are not an admin",
+      if (!isAdmin) {
+        throw redirect({
+          to: "/error",
+          search: {
+            message: "You are not an admin",
+          },
+        });
+      }
+
+      return {
+        getTitle: async () => {
+          const eventData = await queryClient.ensureQueryData(
+            eventQueryOptions.eventDetails(eventId),
+          );
+          return `${eventData.title} - QR Code`;
         },
-      });
-    }
-
-    return {
-      getTitle: async () => {
-        const eventData = await queryClient.ensureQueryData(
-          eventQueryOptions.eventDetails(eventId),
-        );
-        return `${eventData.title} - QR Code`;
-      },
-    };
+      };
+    },
+    loader: ({ context: { queryClient }, params: { eventId } }) => {
+      queryClient.ensureQueryData(eventQueryOptions.eventDetails(eventId));
+      queryClient.prefetchQuery(eventQueryOptions.eventSecret(eventId));
+    },
   },
-  loader: ({ context: { queryClient }, params: { eventId } }) => {
-    queryClient.ensureQueryData(eventQueryOptions.eventDetails(eventId));
-    queryClient.prefetchQuery(eventQueryOptions.eventSecret(eventId));
-  },
-});
+);
 
 function Component() {
   const { eventId } = Route.useParams();

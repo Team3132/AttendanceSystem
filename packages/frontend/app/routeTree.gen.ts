@@ -17,19 +17,19 @@ import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as AuthenticatedIndexImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedProfileImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedLeaderboardImport } from './routes/_authenticated/leaderboard'
-import { Route as AuthenticatedEventsImport } from './routes/_authenticated/events'
 import { Route as AuthenticatedAdminImport } from './routes/_authenticated/admin_'
 import { Route as AuthenticatedProfileIndexImport } from './routes/_authenticated/profile/index'
+import { Route as AuthenticatedEventsIndexImport } from './routes/_authenticated/events/index'
 import { Route as AuthenticatedAdminIndexImport } from './routes/_authenticated/admin_/index'
 import { Route as AuthenticatedProfilePendingImport } from './routes/_authenticated/profile/pending'
-import { Route as AuthenticatedEventsCreateImport } from './routes/_authenticated/events_/create'
-import { Route as AuthenticatedEventsEventIdImport } from './routes/_authenticated/events_/$eventId'
-import { Route as AuthenticatedEventsEventIdIndexImport } from './routes/_authenticated/events_/$eventId/index'
+import { Route as AuthenticatedEventsCreateImport } from './routes/_authenticated/events/create'
+import { Route as AuthenticatedEventsEventIdImport } from './routes/_authenticated/events/$eventId'
+import { Route as AuthenticatedEventsEventIdIndexImport } from './routes/_authenticated/events/$eventId/index'
 import { Route as AuthenticatedAdminUsersIndexImport } from './routes/_authenticated/admin_/users/index'
 import { Route as AuthenticatedAdminEventParsingIndexImport } from './routes/_authenticated/admin_/event-parsing/index'
 import { Route as AuthenticatedAdminApiKeysIndexImport } from './routes/_authenticated/admin_/api-keys/index'
-import { Route as AuthenticatedEventsEventIdQrCodeImport } from './routes/_authenticated/events_/$eventId/qr-code'
-import { Route as AuthenticatedEventsEventIdCheckInImport } from './routes/_authenticated/events_/$eventId/check-in'
+import { Route as AuthenticatedEventsEventIdQrCodeImport } from './routes/_authenticated/events/$eventId/qr-code'
+import { Route as AuthenticatedEventsEventIdCheckInImport } from './routes/_authenticated/events/$eventId/check-in'
 import { Route as AuthenticatedAdminUsersUserIdImport } from './routes/_authenticated/admin_/users/$userId'
 import { Route as AuthenticatedAdminEventParsingCreateImport } from './routes/_authenticated/admin_/event-parsing/create'
 import { Route as AuthenticatedAdminEventParsingRuleIdImport } from './routes/_authenticated/admin_/event-parsing/$ruleId'
@@ -75,12 +75,6 @@ const AuthenticatedLeaderboardRoute = AuthenticatedLeaderboardImport.update({
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 
-const AuthenticatedEventsRoute = AuthenticatedEventsImport.update({
-  id: '/events',
-  path: '/events',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-
 const AuthenticatedAdminRoute = AuthenticatedAdminImport.update({
   id: '/admin_',
   path: '/admin',
@@ -91,6 +85,12 @@ const AuthenticatedProfileIndexRoute = AuthenticatedProfileIndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthenticatedProfileRoute,
+} as any)
+
+const AuthenticatedEventsIndexRoute = AuthenticatedEventsIndexImport.update({
+  id: '/events/',
+  path: '/events/',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 
 const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexImport.update({
@@ -107,14 +107,14 @@ const AuthenticatedProfilePendingRoute =
   } as any)
 
 const AuthenticatedEventsCreateRoute = AuthenticatedEventsCreateImport.update({
-  id: '/events_/create',
+  id: '/events/create',
   path: '/events/create',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 
 const AuthenticatedEventsEventIdRoute = AuthenticatedEventsEventIdImport.update(
   {
-    id: '/events_/$eventId',
+    id: '/events/$eventId',
     path: '/events/$eventId',
     getParentRoute: () => AuthenticatedRoute,
   } as any,
@@ -243,13 +243,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminImport
       parentRoute: typeof AuthenticatedImport
     }
-    '/_authenticated/events': {
-      id: '/_authenticated/events'
-      path: '/events'
-      fullPath: '/events'
-      preLoaderRoute: typeof AuthenticatedEventsImport
-      parentRoute: typeof AuthenticatedImport
-    }
     '/_authenticated/leaderboard': {
       id: '/_authenticated/leaderboard'
       path: '/leaderboard'
@@ -271,15 +264,15 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIndexImport
       parentRoute: typeof AuthenticatedImport
     }
-    '/_authenticated/events_/$eventId': {
-      id: '/_authenticated/events_/$eventId'
+    '/_authenticated/events/$eventId': {
+      id: '/_authenticated/events/$eventId'
       path: '/events/$eventId'
       fullPath: '/events/$eventId'
       preLoaderRoute: typeof AuthenticatedEventsEventIdImport
       parentRoute: typeof AuthenticatedImport
     }
-    '/_authenticated/events_/create': {
-      id: '/_authenticated/events_/create'
+    '/_authenticated/events/create': {
+      id: '/_authenticated/events/create'
       path: '/events/create'
       fullPath: '/events/create'
       preLoaderRoute: typeof AuthenticatedEventsCreateImport
@@ -298,6 +291,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/'
       preLoaderRoute: typeof AuthenticatedAdminIndexImport
       parentRoute: typeof AuthenticatedAdminImport
+    }
+    '/_authenticated/events/': {
+      id: '/_authenticated/events/'
+      path: '/events'
+      fullPath: '/events'
+      preLoaderRoute: typeof AuthenticatedEventsIndexImport
+      parentRoute: typeof AuthenticatedImport
     }
     '/_authenticated/profile/': {
       id: '/_authenticated/profile/'
@@ -334,15 +334,15 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminUsersUserIdImport
       parentRoute: typeof AuthenticatedAdminImport
     }
-    '/_authenticated/events_/$eventId/check-in': {
-      id: '/_authenticated/events_/$eventId/check-in'
+    '/_authenticated/events/$eventId/check-in': {
+      id: '/_authenticated/events/$eventId/check-in'
       path: '/check-in'
       fullPath: '/events/$eventId/check-in'
       preLoaderRoute: typeof AuthenticatedEventsEventIdCheckInImport
       parentRoute: typeof AuthenticatedEventsEventIdImport
     }
-    '/_authenticated/events_/$eventId/qr-code': {
-      id: '/_authenticated/events_/$eventId/qr-code'
+    '/_authenticated/events/$eventId/qr-code': {
+      id: '/_authenticated/events/$eventId/qr-code'
       path: '/qr-code'
       fullPath: '/events/$eventId/qr-code'
       preLoaderRoute: typeof AuthenticatedEventsEventIdQrCodeImport
@@ -369,8 +369,8 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminUsersIndexImport
       parentRoute: typeof AuthenticatedAdminImport
     }
-    '/_authenticated/events_/$eventId/': {
-      id: '/_authenticated/events_/$eventId/'
+    '/_authenticated/events/$eventId/': {
+      id: '/_authenticated/events/$eventId/'
       path: '/'
       fullPath: '/events/$eventId/'
       preLoaderRoute: typeof AuthenticatedEventsEventIdIndexImport
@@ -487,22 +487,22 @@ const AuthenticatedEventsEventIdRouteWithChildren =
 
 interface AuthenticatedRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
-  AuthenticatedEventsRoute: typeof AuthenticatedEventsRoute
   AuthenticatedLeaderboardRoute: typeof AuthenticatedLeaderboardRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRouteWithChildren
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedEventsEventIdRoute: typeof AuthenticatedEventsEventIdRouteWithChildren
   AuthenticatedEventsCreateRoute: typeof AuthenticatedEventsCreateRoute
+  AuthenticatedEventsIndexRoute: typeof AuthenticatedEventsIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
-  AuthenticatedEventsRoute: AuthenticatedEventsRoute,
   AuthenticatedLeaderboardRoute: AuthenticatedLeaderboardRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRouteWithChildren,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedEventsEventIdRoute: AuthenticatedEventsEventIdRouteWithChildren,
   AuthenticatedEventsCreateRoute: AuthenticatedEventsCreateRoute,
+  AuthenticatedEventsIndexRoute: AuthenticatedEventsIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
@@ -514,7 +514,6 @@ export interface FileRoutesByFullPath {
   '/error': typeof ErrorRoute
   '/login': typeof LoginRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
-  '/events': typeof AuthenticatedEventsRoute
   '/leaderboard': typeof AuthenticatedLeaderboardRoute
   '/profile': typeof AuthenticatedProfileRouteWithChildren
   '/': typeof AuthenticatedIndexRoute
@@ -522,6 +521,7 @@ export interface FileRoutesByFullPath {
   '/events/create': typeof AuthenticatedEventsCreateRoute
   '/profile/pending': typeof AuthenticatedProfilePendingRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
+  '/events': typeof AuthenticatedEventsIndexRoute
   '/profile/': typeof AuthenticatedProfileIndexRoute
   '/admin/api-keys/create': typeof AuthenticatedAdminApiKeysCreateRoute
   '/admin/event-parsing/$ruleId': typeof AuthenticatedAdminEventParsingRuleIdRoute
@@ -541,12 +541,12 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/error': typeof ErrorRoute
   '/login': typeof LoginRoute
-  '/events': typeof AuthenticatedEventsRoute
   '/leaderboard': typeof AuthenticatedLeaderboardRoute
   '/': typeof AuthenticatedIndexRoute
   '/events/create': typeof AuthenticatedEventsCreateRoute
   '/profile/pending': typeof AuthenticatedProfilePendingRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
+  '/events': typeof AuthenticatedEventsIndexRoute
   '/profile': typeof AuthenticatedProfileIndexRoute
   '/admin/api-keys/create': typeof AuthenticatedAdminApiKeysCreateRoute
   '/admin/event-parsing/$ruleId': typeof AuthenticatedAdminEventParsingRuleIdRoute
@@ -568,25 +568,25 @@ export interface FileRoutesById {
   '/error': typeof ErrorRoute
   '/login': typeof LoginRoute
   '/_authenticated/admin_': typeof AuthenticatedAdminRouteWithChildren
-  '/_authenticated/events': typeof AuthenticatedEventsRoute
   '/_authenticated/leaderboard': typeof AuthenticatedLeaderboardRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRouteWithChildren
   '/_authenticated/': typeof AuthenticatedIndexRoute
-  '/_authenticated/events_/$eventId': typeof AuthenticatedEventsEventIdRouteWithChildren
-  '/_authenticated/events_/create': typeof AuthenticatedEventsCreateRoute
+  '/_authenticated/events/$eventId': typeof AuthenticatedEventsEventIdRouteWithChildren
+  '/_authenticated/events/create': typeof AuthenticatedEventsCreateRoute
   '/_authenticated/profile/pending': typeof AuthenticatedProfilePendingRoute
   '/_authenticated/admin_/': typeof AuthenticatedAdminIndexRoute
+  '/_authenticated/events/': typeof AuthenticatedEventsIndexRoute
   '/_authenticated/profile/': typeof AuthenticatedProfileIndexRoute
   '/_authenticated/admin_/api-keys/create': typeof AuthenticatedAdminApiKeysCreateRoute
   '/_authenticated/admin_/event-parsing/$ruleId': typeof AuthenticatedAdminEventParsingRuleIdRoute
   '/_authenticated/admin_/event-parsing/create': typeof AuthenticatedAdminEventParsingCreateRoute
   '/_authenticated/admin_/users/$userId': typeof AuthenticatedAdminUsersUserIdRouteWithChildren
-  '/_authenticated/events_/$eventId/check-in': typeof AuthenticatedEventsEventIdCheckInRoute
-  '/_authenticated/events_/$eventId/qr-code': typeof AuthenticatedEventsEventIdQrCodeRoute
+  '/_authenticated/events/$eventId/check-in': typeof AuthenticatedEventsEventIdCheckInRoute
+  '/_authenticated/events/$eventId/qr-code': typeof AuthenticatedEventsEventIdQrCodeRoute
   '/_authenticated/admin_/api-keys/': typeof AuthenticatedAdminApiKeysIndexRoute
   '/_authenticated/admin_/event-parsing/': typeof AuthenticatedAdminEventParsingIndexRoute
   '/_authenticated/admin_/users/': typeof AuthenticatedAdminUsersIndexRoute
-  '/_authenticated/events_/$eventId/': typeof AuthenticatedEventsEventIdIndexRoute
+  '/_authenticated/events/$eventId/': typeof AuthenticatedEventsEventIdIndexRoute
   '/_authenticated/admin_/users/$userId/pending': typeof AuthenticatedAdminUsersUserIdPendingRoute
   '/_authenticated/admin_/users/$userId/summary': typeof AuthenticatedAdminUsersUserIdSummaryRoute
   '/_authenticated/admin_/users/$userId/': typeof AuthenticatedAdminUsersUserIdIndexRoute
@@ -599,7 +599,6 @@ export interface FileRouteTypes {
     | '/error'
     | '/login'
     | '/admin'
-    | '/events'
     | '/leaderboard'
     | '/profile'
     | '/'
@@ -607,6 +606,7 @@ export interface FileRouteTypes {
     | '/events/create'
     | '/profile/pending'
     | '/admin/'
+    | '/events'
     | '/profile/'
     | '/admin/api-keys/create'
     | '/admin/event-parsing/$ruleId'
@@ -625,12 +625,12 @@ export interface FileRouteTypes {
   to:
     | '/error'
     | '/login'
-    | '/events'
     | '/leaderboard'
     | '/'
     | '/events/create'
     | '/profile/pending'
     | '/admin'
+    | '/events'
     | '/profile'
     | '/admin/api-keys/create'
     | '/admin/event-parsing/$ruleId'
@@ -650,25 +650,25 @@ export interface FileRouteTypes {
     | '/error'
     | '/login'
     | '/_authenticated/admin_'
-    | '/_authenticated/events'
     | '/_authenticated/leaderboard'
     | '/_authenticated/profile'
     | '/_authenticated/'
-    | '/_authenticated/events_/$eventId'
-    | '/_authenticated/events_/create'
+    | '/_authenticated/events/$eventId'
+    | '/_authenticated/events/create'
     | '/_authenticated/profile/pending'
     | '/_authenticated/admin_/'
+    | '/_authenticated/events/'
     | '/_authenticated/profile/'
     | '/_authenticated/admin_/api-keys/create'
     | '/_authenticated/admin_/event-parsing/$ruleId'
     | '/_authenticated/admin_/event-parsing/create'
     | '/_authenticated/admin_/users/$userId'
-    | '/_authenticated/events_/$eventId/check-in'
-    | '/_authenticated/events_/$eventId/qr-code'
+    | '/_authenticated/events/$eventId/check-in'
+    | '/_authenticated/events/$eventId/qr-code'
     | '/_authenticated/admin_/api-keys/'
     | '/_authenticated/admin_/event-parsing/'
     | '/_authenticated/admin_/users/'
-    | '/_authenticated/events_/$eventId/'
+    | '/_authenticated/events/$eventId/'
     | '/_authenticated/admin_/users/$userId/pending'
     | '/_authenticated/admin_/users/$userId/summary'
     | '/_authenticated/admin_/users/$userId/'
@@ -706,12 +706,12 @@ export const routeTree = rootRoute
       "filePath": "_authenticated.tsx",
       "children": [
         "/_authenticated/admin_",
-        "/_authenticated/events",
         "/_authenticated/leaderboard",
         "/_authenticated/profile",
         "/_authenticated/",
-        "/_authenticated/events_/$eventId",
-        "/_authenticated/events_/create"
+        "/_authenticated/events/$eventId",
+        "/_authenticated/events/create",
+        "/_authenticated/events/"
       ]
     },
     "/error": {
@@ -734,10 +734,6 @@ export const routeTree = rootRoute
         "/_authenticated/admin_/users/"
       ]
     },
-    "/_authenticated/events": {
-      "filePath": "_authenticated/events.tsx",
-      "parent": "/_authenticated"
-    },
     "/_authenticated/leaderboard": {
       "filePath": "_authenticated/leaderboard.tsx",
       "parent": "/_authenticated"
@@ -754,17 +750,17 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/index.tsx",
       "parent": "/_authenticated"
     },
-    "/_authenticated/events_/$eventId": {
-      "filePath": "_authenticated/events_/$eventId.tsx",
+    "/_authenticated/events/$eventId": {
+      "filePath": "_authenticated/events/$eventId.tsx",
       "parent": "/_authenticated",
       "children": [
-        "/_authenticated/events_/$eventId/check-in",
-        "/_authenticated/events_/$eventId/qr-code",
-        "/_authenticated/events_/$eventId/"
+        "/_authenticated/events/$eventId/check-in",
+        "/_authenticated/events/$eventId/qr-code",
+        "/_authenticated/events/$eventId/"
       ]
     },
-    "/_authenticated/events_/create": {
-      "filePath": "_authenticated/events_/create.tsx",
+    "/_authenticated/events/create": {
+      "filePath": "_authenticated/events/create.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/profile/pending": {
@@ -774,6 +770,10 @@ export const routeTree = rootRoute
     "/_authenticated/admin_/": {
       "filePath": "_authenticated/admin_/index.tsx",
       "parent": "/_authenticated/admin_"
+    },
+    "/_authenticated/events/": {
+      "filePath": "_authenticated/events/index.tsx",
+      "parent": "/_authenticated"
     },
     "/_authenticated/profile/": {
       "filePath": "_authenticated/profile/index.tsx",
@@ -800,13 +800,13 @@ export const routeTree = rootRoute
         "/_authenticated/admin_/users/$userId/"
       ]
     },
-    "/_authenticated/events_/$eventId/check-in": {
-      "filePath": "_authenticated/events_/$eventId/check-in.tsx",
-      "parent": "/_authenticated/events_/$eventId"
+    "/_authenticated/events/$eventId/check-in": {
+      "filePath": "_authenticated/events/$eventId/check-in.tsx",
+      "parent": "/_authenticated/events/$eventId"
     },
-    "/_authenticated/events_/$eventId/qr-code": {
-      "filePath": "_authenticated/events_/$eventId/qr-code.tsx",
-      "parent": "/_authenticated/events_/$eventId"
+    "/_authenticated/events/$eventId/qr-code": {
+      "filePath": "_authenticated/events/$eventId/qr-code.tsx",
+      "parent": "/_authenticated/events/$eventId"
     },
     "/_authenticated/admin_/api-keys/": {
       "filePath": "_authenticated/admin_/api-keys/index.tsx",
@@ -820,9 +820,9 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/admin_/users/index.tsx",
       "parent": "/_authenticated/admin_"
     },
-    "/_authenticated/events_/$eventId/": {
-      "filePath": "_authenticated/events_/$eventId/index.tsx",
-      "parent": "/_authenticated/events_/$eventId"
+    "/_authenticated/events/$eventId/": {
+      "filePath": "_authenticated/events/$eventId/index.tsx",
+      "parent": "/_authenticated/events/$eventId"
     },
     "/_authenticated/admin_/users/$userId/pending": {
       "filePath": "_authenticated/admin_/users/$userId/pending.tsx",

@@ -28,7 +28,7 @@ const eventsSearchSchema = z.object({
   limit: z.number().default(defaultValues.limit),
 });
 
-export const Route = createFileRoute("/_authenticated/events")({
+export const Route = createFileRoute("/_authenticated/events/")({
   validateSearch: eventsSearchSchema,
   search: {
     middlewares: [stripSearchParams(defaultValues)],
@@ -47,17 +47,19 @@ export const Route = createFileRoute("/_authenticated/events")({
 });
 
 function Component() {
-  const { from, limit, type } = Route.useSearch();
+  return (
+    <Stack gap={2} height={"100%"} flexDirection={"column"}>
+      <EventFromSelector />
+      <EventList />
+      <CreateEventButton />
+    </Stack>
+  );
+}
+
+function EventFromSelector() {
+  const { from } = Route.useSearch();
 
   const navigate = Route.useNavigate();
-
-  const infiniteEventsQuery = useSuspenseInfiniteQuery(
-    eventQueryOptions.eventList({
-      from,
-      limit,
-      type,
-    }),
-  );
 
   const handleStartChange = useCallback(
     (date: DateTime<true> | DateTime<false> | null) => {
@@ -70,40 +72,52 @@ function Component() {
   );
 
   return (
-    <Stack gap={2} height={"100%"} flexDirection={"column"}>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <DatePicker
-          value={DateTime.fromISO(from ?? defaultValues.from)}
-          label="From"
-          onChange={handleStartChange}
-        />
-      </Box>
-      <InfiniteList
-        data={infiniteEventsQuery.data}
-        fetchNextPage={infiniteEventsQuery.fetchNextPage}
-        isFetching={infiniteEventsQuery.isFetching}
-        scrollRestorationId="events"
-        renderRow={({ row, style, ref, index }) => (
-          <AsChildLink
-            key={index}
-            to={"/events/$eventId"}
-            params={{
-              eventId: row.id,
-            }}
-          >
-            <ListItemButton style={style} ref={ref} data-index={index}>
-              <UpcomingEventListItem event={row} />
-            </ListItemButton>
-          </AsChildLink>
-        )}
-        fixedHeight={72}
-        sx={{
-          flex: 1,
-          overflowY: "auto",
-        }}
+    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+      <DatePicker
+        value={DateTime.fromISO(from ?? defaultValues.from)}
+        label="From"
+        onChange={handleStartChange}
       />
-      <CreateEventButton />
-    </Stack>
+    </Box>
+  );
+}
+
+function EventList() {
+  const { from, limit, type } = Route.useSearch();
+
+  const infiniteEventsQuery = useSuspenseInfiniteQuery(
+    eventQueryOptions.eventList({
+      from,
+      limit,
+      type,
+    }),
+  );
+
+  return (
+    <InfiniteList
+      data={infiniteEventsQuery.data}
+      fetchNextPage={infiniteEventsQuery.fetchNextPage}
+      isFetching={infiniteEventsQuery.isFetching}
+      scrollRestorationId="events"
+      renderRow={({ row, style, ref, index }) => (
+        <AsChildLink
+          key={index}
+          to={"/events/$eventId"}
+          params={{
+            eventId: row.id,
+          }}
+        >
+          <ListItemButton style={style} ref={ref} data-index={index}>
+            <UpcomingEventListItem event={row} />
+          </ListItemButton>
+        </AsChildLink>
+      )}
+      fixedHeight={72}
+      sx={{
+        flex: 1,
+        overflowY: "auto",
+      }}
+    />
   );
 }
 
