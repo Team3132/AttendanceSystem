@@ -1,12 +1,4 @@
-import {
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  Select,
-  type SelectProps,
-} from "@mui/material";
-import { useId } from "react";
+import { MenuItem, TextField, type TextFieldProps } from "@mui/material";
 import {
   type FieldPath,
   type FieldValues,
@@ -37,8 +29,8 @@ type ControlledSelectProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = Omit<
-  SelectProps,
-  "onChange" | "value" | "defaultValue" | "onBlur" | "error" | "id" | "labelId"
+  TextFieldProps,
+  "onChange" | "value" | "defaultValue" | "onBlur" | "error" | "select"
 > &
   UseControllerProps<TFieldValues, TName> & {
     /** Helper text that appears */
@@ -64,14 +56,11 @@ export default function ControlledSelect<
     defaultValue,
     disabled,
     shouldUnregister,
-    helperText,
     options,
-    fullWidth,
-    size,
     ...rest
   } = props;
 
-  const { field, fieldState } = useController({
+  const { field } = useController({
     control,
     name,
     defaultValue,
@@ -80,49 +69,17 @@ export default function ControlledSelect<
     shouldUnregister,
   });
 
-  const selectId = useId();
-  const labelId = `${selectId}-label`;
-  const helperTextId = `${selectId}-helper-text`;
-
-  const helperTextShown = !!(fieldState.error || helperText);
-
   return (
-    <FormControl
-      error={!!fieldState.error}
-      fullWidth={fullWidth}
-      size={size}
-      disabled={disabled}
-    >
-      {rest.label ? <InputLabel id={labelId}>{rest.label}</InputLabel> : null}
-      <Select
-        {...rest}
-        {...field}
-        error={!!fieldState.error}
-        disabled={disabled}
-        id={selectId}
-        labelId={rest.label ? labelId : undefined}
-        aria-describedby={helperTextShown ? helperTextId : undefined}
-        slotProps={{
-          input: {
-            placeholder: rest.placeholder,
-          },
-        }}
-      >
-        {options.map((option) => (
-          <MenuItem
-            key={option.value}
-            value={option.value}
-            disabled={option.disabled}
-          >
-            {option.label}
-          </MenuItem>
-        ))}
-      </Select>
-      {helperTextShown ? (
-        <FormHelperText id={helperTextId}>
-          {fieldState.error ? fieldState.error.message : helperText}
-        </FormHelperText>
-      ) : null}
-    </FormControl>
+    <TextField select {...rest} {...field}>
+      {options.map((option) => (
+        <MenuItem
+          key={option.value}
+          value={option.value}
+          disabled={option.disabled}
+        >
+          {option.label}
+        </MenuItem>
+      ))}
+    </TextField>
   );
 }
