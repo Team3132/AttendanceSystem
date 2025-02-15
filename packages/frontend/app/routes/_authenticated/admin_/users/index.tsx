@@ -9,7 +9,7 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
-import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
+import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 import { createFileRoute, stripSearchParams } from "@tanstack/react-router";
 import { createColumnHelper } from "@tanstack/react-table";
 import { useMemo } from "react";
@@ -74,20 +74,22 @@ function UserTable() {
   const { query } = Route.useSearch();
   const navigate = Route.useNavigate();
 
-  const usersQuery = useSuspenseInfiniteQuery(
-    usersQueryOptions.userList({
+  // Don't use suspense here because we want to keep the previous data and don't suspend on fetch (breaks search)
+  const usersQuery = useInfiniteQuery({
+    ...usersQueryOptions.userList({
       limit: 10,
       search: query,
     }),
-  );
+    placeholderData: keepPreviousData,
+  });
 
   const pagedItems = useMemo(
-    () => usersQuery.data.pages.flatMap((page) => page.items) ?? [],
+    () => usersQuery.data?.pages.flatMap((page) => page.items) ?? [],
     [usersQuery.data],
   );
 
   const total = useMemo(
-    () => usersQuery.data.pages.at(-1)?.total ?? 0,
+    () => usersQuery.data?.pages.at(-1)?.total ?? 0,
     [usersQuery.data],
   );
 

@@ -10,7 +10,6 @@ import {
   TableRow,
 } from "@mui/material";
 import { type RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
-import { useElementScrollRestoration } from "@tanstack/react-router";
 import {
   type ColumnDef,
   type FilterFn,
@@ -119,16 +118,16 @@ export default function Datatable<Data extends object>({
 
   const { rows } = table.getRowModel();
 
-  const scrollEntry = useElementScrollRestoration({
-    id: scrollRestorationId,
-  });
+  // const scrollEntry = useElementScrollRestoration({
+  //   id: scrollRestorationId,
+  // });
 
   const virtualizer = useVirtualizer({
     getScrollElement: () => tableContainerRef.current,
     count: rows.length,
     estimateSize: () => fixedHeight || 48,
     overscan: 10,
-    initialOffset: scrollEntry?.scrollY,
+    // initialOffset: scrollEntry?.scrollY,
   });
 
   const totalFetched = useMemo(() => {

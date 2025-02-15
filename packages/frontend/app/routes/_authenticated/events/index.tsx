@@ -8,7 +8,8 @@ import { EventTypeSchema } from "@/server/schema";
 import { Box, ListItemButton, Stack } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import {
-  useSuspenseInfiniteQuery,
+  keepPreviousData,
+  useInfiniteQuery,
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createFileRoute, stripSearchParams } from "@tanstack/react-router";
@@ -85,13 +86,15 @@ function EventFromSelector() {
 function EventList() {
   const { from, limit, type } = Route.useSearch();
 
-  const infiniteEventsQuery = useSuspenseInfiniteQuery(
-    eventQueryOptions.eventList({
+  // This doesn't use suspense because we want to show the previous data while fetching new data
+  const infiniteEventsQuery = useInfiniteQuery({
+    ...eventQueryOptions.eventList({
       from,
       limit,
       type,
     }),
-  );
+    placeholderData: keepPreviousData,
+  });
 
   return (
     <InfiniteList
