@@ -1,5 +1,11 @@
 # frontend
 
+## 5.2.25
+
+### Patch Changes
+
+- [`c418ecf`](https://github.com/Team3132/AttendanceSystem/commit/c418ecf0bc927f58f01e2b490d1cb9f32ef56423) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Rework rsvp status box to use form and validation
+
 ## 5.2.24
 
 ### Patch Changes
