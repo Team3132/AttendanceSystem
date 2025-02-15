@@ -82,7 +82,7 @@ export default function ControlledSelect<
       {...field}
     >
       {options.map(({ label, value, ...rest }) => (
-        <MenuItem key={value} {...rest}>
+        <MenuItem key={value} value={value} {...rest}>
           {label}
         </MenuItem>
       ))}

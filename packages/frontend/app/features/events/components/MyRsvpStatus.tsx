@@ -49,7 +49,7 @@ export default function MyRsvpStatus(props: MyRsvpStatusProps) {
 
   useEffect(() => {
     // If the data from the server changes then update it on the client
-    if (myRsvpStatusQuery.data) {
+    if (myRsvpStatusQuery.data !== null) {
       // Use reset to that it isn't considered an "update"
       reset({
         status: myRsvpStatusQuery.data.status,
@@ -83,7 +83,7 @@ export default function MyRsvpStatus(props: MyRsvpStatusProps) {
         },
         { value: "MAYBE", label: "Maybe" },
         { value: "NO", label: "No" },
-        { value: "YES", label: "Yes" },
+        { value: "YES", label: "Yes", divider: true },
         { value: "ATTENDED", label: "Attended", disabled: true },
       ]}
       helperText="Select your RSVP status"
