@@ -11,16 +11,15 @@ import {
   keepPreviousData,
   useQuery,
 } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useRouterState } from "@tanstack/react-router";
 import {
   ErrorComponent,
   Outlet,
   createRootRouteWithContext,
 } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { Meta, Scripts } from "@tanstack/start";
 import type * as React from "react";
+import rootCss from "./root.css?inline";
 
 type Awaitable<T> = T | Promise<T>;
 
@@ -124,25 +123,10 @@ function RootDocument({ children }: Readonly<{ children: React.ReactNode }>) {
       <head>
         <Meta />
         <RootTitle />
-        <style>
-          {`html, body, #root {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-}
-`}
-        </style>
+        <style>{rootCss}</style>
       </head>
       <body>
         {children}
-        {import.meta.env.DEV ? (
-          <>
-            <TanStackRouterDevtools position="bottom-right" />
-            <ReactQueryDevtools buttonPosition="bottom-left" />
-          </>
-        ) : null}
-
         <Scripts />
       </body>
     </html>
