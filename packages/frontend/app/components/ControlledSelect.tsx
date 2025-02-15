@@ -1,4 +1,9 @@
-import { MenuItem, TextField, type TextFieldProps } from "@mui/material";
+import {
+  MenuItem,
+  type MenuItemOwnProps,
+  TextField,
+  type TextFieldProps,
+} from "@mui/material";
 import {
   type FieldPath,
   type FieldValues,
@@ -10,17 +15,15 @@ import {
 /**
  * This is an option that inherits it's value from the type of the field
  */
-type PathValueOption<
+interface PathValueOption<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = {
+> extends MenuItemOwnProps {
   /** The label of the option, may be any react node */
   label: React.ReactNode;
   /** The value of the option, may be any valid value */
   value: PathValue<TFieldValues, TName>;
-  /** Disabled */
-  disabled?: boolean;
-};
+}
 
 /**
  * Props for ControlledSelect
@@ -52,8 +55,8 @@ export default function ControlledSelect<
   const {
     control,
     name,
-    rules,
     defaultValue,
+    rules,
     disabled,
     shouldUnregister,
     options,
@@ -71,13 +74,9 @@ export default function ControlledSelect<
 
   return (
     <TextField select {...rest} {...field}>
-      {options.map((option) => (
-        <MenuItem
-          key={option.value}
-          value={option.value}
-          disabled={option.disabled}
-        >
-          {option.label}
+      {options.map(({ label, value, ...rest }) => (
+        <MenuItem key={value} {...rest}>
+          {label}
         </MenuItem>
       ))}
     </TextField>
