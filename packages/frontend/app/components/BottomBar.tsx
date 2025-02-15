@@ -1,8 +1,6 @@
+import type { TabItem } from "@/hooks/useTabIndex";
 import { authQueryOptions } from "@/queries/auth.queries";
-import type { TabItem } from "@/types/TabItem";
-import { BottomNavigation } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useChildMatches } from "@tanstack/react-router";
 import { useMemo } from "react";
 import {
   FaHouse,
@@ -10,7 +8,7 @@ import {
   FaPeopleGroup,
   FaRegCalendar,
 } from "react-icons/fa6";
-import { BottomNavigationLink } from "./BottomNavigationLink";
+import LinkBottomNavigation from "./LinkBottomNavigation";
 
 const regularItems: TabItem[] = [
   {
@@ -40,35 +38,10 @@ const adminItems: TabItem[] = regularItems.concat({
 export default function BottomBar() {
   const authStatusQuery = useSuspenseQuery(authQueryOptions.status());
 
-  const routes = useMemo<TabItem[]>(
+  const tabs = useMemo<TabItem[]>(
     () => (authStatusQuery.data.isAdmin ? adminItems : regularItems),
     [authStatusQuery.data.isAdmin],
   );
 
-  const currentChildren = useChildMatches();
-
-  const matchingIndex = useMemo(
-    () =>
-      routes.findIndex((tab) => {
-        return currentChildren.some((child) => {
-          return child.fullPath === tab.to;
-        });
-      }),
-    [currentChildren, routes],
-  );
-
-  return (
-    <BottomNavigation showLabels value={matchingIndex}>
-      {routes.map((route, index) => (
-        <BottomNavigationLink
-          label={route.label}
-          icon={route.icon}
-          value={index}
-          to={route.to}
-          params={route.params}
-          key={route.label}
-        />
-      ))}
-    </BottomNavigation>
-  );
+  return <LinkBottomNavigation tabs={tabs} showLabels />;
 }

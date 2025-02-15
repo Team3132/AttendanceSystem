@@ -34,7 +34,7 @@ export default function MyRsvpStatus(props: MyRsvpStatusProps) {
   } = useZodForm({
     schema: FormSchema,
     defaultValues: {
-      status: myRsvpStatusQuery.data?.status ?? null,
+      status: myRsvpStatusQuery.data?.status ?? undefined,
     },
   });
 

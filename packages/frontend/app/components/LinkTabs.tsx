@@ -1,7 +1,5 @@
-import type { TabItem } from "@/types/TabItem";
+import useTabIndex, { type TabItem } from "@/hooks/useTabIndex";
 import { Tabs, type TabsProps } from "@mui/material";
-import { useMatches } from "@tanstack/react-router";
-import { useMemo } from "react";
 import { LinkTab } from "./LinkTab";
 
 interface LinkTabsProps extends Omit<TabsProps, "value"> {
@@ -16,16 +14,10 @@ interface LinkTabsProps extends Omit<TabsProps, "value"> {
 export default function LinkTabs(props: LinkTabsProps) {
   const { tabs, defaultIndex = 0, ...rest } = props;
 
-  const currentChildren = useMatches(); // Get the current matched routes (in the entire tree)
-
-  const matchingIndex = useMemo(() => {
-    // Find the index of the tab that matches the current route
-    const tabIndex = tabs.findIndex((tab) =>
-      currentChildren.some((child) => child.fullPath === tab.to),
-    );
-    // If no tab matches, use the default index (0)
-    return tabIndex === -1 ? defaultIndex : tabIndex;
-  }, [currentChildren, tabs, defaultIndex]);
+  const matchingIndex = useTabIndex({
+    tabs,
+    defaultIndex,
+  });
 
   return (
     <Tabs value={matchingIndex} {...rest}>

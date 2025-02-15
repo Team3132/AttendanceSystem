@@ -1,7 +1,7 @@
 import LinkTabs from "@/components/LinkTabs";
+import type { TabItem } from "@/hooks/useTabIndex";
 import { usersQueryOptions } from "@/queries/users.queries";
 
-import type { TabItem } from "@/types/TabItem";
 import { Outlet, createFileRoute } from "@tanstack/react-router";
 import { useMemo } from "react";
 

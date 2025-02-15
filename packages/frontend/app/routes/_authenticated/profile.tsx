@@ -1,6 +1,6 @@
 import LinkTabs from "@/components/LinkTabs";
+import type { TabItem } from "@/hooks/useTabIndex";
 
-import type { TabItem } from "@/types/TabItem";
 import { Outlet, createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/profile")({

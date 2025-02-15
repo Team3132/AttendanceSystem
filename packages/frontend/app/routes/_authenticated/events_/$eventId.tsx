@@ -1,8 +1,8 @@
 import LinkTabs from "@/components/LinkTabs";
+import type { TabItem } from "@/hooks/useTabIndex";
 import { authQueryOptions } from "@/queries/auth.queries";
 import { eventQueryOptions } from "@/queries/events.queries";
 
-import type { TabItem } from "@/types/TabItem";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Outlet, createFileRoute } from "@tanstack/react-router";
 import { DateTime } from "luxon";
