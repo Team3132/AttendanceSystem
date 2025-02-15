@@ -18,7 +18,7 @@ import {
   createRootRouteWithContext,
 } from "@tanstack/react-router";
 import { Meta, Scripts } from "@tanstack/start";
-import type * as React from "react";
+import * as React from "react";
 import rootCss from "./root.css?inline";
 
 type Awaitable<T> = T | Promise<T>;
@@ -83,6 +83,28 @@ const theme = createTheme({
   },
 });
 
+const TanStackRouterDevtools =
+  process.env.NODE_ENV === "production"
+    ? () => null // Render nothing in production
+    : React.lazy(() =>
+        // Lazy load in development
+        import("@tanstack/router-devtools").then((res) => ({
+          default: res.TanStackRouterDevtools,
+          // For Embedded Mode
+          // default: res.TanStackRouterDevtoolsPanel
+        })),
+      );
+
+const TanStackQueryDevtools =
+  process.env.NODE_ENV === "production"
+    ? () => null // Render nothing in production
+    : React.lazy(() =>
+        // Lazy load in development
+        import("@tanstack/react-query-devtools").then((res) => ({
+          default: res.ReactQueryDevtools,
+        })),
+      );
+
 function RootComponent() {
   return (
     <RootDocument>
@@ -93,6 +115,10 @@ function RootComponent() {
           <CssBaseline />
         </ThemeProvider>
       </LocalizationProvider>
+      <React.Suspense fallback={null}>
+        <TanStackRouterDevtools />
+        <TanStackQueryDevtools />
+      </React.Suspense>
     </RootDocument>
   );
 }

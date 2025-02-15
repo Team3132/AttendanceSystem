@@ -28,7 +28,6 @@
 		"@trpc/client": "11.0.0-rc.768",
 		"class-transformer": "0.5.1",
 		"class-validator": "0.14.1",
-		"cron": "3.5.0",
 		"discord-api-types": "0.37.119",
 		"discord.js": "14.18.0",
 		"express": "4.21.2",
@@ -45,15 +44,10 @@
 		"node": "22.14.0"
 	},
 	"devDependencies": {
-		"@swc/cli": "0.6.0",
 		"@swc/core": "1.10.16",
-		"@types/express": "5.0.0",
 		"@types/luxon": "3.4.2",
 		"@types/node": "22.13.4",
 		"typescript": "5.7.3",
-		"vite": "6.1.0",
-		"vite-plugin-externalize-deps": "0.9.0",
-		"vite-plugin-node": "4.0.0",
-		"vite-tsconfig-paths": "5.1.4"
+		"vite": "6.1.0"
 	}
 }

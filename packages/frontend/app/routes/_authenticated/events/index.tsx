@@ -1,11 +1,11 @@
-import AsChildLink from "@/components/AsChildLink";
 import InfiniteList from "@/components/InfiniteList";
 import { LinkButton } from "@/components/LinkButton";
+import { LinkListItemButton } from "@/components/LinkListItemButton";
 import UpcomingEventListItem from "@/features/events/components/UpcomingEventListItem";
 import { authQueryOptions } from "@/queries/auth.queries";
 import { eventQueryOptions } from "@/queries/events.queries";
 import { EventTypeSchema } from "@/server/schema";
-import { Box, ListItemButton, Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import {
   keepPreviousData,
@@ -103,17 +103,17 @@ function EventList() {
       isFetching={infiniteEventsQuery.isFetching}
       scrollRestorationId="events"
       renderRow={({ row, style, ref, index }) => (
-        <AsChildLink
+        <LinkListItemButton
+          ref={ref}
           key={index}
           to={"/events/$eventId"}
           params={{
             eventId: row.id,
           }}
+          style={style}
         >
-          <ListItemButton style={style} ref={ref} data-index={index}>
-            <UpcomingEventListItem event={row} />
-          </ListItemButton>
-        </AsChildLink>
+          <UpcomingEventListItem event={row} />
+        </LinkListItemButton>
       )}
       fixedHeight={72}
       sx={{

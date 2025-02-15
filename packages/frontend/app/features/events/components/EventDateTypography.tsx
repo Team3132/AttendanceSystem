@@ -1,9 +1,10 @@
-import type { EventSchema } from "@/server/schema";
 import { DateTime } from "luxon";
-import type { z } from "zod";
 
 interface EventDateTypographyProps {
-  event: z.infer<typeof EventSchema>;
+  event: {
+    startDate: string;
+    endDate: string;
+  };
 }
 
 /**

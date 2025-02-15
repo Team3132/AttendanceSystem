@@ -22,7 +22,6 @@ import type { CreateEventSchema } from "../schema/CreateEventSchema";
 import type { EditRSVPSelfSchema } from "../schema/EditRSVPSelfSchema";
 import type { EventSchema } from "../schema/EventSchema";
 import type { GetEventParamsSchema } from "../schema/GetEventParamsSchema";
-import type { PagedEventsSchema } from "../schema/PagedEventsSchema";
 import type { ScaninSchema } from "../schema/ScaninSchema";
 import type { SelfCheckinSchema } from "../schema/SelfCheckinSchema";
 import clampDateTime from "../utils/clampDateTime";
@@ -72,9 +71,7 @@ export async function getNextEvents() {
  * @param input Parameters for the query
  * @returns A list of events
  */
-export async function getEvents(
-  input: z.infer<typeof GetEventParamsSchema>,
-): Promise<z.infer<typeof PagedEventsSchema>> {
+export async function getEvents(input: z.infer<typeof GetEventParamsSchema>) {
   const { from, to, limit, type, cursor: page } = input;
   const conditions: Array<SQL | undefined> = [];
 
@@ -125,11 +122,12 @@ export async function getEvents(
     limit,
     offset,
     orderBy: (event) => [asc(event.startDate)],
-  });
-
-  const eventsWithoutSecret = events.map((event) => {
-    const { secret, ...rest } = event;
-    return rest;
+    columns: {
+      id: true,
+      title: true,
+      startDate: true,
+      endDate: true,
+    },
   });
 
   const { total } = totalEntry;
@@ -138,7 +136,7 @@ export async function getEvents(
   const nextPage = total > offset + limit ? page + 1 : undefined;
 
   return {
-    items: eventsWithoutSecret,
+    items: events,
     page,
     total,
     nextPage,

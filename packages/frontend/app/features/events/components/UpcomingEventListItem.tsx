@@ -1,12 +1,14 @@
-import type { EventSchema } from "@/server/schema";
 import { ListItemText, Typography } from "@mui/material";
 import { DateTime } from "luxon";
 import { useMemo } from "react";
-import type { z } from "zod";
 import EventDateText from "./EventDateTypography";
 
 interface UpcomingEventListItemProps {
-  event: z.infer<typeof EventSchema>;
+  event: {
+    startDate: string;
+    endDate: string;
+    title: string;
+  };
 }
 
 export default function UpcomingEventListItem(
