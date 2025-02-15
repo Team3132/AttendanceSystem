@@ -81,6 +81,7 @@ export default function MyRsvpStatus(props: MyRsvpStatusProps) {
         { value: "YES", label: "Yes" },
         { value: "ATTENDED", label: "Attended", disabled: true },
       ]}
+      helperText="Select your RSVP status"
     />
   );
 }
