@@ -105,7 +105,11 @@ function Component() {
         control={control}
         name="type"
         label="Type"
-        displayEmpty={true}
+        slotProps={{
+          select: {
+            displayEmpty: true,
+          },
+        }}
         options={[
           { label: "All", value: undefined },
           { label: "Outreach", value: "Outreach" },
