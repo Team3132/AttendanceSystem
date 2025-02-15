@@ -60,10 +60,11 @@ export default function ControlledSelect<
     disabled,
     shouldUnregister,
     options,
+    helperText,
     ...rest
   } = props;
 
-  const { field } = useController({
+  const { field, fieldState } = useController({
     control,
     name,
     defaultValue,
@@ -73,7 +74,13 @@ export default function ControlledSelect<
   });
 
   return (
-    <TextField select {...rest} {...field}>
+    <TextField
+      select
+      error={!!fieldState.error}
+      helperText={fieldState.error ? fieldState.error.message : helperText}
+      {...rest}
+      {...field}
+    >
       {options.map(({ label, value, ...rest }) => (
         <MenuItem key={value} {...rest}>
           {label}

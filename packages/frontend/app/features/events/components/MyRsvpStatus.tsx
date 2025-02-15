@@ -22,6 +22,7 @@ export default function MyRsvpStatus(props: MyRsvpStatusProps) {
   const myRsvpStatusQuery = useSuspenseQuery(
     eventQueryOptions.eventRsvp(eventId),
   );
+
   const updateRsvpMutation = useUpdateRsvp();
 
   const {
@@ -47,7 +48,9 @@ export default function MyRsvpStatus(props: MyRsvpStatusProps) {
   );
 
   useEffect(() => {
+    // If the data from the server changes then update it on the client
     if (myRsvpStatusQuery.data) {
+      // Use reset to that it isn't considered an "update"
       reset({
         status: myRsvpStatusQuery.data.status,
       });
@@ -55,6 +58,8 @@ export default function MyRsvpStatus(props: MyRsvpStatusProps) {
   }, [reset, myRsvpStatusQuery.data]);
 
   useEffect(() => {
+    // Create a subscription to the form's values so that
+    // data is submitted on change
     const subscription = watch(() => onSubmit());
 
     return () => subscription.unsubscribe();
