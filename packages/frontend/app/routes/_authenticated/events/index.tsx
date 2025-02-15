@@ -110,6 +110,7 @@ function EventList() {
           params={{
             eventId: row.id,
           }}
+          preloadDelay={500}
           style={style}
         >
           <UpcomingEventListItem event={row} />
