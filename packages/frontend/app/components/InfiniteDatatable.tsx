@@ -4,18 +4,13 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  type TableContainerProps,
   TableHead,
-  type TableProps,
   TableRow,
 } from "@mui/material";
 import { type RankingInfo, rankItem } from "@tanstack/match-sorter-utils";
 import {
-  type ColumnDef,
   type FilterFn,
-  type OnChangeFn,
   type Row,
-  type RowSelectionState,
   type SortingState,
   type VisibilityState,
   flexRender,
@@ -27,22 +22,14 @@ import {
 import { useVirtualizer } from "@tanstack/react-virtual";
 import React, { useMemo, useRef, useState } from "react";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa6";
+import type { DatatableProps } from "./Datatable";
 
-interface DatatableProps<Data extends object> extends TableContainerProps {
-  data: Data[];
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  columns: ColumnDef<Data, any>[];
-  globalFilter?: string;
-  setGlobalFilter?: (filter: string) => void;
-  size?: TableProps["size"];
-  enableRowSelection?: "single" | "multiple";
-  rowSelection?: RowSelectionState;
-  onRowSelectionChange?: OnChangeFn<RowSelectionState>;
+interface InfiniteDatatableProps<Data extends object>
+  extends DatatableProps<Data> {
   fetchNextPage?: () => void;
   isFetching?: boolean;
   totalDBRowCount?: number;
   fixedHeight?: number;
-  onRowSelect?: (row: Row<Data>) => void;
   scrollRestorationId?: string;
 }
 
@@ -70,7 +57,7 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   return itemRank.passed;
 };
 
-export default function Datatable<Data extends object>({
+export default function InfiniteDatatable<Data extends object>({
   data,
   columns,
   globalFilter,
@@ -85,7 +72,7 @@ export default function Datatable<Data extends object>({
   totalDBRowCount,
   scrollRestorationId = "datatable",
   ...tableContainerProps
-}: DatatableProps<Data>) {
+}: InfiniteDatatableProps<Data>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 

@@ -5,16 +5,23 @@ import UpcomingEventListItem from "@/features/events/components/UpcomingEventLis
 import { authQueryOptions } from "@/queries/auth.queries";
 import { eventQueryOptions } from "@/queries/events.queries";
 import { EventTypeSchema } from "@/server/schema";
-import { Box, Stack } from "@mui/material";
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+  Skeleton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import {
-  keepPreviousData,
-  useInfiniteQuery,
+  useSuspenseInfiniteQuery,
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createFileRoute, stripSearchParams } from "@tanstack/react-router";
 import { DateTime } from "luxon";
-import { useCallback } from "react";
+import { Suspense, useCallback } from "react";
 import { z } from "zod";
 
 const defaultValues = {
@@ -51,7 +58,9 @@ function Component() {
   return (
     <Stack gap={2} height={"100%"} flexDirection={"column"}>
       <EventFromSelector />
-      <EventList />
+      <Suspense fallback={<EventListSkeleton />}>
+        <EventList />
+      </Suspense>
       <CreateEventButton />
     </Stack>
   );
@@ -83,17 +92,51 @@ function EventFromSelector() {
   );
 }
 
+function EventListItemSkeleton() {
+  return (
+    <ListItem>
+      <ListItemText
+        primary={<Skeleton width={300} />}
+        secondary={
+          <Typography variant="body2">
+            <Skeleton width={200} />
+          </Typography>
+        }
+      />
+      <Typography variant="body2">
+        <Skeleton width={100} />
+      </Typography>
+    </ListItem>
+  );
+}
+
+function EventListSkeleton() {
+  return (
+    <List
+      sx={{
+        flex: 1,
+        overflowY: "auto",
+      }}
+    >
+      <EventListItemSkeleton />
+      <EventListItemSkeleton />
+      <EventListItemSkeleton />
+      <EventListItemSkeleton />
+      <EventListItemSkeleton />
+    </List>
+  );
+}
+
 function EventList() {
   const { from, limit, type } = Route.useSearch();
 
   // This doesn't use suspense because we want to show the previous data while fetching new data
-  const infiniteEventsQuery = useInfiniteQuery({
+  const infiniteEventsQuery = useSuspenseInfiniteQuery({
     ...eventQueryOptions.eventList({
       from,
       limit,
       type,
     }),
-    placeholderData: keepPreviousData,
   });
 
   return (

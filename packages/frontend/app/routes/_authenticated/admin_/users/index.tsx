@@ -1,4 +1,4 @@
-import Datatable from "@/components/DataTable";
+import InfiniteDatatable from "@/components/InfiniteDatatable";
 import { LinkButton } from "@/components/LinkButton";
 import { usersQueryOptions } from "@/queries/users.queries";
 
@@ -125,7 +125,7 @@ function UserTable() {
             },
           }}
         />
-        <Datatable
+        <InfiniteDatatable
           scrollRestorationId="users"
           columns={columns}
           data={pagedItems}

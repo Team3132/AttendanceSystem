@@ -4,11 +4,12 @@ import { createColumnHelper } from "@tanstack/table-core";
 import { Duration } from "luxon";
 import type { z } from "zod";
 
-import Datatable from "@/components/DataTable";
+import Datatable from "@/components/Datatable";
+import InfiniteDatatable from "@/components/InfiniteDatatable";
 import { leaderboardQueryOptions } from "@/queries/outreach.queries";
-import { Stack } from "@mui/material";
+import { Skeleton, Stack } from "@mui/material";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
+import { Suspense, useMemo } from "react";
 
 type LeaderboardUser = z.infer<typeof LeaderboardUserSchema>;
 
@@ -39,6 +40,22 @@ const columns = [
   }),
 ];
 
+const skeletonColumns = [
+  columnHelper.accessor("rank", {
+    header: "Rank",
+    maxSize: 50,
+    cell: () => <Skeleton />,
+  }),
+  columnHelper.accessor("username", {
+    header: "Username",
+    cell: () => <Skeleton />,
+  }),
+  columnHelper.accessor("duration", {
+    header: "Outreach Hours",
+    cell: () => <Skeleton />,
+  }),
+];
+
 export const Route = createFileRoute("/_authenticated/leaderboard")({
   component: Component,
   beforeLoad: () => ({
@@ -50,6 +67,16 @@ export const Route = createFileRoute("/_authenticated/leaderboard")({
 });
 
 function Component() {
+  return (
+    <Stack gap={2} sx={{ height: "100%", display: "flex" }}>
+      <Suspense fallback={<SkeletonDataTable />}>
+        <LeadboardDataTable />
+      </Suspense>
+    </Stack>
+  );
+}
+
+function LeadboardDataTable() {
   const leaderboardQuery = useSuspenseInfiniteQuery(
     leaderboardQueryOptions({
       limit: 10,
@@ -67,19 +94,40 @@ function Component() {
   );
 
   return (
-    <Stack gap={2} sx={{ height: "100%", display: "flex" }}>
-      <Datatable
-        scrollRestorationId="leaderboard"
-        columns={columns}
-        data={flatResults}
-        fetchNextPage={leaderboardQuery.fetchNextPage}
-        isFetching={leaderboardQuery.isFetching}
-        totalDBRowCount={totalRowCount}
-        fixedHeight={53}
-        sx={{
-          flex: 1,
-        }}
-      />
-    </Stack>
+    <InfiniteDatatable
+      scrollRestorationId="leaderboard"
+      columns={columns}
+      data={flatResults}
+      fetchNextPage={leaderboardQuery.fetchNextPage}
+      isFetching={leaderboardQuery.isFetching}
+      totalDBRowCount={totalRowCount}
+      fixedHeight={53}
+      sx={{
+        flex: 1,
+      }}
+    />
+  );
+}
+
+const skeletonLength = 10;
+
+const skeletonData: LeaderboardUser[] = new Array(skeletonLength)
+  .fill(null)
+  .map((_, i) => ({
+    duration: "",
+    rank: i + 1,
+    username: "",
+    userId: "",
+  }));
+
+function SkeletonDataTable() {
+  return (
+    <Datatable
+      columns={skeletonColumns}
+      data={skeletonData}
+      sx={{
+        flex: 1,
+      }}
+    />
   );
 }
