@@ -1,6 +1,7 @@
 import RsvpList from "@/features/events/components/RSVPList";
 import { eventQueryOptions } from "@/queries/events.queries";
-import { Container, Grid, Paper, Typography, styled } from "@mui/material";
+import { Container, Grid, Paper, Typography } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { DateTime } from "luxon";

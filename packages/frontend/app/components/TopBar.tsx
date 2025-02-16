@@ -1,4 +1,5 @@
-import { AppBar, Toolbar, Typography, styled } from "@mui/material";
+import { AppBar, Toolbar, Typography } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useRouterState } from "@tanstack/react-router";
 import { useMemo } from "react";

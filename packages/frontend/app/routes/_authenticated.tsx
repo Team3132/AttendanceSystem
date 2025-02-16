@@ -1,7 +1,8 @@
 import BottomBar from "@/components/BottomBar";
 import TopBar from "@/components/TopBar";
 import { authQueryOptions } from "@/queries/auth.queries";
-import { Box, Container, styled } from "@mui/material";
+import { Box, Container } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated")({

@@ -1,7 +1,8 @@
 import DarkMode from "@mui/icons-material/DarkMode";
 import LightMode from "@mui/icons-material/LightMode";
 import SettingsBrightness from "@mui/icons-material/SettingsBrightness";
-import { IconButton, useColorScheme } from "@mui/material";
+import { IconButton } from "@mui/material";
+import { useColorScheme } from "@mui/material/styles";
 import { useCallback, useMemo } from "react";
 
 const modes = ["light", "dark", "system"] as const;

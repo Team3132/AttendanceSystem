@@ -2,8 +2,9 @@ import roboto300 from "@fontsource/roboto/300.css?url";
 import robot400 from "@fontsource/roboto/400.css?url";
 import roboto500 from "@fontsource/roboto/500.css?url";
 import roboto700 from "@fontsource/roboto/700.css?url";
-import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
 import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import {
@@ -112,7 +113,7 @@ function RootComponent() {
       <LocalizationProvider adapterLocale={"en-au"} dateAdapter={AdapterLuxon}>
         <ThemeProvider theme={theme}>
           <Outlet />
-          <CssBaseline />
+          <CssBaseline enableColorScheme />
         </ThemeProvider>
       </LocalizationProvider>
       <React.Suspense fallback={null}>
