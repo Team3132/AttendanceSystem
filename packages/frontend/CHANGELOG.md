@@ -1,5 +1,11 @@
 # frontend
 
+## 5.2.27
+
+### Patch Changes
+
+- [`0037a59`](https://github.com/Team3132/AttendanceSystem/commit/0037a594152ea7edc7f6cf0ec9138564b76e5f8f) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add skeletons to stuff that updates
+
 ## 5.2.26
 
 ### Patch Changes
