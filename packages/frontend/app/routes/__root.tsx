@@ -67,13 +67,15 @@ export const Route = createRootRouteWithContext<{
   errorComponent: ErrorComponent,
 });
 
+const attribute: "media" | "class" | "data" = "class";
+
 const theme = createTheme({
   colorSchemes: {
     dark: true,
     light: true,
   },
   cssVariables: {
-    colorSchemeSelector: "data",
+    colorSchemeSelector: attribute,
   },
 });
 
@@ -102,7 +104,6 @@ const TanStackQueryDevtools =
 function RootComponent() {
   return (
     <RootDocument>
-      <InitColorSchemeScript attribute="data" />
       <LocalizationProvider adapterLocale={"en-au"} dateAdapter={AdapterLuxon}>
         <ThemeProvider theme={theme}>
           <Outlet />
@@ -125,6 +126,7 @@ function RootDocument({ children }: Readonly<{ children: React.ReactNode }>) {
         <style>{rootCss}</style>
       </head>
       <body>
+        <InitColorSchemeScript attribute={attribute} />
         {children}
         <Scripts />
       </body>
