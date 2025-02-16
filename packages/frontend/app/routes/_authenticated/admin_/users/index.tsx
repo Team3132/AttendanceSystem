@@ -80,25 +80,23 @@ function Component() {
   );
 
   return (
-    <>
-      <Stack gap={2} sx={{ height: "100%", display: "flex" }}>
-        <TextField
-          onChange={(e) => setSearch(e.target.value)}
-          defaultValue={query}
-          label="Search"
-          placeholder="Search for users"
-          fullWidth
-          slotProps={{
-            inputLabel: {
-              shrink: true,
-            },
-          }}
-        />
-        <Suspense fallback={<SkeletonDataTable />}>
-          <UsersTable />
-        </Suspense>
-      </Stack>
-    </>
+    <Stack gap={2} sx={{ height: "100%", display: "flex" }}>
+      <TextField
+        onChange={(e) => setSearch(e.target.value)}
+        defaultValue={query}
+        label="Search"
+        placeholder="Search for users"
+        fullWidth
+        slotProps={{
+          inputLabel: {
+            shrink: true,
+          },
+        }}
+      />
+      <Suspense fallback={<SkeletonDataTable />}>
+        <UsersTable />
+      </Suspense>
+    </Stack>
   );
 }
 
