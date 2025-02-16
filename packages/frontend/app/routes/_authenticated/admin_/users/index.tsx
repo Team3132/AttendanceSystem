@@ -1,22 +1,21 @@
+import Datatable from "@/components/Datatable";
 import InfiniteDatatable from "@/components/InfiniteDatatable";
 import { LinkButton } from "@/components/LinkButton";
 import { usersQueryOptions } from "@/queries/users.queries";
-
-import type { UserSchema } from "@/server/schema";
-import {
-  CircularProgress,
-  InputAdornment,
-  Stack,
-  TextField,
-} from "@mui/material";
-import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
+import { Button, Skeleton, Stack, TextField } from "@mui/material";
+import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { createFileRoute, stripSearchParams } from "@tanstack/react-router";
 import { createColumnHelper } from "@tanstack/react-table";
-import { useMemo } from "react";
+import { Suspense, useMemo } from "react";
 import { useCallback } from "react";
 import { z } from "zod";
 
-const columnHelper = createColumnHelper<z.infer<typeof UserSchema>>();
+interface User {
+  id: string;
+  username: string;
+}
+
+const columnHelper = createColumnHelper<User>();
 
 const columns = [
   columnHelper.accessor("username", {
@@ -67,31 +66,8 @@ export const Route = createFileRoute("/_authenticated/admin_/users/")({
 });
 
 function Component() {
-  return <UserTable />;
-}
-
-function UserTable() {
   const { query } = Route.useSearch();
   const navigate = Route.useNavigate();
-
-  // Don't use suspense here because we want to keep the previous data and don't suspend on fetch (breaks search)
-  const usersQuery = useInfiniteQuery({
-    ...usersQueryOptions.userList({
-      limit: 10,
-      search: query,
-    }),
-    placeholderData: keepPreviousData,
-  });
-
-  const pagedItems = useMemo(
-    () => usersQuery.data?.pages.flatMap((page) => page.items) ?? [],
-    [usersQuery.data],
-  );
-
-  const total = useMemo(
-    () => usersQuery.data?.pages.at(-1)?.total ?? 0,
-    [usersQuery.data],
-  );
 
   const setSearch = useCallback(
     (v: string) =>
@@ -116,30 +92,88 @@ function UserTable() {
             inputLabel: {
               shrink: true,
             },
-            input: {
-              endAdornment: usersQuery.isFetching ? (
-                <InputAdornment position="end">
-                  <CircularProgress size={"30px"} />
-                </InputAdornment>
-              ) : undefined,
-            },
           }}
         />
-        <InfiniteDatatable
-          scrollRestorationId="users"
-          columns={columns}
-          data={pagedItems}
-          globalFilter={query}
-          setGlobalFilter={setSearch}
-          fetchNextPage={usersQuery.fetchNextPage}
-          isFetching={usersQuery.isFetching}
-          totalDBRowCount={total}
-          fixedHeight={69.5}
-          sx={{
-            flex: 1,
-          }}
-        />
+        <Suspense fallback={<SkeletonDataTable />}>
+          <UsersTable />
+        </Suspense>
       </Stack>
     </>
+  );
+}
+
+const skeletonColumns = [
+  columnHelper.accessor("username", {
+    header: "Username",
+    cell: () => <Skeleton width={100} />,
+  }),
+  columnHelper.display({
+    header: "Settings",
+    cell: () => (
+      <Button loading variant="outlined">
+        Settings
+      </Button>
+    ),
+  }),
+];
+
+const skeletonLength = 10;
+
+const skeletonData: User[] = Array.from({ length: skeletonLength }, (_, i) => ({
+  id: i.toString(),
+  username: "",
+}));
+
+function SkeletonDataTable() {
+  return <Datatable columns={skeletonColumns} data={skeletonData} />;
+}
+
+function UsersTable() {
+  const { query } = Route.useSearch();
+  const navigate = Route.useNavigate();
+
+  // Don't use suspense here because we want to keep the previous data and don't suspend on fetch (breaks search)
+  const usersQuery = useSuspenseInfiniteQuery(
+    usersQueryOptions.userList({
+      limit: 10,
+      search: query,
+    }),
+  );
+
+  const pagedItems = useMemo(
+    () => usersQuery.data?.pages.flatMap((page) => page.items) ?? [],
+    [usersQuery.data],
+  );
+
+  const total = useMemo(
+    () => usersQuery.data?.pages.at(-1)?.total ?? 0,
+    [usersQuery.data],
+  );
+
+  const setSearch = useCallback(
+    (v: string) =>
+      navigate({
+        search: {
+          query: v,
+        },
+      }),
+    [navigate],
+  );
+
+  return (
+    <InfiniteDatatable
+      scrollRestorationId="users"
+      columns={columns}
+      data={pagedItems}
+      globalFilter={query}
+      setGlobalFilter={setSearch}
+      fetchNextPage={usersQuery.fetchNextPage}
+      isFetching={usersQuery.isFetching}
+      totalDBRowCount={total}
+      fixedHeight={69.5}
+      sx={{
+        flex: 1,
+      }}
+    />
   );
 }

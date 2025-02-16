@@ -3,7 +3,6 @@ import type { z } from "zod";
 import db from "../drizzle/db";
 import { scancodeTable, userTable } from "../drizzle/schema";
 import type { UserCreateSchema } from "../schema";
-import type { PagedUserSchema } from "../schema/PagedUserSchema";
 import type { UserListParamsSchema } from "../schema/UserListParamsSchema";
 import { createServerError } from "../utils/errors";
 
@@ -75,7 +74,7 @@ export async function getPendingUserRsvps(userId: string) {
 
 export async function getUserList(
   params: z.infer<typeof UserListParamsSchema>,
-): Promise<z.infer<typeof PagedUserSchema>> {
+) {
   const { limit, cursor: page } = params;
 
   const offset = page * limit;
@@ -99,6 +98,10 @@ export async function getUserList(
     where: (user) => ilike(user.username, `%${params.search}%`),
     limit,
     offset,
+    columns: {
+      id: true,
+      username: true,
+    },
   });
 
   return {

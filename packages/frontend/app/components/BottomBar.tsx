@@ -1,7 +1,7 @@
 import type { TabItem } from "@/hooks/useTabIndex";
 import { authQueryOptions } from "@/queries/auth.queries";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
+import { Suspense } from "react";
 import {
   FaHouse,
   FaHouseLock,
@@ -36,12 +36,25 @@ const adminItems: TabItem[] = regularItems.concat({
 });
 
 export default function BottomBar() {
+  return (
+    <Suspense
+      fallback={
+        <LinkBottomNavigation tabs={regularItems} showLabels key="normalNav" />
+      }
+    >
+      <BottomNavigation />
+    </Suspense>
+  );
+}
+
+function BottomNavigation() {
   const authStatusQuery = useSuspenseQuery(authQueryOptions.status());
 
-  const tabs = useMemo<TabItem[]>(
-    () => (authStatusQuery.data.isAdmin ? adminItems : regularItems),
-    [authStatusQuery.data.isAdmin],
-  );
+  if (authStatusQuery.data.isAdmin) {
+    return <LinkBottomNavigation tabs={adminItems} showLabels key="adminNav" />;
+  }
 
-  return <LinkBottomNavigation tabs={tabs} showLabels />;
+  return (
+    <LinkBottomNavigation tabs={regularItems} showLabels key="normalNav" />
+  );
 }
