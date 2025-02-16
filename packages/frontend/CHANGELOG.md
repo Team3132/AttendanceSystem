@@ -1,5 +1,11 @@
 # frontend
 
+## 5.2.28
+
+### Patch Changes
+
+- [`cf45245`](https://github.com/Team3132/AttendanceSystem/commit/cf45245515c49a5e9b2dfd7773d5c66dcfdc6502) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix themes
+
 ## 5.2.27
 
 ### Patch Changes
