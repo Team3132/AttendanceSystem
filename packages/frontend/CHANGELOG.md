@@ -1,5 +1,11 @@
 # frontend
 
+## 5.2.30
+
+### Patch Changes
+
+- [`287b3a9`](https://github.com/Team3132/AttendanceSystem/commit/287b3a99f151d8ff7e4228693fb8a29fbb34d8a9) Thanks [@sebasptsch](https://github.com/sebasptsch)! - No flashbang
+
 ## 5.2.29
 
 ### Patch Changes
