@@ -123,7 +123,15 @@ const skeletonData: User[] = Array.from({ length: skeletonLength }, (_, i) => ({
 }));
 
 function SkeletonDataTable() {
-  return <Datatable columns={skeletonColumns} data={skeletonData} />;
+  return (
+    <Datatable
+      columns={skeletonColumns}
+      data={skeletonData}
+      sx={{
+        flex: 1,
+      }}
+    />
+  );
 }
 
 function UsersTable() {
