@@ -47,7 +47,7 @@
 		"@tanstack/react-table": "8.21.2",
 		"@tanstack/react-virtual": "3.13.0",
 		"@tanstack/router-devtools": "1.105.0",
-		"@tanstack/start": "1.105.1",
+		"@tanstack/start": "1.105.2",
 		"@tanstack/table-core": "8.21.2",
 		"@tanstack/zod-adapter": "1.105.0",
 		"@trpc/server": "11.0.0-rc.768",
