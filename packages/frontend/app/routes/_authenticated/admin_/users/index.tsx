@@ -46,9 +46,6 @@ const searchSchema = z.object({
 });
 
 export const Route = createFileRoute("/_authenticated/admin_/users/")({
-  beforeLoad: () => ({
-    getTitle: () => "Admin - Users",
-  }),
   validateSearch: searchSchema,
   search: {
     middlewares: [stripSearchParams(defaultValues)],
@@ -62,6 +59,13 @@ export const Route = createFileRoute("/_authenticated/admin_/users/")({
       }),
     );
   },
+  head: () => ({
+    meta: [
+      {
+        title: "Admin - Users",
+      },
+    ],
+  }),
   component: Component,
 });
 

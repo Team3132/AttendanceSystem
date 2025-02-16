@@ -7,8 +7,7 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/events/$eventId/qr-code")(
   {
-    component: Component,
-    beforeLoad: async ({ context: { queryClient }, params: { eventId } }) => {
+    beforeLoad: async ({ context: { queryClient } }) => {
       const { isAdmin } = await queryClient.ensureQueryData(
         authQueryOptions.status(),
       );
@@ -21,20 +20,22 @@ export const Route = createFileRoute("/_authenticated/events/$eventId/qr-code")(
           },
         });
       }
-
-      return {
-        getTitle: async () => {
-          const eventData = await queryClient.ensureQueryData(
-            eventQueryOptions.eventDetails(eventId),
-          );
-          return `${eventData.title} - QR Code`;
-        },
-      };
     },
     loader: ({ context: { queryClient }, params: { eventId } }) => {
-      queryClient.ensureQueryData(eventQueryOptions.eventDetails(eventId));
       queryClient.prefetchQuery(eventQueryOptions.eventSecret(eventId));
+
+      return queryClient.ensureQueryData(
+        eventQueryOptions.eventDetails(eventId),
+      );
     },
+    head: ({ loaderData }) => ({
+      meta: [
+        {
+          title: `${loaderData.title} - QR Code`,
+        },
+      ],
+    }),
+    component: Component,
   },
 );
 

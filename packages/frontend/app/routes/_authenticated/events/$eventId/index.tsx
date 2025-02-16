@@ -7,20 +7,20 @@ import { createFileRoute } from "@tanstack/react-router";
 import { DateTime } from "luxon";
 
 export const Route = createFileRoute("/_authenticated/events/$eventId/")({
-  component: Component,
-  beforeLoad: ({ context: { queryClient }, params: { eventId } }) => ({
-    getTitle: async () => {
-      const eventData = await queryClient.ensureQueryData(
-        eventQueryOptions.eventDetails(eventId),
-      );
-      return `${eventData.title} - Details`;
-    },
-  }),
   loader: ({ context: { queryClient }, params: { eventId } }) => {
-    queryClient.ensureQueryData(eventQueryOptions.eventDetails(eventId));
     queryClient.prefetchQuery(eventQueryOptions.eventRsvps(eventId));
     queryClient.prefetchQuery(eventQueryOptions.eventRsvp(eventId));
+
+    return queryClient.ensureQueryData(eventQueryOptions.eventDetails(eventId));
   },
+  head: ({ loaderData }) => ({
+    meta: [
+      {
+        title: `${loaderData.title} - Details`,
+      },
+    ],
+  }),
+  component: Component,
 });
 
 const StyledContainer = styled(Container)({

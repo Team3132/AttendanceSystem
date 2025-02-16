@@ -41,9 +41,7 @@ export const Route = createFileRoute("/_authenticated/events/")({
   search: {
     middlewares: [stripSearchParams(defaultValues)],
   },
-  beforeLoad: () => ({
-    getTitle: () => "Events",
-  }),
+
   loaderDeps: ({ search }) => search,
 
   loader: ({ context: { queryClient }, deps }) => {
@@ -51,6 +49,13 @@ export const Route = createFileRoute("/_authenticated/events/")({
 
     queryClient.prefetchInfiniteQuery(eventQueryOptions.eventList(deps));
   },
+  head: () => ({
+    meta: [
+      {
+        title: "Events",
+      },
+    ],
+  }),
   component: Component,
 });
 

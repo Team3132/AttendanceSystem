@@ -10,21 +10,20 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 export const Route = createFileRoute(
   "/_authenticated/events/$eventId/check-in",
 )({
-  component: Component,
-  beforeLoad: ({ context: { queryClient }, params: { eventId } }) => ({
-    getTitle: async () => {
-      const eventData = await queryClient.ensureQueryData(
-        eventQueryOptions.eventDetails(eventId),
-      );
-      return `${eventData.title} - Check In`;
-    },
-  }),
   loader: async ({ context: { queryClient }, params: { eventId } }) => {
     const eventData = await queryClient.ensureQueryData(
       eventQueryOptions.eventDetails(eventId),
     );
-    return { eventData };
+    return eventData;
   },
+  head: ({ loaderData }) => ({
+    meta: [
+      {
+        title: `${loaderData.title} - Check In`,
+      },
+    ],
+  }),
+  component: Component,
 });
 
 function Component() {

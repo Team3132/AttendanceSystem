@@ -57,13 +57,17 @@ const skeletonColumns = [
 ];
 
 export const Route = createFileRoute("/_authenticated/leaderboard")({
-  component: Component,
-  beforeLoad: () => ({
-    getTitle: () => "Outreach Leaderboard",
-  }),
   loader: ({ context: { queryClient } }) => {
     queryClient.prefetchInfiniteQuery(leaderboardQueryOptions({ limit: 10 }));
   },
+  head: () => ({
+    meta: [
+      {
+        title: "Leaderboard",
+      },
+    ],
+  }),
+  component: Component,
 });
 
 function Component() {

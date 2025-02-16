@@ -15,8 +15,12 @@ import { z } from "zod";
 export const Route = createFileRoute(
   "/_authenticated/admin_/event-parsing/$ruleId",
 )({
-  beforeLoad: () => ({
-    getTitle: () => "Admin - Edit Rule",
+  head: () => ({
+    meta: [
+      {
+        title: "Admin - Edit Rule",
+      },
+    ],
   }),
   loader: ({ context: { queryClient }, params: { ruleId } }) => {
     queryClient.prefetchQuery(adminQueries.eventParsingRule(ruleId));

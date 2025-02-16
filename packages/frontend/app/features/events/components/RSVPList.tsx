@@ -1,7 +1,19 @@
 import { authQueryOptions } from "@/queries/auth.queries";
 import { eventQueryOptions } from "@/queries/events.queries";
-import { Button, List, Paper, Stack, Typography } from "@mui/material";
+import { Route } from "@/routes/_authenticated/events/$eventId";
+import {
+  Button,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Paper,
+  Skeleton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { Suspense } from "react";
 import { useDisclosure } from "../../../hooks/useDisclosure";
 import AdminRSVPListItem from "./AdminRsvpListItem";
 import MyRsvpStatus from "./MyRsvpStatus";
@@ -13,23 +25,74 @@ interface RsvpListProps {
 }
 
 export default function RsvpList({ eventId }: RsvpListProps) {
-  const authStatusQuery = useSuspenseQuery(authQueryOptions.status());
-
   return (
     <Paper>
       <Stack spacing={2} m={2}>
         <Typography variant="h5">RSVPs</Typography>
-        <MyRsvpStatus eventId={eventId} />
-        {authStatusQuery.data.isAdmin ? (
-          <AdminRSVPList eventId={eventId} />
-        ) : (
-          <RSVPList eventId={eventId} />
-        )}
-        {authStatusQuery.data.isAdmin ? (
+        <Suspense fallback={<SkeletonTextInput />}>
+          <MyRsvpStatus />
+        </Suspense>
+        <Suspense fallback={<SkeletonRSVPList />}>
+          <RSVPList />
+        </Suspense>
+        <Suspense fallback={null}>
           <RSVPAddButton eventId={eventId} />
-        ) : null}
+        </Suspense>
       </Stack>
     </Paper>
+  );
+}
+
+function SkeletonTextInput() {
+  return <Skeleton width={100} />;
+}
+
+function RSVPSkeletonItem() {
+  return (
+    <ListItem>
+      <ListItemAvatar>
+        <Skeleton variant="circular" width={40} height={40} />
+      </ListItemAvatar>
+      <ListItemText
+        primary={<Skeleton width={100} />}
+        secondary={<Skeleton width={50} />}
+      />
+    </ListItem>
+  );
+}
+
+function SkeletonRSVPList() {
+  return (
+    <List>
+      <RSVPSkeletonItem />
+      <RSVPSkeletonItem />
+      <RSVPSkeletonItem />
+    </List>
+  );
+}
+
+function RSVPList() {
+  const { eventId } = Route.useParams();
+
+  const authStatusQuery = useSuspenseQuery(authQueryOptions.status());
+  const rsvpsQuery = useSuspenseQuery(eventQueryOptions.eventRsvps(eventId));
+
+  if (authStatusQuery.data.isAdmin) {
+    return (
+      <List>
+        {rsvpsQuery.data.map((rsvp) => (
+          <AdminRSVPListItem rsvp={rsvp} key={rsvp.id} />
+        ))}
+      </List>
+    );
+  }
+
+  return (
+    <List>
+      {rsvpsQuery.data.map((rsvp) => (
+        <RSVPListItem rsvp={rsvp} key={rsvp.id} />
+      ))}
+    </List>
   );
 }
 
@@ -38,7 +101,12 @@ interface RSVPAddButtonProps {
 }
 
 function RSVPAddButton(props: RSVPAddButtonProps) {
+  const authStatusQuery = useSuspenseQuery(authQueryOptions.status());
   const { getButtonProps, getDisclosureProps, isOpen } = useDisclosure();
+
+  if (!authStatusQuery.data.isAdmin) {
+    return null;
+  }
 
   return (
     <>
@@ -49,37 +117,5 @@ function RSVPAddButton(props: RSVPAddButtonProps) {
         <RSVPAddDialog eventId={props.eventId} {...getDisclosureProps()} />
       ) : null}
     </>
-  );
-}
-
-interface RSVPListProps {
-  eventId: string;
-}
-
-function AdminRSVPList(props: RSVPListProps) {
-  const rsvpsQuery = useSuspenseQuery(
-    eventQueryOptions.eventRsvps(props.eventId),
-  );
-
-  return (
-    <List>
-      {rsvpsQuery.data.map((rsvp) => (
-        <AdminRSVPListItem rsvp={rsvp} key={rsvp.id} />
-      ))}
-    </List>
-  );
-}
-
-function RSVPList(props: RSVPListProps) {
-  const rsvpsQuery = useSuspenseQuery(
-    eventQueryOptions.eventRsvps(props.eventId),
-  );
-
-  return (
-    <List>
-      {rsvpsQuery.data.map((rsvp) => (
-        <RSVPListItem rsvp={rsvp} key={rsvp.id} />
-      ))}
-    </List>
   );
 }

@@ -17,8 +17,12 @@ import { useRef } from "react";
 import { FaEllipsisVertical } from "react-icons/fa6";
 
 export const Route = createFileRoute("/_authenticated/admin_/api-keys/")({
-  beforeLoad: () => ({
-    getTitle: () => "Admin - API Keys",
+  head: () => ({
+    meta: [
+      {
+        title: "Admin - API Keys",
+      },
+    ],
   }),
   loader: ({ context: { queryClient } }) => {
     queryClient.prefetchQuery(adminQueries.apiKeys);

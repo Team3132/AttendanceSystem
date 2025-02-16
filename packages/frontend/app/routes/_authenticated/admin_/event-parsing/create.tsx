@@ -39,8 +39,12 @@ export const Route = createFileRoute(
       .optional(),
     isOutreach: z.boolean().optional(),
   }),
-  beforeLoad: () => ({
-    getTitle: () => "Admin - Create Rule",
+  head: () => ({
+    meta: [
+      {
+        title: "Admin - Create Rule",
+      },
+    ],
   }),
   component: RouteComponent,
 });

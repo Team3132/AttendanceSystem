@@ -1,6 +1,7 @@
 import ControlledSelect from "@/components/ControlledSelect";
 import useZodForm from "@/hooks/useZodForm";
 import { eventQueryOptions } from "@/queries/events.queries";
+import { Route } from "@/routes/_authenticated/events/$eventId";
 import { RSVPStatusSchema } from "@/server/schema";
 import {} from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -8,16 +9,12 @@ import { useEffect, useMemo } from "react";
 import { z } from "zod";
 import useUpdateRsvp from "../hooks/useUpdateRsvp";
 
-interface MyRsvpStatusProps {
-  eventId: string;
-}
-
 const FormSchema = z.object({
   status: RSVPStatusSchema.nullable(),
 });
 
-export default function MyRsvpStatus(props: MyRsvpStatusProps) {
-  const { eventId } = props;
+export default function MyRsvpStatus() {
+  const { eventId } = Route.useParams();
 
   const myRsvpStatusQuery = useSuspenseQuery(
     eventQueryOptions.eventRsvp(eventId),

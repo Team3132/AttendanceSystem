@@ -11,7 +11,6 @@ import { DateTime } from "luxon";
 import { Controller } from "react-hook-form";
 
 export const Route = createFileRoute("/_authenticated/events/create")({
-  component: Component,
   beforeLoad: async ({ context: { queryClient } }) => {
     const { isAdmin } = await queryClient.ensureQueryData(
       authQueryOptions.status(),
@@ -23,11 +22,15 @@ export const Route = createFileRoute("/_authenticated/events/create")({
         },
       };
     }
-
-    return {
-      getTitle: () => "Create Event",
-    };
   },
+  head: () => ({
+    meta: [
+      {
+        title: "Create Event",
+      },
+    ],
+  }),
+  component: Component,
 });
 
 function Component() {

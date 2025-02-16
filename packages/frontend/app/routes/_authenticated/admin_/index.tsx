@@ -3,8 +3,12 @@ import { MenuList } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/admin_/")({
-  beforeLoad: () => ({
-    getTitle: () => "Admin",
+  head: () => ({
+    meta: [
+      {
+        title: "Admin",
+      },
+    ],
   }),
   component: RouteComponent,
 });

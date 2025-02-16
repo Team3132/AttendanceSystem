@@ -16,16 +16,18 @@ const QuerySchema = z.object({
 export const Route = createFileRoute(
   "/_authenticated/admin_/users/$userId/summary",
 )({
-  beforeLoad: ({ context: { queryClient }, params: { userId } }) => ({
-    getTitle: async () => {
-      const user = await queryClient.ensureQueryData(
-        usersQueryOptions.userDetails(userId),
-      );
-      return `${user.username}'s Summary`;
-    },
-  }),
   validateSearch: QuerySchema,
   loaderDeps: ({ search }) => search,
+  loader: ({ context: { queryClient }, params: { userId } }) => {
+    return queryClient.ensureQueryData(usersQueryOptions.userDetails(userId));
+  },
+  head: ({ loaderData }) => ({
+    meta: [
+      {
+        title: `${loaderData.username}'s Summary`,
+      },
+    ],
+  }),
   component: RouteComponent,
 });
 

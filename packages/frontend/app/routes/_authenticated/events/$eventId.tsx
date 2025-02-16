@@ -5,25 +5,21 @@ import { eventQueryOptions } from "@/queries/events.queries";
 
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Outlet, createFileRoute } from "@tanstack/react-router";
-import { DateTime } from "luxon";
 import { useMemo } from "react";
 
 export const Route = createFileRoute("/_authenticated/events/$eventId")({
-  beforeLoad: ({ context: { queryClient }, params: { eventId } }) => ({
-    getTitle: async () => {
-      const eventData = await queryClient.ensureQueryData(
-        eventQueryOptions.eventDetails(eventId),
-      );
-      return `${DateTime.fromMillis(
-        Date.parse(eventData.startDate),
-      ).toLocaleString(DateTime.DATE_SHORT)} - ${eventData.title}`;
-    },
-  }),
   loader: ({ context: { queryClient }, params: { eventId } }) => {
-    queryClient.prefetchQuery(eventQueryOptions.eventDetails(eventId));
     queryClient.prefetchQuery(authQueryOptions.status());
-  },
 
+    return queryClient.ensureQueryData(eventQueryOptions.eventDetails(eventId));
+  },
+  head: ({ loaderData }) => ({
+    meta: [
+      {
+        title: `${loaderData.title} - Details`,
+      },
+    ],
+  }),
   component: Component,
 });
 

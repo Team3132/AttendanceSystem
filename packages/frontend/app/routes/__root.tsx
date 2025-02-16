@@ -7,26 +7,19 @@ import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
-import {
-  type QueryClient,
-  keepPreviousData,
-  useQuery,
-} from "@tanstack/react-query";
-import { useRouterState } from "@tanstack/react-router";
+import type { QueryClient } from "@tanstack/react-query";
+import { HeadContent } from "@tanstack/react-router";
 import {
   ErrorComponent,
   Outlet,
   createRootRouteWithContext,
 } from "@tanstack/react-router";
-import { Meta, Scripts } from "@tanstack/start";
+import { Scripts } from "@tanstack/start";
 import * as React from "react";
 import rootCss from "./root.css?inline";
 
-type Awaitable<T> = T | Promise<T>;
-
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
-  getTitle?: () => Awaitable<string>;
 }>()({
   component: RootComponent,
   head: () => ({
@@ -124,32 +117,11 @@ function RootComponent() {
   );
 }
 
-function RootTitle() {
-  const matches = useRouterState({ select: (s) => s.matches });
-
-  const getTitleQuery = useQuery({
-    queryKey: ["getTitle", matches],
-    queryFn: async () => {
-      const matchWithTitle = [...matches]
-        .reverse()
-        .find((d) => d.context.getTitle);
-
-      return matchWithTitle?.context.getTitle
-        ? await matchWithTitle?.context.getTitle()
-        : "My App";
-    },
-    placeholderData: keepPreviousData,
-  });
-
-  return <title>{getTitleQuery.data || "Loading..."}</title>;
-}
-
 function RootDocument({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <Meta />
-        <RootTitle />
+        <HeadContent />
         <style>{rootCss}</style>
       </head>
       <body>

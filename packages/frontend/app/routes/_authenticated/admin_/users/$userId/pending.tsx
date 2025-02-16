@@ -8,18 +8,17 @@ export const Route = createFileRoute(
   "/_authenticated/admin_/users/$userId/pending",
 )({
   component: Component,
-  beforeLoad: ({ context: { queryClient }, params: { userId } }) => ({
-    getTitle: async () => {
-      const user = await queryClient.ensureQueryData(
-        usersQueryOptions.userDetails(userId),
-      );
-      return `${user.username}'s Pending Events`;
-    },
-  }),
   loader: ({ context: { queryClient }, params: { userId } }) => {
     queryClient.prefetchQuery(usersQueryOptions.userPendingRsvps(userId));
-    queryClient.ensureQueryData(usersQueryOptions.userDetails(userId));
+    return queryClient.ensureQueryData(usersQueryOptions.userDetails(userId));
   },
+  head: ({ loaderData }) => ({
+    meta: [
+      {
+        title: `${loaderData.username}'s Pending Events`,
+      },
+    ],
+  }),
 });
 
 function Component() {

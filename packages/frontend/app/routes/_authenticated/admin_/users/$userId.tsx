@@ -6,20 +6,17 @@ import { Outlet, createFileRoute } from "@tanstack/react-router";
 import { useMemo } from "react";
 
 export const Route = createFileRoute("/_authenticated/admin_/users/$userId")({
-  beforeLoad: ({ params: { userId }, context: { queryClient } }) => {
-    return {
-      getTitle: async () => {
-        const user = await queryClient.ensureQueryData(
-          usersQueryOptions.userDetails(userId),
-        );
-        return `${user.username}'s Profile`;
-      },
-    };
-  },
   component: Component,
   loader: ({ params: { userId }, context: { queryClient } }) => {
-    queryClient.prefetchQuery(usersQueryOptions.userDetails(userId));
+    return queryClient.ensureQueryData(usersQueryOptions.userDetails(userId));
   },
+  head: ({ loaderData }) => ({
+    meta: [
+      {
+        title: `${loaderData.username}'s Profile`,
+      },
+    ],
+  }),
 });
 
 function Component() {

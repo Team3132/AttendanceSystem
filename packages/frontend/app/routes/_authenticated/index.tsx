@@ -7,12 +7,16 @@ import ActiveEventsList from "../../components/ActiveEventsList";
 const appVersion = env.VITE_PUBLIC_APP_VERSION;
 
 export const Route = createFileRoute("/_authenticated/")({
-  beforeLoad: () => ({
-    getTitle: () => "Home",
-  }),
   loader: ({ context: { queryClient } }) => {
     queryClient.prefetchQuery(usersQueryOptions.userSelfPendingRsvps());
   },
+  head: () => ({
+    meta: [
+      {
+        title: "Home",
+      },
+    ],
+  }),
   component: Component,
 });
 
