@@ -1,5 +1,11 @@
 # frontend
 
+## 5.2.32
+
+### Patch Changes
+
+- [`07743d3`](https://github.com/Team3132/AttendanceSystem/commit/07743d3f150c599e7e66eb99b1b82080cd9bc5a7) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix fuzzy tabs and nav
+
 ## 5.2.31
 
 ### Patch Changes
