@@ -6,4 +6,9 @@ import { createRouter } from "./router";
 
 const router = createRouter();
 
-hydrateRoot(document, <StartClient router={router} />);
+hydrateRoot(document, <StartClient router={router} />, {
+  onRecoverableError: (error, errorInfo) => {
+    console.error("Recoverable hydration error:", error);
+    console.error(errorInfo);
+  },
+});
