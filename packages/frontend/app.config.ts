@@ -8,13 +8,14 @@ export default defineConfig({
     },
   },
   server: {
-    routeRules: {
-      "/_build/assets/**": {
-        headers: {
-          "cache-control": "public, max-age=31536000, immutable",
-        },
-      },
-    },
+    // breaks cloudflare cdn caching
+    // routeRules: {
+    //   "/_build/assets/**": {
+    //     headers: {
+    //       "cache-control": "public, max-age=31536000, immutable",
+    //     },
+    //   },
+    // },
   },
   vite: {
     plugins: [viteTsconfigPaths()],
