@@ -33,21 +33,16 @@ const StyledContainer = styled(Container)({
 });
 
 function Component() {
-  const { eventId } = Route.useParams();
   return (
     <StyledContainer>
-      <EventData eventId={eventId} />
-      <RsvpList eventId={eventId} />
+      <EventData />
+      <RsvpList />
     </StyledContainer>
   );
 }
 
-interface EventDataProps {
-  eventId: string;
-}
-
-function EventData(props: EventDataProps) {
-  const { eventId } = props;
+function EventData() {
+  const { eventId } = Route.useParams();
 
   const eventQuery = useSuspenseQuery(eventQueryOptions.eventDetails(eventId));
 

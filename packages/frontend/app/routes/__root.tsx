@@ -1,8 +1,9 @@
+import Devtools from "@/components/Devtools";
 import roboto300 from "@fontsource/roboto/300.css?url";
 import robot400 from "@fontsource/roboto/400.css?url";
 import roboto500 from "@fontsource/roboto/500.css?url";
 import roboto700 from "@fontsource/roboto/700.css?url";
-import CssBaseline from "@mui/material/CssBaseline";
+import { CssBaseline } from "@mui/material";
 import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -15,7 +16,7 @@ import {
   createRootRouteWithContext,
 } from "@tanstack/react-router";
 import { Scripts } from "@tanstack/start";
-import * as React from "react";
+import type * as React from "react";
 import rootCss from "./root.css?inline";
 
 export const Route = createRootRouteWithContext<{
@@ -56,13 +57,13 @@ export const Route = createRootRouteWithContext<{
       },
     ],
 
-    // scripts: import.meta.env.DEV
-    //   ? [
-    //       {
-    //         src: "https://unpkg.com/react-scan/dist/auto.global.js",
-    //       },
-    //     ]
-    //   : undefined,
+    scripts: import.meta.env.DEV
+      ? [
+          {
+            src: "https://unpkg.com/react-scan/dist/auto.global.js",
+          },
+        ]
+      : undefined,
   }),
   errorComponent: ErrorComponent,
 });
@@ -79,41 +80,20 @@ const theme = createTheme({
   },
 });
 
-const TanStackRouterDevtools =
-  process.env.NODE_ENV === "production"
-    ? () => null // Render nothing in production
-    : React.lazy(() =>
-        // Lazy load in development
-        import("@tanstack/router-devtools").then((res) => ({
-          default: res.TanStackRouterDevtools,
-          // For Embedded Mode
-          // default: res.TanStackRouterDevtoolsPanel
-        })),
-      );
-
-const TanStackQueryDevtools =
-  process.env.NODE_ENV === "production"
-    ? () => null // Render nothing in production
-    : React.lazy(() =>
-        // Lazy load in development
-        import("@tanstack/react-query-devtools").then((res) => ({
-          default: res.ReactQueryDevtools,
-        })),
-      );
-
 function RootComponent() {
   return (
     <RootDocument>
-      <LocalizationProvider adapterLocale={"en-au"} dateAdapter={AdapterLuxon}>
-        <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
+        <LocalizationProvider
+          adapterLocale={"en-au"}
+          dateAdapter={AdapterLuxon}
+        >
           <Outlet />
           <CssBaseline enableColorScheme />
-        </ThemeProvider>
-      </LocalizationProvider>
-      <React.Suspense fallback={null}>
-        <TanStackRouterDevtools />
-        <TanStackQueryDevtools />
-      </React.Suspense>
+        </LocalizationProvider>
+      </ThemeProvider>
+
+      <Devtools />
     </RootDocument>
   );
 }

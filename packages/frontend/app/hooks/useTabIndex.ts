@@ -21,7 +21,19 @@ export default function useTabIndex(options: TabIndexProps) {
   const matchingIndex = useMemo(() => {
     // Find the index of the tab that matches the current route
     const tabIndex = tabs.findIndex((tab) =>
-      currentChildren.some((child) => child.fullPath === tab.to),
+      currentChildren.some((child) => {
+        if (!tab.to) return false;
+
+        if (child.fullPath === tab.to) {
+          return true;
+        }
+
+        if (tab.fuzzy) {
+          return child.fullPath.startsWith(tab.to);
+        }
+
+        return false;
+      }),
     );
     // If no tab matches, use the default index (0)
     return tabIndex === -1 ? defaultIndex : tabIndex;

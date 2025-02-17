@@ -5,7 +5,7 @@ import { eventQueryOptions } from "@/queries/events.queries";
 
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Outlet, createFileRoute } from "@tanstack/react-router";
-import { useMemo } from "react";
+import { Suspense, useMemo } from "react";
 
 export const Route = createFileRoute("/_authenticated/events/$eventId")({
   loader: ({ context: { queryClient }, params: { eventId } }) => {
@@ -46,9 +46,23 @@ const adminTabs = (eventId: string): TabItem[] =>
   ]);
 
 function Component() {
+  const { eventId } = Route.useParams();
+
+  const defaultTabs = useMemo(() => userTabs(eventId), [eventId]);
+
   return (
     <>
-      <ProfileTabs />
+      <Suspense
+        fallback={
+          <LinkTabs
+            variant="scrollable"
+            scrollButtons="auto"
+            tabs={defaultTabs}
+          />
+        }
+      >
+        <ProfileTabs />
+      </Suspense>
       <Outlet />
     </>
   );

@@ -31,6 +31,7 @@ const regularItems: TabItem[] = [
 
 const adminItems: TabItem[] = regularItems.concat({
   to: "/admin",
+  fuzzy: true,
   label: "Admin",
   icon: <FaHouseLock />,
 });

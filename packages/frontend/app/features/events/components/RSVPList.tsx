@@ -20,11 +20,7 @@ import MyRsvpStatus from "./MyRsvpStatus";
 import RSVPAddDialog from "./RSVPAddDialog";
 import RSVPListItem from "./RSVPListItem";
 
-interface RsvpListProps {
-  eventId: string;
-}
-
-export default function RsvpList({ eventId }: RsvpListProps) {
+export default function RsvpList() {
   return (
     <Paper>
       <Stack spacing={2} m={2}>
@@ -36,7 +32,7 @@ export default function RsvpList({ eventId }: RsvpListProps) {
           <RSVPList />
         </Suspense>
         <Suspense fallback={null}>
-          <RSVPAddButton eventId={eventId} />
+          <RSVPAddButton />
         </Suspense>
       </Stack>
     </Paper>
@@ -96,11 +92,7 @@ function RSVPList() {
   );
 }
 
-interface RSVPAddButtonProps {
-  eventId: string;
-}
-
-function RSVPAddButton(props: RSVPAddButtonProps) {
+function RSVPAddButton() {
   const authStatusQuery = useSuspenseQuery(authQueryOptions.status());
   const { getButtonProps, getDisclosureProps, isOpen } = useDisclosure();
 
@@ -113,9 +105,7 @@ function RSVPAddButton(props: RSVPAddButtonProps) {
       <Button {...getButtonProps()} variant="contained">
         Create or Edit RSVP
       </Button>
-      {isOpen ? (
-        <RSVPAddDialog eventId={props.eventId} {...getDisclosureProps()} />
-      ) : null}
+      {isOpen ? <RSVPAddDialog {...getDisclosureProps()} /> : null}
     </>
   );
 }

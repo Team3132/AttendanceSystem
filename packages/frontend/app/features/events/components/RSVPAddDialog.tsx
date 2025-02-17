@@ -4,6 +4,7 @@ import ControlledSelect from "@/components/ControlledSelect";
 import { useDisclosure } from "@/hooks/useDisclosure";
 import { eventQueryOptions } from "@/queries/events.queries";
 import { usersQueryOptions } from "@/queries/users.queries";
+import { Route } from "@/routes/_authenticated/events/$eventId/index";
 import { RSVPStatusUpdateSchema } from "@/server";
 import { isServerError } from "@/server/utils/errors";
 import { parseDate } from "@/utils/date";
@@ -34,7 +35,6 @@ interface RSVPAddDialogProps {
   onOpen: () => void;
   onClose: () => void;
   open: boolean;
-  eventId: string;
 }
 
 const UserOptionSchema = z.object({
@@ -50,7 +50,8 @@ const AddUserRsvpSchema = z.object({
 });
 
 export default function RSVPAddDialog(props: RSVPAddDialogProps) {
-  const { onClose, open, eventId } = props;
+  const { eventId } = Route.useParams();
+  const { onClose, open } = props;
 
   const eventRSVPs = useSuspenseQuery(eventQueryOptions.eventRsvps(eventId));
   const eventDetails = useSuspenseQuery(
