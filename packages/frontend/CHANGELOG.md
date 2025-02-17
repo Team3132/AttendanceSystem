@@ -1,5 +1,11 @@
 # frontend
 
+## 5.2.33
+
+### Patch Changes
+
+- [`43ec1d3`](https://github.com/Team3132/AttendanceSystem/commit/43ec1d36cc4264c16c9cc0b82ce8d2161f7596ea) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Inline fonts
+
 ## 5.2.32
 
 ### Patch Changes
