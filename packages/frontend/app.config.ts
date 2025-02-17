@@ -9,13 +9,13 @@ export default defineConfig({
   },
   server: {
     // breaks cloudflare cdn caching
-    // routeRules: {
-    //   "/_build/assets/**": {
-    //     headers: {
-    //       "cache-control": "public, max-age=31536000, immutable",
-    //     },
-    //   },
-    // },
+    routeRules: {
+      "/_build/assets/**": {
+        headers: {
+          "cache-control": "public, max-age=31536000, immutable",
+        },
+      },
+    },
   },
   vite: {
     plugins: [viteTsconfigPaths()],
