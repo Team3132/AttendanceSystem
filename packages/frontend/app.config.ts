@@ -7,6 +7,15 @@ export default defineConfig({
       plugins: ["@emotion/babel-plugin"],
     },
   },
+  server: {
+    routeRules: {
+      "/_build/assets/**": {
+        headers: {
+          "cache-control": "public, max-age=31536000, immutable",
+        },
+      },
+    },
+  },
   vite: {
     plugins: [viteTsconfigPaths()],
     ssr: !import.meta.dev
