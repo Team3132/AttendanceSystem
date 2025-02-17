@@ -1,8 +1,8 @@
 import Devtools from "@/components/Devtools";
-import roboto300 from "@fontsource/roboto/300.css?url";
-import robot400 from "@fontsource/roboto/400.css?url";
-import roboto500 from "@fontsource/roboto/500.css?url";
-import roboto700 from "@fontsource/roboto/700.css?url";
+import roboto300 from "@fontsource/roboto/300.css?inline";
+import robot400 from "@fontsource/roboto/400.css?inline";
+import roboto500 from "@fontsource/roboto/500.css?inline";
+import roboto700 from "@fontsource/roboto/700.css?inline";
 import { CssBaseline } from "@mui/material";
 import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -34,22 +34,6 @@ export const Route = createRootRouteWithContext<{
       },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: roboto300,
-      },
-      {
-        rel: "stylesheet",
-        href: robot400,
-      },
-      {
-        rel: "stylesheet",
-        href: roboto500,
-      },
-      {
-        rel: "stylesheet",
-        href: roboto700,
-      },
       {
         rel: "icon",
         type: "image/x-icon",
@@ -104,6 +88,10 @@ function RootDocument({ children }: Readonly<{ children: React.ReactNode }>) {
       <head>
         <HeadContent />
         <style>{rootCss}</style>
+        <style>{roboto300}</style>
+        <style>{robot400}</style>
+        <style>{roboto500}</style>
+        <style>{roboto700}</style>
       </head>
       <body>
         <InitColorSchemeScript attribute={attribute} />
