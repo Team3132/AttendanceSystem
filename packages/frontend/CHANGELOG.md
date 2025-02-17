@@ -1,5 +1,11 @@
 # frontend
 
+## 5.2.34
+
+### Patch Changes
+
+- [`d27beda`](https://github.com/Team3132/AttendanceSystem/commit/d27beda481de5a6bd73289368de55a73c373be56) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Cache all static assets (they have random hashes every build)
+
 ## 5.2.33
 
 ### Patch Changes
