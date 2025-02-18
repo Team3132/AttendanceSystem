@@ -1,5 +1,11 @@
 # frontend
 
+## 5.2.36
+
+### Patch Changes
+
+- [`19efc2a`](https://github.com/Team3132/AttendanceSystem/commit/19efc2a26d1b94a3a291c025fc385090a90ff90c) Thanks [@sebasptsch](https://github.com/sebasptsch)! - don't delete rule :skull:
+
 ## 5.2.35
 
 ### Patch Changes
