@@ -1,6 +1,6 @@
 {
 	"name": "bot",
-	"version": "5.2.34",
+	"version": "5.2.35",
 	"description": "",
 	"author": "",
 	"private": false,
@@ -25,7 +25,7 @@
 		"@nestjs/platform-express": "11.0.10",
 		"@nestjs/schedule": "5.0.1",
 		"@sentry/node": "9.1.0",
-		"@trpc/client": "11.0.0-rc.768",
+		"@trpc/client": "11.0.0-rc.772",
 		"class-transformer": "0.5.1",
 		"class-validator": "0.14.1",
 		"discord-api-types": "0.37.119",
@@ -44,7 +44,7 @@
 		"node": "22.14.0"
 	},
 	"devDependencies": {
-		"@swc/core": "1.10.16",
+		"@swc/core": "1.10.17",
 		"@types/luxon": "3.4.2",
 		"@types/node": "22.13.4",
 		"typescript": "5.7.3",
