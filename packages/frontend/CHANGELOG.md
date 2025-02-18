@@ -1,5 +1,11 @@
 # frontend
 
+## 5.2.35
+
+### Patch Changes
+
+- [`fd3e22b`](https://github.com/Team3132/AttendanceSystem/commit/fd3e22b7c5e011b847c23bbac6bece4bc1a34cb6) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Edit schema to fix delete
+
 ## 5.2.34
 
 ### Patch Changes
