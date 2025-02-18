@@ -96,6 +96,20 @@ export default class KronosClient {
   }
 
   /**
+   * Get all schedules
+   * @returns The schedules
+   */
+  async getSchedules(): Promise<Schedule[]> {
+    const response = await fetch(`${this.kronosURL}/api/v1/schedules`);
+
+    if (!response.ok) {
+      throw new Error("Error getting Kronos jobs");
+    }
+
+    return response.json();
+  }
+
+  /**
    * Pause a schedule
    * @param id The Id of the schedule
    * @returns The schedule

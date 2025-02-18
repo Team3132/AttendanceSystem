@@ -153,7 +153,7 @@ export async function getParsingRules() {
         kronosRule,
       };
     } catch {
-      deleteParsingRule(rule.id);
+      // deleteParsingRule(rule.id);
       throw createServerError({
         code: "INTERNAL_SERVER_ERROR",
         message: "Error getting parsing rule from Kronos",
@@ -161,7 +161,9 @@ export async function getParsingRules() {
     }
   });
 
-  return Promise.all(promisedKronos);
+  return Promise.allSettled(promisedKronos).then((res) =>
+    res.filter((r) => r.status === "fulfilled").map((r) => r.value),
+  );
 }
 
 /**
@@ -199,7 +201,10 @@ export const getParsingRule = async (id: string) => {
       kronosRule,
     };
   } catch {
-    deleteParsingRule(rule.id);
+    throw createServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error getting parsing rule from Kronos",
+    });
   }
 };
 
