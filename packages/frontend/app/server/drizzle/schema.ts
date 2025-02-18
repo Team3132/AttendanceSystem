@@ -174,7 +174,9 @@ export const eventTable = pgTable(
       .$defaultFn(() => randomStr(8)),
     isSyncedEvent: boolean("isSyncedEvent").default(false).notNull(),
     isPosted: boolean("isPosted").default(false).notNull(),
-    ruleId: text("ruleId").references(() => eventParsingRuleTable.id),
+    ruleId: text("ruleId").references(() => eventParsingRuleTable.id, {
+      onDelete: "set null",
+    }),
   },
   (table) => [unique("Event_secret_key").on(table.secret)],
 );
