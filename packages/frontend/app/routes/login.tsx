@@ -67,7 +67,11 @@ function LogoutButton() {
       <Button
         variant="contained"
         color="secondary"
-        onClick={() => logoutMutation.mutate()}
+        onClick={() =>
+          logoutMutation.mutate({
+            data: undefined,
+          })
+        }
         loading={logoutMutation.isPending}
       >
         Logout

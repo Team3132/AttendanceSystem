@@ -1,4 +1,4 @@
-import type { QueryKey } from "@tanstack/react-query";
+import type { QueryKeyValues } from "@/types/QueryKeyUtils";
 import type { z } from "zod";
 import type {
   GetEventParamsSchema,
@@ -8,25 +8,11 @@ import type {
 
 type UserListParams = Omit<z.infer<typeof UserListParamsSchema>, "cursor">;
 
+/**
+ * Get the resulting type of a function
+ */
 // biome-ignore lint/suspicious/noExplicitAny: Required for the Flatten type, unused in resulting code
 export type Flatten<T> = T extends (...args: any[]) => infer R ? R : T;
-
-// biome-ignore lint/suspicious/noExplicitAny: Needed for a generic query key returning function definition
-type AnyQueryKeyReturningFunction = (...args: any[]) => QueryKey;
-
-type QueryKeyResults<
-  T extends Record<string, QueryKey | AnyQueryKeyReturningFunction>,
-> = {
-  [K in keyof T]: T[K] extends QueryKey
-    ? T[K]
-    : T[K] extends AnyQueryKeyReturningFunction
-      ? ReturnType<T[K]>
-      : never;
-};
-
-type QueryKeyValues<
-  T extends Record<string, QueryKey | AnyQueryKeyReturningFunction>,
-> = Flatten<QueryKeyResults<T>[keyof T]>;
 
 export const usersQueryKeys = {
   users: ["users"] as const, // Root key for all user-related queries

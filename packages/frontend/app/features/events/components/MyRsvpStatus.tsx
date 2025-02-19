@@ -35,14 +35,18 @@ export default function MyRsvpStatus() {
     },
   });
 
-  const onSubmit = handleSubmit((data) =>
-    updateRsvpMutation.mutateAsync({
+  const onSubmit = handleSubmit(async (data) => {
+    if (data.status === null || data.status === "ATTENDED") {
+      return;
+    }
+
+    await updateRsvpMutation.mutateAsync({
       data: {
         eventId,
         status: data.status,
       },
-    }),
-  );
+    });
+  });
 
   useEffect(() => {
     // If the data from the server changes then update it on the client
