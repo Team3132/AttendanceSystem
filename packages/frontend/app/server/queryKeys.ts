@@ -1,3 +1,4 @@
+import type { QueryKey } from "@tanstack/react-query";
 import type { z } from "zod";
 import type {
   GetEventParamsSchema,
@@ -7,14 +8,25 @@ import type {
 
 type UserListParams = Omit<z.infer<typeof UserListParamsSchema>, "cursor">;
 
-type QueryKey = ReadonlyArray<unknown>;
+// biome-ignore lint/suspicious/noExplicitAny: Required for the Flatten type, unused in resulting code
+export type Flatten<T> = T extends (...args: any[]) => infer R ? R : T;
 
-// create a type that is a record of the key and the value can be either an array of strings or a function that returns an array of strings
-// args can possibly contain an object, string or number
+// biome-ignore lint/suspicious/noExplicitAny: Needed for a generic query key returning function definition
+type AnyQueryKeyReturningFunction = (...args: any[]) => QueryKey;
 
-export interface EventTypes {
-  invalidate: [QueryKey];
-}
+type QueryKeyResults<
+  T extends Record<string, QueryKey | AnyQueryKeyReturningFunction>,
+> = {
+  [K in keyof T]: T[K] extends QueryKey
+    ? T[K]
+    : T[K] extends AnyQueryKeyReturningFunction
+      ? ReturnType<T[K]>
+      : never;
+};
+
+type QueryKeyValues<
+  T extends Record<string, QueryKey | AnyQueryKeyReturningFunction>,
+> = Flatten<QueryKeyResults<T>[keyof T]>;
 
 export const usersQueryKeys = {
   users: ["users"] as const, // Root key for all user-related queries
@@ -86,3 +98,11 @@ export const discordQueryKeys = {
   serverRoles: ["discord", "serverRoles"] as const,
   serverChannels: ["discord", "serverChannels"] as const,
 };
+
+export type StrictlyTypedQueryKeys =
+  | QueryKeyValues<typeof usersQueryKeys>
+  | QueryKeyValues<typeof outreachQueryKeys>
+  | QueryKeyValues<typeof eventQueryKeys>
+  | QueryKeyValues<typeof authQueryKeys>
+  | QueryKeyValues<typeof adminQueryKeys>
+  | QueryKeyValues<typeof discordQueryKeys>;

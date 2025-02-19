@@ -1,23 +1,24 @@
 import { sessionMiddleware } from "@/middleware/authMiddleware";
 import { eventQueryKeys, usersQueryKeys } from "@/server/queryKeys";
 import { userCheckout } from "@/server/services/events.service";
-import type { SimpleServerFn } from "@/types/SimpleServerFn";
+import type FlattenServerFn from "@/types/FlattenServerFn";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
 import { z } from "zod";
 
-const selfCheckoutFn: SimpleServerFn<z.ZodString, typeof userCheckout> =
-  createServerFn({
-    method: "POST",
-  })
-    .middleware([sessionMiddleware])
-    .validator(z.string())
-    .handler(async ({ data, context }) => userCheckout(context.user.id, data));
+const selfCheckoutFn = createServerFn({
+  method: "POST",
+})
+  .middleware([sessionMiddleware])
+  .validator(z.string())
+  .handler(async ({ data, context }) => userCheckout(context.user.id, data));
+
+type SelfCheckoutFn = FlattenServerFn<typeof selfCheckoutFn>;
 
 export default function useSelfCheckout() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: selfCheckoutFn,
+    mutationFn: selfCheckoutFn as SelfCheckoutFn,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
         queryKey: eventQueryKeys.eventRsvps(variables.data),

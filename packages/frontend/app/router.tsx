@@ -1,11 +1,23 @@
-import { QueryClient } from "@tanstack/react-query";
+import { MutationCache, QueryClient, matchQuery } from "@tanstack/react-query";
 // app/router.tsx
 import { createRouter as createTanStackRouter } from "@tanstack/react-router";
 import { routerWithQueryClient } from "@tanstack/react-router-with-query";
 import { routeTree } from "./routeTree.gen";
+import type { StrictlyTypedQueryKeys } from "./server/queryKeys";
 
 export function createRouter() {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    mutationCache: new MutationCache({
+      onSuccess: (_data, _vars, _context, mutation) => {
+        queryClient.invalidateQueries({
+          predicate: (query) =>
+            mutation.meta?.invalidates?.some((queryKey) =>
+              matchQuery({ queryKey }, query),
+            ) ?? false,
+        });
+      },
+    }),
+  });
 
   const router = routerWithQueryClient(
     createTanStackRouter({
@@ -24,5 +36,13 @@ export function createRouter() {
 declare module "@tanstack/react-router" {
   interface Register {
     router: ReturnType<typeof createRouter>;
+  }
+}
+
+declare module "@tanstack/react-query" {
+  interface Register {
+    mutationMeta: {
+      invalidates?: Array<StrictlyTypedQueryKeys>;
+    };
   }
 }

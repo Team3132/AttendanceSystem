@@ -1,16 +1,13 @@
 import { sessionMiddleware } from "@/middleware/authMiddleware";
 import { usersQueryKeys } from "@/server/queryKeys";
 import { createUserScancode } from "@/server/services/user.service";
-import type { SimpleServerFn } from "@/types/SimpleServerFn";
+import type FlattenServerFn from "@/types/FlattenServerFn";
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
-import { type ZodString, z } from "zod";
+import { z } from "zod";
 
-const createSelfScancodeFn: SimpleServerFn<
-  ZodString,
-  typeof createUserScancode
-> = createServerFn({
+const createSelfScancodeFn = createServerFn({
   method: "POST",
 })
   .middleware([sessionMiddleware])
@@ -19,11 +16,13 @@ const createSelfScancodeFn: SimpleServerFn<
     createUserScancode(context.user.id, data),
   );
 
+type CreateSelfScancodeFn = FlattenServerFn<typeof createSelfScancodeFn>;
+
 export default function useCreateSelfScancode() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: createSelfScancodeFn,
+    mutationFn: createSelfScancodeFn as CreateSelfScancodeFn,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: usersQueryKeys.userSelfScancodes(),

@@ -1,28 +1,25 @@
 import { mentorMiddleware } from "@/middleware/authMiddleware";
 import { adminQueryKeys } from "@/server/queryKeys";
 import { deleteApiKey } from "@/server/services/adminService";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type FlattenServerFn from "@/types/FlattenServerFn";
+import { useMutation } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
 import { z } from "zod";
 
-const deleteApiKeyFn: ({
-  data,
-}: { data: string }) => ReturnType<typeof deleteApiKey> = createServerFn({
+const deleteApiKeyFn = createServerFn({
   method: "POST",
 })
   .validator(z.string())
   .middleware([mentorMiddleware])
   .handler(({ data }) => deleteApiKey(data));
 
-export default function useDeleteKey() {
-  const queryClient = useQueryClient();
+type DeleteApiKeyFn = FlattenServerFn<typeof deleteApiKeyFn>;
 
+export default function useDeleteKey() {
   return useMutation({
-    mutationFn: deleteApiKeyFn,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: adminQueryKeys.apiKeys,
-      });
+    mutationFn: deleteApiKeyFn as DeleteApiKeyFn,
+    meta: {
+      invalidates: [adminQueryKeys.apiKeys],
     },
   });
 }

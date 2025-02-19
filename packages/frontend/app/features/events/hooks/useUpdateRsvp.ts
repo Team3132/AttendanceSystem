@@ -2,15 +2,12 @@ import { sessionMiddleware } from "@/middleware/authMiddleware";
 import { eventQueryKeys } from "@/server/queryKeys";
 import { EditRSVPSelfSchema } from "@/server/schema/EditRSVPSelfSchema";
 import { editUserRsvpStatus } from "@/server/services/events.service";
-import type { SimpleServerFn } from "@/types/SimpleServerFn";
+import type FlattenServerFn from "@/types/FlattenServerFn";
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
 
-const editSelfRsvpFn: SimpleServerFn<
-  typeof EditRSVPSelfSchema,
-  typeof editUserRsvpStatus
-> = createServerFn({
+const editSelfRsvpFn = createServerFn({
   method: "POST",
 })
   .middleware([sessionMiddleware])
@@ -19,11 +16,13 @@ const editSelfRsvpFn: SimpleServerFn<
     editUserRsvpStatus(context.user.id, data),
   );
 
+type EditSelfRsvpFn = FlattenServerFn<typeof editSelfRsvpFn>;
+
 export default function useUpdateRsvp() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: editSelfRsvpFn,
+    mutationFn: editSelfRsvpFn as EditSelfRsvpFn,
     onSuccess: (data) => {
       queryClient.invalidateQueries({
         queryKey: eventQueryKeys.eventRsvp(data.eventId),

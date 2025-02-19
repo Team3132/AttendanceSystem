@@ -1,5 +1,6 @@
 import { authBaseMiddleware } from "@/middleware/authMiddleware";
 import { lucia } from "@/server/auth/lucia";
+import type FlattenServerFn from "@/types/FlattenServerFn";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
 import { setCookie } from "vinxi/http";
@@ -24,11 +25,13 @@ const logoutFn = createServerFn({
     return { success: false };
   });
 
+type LogoutFn = FlattenServerFn<typeof logoutFn>;
+
 export default function useLogout() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => logoutFn(),
+    mutationFn: logoutFn as LogoutFn,
     onSuccess: () => {
       queryClient.clear();
     },

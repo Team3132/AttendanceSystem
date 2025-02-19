@@ -2,7 +2,7 @@ import { mentorMiddleware } from "@/middleware/authMiddleware";
 import { NewEventParsingRuleSchema } from "@/server";
 import { adminQueryKeys } from "@/server/queryKeys";
 import { createParsingRule } from "@/server/services/adminService";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
 import type { z } from "zod";
 
@@ -18,14 +18,10 @@ const createRuleFn: ({
   .handler(({ data }) => createParsingRule(data));
 
 export default function useCreateRule() {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: createRuleFn,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: adminQueryKeys.parsingRuleList(),
-      });
+    meta: {
+      invalidates: [adminQueryKeys.parsingRuleList()],
     },
   });
 }

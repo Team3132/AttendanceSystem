@@ -2,28 +2,24 @@ import { mentorMiddleware } from "@/middleware/authMiddleware";
 import { eventQueryKeys } from "@/server/queryKeys";
 import { CreateEventSchema } from "@/server/schema/CreateEventSchema";
 import { createEvent } from "@/server/services/events.service";
-import type { SimpleServerFn } from "@/types/SimpleServerFn";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type FlattenServerFn from "@/types/FlattenServerFn";
+import { useMutation } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
 
-const createEventFn: SimpleServerFn<
-  typeof CreateEventSchema,
-  typeof createEvent
-> = createServerFn({
+const createEventFn = createServerFn({
   method: "POST",
 })
   .middleware([mentorMiddleware])
   .validator(CreateEventSchema)
   .handler(async ({ data }) => createEvent(data));
 
+type CreateEventFn = FlattenServerFn<typeof createEventFn>;
+
 export default function useCreateEvent() {
-  const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: createEventFn,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: eventQueryKeys.eventsList,
-      });
+    mutationFn: createEventFn as CreateEventFn,
+    meta: {
+      invalidates: [eventQueryKeys.events],
     },
   });
 }

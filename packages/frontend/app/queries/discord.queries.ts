@@ -4,21 +4,16 @@ import {
   getServerChannels,
   getServerRoles,
 } from "@/server/services/discordService";
-import type { SimpleServerFn } from "@/types/SimpleServerFn";
 import { queryOptions } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
-import { type ZodVoid, z } from "zod";
+import { z } from "zod";
 
-const discordServerRolesFn: SimpleServerFn<ZodVoid, typeof getServerRoles> =
-  createServerFn({ method: "GET" })
-    .validator(z.void())
-    .middleware([mentorMiddleware])
-    .handler(() => getServerRoles());
+const discordServerRolesFn = createServerFn({ method: "GET" })
+  .validator(z.void())
+  .middleware([mentorMiddleware])
+  .handler(() => getServerRoles());
 
-const discordServerChannelsFn: SimpleServerFn<
-  ZodVoid,
-  typeof getServerChannels
-> = createServerFn({ method: "GET" })
+const discordServerChannelsFn = createServerFn({ method: "GET" })
   .validator(z.void())
   .middleware([mentorMiddleware])
   .handler(() => getServerChannels());

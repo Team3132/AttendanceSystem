@@ -1,7 +1,7 @@
 import { mentorMiddleware } from "@/middleware/authMiddleware";
 import { eventQueryKeys } from "@/server/queryKeys";
 import { syncEvents } from "@/server/services/calalendarSync.service";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
 
 const syncCalendarFn: () => ReturnType<typeof syncEvents> = createServerFn({
@@ -11,14 +11,10 @@ const syncCalendarFn: () => ReturnType<typeof syncEvents> = createServerFn({
   .handler(() => syncEvents());
 
 export default function useSyncCalendar() {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: syncCalendarFn,
-    onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey: eventQueryKeys.events,
-      });
+    meta: {
+      invalidates: [eventQueryKeys.events],
     },
   });
 }

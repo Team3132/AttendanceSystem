@@ -1,5 +1,9 @@
 import { EventEmitter } from "eventemitter3";
-import type { EventTypes } from "../queryKeys";
+import type { StrictlyTypedQueryKeys } from "../queryKeys";
+
+interface EventTypes {
+  invalidate: [StrictlyTypedQueryKeys];
+}
 
 const ee = new EventEmitter<EventTypes>();
 

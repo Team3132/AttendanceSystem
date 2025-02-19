@@ -1,28 +1,25 @@
 import { mentorMiddleware } from "@/middleware/authMiddleware";
 import { adminQueryKeys } from "@/server/queryKeys";
 import { triggerRule } from "@/server/services/adminService";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type FlattenServerFn from "@/types/FlattenServerFn";
+import { useMutation } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
 import { z } from "zod";
 
-const triggerRuleFn: ({
-  data,
-}: { data: string }) => ReturnType<typeof triggerRule> = createServerFn({
+const triggerRuleFn = createServerFn({
   method: "POST",
 })
   .validator(z.string())
   .middleware([mentorMiddleware])
   .handler(({ data }) => triggerRule(data));
 
-export default function useTriggerRule() {
-  const queryClient = useQueryClient();
+type TriggerRuleFn = FlattenServerFn<typeof triggerRuleFn>;
 
+export default function useTriggerRule() {
   return useMutation({
-    mutationFn: triggerRuleFn,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: adminQueryKeys.parsingRuleList(),
-      });
+    mutationFn: triggerRuleFn as TriggerRuleFn,
+    meta: {
+      invalidates: [adminQueryKeys.parsingRuleList()],
     },
   });
 }
