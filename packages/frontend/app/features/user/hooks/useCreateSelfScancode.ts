@@ -3,7 +3,6 @@ import { usersQueryKeys } from "@/server/queryKeys";
 import { createUserScancode } from "@/server/services/user.service";
 import type FlattenServerFn from "@/types/FlattenServerFn";
 import { useMutation } from "@tanstack/react-query";
-import { useQueryClient } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
 import { z } from "zod";
 
@@ -19,14 +18,10 @@ const createSelfScancodeFn = createServerFn({
 type CreateSelfScancodeFn = FlattenServerFn<typeof createSelfScancodeFn>;
 
 export default function useCreateSelfScancode() {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: createSelfScancodeFn as CreateSelfScancodeFn,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: usersQueryKeys.userSelfScancodes(),
-      });
+    meta: {
+      invalidates: [usersQueryKeys.userSelfScancodes()],
     },
   });
 }
