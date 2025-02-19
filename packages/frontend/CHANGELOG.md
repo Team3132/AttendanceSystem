@@ -1,5 +1,11 @@
 # frontend
 
+## 5.2.37
+
+### Patch Changes
+
+- [`004d580`](https://github.com/Team3132/AttendanceSystem/commit/004d580d38edde7e03779326d5d840420fbe0790) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Suspense logout button
+
 ## 5.2.36
 
 ### Patch Changes
