@@ -1,7 +1,7 @@
 import { eventQueryOptions } from "@/queries/events.queries";
 import { parseDate } from "@/utils/date";
 import { IconButton } from "@mui/material";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 import { MdCheck } from "react-icons/md";
 import useAddUserRsvp from "../hooks/useAddRsvp";
@@ -13,10 +13,7 @@ interface RSVPEventButtonProps {
 
 export default function RSVPEventButton(props: RSVPEventButtonProps) {
   const { eventId, userId } = props;
-
-  const eventDetailsQuery = useSuspenseQuery(
-    eventQueryOptions.eventDetails(eventId),
-  );
+  const queryClient = useQueryClient();
 
   const addUserEventRsvpMutation = useAddUserRsvp();
 
@@ -24,21 +21,19 @@ export default function RSVPEventButton(props: RSVPEventButtonProps) {
    * Set the user's empty check-in and checkout times to the event's start and/or end time.
    */
   const rsvpEventTime = useCallback(async () => {
+    const eventDetails = await queryClient.ensureQueryData(
+      eventQueryOptions.eventDetails(eventId),
+    );
+
     await addUserEventRsvpMutation.mutateAsync({
       data: {
         eventId: eventId,
         userId: userId,
-        checkinTime: parseDate(eventDetailsQuery.data.startDate),
-        checkoutTime: parseDate(eventDetailsQuery.data.endDate),
+        checkinTime: parseDate(eventDetails.startDate),
+        checkoutTime: parseDate(eventDetails.endDate),
       },
     });
-  }, [
-    addUserEventRsvpMutation,
-    eventDetailsQuery.data.endDate,
-    eventDetailsQuery.data.startDate,
-    eventId,
-    userId,
-  ]);
+  }, [addUserEventRsvpMutation, queryClient, eventId, userId]);
 
   return (
     <IconButton

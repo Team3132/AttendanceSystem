@@ -17,7 +17,7 @@ import {
   DialogTitle,
   Stack,
 } from "@mui/material";
-import { keepPreviousData, useSuspenseQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQueryClient } from "@tanstack/react-query";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { DateTime } from "luxon";
 import { useCallback, useMemo } from "react";
@@ -52,11 +52,7 @@ const AddUserRsvpSchema = z.object({
 export default function RSVPAddDialog(props: RSVPAddDialogProps) {
   const { eventId } = Route.useParams();
   const { onClose, open } = props;
-
-  const eventRSVPs = useSuspenseQuery(eventQueryOptions.eventRsvps(eventId));
-  const eventDetails = useSuspenseQuery(
-    eventQueryOptions.eventDetails(eventId),
-  );
+  const queryClient = useQueryClient();
 
   const {
     formState: { isSubmitting },
@@ -118,13 +114,16 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
    * Restores existing values from the user's RSVP if it exists and it's not already set
    */
   const handleSelect = useCallback(
-    (
+    async (
       data: {
         value: string;
       } | null,
     ) => {
+      const eventRSVPs = await queryClient.ensureQueryData(
+        eventQueryOptions.eventRsvps(eventId),
+      );
       const selectedUserId = data?.value;
-      const existingUserRsvp = eventRSVPs.data?.find(
+      const existingUserRsvp = eventRSVPs?.find(
         (u) => u.userId === selectedUserId,
       );
       if (selectedUserId && existingUserRsvp) {
@@ -141,8 +140,37 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
         }
       }
     },
-    [eventRSVPs.data, getValues, setValue],
+    [queryClient, getValues, setValue, eventId],
   );
+
+  const endNowHandler = useCallback(async () => {
+    if (!getValues().checkinTime) {
+      const eventDetails = await queryClient.ensureQueryData(
+        eventQueryOptions.eventDetails(eventId),
+      );
+
+      setValue("checkinTime", parseDate(eventDetails?.startDate));
+    }
+    setValue("checkoutTime", DateTime.now().toISO());
+  }, [eventId, getValues, queryClient, setValue]);
+
+  const startNowHandler = useCallback(() => {
+    setValue("checkinTime", DateTime.now().toISO());
+  }, [setValue]);
+
+  const eventTimesHandler = useCallback(async () => {
+    const eventDetails = await queryClient.ensureQueryData(
+      eventQueryOptions.eventDetails(eventId),
+    );
+
+    setValue("checkinTime", parseDate(eventDetails?.startDate));
+    setValue("checkoutTime", parseDate(eventDetails?.endDate));
+  }, [eventId, queryClient, setValue]);
+
+  const clearHandler = useCallback(() => {
+    setValue("checkinTime", null);
+    setValue("checkoutTime", null);
+  }, [setValue]);
 
   return (
     <Dialog
@@ -178,48 +206,13 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
           {/* Time Presets */}
           <Stack direction="row" gap={2} justifyContent={"space-evenly"}>
             {/* Set start and end to event */}
-            <Button
-              onClick={() => {
-                setValue(
-                  "checkinTime",
-                  parseDate(eventDetails.data?.startDate),
-                );
-                setValue("checkoutTime", parseDate(eventDetails.data?.endDate));
-              }}
-            >
-              Set to Event
-            </Button>
+            <Button onClick={eventTimesHandler}>Set to Event</Button>
             {/* Set start to now */}
-            <Button
-              onClick={() => {
-                setValue("checkinTime", DateTime.now().toISO());
-              }}
-            >
-              Set Start to Now
-            </Button>
+            <Button onClick={startNowHandler}>Set Start to Now</Button>
             {/* Set end to now (start to event start if undef) */}
-            <Button
-              onClick={() => {
-                if (!getValues().checkinTime) {
-                  setValue(
-                    "checkinTime",
-                    parseDate(eventDetails.data?.startDate),
-                  );
-                }
-                setValue("checkoutTime", DateTime.now().toISO());
-              }}
-            >
-              Set End to Now
-            </Button>
+            <Button onClick={endNowHandler}>Set End to Now</Button>
             {/* Clear */}
-            <Button
-              onClick={() => {
-                setValue("checkinTime", null);
-                setValue("checkoutTime", null);
-              }}
-            >
-              Clear
-            </Button>
+            <Button onClick={clearHandler}>Clear</Button>
           </Stack>
           <ControlledSelect
             control={control}

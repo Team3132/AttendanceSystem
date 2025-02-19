@@ -2,7 +2,7 @@ import { useDisclosure } from "@/hooks/useDisclosure";
 import { eventQueryOptions } from "@/queries/events.queries";
 import { parseDate } from "@/utils/date";
 import { Divider, IconButton, Menu, MenuItem } from "@mui/material";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { DateTime } from "luxon";
 import { useCallback, useId, useRef } from "react";
 import { MdEdit } from "react-icons/md";
@@ -19,12 +19,7 @@ export default function RSVPActionsButton(props: RSVPActionsButtonProps) {
   const { getButtonProps, getDisclosureProps, isOpen, onClose } =
     useDisclosure();
 
-  const eventDetailsQuery = useSuspenseQuery(
-    eventQueryOptions.eventDetails(eventId),
-  );
-  const rsvpDetailsQuery = useSuspenseQuery(
-    eventQueryOptions.userRsvp(eventId, userId),
-  );
+  const queryClient = useQueryClient();
 
   const addUserEventRsvpMutation = useAddUserRsvp();
 
@@ -51,9 +46,16 @@ export default function RSVPActionsButton(props: RSVPActionsButtonProps) {
    * Set the user's checkout time to the current time.
    */
   const checkoutUserNow = useCallback(async () => {
-    const checkinTime = rsvpDetailsQuery.data?.checkinTime
-      ? parseDate(rsvpDetailsQuery.data.checkinTime)
-      : eventDetailsQuery.data.startDate;
+    const rsvpDetails = await queryClient.ensureQueryData(
+      eventQueryOptions.userRsvp(eventId, userId),
+    );
+    const eventDetails = await queryClient.ensureQueryData(
+      eventQueryOptions.eventDetails(eventId),
+    );
+
+    const checkinTime = rsvpDetails?.checkinTime
+      ? parseDate(rsvpDetails.checkinTime)
+      : parseDate(eventDetails.startDate);
 
     await addUserEventRsvpMutation.mutateAsync({
       data: {
@@ -66,38 +68,28 @@ export default function RSVPActionsButton(props: RSVPActionsButtonProps) {
 
     // Close the menu
     onClose();
-  }, [
-    addUserEventRsvpMutation,
-    eventId,
-    userId,
-    onClose,
-    rsvpDetailsQuery.data?.checkinTime,
-    eventDetailsQuery.data.startDate,
-  ]);
+  }, [addUserEventRsvpMutation, eventId, userId, onClose, queryClient]);
 
   /**
    * Set the user's empty check-in and checkout times to the event's start and/or end time.
    */
   const rsvpEventTime = useCallback(async () => {
+    const eventDetailsQuery = await queryClient.ensureQueryData(
+      eventQueryOptions.eventDetails(eventId),
+    );
+
     await addUserEventRsvpMutation.mutateAsync({
       data: {
         eventId: eventId,
         userId: userId,
-        checkinTime: parseDate(eventDetailsQuery.data.startDate),
-        checkoutTime: parseDate(eventDetailsQuery.data.endDate),
+        checkinTime: parseDate(eventDetailsQuery.startDate),
+        checkoutTime: parseDate(eventDetailsQuery.endDate),
       },
     });
 
     // Close the menu
     onClose();
-  }, [
-    addUserEventRsvpMutation,
-    eventDetailsQuery.data.endDate,
-    eventDetailsQuery.data.startDate,
-    eventId,
-    userId,
-    onClose,
-  ]);
+  }, [addUserEventRsvpMutation, queryClient, eventId, userId, onClose]);
 
   /**
    * Clear the user's check-in and checkout times.

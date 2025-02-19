@@ -3,6 +3,7 @@ import { authQueryOptions } from "@/queries/auth.queries";
 import { Button, Container, Paper, Stack, Typography } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { Suspense } from "react";
 
 export const Route = createFileRoute("/login")({
   loader: ({ context: { queryClient } }) => {
@@ -12,10 +13,6 @@ export const Route = createFileRoute("/login")({
 });
 
 function Component() {
-  const authStatusQuery = useSuspenseQuery(authQueryOptions.status());
-
-  const logoutMutation = useLogout();
-
   return (
     <Container
       sx={{
@@ -50,18 +47,32 @@ function Component() {
             >
               Login
             </Button>
-            {authStatusQuery.data.isAuthenticated ? (
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() => logoutMutation.mutate()}
-              >
-                Logout
-              </Button>
-            ) : null}
+            <Suspense fallback={null}>
+              <LogoutButton />
+            </Suspense>
           </Stack>
         </Stack>
       </Paper>
     </Container>
   );
+}
+
+function LogoutButton() {
+  const authStatusQuery = useSuspenseQuery(authQueryOptions.status());
+
+  const logoutMutation = useLogout();
+
+  if (authStatusQuery.data.isAuthenticated) {
+    return (
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={() => logoutMutation.mutate()}
+      >
+        Logout
+      </Button>
+    );
+  }
+
+  return null;
 }
