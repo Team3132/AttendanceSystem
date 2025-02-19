@@ -122,11 +122,14 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
       const eventRSVPs = await queryClient.ensureQueryData(
         eventQueryOptions.eventRsvps(eventId),
       );
+
       const selectedUserId = data?.value;
-      const existingUserRsvp = eventRSVPs?.find(
+
+      const existingUserRsvp = eventRSVPs.find(
         (u) => u.userId === selectedUserId,
       );
-      if (selectedUserId && existingUserRsvp) {
+
+      if (existingUserRsvp) {
         const existingValues = getValues();
         if (!existingValues.checkinTime && existingUserRsvp.checkinTime) {
           setValue("checkinTime", parseDate(existingUserRsvp.checkinTime));
