@@ -1,5 +1,11 @@
 # frontend
 
+## 5.2.38
+
+### Patch Changes
+
+- [`2c6af24`](https://github.com/Team3132/AttendanceSystem/commit/2c6af245421aaf0cae1f9e93453e7e3c6ff3a098) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Invalidation ergonomics improvements & Better Server Fn Flattening
+
 ## 5.2.37
 
 ### Patch Changes
