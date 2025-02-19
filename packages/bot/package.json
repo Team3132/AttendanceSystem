@@ -25,7 +25,7 @@
 		"@nestjs/platform-express": "11.0.10",
 		"@nestjs/schedule": "5.0.1",
 		"@sentry/node": "9.1.0",
-		"@trpc/client": "11.0.0-rc.791",
+		"@trpc/client": "11.0.0-rc.795",
 		"class-transformer": "0.5.1",
 		"class-validator": "0.14.1",
 		"discord-api-types": "0.37.119",
