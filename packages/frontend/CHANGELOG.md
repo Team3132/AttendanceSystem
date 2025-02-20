@@ -1,5 +1,11 @@
 # frontend
 
+## 5.2.39
+
+### Patch Changes
+
+- [`c95f035`](https://github.com/Team3132/AttendanceSystem/commit/c95f03553ad5541428511c585999e45bc205c326) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add suspense query for event code
+
 ## 5.2.38
 
 ### Patch Changes
