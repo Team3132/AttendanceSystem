@@ -25,7 +25,7 @@ export function createRouter() {
       context: { queryClient },
       scrollToTopSelectors: ["#main-area"],
       defaultPreload: "intent",
-      scrollRestoration: !import.meta.env.SSR,
+      scrollRestoration: !import.meta.env.SSR, // Disable scroll restoration in SSR
     }),
     queryClient,
   );
