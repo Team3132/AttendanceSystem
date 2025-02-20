@@ -1,9 +1,19 @@
 import ScaninCard from "@/features/events/components/ScaninCard";
 import { authQueryOptions } from "@/queries/auth.queries";
 import { eventQueryOptions } from "@/queries/events.queries";
-import { Container, Paper, Stack, Typography } from "@mui/material";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import {
+  Container,
+  IconButton,
+  InputAdornment,
+  Paper,
+  Stack,
+  TextField,
+} from "@mui/material";
+import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, redirect } from "@tanstack/react-router";
+import { Suspense, useCallback } from "react";
+import { FaCopy } from "react-icons/fa6";
+import { useCopyToClipboard } from "usehooks-ts";
 
 export const Route = createFileRoute("/_authenticated/events/$eventId/qr-code")(
   {
@@ -42,10 +52,6 @@ export const Route = createFileRoute("/_authenticated/events/$eventId/qr-code")(
 function Component() {
   const { eventId } = Route.useParams();
 
-  const eventSecretQuery = useSuspenseQuery(
-    eventQueryOptions.eventSecret(eventId),
-  );
-
   return (
     <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
       <Stack
@@ -59,21 +65,78 @@ function Component() {
             p: 2,
           }}
         >
-          <Stack gap={2}>
-            <Typography variant="h5" textAlign={"center"}>
-              Event Code
-            </Typography>
-            <Typography
-              variant="body1"
-              textAlign={"center"}
-              fontFamily={"monospace"}
-            >
-              {eventSecretQuery.data.secret}
-            </Typography>
-          </Stack>
+          <Suspense
+            fallback={
+              <TextField
+                label="Event Code"
+                disabled
+                value={"Loading..."}
+                fullWidth
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton disabled>
+                          <FaCopy />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  },
+                }}
+              />
+            }
+          >
+            <EventSecretTextBox />
+          </Suspense>
         </Paper>
         <ScaninCard eventId={eventId} />
       </Stack>
     </Container>
+  );
+}
+
+function EventSecretTextBox() {
+  const { eventId } = Route.useParams();
+
+  const eventSecretQuery = useSuspenseQuery(
+    eventQueryOptions.eventSecret(eventId),
+  );
+
+  return (
+    <TextField
+      slotProps={{
+        input: {
+          readOnly: true,
+          endAdornment: (
+            <InputAdornment position="end">
+              <EventSecretIconButton />
+            </InputAdornment>
+          ),
+        },
+      }}
+      fullWidth
+      value={eventSecretQuery.data.secret}
+      label="Event Code"
+    />
+  );
+}
+
+function EventSecretIconButton() {
+  const [, copyFn] = useCopyToClipboard();
+  const { eventId } = Route.useParams();
+  const queryClient = useQueryClient();
+
+  const handleCopy = useCallback(async () => {
+    const eventSecret = await queryClient.ensureQueryData(
+      eventQueryOptions.eventSecret(eventId),
+    );
+
+    await copyFn(eventSecret.secret);
+  }, [copyFn, queryClient, eventId]);
+
+  return (
+    <IconButton onClick={handleCopy}>
+      <FaCopy />
+    </IconButton>
   );
 }
