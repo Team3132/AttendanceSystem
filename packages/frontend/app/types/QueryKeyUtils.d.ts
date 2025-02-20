@@ -17,12 +17,10 @@ type QueryKeysObject = Record<string, QueryKey | AnyQueryKeyReturningFunction>;
  * @param T The QueryKeysObject to get the resulting QueryKeys from
  * @returns The union of all valid QueryKeys
  */
-export type QueryKeyValues<T extends QueryKeysObject> = Flatten<
-  {
-    [K in keyof T]: T[K] extends QueryKey // If the value is a QueryKey
-      ? T[K] // Return the QueryKey
-      : T[K] extends AnyQueryKeyReturningFunction // If the value is a function that returns a QueryKey
-        ? ReturnType<T[K]> // Return the QueryKey that the function returns
-        : never; // Otherwise, the value is invalid
-  }[keyof T]
->; // Get the union of all valid QueryKeys
+export type QueryKeyValues<T extends QueryKeysObject> = {
+  [K in keyof T]: T[K] extends QueryKey // If the value is a QueryKey
+    ? T[K] // Return the QueryKey
+    : T[K] extends AnyQueryKeyReturningFunction // If the value is a function that returns a QueryKey
+      ? ReturnType<T[K]> // Return the QueryKey that the function returns
+      : never; // Otherwise, the value is invalid
+}[keyof T]; // Get the union of all valid QueryKeys

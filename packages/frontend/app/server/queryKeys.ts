@@ -86,9 +86,9 @@ export const discordQueryKeys = {
 };
 
 export type StrictlyTypedQueryKeys =
-  | QueryKeyValues<typeof usersQueryKeys>
-  | QueryKeyValues<typeof outreachQueryKeys>
-  | QueryKeyValues<typeof eventQueryKeys>
-  | QueryKeyValues<typeof authQueryKeys>
-  | QueryKeyValues<typeof adminQueryKeys>
-  | QueryKeyValues<typeof discordQueryKeys>;
+  | Flatten<QueryKeyValues<typeof usersQueryKeys>>
+  | Flatten<QueryKeyValues<typeof outreachQueryKeys>>
+  | Flatten<QueryKeyValues<typeof eventQueryKeys>>
+  | Flatten<QueryKeyValues<typeof authQueryKeys>>
+  | Flatten<QueryKeyValues<typeof adminQueryKeys>>
+  | Flatten<QueryKeyValues<typeof discordQueryKeys>>;

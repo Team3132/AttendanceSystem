@@ -176,9 +176,13 @@ function EventList() {
 function CreateEventButton() {
   const authStatusQuery = useSuspenseQuery(authQueryOptions.status());
 
-  return authStatusQuery.data.isAdmin ? (
+  if (!authStatusQuery.data.isAdmin) {
+    return null;
+  }
+
+  return (
     <LinkButton to="/events/create" variant="contained">
       Create Event
     </LinkButton>
-  ) : null;
+  );
 }
