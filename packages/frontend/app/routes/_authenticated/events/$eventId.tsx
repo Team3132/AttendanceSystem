@@ -28,14 +28,14 @@ export const Route = createFileRoute("/_authenticated/events/$eventId")({
 
 const userTabs = (eventId: string): TabItem[] => [
   {
-    label: "Details",
+    label: "RSVPs",
     to: "/events/$eventId",
     params: {
       eventId: eventId,
     },
   },
   {
-    label: "Check In",
+    label: "Check-In",
     to: "/events/$eventId/check-in",
   },
 ];
@@ -43,7 +43,7 @@ const userTabs = (eventId: string): TabItem[] => [
 const adminTabs = (eventId: string): TabItem[] =>
   userTabs(eventId).concat([
     {
-      label: "QR Code",
+      label: "Code",
       to: "/events/$eventId/qr-code",
     },
   ]);
