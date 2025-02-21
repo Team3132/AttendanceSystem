@@ -59,13 +59,7 @@ function Component() {
         <EventTitle />
       </Suspense>
       <Suspense
-        fallback={
-          <LinkTabs
-            variant="scrollable"
-            scrollButtons="auto"
-            tabs={defaultTabs}
-          />
-        }
+        fallback={<LinkTabs scrollButtons="auto" tabs={defaultTabs} centered />}
       >
         <ProfileTabs />
       </Suspense>
