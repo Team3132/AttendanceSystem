@@ -95,19 +95,19 @@ const generateCheckinCheckout = (startTime: string, endTime: string) => {
   const isSameDay =
     checkin && checkout ? checkin.hasSame(checkout, "day") : false;
 
-  const hours = checkout.diff(checkin, "hours").hours;
+  const hours = checkout.diff(checkin, "hours").toHuman();
 
   if (isSameDay) {
     // If the checkin and checkout are on the same day, show the time range
     return `${checkin.toLocaleString(
       DateTime.DATETIME_MED_WITH_WEEKDAY,
-    )} - ${checkout.toLocaleString(DateTime.TIME_SIMPLE)} (${hours} hours)`;
+    )} - ${checkout.toLocaleString(DateTime.TIME_SIMPLE)} (${hours})`;
   }
 
   // If the checkin and checkout are not on the same day, show the date range
   return `${checkin.toLocaleString(
     DateTime.DATETIME_MED,
-  )} - ${checkout.toLocaleString(DateTime.DATETIME_MED)} (${hours} hours)`;
+  )} - ${checkout.toLocaleString(DateTime.DATETIME_MED)} (${hours})`;
 };
 
 function EventTitle() {
