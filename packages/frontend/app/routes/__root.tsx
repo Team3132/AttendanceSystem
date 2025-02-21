@@ -15,7 +15,7 @@ import {
   Outlet,
   createRootRouteWithContext,
 } from "@tanstack/react-router";
-import { Scripts } from "@tanstack/start";
+import { Scripts } from "@tanstack/react-router";
 import type * as React from "react";
 import rootCss from "./root.css?inline";
 
