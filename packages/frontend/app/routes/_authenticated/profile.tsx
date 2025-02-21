@@ -16,6 +16,10 @@ const tabs: Array<TabItem> = [
     label: "Pending",
     to: "/profile/pending",
   },
+  {
+    label: "Sessions",
+    to: "/profile/sessions",
+  },
 ];
 
 function Component() {

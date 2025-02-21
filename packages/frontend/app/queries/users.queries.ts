@@ -9,6 +9,7 @@ import {
   getUser,
   getUserList,
   getUserScancodes,
+  getUserSessions,
 } from "@/server/services/user.service";
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/start";
@@ -47,6 +48,15 @@ const getUserPendingRsvpsFn = createServerFn({ method: "GET" })
   .middleware([mentorMiddleware])
   .validator(z.string().describe("The user ID"))
   .handler(async ({ data }) => getPendingUserRsvps(data));
+
+const getUserSessionsFn = createServerFn({ method: "GET" })
+  .middleware([mentorMiddleware])
+  .validator(z.string())
+  .handler(async ({ data }) => getUserSessions(data));
+
+const getSelfSessionsFn = createServerFn({ method: "GET" })
+  .middleware([sessionMiddleware])
+  .handler(async ({ context }) => getUserSessions(context.user.id));
 
 export const usersQueryOptions = {
   userList: (params: UserListParams) =>
@@ -97,5 +107,17 @@ export const usersQueryOptions = {
     queryOptions({
       queryFn: () => getSelfPendingRsvpsFn(),
       queryKey: usersQueryKeys.userSelfPendingRsvps(),
+    }),
+
+  userSelfSessions: () =>
+    queryOptions({
+      queryFn: getSelfSessionsFn,
+      queryKey: usersQueryKeys.userSelfSessions(),
+    }),
+
+  userSessions: (id: string) =>
+    queryOptions({
+      queryFn: () => getUserSessionsFn({ data: id }),
+      queryKey: usersQueryKeys.userSessions(id),
     }),
 };

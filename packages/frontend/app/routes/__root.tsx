@@ -67,6 +67,7 @@ const theme = createTheme({
 function RootComponent() {
   return (
     <RootDocument>
+      <InitColorSchemeScript attribute={attribute} />
       <ThemeProvider theme={theme}>
         <LocalizationProvider
           adapterLocale={"en-au"}
@@ -76,7 +77,6 @@ function RootComponent() {
           <CssBaseline enableColorScheme />
         </LocalizationProvider>
       </ThemeProvider>
-
       <Devtools />
     </RootDocument>
   );
@@ -94,7 +94,6 @@ function RootDocument({ children }: Readonly<{ children: React.ReactNode }>) {
         <style>{roboto700}</style>
       </head>
       <body>
-        <InitColorSchemeScript attribute={attribute} />
         {children}
         <Scripts />
       </body>

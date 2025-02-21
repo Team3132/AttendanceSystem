@@ -37,14 +37,21 @@ function ProfileTabs() {
         label: "Scancodes",
         to: "/admin/users/$userId",
         params: {
-          userId: userId,
+          userId,
         },
       },
       {
         label: "Pending",
         to: "/admin/users/$userId/pending",
         params: {
-          userId: userId,
+          userId,
+        },
+      },
+      {
+        label: "Sessions",
+        to: "/admin/users/$userId/sessions",
+        params: {
+          userId,
         },
       },
     ],

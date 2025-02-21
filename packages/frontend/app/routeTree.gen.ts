@@ -21,6 +21,7 @@ import { Route as AuthenticatedAdminImport } from './routes/_authenticated/admin
 import { Route as AuthenticatedProfileIndexImport } from './routes/_authenticated/profile/index'
 import { Route as AuthenticatedEventsIndexImport } from './routes/_authenticated/events/index'
 import { Route as AuthenticatedAdminIndexImport } from './routes/_authenticated/admin_/index'
+import { Route as AuthenticatedProfileSessionsImport } from './routes/_authenticated/profile/sessions'
 import { Route as AuthenticatedProfilePendingImport } from './routes/_authenticated/profile/pending'
 import { Route as AuthenticatedEventsCreateImport } from './routes/_authenticated/events/create'
 import { Route as AuthenticatedEventsEventIdImport } from './routes/_authenticated/events/$eventId'
@@ -36,6 +37,7 @@ import { Route as AuthenticatedAdminEventParsingRuleIdImport } from './routes/_a
 import { Route as AuthenticatedAdminApiKeysCreateImport } from './routes/_authenticated/admin_/api-keys/create'
 import { Route as AuthenticatedAdminUsersUserIdIndexImport } from './routes/_authenticated/admin_/users/$userId/index'
 import { Route as AuthenticatedAdminUsersUserIdSummaryImport } from './routes/_authenticated/admin_/users/$userId/summary'
+import { Route as AuthenticatedAdminUsersUserIdSessionsImport } from './routes/_authenticated/admin_/users/$userId/sessions'
 import { Route as AuthenticatedAdminUsersUserIdPendingImport } from './routes/_authenticated/admin_/users/$userId/pending'
 
 // Create/Update Routes
@@ -98,6 +100,13 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+
+const AuthenticatedProfileSessionsRoute =
+  AuthenticatedProfileSessionsImport.update({
+    id: '/sessions',
+    path: '/sessions',
+    getParentRoute: () => AuthenticatedProfileRoute,
+  } as any)
 
 const AuthenticatedProfilePendingRoute =
   AuthenticatedProfilePendingImport.update({
@@ -204,6 +213,13 @@ const AuthenticatedAdminUsersUserIdSummaryRoute =
     getParentRoute: () => AuthenticatedAdminUsersUserIdRoute,
   } as any)
 
+const AuthenticatedAdminUsersUserIdSessionsRoute =
+  AuthenticatedAdminUsersUserIdSessionsImport.update({
+    id: '/sessions',
+    path: '/sessions',
+    getParentRoute: () => AuthenticatedAdminUsersUserIdRoute,
+  } as any)
+
 const AuthenticatedAdminUsersUserIdPendingRoute =
   AuthenticatedAdminUsersUserIdPendingImport.update({
     id: '/pending',
@@ -283,6 +299,13 @@ declare module '@tanstack/react-router' {
       path: '/pending'
       fullPath: '/profile/pending'
       preLoaderRoute: typeof AuthenticatedProfilePendingImport
+      parentRoute: typeof AuthenticatedProfileImport
+    }
+    '/_authenticated/profile/sessions': {
+      id: '/_authenticated/profile/sessions'
+      path: '/sessions'
+      fullPath: '/profile/sessions'
+      preLoaderRoute: typeof AuthenticatedProfileSessionsImport
       parentRoute: typeof AuthenticatedProfileImport
     }
     '/_authenticated/admin_/': {
@@ -383,6 +406,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminUsersUserIdPendingImport
       parentRoute: typeof AuthenticatedAdminUsersUserIdImport
     }
+    '/_authenticated/admin_/users/$userId/sessions': {
+      id: '/_authenticated/admin_/users/$userId/sessions'
+      path: '/sessions'
+      fullPath: '/admin/users/$userId/sessions'
+      preLoaderRoute: typeof AuthenticatedAdminUsersUserIdSessionsImport
+      parentRoute: typeof AuthenticatedAdminUsersUserIdImport
+    }
     '/_authenticated/admin_/users/$userId/summary': {
       id: '/_authenticated/admin_/users/$userId/summary'
       path: '/summary'
@@ -404,6 +434,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedAdminUsersUserIdRouteChildren {
   AuthenticatedAdminUsersUserIdPendingRoute: typeof AuthenticatedAdminUsersUserIdPendingRoute
+  AuthenticatedAdminUsersUserIdSessionsRoute: typeof AuthenticatedAdminUsersUserIdSessionsRoute
   AuthenticatedAdminUsersUserIdSummaryRoute: typeof AuthenticatedAdminUsersUserIdSummaryRoute
   AuthenticatedAdminUsersUserIdIndexRoute: typeof AuthenticatedAdminUsersUserIdIndexRoute
 }
@@ -412,6 +443,8 @@ const AuthenticatedAdminUsersUserIdRouteChildren: AuthenticatedAdminUsersUserIdR
   {
     AuthenticatedAdminUsersUserIdPendingRoute:
       AuthenticatedAdminUsersUserIdPendingRoute,
+    AuthenticatedAdminUsersUserIdSessionsRoute:
+      AuthenticatedAdminUsersUserIdSessionsRoute,
     AuthenticatedAdminUsersUserIdSummaryRoute:
       AuthenticatedAdminUsersUserIdSummaryRoute,
     AuthenticatedAdminUsersUserIdIndexRoute:
@@ -454,11 +487,13 @@ const AuthenticatedAdminRouteWithChildren =
 
 interface AuthenticatedProfileRouteChildren {
   AuthenticatedProfilePendingRoute: typeof AuthenticatedProfilePendingRoute
+  AuthenticatedProfileSessionsRoute: typeof AuthenticatedProfileSessionsRoute
   AuthenticatedProfileIndexRoute: typeof AuthenticatedProfileIndexRoute
 }
 
 const AuthenticatedProfileRouteChildren: AuthenticatedProfileRouteChildren = {
   AuthenticatedProfilePendingRoute: AuthenticatedProfilePendingRoute,
+  AuthenticatedProfileSessionsRoute: AuthenticatedProfileSessionsRoute,
   AuthenticatedProfileIndexRoute: AuthenticatedProfileIndexRoute,
 }
 
@@ -520,6 +555,7 @@ export interface FileRoutesByFullPath {
   '/events/$eventId': typeof AuthenticatedEventsEventIdRouteWithChildren
   '/events/create': typeof AuthenticatedEventsCreateRoute
   '/profile/pending': typeof AuthenticatedProfilePendingRoute
+  '/profile/sessions': typeof AuthenticatedProfileSessionsRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/events': typeof AuthenticatedEventsIndexRoute
   '/profile/': typeof AuthenticatedProfileIndexRoute
@@ -534,6 +570,7 @@ export interface FileRoutesByFullPath {
   '/admin/users': typeof AuthenticatedAdminUsersIndexRoute
   '/events/$eventId/': typeof AuthenticatedEventsEventIdIndexRoute
   '/admin/users/$userId/pending': typeof AuthenticatedAdminUsersUserIdPendingRoute
+  '/admin/users/$userId/sessions': typeof AuthenticatedAdminUsersUserIdSessionsRoute
   '/admin/users/$userId/summary': typeof AuthenticatedAdminUsersUserIdSummaryRoute
   '/admin/users/$userId/': typeof AuthenticatedAdminUsersUserIdIndexRoute
 }
@@ -545,6 +582,7 @@ export interface FileRoutesByTo {
   '/': typeof AuthenticatedIndexRoute
   '/events/create': typeof AuthenticatedEventsCreateRoute
   '/profile/pending': typeof AuthenticatedProfilePendingRoute
+  '/profile/sessions': typeof AuthenticatedProfileSessionsRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/events': typeof AuthenticatedEventsIndexRoute
   '/profile': typeof AuthenticatedProfileIndexRoute
@@ -558,6 +596,7 @@ export interface FileRoutesByTo {
   '/admin/users': typeof AuthenticatedAdminUsersIndexRoute
   '/events/$eventId': typeof AuthenticatedEventsEventIdIndexRoute
   '/admin/users/$userId/pending': typeof AuthenticatedAdminUsersUserIdPendingRoute
+  '/admin/users/$userId/sessions': typeof AuthenticatedAdminUsersUserIdSessionsRoute
   '/admin/users/$userId/summary': typeof AuthenticatedAdminUsersUserIdSummaryRoute
   '/admin/users/$userId': typeof AuthenticatedAdminUsersUserIdIndexRoute
 }
@@ -574,6 +613,7 @@ export interface FileRoutesById {
   '/_authenticated/events/$eventId': typeof AuthenticatedEventsEventIdRouteWithChildren
   '/_authenticated/events/create': typeof AuthenticatedEventsCreateRoute
   '/_authenticated/profile/pending': typeof AuthenticatedProfilePendingRoute
+  '/_authenticated/profile/sessions': typeof AuthenticatedProfileSessionsRoute
   '/_authenticated/admin_/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/events/': typeof AuthenticatedEventsIndexRoute
   '/_authenticated/profile/': typeof AuthenticatedProfileIndexRoute
@@ -588,6 +628,7 @@ export interface FileRoutesById {
   '/_authenticated/admin_/users/': typeof AuthenticatedAdminUsersIndexRoute
   '/_authenticated/events/$eventId/': typeof AuthenticatedEventsEventIdIndexRoute
   '/_authenticated/admin_/users/$userId/pending': typeof AuthenticatedAdminUsersUserIdPendingRoute
+  '/_authenticated/admin_/users/$userId/sessions': typeof AuthenticatedAdminUsersUserIdSessionsRoute
   '/_authenticated/admin_/users/$userId/summary': typeof AuthenticatedAdminUsersUserIdSummaryRoute
   '/_authenticated/admin_/users/$userId/': typeof AuthenticatedAdminUsersUserIdIndexRoute
 }
@@ -605,6 +646,7 @@ export interface FileRouteTypes {
     | '/events/$eventId'
     | '/events/create'
     | '/profile/pending'
+    | '/profile/sessions'
     | '/admin/'
     | '/events'
     | '/profile/'
@@ -619,6 +661,7 @@ export interface FileRouteTypes {
     | '/admin/users'
     | '/events/$eventId/'
     | '/admin/users/$userId/pending'
+    | '/admin/users/$userId/sessions'
     | '/admin/users/$userId/summary'
     | '/admin/users/$userId/'
   fileRoutesByTo: FileRoutesByTo
@@ -629,6 +672,7 @@ export interface FileRouteTypes {
     | '/'
     | '/events/create'
     | '/profile/pending'
+    | '/profile/sessions'
     | '/admin'
     | '/events'
     | '/profile'
@@ -642,6 +686,7 @@ export interface FileRouteTypes {
     | '/admin/users'
     | '/events/$eventId'
     | '/admin/users/$userId/pending'
+    | '/admin/users/$userId/sessions'
     | '/admin/users/$userId/summary'
     | '/admin/users/$userId'
   id:
@@ -656,6 +701,7 @@ export interface FileRouteTypes {
     | '/_authenticated/events/$eventId'
     | '/_authenticated/events/create'
     | '/_authenticated/profile/pending'
+    | '/_authenticated/profile/sessions'
     | '/_authenticated/admin_/'
     | '/_authenticated/events/'
     | '/_authenticated/profile/'
@@ -670,6 +716,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin_/users/'
     | '/_authenticated/events/$eventId/'
     | '/_authenticated/admin_/users/$userId/pending'
+    | '/_authenticated/admin_/users/$userId/sessions'
     | '/_authenticated/admin_/users/$userId/summary'
     | '/_authenticated/admin_/users/$userId/'
   fileRoutesById: FileRoutesById
@@ -743,6 +790,7 @@ export const routeTree = rootRoute
       "parent": "/_authenticated",
       "children": [
         "/_authenticated/profile/pending",
+        "/_authenticated/profile/sessions",
         "/_authenticated/profile/"
       ]
     },
@@ -765,6 +813,10 @@ export const routeTree = rootRoute
     },
     "/_authenticated/profile/pending": {
       "filePath": "_authenticated/profile/pending.tsx",
+      "parent": "/_authenticated/profile"
+    },
+    "/_authenticated/profile/sessions": {
+      "filePath": "_authenticated/profile/sessions.tsx",
       "parent": "/_authenticated/profile"
     },
     "/_authenticated/admin_/": {
@@ -796,6 +848,7 @@ export const routeTree = rootRoute
       "parent": "/_authenticated/admin_",
       "children": [
         "/_authenticated/admin_/users/$userId/pending",
+        "/_authenticated/admin_/users/$userId/sessions",
         "/_authenticated/admin_/users/$userId/summary",
         "/_authenticated/admin_/users/$userId/"
       ]
@@ -826,6 +879,10 @@ export const routeTree = rootRoute
     },
     "/_authenticated/admin_/users/$userId/pending": {
       "filePath": "_authenticated/admin_/users/$userId/pending.tsx",
+      "parent": "/_authenticated/admin_/users/$userId"
+    },
+    "/_authenticated/admin_/users/$userId/sessions": {
+      "filePath": "_authenticated/admin_/users/$userId/sessions.tsx",
       "parent": "/_authenticated/admin_/users/$userId"
     },
     "/_authenticated/admin_/users/$userId/summary": {

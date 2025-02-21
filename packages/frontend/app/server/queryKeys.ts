@@ -26,11 +26,14 @@ export const usersQueryKeys = {
     [...usersQueryKeys.user(id), "scancodes"] as const, // Key for the scancodes of a specific user
   userPendingRsvps: (id: string) =>
     [...usersQueryKeys.user(id), "pendingRsvps"] as const, // Key for the pending rsvps of a specific user
+  userSessions: (id: string) =>
+    [...usersQueryKeys.user(id), "sessions"] as const,
   userSelf: () => [...usersQueryKeys.users, "self"] as const, // Root key for the current user
   userSelfDetails: () => [...usersQueryKeys.userSelf(), "details"] as const, // Key for the details of the current user
   userSelfScancodes: () => [...usersQueryKeys.userSelf(), "scancodes"] as const, // Key for the scancodes of the current user
   userSelfPendingRsvps: () =>
     [...usersQueryKeys.userSelf(), "pendingRsvps"] as const, // Key for the pending rsvps of the current user
+  userSelfSessions: () => [...usersQueryKeys.userSelf(), "sessions"] as const, // Sessions for the current user
 };
 
 type OutreachTimeOptions = Omit<z.infer<typeof OutreachTimeSchema>, "cursor">;

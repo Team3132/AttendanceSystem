@@ -1,7 +1,7 @@
 import { and, count, eq, ilike, isNotNull, isNull } from "drizzle-orm";
 import type { z } from "zod";
 import db from "../drizzle/db";
-import { scancodeTable, userTable } from "../drizzle/schema";
+import { scancodeTable, sessionTable, userTable } from "../drizzle/schema";
 import type { UserCreateSchema } from "../schema";
 import type { UserListParamsSchema } from "../schema/UserListParamsSchema";
 import { createServerError } from "../utils/errors";
@@ -202,4 +202,12 @@ export async function createUser(userdata: z.infer<typeof UserCreateSchema>) {
   }
 
   return dbUser;
+}
+
+export async function getUserSessions(userId: string) {
+  const sessions = await db.query.sessionTable.findMany({
+    where: eq(sessionTable.userId, userId),
+  });
+
+  return sessions;
 }
