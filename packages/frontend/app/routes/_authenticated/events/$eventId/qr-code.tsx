@@ -2,7 +2,6 @@ import ScaninCard from "@/features/events/components/ScaninCard";
 import { authQueryOptions } from "@/queries/auth.queries";
 import { eventQueryOptions } from "@/queries/events.queries";
 import {
-  Container,
   IconButton,
   InputAdornment,
   Paper,
@@ -33,15 +32,11 @@ export const Route = createFileRoute("/_authenticated/events/$eventId/qr-code")(
     },
     loader: ({ context: { queryClient }, params: { eventId } }) => {
       queryClient.prefetchQuery(eventQueryOptions.eventSecret(eventId));
-
-      return queryClient.ensureQueryData(
-        eventQueryOptions.eventDetails(eventId),
-      );
     },
-    head: ({ loaderData }) => ({
+    head: () => ({
       meta: [
         {
-          title: `${loaderData.title} - QR Code`,
+          title: "Event - Code",
         },
       ],
     }),
@@ -53,45 +48,38 @@ function Component() {
   const { eventId } = Route.useParams();
 
   return (
-    <Container sx={{ my: 2, flex: 1, overflowY: "auto" }}>
-      <Stack
+    <Stack gap={2}>
+      <Paper
         sx={{
-          py: 2,
+          p: 2,
         }}
-        gap={2}
       >
-        <Paper
-          sx={{
-            p: 2,
-          }}
+        <Suspense
+          fallback={
+            <TextField
+              label="Event Code"
+              disabled
+              value={"Loading..."}
+              fullWidth
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton disabled>
+                        <FaCopy />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                },
+              }}
+            />
+          }
         >
-          <Suspense
-            fallback={
-              <TextField
-                label="Event Code"
-                disabled
-                value={"Loading..."}
-                fullWidth
-                slotProps={{
-                  input: {
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton disabled>
-                          <FaCopy />
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  },
-                }}
-              />
-            }
-          >
-            <EventSecretTextBox />
-          </Suspense>
-        </Paper>
-        <ScaninCard eventId={eventId} />
-      </Stack>
-    </Container>
+          <EventSecretTextBox />
+        </Suspense>
+      </Paper>
+      <ScaninCard eventId={eventId} />
+    </Stack>
   );
 }
 

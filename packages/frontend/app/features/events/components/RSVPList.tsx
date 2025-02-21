@@ -22,8 +22,12 @@ import RSVPListItem from "./RSVPListItem";
 
 export default function RsvpList() {
   return (
-    <Paper>
-      <Stack spacing={2} m={2}>
+    <Paper
+      sx={{
+        p: 2,
+      }}
+    >
+      <Stack spacing={2}>
         <Typography variant="h5">RSVPs</Typography>
         <Suspense fallback={<SkeletonTextInput />}>
           <MyRsvpStatus />
