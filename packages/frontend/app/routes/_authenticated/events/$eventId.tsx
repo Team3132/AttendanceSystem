@@ -110,6 +110,11 @@ const generateCheckinCheckout = (startTime: string, endTime: string) => {
   )} - ${checkout.toLocaleString(DateTime.DATETIME_MED)} (${hours})`;
 };
 
+const CenteredStack = styled(Stack)(({ theme }) => ({
+  textAlign: "center",
+  padding: theme.spacing(2),
+}));
+
 function EventTitle() {
   const { eventId } = Route.useParams();
   const eventData = useSuspenseQuery(eventQueryOptions.eventDetails(eventId));
@@ -121,23 +126,23 @@ function EventTitle() {
   );
 
   return (
-    <Stack p={2} textAlign={"center"}>
+    <CenteredStack>
       <Typography variant="h4">{eventData.data.title}</Typography>
       <Typography variant="subtitle1">{dateText}</Typography>
-    </Stack>
+    </CenteredStack>
   );
 }
 
 function EventTitleSkeleton() {
   return (
-    <Stack p={2} textAlign={"center"}>
+    <CenteredStack>
       <Typography variant="h4">
         <CenteredSkeleton width={300} />
       </Typography>
       <Typography variant="subtitle1">
         <CenteredSkeleton width={230} />
       </Typography>
-    </Stack>
+    </CenteredStack>
   );
 }
 
