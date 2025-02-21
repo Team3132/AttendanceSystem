@@ -1,4 +1,5 @@
 import { defineConfig } from "@tanstack/start/config";
+import { visualizer } from "rollup-plugin-visualizer";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
@@ -18,7 +19,7 @@ export default defineConfig({
     },
   },
   vite: {
-    plugins: [viteTsconfigPaths()],
+    plugins: [viteTsconfigPaths(), visualizer({ emitFile: true })],
     ssr: !import.meta.dev
       ? {
           noExternal: ["@mui/*"],

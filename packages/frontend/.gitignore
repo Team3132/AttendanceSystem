@@ -31,3 +31,4 @@ app.config.timestamp*
 trace
 
 dist-ts
+stats.html
