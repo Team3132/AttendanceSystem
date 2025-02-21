@@ -8,6 +8,9 @@ import { Suspense } from "react";
 export const Route = createFileRoute(
   "/_authenticated/admin_/users/$userId/sessions",
 )({
+  loader: ({ context: { queryClient }, params: { userId } }) => {
+    queryClient.prefetchQuery(usersQueryOptions.userSessions(userId));
+  },
   component: RouteComponent,
 });
 
