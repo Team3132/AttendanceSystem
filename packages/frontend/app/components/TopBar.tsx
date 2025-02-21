@@ -64,7 +64,9 @@ function ProfileMenu() {
           "aria-labelledby": `${menuId}-button`,
         }}
       >
-        <LinkMenuItem to="/profile">Profile</LinkMenuItem>
+        <LinkMenuItem to="/profile">Scancodes</LinkMenuItem>
+        <LinkMenuItem to="/profile/pending">Active Events</LinkMenuItem>
+        <LinkMenuItem to="/profile/sessions">Sessions</LinkMenuItem>
         <Divider />
         <LogoutMenuButton />
       </Menu>
