@@ -1,5 +1,11 @@
 # frontend
 
+## 5.3.1
+
+### Patch Changes
+
+- [`6045936`](https://github.com/Team3132/AttendanceSystem/commit/6045936245d61835eaed54efeb932b98e7fb372c) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Change event page layout
+
 ## 5.3.0
 
 ### Minor Changes
