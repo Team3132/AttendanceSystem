@@ -1,5 +1,11 @@
 # frontend
 
+## 5.3.0
+
+### Minor Changes
+
+- [`8f97bfa`](https://github.com/Team3132/AttendanceSystem/commit/8f97bfa69627565053ca0cab09a2a39de817f4e9) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add sessions tab
+
 ## 5.2.39
 
 ### Patch Changes
