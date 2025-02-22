@@ -4,5 +4,5 @@ import { RSVPStatusUpdateSchema } from "./RSVPStatusSchema";
 export const EditRSVPSelfSchema = z.object({
   eventId: z.string(),
   status: RSVPStatusUpdateSchema.optional(),
-  arrivingAt: z.string().datetime().optional(),
+  arrivingAt: z.date().optional(),
 });

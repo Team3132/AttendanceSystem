@@ -49,12 +49,10 @@ export class DelayModal {
     const eventData =
       await this.backendClient.client.getEventDetails.query(eventId);
 
-    const startDateTime = DateTime.fromISO(
-      new Date(eventData.startDate).toISOString(),
-    );
+    const startDateTime = DateTime.fromJSDate(eventData.startDate);
 
     const arrivingAt =
-      startDateTime.plus({ minutes: value.data }).toISO() ?? undefined;
+      startDateTime.plus({ minutes: value.data }).toJSDate() ?? undefined;
 
     await this.backendClient.client.setEventRsvp.mutate({
       eventId,

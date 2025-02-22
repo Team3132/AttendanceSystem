@@ -296,14 +296,14 @@ export async function editUserRsvpStatus(
       userId,
       eventId,
       status,
-      arrivingAt: arrivingAt ? new Date(arrivingAt) : undefined,
+      arrivingAt,
     })
     .onConflictDoUpdate({
       set: {
         userId,
         eventId,
         status,
-        arrivingAt: arrivingAt ? new Date(arrivingAt) : undefined,
+        arrivingAt,
       },
       target: [rsvpTable.eventId, rsvpTable.userId],
     })
