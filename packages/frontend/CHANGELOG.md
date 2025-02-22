@@ -1,5 +1,11 @@
 # frontend
 
+## 5.4.0
+
+### Minor Changes
+
+- [`8edccc5`](https://github.com/Team3132/AttendanceSystem/commit/8edccc5442514a4fe716bc7a0344fbce0972ae60) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Change delay logic to use an absolute arrival and leaving time (future)
+
 ## 5.3.2
 
 ### Patch Changes
