@@ -1,5 +1,11 @@
 # frontend
 
+## 5.5.4
+
+### Patch Changes
+
+- [`2b25ae5`](https://github.com/Team3132/AttendanceSystem/commit/2b25ae5df4e08e7e49ef7cee06ae79cf796268f2) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Copy drizzle
+
 ## 5.5.3
 
 ### Patch Changes
