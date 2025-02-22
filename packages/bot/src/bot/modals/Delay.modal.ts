@@ -38,7 +38,7 @@ export class DelayModal {
       .safeParseAsync(delay);
 
     if (!value.success) {
-      return interaction.reply({
+      return interaction.followUp({
         content: "Please enter a valid number in minutes (no decimals)",
         ephemeral: true,
       });
