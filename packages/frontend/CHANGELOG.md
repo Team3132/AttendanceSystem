@@ -1,5 +1,11 @@
 # frontend
 
+## 5.5.3
+
+### Patch Changes
+
+- [`d1eb934`](https://github.com/Team3132/AttendanceSystem/commit/d1eb934103e95242314aeabe18067f27c1d46761) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Docker deploy streamline
+
 ## 5.5.2
 
 ### Patch Changes
