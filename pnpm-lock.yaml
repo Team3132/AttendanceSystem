@@ -133,8 +133,8 @@ importers:
         specifier: 5.1.1
         version: 5.1.1
       '@hookform/resolvers':
-        specifier: 4.1.0
-        version: 4.1.0(react-hook-form@7.54.2(react@19.0.0))
+        specifier: 4.1.1
+        version: 4.1.1(react-hook-form@7.54.2(react@19.0.0))
       '@keyv/postgres':
         specifier: 2.1.1
         version: 2.1.1
@@ -1356,8 +1356,8 @@ packages:
   '@fontsource/roboto@5.1.1':
     resolution: {integrity: sha512-XwVVXtERDQIM7HPUIbyDe0FP4SRovpjF7zMI8M7pbqFp3ahLJsJTd18h+E6pkar6UbV3btbwkKjYARr5M+SQow==}
 
-  '@hookform/resolvers@4.1.0':
-    resolution: {integrity: sha512-fX/uHKb+OOCpACLc6enuTQsf0ZpRrKbeBBPETg5PCPLCIYV6osP2Bw6ezuclM61lH+wBF9eXcuC0+BFh9XOEnQ==}
+  '@hookform/resolvers@4.1.1':
+    resolution: {integrity: sha512-S9YN1RgNWG+klUz5uQaV6rjE4pr6Py2tamj7ekshzLcMyg+/Pal1KZAYgGszV0+doiy41dUiQgXL3uRS9stndQ==}
     peerDependencies:
       react-hook-form: ^7.0.0
 
@@ -6531,7 +6531,7 @@ snapshots:
 
   '@fontsource/roboto@5.1.1': {}
 
-  '@hookform/resolvers@4.1.0(react-hook-form@7.54.2(react@19.0.0))':
+  '@hookform/resolvers@4.1.1(react-hook-form@7.54.2(react@19.0.0))':
     dependencies:
       caniuse-lite: 1.0.30001700
       react-hook-form: 7.54.2(react@19.0.0)
