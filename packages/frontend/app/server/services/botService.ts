@@ -169,7 +169,7 @@ export async function generateMessage(data: MessageParams) {
 
         const delay =
           arrivingAt?.isValid && eventStart
-            ? eventStart.diff(arrivingAt, "minutes").rescale().toHuman()
+            ? arrivingAt.diff(eventStart, "minutes").rescale().toHuman()
             : undefined;
 
         return `${rawRsvp.user.username} - ${statusToEmoji(rawRsvp.status, delay)}`;
@@ -195,7 +195,7 @@ export async function generateMessage(data: MessageParams) {
 
         const delay =
           arrivingAt?.isValid && eventStart
-            ? eventStart.diff(arrivingAt, "minutes").rescale().toHuman()
+            ? arrivingAt.diff(eventStart, "minutes").rescale().toHuman()
             : undefined;
 
         return `${rawRsvp.user.username} - ${statusToEmoji(rawRsvp.status, delay)}`;
