@@ -48,10 +48,10 @@ export default function ControlledDateTime<
 
   return (
     <DateTimePicker
-      value={value ? DateTime.fromISO(value) : null}
+      value={value ? DateTime.fromJSDate(value) : null}
       label="Checkin Time"
       onChange={(date) => {
-        onChange(date?.toISO());
+        onChange(date?.toJSDate());
       }}
       slotProps={{
         textField: {
