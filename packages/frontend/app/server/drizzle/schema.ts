@@ -189,7 +189,11 @@ export const eventTable = pgTable(
 
 export const eventTableRelations = relations(eventTable, ({ many, one }) => ({
   rsvps: many(rsvpTable),
-  rule: one(eventParsingRuleTable),
+  rule: one(eventParsingRuleTable, {
+    relationName: "ruleOnEvent",
+    fields: [eventTable.ruleId],
+    references: [eventParsingRuleTable.id],
+  }),
 }));
 
 export const scancodeTable = pgTable("Scancode", {
@@ -276,6 +280,8 @@ export const eventParsingRuleTable = pgTable("EventParsingRule", {
 export const eventParsingRuleTableRelations = relations(
   eventParsingRuleTable,
   ({ many }) => ({
-    events: many(eventTable),
+    events: many(eventTable, {
+      relationName: "ruleOnEvent",
+    }),
   }),
 );
