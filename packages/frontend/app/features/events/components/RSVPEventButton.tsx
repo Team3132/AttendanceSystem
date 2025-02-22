@@ -1,5 +1,4 @@
 import { eventQueryOptions } from "@/queries/events.queries";
-import { parseDate } from "@/utils/date";
 import { IconButton } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
@@ -29,8 +28,8 @@ export default function RSVPEventButton(props: RSVPEventButtonProps) {
       data: {
         eventId: eventId,
         userId: userId,
-        checkinTime: parseDate(eventDetails.startDate),
-        checkoutTime: parseDate(eventDetails.endDate),
+        checkinTime: eventDetails.startDate,
+        checkoutTime: eventDetails.endDate,
       },
     });
   }, [addUserEventRsvpMutation, queryClient, eventId, userId]);

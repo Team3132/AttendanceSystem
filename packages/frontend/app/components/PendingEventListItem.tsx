@@ -23,7 +23,7 @@ export default function PendingEventListItem(props: PendingEventListItemProps) {
         primary={rsvp.event.title}
         secondary={`Checked In: ${
           rsvp.checkinTime
-            ? DateTime.fromMillis(Date.parse(rsvp.checkinTime)).toLocaleString(
+            ? DateTime.fromJSDate(rsvp.checkinTime).toLocaleString(
                 DateTime.DATETIME_MED,
               )
             : "Unknown"

@@ -1,4 +1,3 @@
-import { parseDateTime } from "@/utils/date";
 import {
   ActionRowBuilder,
   ButtonBuilder,
@@ -122,18 +121,12 @@ export async function generateMessage(data: MessageParams) {
       },
       {
         name: "Start Time",
-        value: time(
-          DateTime.fromMillis(Date.parse(eventData.startDate)).toJSDate(),
-          "F",
-        ),
+        value: time(eventData.startDate, "F"),
         inline: true,
       },
       {
         name: "End Time",
-        value: time(
-          DateTime.fromMillis(Date.parse(eventData.endDate)).toJSDate(),
-          "F",
-        ),
+        value: time(eventData.endDate, "F"),
         inline: true,
       },
     )
@@ -165,7 +158,7 @@ export async function generateMessage(data: MessageParams) {
 
   const embeds: Array<EmbedBuilder> = [meetingInfo];
 
-  const eventStart = parseDateTime(eventData.startDate);
+  const eventStart = DateTime.fromJSDate(eventData.startDate);
 
   if (mentorRSVPs.length) {
     const content = mentorRSVPs

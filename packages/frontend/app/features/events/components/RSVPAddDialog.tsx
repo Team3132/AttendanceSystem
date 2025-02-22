@@ -7,7 +7,6 @@ import { usersQueryOptions } from "@/queries/users.queries";
 import { Route } from "@/routes/_authenticated/events/$eventId/index";
 import { RSVPStatusUpdateSchema } from "@/server";
 import { isServerError } from "@/server/utils/errors";
-import { parseDate } from "@/utils/date";
 import {
   Button,
   Dialog,
@@ -19,7 +18,6 @@ import {
 } from "@mui/material";
 import { keepPreviousData, useQueryClient } from "@tanstack/react-query";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { DateTime } from "luxon";
 import { useCallback, useMemo } from "react";
 import type {
   FieldPath,
@@ -44,8 +42,8 @@ const UserOptionSchema = z.object({
 
 const AddUserRsvpSchema = z.object({
   userOption: UserOptionSchema.nullable().default(null),
-  checkinTime: z.string().nullable().optional(),
-  checkoutTime: z.string().nullable().optional(),
+  checkinTime: z.date().nullable().optional(),
+  checkoutTime: z.date().nullable().optional(),
   status: z.union([RSVPStatusUpdateSchema, z.literal("")]).default(""),
 });
 
@@ -132,10 +130,10 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
       if (existingUserRsvp) {
         const existingValues = getValues();
         if (!existingValues.checkinTime && existingUserRsvp.checkinTime) {
-          setValue("checkinTime", parseDate(existingUserRsvp.checkinTime));
+          setValue("checkinTime", existingUserRsvp.checkinTime);
         }
         if (!existingValues.checkoutTime) {
-          setValue("checkoutTime", parseDate(existingUserRsvp.checkoutTime));
+          setValue("checkoutTime", existingUserRsvp.checkoutTime);
         }
 
         if (!existingValues.status && existingUserRsvp.status !== "ATTENDED") {
@@ -152,13 +150,13 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
         eventQueryOptions.eventDetails(eventId),
       );
 
-      setValue("checkinTime", parseDate(eventDetails?.startDate));
+      setValue("checkinTime", eventDetails.startDate);
     }
-    setValue("checkoutTime", DateTime.now().toISO());
+    setValue("checkoutTime", new Date());
   }, [eventId, getValues, queryClient, setValue]);
 
   const startNowHandler = useCallback(() => {
-    setValue("checkinTime", DateTime.now().toISO());
+    setValue("checkinTime", new Date());
   }, [setValue]);
 
   const eventTimesHandler = useCallback(async () => {
@@ -166,8 +164,8 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
       eventQueryOptions.eventDetails(eventId),
     );
 
-    setValue("checkinTime", parseDate(eventDetails?.startDate));
-    setValue("checkoutTime", parseDate(eventDetails?.endDate));
+    setValue("checkinTime", eventDetails?.startDate);
+    setValue("checkoutTime", eventDetails?.endDate);
   }, [eventId, queryClient, setValue]);
 
   const clearHandler = useCallback(() => {
@@ -206,6 +204,7 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
               label="Checkout Time"
             />
           </Stack>
+
           {/* Time Presets */}
           <Stack direction="row" gap={2} justifyContent={"space-evenly"}>
             {/* Set start and end to event */}

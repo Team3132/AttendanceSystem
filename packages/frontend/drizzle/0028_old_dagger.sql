@@ -1,0 +1,1 @@
+ALTER TABLE "ApiKey" ALTER COLUMN "updatedAt" DROP NOT NULL;

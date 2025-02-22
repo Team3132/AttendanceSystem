@@ -103,17 +103,18 @@ export const rsvpTable = pgTable(
     }),
     createdAt: timestamp("createdAt", {
       precision: 3,
-      mode: "string",
+      mode: "date",
       withTimezone: true,
     })
       .defaultNow()
       .notNull(),
     updatedAt: timestamp("updatedAt", {
       precision: 3,
-      mode: "string",
+      mode: "date",
       withTimezone: true,
     })
       .defaultNow()
+      .$onUpdateFn(() => new Date())
       .notNull(),
     status: rsvpStatus("status"),
     /**
@@ -121,7 +122,7 @@ export const rsvpTable = pgTable(
      */
     checkinTime: timestamp("checkinTime", {
       precision: 3,
-      mode: "string",
+      mode: "date",
       withTimezone: true,
     }),
     /**
@@ -129,7 +130,7 @@ export const rsvpTable = pgTable(
      */
     checkoutTime: timestamp("checkoutTime", {
       precision: 3,
-      mode: "string",
+      mode: "date",
       withTimezone: true,
     }),
   },
@@ -165,12 +166,12 @@ export const eventTable = pgTable(
     title: text("title").notNull(),
     startDate: timestamp("startDate", {
       precision: 3,
-      mode: "string",
+      mode: "date",
       withTimezone: true,
     }).notNull(),
     endDate: timestamp("endDate", {
       precision: 3,
-      mode: "string",
+      mode: "date",
       withTimezone: true,
     }).notNull(),
     allDay: boolean("allDay").default(false).notNull(),
@@ -207,11 +208,11 @@ export const scancodeTable = pgTable("Scancode", {
     .notNull(),
   updatedAt: timestamp("updatedAt", {
     precision: 3,
-    mode: "string",
+    mode: "date",
     withTimezone: true,
   })
     .defaultNow()
-    .notNull(),
+    .$onUpdateFn(() => new Date()),
   userId: text("userId")
     .notNull()
     .references(() => userTable.id, {
@@ -247,8 +248,8 @@ export const apiKeyTable = pgTable("ApiKey", {
     mode: "date",
     withTimezone: true,
   })
-    .notNull()
-    .defaultNow(),
+    .defaultNow()
+    .$onUpdateFn(() => new Date()),
 });
 
 export const apiKeyTableRelations = relations(apiKeyTable, ({ one }) => ({

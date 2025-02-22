@@ -5,8 +5,8 @@ import EventDateText from "./EventDateTypography";
 
 interface UpcomingEventListItemProps {
   event: {
-    startDate: string;
-    endDate: string;
+    startDate: Date;
+    endDate: Date;
     title: string;
   };
 }
@@ -18,8 +18,8 @@ export default function UpcomingEventListItem(
 
   const isCurrentlyHappening = useMemo(
     () =>
-      DateTime.now() > DateTime.fromISO(event.startDate) &&
-      DateTime.now() < DateTime.fromISO(event.endDate),
+      DateTime.now() > DateTime.fromJSDate(event.startDate) &&
+      DateTime.now() < DateTime.fromJSDate(event.endDate),
     [event.startDate, event.endDate],
   );
 
@@ -37,7 +37,7 @@ export default function UpcomingEventListItem(
         variant="body2"
         color={isCurrentlyHappening ? "success" : undefined}
       >
-        {DateTime.fromMillis(Date.parse(event.startDate)).toRelativeCalendar()}
+        {DateTime.fromJSDate(event.startDate).toRelativeCalendar()}
       </Typography>
     </>
   );

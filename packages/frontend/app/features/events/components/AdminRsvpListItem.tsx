@@ -1,5 +1,4 @@
 import type { RSVPUserSchema } from "@/server/schema";
-import { parseDate } from "@/utils/date";
 import {
   ListItem,
   ListItemAvatar,
@@ -19,14 +18,11 @@ interface AdminRSVPListItemProps {
 }
 
 const generateCheckinCheckout = (
-  checkinTime: string | null,
-  checkoutTime: string | null,
+  checkinTime: Date | null,
+  checkoutTime: Date | null,
 ) => {
-  const checkinIso = parseDate(checkinTime);
-  const checkoutIso = parseDate(checkoutTime);
-
-  const checkin = checkinIso ? DateTime.fromISO(checkinIso) : null;
-  const checkout = checkoutIso ? DateTime.fromISO(checkoutIso) : null;
+  const checkin = checkinTime ? DateTime.fromJSDate(checkinTime) : null;
+  const checkout = checkoutTime ? DateTime.fromJSDate(checkoutTime) : null;
   const isSameDay =
     checkin && checkout ? checkin.hasSame(checkout, "day") : false;
 

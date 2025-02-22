@@ -47,18 +47,12 @@ export default function rsvpReminderMessage(
       { name: "All Day", value: event.allDay ? "Yes" : "No", inline: true },
       {
         name: "Start Time",
-        value: time(
-          DateTime.fromMillis(Date.parse(event.startDate)).toJSDate(),
-          "F",
-        ),
+        value: time(event.startDate, "F"),
         inline: true,
       },
       {
         name: "End Time",
-        value: time(
-          DateTime.fromMillis(Date.parse(event.endDate)).toJSDate(),
-          "F",
-        ),
+        value: time(event.endDate, "F"),
         inline: true,
       },
     )

@@ -2,8 +2,8 @@ import { z } from "zod";
 import { eventTable } from "../drizzle/schema";
 
 export const GetEventParamsSchema = z.object({
-  from: z.string().date().optional().describe("The start date of the range"),
-  to: z.string().date().optional().describe("The end date of the range"),
+  from: z.date().optional().describe("The start date of the range"),
+  to: z.date().optional().describe("The end date of the range"),
   limit: z
     .number()
     .min(1)

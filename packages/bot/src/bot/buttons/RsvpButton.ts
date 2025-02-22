@@ -40,8 +40,8 @@ export class RsvpButton {
 
       const rsvpEmbed = new EmbedBuilder()
         .setTitle(
-          `RSVPs for ${rsvpEvent.title} at ${DateTime.fromMillis(
-            Date.parse(rsvpEvent.startDate),
+          `RSVPs for ${rsvpEvent.title} at ${DateTime.fromJSDate(
+            rsvpEvent.startDate,
           ).toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}`,
         )
         .setDescription(description)

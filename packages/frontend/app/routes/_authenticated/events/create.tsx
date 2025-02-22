@@ -44,8 +44,8 @@ function Component() {
     defaultValues: {
       description: "",
       title: "",
-      startDate: DateTime.now().toISODate() ?? undefined,
-      endDate: DateTime.now().toISODate() ?? undefined,
+      startDate: new Date(),
+      endDate: new Date(),
       allDay: false,
       type: "Regular",
     },
@@ -85,7 +85,7 @@ function Component() {
         render={({ field: { onChange, value, ...rest } }) => (
           <DateTimePicker
             label="Start Date"
-            value={DateTime.fromMillis(Date.parse(value ?? ""))}
+            value={DateTime.fromJSDate(value)}
             onChange={(v) => onChange(v?.toISO() ?? "")}
             {...rest}
           />
@@ -97,8 +97,8 @@ function Component() {
         render={({ field: { onChange, value, ...rest } }) => (
           <DateTimePicker
             label="End Date"
-            value={DateTime.fromMillis(Date.parse(value ?? ""))}
-            onChange={(v) => onChange(v?.toISO() ?? "")}
+            value={DateTime.fromJSDate(value)}
+            onChange={(v) => onChange(v?.toJSDate() ?? "")}
             {...rest}
           />
         )}

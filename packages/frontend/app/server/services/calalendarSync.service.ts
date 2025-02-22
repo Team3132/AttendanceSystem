@@ -108,17 +108,19 @@ const googleEventToEvent = (gcalEvent: calendar_v3.Schema$Event) => {
   const allDay = !gcalEvent.start?.dateTime && !gcalEvent.end?.dateTime;
 
   const startDate = gcalEvent.start?.dateTime
-    ? gcalEvent.start.dateTime
+    ? new Date(gcalEvent.start.dateTime)
     : gcalEvent.end?.date
       ? DateTime.fromMillis(Date.parse(gcalEvent.end.date))
           .startOf("day")
-          .toISO()
+          .toJSDate()
       : null; // If the event is an all-day event, set the start date to the start of the day
 
   const endDate = gcalEvent.end?.dateTime
-    ? gcalEvent.end.dateTime
+    ? new Date(gcalEvent.end.dateTime)
     : gcalEvent.end?.date
-      ? DateTime.fromMillis(Date.parse(gcalEvent.end.date)).endOf("day").toISO()
+      ? DateTime.fromMillis(Date.parse(gcalEvent.end.date))
+          .endOf("day")
+          .toJSDate()
       : null; // If the event is an all-day event, set the end date to the end of the day
 
   if (!startDate || !endDate) {

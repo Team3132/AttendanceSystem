@@ -2,8 +2,8 @@ import { DateTime } from "luxon";
 
 interface EventDateTypographyProps {
   event: {
-    startDate: string;
-    endDate: string;
+    startDate: Date;
+    endDate: Date;
   };
 }
 
@@ -15,8 +15,8 @@ interface EventDateTypographyProps {
  */
 export default function EventDateText(props: EventDateTypographyProps) {
   const { event } = props;
-  const startDate = DateTime.fromMillis(Date.parse(event.startDate));
-  const endDate = DateTime.fromMillis(Date.parse(event.endDate));
+  const startDate = DateTime.fromJSDate(event.startDate);
+  const endDate = DateTime.fromJSDate(event.endDate);
 
   if (startDate.hasSame(endDate, "day")) {
     return (

@@ -20,12 +20,12 @@ export default function RSVPListItem({ rsvp }: RSVPListItemProps) {
         primary={rsvp.user.username}
         secondary={
           rsvp.checkinTime && rsvp.checkoutTime
-            ? `Checked out at ${DateTime.fromMillis(
-                Date.parse(rsvp.checkoutTime),
+            ? `Checked out at ${DateTime.fromJSDate(
+                rsvp.checkoutTime,
               ).toLocaleString(DateTime.TIME_SIMPLE)}`
             : rsvp.checkinTime
-              ? `Checked in at ${DateTime.fromMillis(
-                  Date.parse(rsvp.checkinTime),
+              ? `Checked in at ${DateTime.fromJSDate(
+                  rsvp.checkinTime,
                 ).toLocaleString(DateTime.TIME_SIMPLE)}`
               : "No check-in"
         }

@@ -40,7 +40,11 @@ export async function getNextEvents() {
   const nextEvents = await db.query.eventTable.findMany({
     where: (event) =>
       and(
-        between(event.startDate, startNextDay.toISO(), endNextDay.toISO()),
+        between(
+          event.startDate,
+          startNextDay.toJSDate(),
+          endNextDay.toJSDate(),
+        ),
         not(event.isPosted),
       ),
     with: {
@@ -336,8 +340,8 @@ async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
     });
   }
 
-  const eventStartDateTime = DateTime.fromMillis(Date.parse(dbEvent.startDate));
-  const eventEndDateTime = DateTime.fromMillis(Date.parse(dbEvent.endDate));
+  const eventStartDateTime = DateTime.fromJSDate(dbEvent.startDate);
+  const eventEndDateTime = DateTime.fromJSDate(dbEvent.endDate);
 
   const currentRSVP = await db.query.rsvpTable.findFirst({
     where: (rsvp, { and }) =>
@@ -355,7 +359,7 @@ async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
     DateTime.local(),
     eventStartDateTime,
     eventEndDateTime,
-  ).toISO();
+  ).toJSDate();
 
   const [updatedRsvp] = await db
     .insert(rsvpTable)
@@ -364,8 +368,6 @@ async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
       eventId,
       checkinTime: checkinTime,
       status: "ATTENDED",
-      updatedAt: DateTime.local().toISO(),
-      createdAt: DateTime.local().toISO(),
     })
     .onConflictDoUpdate({
       set: {
@@ -373,7 +375,6 @@ async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
         eventId,
         checkinTime: checkinTime,
         status: "ATTENDED",
-        updatedAt: DateTime.local().toISO(),
       },
       target: [rsvpTable.eventId, rsvpTable.userId],
     })
@@ -464,12 +465,8 @@ export async function userCheckout(userId: string, eventId: string) {
     });
   }
 
-  const existingRsvpCheckinTime = DateTime.fromMillis(
-    Date.parse(existingRsvp.checkinTime),
-  );
-  const eventEndDateTime = DateTime.fromMillis(
-    Date.parse(existingEvent.endDate),
-  );
+  const existingRsvpCheckinTime = DateTime.fromJSDate(existingRsvp.checkinTime);
+  const eventEndDateTime = DateTime.fromJSDate(existingEvent.endDate);
 
   const [updatedRsvp] = await db
     .insert(rsvpTable)
@@ -480,9 +477,7 @@ export async function userCheckout(userId: string, eventId: string) {
         DateTime.local(),
         existingRsvpCheckinTime,
         eventEndDateTime,
-      ).toISO(),
-      createdAt: DateTime.local().toISO(),
-      updatedAt: DateTime.local().toISO(),
+      ).toJSDate(),
       status: "ATTENDED",
     })
     .onConflictDoUpdate({
@@ -493,8 +488,7 @@ export async function userCheckout(userId: string, eventId: string) {
           DateTime.local(),
           existingRsvpCheckinTime,
           eventEndDateTime,
-        ).toISO(),
-        updatedAt: DateTime.local().toISO(),
+        ).toJSDate(),
         status: "ATTENDED",
       },
       target: [rsvpTable.eventId, rsvpTable.userId],
@@ -547,7 +541,8 @@ export async function selfCheckin(
 export async function createUserRsvp(
   params: z.infer<typeof CreateUserRsvpSchema>,
 ) {
-  const { userId, eventId, checkinTime, checkoutTime, status } = params;
+  const { userId, eventId, checkinTime, checkoutTime, status, arrivingAt } =
+    params;
 
   if (checkoutTime && !checkinTime) {
     throw createServerError({
@@ -557,7 +552,7 @@ export async function createUserRsvp(
   }
 
   if (checkinTime && checkoutTime) {
-    if (DateTime.fromISO(checkinTime) > DateTime.fromISO(checkoutTime)) {
+    if (DateTime.fromJSDate(checkinTime) > DateTime.fromJSDate(checkoutTime)) {
       throw createServerError({
         code: "BAD_REQUEST",
         message: "Checkin time must be before checkout time",
@@ -570,20 +565,19 @@ export async function createUserRsvp(
     .values({
       userId,
       eventId,
-      createdAt: DateTime.local().toISO(),
-      updatedAt: DateTime.local().toISO(),
       checkinTime,
       checkoutTime,
       status: checkinTime ? "ATTENDED" : status,
+      arrivingAt,
     })
     .onConflictDoUpdate({
       set: {
         userId,
         eventId,
-        updatedAt: DateTime.local().toISO(),
         checkinTime,
         checkoutTime,
         status: checkinTime ? "ATTENDED" : status,
+        arrivingAt,
       },
       target: [rsvpTable.eventId, rsvpTable.userId],
     })
@@ -605,7 +599,7 @@ export async function getAutocompleteEvents(like?: string) {
   const events = await db.query.eventTable.findMany({
     where: (event) => {
       const conditions: Array<SQL<unknown>> = [
-        gte(event.endDate, DateTime.local().toISO()),
+        gte(event.endDate, DateTime.local().toJSDate()),
       ];
 
       if (like) {

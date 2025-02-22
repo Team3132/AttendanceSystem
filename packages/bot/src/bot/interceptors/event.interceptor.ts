@@ -43,10 +43,10 @@ export class EventAutocompleteInterceptor extends AutocompleteInterceptor {
     );
 
     const dateEvent = (event: z.infer<typeof EventSchema>) => ({
-      name: `${event.title} - ${DateTime.fromMillis(
-        Date.parse(event.startDate),
-      ).toLocaleString(DateTime.DATETIME_SHORT)} - ${DateTime.fromMillis(
-        Date.parse(event.endDate),
+      name: `${event.title} - ${DateTime.fromJSDate(
+        event.startDate,
+      ).toLocaleString(DateTime.DATETIME_SHORT)} - ${DateTime.fromJSDate(
+        event.endDate,
       ).toLocaleString(DateTime.DATETIME_SHORT)} `,
       value: event.id,
     });

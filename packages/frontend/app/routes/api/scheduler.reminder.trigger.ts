@@ -54,8 +54,8 @@ export const APIRoute = createAPIFileRoute("/api/scheduler/reminder/trigger")({
             eq(eventTable.ruleId, ruleId),
             between(
               eventTable.startDate,
-              startNextDay.toISO(),
-              endNextDay.toISO(),
+              startNextDay.toJSDate(),
+              endNextDay.toJSDate(),
             ),
             not(eventTable.isPosted),
           ),

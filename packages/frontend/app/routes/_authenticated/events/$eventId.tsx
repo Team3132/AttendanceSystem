@@ -2,7 +2,6 @@ import LinkTabs from "@/components/LinkTabs";
 import type { TabItem } from "@/hooks/useTabIndex";
 import { authQueryOptions } from "@/queries/auth.queries";
 import { eventQueryOptions } from "@/queries/events.queries";
-import { parseDate } from "@/utils/date";
 import { Skeleton, Stack, Typography, styled } from "@mui/material";
 
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -83,14 +82,11 @@ function ProfileTabs() {
   return <LinkTabs scrollButtons="auto" tabs={tabs} centered />;
 }
 
-const generateCheckinCheckout = (startTime: string, endTime: string) => {
-  const checkinIso = parseDate(startTime);
-  const checkoutIso = parseDate(endTime);
+const generateCheckinCheckout = (startTime: Date, endTime: Date) => {
+  const checkin = DateTime.fromJSDate(startTime);
+  const checkout = DateTime.fromJSDate(endTime);
 
-  const checkin = checkinIso ? DateTime.fromISO(checkinIso) : null;
-  const checkout = checkoutIso ? DateTime.fromISO(checkoutIso) : null;
-
-  if (!checkin || !checkout) return "Missing Dates";
+  if (!checkin.isValid || !checkout.isValid) return "Missing Dates";
 
   const isSameDay =
     checkin && checkout ? checkin.hasSame(checkout, "day") : false;

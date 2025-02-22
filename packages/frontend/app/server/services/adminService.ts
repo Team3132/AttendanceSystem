@@ -333,10 +333,7 @@ const reapplyRules = async () => {
       })
       .from(eventTable)
       .where(
-        and(
-          gte(eventTable.startDate, new Date().toISOString()),
-          not(eventTable.isPosted),
-        ),
+        and(gte(eventTable.startDate, new Date()), not(eventTable.isPosted)),
       );
 
     const filters = await db

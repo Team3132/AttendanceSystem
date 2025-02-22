@@ -34,7 +34,7 @@ export async function getOutreachTime(
     throw new Error("Could not find a valid date for last April 25th");
   }
 
-  const aprilIsoDate = lastApril25.toISODate();
+  const aprilIsoDate = lastApril25.toJSDate();
 
   if (!aprilIsoDate) {
     throw new Error("Could not convert last April 25th to ISO date");

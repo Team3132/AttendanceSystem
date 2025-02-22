@@ -1,9 +1,7 @@
 import { useDisclosure } from "@/hooks/useDisclosure";
 import { eventQueryOptions } from "@/queries/events.queries";
-import { parseDate } from "@/utils/date";
 import { Divider, IconButton, Menu, MenuItem } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
-import { DateTime } from "luxon";
 import { useCallback, useId, useRef } from "react";
 import { MdEdit } from "react-icons/md";
 import useAddUserRsvp from "../hooks/useAddRsvp";
@@ -34,7 +32,7 @@ export default function RSVPActionsButton(props: RSVPActionsButtonProps) {
       data: {
         eventId: eventId,
         userId: userId,
-        checkinTime: DateTime.now().toISO(),
+        checkinTime: new Date(),
       },
     });
 
@@ -54,15 +52,15 @@ export default function RSVPActionsButton(props: RSVPActionsButtonProps) {
     );
 
     const checkinTime = rsvpDetails?.checkinTime
-      ? parseDate(rsvpDetails.checkinTime)
-      : parseDate(eventDetails.startDate);
+      ? rsvpDetails.checkinTime
+      : eventDetails.startDate;
 
     await addUserEventRsvpMutation.mutateAsync({
       data: {
         eventId: eventId,
         userId: userId,
         checkinTime: checkinTime,
-        checkoutTime: DateTime.now().toISO(),
+        checkoutTime: new Date(),
       },
     });
 
@@ -82,8 +80,8 @@ export default function RSVPActionsButton(props: RSVPActionsButtonProps) {
       data: {
         eventId: eventId,
         userId: userId,
-        checkinTime: parseDate(eventDetailsQuery.startDate),
-        checkoutTime: parseDate(eventDetailsQuery.endDate),
+        checkinTime: eventDetailsQuery.startDate,
+        checkoutTime: eventDetailsQuery.endDate,
       },
     });
 

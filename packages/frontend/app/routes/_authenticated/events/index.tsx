@@ -44,10 +44,16 @@ export const Route = createFileRoute("/_authenticated/events/")({
 
   loaderDeps: ({ search }) => search,
 
-  loader: ({ context: { queryClient }, deps }) => {
+  loader: ({ context: { queryClient }, deps: { from, limit, type } }) => {
     queryClient.prefetchQuery(authQueryOptions.status());
 
-    queryClient.prefetchInfiniteQuery(eventQueryOptions.eventList(deps));
+    queryClient.prefetchInfiniteQuery(
+      eventQueryOptions.eventList({
+        from: new Date(from),
+        limit,
+        type,
+      }),
+    );
   },
   head: () => ({
     meta: [
@@ -138,7 +144,7 @@ function EventList() {
   // This doesn't use suspense because we want to show the previous data while fetching new data
   const infiniteEventsQuery = useSuspenseInfiniteQuery({
     ...eventQueryOptions.eventList({
-      from,
+      from: new Date(from),
       limit,
       type,
     }),
