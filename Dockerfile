@@ -11,7 +11,6 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 ARG VERSION
 ENV VITE_PUBLIC_APP_VERSION=$VERSION
 RUN pnpm run --filter frontend build
-RUN pnpm deploy --filter frontend --prod /opt/frontend
 
 FROM base AS build-bot
 COPY . .
@@ -26,7 +25,7 @@ FROM base AS frontend-runner
 ARG VERSION
 ENV VERSION=$VERSION
 ENV NODE_ENV=production
-COPY --from=build-frontend /opt/frontend /app
+COPY --from=build-frontend /app/packages/frontend/.output
 EXPOSE 3000
 CMD [ "pnpm", "start" ]
 

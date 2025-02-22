@@ -7,14 +7,12 @@
 		"dev": "PORT=1420 vinxi dev",
 		"build": "pnpm run buildpkg && vinxi build",
 		"buildpkg": "tsc -b && tsup",
-		"start": "PORT=1420 vinxi start"
+		"start": "PORT=1420 node .output/server/index.mjs"
 	},
 	"files": [
-		".output",
 		"dist",
 		"dist-ts",
-		"drizzle",
-		"vite.config.ts"
+		"drizzle"
 	],
 	"module": "dist/index.js",
 	"types": "dist-ts/app/server/index.d.ts",
