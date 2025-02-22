@@ -1,5 +1,14 @@
 # bot
 
+## 5.5.1
+
+### Patch Changes
+
+- [`52744b1`](https://github.com/Team3132/AttendanceSystem/commit/52744b12c95424b48e4270f5bb4456a73720e306) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Follow up late reply
+
+- Updated dependencies []:
+  - frontend@5.5.1
+
 ## 5.5.0
 
 ### Minor Changes
