@@ -27,6 +27,7 @@ ENV VERSION=$VERSION
 ENV NODE_ENV=production
 COPY --from=build-frontend /app/packages/frontend/.output /app/.output
 COPY --from=build-frontend /app/packages/frontend/package.json /app/package.json
+COPY --from=build-frontend /app/packages/frontend/drizzle /app/drizzle
 EXPOSE 3000
 CMD [ "pnpm", "start" ]
 
