@@ -1,5 +1,11 @@
 # frontend
 
+## 5.5.2
+
+### Patch Changes
+
+- [`2f8afb8`](https://github.com/Team3132/AttendanceSystem/commit/2f8afb863e8ad3695887b5bd416c746ae15fdaee) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Rescale instead of normalise
+
 ## 5.5.1
 
 ## 5.5.0
