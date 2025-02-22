@@ -17,6 +17,9 @@ export default defineConfig({
         },
       },
     },
+    analyze: {
+      emitFile: true,
+    },
   },
   vite: {
     plugins: [viteTsconfigPaths(), visualizer({ emitFile: true })],
