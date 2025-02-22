@@ -5,7 +5,33 @@ import viteTsconfigPaths from "vite-tsconfig-paths";
 export default defineConfig({
   react: {
     babel: {
-      plugins: ["@emotion/babel-plugin"],
+      plugins: [
+        [
+          "@emotion/babel-plugin",
+          {
+            importMap: {
+              "@mui/system": {
+                styled: {
+                  canonicalImport: ["@emotion/styled", "default"],
+                  styledBaseImport: ["@mui/system", "styled"],
+                },
+              },
+              "@mui/material": {
+                styled: {
+                  canonicalImport: ["@emotion/styled", "default"],
+                  styledBaseImport: ["@mui/material", "styled"],
+                },
+              },
+              "@mui/material/styles": {
+                styled: {
+                  canonicalImport: ["@emotion/styled", "default"],
+                  styledBaseImport: ["@mui/material/styles", "styled"],
+                },
+              },
+            },
+          },
+        ],
+      ],
     },
   },
   server: {

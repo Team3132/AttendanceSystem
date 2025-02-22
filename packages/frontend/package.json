@@ -81,7 +81,6 @@
 		"@types/react": "19.0.10",
 		"@types/react-dom": "19.0.4",
 		"@vitejs/plugin-react": "4.3.4",
-		"babel-plugin-import": "1.13.8",
 		"drizzle-kit": "0.30.4",
 		"rollup-plugin-visualizer": "5.14.0",
 		"tsup": "8.3.6",
