@@ -51,8 +51,8 @@ importers:
         specifier: 9.1.0
         version: 9.1.0
       '@trpc/client':
-        specifier: 11.0.0-rc.800
-        version: 11.0.0-rc.800(@trpc/server@11.0.0-rc.800(typescript@5.7.3))(typescript@5.7.3)
+        specifier: 11.0.0-rc.802
+        version: 11.0.0-rc.802(@trpc/server@11.0.0-rc.802(typescript@5.7.3))(typescript@5.7.3)
       class-transformer:
         specifier: 0.5.1
         version: 0.5.1
@@ -187,8 +187,8 @@ importers:
         specifier: 1.109.2
         version: 1.109.2(@tanstack/react-router@1.109.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(zod@3.24.2)
       '@trpc/server':
-        specifier: 11.0.0-rc.800
-        version: 11.0.0-rc.800(typescript@5.7.3)
+        specifier: 11.0.0-rc.802
+        version: 11.0.0-rc.802(typescript@5.7.3)
       arctic:
         specifier: 1.9.2
         version: 1.9.2
@@ -263,8 +263,8 @@ importers:
         specifier: 1.109.2
         version: 1.109.2(@tanstack/react-router@1.109.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(vite@6.1.1(@types/node@22.13.5)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.2))
       '@trpc/client':
-        specifier: 11.0.0-rc.800
-        version: 11.0.0-rc.800(@trpc/server@11.0.0-rc.800(typescript@5.7.3))(typescript@5.7.3)
+        specifier: 11.0.0-rc.802
+        version: 11.0.0-rc.802(@trpc/server@11.0.0-rc.802(typescript@5.7.3))(typescript@5.7.3)
       '@types/luxon':
         specifier: 3.4.2
         version: 3.4.2
@@ -2725,14 +2725,14 @@ packages:
       '@tanstack/react-router': '>=1.43.2'
       zod: ^3.23.8
 
-  '@trpc/client@11.0.0-rc.800':
-    resolution: {integrity: sha512-ER9W2zdEnvSI9jeXeQ5Rz8OnDN5wkscAITWpsLUPCqaVCpL5yT/zCb8gayshSTx9kuyk7iWn43nD41cTYjKQ5Q==}
+  '@trpc/client@11.0.0-rc.802':
+    resolution: {integrity: sha512-oToR54iL/sxmu2RwVxh/dJfY6CrZ8IeSEpsu5KjtlwQHM7/w5awSTF4+odjhgB0QnVFgM0vOjw8MNbExKCKSFw==}
     peerDependencies:
-      '@trpc/server': 11.0.0-rc.800+892471d1b
+      '@trpc/server': 11.0.0-rc.802+1eccc1171
       typescript: '>=5.7.2'
 
-  '@trpc/server@11.0.0-rc.800':
-    resolution: {integrity: sha512-41bKqujk4QAS2czpTPMXDBy8ZD9kInu9qDfya0KMs4SkEs2RNW4c0FLBJKMOIXz+z0dVkrmspW5q+ZTPGZV59g==}
+  '@trpc/server@11.0.0-rc.802':
+    resolution: {integrity: sha512-CkV2qTnmSOy84Qtev3B4WA6oLft7q2pg8X/IewssaD4LQevBrmTdTPDfvGeT1wdCa/NAT4ZIMt7AgbbWfAs/9Q==}
     peerDependencies:
       typescript: '>=5.7.2'
 
@@ -8387,12 +8387,12 @@ snapshots:
       '@tanstack/react-router': 1.109.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       zod: 3.24.2
 
-  '@trpc/client@11.0.0-rc.800(@trpc/server@11.0.0-rc.800(typescript@5.7.3))(typescript@5.7.3)':
+  '@trpc/client@11.0.0-rc.802(@trpc/server@11.0.0-rc.802(typescript@5.7.3))(typescript@5.7.3)':
     dependencies:
-      '@trpc/server': 11.0.0-rc.800(typescript@5.7.3)
+      '@trpc/server': 11.0.0-rc.802(typescript@5.7.3)
       typescript: 5.7.3
 
-  '@trpc/server@11.0.0-rc.800(typescript@5.7.3)':
+  '@trpc/server@11.0.0-rc.802(typescript@5.7.3)':
     dependencies:
       typescript: 5.7.3
 
