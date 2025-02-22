@@ -25,7 +25,8 @@ FROM base AS frontend-runner
 ARG VERSION
 ENV VERSION=$VERSION
 ENV NODE_ENV=production
-COPY --from=build-frontend /app/packages/frontend/.output
+COPY --from=build-frontend /app/.output
+COPY --from=build-frontend /app/packages/frontend/package.json
 EXPOSE 3000
 CMD [ "pnpm", "start" ]
 
