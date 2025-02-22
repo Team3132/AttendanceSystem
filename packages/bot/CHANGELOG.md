@@ -1,5 +1,16 @@
 # bot
 
+## 5.5.0
+
+### Minor Changes
+
+- [`31da05d`](https://github.com/Team3132/AttendanceSystem/commit/31da05df37e8b935ed7d2ee4baa485db156ef679) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Change to use JS date internally (may be breaking)
+
+### Patch Changes
+
+- Updated dependencies [[`31da05d`](https://github.com/Team3132/AttendanceSystem/commit/31da05df37e8b935ed7d2ee4baa485db156ef679)]:
+  - frontend@5.5.0
+
 ## 5.4.0
 
 ### Patch Changes
