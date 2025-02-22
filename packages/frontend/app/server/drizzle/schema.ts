@@ -53,9 +53,6 @@ export const userTable = pgTable("User", {
     withTimezone: true,
   }),
   defaultStatus: rsvpStatus("defaultStatus"),
-  additionalOutreachHours: integer("additionalOutreachHours")
-    .default(0)
-    .notNull(),
 });
 
 export const sessionTable = pgTable("session", {
@@ -94,7 +91,16 @@ export const rsvpTable = pgTable(
         onDelete: "cascade",
         onUpdate: "cascade",
       }),
-    delay: integer("delay"),
+    arrivingAt: timestamp("arrivingAt", {
+      precision: 3,
+      mode: "date",
+      withTimezone: true,
+    }),
+    leavingAt: timestamp("leavingAt", {
+      precision: 3,
+      mode: "date",
+      withTimezone: true,
+    }),
     createdAt: timestamp("createdAt", {
       precision: 3,
       mode: "string",

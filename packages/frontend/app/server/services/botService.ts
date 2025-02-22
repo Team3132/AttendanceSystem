@@ -1,3 +1,4 @@
+import { parseDateTime } from "@/utils/date";
 import {
   ActionRowBuilder,
   ButtonBuilder,
@@ -27,7 +28,7 @@ interface MessageParams {
 
 const statusToEmoji = (
   status: z.infer<typeof RSVPUserSchema>["status"],
-  delay?: number,
+  delay?: string,
 ) => {
   switch (status) {
     case "YES":
@@ -37,7 +38,7 @@ const statusToEmoji = (
     case "MAYBE":
       return ":grey_question:";
     case "LATE":
-      return delay ? `:clock3: - ${delay}m late` : ":clock3:";
+      return delay ? `:clock3: - ${delay} late` : ":clock3:";
     case "ATTENDED":
       return ":ok:";
     default:
@@ -164,12 +165,22 @@ export async function generateMessage(data: MessageParams) {
 
   const embeds: Array<EmbedBuilder> = [meetingInfo];
 
+  const eventStart = parseDateTime(eventData.startDate);
+
   if (mentorRSVPs.length) {
     const content = mentorRSVPs
-      .map(
-        (rawRsvp) =>
-          `${rawRsvp.user.username} - ${statusToEmoji(rawRsvp.status, rawRsvp.delay ?? undefined)}`,
-      )
+      .map((rawRsvp) => {
+        const arrivingAt = rawRsvp.arrivingAt
+          ? DateTime.fromJSDate(rawRsvp.arrivingAt)
+          : null;
+
+        const delay =
+          arrivingAt?.isValid && eventStart
+            ? eventStart.diff(arrivingAt).normalize().toHuman()
+            : undefined;
+
+        return `${rawRsvp.user.username} - ${statusToEmoji(rawRsvp.status, delay)}`;
+      })
       .join("\n");
     const count = mentorRSVPs.filter(
       (rsvp) => rsvp.status === "YES" || rsvp.status === "LATE",
@@ -184,10 +195,18 @@ export async function generateMessage(data: MessageParams) {
 
   if (otherRSVPs.length) {
     const content = otherRSVPs
-      .map(
-        (rawRsvp) =>
-          `${rawRsvp.user.username} - ${statusToEmoji(rawRsvp.status)}`,
-      )
+      .map((rawRsvp) => {
+        const arrivingAt = rawRsvp.arrivingAt
+          ? DateTime.fromJSDate(rawRsvp.arrivingAt)
+          : null;
+
+        const delay =
+          arrivingAt?.isValid && eventStart
+            ? eventStart.diff(arrivingAt).normalize().toHuman()
+            : undefined;
+
+        return `${rawRsvp.user.username} - ${statusToEmoji(rawRsvp.status, delay)}`;
+      })
       .join("\n");
     const count = otherRSVPs.filter(
       (rsvp) => rsvp.status === "YES" || rsvp.status === "LATE",

@@ -7,3 +7,10 @@ export function parseDate<T extends string | null>(date: T) {
   }
   return DateTime.fromMillis(Date.parse(date)).toISO();
 }
+
+export function parseDateTime<T extends string | null>(date: T) {
+  if (!date) {
+    return null;
+  }
+  return DateTime.fromMillis(Date.parse(date));
+}

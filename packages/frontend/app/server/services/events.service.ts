@@ -273,7 +273,7 @@ export async function editUserRsvpStatus(
   userId: string,
   params: z.infer<typeof EditRSVPSelfSchema>,
 ) {
-  const { eventId, status, delay } = params;
+  const { eventId, status, arrivingAt } = params;
   const existingRsvp = await db.query.rsvpTable.findFirst({
     where: (rsvp, { and }) =>
       and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
@@ -292,14 +292,14 @@ export async function editUserRsvpStatus(
       userId,
       eventId,
       status,
-      delay,
+      arrivingAt: arrivingAt ? new Date(arrivingAt) : undefined,
     })
     .onConflictDoUpdate({
       set: {
         userId,
         eventId,
         status,
-        delay,
+        arrivingAt: arrivingAt ? new Date(arrivingAt) : undefined,
       },
       target: [rsvpTable.eventId, rsvpTable.userId],
     })

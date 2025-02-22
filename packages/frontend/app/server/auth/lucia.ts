@@ -23,7 +23,6 @@ export const lucia = new Lucia(adapter, {
     updatedAt: attributes.updatedAt,
     roles: attributes.roles,
     defaultStatus: attributes.defaultStatus,
-    additionalOutreachHours: attributes.additionalOutreachHours,
   }),
 });
 

@@ -7,6 +7,7 @@ import {
   TextInputBuilder,
 } from "discord.js";
 import { TextInputStyle } from "discord.js";
+import { DateTime } from "luxon";
 import { Ctx, Modal, type ModalContext, ModalParam } from "necord";
 import { z } from "zod";
 import {
@@ -45,11 +46,21 @@ export class DelayModal {
 
     const userId = interaction.user.id;
 
+    const eventData =
+      await this.backendClient.client.getEventDetails.query(eventId);
+
+    const startDateTime = DateTime.fromISO(
+      new Date(eventData.startDate).toISOString(),
+    );
+
+    const arrivingAt =
+      startDateTime.plus({ minutes: value.data }).toISO() ?? undefined;
+
     await this.backendClient.client.setEventRsvp.mutate({
       eventId,
       userId,
       status: "LATE",
-      delay: value.data,
+      arrivingAt,
     });
 
     const reminderMessage =
