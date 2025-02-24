@@ -30,7 +30,7 @@
 		"@emotion/react": "11.14.0",
 		"@emotion/styled": "11.14.0",
 		"@fontsource/roboto": "5.1.1",
-		"@hookform/resolvers": "4.1.1",
+		"@hookform/resolvers": "4.1.2",
 		"@keyv/postgres": "2.1.1",
 		"@lucia-auth/adapter-drizzle": "1.1.0",
 		"@mui/icons-material": "6.4.5",
