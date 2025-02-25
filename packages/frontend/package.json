@@ -43,7 +43,7 @@
 		"@tanstack/react-router": "1.111.7",
 		"@tanstack/react-router-with-query": "1.111.7",
 		"@tanstack/react-table": "8.21.2",
-		"@tanstack/react-virtual": "3.13.0",
+		"@tanstack/react-virtual": "3.13.2",
 		"@tanstack/router-devtools": "1.111.7",
 		"@tanstack/start": "1.111.7",
 		"@tanstack/table-core": "8.21.2",
