@@ -1,3 +1,4 @@
+import { trytm } from "@/utils/trytm";
 import {
   type SQL,
   and,
@@ -37,30 +38,39 @@ export async function getNextEvents() {
 
   const endNextDay = startNextDay.endOf("day");
 
-  const nextEvents = await db.query.eventTable.findMany({
-    where: (event) =>
-      and(
-        between(
-          event.startDate,
-          startNextDay.toJSDate(),
-          endNextDay.toJSDate(),
+  const [nextEvents, nextEventsError] = await trytm(
+    db.query.eventTable.findMany({
+      where: (event) =>
+        and(
+          between(
+            event.startDate,
+            startNextDay.toJSDate(),
+            endNextDay.toJSDate(),
+          ),
+          not(event.isPosted),
         ),
-        not(event.isPosted),
-      ),
-    with: {
-      rsvps: {
-        orderBy: [rsvpTable.status, rsvpTable.updatedAt],
-        with: {
-          user: {
-            columns: {
-              username: true,
-              roles: true,
+      with: {
+        rsvps: {
+          orderBy: [rsvpTable.status, rsvpTable.updatedAt],
+          with: {
+            user: {
+              columns: {
+                username: true,
+                roles: true,
+              },
             },
           },
         },
       },
-    },
-  });
+    }),
+  );
+
+  if (nextEventsError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to get next events",
+    });
+  }
 
   const nextEventsWithoutSecret = nextEvents.map((event) => {
     const { secret, ...rest } = event;
@@ -107,12 +117,23 @@ export async function getEvents(input: z.infer<typeof GetEventParamsSchema>) {
 
   const andConditions = and(...conditions);
 
-  const [totalEntry] = await db
-    .select({
-      total: count(),
-    })
-    .from(eventTable)
-    .where(andConditions);
+  const [totalEntriesData, totalEntriesError] = await trytm(
+    db
+      .select({
+        total: count(),
+      })
+      .from(eventTable)
+      .where(andConditions),
+  );
+
+  if (totalEntriesError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to get total events",
+    });
+  }
+
+  const [totalEntry] = totalEntriesData;
 
   if (!totalEntry) {
     throw new ServerError({
@@ -121,18 +142,27 @@ export async function getEvents(input: z.infer<typeof GetEventParamsSchema>) {
     });
   }
 
-  const events = await db.query.eventTable.findMany({
-    where: andConditions,
-    limit,
-    offset,
-    orderBy: (event) => [asc(event.startDate)],
-    columns: {
-      id: true,
-      title: true,
-      startDate: true,
-      endDate: true,
-    },
-  });
+  const [events, eventFetchError] = await trytm(
+    db.query.eventTable.findMany({
+      where: andConditions,
+      limit,
+      offset,
+      orderBy: (event) => [asc(event.startDate)],
+      columns: {
+        id: true,
+        title: true,
+        startDate: true,
+        endDate: true,
+      },
+    }),
+  );
+
+  if (eventFetchError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to get events",
+    });
+  }
 
   const { total } = totalEntry;
 
@@ -155,9 +185,18 @@ export async function getEvents(input: z.infer<typeof GetEventParamsSchema>) {
 export async function getEvent(
   id: string,
 ): Promise<z.infer<typeof EventSchema>> {
-  const dbEvent = await db.query.eventTable.findFirst({
-    where: (event) => eq(event.id, id),
-  });
+  const [dbEvent, dbError] = await trytm(
+    db.query.eventTable.findFirst({
+      where: (event) => eq(event.id, id),
+    }),
+  );
+
+  if (dbError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to fetch event",
+    });
+  }
 
   if (!dbEvent) {
     throw new ServerError({
@@ -179,9 +218,18 @@ export async function getEvent(
 export async function getEventSecret(id: string): Promise<{
   secret: string;
 }> {
-  const dbEvent = await db.query.eventTable.findFirst({
-    where: (event) => eq(event.id, id),
-  });
+  const [dbEvent, dbError] = await trytm(
+    db.query.eventTable.findFirst({
+      where: (event) => eq(event.id, id),
+    }),
+  );
+
+  if (dbError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to fetch event",
+    });
+  }
 
   if (!dbEvent) {
     throw new ServerError({
@@ -202,10 +250,19 @@ export async function getEventSecret(id: string): Promise<{
  * @returns The RSVP of the user for the event
  */
 export async function getEventRsvp(eventId: string, userId: string) {
-  const eventRsvp = await db.query.rsvpTable.findFirst({
-    where: (rsvp, { and }) =>
-      and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
-  });
+  const [eventRsvp, eventError] = await trytm(
+    db.query.rsvpTable.findFirst({
+      where: (rsvp, { and }) =>
+        and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
+    }),
+  );
+
+  if (eventError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to fetch event rsvp",
+    });
+  }
 
   return eventRsvp ?? null;
 }
@@ -217,20 +274,21 @@ export async function getEventRsvp(eventId: string, userId: string) {
 export async function getEventRsvps(
   eventId: string,
 ): Promise<Array<z.infer<typeof RSVPUserSchema>>> {
-  // const eventRsvps = await db.query.rsvpTable.findMany({
-  //   where: (rsvp, { and }) => and(eq(rsvp.eventId, eventId)),
-  //   orderBy: (rsvp) => [asc(rsvp.updatedAt)],
-  //   with: {
-  //     user: true,
-  //   },
-  // });
+  const [eventRsvps, eventRsvpFetchError] = await trytm(
+    db
+      .select()
+      .from(rsvpTable)
+      .innerJoin(userTable, eq(rsvpTable.userId, userTable.id))
+      .where(eq(rsvpTable.eventId, eventId))
+      .orderBy(asc(userTable.username)),
+  );
 
-  const eventRsvps = await db
-    .select()
-    .from(rsvpTable)
-    .innerJoin(userTable, eq(rsvpTable.userId, userTable.id))
-    .where(eq(rsvpTable.eventId, eventId))
-    .orderBy(asc(userTable.username));
+  if (eventRsvpFetchError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to fetch event rsvps",
+    });
+  }
 
   const formatted = eventRsvps.map(({ User, RSVP }) => {
     return {
@@ -248,13 +306,24 @@ export async function getEventRsvps(
  * @returns The created event
  */
 export async function createEvent(params: z.infer<typeof CreateEventSchema>) {
-  const [createdEvent] = await db
-    .insert(eventTable)
-    .values({
-      ...params,
-      secret: randomStr(8),
-    })
-    .returning();
+  const [createdEvents, dbInserterror] = await trytm(
+    db
+      .insert(eventTable)
+      .values({
+        ...params,
+        secret: randomStr(8),
+      })
+      .returning(),
+  );
+
+  if (dbInserterror) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to create event",
+    });
+  }
+
+  const [createdEvent] = createdEvents;
 
   if (!createdEvent) {
     throw new ServerError({
