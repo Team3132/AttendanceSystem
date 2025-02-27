@@ -41,10 +41,21 @@ export async function getUser(userId: string) {
  * @param userId The user ID to get scancodes for
  * @returns The scancodes for the user
  */
-export function getUserScancodes(userId: string) {
-  return db.query.scancodeTable.findMany({
-    where: (scancode) => eq(scancode.userId, userId),
-  });
+export async function getUserScancodes(userId: string) {
+  const [scancodes, dberror] = await trytm(
+    db.query.scancodeTable.findMany({
+      where: (scancode) => eq(scancode.userId, userId),
+    }),
+  );
+
+  if (dberror) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error fetching scancodes",
+    });
+  }
+
+  return scancodes;
 }
 
 /**
@@ -53,31 +64,40 @@ export function getUserScancodes(userId: string) {
  * @returns The pending RSVPs for the user
  */
 export async function getPendingUserRsvps(userId: string) {
-  const rsvps = await db.query.rsvpTable.findMany({
-    where: (rsvp) =>
-      and(
-        eq(rsvp.userId, userId),
-        isNotNull(rsvp.checkinTime),
-        isNull(rsvp.checkoutTime),
-      ),
-    with: {
-      event: {
-        columns: {
-          allDay: true,
-          description: true,
-          endDate: true,
-          id: true,
-          isSyncedEvent: true,
-          secret: false,
-          startDate: true,
-          title: true,
-          type: true,
-          isPosted: true,
-          ruleId: true,
+  const [rsvps, dbError] = await trytm(
+    db.query.rsvpTable.findMany({
+      where: (rsvp) =>
+        and(
+          eq(rsvp.userId, userId),
+          isNotNull(rsvp.checkinTime),
+          isNull(rsvp.checkoutTime),
+        ),
+      with: {
+        event: {
+          columns: {
+            allDay: true,
+            description: true,
+            endDate: true,
+            id: true,
+            isSyncedEvent: true,
+            secret: false,
+            startDate: true,
+            title: true,
+            type: true,
+            isPosted: true,
+            ruleId: true,
+          },
         },
       },
-    },
-  });
+    }),
+  );
+
+  if (dbError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error fetching rsvps",
+    });
+  }
 
   return rsvps;
 }
@@ -91,12 +111,23 @@ export async function getUserList(
 
   let total = 0;
 
-  const [totalData] = await db
-    .select({
-      total: count(),
-    })
-    .from(userTable)
-    .where(ilike(userTable.username, `%${params.search}%`));
+  const [totalsData, totalDberror] = await trytm(
+    db
+      .select({
+        total: count(),
+      })
+      .from(userTable)
+      .where(ilike(userTable.username, `%${params.search}%`)),
+  );
+
+  if (totalDberror) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error fetching total",
+    });
+  }
+
+  const totalData = totalsData[0];
 
   if (totalData) {
     total = totalData.total;
@@ -104,15 +135,24 @@ export async function getUserList(
 
   const nextPage = total > offset + limit ? page + 1 : undefined;
 
-  const users = await db.query.userTable.findMany({
-    where: (user) => ilike(user.username, `%${params.search}%`),
-    limit,
-    offset,
-    columns: {
-      id: true,
-      username: true,
-    },
-  });
+  const [users, userFetchError] = await trytm(
+    db.query.userTable.findMany({
+      where: (user) => ilike(user.username, `%${params.search}%`),
+      limit,
+      offset,
+      columns: {
+        id: true,
+        username: true,
+      },
+    }),
+  );
+
+  if (userFetchError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error fetching users",
+    });
+  }
 
   return {
     items: users,
@@ -123,11 +163,22 @@ export async function getUserList(
 }
 
 export async function createUserScancode(userId: string, scancodeCode: string) {
-  const [dbScancode] = await db
-    .select()
-    .from(scancodeTable)
-    .where(eq(scancodeTable.code, scancodeCode))
-    .limit(1);
+  const [dbScancodes, dbScancodeError] = await trytm(
+    db
+      .select()
+      .from(scancodeTable)
+      .where(eq(scancodeTable.code, scancodeCode))
+      .limit(1),
+  );
+
+  if (dbScancodeError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error fetching scancode",
+    });
+  }
+
+  const dbScancode = dbScancodes[0];
 
   if (dbScancode) {
     throw new ServerError({
@@ -136,13 +187,24 @@ export async function createUserScancode(userId: string, scancodeCode: string) {
     });
   }
 
-  const [createdScancode] = await db
-    .insert(scancodeTable)
-    .values({
-      userId,
-      code: scancodeCode,
-    })
-    .returning();
+  const [createdScancodes, createError] = await trytm(
+    db
+      .insert(scancodeTable)
+      .values({
+        userId,
+        code: scancodeCode,
+      })
+      .returning(),
+  );
+
+  if (createError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error creating scancode",
+    });
+  }
+
+  const createdScancode = createdScancodes[0];
 
   if (!createdScancode) {
     throw new ServerError({
@@ -158,11 +220,24 @@ export async function createUserScancode(userId: string, scancodeCode: string) {
 }
 
 export async function removeScancode(userId: string, code: string) {
-  const [dbScancode] = await db
-    .select()
-    .from(scancodeTable)
-    .where(and(eq(scancodeTable.userId, userId), eq(scancodeTable.code, code)))
-    .limit(1);
+  const [dbScancodes, scancodesError] = await trytm(
+    db
+      .select()
+      .from(scancodeTable)
+      .where(
+        and(eq(scancodeTable.userId, userId), eq(scancodeTable.code, code)),
+      )
+      .limit(1),
+  );
+
+  if (scancodesError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error fetching scancode",
+    });
+  }
+
+  const dbScancode = dbScancodes[0];
 
   if (!dbScancode) {
     throw new ServerError({
@@ -171,10 +246,30 @@ export async function removeScancode(userId: string, code: string) {
     });
   }
 
-  await db
-    .delete(scancodeTable)
-    .where(and(eq(scancodeTable.userId, userId), eq(scancodeTable.code, code)))
-    .returning();
+  const [deletedScancodes, deleteScancodesError] = await trytm(
+    db
+      .delete(scancodeTable)
+      .where(
+        and(eq(scancodeTable.userId, userId), eq(scancodeTable.code, code)),
+      )
+      .returning(),
+  );
+
+  if (deleteScancodesError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error deleting scancode",
+    });
+  }
+
+  const deletedScancode = deletedScancodes[0];
+
+  if (!deletedScancode) {
+    throw new ServerError({
+      code: "BAD_REQUEST",
+      message: "Scancode does not exist",
+    });
+  }
 
   // if (!deletedScancode) {
   //   throw new ServerError({
@@ -188,21 +283,32 @@ export async function removeScancode(userId: string, code: string) {
 }
 
 export async function createUser(userdata: z.infer<typeof UserCreateSchema>) {
-  const [dbUser] = await db
-    .insert(userTable)
-    .values({
-      ...userdata,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    })
-    .onConflictDoUpdate({
-      target: [userTable.id],
-      set: {
+  const [dbUsers, dbUsersError] = await trytm(
+    db
+      .insert(userTable)
+      .values({
         ...userdata,
+        createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-      },
-    })
-    .returning();
+      })
+      .onConflictDoUpdate({
+        target: [userTable.id],
+        set: {
+          ...userdata,
+          updatedAt: new Date().toISOString(),
+        },
+      })
+      .returning(),
+  );
+
+  if (dbUsersError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error creating user",
+    });
+  }
+
+  const [dbUser] = dbUsers;
 
   if (!dbUser) {
     throw new ServerError({
@@ -215,9 +321,18 @@ export async function createUser(userdata: z.infer<typeof UserCreateSchema>) {
 }
 
 export async function getUserSessions(userId: string) {
-  const sessions = await db.query.sessionTable.findMany({
-    where: eq(sessionTable.userId, userId),
-  });
+  const [sessions, sessionsError] = await trytm(
+    db.query.sessionTable.findMany({
+      where: eq(sessionTable.userId, userId),
+    }),
+  );
+
+  if (sessionsError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error fetching sessions",
+    });
+  }
 
   return sessions;
 }
