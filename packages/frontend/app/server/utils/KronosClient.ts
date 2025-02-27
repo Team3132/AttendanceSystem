@@ -72,7 +72,7 @@ export default class KronosClient {
     });
 
     if (!response.ok) {
-      throw new Error("Error deleting Kronos job");
+      throw new Error(`Error deleting Kronos job: ${response.statusText}`);
     }
 
     return response.json();
@@ -89,7 +89,7 @@ export default class KronosClient {
     if (!response.ok) {
       const responseText = await response.text();
 
-      throw new Error(`Error getting Kronos job ${responseText}`);
+      throw new Error(`Error getting Kronos job: ${responseText}`);
     }
 
     return response.json() as Promise<Schedule>;
@@ -103,7 +103,7 @@ export default class KronosClient {
     const response = await fetch(`${this.kronosURL}/api/v1/schedules`);
 
     if (!response.ok) {
-      throw new Error("Error getting Kronos jobs");
+      throw new Error(`Error getting Kronos jobs: ${response.statusText}`);
     }
 
     return response.json();
@@ -123,7 +123,7 @@ export default class KronosClient {
     );
 
     if (!response.ok) {
-      throw new Error("Error pausing Kronos job");
+      throw new Error(`Error pausing Kronos job: ${response.statusText}`);
     }
 
     return response.json();
@@ -138,7 +138,7 @@ export default class KronosClient {
     );
 
     if (!response.ok) {
-      throw new Error("Error resuming Kronos job");
+      throw new Error(`Error resuming Kronos job: ${response.statusText}`);
     }
 
     return response.json();

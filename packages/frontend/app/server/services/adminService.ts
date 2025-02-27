@@ -1,3 +1,4 @@
+import { trytm } from "@/utils/trytm";
 import { and, asc, eq, gte, not } from "drizzle-orm";
 import { ulid } from "ulidx";
 import { z } from "zod";
@@ -8,7 +9,6 @@ import {
   eventTable,
 } from "../drizzle/schema";
 import env from "../env";
-import mainLogger from "../logger";
 import type {
   NewEventParsingRuleSchema,
   UpdateEventParsingRuleSchema,
@@ -22,7 +22,13 @@ import { strToRegex } from "../utils/regexBuilder";
  * @returns A list of all API keys
  */
 export async function getApiKeys() {
-  const apiKeys = await db.query.apiKeyTable.findMany();
+  const [apiKeys, error] = await trytm(db.query.apiKeyTable.findMany());
+
+  if (error)
+    throw createServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "An error occured fetching API Keys",
+    });
 
   return apiKeys;
 }
@@ -33,10 +39,15 @@ export async function getApiKeys() {
  * @returns The deleted API key
  */
 export async function deleteApiKey(id: string) {
-  const [deleted] = await db
-    .delete(apiKeyTable)
-    .where(eq(apiKeyTable.id, id))
-    .returning();
+  const [deleted, error] = await trytm(
+    db.delete(apiKeyTable).where(eq(apiKeyTable.id, id)).returning(),
+  );
+
+  if (error)
+    throw createServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "An error occured deleting API Key",
+    });
 
   return deleted;
 }
@@ -47,13 +58,29 @@ export async function deleteApiKey(id: string) {
  * @returns The created API key
  */
 export async function createApiKey(userId: string, name: string) {
-  const [apiKey] = await db
-    .insert(apiKeyTable)
-    .values({
-      name,
-      createdBy: userId,
-    })
-    .returning();
+  const [apiKeys, error] = await trytm(
+    db
+      .insert(apiKeyTable)
+      .values({
+        name,
+        createdBy: userId,
+      })
+      .returning(),
+  );
+
+  if (error)
+    throw createServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "An error occured creating API Key",
+    });
+
+  const [apiKey] = apiKeys;
+
+  if (!apiKey)
+    throw createServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "An error occured creating API Key",
+    });
 
   return apiKey;
 }
@@ -92,38 +119,58 @@ export async function createParsingRule(
     ruleId,
   };
 
-  const { id: kronosId } = await kronosClient.createSchedule({
-    // Create a new schedule in Kronos
-    title: name,
-    description: `Parsing rule for ${name}`,
-    url: parsingRuleWebhookUrl,
-    isRecurring: true,
-    cronExpr,
-    metadata: scheduleMetadata,
-  });
+  const [kronosSchedule, error] = await trytm(
+    kronosClient.createSchedule({
+      // Create a new schedule in Kronos
+      title: name,
+      description: `Parsing rule for ${name}`,
+      url: parsingRuleWebhookUrl,
+      isRecurring: true,
+      cronExpr,
+      metadata: scheduleMetadata,
+    }),
+  );
+
+  if (error)
+    throw createServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error creating parsing rule in Kronos",
+    });
+
+  const kronosId = kronosSchedule.id;
 
   // Create a new parsing rule
-  const [parsingRule] = await db
-    .insert(eventParsingRuleTable)
-    .values({
-      id: ruleId,
-      kronosId,
-      regex,
-      channelId,
-      roleIds,
-      priority,
-      isOutreach,
-    })
-    .returning();
+  const [parsingRules, scheduleError] = await trytm(
+    db
+      .insert(eventParsingRuleTable)
+      .values({
+        id: ruleId,
+        kronosId,
+        regex,
+        channelId,
+        roleIds,
+        priority,
+        isOutreach,
+      })
+      .returning(),
+  );
 
-  if (!parsingRule) {
+  const parsingRule = parsingRules?.[0];
+
+  if (!parsingRule || scheduleError) {
     throw createServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error creating parsing rule",
     });
   }
 
-  await reapplyRules();
+  const [_reapplyData, reapplyError] = await trytm(reapplyRules());
+
+  if (reapplyError)
+    throw createServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error reapplying parsing rules",
+    });
 
   return parsingRule;
 }
@@ -133,7 +180,15 @@ export async function createParsingRule(
  * @returns A list of all parsing rules
  */
 export async function getParsingRules() {
-  const parsingRules = await db.query.eventParsingRuleTable.findMany();
+  const [parsingRules, parsingRulesError] = await trytm(
+    db.query.eventParsingRuleTable.findMany(),
+  );
+
+  if (parsingRulesError)
+    throw createServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error fetching parsing rules",
+    });
 
   const promisedKronos = parsingRules.map(async (rule) => {
     if (!env.VITE_KRONOS_URL) {
@@ -145,20 +200,21 @@ export async function getParsingRules() {
 
     const kronosClient = new KronosClient(env.VITE_KRONOS_URL);
 
-    try {
-      const kronosRule = await kronosClient.getSchedule(rule.kronosId);
+    const [kronosRule, error] = await trytm(
+      kronosClient.getSchedule(rule.kronosId),
+    );
 
-      return {
-        ...rule,
-        kronosRule,
-      };
-    } catch {
-      // deleteParsingRule(rule.id);
+    if (error) {
       throw createServerError({
         code: "INTERNAL_SERVER_ERROR",
         message: "Error getting parsing rule from Kronos",
       });
     }
+
+    return {
+      ...rule,
+      kronosRule,
+    };
   });
 
   return Promise.allSettled(promisedKronos).then((res) =>
@@ -172,10 +228,21 @@ export async function getParsingRules() {
  * @returns The parsing rule
  */
 export const getParsingRule = async (id: string) => {
-  const [rule] = await db
-    .select()
-    .from(eventParsingRuleTable)
-    .where(eq(eventParsingRuleTable.id, id));
+  const [rules, ruleGetError] = await trytm(
+    db
+      .select()
+      .from(eventParsingRuleTable)
+      .where(eq(eventParsingRuleTable.id, id)),
+  );
+
+  if (ruleGetError) {
+    throw createServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error fetching parsing rule",
+    });
+  }
+
+  const [rule] = rules;
 
   if (!rule) {
     throw createServerError({
@@ -193,19 +260,20 @@ export const getParsingRule = async (id: string) => {
 
   const kronosClient = new KronosClient(env.VITE_KRONOS_URL);
 
-  try {
-    const kronosRule = await kronosClient.getSchedule(rule.kronosId);
+  const [kronosRule, kronosRuleError] = await trytm(
+    kronosClient.getSchedule(rule.kronosId),
+  );
 
-    return {
-      ...rule,
-      kronosRule,
-    };
-  } catch {
+  if (kronosRuleError)
     throw createServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error getting parsing rule from Kronos",
     });
-  }
+
+  return {
+    ...rule,
+    kronosRule,
+  };
 };
 
 /**
@@ -223,10 +291,21 @@ export async function deleteParsingRule(id: string) {
 
   const kronosClient = new KronosClient(env.VITE_KRONOS_URL);
 
-  const [rule] = await db
-    .select()
-    .from(eventParsingRuleTable)
-    .where(eq(eventParsingRuleTable.id, id));
+  const [rules, ruleFetchError] = await trytm(
+    db
+      .select()
+      .from(eventParsingRuleTable)
+      .where(eq(eventParsingRuleTable.id, id)),
+  );
+
+  if (ruleFetchError) {
+    throw createServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error fetching parsing rule",
+    });
+  }
+
+  const [rule] = rules;
 
   if (!rule) {
     throw createServerError({
@@ -234,21 +313,30 @@ export async function deleteParsingRule(id: string) {
       message: "Parsing rule not found",
     });
   }
-  try {
-    await kronosClient.deleteSchedule(rule.kronosId);
-  } catch {
-    console.log("Error");
+
+  const [_deleteData, kronosDeleteError] = await trytm(
+    kronosClient.deleteSchedule(rule.kronosId),
+  );
+
+  if (kronosDeleteError) {
+    throw createServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error deleting parsing rule from Kronos",
+    });
   }
 
-  try {
-    await db
-      .delete(eventParsingRuleTable)
-      .where(eq(eventParsingRuleTable.id, id));
-  } catch {
-    console.log("error");
-  }
+  const [_deletedRule, _deleteError] = await trytm(
+    db.delete(eventParsingRuleTable).where(eq(eventParsingRuleTable.id, id)),
+  );
 
-  await reapplyRules();
+  const [_reapplyData, reapplyError] = await trytm(reapplyRules());
+
+  if (reapplyError) {
+    throw createServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error reapplying parsing rules",
+    });
+  }
 
   return rule;
 }
@@ -264,35 +352,64 @@ export async function updateParsingRule(
   data: z.infer<typeof UpdateEventParsingRuleSchema>,
 ) {
   const { channelId, regex, roleIds, priority, isOutreach } = data;
-  const [updated] = await db
-    .update(eventParsingRuleTable)
-    .set({
-      channelId,
-      regex,
-      roleIds,
-      priority,
-      isOutreach,
-    })
-    .where(eq(eventParsingRuleTable.id, id))
-    .returning();
+  const [updatedRules, updateError] = await trytm(
+    db
+      .update(eventParsingRuleTable)
+      .set({
+        channelId,
+        regex,
+        roleIds,
+        priority,
+        isOutreach,
+      })
+      .where(eq(eventParsingRuleTable.id, id))
+      .returning(),
+  );
 
-  if (!updated) {
+  if (updateError) {
     throw createServerError({
       code: "NOT_FOUND",
       message: "Parsing rule not found",
     });
   }
 
-  await reapplyRules();
+  const [rule] = updatedRules;
 
-  return updated;
+  if (!rule) {
+    throw createServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error updating parsing rule",
+    });
+  }
+
+  const [_reapplyData, reapplyError] = await trytm(reapplyRules());
+
+  if (reapplyError) {
+    throw createServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error reapplying parsing rules",
+    });
+  }
+
+  return rule;
 }
 
 export const triggerRule = async (id: string) => {
-  const [rule] = await db
-    .select()
-    .from(eventParsingRuleTable)
-    .where(eq(eventParsingRuleTable.id, id));
+  const [rules, ruleFetchError] = await trytm(
+    db
+      .select()
+      .from(eventParsingRuleTable)
+      .where(eq(eventParsingRuleTable.id, id)),
+  );
+
+  if (ruleFetchError) {
+    throw createServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error fetching parsing rule",
+    });
+  }
+
+  const [rule] = rules;
 
   if (!rule) {
     throw createServerError({
@@ -310,21 +427,23 @@ export const triggerRule = async (id: string) => {
 
   const kronosClient = new KronosClient(env.VITE_KRONOS_URL);
 
-  try {
-    await kronosClient.triggerSchedule(rule.kronosId);
-  } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "Error triggering parsing rule";
+  const [triggerData, triggerError] = await trytm(
+    kronosClient.triggerSchedule(rule.kronosId),
+  );
+
+  if (triggerError) {
     throw createServerError({
       code: "INTERNAL_SERVER_ERROR",
-      message,
+      message: "Error triggering parsing rule",
     });
   }
+
+  return triggerData;
 };
 
 const reapplyRules = async () => {
-  try {
-    const futureEvents = await db
+  const [futureEvents, futureEventsError] = await trytm(
+    db
       .select({
         id: eventTable.id,
         title: eventTable.title,
@@ -334,49 +453,60 @@ const reapplyRules = async () => {
       .from(eventTable)
       .where(
         and(gte(eventTable.startDate, new Date()), not(eventTable.isPosted)),
-      );
+      ),
+  );
 
-    const filters = await db
+  if (futureEventsError) {
+    throw createServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error fetching future events",
+    });
+  }
+
+  const [filters, filtersError] = await trytm(
+    db
       .select({
         id: eventParsingRuleTable.id,
         regex: eventParsingRuleTable.regex,
         priority: eventParsingRuleTable.priority,
       })
       .from(eventParsingRuleTable)
-      .orderBy(asc(eventParsingRuleTable.priority));
+      .orderBy(asc(eventParsingRuleTable.priority)),
+  );
 
-    const updatedEvents = [];
-    for (const event of futureEvents) {
-      let newRuleId: null | string = null;
+  if (filtersError) {
+    throw createServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error fetching parsing rules",
+    });
+  }
 
-      for (const filter of filters) {
-        const reg = strToRegex(filter.regex);
+  const updatedEvents = [];
+  for (const event of futureEvents) {
+    let newRuleId: null | string = null;
 
-        if (reg.test(event.title) || reg.test(event.description)) {
-          newRuleId = filter.id;
-        }
-      }
+    for (const filter of filters) {
+      const reg = strToRegex(filter.regex);
 
-      if (newRuleId !== event.existingRuleId) {
-        updatedEvents.push({
-          id: event.id,
-          ruleId: newRuleId,
-        });
+      if (reg.test(event.title) || reg.test(event.description)) {
+        newRuleId = filter.id;
       }
     }
 
-    for (const event of updatedEvents) {
-      await db
-        .update(eventTable)
-        .set({
-          ruleId: event.ruleId,
-        })
-        .where(eq(eventTable.id, event.id));
+    if (newRuleId !== event.existingRuleId) {
+      updatedEvents.push({
+        id: event.id,
+        ruleId: newRuleId,
+      });
     }
-  } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "Error reapplying parsing rules";
+  }
 
-    mainLogger.error(message);
+  for (const event of updatedEvents) {
+    await db
+      .update(eventTable)
+      .set({
+        ruleId: event.ruleId,
+      })
+      .where(eq(eventTable.id, event.id));
   }
 };

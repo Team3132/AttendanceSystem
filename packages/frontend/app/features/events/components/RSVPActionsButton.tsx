@@ -1,5 +1,6 @@
 import { useDisclosure } from "@/hooks/useDisclosure";
 import { eventQueryOptions } from "@/queries/events.queries";
+import { trytm } from "@/utils/trytm";
 import { Divider, IconButton, Menu, MenuItem } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback, useId, useRef } from "react";
@@ -44,12 +45,23 @@ export default function RSVPActionsButton(props: RSVPActionsButtonProps) {
    * Set the user's checkout time to the current time.
    */
   const checkoutUserNow = useCallback(async () => {
-    const rsvpDetails = await queryClient.ensureQueryData(
-      eventQueryOptions.userRsvp(eventId, userId),
+    const [rsvpDetails, detailsError] = await trytm(
+      queryClient.ensureQueryData(eventQueryOptions.userRsvp(eventId, userId)),
     );
-    const eventDetails = await queryClient.ensureQueryData(
-      eventQueryOptions.eventDetails(eventId),
+
+    if (detailsError) {
+      console.error(detailsError);
+      return;
+    }
+
+    const [eventDetails, eventDetailsError] = await trytm(
+      queryClient.ensureQueryData(eventQueryOptions.eventDetails(eventId)),
     );
+
+    if (eventDetailsError) {
+      console.error(eventDetailsError);
+      return;
+    }
 
     const checkinTime = rsvpDetails?.checkinTime
       ? rsvpDetails.checkinTime

@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { useRef } from "react";
+import { Suspense, useRef } from "react";
 import { FaEllipsisVertical } from "react-icons/fa6";
 
 export const Route = createFileRoute("/_authenticated/admin_/api-keys/")({
@@ -31,22 +31,49 @@ export const Route = createFileRoute("/_authenticated/admin_/api-keys/")({
 });
 
 function RouteComponent() {
+  return (
+    <Stack gap={2}>
+      <Suspense fallback={<SkeletonList />}>
+        <KeyList />
+      </Suspense>
+      <LinkButton to="/admin/api-keys/create">Create API Key</LinkButton>
+    </Stack>
+  );
+}
+
+function KeyList() {
   const apiKeysQuery = useSuspenseQuery(adminQueries.apiKeys);
 
   return (
-    <Stack gap={2}>
-      <List>
-        {apiKeysQuery.data?.map((apiKey) => (
-          <ListItem
-            key={apiKey.id}
-            secondaryAction={<ListItemActions apiKeyId={apiKey.id} />}
-          >
-            <ListItemText primary={apiKey.name} />
-          </ListItem>
-        ))}
-      </List>
-      <LinkButton to="/admin/api-keys/create">Create API Key</LinkButton>
-    </Stack>
+    <List>
+      {apiKeysQuery.data?.map((apiKey) => (
+        <ListItem
+          key={apiKey.id}
+          secondaryAction={<ListItemActions apiKeyId={apiKey.id} />}
+        >
+          <ListItemText primary={apiKey.name} />
+        </ListItem>
+      ))}
+    </List>
+  );
+}
+
+function SkeletonList() {
+  return (
+    <List>
+      {[1, 2, 3].map((id) => (
+        <ListItem
+          key={id}
+          secondaryAction={
+            <IconButton>
+              <FaEllipsisVertical />
+            </IconButton>
+          }
+        >
+          <ListItemText primary="Loading..." key={id} />
+        </ListItem>
+      ))}
+    </List>
   );
 }
 
