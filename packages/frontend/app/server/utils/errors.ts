@@ -1,7 +1,6 @@
-import { json } from "@tanstack/start";
 import { z } from "zod";
 
-const ErrorLiteral = z.union([
+const ERROR_CODES = z.union([
   z.literal("NOT_FOUND"),
   z.literal("UNAUTHORIZED"),
   z.literal("FORBIDDEN"),
@@ -9,36 +8,98 @@ const ErrorLiteral = z.union([
   z.literal("INTERNAL_SERVER_ERROR"),
 ]);
 
-const ErrorSchema = z.object({
-  code: ErrorLiteral,
-  message: z.string(),
-});
-
-interface ServerErrorOptions {
-  code: z.infer<typeof ErrorLiteral>;
-  message: string;
-  stack?: string;
+/**
+ * Check that value is object
+ * @internal
+ */
+export function isObject(value: unknown): value is Record<string, unknown> {
+  return !!value && !Array.isArray(value) && typeof value === "object";
 }
 
-export const createServerError = ({
-  code,
-  message,
-  stack,
-}: ServerErrorOptions) => {
-  return json(
-    {
-      code,
-      message,
-      stack: import.meta.env.DEV ? stack : undefined,
-    },
-    {
-      status: 500,
-    },
-  );
-};
+class UnknownCauseError extends Error {
+  [key: string]: unknown;
+}
+export function getCauseFromUnknown(cause: unknown): Error | undefined {
+  if (cause instanceof Error) {
+    return cause;
+  }
 
-export const isServerError = (
-  error: unknown,
-): error is z.infer<typeof ErrorSchema> => {
-  return ErrorSchema.safeParse(error).success;
-};
+  const type = typeof cause;
+  if (type === "undefined" || type === "function" || cause === null) {
+    return undefined;
+  }
+
+  // Primitive types just get wrapped in an error
+  if (type !== "object") {
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string
+    return new Error(String(cause));
+  }
+
+  // If it's an object, we'll create a synthetic error
+  if (isObject(cause)) {
+    const err = new UnknownCauseError();
+    for (const key in cause) {
+      err[key] = cause[key];
+    }
+    return err;
+  }
+
+  return undefined;
+}
+
+export function getServerErrorFromUnknown(cause: unknown): ServerError {
+  if (cause instanceof ServerError) {
+    return cause;
+  }
+  if (cause instanceof Error && cause.name === "ServerError") {
+    // https://github.com/trpc/trpc/pull/4848
+    return cause as ServerError;
+  }
+
+  const trpcError = new ServerError({
+    code: "INTERNAL_SERVER_ERROR",
+    cause,
+  });
+
+  // Inherit stack from error
+  if (cause instanceof Error && cause.stack) {
+    trpcError.stack = cause.stack;
+  }
+
+  return trpcError;
+}
+
+export class ServerError extends Error {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore override doesn't work in all environments due to "This member cannot have an 'override' modifier because it is not declared in the base class 'Error'"
+  public override readonly cause?: Error;
+  public readonly code;
+
+  constructor(opts: {
+    message?: string;
+    code: z.infer<typeof ERROR_CODES>;
+    cause?: unknown;
+  }) {
+    const cause = getCauseFromUnknown(opts.cause);
+    const message = opts.message ?? cause?.message ?? opts.code;
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore https://github.com/tc39/proposal-error-cause
+    super(message, { cause });
+
+    this.code = opts.code;
+    this.name = "TRPCError";
+
+    if (!this.cause) {
+      // < ES2022 / < Node 16.9.0 compatability
+      this.cause = cause;
+    }
+  }
+}
+
+export function isServerError(value: unknown): value is ServerError {
+  if (!(value instanceof Error)) {
+    return false;
+  }
+  return value.name === "TRPCError";
+}

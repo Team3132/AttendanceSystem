@@ -14,7 +14,7 @@ import type {
   UpdateEventParsingRuleSchema,
 } from "../schema";
 import KronosClient from "../utils/KronosClient";
-import { createServerError } from "../utils/errors";
+import { ServerError } from "../utils/errors";
 import { strToRegex } from "../utils/regexBuilder";
 
 /**
@@ -25,7 +25,7 @@ export async function getApiKeys() {
   const [apiKeys, error] = await trytm(db.query.apiKeyTable.findMany());
 
   if (error)
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "An error occured fetching API Keys",
     });
@@ -44,7 +44,7 @@ export async function deleteApiKey(id: string) {
   );
 
   if (error)
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "An error occured deleting API Key",
     });
@@ -69,7 +69,7 @@ export async function createApiKey(userId: string, name: string) {
   );
 
   if (error)
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "An error occured creating API Key",
     });
@@ -77,7 +77,7 @@ export async function createApiKey(userId: string, name: string) {
   const [apiKey] = apiKeys;
 
   if (!apiKey)
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "An error occured creating API Key",
     });
@@ -105,7 +105,7 @@ export async function createParsingRule(
   const kronosURL = env.VITE_KRONOS_URL;
 
   if (!kronosURL) {
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Kronos URL not set",
     });
@@ -132,7 +132,7 @@ export async function createParsingRule(
   );
 
   if (error)
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error creating parsing rule in Kronos",
     });
@@ -158,7 +158,7 @@ export async function createParsingRule(
   const parsingRule = parsingRules?.[0];
 
   if (!parsingRule || scheduleError) {
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error creating parsing rule",
     });
@@ -167,7 +167,7 @@ export async function createParsingRule(
   const [_reapplyData, reapplyError] = await trytm(reapplyRules());
 
   if (reapplyError)
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error reapplying parsing rules",
     });
@@ -185,14 +185,14 @@ export async function getParsingRules() {
   );
 
   if (parsingRulesError)
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error fetching parsing rules",
     });
 
   const promisedKronos = parsingRules.map(async (rule) => {
     if (!env.VITE_KRONOS_URL) {
-      throw createServerError({
+      throw new ServerError({
         code: "INTERNAL_SERVER_ERROR",
         message: "Kronos URL not set",
       });
@@ -205,7 +205,7 @@ export async function getParsingRules() {
     );
 
     if (error) {
-      throw createServerError({
+      throw new ServerError({
         code: "INTERNAL_SERVER_ERROR",
         message: "Error getting parsing rule from Kronos",
       });
@@ -236,7 +236,7 @@ export const getParsingRule = async (id: string) => {
   );
 
   if (ruleGetError) {
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error fetching parsing rule",
     });
@@ -245,14 +245,14 @@ export const getParsingRule = async (id: string) => {
   const [rule] = rules;
 
   if (!rule) {
-    throw createServerError({
+    throw new ServerError({
       code: "NOT_FOUND",
       message: "Parsing rule not found",
     });
   }
 
   if (!env.VITE_KRONOS_URL) {
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Kronos URL not set",
     });
@@ -265,7 +265,7 @@ export const getParsingRule = async (id: string) => {
   );
 
   if (kronosRuleError)
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error getting parsing rule from Kronos",
     });
@@ -283,7 +283,7 @@ export const getParsingRule = async (id: string) => {
  */
 export async function deleteParsingRule(id: string) {
   if (!env.VITE_KRONOS_URL) {
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Kronos URL not set",
     });
@@ -299,7 +299,7 @@ export async function deleteParsingRule(id: string) {
   );
 
   if (ruleFetchError) {
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error fetching parsing rule",
     });
@@ -308,7 +308,7 @@ export async function deleteParsingRule(id: string) {
   const [rule] = rules;
 
   if (!rule) {
-    throw createServerError({
+    throw new ServerError({
       code: "NOT_FOUND",
       message: "Parsing rule not found",
     });
@@ -319,7 +319,7 @@ export async function deleteParsingRule(id: string) {
   );
 
   if (kronosDeleteError) {
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error deleting parsing rule from Kronos",
     });
@@ -332,7 +332,7 @@ export async function deleteParsingRule(id: string) {
   const [_reapplyData, reapplyError] = await trytm(reapplyRules());
 
   if (reapplyError) {
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error reapplying parsing rules",
     });
@@ -367,7 +367,7 @@ export async function updateParsingRule(
   );
 
   if (updateError) {
-    throw createServerError({
+    throw new ServerError({
       code: "NOT_FOUND",
       message: "Parsing rule not found",
     });
@@ -376,7 +376,7 @@ export async function updateParsingRule(
   const [rule] = updatedRules;
 
   if (!rule) {
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error updating parsing rule",
     });
@@ -385,7 +385,7 @@ export async function updateParsingRule(
   const [_reapplyData, reapplyError] = await trytm(reapplyRules());
 
   if (reapplyError) {
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error reapplying parsing rules",
     });
@@ -403,7 +403,7 @@ export const triggerRule = async (id: string) => {
   );
 
   if (ruleFetchError) {
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error fetching parsing rule",
     });
@@ -412,14 +412,14 @@ export const triggerRule = async (id: string) => {
   const [rule] = rules;
 
   if (!rule) {
-    throw createServerError({
+    throw new ServerError({
       code: "NOT_FOUND",
       message: "Parsing rule not found",
     });
   }
 
   if (!env.VITE_KRONOS_URL) {
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Kronos URL not set",
     });
@@ -432,7 +432,7 @@ export const triggerRule = async (id: string) => {
   );
 
   if (triggerError) {
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error triggering parsing rule",
     });
@@ -457,7 +457,7 @@ const reapplyRules = async () => {
   );
 
   if (futureEventsError) {
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error fetching future events",
     });
@@ -475,7 +475,7 @@ const reapplyRules = async () => {
   );
 
   if (filtersError) {
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error fetching parsing rules",
     });
@@ -502,11 +502,20 @@ const reapplyRules = async () => {
   }
 
   for (const event of updatedEvents) {
-    await db
-      .update(eventTable)
-      .set({
-        ruleId: event.ruleId,
-      })
-      .where(eq(eventTable.id, event.id));
+    const [_updatedEvent, updateEventError] = await trytm(
+      db
+        .update(eventTable)
+        .set({
+          ruleId: event.ruleId,
+        })
+        .where(eq(eventTable.id, event.id)),
+    );
+
+    if (updateEventError) {
+      throw new ServerError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Error updating event",
+      });
+    }
   }
 };

@@ -1,6 +1,8 @@
+import { trytm } from "@/utils/trytm";
 import { API, ChannelType } from "@discordjs/core";
 import { REST } from "@discordjs/rest";
 import env from "../env";
+import { ServerError } from "../utils/errors";
 
 /**
  * Get the API instance for the bot
@@ -24,10 +26,19 @@ export const getServerRoles = async () => {
   const guildId = env.VITE_GUILD_ID;
   const api = await getDiscordBotAPI();
 
-  const guild = await api.guilds.getRoles(guildId);
+  const [guildRoles, rolesFetchError] = await trytm(
+    api.guilds.getRoles(guildId),
+  );
+
+  if (rolesFetchError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error fetching roles",
+    });
+  }
 
   // return in name, id format
-  return guild.map(({ name, id }) => ({ name, id }));
+  return guildRoles.map(({ name, id }) => ({ name, id }));
 };
 
 /**
@@ -39,9 +50,18 @@ export const getServerChannels = async () => {
   const guildId = env.VITE_GUILD_ID;
   const api = await getDiscordBotAPI();
 
-  const guild = await api.guilds.getChannels(guildId);
+  const [channels, channelFetchError] = await trytm(
+    api.guilds.getChannels(guildId),
+  );
 
-  const textChannels = guild.filter(
+  if (channelFetchError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error fetching channels",
+    });
+  }
+
+  const textChannels = channels.filter(
     (channel) => channel.type === ChannelType.GuildText,
   );
 

@@ -1,3 +1,4 @@
+import { trytm } from "@/utils/trytm";
 import {
   ActionRowBuilder,
   ButtonBuilder,
@@ -53,21 +54,33 @@ const statusToEmoji = (
 export async function generateMessage(data: MessageParams) {
   const { eventId } = data;
 
-  const eventRSVPs = await db.query.rsvpTable.findMany({
-    where: eq(rsvpTable.eventId, eventId),
-    with: {
-      user: {
-        columns: {
-          roles: true,
-          username: true,
+  const [eventRSVPs, eventRsvpsError] = await trytm(
+    db.query.rsvpTable.findMany({
+      where: eq(rsvpTable.eventId, eventId),
+      with: {
+        user: {
+          columns: {
+            roles: true,
+            username: true,
+          },
         },
       },
-    },
-  });
+    }),
+  );
 
-  const eventData = await db.query.eventTable.findFirst({
-    where: eq(eventTable.id, eventId),
-  });
+  if (eventRsvpsError) {
+    throw new Error("Error fetching RSVPs");
+  }
+
+  const [eventData, eventDataError] = await trytm(
+    db.query.eventTable.findFirst({
+      where: eq(eventTable.id, eventId),
+    }),
+  );
+
+  if (eventDataError) {
+    throw new Error("Error fetching event");
+  }
 
   if (!eventData) {
     throw new Error("Event not found");
@@ -84,9 +97,16 @@ export async function generateMessage(data: MessageParams) {
       roleIds.push(env.VITE_MENTOR_ROLE_ID);
     }
   } else {
-    const eventRule = await db.query.eventParsingRuleTable.findFirst({
-      where: eq(eventParsingRuleTable.id, ruleId),
-    });
+    const [eventRule, eventRuleError] = await trytm(
+      db.query.eventParsingRuleTable.findFirst({
+        where: eq(eventParsingRuleTable.id, ruleId),
+      }),
+    );
+
+    if (eventRuleError) {
+      throw new Error("Error fetching event rule");
+    }
+
     if (!eventRule) {
       throw new Error("Event Rule not found");
     }

@@ -25,7 +25,7 @@ import type { GetEventParamsSchema } from "../schema/GetEventParamsSchema";
 import type { ScaninSchema } from "../schema/ScaninSchema";
 import type { SelfCheckinSchema } from "../schema/SelfCheckinSchema";
 import clampDateTime from "../utils/clampDateTime";
-import { createServerError } from "../utils/errors";
+import { ServerError } from "../utils/errors";
 import ee from "../utils/eventEmitter";
 import randomStr from "../utils/randomStr";
 
@@ -115,7 +115,7 @@ export async function getEvents(input: z.infer<typeof GetEventParamsSchema>) {
     .where(andConditions);
 
   if (!totalEntry) {
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to get total events",
     });
@@ -160,7 +160,7 @@ export async function getEvent(
   });
 
   if (!dbEvent) {
-    throw createServerError({
+    throw new ServerError({
       code: "NOT_FOUND",
       message: "Event not found",
     });
@@ -184,7 +184,7 @@ export async function getEventSecret(id: string): Promise<{
   });
 
   if (!dbEvent) {
-    throw createServerError({
+    throw new ServerError({
       code: "NOT_FOUND",
       message: "Event not found",
     });
@@ -257,7 +257,7 @@ export async function createEvent(params: z.infer<typeof CreateEventSchema>) {
     .returning();
 
   if (!createdEvent) {
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to create event",
     });
@@ -284,7 +284,7 @@ export async function editUserRsvpStatus(
   });
 
   if (existingRsvp?.status === "ATTENDED") {
-    throw createServerError({
+    throw new ServerError({
       code: "BAD_REQUEST",
       message: "User ihas already attended the event",
     });
@@ -310,7 +310,7 @@ export async function editUserRsvpStatus(
     .returning();
 
   if (!updatedRsvp) {
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to update RSVP",
     });
@@ -334,7 +334,7 @@ async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
   });
 
   if (!dbEvent) {
-    throw createServerError({
+    throw new ServerError({
       code: "NOT_FOUND",
       message: "Event not found",
     });
@@ -349,7 +349,7 @@ async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
   });
 
   if (currentRSVP?.checkinTime) {
-    throw createServerError({
+    throw new ServerError({
       code: "BAD_REQUEST",
       message: "You are already checked in",
     });
@@ -381,7 +381,7 @@ async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
     .returning();
 
   if (!updatedRsvp) {
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to check in",
     });
@@ -407,7 +407,7 @@ export async function userScanin(params: z.infer<typeof ScaninSchema>) {
   });
 
   if (!dbScancode) {
-    throw createServerError({
+    throw new ServerError({
       code: "NOT_FOUND",
       message: "Scancode not found",
     });
@@ -438,28 +438,28 @@ export async function userCheckout(userId: string, eventId: string) {
   });
 
   if (!existingRsvp) {
-    throw createServerError({
+    throw new ServerError({
       code: "NOT_FOUND",
       message: "RSVP not found, please check in first",
     });
   }
 
   if (!existingEvent) {
-    throw createServerError({
+    throw new ServerError({
       code: "NOT_FOUND",
       message: "Event not found",
     });
   }
 
   if (!existingRsvp.checkinTime) {
-    throw createServerError({
+    throw new ServerError({
       code: "BAD_REQUEST",
       message: "User is not checked in",
     });
   }
 
   if (existingRsvp.checkoutTime !== null) {
-    throw createServerError({
+    throw new ServerError({
       code: "BAD_REQUEST",
       message: "User is already checked out",
     });
@@ -496,7 +496,7 @@ export async function userCheckout(userId: string, eventId: string) {
     .returning();
 
   if (!updatedRsvp) {
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to check out",
     });
@@ -517,14 +517,14 @@ export async function selfCheckin(
   });
 
   if (!dbEvent) {
-    throw createServerError({
+    throw new ServerError({
       code: "NOT_FOUND",
       message: "Event not found",
     });
   }
 
   if (dbEvent.secret !== secret) {
-    throw createServerError({
+    throw new ServerError({
       code: "UNAUTHORIZED",
       message: "Invalid secret",
     });
@@ -545,7 +545,7 @@ export async function createUserRsvp(
     params;
 
   if (checkoutTime && !checkinTime) {
-    throw createServerError({
+    throw new ServerError({
       code: "BAD_REQUEST",
       message: "Cannot check out without checking in",
     });
@@ -553,7 +553,7 @@ export async function createUserRsvp(
 
   if (checkinTime && checkoutTime) {
     if (DateTime.fromJSDate(checkinTime) > DateTime.fromJSDate(checkoutTime)) {
-      throw createServerError({
+      throw new ServerError({
         code: "BAD_REQUEST",
         message: "Checkin time must be before checkout time",
       });
@@ -584,7 +584,7 @@ export async function createUserRsvp(
     .returning();
 
   if (!createdRsvp) {
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to create RSVP",
     });
@@ -632,7 +632,7 @@ export async function markEventPosted(eventId: string) {
     .returning();
 
   if (!updatedEvent) {
-    throw createServerError({
+    throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to mark event as posted",
     });

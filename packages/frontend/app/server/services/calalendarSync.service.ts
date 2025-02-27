@@ -1,5 +1,6 @@
 import { type calendar_v3, google } from "googleapis";
 
+import { trytm } from "@/utils/trytm";
 import { asc, eq } from "drizzle-orm";
 import { DateTime } from "luxon";
 import db from "../drizzle/db";
@@ -93,9 +94,9 @@ async function* getCalendarEvents() {
   }
 
   if (nextSyncToken) {
-    await kv.set("syncToken", nextSyncToken);
+    kv.set("syncToken", nextSyncToken);
   } else {
-    await kv.delete("syncToken");
+    kv.delete("syncToken");
   }
 }
 
@@ -172,7 +173,14 @@ export const syncEvents = async () => {
       }
 
       if (gcalEvent.status === "cancelled") {
-        await db.delete(eventTable).where(eq(eventTable.id, gcalEvent.id));
+        const [_deletedRes, deletedError] = await trytm(
+          db.delete(eventTable).where(eq(eventTable.id, gcalEvent.id)),
+        );
+
+        if (deletedError) {
+          eventLogger.error("Failed to delete event", deletedError);
+        }
+
         deletedCount++;
         continue;
       }
@@ -192,13 +200,19 @@ export const syncEvents = async () => {
         ruleId: matchingRule?.id,
       } satisfies EventInsert;
 
-      await db
-        .insert(eventTable)
-        .values(eventData)
-        .onConflictDoUpdate({
-          set: eventData,
-          target: [eventTable.id],
-        });
+      const [_updatedEventData, updateError] = await trytm(
+        db
+          .insert(eventTable)
+          .values(eventData)
+          .onConflictDoUpdate({
+            set: eventData,
+            target: [eventTable.id],
+          }),
+      );
+
+      if (updateError) {
+        eventLogger.error("Failed to update/create event", updateError);
+      }
 
       insertedCount++;
     } catch (error) {
