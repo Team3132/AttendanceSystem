@@ -347,10 +347,19 @@ export async function editUserRsvpStatus(
   params: z.infer<typeof EditRSVPSelfSchema>,
 ) {
   const { eventId, status, arrivingAt } = params;
-  const existingRsvp = await db.query.rsvpTable.findFirst({
-    where: (rsvp, { and }) =>
-      and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
-  });
+  const [existingRsvp, rsvpFetchError] = await trytm(
+    db.query.rsvpTable.findFirst({
+      where: (rsvp, { and }) =>
+        and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
+    }),
+  );
+
+  if (rsvpFetchError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to fetch exsisting RSVP",
+    });
+  }
 
   if (existingRsvp?.status === "ATTENDED") {
     throw new ServerError({
@@ -359,24 +368,35 @@ export async function editUserRsvpStatus(
     });
   }
 
-  const [updatedRsvp] = await db
-    .insert(rsvpTable)
-    .values({
-      userId,
-      eventId,
-      status,
-      arrivingAt,
-    })
-    .onConflictDoUpdate({
-      set: {
+  const [updatedRsvps, rsvpUpdateError] = await trytm(
+    db
+      .insert(rsvpTable)
+      .values({
         userId,
         eventId,
         status,
         arrivingAt,
-      },
-      target: [rsvpTable.eventId, rsvpTable.userId],
-    })
-    .returning();
+      })
+      .onConflictDoUpdate({
+        set: {
+          userId,
+          eventId,
+          status,
+          arrivingAt,
+        },
+        target: [rsvpTable.eventId, rsvpTable.userId],
+      })
+      .returning(),
+  );
+
+  if (rsvpUpdateError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to update RSVP",
+    });
+  }
+
+  const [updatedRsvp] = updatedRsvps;
 
   if (!updatedRsvp) {
     throw new ServerError({
@@ -398,9 +418,18 @@ export async function editUserRsvpStatus(
  */
 async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
   const { eventId, userId } = params;
-  const dbEvent = await db.query.eventTable.findFirst({
-    where: eq(eventTable.id, eventId),
-  });
+  const [dbEvent, dbEventError] = await trytm(
+    db.query.eventTable.findFirst({
+      where: eq(eventTable.id, eventId),
+    }),
+  );
+
+  if (dbEventError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to fetch event",
+    });
+  }
 
   if (!dbEvent) {
     throw new ServerError({
@@ -412,10 +441,19 @@ async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
   const eventStartDateTime = DateTime.fromJSDate(dbEvent.startDate);
   const eventEndDateTime = DateTime.fromJSDate(dbEvent.endDate);
 
-  const currentRSVP = await db.query.rsvpTable.findFirst({
-    where: (rsvp, { and }) =>
-      and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
-  });
+  const [currentRSVP, rsvpFetchError] = await trytm(
+    db.query.rsvpTable.findFirst({
+      where: (rsvp, { and }) =>
+        and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
+    }),
+  );
+
+  if (rsvpFetchError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to fetch RSVP",
+    });
+  }
 
   if (currentRSVP?.checkinTime) {
     throw new ServerError({
@@ -430,24 +468,35 @@ async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
     eventEndDateTime,
   ).toJSDate();
 
-  const [updatedRsvp] = await db
-    .insert(rsvpTable)
-    .values({
-      userId,
-      eventId,
-      checkinTime: checkinTime,
-      status: "ATTENDED",
-    })
-    .onConflictDoUpdate({
-      set: {
+  const [updatedRSVPs, updateRSVPError] = await trytm(
+    db
+      .insert(rsvpTable)
+      .values({
         userId,
         eventId,
         checkinTime: checkinTime,
         status: "ATTENDED",
-      },
-      target: [rsvpTable.eventId, rsvpTable.userId],
-    })
-    .returning();
+      })
+      .onConflictDoUpdate({
+        set: {
+          userId,
+          eventId,
+          checkinTime: checkinTime,
+          status: "ATTENDED",
+        },
+        target: [rsvpTable.eventId, rsvpTable.userId],
+      })
+      .returning(),
+  );
+
+  if (updateRSVPError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to check in",
+    });
+  }
+
+  const [updatedRsvp] = updatedRSVPs;
 
   if (!updatedRsvp) {
     throw new ServerError({
@@ -471,9 +520,18 @@ export async function userScanin(params: z.infer<typeof ScaninSchema>) {
   const { eventId, scancode: code } = params;
 
   // find scancode
-  const dbScancode = await db.query.scancodeTable.findFirst({
-    where: (scancode) => eq(scancode.code, code),
-  });
+  const [dbScancode, dbFetchError] = await trytm(
+    db.query.scancodeTable.findFirst({
+      where: (scancode) => eq(scancode.code, code),
+    }),
+  );
+
+  if (dbFetchError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to fetch scancode",
+    });
+  }
 
   if (!dbScancode) {
     throw new ServerError({
@@ -497,14 +555,32 @@ export async function userScanin(params: z.infer<typeof ScaninSchema>) {
  * @returns The updated rsvp
  */
 export async function userCheckout(userId: string, eventId: string) {
-  const existingRsvp = await db.query.rsvpTable.findFirst({
-    where: (rsvp, { and }) =>
-      and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
-  });
+  const [existingRsvp, existingRSVPError] = await trytm(
+    db.query.rsvpTable.findFirst({
+      where: (rsvp, { and }) =>
+        and(eq(rsvp.eventId, eventId), eq(rsvp.userId, userId)),
+    }),
+  );
 
-  const existingEvent = await db.query.eventTable.findFirst({
-    where: eq(eventTable.id, eventId),
-  });
+  if (existingRSVPError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to fetch RSVP",
+    });
+  }
+
+  const [existingEvent, existingEventError] = await trytm(
+    db.query.eventTable.findFirst({
+      where: eq(eventTable.id, eventId),
+    }),
+  );
+
+  if (existingEventError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to fetch event",
+    });
+  }
 
   if (!existingRsvp) {
     throw new ServerError({
@@ -537,20 +613,10 @@ export async function userCheckout(userId: string, eventId: string) {
   const existingRsvpCheckinTime = DateTime.fromJSDate(existingRsvp.checkinTime);
   const eventEndDateTime = DateTime.fromJSDate(existingEvent.endDate);
 
-  const [updatedRsvp] = await db
-    .insert(rsvpTable)
-    .values({
-      userId,
-      eventId,
-      checkoutTime: clampDateTime(
-        DateTime.local(),
-        existingRsvpCheckinTime,
-        eventEndDateTime,
-      ).toJSDate(),
-      status: "ATTENDED",
-    })
-    .onConflictDoUpdate({
-      set: {
+  const [updatedRsvps, rsvpUpdateError] = await trytm(
+    db
+      .insert(rsvpTable)
+      .values({
         userId,
         eventId,
         checkoutTime: clampDateTime(
@@ -559,10 +625,31 @@ export async function userCheckout(userId: string, eventId: string) {
           eventEndDateTime,
         ).toJSDate(),
         status: "ATTENDED",
-      },
-      target: [rsvpTable.eventId, rsvpTable.userId],
-    })
-    .returning();
+      })
+      .onConflictDoUpdate({
+        set: {
+          userId,
+          eventId,
+          checkoutTime: clampDateTime(
+            DateTime.local(),
+            existingRsvpCheckinTime,
+            eventEndDateTime,
+          ).toJSDate(),
+          status: "ATTENDED",
+        },
+        target: [rsvpTable.eventId, rsvpTable.userId],
+      })
+      .returning(),
+  );
+
+  if (rsvpUpdateError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to check out",
+    });
+  }
+
+  const [updatedRsvp] = updatedRsvps;
 
   if (!updatedRsvp) {
     throw new ServerError({
@@ -581,9 +668,18 @@ export async function selfCheckin(
   params: z.infer<typeof SelfCheckinSchema>,
 ) {
   const { eventId, secret } = params;
-  const dbEvent = await db.query.eventTable.findFirst({
-    where: eq(eventTable.id, eventId),
-  });
+  const [dbEvent, dbEventError] = await trytm(
+    db.query.eventTable.findFirst({
+      where: eq(eventTable.id, eventId),
+    }),
+  );
+
+  if (dbEventError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to fetch event",
+    });
+  }
 
   if (!dbEvent) {
     throw new ServerError({
@@ -629,28 +725,39 @@ export async function createUserRsvp(
     }
   }
 
-  const [createdRsvp] = await db
-    .insert(rsvpTable)
-    .values({
-      userId,
-      eventId,
-      checkinTime,
-      checkoutTime,
-      status: checkinTime ? "ATTENDED" : status,
-      arrivingAt,
-    })
-    .onConflictDoUpdate({
-      set: {
+  const [createdRsvps, rsvpCreateError] = await trytm(
+    db
+      .insert(rsvpTable)
+      .values({
         userId,
         eventId,
         checkinTime,
         checkoutTime,
         status: checkinTime ? "ATTENDED" : status,
         arrivingAt,
-      },
-      target: [rsvpTable.eventId, rsvpTable.userId],
-    })
-    .returning();
+      })
+      .onConflictDoUpdate({
+        set: {
+          userId,
+          eventId,
+          checkinTime,
+          checkoutTime,
+          status: checkinTime ? "ATTENDED" : status,
+          arrivingAt,
+        },
+        target: [rsvpTable.eventId, rsvpTable.userId],
+      })
+      .returning(),
+  );
+
+  if (rsvpCreateError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to create RSVP",
+    });
+  }
+
+  const [createdRsvp] = createdRsvps;
 
   if (!createdRsvp) {
     throw new ServerError({
@@ -665,40 +772,60 @@ export async function createUserRsvp(
 }
 
 export async function getAutocompleteEvents(like?: string) {
-  const events = await db.query.eventTable.findMany({
-    where: (event) => {
-      const conditions: Array<SQL<unknown>> = [
-        gte(event.endDate, DateTime.local().toJSDate()),
-      ];
+  const [events, eventsError] = await trytm(
+    db.query.eventTable.findMany({
+      where: (event) => {
+        const conditions: Array<SQL<unknown>> = [
+          gte(event.endDate, DateTime.local().toJSDate()),
+        ];
 
-      if (like) {
-        const condition = or(
-          ilike(event.title, `%${like}%`),
-          ilike(event.id, `%${like}%`),
-        );
+        if (like) {
+          const condition = or(
+            ilike(event.title, `%${like}%`),
+            ilike(event.id, `%${like}%`),
+          );
 
-        if (condition) {
-          conditions.push(condition);
+          if (condition) {
+            conditions.push(condition);
+          }
         }
-      }
 
-      return and(...conditions);
-    },
-    orderBy: (event) => [asc(event.startDate)],
-    limit: 10,
-  });
+        return and(...conditions);
+      },
+      orderBy: (event) => [asc(event.startDate)],
+      limit: 10,
+    }),
+  );
+
+  if (eventsError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to fetch events",
+    });
+  }
 
   return events;
 }
 
 export async function markEventPosted(eventId: string) {
-  const [updatedEvent] = await db
-    .update(eventTable)
-    .set({
-      isPosted: true,
-    })
-    .where(eq(eventTable.id, eventId))
-    .returning();
+  const [updatedEvents, updateEventsError] = await trytm(
+    db
+      .update(eventTable)
+      .set({
+        isPosted: true,
+      })
+      .where(eq(eventTable.id, eventId))
+      .returning(),
+  );
+
+  if (updateEventsError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to mark event as posted",
+    });
+  }
+
+  const [updatedEvent] = updatedEvents;
 
   if (!updatedEvent) {
     throw new ServerError({

@@ -1,3 +1,4 @@
+import { trytm } from "@/utils/trytm";
 import {
   and,
   arrayOverlaps,
@@ -16,6 +17,7 @@ import { eventTable, rsvpTable, userTable } from "../drizzle/schema";
 import env from "../env";
 import { OutreachTimeSchema } from "../schema/OutreachTimeSchema";
 import type { PagedLeaderboardSchema } from "../schema/PagedLeaderboardSchema";
+import { ServerError } from "../utils/errors";
 
 /**
  * Get the sum of the difference between the start and end dates of all
@@ -42,72 +44,83 @@ export async function getOutreachTime(
 
   const offset = page * limit;
 
-  const { paginatedItems, total } = await db.transaction(async (tx) => {
-    await tx.execute(sql`SET LOCAL intervalstyle = 'iso_8601'`); // set the interval style to iso_8601
+  const [dbResult, dbError] = await trytm(
+    db.transaction(async (tx) => {
+      await tx.execute(sql`SET LOCAL intervalstyle = 'iso_8601'`); // set the interval style to iso_8601
 
-    /**
-     * Base query to get the sum of the difference between the start and end dates of all
-     * events that have been attended by a user and that are outreach events as an iso duration
-     * Filters out events that have not been attended, and events that are not outreach events
-     * and every event before the last 25th of the last april
-     */
-    const baseQuery = tx
-      .select({
-        /** Username */
-        username: userTable.username,
-        /** UserId */
-        userId: userTable.id,
-        /** Duration (in ISO8601 format) */
-        duration:
-          sql<string>`sum(${rsvpTable.checkoutTime} - ${rsvpTable.checkinTime})`.as(
-            "duration",
+      /**
+       * Base query to get the sum of the difference between the start and end dates of all
+       * events that have been attended by a user and that are outreach events as an iso duration
+       * Filters out events that have not been attended, and events that are not outreach events
+       * and every event before the last 25th of the last april
+       */
+      const baseQuery = tx
+        .select({
+          /** Username */
+          username: userTable.username,
+          /** UserId */
+          userId: userTable.id,
+          /** Duration (in ISO8601 format) */
+          duration:
+            sql<string>`sum(${rsvpTable.checkoutTime} - ${rsvpTable.checkinTime})`.as(
+              "duration",
+            ),
+        })
+        .from(rsvpTable)
+        .innerJoin(eventTable, eq(rsvpTable.eventId, eventTable.id))
+        .innerJoin(userTable, eq(rsvpTable.userId, userTable.id))
+        .groupBy(userTable.id)
+        .where(
+          and(
+            eq(eventTable.type, "Outreach"),
+            not(arrayOverlaps(userTable.roles, [env.VITE_MENTOR_ROLE_ID])),
+            isNotNull(rsvpTable.checkinTime),
+            isNotNull(rsvpTable.checkoutTime),
+            eq(rsvpTable.status, "ATTENDED"),
+            gte(eventTable.startDate, aprilIsoDate),
           ),
-      })
-      .from(rsvpTable)
-      .innerJoin(eventTable, eq(rsvpTable.eventId, eventTable.id))
-      .innerJoin(userTable, eq(rsvpTable.userId, userTable.id))
-      .groupBy(userTable.id)
-      .where(
-        and(
-          eq(eventTable.type, "Outreach"),
-          not(arrayOverlaps(userTable.roles, [env.VITE_MENTOR_ROLE_ID])),
-          isNotNull(rsvpTable.checkinTime),
-          isNotNull(rsvpTable.checkoutTime),
-          eq(rsvpTable.status, "ATTENDED"),
-          gte(eventTable.startDate, aprilIsoDate),
-        ),
-      )
-      .as("baseQuery");
+        )
+        .as("baseQuery");
 
-    /**
-     * Count the number of rows in the base query
-     */
-    const [{ total }] = await tx
-      .select({
-        total: count(),
-      })
-      .from(baseQuery);
+      /**
+       * Count the number of rows in the base query
+       */
+      const [{ total }] = await tx
+        .select({
+          total: count(),
+        })
+        .from(baseQuery);
 
-    /**
-     * Get the paginated items, ordered by duration in descending order and username in ascending order
-     * and offset by the offset and limited by the limit
-     */
-    const paginatedItems = await tx
-      .select({
-        username: baseQuery.username,
-        userId: baseQuery.userId,
-        duration: baseQuery.duration,
-      })
-      .from(baseQuery)
-      .orderBy(desc(baseQuery.duration), baseQuery.username)
-      .offset(offset)
-      .limit(limit);
+      /**
+       * Get the paginated items, ordered by duration in descending order and username in ascending order
+       * and offset by the offset and limited by the limit
+       */
+      const paginatedItems = await tx
+        .select({
+          username: baseQuery.username,
+          userId: baseQuery.userId,
+          duration: baseQuery.duration,
+        })
+        .from(baseQuery)
+        .orderBy(desc(baseQuery.duration), baseQuery.username)
+        .offset(offset)
+        .limit(limit);
 
-    return {
-      paginatedItems,
-      total,
-    };
-  });
+      return {
+        paginatedItems,
+        total,
+      };
+    }),
+  );
+
+  if (dbError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error fetching outreach time",
+    });
+  }
+
+  const { paginatedItems, total } = dbResult;
 
   // add rank to the result
   const items = paginatedItems.map((row, index) => ({

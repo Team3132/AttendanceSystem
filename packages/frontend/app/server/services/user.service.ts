@@ -1,3 +1,4 @@
+import { trytm } from "@/utils/trytm";
 import { and, count, eq, ilike, isNotNull, isNull } from "drizzle-orm";
 import type { z } from "zod";
 import db from "../drizzle/db";
@@ -12,9 +13,18 @@ import { ServerError } from "../utils/errors";
  * @returns The user object
  */
 export async function getUser(userId: string) {
-  const dbUser = await db.query.userTable.findFirst({
-    where: (user) => eq(user.id, userId),
-  });
+  const [dbUser, dbError] = await trytm(
+    db.query.userTable.findFirst({
+      where: (user) => eq(user.id, userId),
+    }),
+  );
+
+  if (dbError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error fetching user",
+    });
+  }
 
   if (!dbUser) {
     throw new ServerError({
