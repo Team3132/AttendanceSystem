@@ -25,7 +25,7 @@
 		"@nestjs/platform-express": "11.0.10",
 		"@nestjs/schedule": "5.0.1",
 		"@sentry/node": "9.1.0",
-		"@trpc/client": "11.0.0-rc.804",
+		"@trpc/client": "11.0.0-rc.814",
 		"class-transformer": "0.5.1",
 		"class-validator": "0.14.1",
 		"discord-api-types": "0.37.119",
@@ -43,11 +43,11 @@
 		"node": "22.14.0"
 	},
 	"devDependencies": {
-		"@swc/core": "1.10.18",
+		"@swc/core": "1.11.1",
 		"@types/luxon": "3.4.2",
 		"@types/node": "22.13.5",
 		"typescript": "5.7.3",
 		"vite": "6.1.1",
-		"tsup": "8.3.6"
+		"tsup": "8.4.0"
 	}
 }
