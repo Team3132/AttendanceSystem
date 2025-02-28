@@ -117,6 +117,7 @@ export async function getOutreachTime(
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error fetching outreach time",
+      cause: dbError,
     });
   }
 

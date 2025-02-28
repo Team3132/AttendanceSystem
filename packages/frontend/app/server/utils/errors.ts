@@ -8,6 +8,8 @@ const ERROR_CODES = z.union([
   z.literal("INTERNAL_SERVER_ERROR"),
 ]);
 
+const errorName = "StartServerError";
+
 /**
  * Check that value is object
  * @internal
@@ -69,6 +71,11 @@ export function getServerErrorFromUnknown(cause: unknown): ServerError {
   return trpcError;
 }
 
+/**
+ * Error class for server errors
+ * This is used to recognise server errors in the client
+ * e.g. Not Found, Unauthorized, Forbidden, Bad Request, Internal Server Error etc.
+ */
 export class ServerError extends Error {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore override doesn't work in all environments due to "This member cannot have an 'override' modifier because it is not declared in the base class 'Error'"
@@ -88,9 +95,10 @@ export class ServerError extends Error {
     super(message, { cause });
 
     this.code = opts.code;
-    this.name = "TRPCError";
+    this.name = errorName;
 
     if (!this.cause) {
+      // Don't set cause in production to avoid leaking sensitive information
       // < ES2022 / < Node 16.9.0 compatability
       this.cause = cause;
     }
@@ -101,5 +109,5 @@ export function isServerError(value: unknown): value is ServerError {
   if (!(value instanceof Error)) {
     return false;
   }
-  return value.name === "TRPCError";
+  return value.name === errorName;
 }

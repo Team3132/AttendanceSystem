@@ -130,6 +130,7 @@ export async function getEvents(input: z.infer<typeof GetEventParamsSchema>) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to get total events",
+      cause: totalEntriesError,
     });
   }
 
@@ -161,6 +162,7 @@ export async function getEvents(input: z.infer<typeof GetEventParamsSchema>) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to get events",
+      cause: eventFetchError,
     });
   }
 
@@ -195,6 +197,7 @@ export async function getEvent(
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to fetch event",
+      cause: dbError,
     });
   }
 
@@ -228,6 +231,7 @@ export async function getEventSecret(id: string): Promise<{
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to fetch event",
+      cause: dbError,
     });
   }
 
@@ -261,6 +265,7 @@ export async function getEventRsvp(eventId: string, userId: string) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to fetch event rsvp",
+      cause: eventError,
     });
   }
 
@@ -287,6 +292,7 @@ export async function getEventRsvps(
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to fetch event rsvps",
+      cause: eventRsvpFetchError,
     });
   }
 
@@ -320,6 +326,7 @@ export async function createEvent(params: z.infer<typeof CreateEventSchema>) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to create event",
+      cause: dbInserterror,
     });
   }
 
@@ -329,6 +336,7 @@ export async function createEvent(params: z.infer<typeof CreateEventSchema>) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to create event",
+      cause: dbInserterror,
     });
   }
 
@@ -358,6 +366,7 @@ export async function editUserRsvpStatus(
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to fetch exsisting RSVP",
+      cause: rsvpFetchError,
     });
   }
 
@@ -393,6 +402,7 @@ export async function editUserRsvpStatus(
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to update RSVP",
+      cause: rsvpUpdateError,
     });
   }
 
@@ -402,6 +412,7 @@ export async function editUserRsvpStatus(
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to update RSVP",
+      cause: rsvpUpdateError,
     });
   }
 
@@ -428,6 +439,7 @@ async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to fetch event",
+      cause: dbEventError,
     });
   }
 
@@ -452,6 +464,7 @@ async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to fetch RSVP",
+      cause: rsvpFetchError,
     });
   }
 
@@ -493,6 +506,7 @@ async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to check in",
+      cause: updateRSVPError,
     });
   }
 
@@ -530,6 +544,7 @@ export async function userScanin(params: z.infer<typeof ScaninSchema>) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to fetch scancode",
+      cause: dbFetchError,
     });
   }
 
@@ -566,6 +581,7 @@ export async function userCheckout(userId: string, eventId: string) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to fetch RSVP",
+      cause: existingRSVPError,
     });
   }
 
@@ -579,6 +595,7 @@ export async function userCheckout(userId: string, eventId: string) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to fetch event",
+      cause: existingEventError,
     });
   }
 
@@ -646,6 +663,7 @@ export async function userCheckout(userId: string, eventId: string) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to check out",
+      cause: rsvpUpdateError,
     });
   }
 
@@ -678,6 +696,7 @@ export async function selfCheckin(
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to fetch event",
+      cause: dbEventError,
     });
   }
 
@@ -754,6 +773,7 @@ export async function createUserRsvp(
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to create RSVP",
+      cause: rsvpCreateError,
     });
   }
 
@@ -801,6 +821,7 @@ export async function getAutocompleteEvents(like?: string) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to fetch events",
+      cause: eventsError,
     });
   }
 
@@ -822,6 +843,7 @@ export async function markEventPosted(eventId: string) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to mark event as posted",
+      cause: updateEventsError,
     });
   }
 

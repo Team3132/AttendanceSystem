@@ -23,6 +23,7 @@ export async function getUser(userId: string) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error fetching user",
+      cause: dbError,
     });
   }
 
@@ -52,6 +53,7 @@ export async function getUserScancodes(userId: string) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error fetching scancodes",
+      cause: dberror,
     });
   }
 
@@ -96,6 +98,7 @@ export async function getPendingUserRsvps(userId: string) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error fetching rsvps",
+      cause: dbError,
     });
   }
 
@@ -124,6 +127,7 @@ export async function getUserList(
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error fetching total",
+      cause: totalDberror,
     });
   }
 
@@ -151,6 +155,7 @@ export async function getUserList(
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error fetching users",
+      cause: userFetchError,
     });
   }
 
@@ -175,6 +180,7 @@ export async function createUserScancode(userId: string, scancodeCode: string) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error fetching scancode",
+      cause: dbScancodeError,
     });
   }
 
@@ -201,6 +207,7 @@ export async function createUserScancode(userId: string, scancodeCode: string) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error creating scancode",
+      cause: createError,
     });
   }
 
@@ -234,6 +241,7 @@ export async function removeScancode(userId: string, code: string) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error fetching scancode",
+      cause: scancodesError,
     });
   }
 
@@ -259,6 +267,7 @@ export async function removeScancode(userId: string, code: string) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error deleting scancode",
+      cause: deleteScancodesError,
     });
   }
 
@@ -305,6 +314,7 @@ export async function createUser(userdata: z.infer<typeof UserCreateSchema>) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error creating user",
+      cause: dbUsersError,
     });
   }
 
@@ -331,6 +341,7 @@ export async function getUserSessions(userId: string) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error fetching sessions",
+      cause: sessionsError,
     });
   }
 

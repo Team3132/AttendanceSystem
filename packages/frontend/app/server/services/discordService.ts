@@ -34,6 +34,7 @@ export const getServerRoles = async () => {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error fetching roles",
+      cause: rolesFetchError,
     });
   }
 
@@ -58,6 +59,7 @@ export const getServerChannels = async () => {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error fetching channels",
+      cause: channelFetchError,
     });
   }
 

@@ -28,6 +28,7 @@ export async function getApiKeys() {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "An error occured fetching API Keys",
+      cause: error,
     });
 
   return apiKeys;
@@ -47,6 +48,7 @@ export async function deleteApiKey(id: string) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "An error occured deleting API Key",
+      cause: error,
     });
 
   return deleted;
@@ -72,6 +74,7 @@ export async function createApiKey(userId: string, name: string) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "An error occured creating API Key",
+      cause: error,
     });
 
   const [apiKey] = apiKeys;
@@ -80,6 +83,7 @@ export async function createApiKey(userId: string, name: string) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "An error occured creating API Key",
+      cause: error,
     });
 
   return apiKey;
@@ -135,6 +139,7 @@ export async function createParsingRule(
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error creating parsing rule in Kronos",
+      cause: error,
     });
 
   const kronosId = kronosSchedule.id;
@@ -161,6 +166,7 @@ export async function createParsingRule(
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error creating parsing rule",
+      cause: scheduleError,
     });
   }
 
@@ -170,6 +176,7 @@ export async function createParsingRule(
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error reapplying parsing rules",
+      cause: reapplyError,
     });
 
   return parsingRule;
@@ -188,6 +195,7 @@ export async function getParsingRules() {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error fetching parsing rules",
+      cause: parsingRulesError,
     });
 
   const promisedKronos = parsingRules.map(async (rule) => {
@@ -208,6 +216,7 @@ export async function getParsingRules() {
       throw new ServerError({
         code: "INTERNAL_SERVER_ERROR",
         message: "Error getting parsing rule from Kronos",
+        cause: error,
       });
     }
 
@@ -239,6 +248,7 @@ export const getParsingRule = async (id: string) => {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error fetching parsing rule",
+      cause: ruleGetError,
     });
   }
 
@@ -268,6 +278,7 @@ export const getParsingRule = async (id: string) => {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error getting parsing rule from Kronos",
+      cause: kronosRuleError,
     });
 
   return {
@@ -302,6 +313,7 @@ export async function deleteParsingRule(id: string) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error fetching parsing rule",
+      cause: ruleFetchError,
     });
   }
 
@@ -322,6 +334,7 @@ export async function deleteParsingRule(id: string) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error deleting parsing rule from Kronos",
+      cause: kronosDeleteError,
     });
   }
 
@@ -335,6 +348,7 @@ export async function deleteParsingRule(id: string) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error reapplying parsing rules",
+      cause: reapplyError,
     });
   }
 
@@ -370,6 +384,7 @@ export async function updateParsingRule(
     throw new ServerError({
       code: "NOT_FOUND",
       message: "Parsing rule not found",
+      cause: updateError,
     });
   }
 
@@ -388,6 +403,7 @@ export async function updateParsingRule(
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error reapplying parsing rules",
+      cause: reapplyError,
     });
   }
 
@@ -406,6 +422,7 @@ export const triggerRule = async (id: string) => {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error fetching parsing rule",
+      cause: ruleFetchError,
     });
   }
 
@@ -415,6 +432,7 @@ export const triggerRule = async (id: string) => {
     throw new ServerError({
       code: "NOT_FOUND",
       message: "Parsing rule not found",
+      cause: ruleFetchError,
     });
   }
 
@@ -435,6 +453,7 @@ export const triggerRule = async (id: string) => {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error triggering parsing rule",
+      cause: triggerError,
     });
   }
 
@@ -460,6 +479,7 @@ const reapplyRules = async () => {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error fetching future events",
+      cause: futureEventsError,
     });
   }
 
@@ -478,6 +498,7 @@ const reapplyRules = async () => {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error fetching parsing rules",
+      cause: filtersError,
     });
   }
 
@@ -515,6 +536,7 @@ const reapplyRules = async () => {
       throw new ServerError({
         code: "INTERNAL_SERVER_ERROR",
         message: "Error updating event",
+        cause: updateEventError,
       });
     }
   }
