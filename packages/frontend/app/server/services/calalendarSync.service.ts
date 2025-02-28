@@ -1,7 +1,7 @@
 import { type calendar_v3, google } from "googleapis";
 
 import { trytm } from "@/utils/trytm";
-import { asc, eq } from "drizzle-orm";
+import { asc, count, inArray } from "drizzle-orm";
 import { DateTime } from "luxon";
 import db from "../drizzle/db";
 import { kv } from "../drizzle/kv";
@@ -163,62 +163,68 @@ export const syncEvents = async () => {
     .from(eventParsingRuleTable)
     .orderBy(asc(eventParsingRuleTable.priority));
 
-  let deletedCount = 0;
   let insertedCount = 0;
 
+  const toDelete: string[] = [];
+
   for await (const gcalEvent of iteratorResult) {
-    try {
-      if (!gcalEvent.id) {
-        continue;
-      }
-
-      if (gcalEvent.status === "cancelled") {
-        const [_deletedRes, deletedError] = await trytm(
-          db.delete(eventTable).where(eq(eventTable.id, gcalEvent.id)),
-        );
-
-        if (deletedError) {
-          eventLogger.error("Failed to delete event", deletedError);
-        }
-
-        deletedCount++;
-        continue;
-      }
-
-      const updatedEvent = googleEventToEvent(gcalEvent);
-
-      const matchingRule = filters.find((rule) => {
-        const regex = strToRegex(rule.regex);
-
-        return (
-          regex.test(updatedEvent.title) || regex.test(updatedEvent.description)
-        );
-      });
-
-      const eventData = {
-        ...updatedEvent,
-        ruleId: matchingRule?.id,
-      } satisfies EventInsert;
-
-      const [_updatedEventData, updateError] = await trytm(
-        db
-          .insert(eventTable)
-          .values(eventData)
-          .onConflictDoUpdate({
-            set: eventData,
-            target: [eventTable.id],
-          }),
-      );
-
-      if (updateError) {
-        eventLogger.error("Failed to update/create event", updateError);
-      }
-
-      insertedCount++;
-    } catch (error) {
-      mainLogger.error("Failed to update event", error);
+    if (!gcalEvent.id) {
+      continue;
     }
+
+    if (gcalEvent.status === "cancelled") {
+      toDelete.push(gcalEvent.id);
+      continue;
+    }
+
+    const updatedEvent = googleEventToEvent(gcalEvent);
+
+    const matchingRule = filters.find((rule) => {
+      const regex = strToRegex(rule.regex);
+
+      return (
+        regex.test(updatedEvent.title) || regex.test(updatedEvent.description)
+      );
+    });
+
+    const eventData = {
+      ...updatedEvent,
+      ruleId: matchingRule?.id,
+    } satisfies EventInsert;
+
+    const [updatedEventsData, updateError] = await trytm(
+      db
+        .insert(eventTable)
+        .values(eventData)
+        .onConflictDoUpdate({
+          set: eventData,
+          target: [eventTable.id],
+        })
+        .returning({
+          count: count(),
+        }),
+    );
+
+    if (updateError) {
+      eventLogger.error("Failed to update/create event", updateError);
+      continue;
+    }
+
+    insertedCount += updatedEventsData?.[0]?.count ?? 0;
   }
+
+  const [deletedCountData, deleteError] = await trytm(
+    db.delete(eventTable).where(inArray(eventTable.id, toDelete)).returning({
+      count: count(),
+    }),
+  );
+
+  if (deleteError) {
+    eventLogger.error("Failed to delete events", deleteError);
+  }
+
+  const deletedCount = deletedCountData?.[0]?.count ?? 0;
+
   eventLogger.timeEnd("Sync Events");
   eventLogger.info(`Deleted ${deletedCount} events`);
   eventLogger.info(`Inserted ${insertedCount} events`);
