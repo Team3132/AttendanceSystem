@@ -1,5 +1,11 @@
 # frontend
 
+## 5.6.0
+
+### Minor Changes
+
+- [`c7ddb93`](https://github.com/Team3132/AttendanceSystem/commit/c7ddb936f7caaf75e116f7988100331b8c4403cd) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add error handling to all server operations
+
 ## 5.5.4
 
 ### Patch Changes
