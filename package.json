@@ -8,9 +8,6 @@
 	"private": true,
 	"workspaces": ["packages/*"],
 	"packageManager": "pnpm@9.15.6",
-	"engines": {
-		"node": "23.8.0"
-	},
 	"scripts": {
 		"build": "pnpm buildtypes && pnpm run -r build",
 		"buildtypes:bot": "pnpm tsc -b packages/bot",
