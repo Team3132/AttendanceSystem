@@ -1,5 +1,5 @@
 import appRouter from "@/server/routers/app.router";
-import { createAPIFileRoute } from "@tanstack/start/api";
+import { createAPIFileRoute } from "@tanstack/react-start/api";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
 export const APIRoute = createAPIFileRoute("/api/trpc")({

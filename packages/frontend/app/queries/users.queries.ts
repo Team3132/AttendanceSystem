@@ -12,7 +12,7 @@ import {
   getUserSessions,
 } from "@/server/services/user.service";
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
-import { createServerFn } from "@tanstack/start";
+import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 type UserListParams = Omit<z.infer<typeof UserListParamsSchema>, "cursor">;

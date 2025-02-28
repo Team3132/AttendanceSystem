@@ -4,7 +4,7 @@ import { adminQueryKeys } from "@/server/queryKeys";
 import { updateParsingRule } from "@/server/services/adminService";
 import type FlattenServerFn from "@/types/FlattenServerFn";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createServerFn } from "@tanstack/start";
+import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 const UpdateRuleSchema = UpdateEventParsingRuleSchema.extend({

@@ -5,7 +5,7 @@ import env from "@/server/env";
 import mainLogger from "@/server/logger";
 import { API } from "@discordjs/core";
 import { DiscordAPIError, REST } from "@discordjs/rest";
-import { createAPIFileRoute } from "@tanstack/start/api";
+import { createAPIFileRoute } from "@tanstack/react-start/api";
 import { OAuth2RequestError } from "arctic";
 import {
   deleteCookie,

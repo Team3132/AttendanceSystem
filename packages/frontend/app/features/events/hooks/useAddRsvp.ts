@@ -5,7 +5,7 @@ import { createUserRsvp } from "@/server/services/events.service";
 import type FlattenServerFn from "@/types/FlattenServerFn";
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
-import { createServerFn } from "@tanstack/start";
+import { createServerFn } from "@tanstack/react-start";
 import type {} from "zod";
 
 const createUserRsvpFn = createServerFn({

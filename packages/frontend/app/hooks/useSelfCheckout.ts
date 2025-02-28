@@ -3,7 +3,7 @@ import { eventQueryKeys, usersQueryKeys } from "@/server/queryKeys";
 import { userCheckout } from "@/server/services/events.service";
 import type FlattenServerFn from "@/types/FlattenServerFn";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createServerFn } from "@tanstack/start";
+import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 const selfCheckoutFn = createServerFn({

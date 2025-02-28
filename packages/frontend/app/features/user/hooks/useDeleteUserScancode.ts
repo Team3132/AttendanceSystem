@@ -5,7 +5,7 @@ import { removeScancode } from "@/server/services/user.service";
 import type FlattenServerFn from "@/types/FlattenServerFn";
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
-import { createServerFn } from "@tanstack/start";
+import { createServerFn } from "@tanstack/react-start";
 
 const removeUserScancodeFn = createServerFn({
   method: "POST",

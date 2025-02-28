@@ -1,5 +1,5 @@
 import { discord } from "@/server/auth/lucia";
-import { createAPIFileRoute } from "@tanstack/start/api";
+import { createAPIFileRoute } from "@tanstack/react-start/api";
 import { generateState } from "arctic";
 import { setCookie } from "vinxi/http";
 

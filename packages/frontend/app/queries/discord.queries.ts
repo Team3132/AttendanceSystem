@@ -5,7 +5,7 @@ import {
   getServerRoles,
 } from "@/server/services/discordService";
 import { queryOptions } from "@tanstack/react-query";
-import { createServerFn } from "@tanstack/start";
+import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 const discordServerRolesFn = createServerFn({ method: "GET" })

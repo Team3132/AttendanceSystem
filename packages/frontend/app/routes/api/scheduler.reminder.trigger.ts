@@ -6,8 +6,8 @@ import { generateMessage } from "@/server/services/botService";
 import { getDiscordBotAPI } from "@/server/services/discordService";
 import KronosClient, { ScheduleSchema } from "@/server/utils/KronosClient";
 import { ChannelType } from "@discordjs/core";
-import { json } from "@tanstack/start";
-import { createAPIFileRoute } from "@tanstack/start/api";
+import { json } from "@tanstack/react-start";
+import { createAPIFileRoute } from "@tanstack/react-start/api";
 import { and, between, eq, inArray, not } from "drizzle-orm";
 import { DateTime } from "luxon";
 

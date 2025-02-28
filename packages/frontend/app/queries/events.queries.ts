@@ -12,7 +12,7 @@ import {
   getEvents,
 } from "@/server/services/events.service";
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
-import { createServerFn } from "@tanstack/start";
+import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 type GetEventsParams = Omit<z.infer<typeof GetEventParamsSchema>, "cursor">;

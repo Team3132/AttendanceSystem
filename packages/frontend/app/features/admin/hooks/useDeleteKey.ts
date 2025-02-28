@@ -3,7 +3,7 @@ import { adminQueryKeys } from "@/server/queryKeys";
 import { deleteApiKey } from "@/server/services/adminService";
 import type FlattenServerFn from "@/types/FlattenServerFn";
 import { useMutation } from "@tanstack/react-query";
-import { createServerFn } from "@tanstack/start";
+import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 const deleteApiKeyFn = createServerFn({

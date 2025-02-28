@@ -2,7 +2,7 @@ import { mentorMiddleware } from "@/middleware/authMiddleware";
 import { eventQueryKeys } from "@/server/queryKeys";
 import { fullSyncEvents } from "@/server/services/calalendarSync.service";
 import { useMutation } from "@tanstack/react-query";
-import { createServerFn } from "@tanstack/start";
+import { createServerFn } from "@tanstack/react-start";
 
 const syncCalendarFullFn: () => ReturnType<typeof fullSyncEvents> =
   createServerFn({

@@ -4,7 +4,7 @@ import { removeScancode } from "@/server/services/user.service";
 import type FlattenServerFn from "@/types/FlattenServerFn";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
-import { createServerFn } from "@tanstack/start";
+import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 const deleteSelfScancodeFn = createServerFn({

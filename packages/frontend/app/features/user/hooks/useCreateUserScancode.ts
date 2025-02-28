@@ -4,7 +4,7 @@ import { AddUserScancodeParams } from "@/server/schema/AddUserScancodeParams";
 import { createUserScancode } from "@/server/services/user.service";
 import type FlattenServerFn from "@/types/FlattenServerFn";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createServerFn } from "@tanstack/start";
+import { createServerFn } from "@tanstack/react-start";
 
 const addUserScanCodeFn = createServerFn({
   method: "POST",

@@ -5,9 +5,9 @@ import {
   InteractionResponseType,
   InteractionType,
 } from "@discordjs/core";
-import { json } from "@tanstack/start";
-import { createAPIFileRoute } from "@tanstack/start/api";
-import { getHeader, readRawBody } from "@tanstack/start/server";
+import { json } from "@tanstack/react-start";
+import { createAPIFileRoute } from "@tanstack/react-start/api";
+import { getHeader, readRawBody } from "@tanstack/react-start/server";
 
 import { verifyKey } from "discord-interactions";
 

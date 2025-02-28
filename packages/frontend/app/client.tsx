@@ -1,4 +1,4 @@
-import { StartClient } from "@tanstack/start";
+import { StartClient } from "@tanstack/react-start";
 // app/client.tsx
 /// <reference types="vinxi/types/client" />
 import { hydrateRoot } from "react-dom/client";
