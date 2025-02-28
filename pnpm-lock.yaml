@@ -172,7 +172,7 @@ importers:
         specifier: 1.112.0
         version: 1.112.0(@types/node@22.13.5)(babel-plugin-macros@3.1.0)(db0@0.2.4(drizzle-orm@0.39.3(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(pg@8.13.3)(postgres@3.4.5)))(drizzle-orm@0.39.3(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(pg@8.13.3)(postgres@3.4.5))(ioredis@5.5.0)(jiti@2.4.2)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(terser@5.39.0)(tsx@4.19.3)(typescript@5.7.3)(vite@6.1.1(@types/node@22.13.5)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))
       '@tanstack/react-start-client':
-        specifier: ^1.112.0
+        specifier: 1.112.0
         version: 1.112.0(@types/node@22.13.5)(db0@0.2.4(drizzle-orm@0.39.3(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(pg@8.13.3)(postgres@3.4.5)))(drizzle-orm@0.39.3(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(pg@8.13.3)(postgres@3.4.5))(ioredis@5.5.0)(jiti@2.4.2)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(terser@5.39.0)(tsx@4.19.3)(typescript@5.7.3)
       '@tanstack/react-table':
         specifier: 8.21.2
@@ -1433,6 +1433,7 @@ packages:
   '@mui/base@5.0.0-beta.69':
     resolution: {integrity: sha512-r2YyGUXpZxj8rLAlbjp1x2BnMERTZ/dMqd9cClKj2OJ7ALAuiv/9X5E9eHfRc9o/dGRuLSMq/WTjREktJVjxVA==}
     engines: {node: '>=14.0.0'}
+    deprecated: This package has been replaced by @base-ui-components/react
     peerDependencies:
       '@types/react': ^17.0.0 || ^18.0.0 || ^19.0.0
       react: ^17.0.0 || ^18.0.0 || ^19.0.0
@@ -4544,6 +4545,7 @@ packages:
 
   oslo@1.2.0:
     resolution: {integrity: sha512-OoFX6rDsNcOQVAD2gQD/z03u4vEjWZLzJtwkmgfRF+KpQUXwdgEXErD7zNhyowmHwHefP+PM9Pw13pgpHMRlzw==}
+    deprecated: Package is no longer supported. Please see https://oslojs.dev for the successor project.
 
   outdent@0.5.0:
     resolution: {integrity: sha512-/jHxFIzoMXdqPzTaCpFzAAWhpkSjZPF4Vsn6jAfNpmbH/ymsmd7Qc6VE9BGn0L6YMj6uwpQLxCECpus4ukKS9Q==}
