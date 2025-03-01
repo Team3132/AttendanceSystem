@@ -68,7 +68,6 @@ async function getCalendarEvents() {
   };
 
   try {
-    console.log("Fetching initial data");
     const initialData = await promiseifiedCalEventsList(params);
 
     if (initialData.items) {
@@ -83,7 +82,6 @@ async function getCalendarEvents() {
       pageToken = initialData.nextPageToken;
     }
   } catch {
-    console.log("Failed to fetch initial data");
     // Throw an error if the sync token is not present
     // If the first request failed without a sync token
     // then it failed for another reason
@@ -108,7 +106,6 @@ async function getCalendarEvents() {
   }
 
   while (pageToken) {
-    console.log("Fetching more data");
     const data = await promiseifiedCalEventsList({
       ...params,
       pageToken,
@@ -132,46 +129,46 @@ async function getCalendarEvents() {
   return allData;
 }
 
+const getEventDates = (event: calendar_v3.Schema$Event) => {
+  if (event.start?.date && event.end?.date) {
+    return {
+      allDay: true,
+      startDate: DateTime.fromISO(event.start.date).toJSDate(),
+      endDate: DateTime.fromISO(event.end.date).toJSDate(),
+    };
+  }
+
+  if (event.start?.dateTime && event.end?.dateTime) {
+    return {
+      allDay: false,
+      startDate: DateTime.fromISO(event.start.dateTime).toJSDate(),
+      endDate: DateTime.fromISO(event.end.dateTime).toJSDate(),
+    };
+  }
+
+  throw new Error("Event start or end is null or incorrectly entered");
+};
+
 /**
  * Converts a Google Calendar event to an event object
  * @param gcalEvent Google Calendar event
  * @returns Event object
  */
 const googleEventToEvent = (gcalEvent: calendar_v3.Schema$Event) => {
-  const allDay = !gcalEvent.start?.dateTime && !gcalEvent.end?.dateTime;
-
-  const startDate = gcalEvent.start?.dateTime
-    ? new Date(gcalEvent.start.dateTime)
-    : gcalEvent.end?.date
-      ? DateTime.fromMillis(Date.parse(gcalEvent.end.date))
-          .startOf("day")
-          .toJSDate()
-      : null; // If the event is an all-day event, set the start date to the start of the day
-
-  const endDate = gcalEvent.end?.dateTime
-    ? new Date(gcalEvent.end.dateTime)
-    : gcalEvent.end?.date
-      ? DateTime.fromMillis(Date.parse(gcalEvent.end.date))
-          .endOf("day")
-          .toJSDate()
-      : null; // If the event is an all-day event, set the end date to the end of the day
-
-  if (!startDate || !endDate) {
-    throw new Error("Event start or end date is null");
-  }
-
   const { id } = gcalEvent;
 
   if (!id) {
     throw new Error("Event does not have an ID");
   }
 
+  const { startDate, endDate, allDay } = getEventDates(gcalEvent);
+
   return {
     id,
     title: gcalEvent.summary ?? "",
+    description: gcalEvent.description ?? "",
     startDate,
     endDate,
-    description: gcalEvent.description ?? "",
     type: "Regular",
     allDay,
     isSyncedEvent: true,
@@ -209,7 +206,7 @@ const buildConflictUpdateColumns = <
 export const syncEvents = async () => {
   eventLogger.time("Sync Events");
 
-  const iteratorResult = await getCalendarEvents();
+  const calendarEvents = await getCalendarEvents();
 
   const filters = await db
     .select({
@@ -219,14 +216,12 @@ export const syncEvents = async () => {
     .from(eventParsingRuleTable)
     .orderBy(asc(eventParsingRuleTable.priority));
 
-  const toDelete = iteratorResult
+  const toDelete = calendarEvents
     .filter((e) => e.status === "cancelled")
     .map((e) => e.id)
     .filter(Boolean) as string[];
 
-  eventLogger.info(`Found ${toDelete.length} events to delete`);
-
-  const toUpsert = iteratorResult
+  const toUpsert = calendarEvents
     .filter((e) => e.status !== "cancelled")
     .map(googleEventToEvent)
     .map((e) => {
@@ -251,8 +246,6 @@ export const syncEvents = async () => {
         ruleId: matchingRuleId,
       };
     });
-
-  eventLogger.info(`Found ${toUpsert.length} events to upsert`);
 
   let deletedCount = 0;
 
