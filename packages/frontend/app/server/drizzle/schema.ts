@@ -73,42 +73,42 @@ export const userTableRelations = relations(userTable, ({ many }) => ({
 }));
 
 export const rsvpTable = pgTable(
-  "RSVP",
+  "rsvp",
   {
     id: text("id")
       .primaryKey()
       .notNull()
       .$default(() => v4()),
-    eventId: text("eventId")
+    eventId: text("event_id")
       .notNull()
       .references(() => eventTable.id, {
         onDelete: "cascade",
         onUpdate: "cascade",
       }),
-    userId: text("userId")
+    userId: text("user_id")
       .notNull()
       .references(() => userTable.id, {
         onDelete: "cascade",
         onUpdate: "cascade",
       }),
-    arrivingAt: timestamp("arrivingAt", {
+    arrivingAt: timestamp("arriving_at", {
       precision: 3,
       mode: "date",
       withTimezone: true,
     }),
-    leavingAt: timestamp("leavingAt", {
+    leavingAt: timestamp("leaving_at", {
       precision: 3,
       mode: "date",
       withTimezone: true,
     }),
-    createdAt: timestamp("createdAt", {
+    createdAt: timestamp("created_at", {
       precision: 3,
       mode: "date",
       withTimezone: true,
     })
       .defaultNow()
       .notNull(),
-    updatedAt: timestamp("updatedAt", {
+    updatedAt: timestamp("updated_at", {
       precision: 3,
       mode: "date",
       withTimezone: true,
@@ -120,7 +120,7 @@ export const rsvpTable = pgTable(
     /**
      * The time that the user checks into the event
      */
-    checkinTime: timestamp("checkinTime", {
+    checkinTime: timestamp("checkin_time", {
       precision: 3,
       mode: "date",
       withTimezone: true,
@@ -128,7 +128,7 @@ export const rsvpTable = pgTable(
     /**
      * The time that the user checks out of the event
      */
-    checkoutTime: timestamp("checkoutTime", {
+    checkoutTime: timestamp("checkout_time", {
       precision: 3,
       mode: "date",
       withTimezone: true,
@@ -164,24 +164,24 @@ export const eventTable = pgTable(
       .$defaultFn(() => v4()),
     description: text("description").default("").notNull(),
     title: text("title").notNull(),
-    startDate: timestamp("startDate", {
+    startDate: timestamp("start_date", {
       precision: 3,
       mode: "date",
       withTimezone: true,
     }).notNull(),
-    endDate: timestamp("endDate", {
+    endDate: timestamp("end_date", {
       precision: 3,
       mode: "date",
       withTimezone: true,
     }).notNull(),
-    allDay: boolean("allDay").default(false).notNull(),
+    allDay: boolean("all_day").default(false).notNull(),
     type: eventTypes("type").default("Regular").notNull(),
     secret: text("secret")
       .notNull()
       .$defaultFn(() => randomStr(8)),
-    isSyncedEvent: boolean("isSyncedEvent").default(false).notNull(),
-    isPosted: boolean("isPosted").default(false).notNull(),
-    ruleId: text("ruleId").references(() => eventParsingRuleTable.id, {
+    isSyncedEvent: boolean("is_synced_event").default(false).notNull(),
+    isPosted: boolean("is_posted").default(false).notNull(),
+    ruleId: text("rule_id").references(() => eventParsingRuleTable.id, {
       onDelete: "set null",
     }),
   },
@@ -197,23 +197,23 @@ export const eventTableRelations = relations(eventTable, ({ many, one }) => ({
   }),
 }));
 
-export const scancodeTable = pgTable("Scancode", {
+export const scancodeTable = pgTable("scancode", {
   code: text("code").primaryKey().notNull(),
-  createdAt: timestamp("createdAt", {
+  createdAt: timestamp("created_at", {
     precision: 3,
     mode: "string",
     withTimezone: true,
   })
     .defaultNow()
     .notNull(),
-  updatedAt: timestamp("updatedAt", {
+  updatedAt: timestamp("updated_at", {
     precision: 3,
     mode: "date",
     withTimezone: true,
   })
     .defaultNow()
     .$onUpdateFn(() => new Date()),
-  userId: text("userId")
+  userId: text("user_id")
     .notNull()
     .references(() => userTable.id, {
       onDelete: "restrict",
@@ -235,15 +235,15 @@ export const apiKeyTable = pgTable("ApiKey", {
     .notNull()
     .$default(() => ulid()),
   name: text("name").notNull(),
-  createdBy: text("createdBy").references(() => userTable.id),
-  createdAt: timestamp("createdAt", {
+  createdBy: text("created_by").references(() => userTable.id),
+  createdAt: timestamp("created_at", {
     precision: 3,
     mode: "date",
     withTimezone: true,
   })
     .notNull()
     .defaultNow(),
-  updatedAt: timestamp("updatedAt", {
+  updatedAt: timestamp("updated_at", {
     precision: 3,
     mode: "date",
     withTimezone: true,
@@ -265,17 +265,17 @@ export const eventParsingRuleTable = pgTable("EventParsingRule", {
   id: text("id").primaryKey().notNull(),
   /** Name */
   /** Kronos Id */
-  kronosId: integer("kronosId").notNull(),
+  kronosId: integer("kronos_id").notNull(),
   /** The title to match */
   regex: text("regex").notNull().default(""),
   /** Channel Id */
-  channelId: text("channelId").notNull(),
+  channelId: text("channel_id").notNull(),
   /** Role Ids */
-  roleIds: text("rolesIds").array().notNull(),
+  roleIds: text("role_ids").array().notNull(),
   /** Priority */
   priority: integer("priority").notNull().default(0),
   /** Counts for outreach */
-  isOutreach: boolean("isOutreach").notNull().default(false),
+  isOutreach: boolean("is_outreach").notNull().default(false),
 });
 
 export const eventParsingRuleTableRelations = relations(

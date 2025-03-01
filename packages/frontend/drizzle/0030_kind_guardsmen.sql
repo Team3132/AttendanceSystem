@@ -1,0 +1,1 @@
+ALTER TABLE "EventParsingRule" RENAME COLUMN "krnos_id" TO "kronos_id";

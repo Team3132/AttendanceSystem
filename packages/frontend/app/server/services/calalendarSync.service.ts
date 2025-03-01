@@ -1,7 +1,9 @@
 import { type calendar_v3, google } from "googleapis";
 
 import { trytm } from "@/utils/trytm";
-import { asc, count, inArray } from "drizzle-orm";
+import { type SQL, asc, getTableColumns, inArray, sql } from "drizzle-orm";
+import type { PgTable } from "drizzle-orm/pg-core";
+import type { SQLiteTable } from "drizzle-orm/sqlite-core";
 import { DateTime } from "luxon";
 import db from "../drizzle/db";
 import { kv } from "../drizzle/kv";
@@ -49,55 +51,85 @@ const promiseifiedCalEventsList = (
 /**
  * Generator function to get all calendar events
  */
-async function* getCalendarEvents() {
-  // if skipSyncToken is true, we want to ignore the sync token and fetch all events
+async function getCalendarEvents() {
+  /** All the calendar events */
+  let allData: calendar_v3.Schema$Event[] = [];
+  /** The page token */
+  let pageToken: string | undefined;
+  /** The stored sync token */
+  const kvSyncToken = await kv.get<string>("syncToken");
 
+  /** The google calendar parameters */
   const params: calendar_v3.Params$Resource$Events$List = {
     calendarId: env.VITE_GOOGLE_CALENDAR_ID,
     showDeleted: true,
     singleEvents: true,
+    syncToken: kvSyncToken,
   };
 
-  let initialData: calendar_v3.Schema$Events;
   try {
-    const kvSyncToken = await kv.get<string>("syncToken");
-    if (kvSyncToken) {
-      eventLogger.info("Syncing events using sync token");
+    console.log("Fetching initial data");
+    const initialData = await promiseifiedCalEventsList(params);
+
+    if (initialData.items) {
+      allData = allData.concat(initialData.items);
     }
-    initialData = await promiseifiedCalEventsList({
-      ...params,
-      syncToken: kvSyncToken,
-    });
+
+    if (initialData.nextSyncToken) {
+      kv.set("syncToken", initialData.nextSyncToken);
+    }
+
+    if (initialData.nextPageToken) {
+      pageToken = initialData.nextPageToken;
+    }
   } catch {
-    eventLogger.info("Sync token is presumed invalid, fetching all events");
-    initialData = await promiseifiedCalEventsList(params);
+    console.log("Failed to fetch initial data");
+    // Throw an error if the sync token is not present
+    // If the first request failed without a sync token
+    // then it failed for another reason
+    if (!kvSyncToken) {
+      throw new Error("Failed to fetch initial data");
+    }
+
+    const initialData = await promiseifiedCalEventsList({
+      ...params,
+      syncToken: undefined,
+    });
+
+    if (initialData.items) {
+      allData = allData.concat(initialData.items);
+    }
+
+    if (initialData.nextSyncToken) {
+      kv.set("syncToken", initialData.nextSyncToken);
+    }
+
+    pageToken = initialData.nextPageToken ?? undefined;
   }
 
-  for (const item of initialData.items ?? []) {
-    yield item;
-  }
-
-  let { nextPageToken, nextSyncToken } = initialData;
-
-  while (nextPageToken) {
+  while (pageToken) {
+    console.log("Fetching more data");
     const data = await promiseifiedCalEventsList({
       ...params,
-      pageToken: nextPageToken,
+      pageToken,
     });
 
-    for (const item of data.items ?? []) {
-      yield item;
+    // If there are items, push them to the allData array
+    if (data.items) {
+      allData = allData.concat(data.items);
     }
 
-    nextPageToken = data.nextPageToken;
-    nextSyncToken = data.nextSyncToken;
+    // If there is a next page token, update the page token
+    // If there is no next page token, set the page token to undefined
+    pageToken = data.nextPageToken ?? undefined;
+
+    // If the sync token is present, update it
+    if (data.nextSyncToken) {
+      kv.set("syncToken", data.nextSyncToken);
+    }
   }
 
-  if (nextSyncToken) {
-    kv.set("syncToken", nextSyncToken);
-  } else {
-    kv.delete("syncToken");
-  }
+  return allData;
 }
 
 /**
@@ -143,7 +175,32 @@ const googleEventToEvent = (gcalEvent: calendar_v3.Schema$Event) => {
     type: "Regular",
     allDay,
     isSyncedEvent: true,
-  } satisfies Partial<EventInsert>;
+  } satisfies EventInsert;
+};
+
+/**
+ * Builds the columns to update in the event table on conflict
+ * @param table Table to build the columns for
+ * @param columns Columns to update
+ * @returns Object with columns to update
+ */
+const buildConflictUpdateColumns = <
+  T extends PgTable | SQLiteTable,
+  Q extends keyof T["_"]["columns"],
+>(
+  table: T,
+  columns: Q[],
+) => {
+  const cls = getTableColumns(table);
+
+  return columns.reduce(
+    (acc, column) => {
+      const colName = cls[column].name;
+      acc[column] = sql.raw(`excluded.${colName}`);
+      return acc;
+    },
+    {} as Record<Q, SQL>,
+  );
 };
 
 /**
@@ -152,84 +209,106 @@ const googleEventToEvent = (gcalEvent: calendar_v3.Schema$Event) => {
 export const syncEvents = async () => {
   eventLogger.time("Sync Events");
 
-  const iteratorResult = getCalendarEvents();
+  const iteratorResult = await getCalendarEvents();
 
   const filters = await db
     .select({
       id: eventParsingRuleTable.id,
       regex: eventParsingRuleTable.regex,
-      priority: eventParsingRuleTable.priority,
     })
     .from(eventParsingRuleTable)
     .orderBy(asc(eventParsingRuleTable.priority));
 
-  let insertedCount = 0;
+  const toDelete = iteratorResult
+    .filter((e) => e.status === "cancelled")
+    .map((e) => e.id)
+    .filter(Boolean) as string[];
 
-  const toDelete: string[] = [];
+  eventLogger.info(`Found ${toDelete.length} events to delete`);
 
-  for await (const gcalEvent of iteratorResult) {
-    if (!gcalEvent.id) {
-      continue;
-    }
+  const toUpsert = iteratorResult
+    .filter((e) => e.status !== "cancelled")
+    .map(googleEventToEvent)
+    .map((e) => {
+      // Find the first matching rule
+      const matchingRuleId = filters.find((rule) => {
+        const regex = strToRegex(rule.regex);
 
-    if (gcalEvent.status === "cancelled") {
-      toDelete.push(gcalEvent.id);
-      continue;
-    }
+        return regex.test(e.title) || regex.test(e.description);
+      })?.id;
 
-    const updatedEvent = googleEventToEvent(gcalEvent);
+      // If there is no matching rule, set the rule ID to null
+      if (!matchingRuleId) {
+        return {
+          ...e,
+          ruleId: null,
+        };
+      }
 
-    const matchingRule = filters.find((rule) => {
-      const regex = strToRegex(rule.regex);
-
-      return (
-        regex.test(updatedEvent.title) || regex.test(updatedEvent.description)
-      );
+      // If there is a matching rule, set the rule ID to the matching rule ID
+      return {
+        ...e,
+        ruleId: matchingRuleId,
+      };
     });
 
-    const eventData = {
-      ...updatedEvent,
-      ruleId: matchingRule?.id,
-    } satisfies EventInsert;
+  eventLogger.info(`Found ${toUpsert.length} events to upsert`);
 
-    const [updatedEventsData, updateError] = await trytm(
+  let deletedCount = 0;
+
+  // Delete events that are marked as cancelled
+  if (toDelete.length) {
+    const [deletedData, deleteError] = await trytm(
+      db.delete(eventTable).where(inArray(eventTable.id, toDelete)).returning({
+        id: eventTable.id,
+      }),
+    );
+
+    if (deleteError) {
+      eventLogger.error("Failed to delete events", deleteError);
+    }
+
+    deletedCount = deletedData?.length ?? 0;
+  }
+
+  let upsertedCount = 0;
+
+  // Upsert events that are not marked as cancelled
+  if (toUpsert.length) {
+    const [insertedData, insertError] = await trytm(
       db
         .insert(eventTable)
-        .values(eventData)
+        .values(toUpsert)
         .onConflictDoUpdate({
-          set: eventData,
           target: [eventTable.id],
+          set: buildConflictUpdateColumns(eventTable, [
+            "title",
+            "startDate",
+            "endDate",
+            "description",
+            "allDay",
+            "type",
+            "isSyncedEvent",
+            "ruleId",
+          ]),
         })
         .returning({
-          count: count(),
+          id: eventTable.id,
         }),
     );
 
-    if (updateError) {
-      eventLogger.error("Failed to update/create event", updateError);
-      continue;
+    if (insertError) {
+      eventLogger.error("Failed to insert events", insertError);
     }
 
-    insertedCount += updatedEventsData?.[0]?.count ?? 0;
+    upsertedCount = insertedData?.length ?? 0;
   }
-
-  const [deletedCountData, deleteError] = await trytm(
-    db.delete(eventTable).where(inArray(eventTable.id, toDelete)).returning({
-      count: count(),
-    }),
-  );
-
-  if (deleteError) {
-    eventLogger.error("Failed to delete events", deleteError);
-  }
-
-  const deletedCount = deletedCountData?.[0]?.count ?? 0;
 
   eventLogger.timeEnd("Sync Events");
   eventLogger.info(`Deleted ${deletedCount} events`);
-  eventLogger.info(`Inserted ${insertedCount} events`);
+  eventLogger.info(`Upserted ${upsertedCount} events`);
 
-  return { updatedEvents: insertedCount, deletedEventCount: deletedCount };
+  return { updatedEvents: upsertedCount, deletedEventCount: deletedCount };
 };
 
 export const fullSyncEvents = async () => {
