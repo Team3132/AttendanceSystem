@@ -296,10 +296,10 @@ export async function getEventRsvps(
     });
   }
 
-  const formatted = eventRsvps.map(({ User, RSVP }) => {
+  const formatted = eventRsvps.map(({ user, rsvp }) => {
     return {
-      ...RSVP,
-      user: User,
+      ...rsvp,
+      user: user,
     };
   });
 

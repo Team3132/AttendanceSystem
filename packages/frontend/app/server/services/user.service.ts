@@ -297,14 +297,14 @@ export async function createUser(userdata: z.infer<typeof UserCreateSchema>) {
       .insert(userTable)
       .values({
         ...userdata,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
       })
       .onConflictDoUpdate({
         target: [userTable.id],
         set: {
           ...userdata,
-          updatedAt: new Date().toISOString(),
+          updatedAt: new Date(),
         },
       })
       .returning(),

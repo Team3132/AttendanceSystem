@@ -82,7 +82,7 @@ export const APIRoute = createAPIFileRoute("/api/auth/discord/callback")({
           set: {
             username: nick || username,
             roles: roles,
-            updatedAt: new Date().toISOString(),
+            updatedAt: new Date(),
             accessToken,
             refreshToken,
             accessTokenExpiresAt,

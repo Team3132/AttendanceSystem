@@ -201,7 +201,7 @@ export const scancodeTable = pgTable("scancode", {
   code: text("code").primaryKey().notNull(),
   createdAt: timestamp("created_at", {
     precision: 3,
-    mode: "string",
+    mode: "date",
     withTimezone: true,
   })
     .defaultNow()
