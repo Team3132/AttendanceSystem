@@ -129,6 +129,11 @@ async function getCalendarEvents() {
   return allData;
 }
 
+/**
+ * Gets the start and end dates of an event
+ * @param event Google Calendar event
+ * @returns Object with start and end dates
+ */
 const getEventDates = (event: calendar_v3.Schema$Event) => {
   if (event.start?.date && event.end?.date) {
     return {
@@ -154,7 +159,9 @@ const getEventDates = (event: calendar_v3.Schema$Event) => {
  * @param gcalEvent Google Calendar event
  * @returns Event object
  */
-const googleEventToEvent = (gcalEvent: calendar_v3.Schema$Event) => {
+const googleEventToEvent = (
+  gcalEvent: calendar_v3.Schema$Event,
+): EventInsert => {
   const { id } = gcalEvent;
 
   if (!id) {
@@ -172,7 +179,7 @@ const googleEventToEvent = (gcalEvent: calendar_v3.Schema$Event) => {
     type: "Regular",
     allDay,
     isSyncedEvent: true,
-  } satisfies EventInsert;
+  };
 };
 
 /**
@@ -201,52 +208,69 @@ const buildConflictUpdateColumns = <
 };
 
 /**
+ * Columns to update on conflict in the event table, everything that could change in a Google Calendar event
+ * This excludes any changes made locally
+ */
+const conflictUpdateColumns = buildConflictUpdateColumns(eventTable, [
+  "title",
+  "startDate",
+  "endDate",
+  "description",
+  "allDay",
+  "type",
+  "isSyncedEvent",
+  "ruleId",
+]);
+
+/**
+ * Checks if an event matches a rule
+ * @param rule regex and id of the rule
+ * @param e event to check (title and description)
+ * @returns Whether the event matches the rule
+ */
+const isMatchingRule = (
+  rule: { id: string; regex: string },
+  e: { title: string; description?: string },
+): boolean => {
+  const regex = strToRegex(rule.regex);
+
+  if (e.description) {
+    return regex.test(e.title) || regex.test(e.description);
+  }
+
+  return regex.test(e.title);
+};
+
+/**
  * Syncs events from Google Calendar to the database
  */
 export const syncEvents = async () => {
   eventLogger.time("Sync Events");
 
+  /** All the calendar events */
   const calendarEvents = await getCalendarEvents();
 
+  /** Filters to map events to */
   const filters = await db
     .select({
       id: eventParsingRuleTable.id,
       regex: eventParsingRuleTable.regex,
     })
     .from(eventParsingRuleTable)
-    .orderBy(asc(eventParsingRuleTable.priority));
+    .orderBy(asc(eventParsingRuleTable.priority)); // Order by priority, lowest to highest (the lower the priority, the higher the precedence)
 
+  /** Events to delete */
   const toDelete = calendarEvents
-    .filter((e) => e.status === "cancelled")
-    .map((e) => e.id)
-    .filter(Boolean) as string[];
+    .filter((e) => e.status === "cancelled" && !!e.id)
+    .map((e) => e.id) as string[];
 
+  /** Events to upsert */
   const toUpsert = calendarEvents
-    .filter((e) => e.status !== "cancelled")
-    .map(googleEventToEvent)
-    .map((e) => {
-      // Find the first matching rule
-      const matchingRuleId = filters.find((rule) => {
-        const regex = strToRegex(rule.regex);
+    .filter((e) => e.status !== "cancelled") // Filter out events that are marked as cancelled
+    .map(googleEventToEvent) // Map Google Calendar events to event objects
+    .map((e) => mapEventToRule(e, filters)); // Map events with rules
 
-        return regex.test(e.title) || regex.test(e.description);
-      })?.id;
-
-      // If there is no matching rule, set the rule ID to null
-      if (!matchingRuleId) {
-        return {
-          ...e,
-          ruleId: null,
-        };
-      }
-
-      // If there is a matching rule, set the rule ID to the matching rule ID
-      return {
-        ...e,
-        ruleId: matchingRuleId,
-      };
-    });
-
+  /** The number of events that were deleted */
   let deletedCount = 0;
 
   // Delete events that are marked as cancelled
@@ -262,8 +286,11 @@ export const syncEvents = async () => {
     }
 
     deletedCount = deletedData?.length ?? 0;
+
+    eventLogger.info(`Deleted ${deletedCount} events`);
   }
 
+  /** Events to create or update */
   let upsertedCount = 0;
 
   // Upsert events that are not marked as cancelled
@@ -274,16 +301,7 @@ export const syncEvents = async () => {
         .values(toUpsert)
         .onConflictDoUpdate({
           target: [eventTable.id],
-          set: buildConflictUpdateColumns(eventTable, [
-            "title",
-            "startDate",
-            "endDate",
-            "description",
-            "allDay",
-            "type",
-            "isSyncedEvent",
-            "ruleId",
-          ]),
+          set: conflictUpdateColumns,
         })
         .returning({
           id: eventTable.id,
@@ -295,11 +313,11 @@ export const syncEvents = async () => {
     }
 
     upsertedCount = insertedData?.length ?? 0;
+
+    eventLogger.info(`Upserted ${upsertedCount} events`);
   }
 
   eventLogger.timeEnd("Sync Events");
-  eventLogger.info(`Deleted ${deletedCount} events`);
-  eventLogger.info(`Upserted ${upsertedCount} events`);
 
   return { updatedEvents: upsertedCount, deletedEventCount: deletedCount };
 };
@@ -308,3 +326,30 @@ export const fullSyncEvents = async () => {
   await kv.delete("syncToken");
   return syncEvents();
 };
+
+/**
+ * Maps an event to a rule
+ * @param filters Filters to map to
+ * @returns Function to map an event to a rule
+ */
+function mapEventToRule(
+  e: EventInsert,
+  filters: { id: string; regex: string }[],
+): EventInsert {
+  // Find the first matching rule
+  const matchingRuleId = filters.find((r) => isMatchingRule(r, e))?.id;
+
+  // If there is no matching rule, set the rule ID to null
+  if (matchingRuleId) {
+    return {
+      ...e,
+      ruleId: matchingRuleId,
+    };
+  }
+
+  // If there is a matching rule, set the rule ID to the matching rule ID
+  return {
+    ...e,
+    ruleId: null,
+  };
+}

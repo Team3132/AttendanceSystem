@@ -13,13 +13,13 @@ import { ulid } from "ulidx";
 import { v4 } from "uuid";
 import randomStr from "../utils/randomStr";
 
-export const eventTypes = pgEnum("EventTypes", [
+export const eventTypes = pgEnum("event_type", [
   "Social",
   "Regular",
   "Outreach",
   "Mentor",
 ]);
-export const rsvpStatus = pgEnum("RSVPStatus", [
+export const rsvpStatus = pgEnum("rsvp_status", [
   "LATE",
   "MAYBE",
   "NO",
@@ -27,32 +27,32 @@ export const rsvpStatus = pgEnum("RSVPStatus", [
   "ATTENDED",
 ]);
 
-export const userTable = pgTable("User", {
+export const userTable = pgTable("user", {
   username: text("username").notNull(),
-  createdAt: timestamp("createdAt", {
+  createdAt: timestamp("created_at", {
     precision: 3,
-    mode: "string",
+    mode: "date",
     withTimezone: true,
   })
     .defaultNow()
     .notNull(),
-  updatedAt: timestamp("updatedAt", {
+  updatedAt: timestamp("updated_at", {
     precision: 3,
-    mode: "string",
+    mode: "date",
     withTimezone: true,
   })
     .defaultNow()
     .notNull(),
   id: text("id").primaryKey().notNull(),
   roles: text("roles").array(),
-  accessToken: text("accessToken"),
-  refreshToken: text("refreshToken"),
-  accessTokenExpiresAt: timestamp("accessTokenExpiresAt", {
+  accessToken: text("access_token"),
+  refreshToken: text("refresh_token"),
+  accessTokenExpiresAt: timestamp("access_token_expires_at", {
     precision: 3,
     mode: "date",
     withTimezone: true,
   }),
-  defaultStatus: rsvpStatus("defaultStatus"),
+  defaultStatus: rsvpStatus("default_status"),
 });
 
 export const sessionTable = pgTable("session", {
@@ -156,7 +156,7 @@ export const rsvpTableRelations = relations(rsvpTable, ({ one }) => ({
 }));
 
 export const eventTable = pgTable(
-  "Event",
+  "event",
   {
     id: text("id")
       .primaryKey()
@@ -229,7 +229,7 @@ export const scancodeTableRelations = relations(scancodeTable, ({ one }) => ({
 }));
 
 // API Key
-export const apiKeyTable = pgTable("ApiKey", {
+export const apiKeyTable = pgTable("api_key", {
   id: text("id")
     .primaryKey()
     .notNull()
@@ -260,10 +260,9 @@ export const apiKeyTableRelations = relations(apiKeyTable, ({ one }) => ({
 }));
 
 /** Parsing rules for event names */
-export const eventParsingRuleTable = pgTable("EventParsingRule", {
+export const eventParsingRuleTable = pgTable("parsing_rule", {
   /** The Id of the rule */
   id: text("id").primaryKey().notNull(),
-  /** Name */
   /** Kronos Id */
   kronosId: integer("kronos_id").notNull(),
   /** The title to match */

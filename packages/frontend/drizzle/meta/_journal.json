@@ -218,6 +218,13 @@
 			"when": 1740803745411,
 			"tag": "0030_kind_guardsmen",
 			"breakpoints": true
+		},
+		{
+			"idx": 31,
+			"version": "7",
+			"when": 1740894173984,
+			"tag": "0031_calm_chat",
+			"breakpoints": true
 		}
 	]
 }
