@@ -214,8 +214,8 @@ importers:
         specifier: 146.0.0
         version: 146.0.0
       keyv:
-        specifier: 5.2.3
-        version: 5.2.3
+        specifier: 5.3.0
+        version: 5.3.0
       lucia:
         specifier: 3.2.2
         version: 3.2.2
@@ -4130,8 +4130,8 @@ packages:
   jws@4.0.0:
     resolution: {integrity: sha512-KDncfTmOZoOMTFG4mBlG0qUIOlc03fmzH+ru6RgYVZhPkyiy/92Owlt/8UEN+a4TXR1FQetfIpJE8ApdvdVxTg==}
 
-  keyv@5.2.3:
-    resolution: {integrity: sha512-AGKecUfzrowabUv0bH1RIR5Vf7w+l4S3xtQAypKaUpTdIR1EbrAcTxHCrpo9Q+IWeUlFE2palRtgIQcgm+PQJw==}
+  keyv@5.3.0:
+    resolution: {integrity: sha512-XMBcWGBqH1j04AzjzdIulcsAKr5MaGlYC/N2PLyxdwTrEqVhQnuEIP5h1TPpa5UUcPOH1yVJ+xvhYJ2QAEv94w==}
 
   klona@2.0.6:
     resolution: {integrity: sha512-dhG34DXATL5hSxJbIexCft8FChFXtmskoZYnoPWjXQuebWYCNkVeV3KkGegCK9CP1oswI/vQibS2GY7Em/sJJA==}
@@ -6649,7 +6649,7 @@ snapshots:
 
   '@keyv/postgres@2.1.1':
     dependencies:
-      keyv: 5.2.3
+      keyv: 5.3.0
       pg: 8.13.3
     transitivePeerDependencies:
       - pg-native
@@ -10035,7 +10035,7 @@ snapshots:
       jwa: 2.0.0
       safe-buffer: 5.2.1
 
-  keyv@5.2.3:
+  keyv@5.3.0:
     dependencies:
       '@keyv/serialize': 1.0.3
 
