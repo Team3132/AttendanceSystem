@@ -243,34 +243,35 @@ const buildSetWhereColumns = <
   return or(...statements);
 };
 
+type ColumnNames<T extends PgTable | SQLiteTable> = keyof T["_"]["columns"];
+
+/**
+ * Columns that can be updated in the event table based on Google Calendar events
+ */
+const updatableColumns: ColumnNames<typeof eventTable>[] = [
+  "title",
+  "startDate",
+  "endDate",
+  "description",
+  "allDay",
+  "type",
+  "isSyncedEvent",
+  "ruleId",
+];
+
 /**
  * Columns to update on conflict in the event table, everything that could change in a Google Calendar event
  * This excludes any changes made locally
  */
-const conflictUpdateColumns = buildConflictUpdateColumns(eventTable, [
-  "title",
-  "startDate",
-  "endDate",
-  "description",
-  "allDay",
-  "type",
-  "isSyncedEvent",
-  "ruleId",
-]);
+const conflictUpdateColumns = buildConflictUpdateColumns(
+  eventTable,
+  updatableColumns,
+);
 
 /**
  * Columns to check for changes in the event table to determine if the event should be updated
  */
-const conflictWhereColumns = buildSetWhereColumns(eventTable, [
-  "title",
-  "startDate",
-  "endDate",
-  "description",
-  "allDay",
-  "type",
-  "isSyncedEvent",
-  "ruleId",
-]);
+const conflictWhereColumns = buildSetWhereColumns(eventTable, updatableColumns);
 
 /**
  * Checks if an event matches a rule
