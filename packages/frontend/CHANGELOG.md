@@ -1,5 +1,11 @@
 # frontend
 
+## 5.6.2
+
+### Patch Changes
+
+- [`b77702e`](https://github.com/Team3132/AttendanceSystem/commit/b77702edfba190aff25dfdf560ec5a086541550c) Thanks [@sebasptsch](https://github.com/sebasptsch)! - revert fontsource update
+
 ## 5.6.1
 
 ### Patch Changes
