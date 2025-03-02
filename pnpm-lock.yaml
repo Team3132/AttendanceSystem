@@ -130,8 +130,8 @@ importers:
         specifier: 11.14.0
         version: 11.14.0(@emotion/react@11.14.0(@types/react@19.0.10)(react@19.0.0))(@types/react@19.0.10)(react@19.0.0)
       '@fontsource/roboto':
-        specifier: 5.1.1
-        version: 5.1.1
+        specifier: 5.2.1
+        version: 5.2.1
       '@hookform/resolvers':
         specifier: 4.1.2
         version: 4.1.2(react-hook-form@7.54.2(react@19.0.0))
@@ -1362,8 +1362,8 @@ packages:
   '@floating-ui/utils@0.2.9':
     resolution: {integrity: sha512-MDWhGtE+eHw5JW7lq4qhc5yRLS11ERl1c7Z6Xd0a58DozHES6EnNNwUWbMiG4J9Cgj053Bhk8zvlhFYKVhULwg==}
 
-  '@fontsource/roboto@5.1.1':
-    resolution: {integrity: sha512-XwVVXtERDQIM7HPUIbyDe0FP4SRovpjF7zMI8M7pbqFp3ahLJsJTd18h+E6pkar6UbV3btbwkKjYARr5M+SQow==}
+  '@fontsource/roboto@5.2.1':
+    resolution: {integrity: sha512-9fRnNLrNN1mksWUDuQNkFBFNgTLEAIs7Mglb3fPkHDRPvbAfafaVz49Vz74+nItAZ1ovZr4H7MXrYAkTwvH9iA==}
 
   '@hookform/resolvers@4.1.2':
     resolution: {integrity: sha512-wl6H9c9wLOZMJAqGLEVKzbCkxJuV+BYuLFZFCQtCwMe0b3qQk4kUBd/ZAj13SwcSqcx86rCgSCyngQfmA6DOWg==}
@@ -6583,7 +6583,7 @@ snapshots:
 
   '@floating-ui/utils@0.2.9': {}
 
-  '@fontsource/roboto@5.1.1': {}
+  '@fontsource/roboto@5.2.1': {}
 
   '@hookform/resolvers@4.1.2(react-hook-form@7.54.2(react@19.0.0))':
     dependencies:
