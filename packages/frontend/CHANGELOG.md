@@ -1,5 +1,11 @@
 # frontend
 
+## 5.6.1
+
+### Patch Changes
+
+- [`422af4e`](https://github.com/Team3132/AttendanceSystem/commit/422af4e3b46bd401b51ce9bae11319afd657e397) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Change database schema to be better
+
 ## 5.6.0
 
 ### Minor Changes
