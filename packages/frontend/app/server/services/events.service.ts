@@ -26,6 +26,8 @@ import type { GetEventParamsSchema } from "../schema/GetEventParamsSchema";
 import type { ScaninSchema } from "../schema/ScaninSchema";
 import type { SelfCheckinSchema } from "../schema/SelfCheckinSchema";
 import clampDateTime from "../utils/clampDateTime";
+import { buildConflictUpdateColumns } from "../utils/db/buildConflictUpdateColumns";
+import { buildSetWhereColumns } from "../utils/db/buildSetWhereColumns";
 import { ServerError } from "../utils/errors";
 import ee from "../utils/eventEmitter";
 import randomStr from "../utils/randomStr";
@@ -387,13 +389,9 @@ export async function editUserRsvpStatus(
         arrivingAt,
       })
       .onConflictDoUpdate({
-        set: {
-          userId,
-          eventId,
-          status,
-          arrivingAt,
-        },
         target: [rsvpTable.eventId, rsvpTable.userId],
+        set: buildConflictUpdateColumns(rsvpTable, ["status", "arrivingAt"]),
+        setWhere: buildSetWhereColumns(rsvpTable, ["status", "arrivingAt"]),
       })
       .returning(),
   );
@@ -491,12 +489,8 @@ async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
         status: "ATTENDED",
       })
       .onConflictDoUpdate({
-        set: {
-          userId,
-          eventId,
-          checkinTime: checkinTime,
-          status: "ATTENDED",
-        },
+        set: buildConflictUpdateColumns(rsvpTable, ["checkinTime", "status"]),
+        setWhere: buildSetWhereColumns(rsvpTable, ["checkinTime", "status"]),
         target: [rsvpTable.eventId, rsvpTable.userId],
       })
       .returning(),
@@ -630,30 +624,24 @@ export async function userCheckout(userId: string, eventId: string) {
   const existingRsvpCheckinTime = DateTime.fromJSDate(existingRsvp.checkinTime);
   const eventEndDateTime = DateTime.fromJSDate(existingEvent.endDate);
 
+  const checkoutTime = clampDateTime(
+    DateTime.local(),
+    existingRsvpCheckinTime,
+    eventEndDateTime,
+  ).toJSDate();
+
   const [updatedRsvps, rsvpUpdateError] = await trytm(
     db
       .insert(rsvpTable)
       .values({
         userId,
         eventId,
-        checkoutTime: clampDateTime(
-          DateTime.local(),
-          existingRsvpCheckinTime,
-          eventEndDateTime,
-        ).toJSDate(),
+        checkoutTime,
         status: "ATTENDED",
       })
       .onConflictDoUpdate({
-        set: {
-          userId,
-          eventId,
-          checkoutTime: clampDateTime(
-            DateTime.local(),
-            existingRsvpCheckinTime,
-            eventEndDateTime,
-          ).toJSDate(),
-          status: "ATTENDED",
-        },
+        set: buildConflictUpdateColumns(rsvpTable, ["checkoutTime", "status"]),
+        setWhere: buildSetWhereColumns(rsvpTable, ["checkoutTime", "status"]),
         target: [rsvpTable.eventId, rsvpTable.userId],
       })
       .returning(),
@@ -756,14 +744,18 @@ export async function createUserRsvp(
         arrivingAt,
       })
       .onConflictDoUpdate({
-        set: {
-          userId,
-          eventId,
-          checkinTime,
-          checkoutTime,
-          status: checkinTime ? "ATTENDED" : status,
-          arrivingAt,
-        },
+        set: buildConflictUpdateColumns(rsvpTable, [
+          "checkinTime",
+          "checkoutTime",
+          "status",
+          "arrivingAt",
+        ]),
+        setWhere: buildSetWhereColumns(rsvpTable, [
+          "checkinTime",
+          "checkoutTime",
+          "status",
+          "arrivingAt",
+        ]),
         target: [rsvpTable.eventId, rsvpTable.userId],
       })
       .returning(),

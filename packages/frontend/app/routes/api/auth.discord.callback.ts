@@ -3,6 +3,9 @@ import db from "@/server/drizzle/db";
 import { userTable } from "@/server/drizzle/schema";
 import env from "@/server/env";
 import mainLogger from "@/server/logger";
+import type { ColumnNames } from "@/server/utils/db/ColumnNames";
+import { buildConflictUpdateColumns } from "@/server/utils/db/buildConflictUpdateColumns";
+import { buildSetWhereColumns } from "@/server/utils/db/buildSetWhereColumns";
 import { API } from "@discordjs/core";
 import { DiscordAPIError, REST } from "@discordjs/rest";
 import { createAPIFileRoute } from "@tanstack/react-start/api";
@@ -67,6 +70,14 @@ export const APIRoute = createAPIFileRoute("/api/auth/discord/callback")({
 
       const { accessToken, refreshToken, accessTokenExpiresAt } = tokens;
 
+      const updateColumns: ColumnNames<typeof userTable>[] = [
+        "accessToken",
+        "roles",
+        "refreshToken",
+        "accessTokenExpiresAt",
+        "username",
+      ];
+
       const [authedUser] = await db
         .insert(userTable)
         .values({
@@ -79,14 +90,8 @@ export const APIRoute = createAPIFileRoute("/api/auth/discord/callback")({
         })
         .onConflictDoUpdate({
           target: userTable.id,
-          set: {
-            username: nick || username,
-            roles: roles,
-            updatedAt: new Date(),
-            accessToken,
-            refreshToken,
-            accessTokenExpiresAt,
-          },
+          set: buildConflictUpdateColumns(userTable, updateColumns),
+          setWhere: buildSetWhereColumns(userTable, updateColumns),
         })
         .returning();
 

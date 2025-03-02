@@ -5,6 +5,7 @@ import db from "../drizzle/db";
 import { scancodeTable, sessionTable, userTable } from "../drizzle/schema";
 import type { UserCreateSchema } from "../schema";
 import type { UserListParamsSchema } from "../schema/UserListParamsSchema";
+import { buildConflictUpdateColumns } from "../utils/db/buildConflictUpdateColumns";
 import { ServerError } from "../utils/errors";
 
 /**
@@ -295,17 +296,17 @@ export async function createUser(userdata: z.infer<typeof UserCreateSchema>) {
   const [dbUsers, dbUsersError] = await trytm(
     db
       .insert(userTable)
-      .values({
-        ...userdata,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      })
+      .values(userdata)
       .onConflictDoUpdate({
         target: [userTable.id],
-        set: {
-          ...userdata,
-          updatedAt: new Date(),
-        },
+        set: buildConflictUpdateColumns(userTable, [
+          "username",
+          "roles",
+          "accessToken",
+          "refreshToken",
+          "accessTokenExpiresAt",
+          "defaultStatus",
+        ]),
       })
       .returning(),
   );

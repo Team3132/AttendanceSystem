@@ -1,15 +1,16 @@
 import { type calendar_v3, google } from "googleapis";
 
 import { trytm } from "@/utils/trytm";
-import { type SQL, asc, getTableColumns, inArray, or, sql } from "drizzle-orm";
-import type { PgTable } from "drizzle-orm/pg-core";
-import type { SQLiteTable } from "drizzle-orm/sqlite-core";
+import { asc, inArray } from "drizzle-orm";
 import { DateTime } from "luxon";
 import db from "../drizzle/db";
 import { kv } from "../drizzle/kv";
 import { eventParsingRuleTable, eventTable } from "../drizzle/schema";
 import env from "../env";
 import mainLogger from "../logger";
+import type { ColumnNames } from "../utils/db/ColumnNames";
+import { buildConflictUpdateColumns } from "../utils/db/buildConflictUpdateColumns";
+import { buildSetWhereColumns } from "../utils/db/buildSetWhereColumns";
 import { strToRegex } from "../utils/regexBuilder";
 
 const eventLogger = mainLogger.child("Sync Events");
@@ -181,69 +182,6 @@ const googleEventToEvent = (
     isSyncedEvent: true,
   };
 };
-
-/**
- * Builds the columns to update in the event table on conflict
- * @param table Table to build the columns for
- * @param columns Columns to update
- * @returns Object with columns to update
- */
-const buildConflictUpdateColumns = <
-  T extends PgTable | SQLiteTable,
-  Q extends keyof T["_"]["columns"],
->(
-  table: T,
-  columns: Q[],
-) => {
-  const cls = getTableColumns(table);
-
-  return columns.reduce(
-    (acc, column) => {
-      const colName = cls[column].name;
-      acc[column] = sql.raw(`excluded.${colName}`);
-      return acc;
-    },
-    {} as Record<Q, SQL>,
-  );
-};
-
-/**
- * Builds the set columns for the on conflict clause to check to see if the excluded column value is different from the current column value
- *
- * On conflict only updates the entry if any of the columns are different
- *
- * @param table Table to build the columns for
- * @param columns Columns to set
- * @returns SQL object with the columns to set based on exclusions
- */
-const buildSetWhereColumns = <
-  T extends PgTable | SQLiteTable,
-  Q extends keyof T["_"]["columns"],
->(
-  table: T,
-  columns: Q[],
-) => {
-  /** The table columns */
-  const cls = getTableColumns(table);
-
-  /** The statements to check if the column is different */
-  const statements = columns.map((column) => {
-    /** The reference to the column */
-    const col = cls[column];
-    /** The column name */
-    const colName = col.name;
-    /** The excluded column as a raw SQL object */
-    const excluded = sql.raw(`excluded.${colName}`);
-
-    // Check if the column is different
-    return sql`${col} != ${excluded}`;
-  });
-
-  // Return the or statement of all the statements
-  return or(...statements);
-};
-
-type ColumnNames<T extends PgTable | SQLiteTable> = keyof T["_"]["columns"];
 
 /**
  * Columns that can be updated in the event table based on Google Calendar events

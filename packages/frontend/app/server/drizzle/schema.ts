@@ -41,6 +41,7 @@ export const userTable = pgTable("user", {
     mode: "date",
     withTimezone: true,
   })
+    .$onUpdateFn(() => new Date())
     .defaultNow()
     .notNull(),
   id: text("id").primaryKey().notNull(),
