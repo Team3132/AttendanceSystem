@@ -1,5 +1,5 @@
 import { trytm } from "@/utils/trytm";
-import { and, asc, eq, gte, not } from "drizzle-orm";
+import { asc, eq, gte } from "drizzle-orm";
 import { ulid } from "ulidx";
 import { z } from "zod";
 import db from "../drizzle/db";
@@ -470,9 +470,7 @@ const reapplyRules = async () => {
         existingRuleId: eventTable.ruleId,
       })
       .from(eventTable)
-      .where(
-        and(gte(eventTable.startDate, new Date()), not(eventTable.isPosted)),
-      ),
+      .where(gte(eventTable.startDate, new Date())),
   );
 
   if (futureEventsError) {
