@@ -1,4 +1,5 @@
 import BottomBar from "@/components/BottomBar";
+import GenericServerErrorBoundary from "@/components/GenericServerErrorBoundary";
 import TopBar from "@/components/TopBar";
 import { authQueryOptions } from "@/queries/auth.queries";
 import { Box, Container } from "@mui/material";
@@ -38,7 +39,10 @@ function Component() {
     <RootWrapper>
       <TopBar />
       <RootContainer id="main-area">
-        <Outlet />
+        {/* Catch any errors in authenticated routes */}
+        <GenericServerErrorBoundary>
+          <Outlet />
+        </GenericServerErrorBoundary>
       </RootContainer>
       <BottomBar />
     </RootWrapper>

@@ -1,4 +1,5 @@
 import Devtools from "@/components/Devtools";
+import GenericServerErrorBoundary from "@/components/GenericServerErrorBoundary";
 import roboto300 from "@fontsource/roboto/300.css?inline";
 import robot400 from "@fontsource/roboto/400.css?inline";
 import roboto500 from "@fontsource/roboto/500.css?inline";
@@ -73,7 +74,9 @@ function RootComponent() {
           adapterLocale={"en-au"}
           dateAdapter={AdapterLuxon}
         >
-          <Outlet />
+          <GenericServerErrorBoundary>
+            <Outlet />
+          </GenericServerErrorBoundary>
           <CssBaseline enableColorScheme />
         </LocalizationProvider>
       </ThemeProvider>
