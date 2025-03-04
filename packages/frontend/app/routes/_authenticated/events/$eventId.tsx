@@ -1,3 +1,4 @@
+import GenericServerErrorBoundary from "@/components/GenericServerErrorBoundary";
 import LinkTabs from "@/components/LinkTabs";
 import type { TabItem } from "@/hooks/useTabIndex";
 import { authQueryOptions } from "@/queries/auth.queries";
@@ -53,7 +54,7 @@ function Component() {
   const defaultTabs = useMemo(() => userTabs(eventId), [eventId]);
 
   return (
-    <>
+    <GenericServerErrorBoundary>
       <Suspense fallback={<EventTitleSkeleton />}>
         <EventTitle />
       </Suspense>
@@ -63,7 +64,7 @@ function Component() {
         <ProfileTabs />
       </Suspense>
       <Outlet />
-    </>
+    </GenericServerErrorBoundary>
   );
 }
 
