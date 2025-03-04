@@ -232,9 +232,7 @@ export async function getParsingRules() {
   const [promisedData, promiseError] = await Promise.all(promisedKronos);
 
   if (promiseError) {
-    if (promiseError instanceof ServerError) {
-      throw promiseError;
-    }
+    if (promiseError instanceof ServerError) throw promiseError;
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error fetching parsing rules from Kronos",
