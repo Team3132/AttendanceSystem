@@ -188,7 +188,10 @@ export async function createParsingRule(
  */
 export async function getParsingRules() {
   const [parsingRules, parsingRulesError] = await trytm(
-    db.query.eventParsingRuleTable.findMany(),
+    db
+      .select()
+      .from(eventParsingRuleTable)
+      .orderBy(asc(eventParsingRuleTable.priority)),
   );
 
   if (parsingRulesError)
