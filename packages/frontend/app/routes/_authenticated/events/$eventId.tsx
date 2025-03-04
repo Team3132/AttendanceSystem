@@ -1,13 +1,17 @@
 import LinkTabs from "@/components/LinkTabs";
+import QueryErrorBoundary from "@/components/QueryErrorBoundary";
 import type { TabItem } from "@/hooks/useTabIndex";
 import { authQueryOptions } from "@/queries/auth.queries";
 import { eventQueryOptions } from "@/queries/events.queries";
-import { Skeleton, Stack, Typography, styled } from "@mui/material";
+import { isServerError } from "@/server";
+import { Button, Skeleton, Stack, Typography, styled } from "@mui/material";
 
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Outlet, createFileRoute } from "@tanstack/react-router";
 import { DateTime } from "luxon";
 import { Suspense, useMemo } from "react";
+import { FaArrowLeft } from "react-icons/fa6";
+import { MdRefresh } from "react-icons/md";
 
 export const Route = createFileRoute("/_authenticated/events/$eventId")({
   loader: ({ context: { queryClient }, params: { eventId } }) => {
@@ -53,7 +57,40 @@ function Component() {
   const defaultTabs = useMemo(() => userTabs(eventId), [eventId]);
 
   return (
-    <>
+    <QueryErrorBoundary
+      fallbackRender={({ resetErrorBoundary, error, handleBack }) => {
+        const errorMessage = isServerError(error)
+          ? error.message
+          : "An error occurred";
+
+        return (
+          <Stack
+            spacing={2}
+            textAlign={"center"}
+            justifyContent={"center"}
+            height={"100%"}
+          >
+            <Typography variant="h5">{errorMessage}</Typography>
+            <Stack spacing={2} direction="row" justifyContent={"center"}>
+              <Button
+                onClick={handleBack}
+                variant="contained"
+                startIcon={<FaArrowLeft />}
+              >
+                Back
+              </Button>
+              <Button
+                onClick={resetErrorBoundary}
+                variant="contained"
+                endIcon={<MdRefresh />}
+              >
+                Retry
+              </Button>
+            </Stack>
+          </Stack>
+        );
+      }}
+    >
       <Suspense fallback={<EventTitleSkeleton />}>
         <EventTitle />
       </Suspense>
@@ -63,7 +100,7 @@ function Component() {
         <ProfileTabs />
       </Suspense>
       <Outlet />
-    </>
+    </QueryErrorBoundary>
   );
 }
 
