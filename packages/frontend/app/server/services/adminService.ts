@@ -229,9 +229,20 @@ export async function getParsingRules() {
     };
   });
 
-  return Promise.allSettled(promisedKronos).then((res) =>
-    res.filter((r) => r.status === "fulfilled").map((r) => r.value),
-  );
+  const [promisedData, promiseError] = await Promise.all(promisedKronos);
+
+  if (promiseError) {
+    if (promiseError instanceof ServerError) {
+      throw promiseError;
+    }
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error fetching parsing rules from Kronos",
+      cause: promiseError,
+    });
+  }
+
+  return promisedData;
 }
 
 /**
