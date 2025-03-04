@@ -229,7 +229,7 @@ export async function getParsingRules() {
     };
   });
 
-  const [promisedData, promiseError] = await Promise.all(promisedKronos);
+  const [promisedData, promiseError] = await trytm(Promise.all(promisedKronos));
 
   if (promiseError) {
     if (promiseError instanceof ServerError) throw promiseError;
