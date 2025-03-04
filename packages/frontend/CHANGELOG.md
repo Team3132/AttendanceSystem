@@ -1,5 +1,11 @@
 # frontend
 
+## 5.7.0
+
+### Minor Changes
+
+- [`74750b0`](https://github.com/Team3132/AttendanceSystem/commit/74750b0f5657141742604518178203151d7a2d2f) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Generic server error boundary
+
 ## 5.6.2
 
 ### Patch Changes
