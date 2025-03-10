@@ -7,7 +7,7 @@
 	"license": "MIT",
 	"private": true,
 	"workspaces": ["packages/*"],
-	"packageManager": "pnpm@9.15.7",
+	"packageManager": "pnpm@9.15.9",
 	"scripts": {
 		"build": "pnpm buildtypes && pnpm run -r build",
 		"buildtypes:bot": "pnpm tsc -b packages/bot",
