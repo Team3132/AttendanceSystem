@@ -33,7 +33,7 @@
 		"express": "4.21.2",
 		"frontend": "workspace:*",
 		"luxon": "3.5.0",
-		"necord": "6.8.7",
+		"necord": "6.8.8",
 		"reflect-metadata": "0.2.2",
 		"rxjs": "7.8.2",
 		"superjson": "2.2.2",
