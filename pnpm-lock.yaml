@@ -196,8 +196,8 @@ importers:
         specifier: 1.9.2
         version: 1.9.2
       cron-validate:
-        specifier: 1.5.0
-        version: 1.5.0
+        specifier: 1.5.2
+        version: 1.5.2
       discord-interactions:
         specifier: 4.1.1
         version: 4.1.1
@@ -3223,8 +3223,8 @@ packages:
     resolution: {integrity: sha512-piICUB6ei4IlTv1+653yq5+KoqfBYmj9bw6LqXoOneTMDXk5nM1qt12mFW1caG3LlJXEKW1Bp0WggEmIfQB34g==}
     engines: {node: '>= 14'}
 
-  cron-validate@1.5.0:
-    resolution: {integrity: sha512-YEMH3oEyDycx/Ojnrt6H+hDqJUGTF9HWELlqrlnUIXWlmpeszORIgRzbNlIA6gb0qHkv/OLq+5w0amuf66TTvg==}
+  cron-validate@1.5.2:
+    resolution: {integrity: sha512-WYyUAgYlaaLCi4gF4tK/by+ky+i82E9H5ekTAOk50GtpSDyBt4HMBTdsjxTGWOCtEygmgm2zMLVD/AszcsmS+w==}
 
   cron@3.5.0:
     resolution: {integrity: sha512-0eYZqCnapmxYcV06uktql93wNWdlTmmBFP2iYz+JPVcQqlyFYcn1lFuIk4R54pkOmE7mcldTAPZv6X5XA4Q46A==}
@@ -8879,7 +8879,7 @@ snapshots:
       crc-32: 1.2.2
       readable-stream: 4.7.0
 
-  cron-validate@1.5.0:
+  cron-validate@1.5.2:
     dependencies:
       yup: 1.6.1
 
