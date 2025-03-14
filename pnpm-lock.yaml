@@ -75,8 +75,8 @@ importers:
         specifier: 3.5.0
         version: 3.5.0
       necord:
-        specifier: 6.8.7
-        version: 6.8.7(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(discord-api-types@0.37.119)(discord.js@14.18.0)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+        specifier: 6.8.8
+        version: 6.8.8(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(discord-api-types@0.37.119)(discord.js@14.18.0)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       reflect-metadata:
         specifier: 0.2.2
         version: 0.2.2
@@ -4446,8 +4446,8 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
-  necord@6.8.7:
-    resolution: {integrity: sha512-aYfXtQXnEwZiXPshHcpKc/fX12QNJX1jNz3+ji3ekXz21N2Fj9fXYOrb5RgE+Yy6nwRAh1YAiCF4QMwkHFpCXw==}
+  necord@6.8.8:
+    resolution: {integrity: sha512-IDJ/wedWZlc6ksXmLSAHx1F5V6jXtbJzpyQ1makTVgZ/OzC93ik7Y6tpXmqpIuIWH+jBdPLRDPAbh3QQFhvMMQ==}
     engines: {node: '>=18', npm: '>=8.6.0'}
     peerDependencies:
       '@nestjs/common': ^10.2.0 || ^11.0.0
@@ -10171,7 +10171,7 @@ snapshots:
 
   nanoid@3.3.8: {}
 
-  necord@6.8.7(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(discord-api-types@0.37.119)(discord.js@14.18.0)(reflect-metadata@0.2.2)(rxjs@7.8.2):
+  necord@6.8.8(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(discord-api-types@0.37.119)(discord.js@14.18.0)(reflect-metadata@0.2.2)(rxjs@7.8.2):
     dependencies:
       '@nestjs/common': 11.0.11(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 11.0.11(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.0.11)(reflect-metadata@0.2.2)(rxjs@7.8.2)
