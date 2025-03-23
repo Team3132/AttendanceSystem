@@ -40,7 +40,7 @@
 		"zod": "3.24.2"
 	},
 	"devDependencies": {
-		"@swc/core": "1.11.11",
+		"@swc/core": "1.11.12",
 		"@types/luxon": "3.4.2",
 		"@types/node": "22.13.11",
 		"typescript": "5.8.2",
