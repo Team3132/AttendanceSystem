@@ -284,8 +284,8 @@ importers:
         specifier: 4.3.4
         version: 4.3.4(vite@6.2.3(@types/node@22.13.14)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))
       drizzle-kit:
-        specifier: 0.30.5
-        version: 0.30.5
+        specifier: 0.30.6
+        version: 0.30.6
       rollup-plugin-visualizer:
         specifier: 5.14.0
         version: 5.14.0(rollup@4.34.9)
@@ -3422,8 +3422,8 @@ packages:
     resolution: {integrity: sha512-IrPdXQsk2BbzvCBGBOTmmSH5SodmqZNt4ERAZDmW4CT+tL8VtvinqywuANaFu4bOMWki16nqf0e4oC0QIaDr/g==}
     engines: {node: '>=10'}
 
-  drizzle-kit@0.30.5:
-    resolution: {integrity: sha512-l6dMSE100u7sDaTbLczibrQZjA35jLsHNqIV+jmhNVO3O8jzM6kywMOmV9uOz9ZVSCMPQhAZEFjL/qDPVrqpUA==}
+  drizzle-kit@0.30.6:
+    resolution: {integrity: sha512-U4wWit0fyZuGuP7iNmRleQyK2V8wCuv57vf5l3MnG4z4fzNTjY/U13M8owyQ5RavqvqxBifWORaR3wIUzlN64g==}
     hasBin: true
 
   drizzle-orm@0.40.0:
@@ -9083,7 +9083,7 @@ snapshots:
 
   dotenv@8.6.0: {}
 
-  drizzle-kit@0.30.5:
+  drizzle-kit@0.30.6:
     dependencies:
       '@drizzle-team/brocli': 0.10.2
       '@esbuild-kit/esm-loader': 2.6.5
