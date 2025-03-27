@@ -83,7 +83,7 @@
 		"@types/react": "19.0.12",
 		"@types/react-dom": "19.0.4",
 		"@vitejs/plugin-react": "4.3.4",
-		"drizzle-kit": "0.30.5",
+		"drizzle-kit": "0.30.6",
 		"rollup-plugin-visualizer": "5.14.0",
 		"tsup": "8.4.0",
 		"typescript": "5.8.2",
