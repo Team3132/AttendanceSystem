@@ -24,7 +24,7 @@
 		"@changesets/cli": "2.28.1",
 		"@types/node": "22.13.14",
 		"knip": "5.46.4",
-		"lefthook": "1.11.5",
+		"lefthook": "1.11.6",
 		"typescript": "5.8.2"
 	}
 }
