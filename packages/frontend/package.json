@@ -79,7 +79,7 @@
 		"@tanstack/router-plugin": "1.114.30",
 		"@trpc/client": "11.0.1",
 		"@trpc/server": "11.0.1",
-		"@types/luxon": "3.4.2",
+		"@types/luxon": "3.6.0",
 		"@types/react": "19.0.12",
 		"@types/react-dom": "19.0.4",
 		"@vitejs/plugin-react": "4.3.4",
