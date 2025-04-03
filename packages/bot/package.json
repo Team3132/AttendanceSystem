@@ -42,7 +42,7 @@
 	"devDependencies": {
 		"@swc/core": "1.11.16",
 		"@types/luxon": "3.6.0",
-		"@types/node": "22.13.17",
+		"@types/node": "22.14.0",
 		"typescript": "5.8.2",
 		"vite": "6.2.4",
 		"tsup": "8.4.0"
