@@ -163,17 +163,17 @@ importers:
         specifier: 5.71.5
         version: 5.71.5(@tanstack/react-query@5.71.5(react@19.1.0))(react@19.1.0)
       '@tanstack/react-router':
-        specifier: 1.114.32
-        version: 1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        specifier: 1.114.34
+        version: 1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@tanstack/react-router-with-query':
-        specifier: 1.114.32
-        version: 1.114.32(@tanstack/react-query@5.71.5(react@19.1.0))(@tanstack/react-router@1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/router-core@1.114.32)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        specifier: 1.114.34
+        version: 1.114.34(@tanstack/react-query@5.71.5(react@19.1.0))(@tanstack/react-router@1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/router-core@1.114.33)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@tanstack/react-start':
-        specifier: 1.114.32
-        version: 1.114.32(@tanstack/react-router@1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/node@22.13.17)(babel-plugin-macros@3.1.0)(db0@0.2.4(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5))(ioredis@5.5.0)(jiti@2.4.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(terser@5.39.0)(tsx@4.19.3)(typescript@5.8.2)(vite@6.2.4(@types/node@22.13.17)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))
+        specifier: 1.114.34
+        version: 1.114.34(@tanstack/react-router@1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/node@22.13.17)(babel-plugin-macros@3.1.0)(db0@0.2.4(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5))(ioredis@5.5.0)(jiti@2.4.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(terser@5.39.0)(tsx@4.19.3)(typescript@5.8.2)(vite@6.2.4(@types/node@22.13.17)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))
       '@tanstack/react-start-client':
-        specifier: 1.114.32
-        version: 1.114.32(@types/node@22.13.17)(db0@0.2.4(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5))(ioredis@5.5.0)(jiti@2.4.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(terser@5.39.0)(tsx@4.19.3)(typescript@5.8.2)
+        specifier: 1.114.34
+        version: 1.114.34(@types/node@22.13.17)(db0@0.2.4(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5))(ioredis@5.5.0)(jiti@2.4.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(terser@5.39.0)(tsx@4.19.3)(typescript@5.8.2)
       '@tanstack/react-table':
         specifier: 8.21.2
         version: 8.21.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -181,14 +181,14 @@ importers:
         specifier: 3.13.6
         version: 3.13.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@tanstack/router-devtools':
-        specifier: 1.114.32
-        version: 1.114.32(@tanstack/react-router@1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/router-core@1.114.32)(csstype@3.1.3)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tiny-invariant@1.3.3)
+        specifier: 1.114.34
+        version: 1.114.34(@tanstack/react-router@1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/router-core@1.114.33)(csstype@3.1.3)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tiny-invariant@1.3.3)
       '@tanstack/table-core':
         specifier: 8.21.2
         version: 8.21.2
       '@tanstack/zod-adapter':
-        specifier: 1.114.32
-        version: 1.114.32(@tanstack/react-router@1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(zod@3.24.2)
+        specifier: 1.114.34
+        version: 1.114.34(@tanstack/react-router@1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(zod@3.24.2)
       '@trpc/server':
         specifier: 11.0.1
         version: 11.0.1(typescript@5.8.2)
@@ -266,8 +266,8 @@ importers:
         specifier: 6.0.0-dev.240424162023-9968b4889d
         version: 6.0.0-dev.240424162023-9968b4889d(@emotion/react@11.14.0(@types/react@19.1.0)(react@19.1.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.1.0)(react@19.1.0))(@types/react@19.1.0)(react@19.1.0))(@mui/material@6.4.10(@emotion/react@11.14.0(@types/react@19.1.0)(react@19.1.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.1.0)(react@19.1.0))(@types/react@19.1.0)(react@19.1.0))(@types/react@19.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/react@19.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@tanstack/router-plugin':
-        specifier: 1.114.32
-        version: 1.114.32(@tanstack/react-router@1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(vite@6.2.4(@types/node@22.13.17)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))
+        specifier: 1.114.34
+        version: 1.114.34(@tanstack/react-router@1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(vite@6.2.4(@types/node@22.13.17)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))
       '@trpc/client':
         specifier: 11.0.1
         version: 11.0.1(@trpc/server@11.0.1(typescript@5.8.2))(typescript@5.8.2)
@@ -2567,16 +2567,16 @@ packages:
     peerDependencies:
       react: ^18 || ^19
 
-  '@tanstack/react-router-devtools@1.114.32':
-    resolution: {integrity: sha512-jsFdM7q0qY9KJAaMl6Np/BBVw65Wgs/NkYrqY3x7+ydB29dRaoBBefqwklC+WzoqTaaV1VaVb0cfqscDkFr+Cw==}
+  '@tanstack/react-router-devtools@1.114.34':
+    resolution: {integrity: sha512-TBSYUitRGu4s0s+NA14tzfXG+KlIApv4oPEGTKv9qBhfmDqAYsxcCzVsncXpNrxC+qBKHkzSJikmgBZNu0e5sQ==}
     engines: {node: '>=12'}
     peerDependencies:
-      '@tanstack/react-router': ^1.114.32
+      '@tanstack/react-router': ^1.114.34
       react: '>=18.0.0 || >=19.0.0'
       react-dom: '>=18.0.0 || >=19.0.0'
 
-  '@tanstack/react-router-with-query@1.114.32':
-    resolution: {integrity: sha512-dcgWVwdR6ufW6vI9J9CUAQB9grbwDd909/CVNEHAps4lbwKw1hQHTCKw8GHJgeJmVcltOc/+VrM5oZ5x7mZwSw==}
+  '@tanstack/react-router-with-query@1.114.34':
+    resolution: {integrity: sha512-Yq46H1/YomWtnGDJV23u6925tbTOxNZQDG1qR52LFMhO3rUII7L8YW8DTD2LSyMepsPBFARSNa7XutBX4GvY9Q==}
     engines: {node: '>=12'}
     peerDependencies:
       '@tanstack/react-query': '>=5.49.2'
@@ -2585,22 +2585,22 @@ packages:
       react: '>=18.0.0 || >=19.0.0'
       react-dom: '>=18.0.0 || >=19.0.0'
 
-  '@tanstack/react-router@1.114.32':
-    resolution: {integrity: sha512-c8WytFGJsg6EbyVTDvWmW0H4kkOPe/VZY6NyDpAOn5D1UgfZlOXFq1oRUy3/C/FChKJfXuPEeaJI1zezt5+waQ==}
+  '@tanstack/react-router@1.114.34':
+    resolution: {integrity: sha512-J2HOgnhc5AY31Y5cVMkWJRDw6rdZiRx2heLCNtxDnIXVKvK/hc3rKLPUEqqTS9VoPW8P+aSK3f7ggPtkrtn06A==}
     engines: {node: '>=12'}
     peerDependencies:
       react: '>=18.0.0 || >=19.0.0'
       react-dom: '>=18.0.0 || >=19.0.0'
 
-  '@tanstack/react-start-client@1.114.32':
-    resolution: {integrity: sha512-KVkWB4TfaVPQ8o42ZJ0QC14kVbGoY8VgAm+XvXDFMHgPgRL83IkBiyo/KsK6yE1OMbFrCLprK5+QzIhwWbqceg==}
+  '@tanstack/react-start-client@1.114.34':
+    resolution: {integrity: sha512-OB5QZEkZqL5VmA5l/narCBu0U0Cb0CkXTJS9w6DhBDZnD+7R6zGTgPpmdn8n6mrkgOlE2CxLFVOc4N5d5cP4Kw==}
     engines: {node: '>=12'}
     peerDependencies:
       react: '>=18.0.0 || >=19.0.0'
       react-dom: '>=18.0.0 || >=19.0.0'
 
-  '@tanstack/react-start-config@1.114.32':
-    resolution: {integrity: sha512-WjKyrCzndSwOs0AXteeJB5YXWUvG24aYTttL0ouNmSkt7CB60ZJ1Gm7vYx//DCvH1N+oxRodemuVDKo9BNKO4w==}
+  '@tanstack/react-start-config@1.114.34':
+    resolution: {integrity: sha512-P7K3Iupbf7+lVeie7TEyn1Q6c+sWwHCgGmyUITA7Agol8U/BtTSVUX5Sfo1RIlOgYNveB+7eGU0+gCS3RE1W3g==}
     engines: {node: '>=12'}
     peerDependencies:
       react: '>=18.0.0 || >=19.0.0'
@@ -2611,19 +2611,19 @@ packages:
     resolution: {integrity: sha512-sOHCeXGDgKQ1ECLjCsfD7uG5PE5PlYC9pFkX7G1p91ktO7Ds3Q85VVNGpF+N549b3VnDSVfd9vlAV4F7SrkxgQ==}
     engines: {node: '>=12'}
 
-  '@tanstack/react-start-router-manifest@1.114.32':
-    resolution: {integrity: sha512-a71w8Z5KEs+N0FOfyfTXytOEToIlgaQTSkmzBJ5HqyilNTGPve/3dXVEpyRswuXQtOBqjy/xmeRrh9gYfUcbTA==}
+  '@tanstack/react-start-router-manifest@1.114.33':
+    resolution: {integrity: sha512-b4Dc7DYCy3peMUNu2F+CaiUpMdqpHw2qwJC5PqFOMVwaSD+V4n4XReCEn8Y+nsstNFHIzJ5gKouH/jAOk/GJAg==}
     engines: {node: '>=12'}
 
-  '@tanstack/react-start-server@1.114.32':
-    resolution: {integrity: sha512-7Kg9ymian8cdhh1MiJcjrtNyvAnJskGmjTB8TrtJEJus+uykxLiYUvije0KUUa18uitHxYJTAMEhtZRh30AdLQ==}
+  '@tanstack/react-start-server@1.114.34':
+    resolution: {integrity: sha512-XC7ns/Bnh7FxbPnGX0ayG27xXWppfV7BktnXskQP8tQ0sGkScdh6E7Uy3NysE72noeikZPLBxiT+e/dR5RYvZQ==}
     engines: {node: '>=12'}
     peerDependencies:
       react: '>=18.0.0 || >=19.0.0'
       react-dom: '>=18.0.0 || >=19.0.0'
 
-  '@tanstack/react-start@1.114.32':
-    resolution: {integrity: sha512-2NZx7am52aJUTDLGYCiwgWQqFWdGUbHsQyEOtUS004UrXXEpqAwu1u9fK+4pQKv2uVq6as3trzaq/TYVIl/wxA==}
+  '@tanstack/react-start@1.114.34':
+    resolution: {integrity: sha512-xPK0oqlXJS1QsvX/bEovrC35s7IVmr9nsIMlrfSb8M1Jtas5dkL6WgpUn72Qw0rw6PXDnTNwffd+9am9eEX6vQ==}
     engines: {node: '>=12'}
     peerDependencies:
       react: '>=18.0.0 || >=19.0.0'
@@ -2649,15 +2649,15 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
-  '@tanstack/router-core@1.114.32':
-    resolution: {integrity: sha512-MFHLPMvxCWUKT23xh/lgPTldJUkn1tVSyhwIaxNZBG3yfLv0kY2aGvkMSa7uVTgD1fkGEdDBTXjpsxUSATUlzA==}
+  '@tanstack/router-core@1.114.33':
+    resolution: {integrity: sha512-jSBo7R+oat3k///Q4XpgNp9sVveQdjdmju5a7u2ibi8V/qPXEAaaYh57vMXvIOpE3ZDDLPYLjWPAf+SvHV8JeA==}
     engines: {node: '>=12'}
 
-  '@tanstack/router-devtools-core@1.114.32':
-    resolution: {integrity: sha512-HmvV48+M7TymODsAsrJdLTM/cQ/4YoP89HIwCvAoCmu9UEWzQUuxedPS3Ri+eF9gBzBkGQF9oGzFbi/gPJYxoQ==}
+  '@tanstack/router-devtools-core@1.114.33':
+    resolution: {integrity: sha512-BXSPVwhet2edTYF+Td+38AvUQTyFnv9WYF5QMUP3ODO8nx9BLvV7ABPfgUL77xvfdXFSYDLgOno1Ep+jkNmeqw==}
     engines: {node: '>=12'}
     peerDependencies:
-      '@tanstack/router-core': ^1.114.32
+      '@tanstack/router-core': ^1.114.33
       csstype: ^3.0.10
       solid-js: '>=1.9.5'
       tiny-invariant: ^1.3.3
@@ -2665,11 +2665,11 @@ packages:
       csstype:
         optional: true
 
-  '@tanstack/router-devtools@1.114.32':
-    resolution: {integrity: sha512-Iua/qCRuybQhKXX0wYj1eXYkIqgPMaSgdv0K4Ssc+lMQgdGl1Bt5WRjtH8Fvwzkfr4jIa0M6k3GpnLVXdfUXpA==}
+  '@tanstack/router-devtools@1.114.34':
+    resolution: {integrity: sha512-lu3qC8ZpunGg5nFCvbz8/evbDqvkL7X5133kwgfog7fb/lIhs+4NMe/+MWtqm5kJnvnylYV+2ETwDBKZ/oZ0bw==}
     engines: {node: '>=12'}
     peerDependencies:
-      '@tanstack/react-router': ^1.114.32
+      '@tanstack/react-router': ^1.114.34
       csstype: ^3.0.10
       react: '>=18.0.0 || >=19.0.0'
       react-dom: '>=18.0.0 || >=19.0.0'
@@ -2677,21 +2677,21 @@ packages:
       csstype:
         optional: true
 
-  '@tanstack/router-generator@1.114.32':
-    resolution: {integrity: sha512-rhLK2xeHqM+t7dbqAmeMBMftCE4LmtAz4v5AMtOl8xFJ06x4HZKKCX+vlAoOjbmf7zLcjWX3z1iGxX6ILH1W8A==}
+  '@tanstack/router-generator@1.114.34':
+    resolution: {integrity: sha512-+lBA2LAoffzBaGHWKT/YeEgwN/aUZMIhbtsbifLsqGIyKmXXbg+U/CQz8uO5Nqv4m36SmhjevOoVUxkPZbEPDg==}
     engines: {node: '>=12'}
     peerDependencies:
-      '@tanstack/react-router': ^1.114.32
+      '@tanstack/react-router': ^1.114.34
     peerDependenciesMeta:
       '@tanstack/react-router':
         optional: true
 
-  '@tanstack/router-plugin@1.114.32':
-    resolution: {integrity: sha512-6eSn23JsB+wXvGVT6s+4wnaeXxKByekIu58wXcVfWlhb+cKZAcyGaKR67CuXOeQS4Kjv7sPbluDqkUUQRIG+5Q==}
+  '@tanstack/router-plugin@1.114.34':
+    resolution: {integrity: sha512-G3OxypoRnijDKIlCJkJ29+Zq2b050nqDCbhZYz2yMIvfzYB2BnKLpJSHmQuT9AEiM5drrUgL5WdGlUcRU3tNxg==}
     engines: {node: '>=12'}
     peerDependencies:
       '@rsbuild/core': '>=1.0.2'
-      '@tanstack/react-router': ^1.114.32
+      '@tanstack/react-router': ^1.114.34
       vite: '>=5.0.0 || >=6.0.0'
       vite-plugin-solid: ^2.11.2
       webpack: '>=5.92.0'
@@ -2715,36 +2715,36 @@ packages:
     resolution: {integrity: sha512-l4RonnJM8gOLeyzThSEd/ZTDhrMGQGm9ZdXtmoLPF17L6Z6neJkNmfYSvVXPPUpL9aQOVncAR0OWDgZgsxIjFw==}
     engines: {node: '>=12'}
 
-  '@tanstack/start-api-routes@1.114.32':
-    resolution: {integrity: sha512-xxe90DoMLMtEWsGa3PG984j76+BGN//RAFtUSzSQlNImsU6zaiMaFuQBHYxQJUOBQF5iJKULI5F5U1zNMTy0RQ==}
+  '@tanstack/start-api-routes@1.114.33':
+    resolution: {integrity: sha512-rPqnYK5HrPnAWQ0NyBUHj0AOniZn+nIaxD/69FQC3U2KGsdFv9kbk2uQNgDypokix+/1Lijv/qO4ZAcL6H7FQQ==}
     engines: {node: '>=12'}
 
-  '@tanstack/start-client-core@1.114.32':
-    resolution: {integrity: sha512-39xDVmtlgVL4AMrkHplz5+GDBWwspFtkgr9AmHrhjru97I+PxjxQPRbeOXrfgdTl8QflqROGNGHc8xfV6YCUsg==}
+  '@tanstack/start-client-core@1.114.33':
+    resolution: {integrity: sha512-d3cYO0zCC+UpEs/mdPobjdAgXaAQkFqAbQXNUX9Hbr4RhcikmFQvnaXMGCXex0iL2vJN3Lc1nEvGzWuOSlSD3Q==}
     engines: {node: '>=12'}
 
-  '@tanstack/start-server-core@1.114.32':
-    resolution: {integrity: sha512-F2MVMzinjQHwuqb6cdKtQHwYVw3kCxFPE+cnqNMrHp+wRmnRduhpO37k9CwLj5Rg1AObxbUUh6+/wD+3Wg66fw==}
+  '@tanstack/start-server-core@1.114.33':
+    resolution: {integrity: sha512-fPtd9zhQT1QsfeffWu1QQSS5Bbt2Mh8/Ufg9mrP84Jx3U5EumZ0tpz1k0PvnWF4Bnu5NWuMUMRHUtD1pUJu6AQ==}
     engines: {node: '>=12'}
 
-  '@tanstack/start-server-functions-client@1.114.32':
-    resolution: {integrity: sha512-kRKeOOfVIWnOSnWQUedY6Y8rXXj6pTCGhRcVRIw0cBR0xfNS8HF8up7VxkuabIuhLg4Hn94HZuDlJG38i/QRaw==}
+  '@tanstack/start-server-functions-client@1.114.33':
+    resolution: {integrity: sha512-37DSyfum6RYtrXR3+mmXuYBEjcdUPlVpog6PuZDlowVJsuejfH1ueNZbn3RpPH+ioxHTGoeaWXFsnQZ/9MyAMg==}
     engines: {node: '>=12'}
 
-  '@tanstack/start-server-functions-fetcher@1.114.32':
-    resolution: {integrity: sha512-VCfDcYOlgnb8hOySUCQ0euSvszsEew3h4XBNlp7tacW3zkcLm99RLexbTMKbIgIcP0U1YekX1ZxWGStROGNYDw==}
+  '@tanstack/start-server-functions-fetcher@1.114.33':
+    resolution: {integrity: sha512-xPNGJGcKWBIGa78UK3SLNj3FA4iI6vuusD1pmE+Pjt9eaLDu4e5bdeqhq0Q9y5lqpSw9ykyy2S4qFI1WtYXfQg==}
     engines: {node: '>=12'}
 
-  '@tanstack/start-server-functions-handler@1.114.32':
-    resolution: {integrity: sha512-2Dv+AHMHABZH97mlUgbUGIdsl55AT02HI3i0E7hWYp/yvk4xA1UTV4dMO7BWPtd0GVO5h51lcUvCzEADWr7d1A==}
+  '@tanstack/start-server-functions-handler@1.114.33':
+    resolution: {integrity: sha512-b4iCspTrisfdfSN95xKIXRHSPUryQOp6r+2+jPNU3WlpyAKdYR8egZNJ/p1L4kmgb3zLopsLe9C6qcIEcOxR1A==}
     engines: {node: '>=12'}
 
   '@tanstack/start-server-functions-server@1.114.32':
     resolution: {integrity: sha512-xsUpoCsjRx7F8y6HnowMNJ1K0vjxFMCBwAeQfa1M9mraXKGDIUr5tpz4Z1KIv7fW52EHGakXHe34IfYCtTvNVw==}
     engines: {node: '>=12'}
 
-  '@tanstack/start-server-functions-ssr@1.114.32':
-    resolution: {integrity: sha512-bIjgR+GEzr4Rp268PKwMZwURhuG/OuJs4yq3neJgSFLBZZYUmNCwK8jywwbZe50OjwT4T2rfA/IbCwl7LpDksg==}
+  '@tanstack/start-server-functions-ssr@1.114.33':
+    resolution: {integrity: sha512-XEmQGhXRkMXNVIUpMIe2kaD7gR9idiWSDOpfx/dK/yeZM2cL0fliMirLe9B3xxpr7NeEF48PcSGB244C6TAgrw==}
     engines: {node: '>=12'}
 
   '@tanstack/store@0.7.0':
@@ -2761,8 +2761,8 @@ packages:
     resolution: {integrity: sha512-DufKsQy/qxDpOTiggJCgshhJkpSyUygwHHfl2LA66CXOf3aUjZtlNu4io1UpmJNf8C/9lVlGARhkoq5fTRRk0w==}
     engines: {node: '>=12'}
 
-  '@tanstack/zod-adapter@1.114.32':
-    resolution: {integrity: sha512-dzybkvGDABHfnu2fek2ROIoOvJVgs+Y/zHx+cuiWaOJX+uI3ac503DFDbfoAR6VI/jDKoA3uXC4/5uJLTnDJyg==}
+  '@tanstack/zod-adapter@1.114.34':
+    resolution: {integrity: sha512-Lgj1vN5tvFF/UMiCkXAXXPYZGo4FLFnrNFSiskEk2yv+1FIqkM23oPkq/rYuT3ADyEg+88//dm1EL53dBYYywg==}
     engines: {node: '>=12'}
     peerDependencies:
       '@tanstack/react-router': '>=1.43.2'
@@ -7855,10 +7855,10 @@ snapshots:
       '@tanstack/query-core': 5.71.5
       react: 19.1.0
 
-  '@tanstack/react-router-devtools@1.114.32(@tanstack/react-router@1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/router-core@1.114.32)(csstype@3.1.3)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tiny-invariant@1.3.3)':
+  '@tanstack/react-router-devtools@1.114.34(@tanstack/react-router@1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/router-core@1.114.33)(csstype@3.1.3)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tiny-invariant@1.3.3)':
     dependencies:
-      '@tanstack/react-router': 1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@tanstack/router-devtools-core': 1.114.32(@tanstack/router-core@1.114.32)(csstype@3.1.3)(solid-js@1.9.5)(tiny-invariant@1.3.3)
+      '@tanstack/react-router': 1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@tanstack/router-devtools-core': 1.114.33(@tanstack/router-core@1.114.33)(csstype@3.1.3)(solid-js@1.9.5)(tiny-invariant@1.3.3)
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
       solid-js: 1.9.5
@@ -7867,30 +7867,30 @@ snapshots:
       - csstype
       - tiny-invariant
 
-  '@tanstack/react-router-with-query@1.114.32(@tanstack/react-query@5.71.5(react@19.1.0))(@tanstack/react-router@1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/router-core@1.114.32)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@tanstack/react-router-with-query@1.114.34(@tanstack/react-query@5.71.5(react@19.1.0))(@tanstack/react-router@1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/router-core@1.114.33)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@tanstack/react-query': 5.71.5(react@19.1.0)
-      '@tanstack/react-router': 1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@tanstack/router-core': 1.114.32
+      '@tanstack/react-router': 1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@tanstack/router-core': 1.114.33
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
 
-  '@tanstack/react-router@1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@tanstack/react-router@1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@tanstack/history': 1.114.29
       '@tanstack/react-store': 0.7.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@tanstack/router-core': 1.114.32
+      '@tanstack/router-core': 1.114.33
       jsesc: 3.1.0
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
       tiny-invariant: 1.3.3
       tiny-warning: 1.0.3
 
-  '@tanstack/react-start-client@1.114.32(@types/node@22.13.17)(db0@0.2.4(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5))(ioredis@5.5.0)(jiti@2.4.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(terser@5.39.0)(tsx@4.19.3)(typescript@5.8.2)':
+  '@tanstack/react-start-client@1.114.34(@types/node@22.13.17)(db0@0.2.4(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5))(ioredis@5.5.0)(jiti@2.4.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(terser@5.39.0)(tsx@4.19.3)(typescript@5.8.2)':
     dependencies:
-      '@tanstack/react-router': 1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@tanstack/router-core': 1.114.32
-      '@tanstack/start-client-core': 1.114.32
+      '@tanstack/react-router': 1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@tanstack/router-core': 1.114.33
+      '@tanstack/start-client-core': 1.114.33
       cookie-es: 1.2.2
       jsesc: 3.1.0
       react: 19.1.0
@@ -7941,14 +7941,14 @@ snapshots:
       - xml2js
       - yaml
 
-  '@tanstack/react-start-config@1.114.32(@tanstack/react-router@1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/node@22.13.17)(babel-plugin-macros@3.1.0)(db0@0.2.4(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5))(ioredis@5.5.0)(jiti@2.4.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(terser@5.39.0)(tsx@4.19.3)(typescript@5.8.2)(vite@6.2.4(@types/node@22.13.17)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))':
+  '@tanstack/react-start-config@1.114.34(@tanstack/react-router@1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/node@22.13.17)(babel-plugin-macros@3.1.0)(db0@0.2.4(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5))(ioredis@5.5.0)(jiti@2.4.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(terser@5.39.0)(tsx@4.19.3)(typescript@5.8.2)(vite@6.2.4(@types/node@22.13.17)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))':
     dependencies:
       '@tanstack/react-start-plugin': 1.114.32(@types/node@22.13.17)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)
-      '@tanstack/router-core': 1.114.32
-      '@tanstack/router-generator': 1.114.32(@tanstack/react-router@1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
-      '@tanstack/router-plugin': 1.114.32(@tanstack/react-router@1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(vite@6.2.4(@types/node@22.13.17)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))
+      '@tanstack/router-core': 1.114.33
+      '@tanstack/router-generator': 1.114.34(@tanstack/react-router@1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+      '@tanstack/router-plugin': 1.114.34(@tanstack/react-router@1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(vite@6.2.4(@types/node@22.13.17)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))
       '@tanstack/server-functions-plugin': 1.114.32(@types/node@22.13.17)(babel-plugin-macros@3.1.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)
-      '@tanstack/start-server-functions-handler': 1.114.32
+      '@tanstack/start-server-functions-handler': 1.114.33
       '@vitejs/plugin-react': 4.3.4(vite@6.2.4(@types/node@22.13.17)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))
       import-meta-resolve: 4.1.0
       nitropack: 2.10.4(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5))(typescript@5.8.2)
@@ -8033,9 +8033,9 @@ snapshots:
       - tsx
       - yaml
 
-  '@tanstack/react-start-router-manifest@1.114.32(@types/node@22.13.17)(db0@0.2.4(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5))(ioredis@5.5.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)(typescript@5.8.2)':
+  '@tanstack/react-start-router-manifest@1.114.33(@types/node@22.13.17)(db0@0.2.4(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5))(ioredis@5.5.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)(typescript@5.8.2)':
     dependencies:
-      '@tanstack/router-core': 1.114.32
+      '@tanstack/router-core': 1.114.33
       tiny-invariant: 1.3.3
       vinxi: 0.5.3(@types/node@22.13.17)(db0@0.2.4(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5))(ioredis@5.5.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)(typescript@5.8.2)
     transitivePeerDependencies:
@@ -8081,13 +8081,13 @@ snapshots:
       - xml2js
       - yaml
 
-  '@tanstack/react-start-server@1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@tanstack/react-start-server@1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@tanstack/history': 1.114.29
-      '@tanstack/react-router': 1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@tanstack/router-core': 1.114.32
-      '@tanstack/start-client-core': 1.114.32
-      '@tanstack/start-server-core': 1.114.32
+      '@tanstack/react-router': 1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@tanstack/router-core': 1.114.33
+      '@tanstack/start-client-core': 1.114.33
+      '@tanstack/start-server-core': 1.114.33
       h3: 1.13.0
       isbot: 5.1.23
       jsesc: 3.1.0
@@ -8096,17 +8096,17 @@ snapshots:
       tiny-warning: 1.0.3
       unctx: 2.4.1
 
-  '@tanstack/react-start@1.114.32(@tanstack/react-router@1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/node@22.13.17)(babel-plugin-macros@3.1.0)(db0@0.2.4(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5))(ioredis@5.5.0)(jiti@2.4.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(terser@5.39.0)(tsx@4.19.3)(typescript@5.8.2)(vite@6.2.4(@types/node@22.13.17)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))':
+  '@tanstack/react-start@1.114.34(@tanstack/react-router@1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/node@22.13.17)(babel-plugin-macros@3.1.0)(db0@0.2.4(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5))(ioredis@5.5.0)(jiti@2.4.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(terser@5.39.0)(tsx@4.19.3)(typescript@5.8.2)(vite@6.2.4(@types/node@22.13.17)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))':
     dependencies:
-      '@tanstack/react-start-client': 1.114.32(@types/node@22.13.17)(db0@0.2.4(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5))(ioredis@5.5.0)(jiti@2.4.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(terser@5.39.0)(tsx@4.19.3)(typescript@5.8.2)
-      '@tanstack/react-start-config': 1.114.32(@tanstack/react-router@1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/node@22.13.17)(babel-plugin-macros@3.1.0)(db0@0.2.4(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5))(ioredis@5.5.0)(jiti@2.4.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(terser@5.39.0)(tsx@4.19.3)(typescript@5.8.2)(vite@6.2.4(@types/node@22.13.17)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))
-      '@tanstack/react-start-router-manifest': 1.114.32(@types/node@22.13.17)(db0@0.2.4(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5))(ioredis@5.5.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)(typescript@5.8.2)
-      '@tanstack/react-start-server': 1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@tanstack/start-api-routes': 1.114.32(@types/node@22.13.17)(db0@0.2.4(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5))(ioredis@5.5.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)(typescript@5.8.2)
-      '@tanstack/start-server-functions-client': 1.114.32(@types/node@22.13.17)(babel-plugin-macros@3.1.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)
-      '@tanstack/start-server-functions-handler': 1.114.32
+      '@tanstack/react-start-client': 1.114.34(@types/node@22.13.17)(db0@0.2.4(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5))(ioredis@5.5.0)(jiti@2.4.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(terser@5.39.0)(tsx@4.19.3)(typescript@5.8.2)
+      '@tanstack/react-start-config': 1.114.34(@tanstack/react-router@1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/node@22.13.17)(babel-plugin-macros@3.1.0)(db0@0.2.4(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5))(ioredis@5.5.0)(jiti@2.4.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(terser@5.39.0)(tsx@4.19.3)(typescript@5.8.2)(vite@6.2.4(@types/node@22.13.17)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))
+      '@tanstack/react-start-router-manifest': 1.114.33(@types/node@22.13.17)(db0@0.2.4(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5))(ioredis@5.5.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)(typescript@5.8.2)
+      '@tanstack/react-start-server': 1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@tanstack/start-api-routes': 1.114.33(@types/node@22.13.17)(db0@0.2.4(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5))(ioredis@5.5.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)(typescript@5.8.2)
+      '@tanstack/start-server-functions-client': 1.114.33(@types/node@22.13.17)(babel-plugin-macros@3.1.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)
+      '@tanstack/start-server-functions-handler': 1.114.33
       '@tanstack/start-server-functions-server': 1.114.32(@types/node@22.13.17)(babel-plugin-macros@3.1.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)
-      '@tanstack/start-server-functions-ssr': 1.114.32(@types/node@22.13.17)(babel-plugin-macros@3.1.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)
+      '@tanstack/start-server-functions-ssr': 1.114.33(@types/node@22.13.17)(babel-plugin-macros@3.1.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
       vite: 6.2.4(@types/node@22.13.17)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)
@@ -8177,15 +8177,15 @@ snapshots:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
 
-  '@tanstack/router-core@1.114.32':
+  '@tanstack/router-core@1.114.33':
     dependencies:
       '@tanstack/history': 1.114.29
       '@tanstack/store': 0.7.0
       tiny-invariant: 1.3.3
 
-  '@tanstack/router-devtools-core@1.114.32(@tanstack/router-core@1.114.32)(csstype@3.1.3)(solid-js@1.9.5)(tiny-invariant@1.3.3)':
+  '@tanstack/router-devtools-core@1.114.33(@tanstack/router-core@1.114.33)(csstype@3.1.3)(solid-js@1.9.5)(tiny-invariant@1.3.3)':
     dependencies:
-      '@tanstack/router-core': 1.114.32
+      '@tanstack/router-core': 1.114.33
       clsx: 2.1.1
       goober: 2.1.16(csstype@3.1.3)
       solid-js: 1.9.5
@@ -8193,10 +8193,10 @@ snapshots:
     optionalDependencies:
       csstype: 3.1.3
 
-  '@tanstack/router-devtools@1.114.32(@tanstack/react-router@1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/router-core@1.114.32)(csstype@3.1.3)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tiny-invariant@1.3.3)':
+  '@tanstack/router-devtools@1.114.34(@tanstack/react-router@1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/router-core@1.114.33)(csstype@3.1.3)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tiny-invariant@1.3.3)':
     dependencies:
-      '@tanstack/react-router': 1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@tanstack/react-router-devtools': 1.114.32(@tanstack/react-router@1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/router-core@1.114.32)(csstype@3.1.3)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tiny-invariant@1.3.3)
+      '@tanstack/react-router': 1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@tanstack/react-router-devtools': 1.114.34(@tanstack/react-router@1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/router-core@1.114.33)(csstype@3.1.3)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tiny-invariant@1.3.3)
       clsx: 2.1.1
       goober: 2.1.16(csstype@3.1.3)
       react: 19.1.0
@@ -8207,16 +8207,16 @@ snapshots:
       - '@tanstack/router-core'
       - tiny-invariant
 
-  '@tanstack/router-generator@1.114.32(@tanstack/react-router@1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0))':
+  '@tanstack/router-generator@1.114.34(@tanstack/react-router@1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0))':
     dependencies:
       '@tanstack/virtual-file-routes': 1.114.29
       prettier: 3.5.3
       tsx: 4.19.3
       zod: 3.24.2
     optionalDependencies:
-      '@tanstack/react-router': 1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@tanstack/react-router': 1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
-  '@tanstack/router-plugin@1.114.32(@tanstack/react-router@1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(vite@6.2.4(@types/node@22.13.17)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))':
+  '@tanstack/router-plugin@1.114.34(@tanstack/react-router@1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(vite@6.2.4(@types/node@22.13.17)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))':
     dependencies:
       '@babel/core': 7.26.9
       '@babel/plugin-syntax-jsx': 7.25.9(@babel/core@7.26.9)
@@ -8224,8 +8224,8 @@ snapshots:
       '@babel/template': 7.26.9
       '@babel/traverse': 7.26.9
       '@babel/types': 7.26.9
-      '@tanstack/router-core': 1.114.32
-      '@tanstack/router-generator': 1.114.32(@tanstack/react-router@1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+      '@tanstack/router-core': 1.114.33
+      '@tanstack/router-generator': 1.114.34(@tanstack/react-router@1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       '@tanstack/router-utils': 1.114.29
       '@tanstack/virtual-file-routes': 1.114.29
       '@types/babel__core': 7.20.5
@@ -8236,7 +8236,7 @@ snapshots:
       unplugin: 2.2.0
       zod: 3.24.2
     optionalDependencies:
-      '@tanstack/react-router': 1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@tanstack/react-router': 1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       vite: 6.2.4(@types/node@22.13.17)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)
     transitivePeerDependencies:
       - supports-color
@@ -8276,10 +8276,10 @@ snapshots:
       - tsx
       - yaml
 
-  '@tanstack/start-api-routes@1.114.32(@types/node@22.13.17)(db0@0.2.4(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5))(ioredis@5.5.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)(typescript@5.8.2)':
+  '@tanstack/start-api-routes@1.114.33(@types/node@22.13.17)(db0@0.2.4(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5))(ioredis@5.5.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)(typescript@5.8.2)':
     dependencies:
-      '@tanstack/router-core': 1.114.32
-      '@tanstack/start-server-core': 1.114.32
+      '@tanstack/router-core': 1.114.33
+      '@tanstack/start-server-core': 1.114.33
       vinxi: 0.5.3(@types/node@22.13.17)(db0@0.2.4(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.14.0)(postgres@3.4.5))(ioredis@5.5.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)(typescript@5.8.2)
     transitivePeerDependencies:
       - '@azure/app-configuration'
@@ -8324,28 +8324,28 @@ snapshots:
       - xml2js
       - yaml
 
-  '@tanstack/start-client-core@1.114.32':
+  '@tanstack/start-client-core@1.114.33':
     dependencies:
-      '@tanstack/router-core': 1.114.32
+      '@tanstack/router-core': 1.114.33
       cookie-es: 1.2.2
       tiny-invariant: 1.3.3
       tiny-warning: 1.0.3
 
-  '@tanstack/start-server-core@1.114.32':
+  '@tanstack/start-server-core@1.114.33':
     dependencies:
       '@tanstack/history': 1.114.29
-      '@tanstack/router-core': 1.114.32
-      '@tanstack/start-client-core': 1.114.32
+      '@tanstack/router-core': 1.114.33
+      '@tanstack/start-client-core': 1.114.33
       h3: 1.13.0
       isbot: 5.1.23
       jsesc: 3.1.0
       tiny-warning: 1.0.3
       unctx: 2.4.1
 
-  '@tanstack/start-server-functions-client@1.114.32(@types/node@22.13.17)(babel-plugin-macros@3.1.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)':
+  '@tanstack/start-server-functions-client@1.114.33(@types/node@22.13.17)(babel-plugin-macros@3.1.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)':
     dependencies:
       '@tanstack/server-functions-plugin': 1.114.32(@types/node@22.13.17)(babel-plugin-macros@3.1.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)
-      '@tanstack/start-server-functions-fetcher': 1.114.32
+      '@tanstack/start-server-functions-fetcher': 1.114.33
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -8361,16 +8361,16 @@ snapshots:
       - tsx
       - yaml
 
-  '@tanstack/start-server-functions-fetcher@1.114.32':
+  '@tanstack/start-server-functions-fetcher@1.114.33':
     dependencies:
-      '@tanstack/router-core': 1.114.32
-      '@tanstack/start-client-core': 1.114.32
+      '@tanstack/router-core': 1.114.33
+      '@tanstack/start-client-core': 1.114.33
 
-  '@tanstack/start-server-functions-handler@1.114.32':
+  '@tanstack/start-server-functions-handler@1.114.33':
     dependencies:
-      '@tanstack/router-core': 1.114.32
-      '@tanstack/start-client-core': 1.114.32
-      '@tanstack/start-server-core': 1.114.32
+      '@tanstack/router-core': 1.114.33
+      '@tanstack/start-client-core': 1.114.33
+      '@tanstack/start-server-core': 1.114.33
       tiny-invariant: 1.3.3
 
   '@tanstack/start-server-functions-server@1.114.32(@types/node@22.13.17)(babel-plugin-macros@3.1.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)':
@@ -8392,12 +8392,12 @@ snapshots:
       - tsx
       - yaml
 
-  '@tanstack/start-server-functions-ssr@1.114.32(@types/node@22.13.17)(babel-plugin-macros@3.1.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)':
+  '@tanstack/start-server-functions-ssr@1.114.33(@types/node@22.13.17)(babel-plugin-macros@3.1.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)':
     dependencies:
       '@tanstack/server-functions-plugin': 1.114.32(@types/node@22.13.17)(babel-plugin-macros@3.1.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)
-      '@tanstack/start-client-core': 1.114.32
-      '@tanstack/start-server-core': 1.114.32
-      '@tanstack/start-server-functions-fetcher': 1.114.32
+      '@tanstack/start-client-core': 1.114.33
+      '@tanstack/start-server-core': 1.114.33
+      '@tanstack/start-server-functions-fetcher': 1.114.33
       tiny-invariant: 1.3.3
     transitivePeerDependencies:
       - '@types/node'
@@ -8422,9 +8422,9 @@ snapshots:
 
   '@tanstack/virtual-file-routes@1.114.29': {}
 
-  '@tanstack/zod-adapter@1.114.32(@tanstack/react-router@1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(zod@3.24.2)':
+  '@tanstack/zod-adapter@1.114.34(@tanstack/react-router@1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(zod@3.24.2)':
     dependencies:
-      '@tanstack/react-router': 1.114.32(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@tanstack/react-router': 1.114.34(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       zod: 3.24.2
 
   '@trpc/client@11.0.1(@trpc/server@11.0.1(typescript@5.8.2))(typescript@5.8.2)':
