@@ -19,10 +19,10 @@
 		"dist-ts"
 	],
 	"dependencies": {
-		"@nestjs/common": "11.0.13",
+		"@nestjs/common": "11.0.14",
 		"@nestjs/config": "4.0.2",
-		"@nestjs/core": "11.0.13",
-		"@nestjs/platform-express": "11.0.13",
+		"@nestjs/core": "11.0.14",
+		"@nestjs/platform-express": "11.0.14",
 		"@nestjs/schedule": "5.0.1",
 		"@sentry/node": "9.12.0",
 		"@trpc/client": "11.0.4",
