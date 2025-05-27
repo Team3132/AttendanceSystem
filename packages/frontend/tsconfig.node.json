@@ -4,8 +4,7 @@
 	"include": [
 		"vite.config.ts",
 		"tsup.config.ts",
-		"app.config.ts",
 		"drizzle.config.ts",
-		"app/server/env.ts"
+		"src/server/env.ts"
 	]
 }

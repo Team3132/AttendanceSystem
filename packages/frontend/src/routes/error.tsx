@@ -1,0 +1,17 @@
+import { fallback } from "@tanstack/zod-adapter";
+import { z } from "zod";
+
+const SerializableErrorSchema = z.object({
+  message: fallback(z.string(), "Unknown error").default("Unknown error"),
+  stack: fallback(z.string().optional(), undefined),
+});
+
+export const Route = createFileRoute({
+  validateSearch: SerializableErrorSchema,
+  component: RouteComponent,
+});
+
+function RouteComponent() {
+  const { message } = Route.useSearch();
+  return <div>{message}</div>;
+}

@@ -4,12 +4,12 @@
 		"lib": ["ES2023", "DOM", "DOM.Iterable"],
 		"jsx": "react-jsx",
 		/* Linting */
-		"baseUrl": "app",
+		"baseUrl": "src",
 		"moduleResolution": "bundler",
 		"paths": {
 			"@/*": ["./*"]
 		},
 		"outDir": "./dist-ts"
 	},
-	"include": ["app"]
+	"include": ["src"]
 }
