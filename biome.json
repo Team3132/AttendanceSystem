@@ -8,7 +8,7 @@
 	"files": {
 		"ignoreUnknown": false,
 		"ignore": [
-			"./packages/frontend/app/routeTree.gen.ts",
+			"./packages/frontend/src/routeTree.gen.ts",
 			"./packages/frontend/package.json",
 			"./packages/bot/package.json",
 			"./packages/frontend/.output/**",
@@ -39,7 +39,6 @@
 			"unsafeParameterDecoratorsEnabled": true
 		}
 	},
-
 	"overrides": [
 		{
 			"include": ["./packages/bot/**"],
