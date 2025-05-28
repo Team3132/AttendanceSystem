@@ -1,5 +1,11 @@
 # frontend
 
+## 5.9.4
+
+### Patch Changes
+
+- [`e171332`](https://github.com/Team3132/AttendanceSystem/commit/e17133209b2ea292b7f114a35b1ee495e5b07ac0) Thanks [@sebasptsch](https://github.com/sebasptsch)! - When no roles and include everyone
+
 ## 5.9.3
 
 ### Patch Changes
