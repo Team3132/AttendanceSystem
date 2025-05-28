@@ -37,7 +37,7 @@ importers:
         version: 2.1.5(keyv@5.3.2)
       '@lucia-auth/adapter-drizzle':
         specifier: 1.1.0
-        version: 1.1.0(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.5))(lucia@3.2.2)
+        version: 1.1.0(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.7))(lucia@3.2.2)
       '@mui/icons-material':
         specifier: 6.4.11
         version: 6.4.11(@mui/material@6.4.11(@emotion/react@11.14.0(@types/react@19.1.5)(react@19.1.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.1.5)(react@19.1.0))(@types/react@19.1.5)(react@19.1.0))(@types/react@19.1.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/react@19.1.5)(react@19.1.0)
@@ -70,7 +70,7 @@ importers:
         version: 1.121.0-alpha.14(@tanstack/react-query@5.72.2(react@19.1.0))(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/router-core@1.121.0-alpha.14)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@tanstack/react-start':
         specifier: 1.121.0-alpha.17
-        version: 1.121.0-alpha.17(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@vitejs/plugin-react@4.3.4(vite@6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.5))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(vite@6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))
+        version: 1.121.0-alpha.17(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@vitejs/plugin-react@4.3.4(vite@6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.7))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(vite@6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))
       '@tanstack/react-table':
         specifier: 8.21.2
         version: 8.21.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -100,10 +100,10 @@ importers:
         version: 4.1.1
       drizzle-orm:
         specifier: 0.40.0
-        version: 0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.5)
+        version: 0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.7)
       drizzle-zod:
         specifier: 0.7.0
-        version: 0.7.0(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.5))(zod@3.24.2)
+        version: 0.7.0(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.7))(zod@3.24.2)
       eventemitter3:
         specifier: 5.0.1
         version: 5.0.1
@@ -123,8 +123,8 @@ importers:
         specifier: ^8.2.0
         version: 8.2.0
       postgres:
-        specifier: 3.4.5
-        version: 3.4.5
+        specifier: 3.4.7
+        version: 3.4.7
       react:
         specifier: 19.1.0
         version: 19.1.0
@@ -1646,6 +1646,7 @@ packages:
   '@mui/base@5.0.0-beta.42':
     resolution: {integrity: sha512-fWRiUJVCHCPF+mxd5drn08bY2qRw3jj5f1SSQdUXmaJ/yKpk23ys8MgLO2KGVTRtbks/+ctRfgffGPbXifj0Ug==}
     engines: {node: '>=12.0.0'}
+    deprecated: This package has been replaced by @base-ui-components/react
     peerDependencies:
       '@types/react': ^17.0.0 || ^18.0.0
       react: ^17.0.0 || ^18.0.0
@@ -5290,6 +5291,7 @@ packages:
 
   oslo@1.2.0:
     resolution: {integrity: sha512-OoFX6rDsNcOQVAD2gQD/z03u4vEjWZLzJtwkmgfRF+KpQUXwdgEXErD7zNhyowmHwHefP+PM9Pw13pgpHMRlzw==}
+    deprecated: Package is no longer supported. Please see https://oslojs.dev for the successor project.
 
   outdent@0.5.0:
     resolution: {integrity: sha512-/jHxFIzoMXdqPzTaCpFzAAWhpkSjZPF4Vsn6jAfNpmbH/ymsmd7Qc6VE9BGn0L6YMj6uwpQLxCECpus4ukKS9Q==}
@@ -5531,6 +5533,10 @@ packages:
 
   postgres@3.4.5:
     resolution: {integrity: sha512-cDWgoah1Gez9rN3H4165peY9qfpEo+SA61oQv65O3cRUE1pOEoJWwddwcqKE8XZYjbblOJlYDlLV4h67HrEVDg==}
+    engines: {node: '>=12'}
+
+  postgres@3.4.7:
+    resolution: {integrity: sha512-Jtc2612XINuBjIl/QTWsV5UvE8UHuNblcO3vVADSrKsrc6RqGX6lOW1cEo3CM2v0XG4Nat8nI+YM7/f26VxXLw==}
     engines: {node: '>=12'}
 
   precinct@12.2.0:
@@ -7571,6 +7577,11 @@ snapshots:
       drizzle-orm: 0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.5)
       lucia: 3.2.2
 
+  '@lucia-auth/adapter-drizzle@1.1.0(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.7))(lucia@3.2.2)':
+    dependencies:
+      drizzle-orm: 0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.7)
+      lucia: 3.2.2
+
   '@lukeed/csprng@1.1.0': {}
 
   '@manypkg/find-root@1.1.0':
@@ -8897,6 +8908,45 @@ snapshots:
       - webpack
       - xml2js
 
+  '@tanstack/react-start-plugin@1.121.0-alpha.17(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@vitejs/plugin-react@4.3.4(vite@6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.7))(vite@6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))':
+    dependencies:
+      '@tanstack/router-utils': 1.121.0-alpha.2
+      '@tanstack/start-plugin-core': 1.121.0-alpha.17(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.7))(vite@6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))
+      '@vitejs/plugin-react': 4.3.4(vite@6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))
+      vite: 6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)
+      zod: 3.24.2
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@deno/kv'
+      - '@electric-sql/pglite'
+      - '@libsql/client'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@rsbuild/core'
+      - '@tanstack/react-router'
+      - '@upstash/redis'
+      - '@vercel/blob'
+      - '@vercel/kv'
+      - aws4fetch
+      - better-sqlite3
+      - drizzle-orm
+      - encoding
+      - idb-keyval
+      - mysql2
+      - rolldown
+      - sqlite3
+      - supports-color
+      - uploadthing
+      - vite-plugin-solid
+      - webpack
+      - xml2js
+
   '@tanstack/react-start-server@1.121.0-alpha.17(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@tanstack/history': 1.121.0-alpha.1
@@ -8917,6 +8967,49 @@ snapshots:
     dependencies:
       '@tanstack/react-start-client': 1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@tanstack/react-start-plugin': 1.121.0-alpha.17(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@vitejs/plugin-react@4.3.4(vite@6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.5))(vite@6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))
+      '@tanstack/react-start-server': 1.121.0-alpha.17(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@tanstack/start-server-functions-client': 1.121.0-alpha.17(vite@6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))
+      '@tanstack/start-server-functions-server': 1.121.0-alpha.8(vite@6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))
+      '@vitejs/plugin-react': 4.3.4(vite@6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
+      vite: 6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@deno/kv'
+      - '@electric-sql/pglite'
+      - '@libsql/client'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@rsbuild/core'
+      - '@tanstack/react-router'
+      - '@upstash/redis'
+      - '@vercel/blob'
+      - '@vercel/kv'
+      - aws4fetch
+      - better-sqlite3
+      - drizzle-orm
+      - encoding
+      - idb-keyval
+      - mysql2
+      - rolldown
+      - sqlite3
+      - supports-color
+      - uploadthing
+      - vite-plugin-solid
+      - webpack
+      - xml2js
+
+  '@tanstack/react-start@1.121.0-alpha.17(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@vitejs/plugin-react@4.3.4(vite@6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.7))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(vite@6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))':
+    dependencies:
+      '@tanstack/react-start-client': 1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@tanstack/react-start-plugin': 1.121.0-alpha.17(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@vitejs/plugin-react@4.3.4(vite@6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.7))(vite@6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))
       '@tanstack/react-start-server': 1.121.0-alpha.17(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@tanstack/start-server-functions-client': 1.121.0-alpha.17(vite@6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))
       '@tanstack/start-server-functions-server': 1.121.0-alpha.8(vite@6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))
@@ -9118,6 +9211,59 @@ snapshots:
       cheerio: 1.0.0
       h3: 1.13.0
       nitropack: 2.11.12(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.5))
+      pathe: 2.0.3
+      ufo: 1.6.1
+      vite: 6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)
+      xmlbuilder2: 3.1.1
+      zod: 3.24.2
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@deno/kv'
+      - '@electric-sql/pglite'
+      - '@libsql/client'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@rsbuild/core'
+      - '@tanstack/react-router'
+      - '@upstash/redis'
+      - '@vercel/blob'
+      - '@vercel/kv'
+      - aws4fetch
+      - better-sqlite3
+      - drizzle-orm
+      - encoding
+      - idb-keyval
+      - mysql2
+      - rolldown
+      - sqlite3
+      - supports-color
+      - uploadthing
+      - vite-plugin-solid
+      - webpack
+      - xml2js
+
+  '@tanstack/start-plugin-core@1.121.0-alpha.17(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.7))(vite@6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))':
+    dependencies:
+      '@babel/code-frame': 7.26.2
+      '@babel/core': 7.26.9
+      '@babel/types': 7.27.3
+      '@tanstack/router-core': 1.121.0-alpha.14
+      '@tanstack/router-generator': 1.121.0-alpha.14(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+      '@tanstack/router-plugin': 1.121.0-alpha.14(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(vite@6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))
+      '@tanstack/router-utils': 1.121.0-alpha.2
+      '@tanstack/server-functions-plugin': 1.121.0-alpha.8(vite@6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))
+      '@types/babel__code-frame': 7.0.6
+      '@types/babel__core': 7.20.5
+      babel-dead-code-elimination: 1.0.10
+      cheerio: 1.0.0
+      h3: 1.13.0
+      nitropack: 2.11.12(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.7))
       pathe: 2.0.3
       ufo: 1.6.1
       vite: 6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)
@@ -9983,6 +10129,10 @@ snapshots:
     optionalDependencies:
       drizzle-orm: 0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.5)
 
+  db0@0.3.2(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.7)):
+    optionalDependencies:
+      drizzle-orm: 0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.7)
+
   de-indent@1.0.2: {}
 
   debug@2.6.9:
@@ -10156,9 +10306,22 @@ snapshots:
       pg: 8.16.0
       postgres: 3.4.5
 
+  drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.7):
+    optionalDependencies:
+      '@opentelemetry/api': 1.9.0
+      '@types/pg': 8.6.1
+      gel: 2.0.0
+      pg: 8.16.0
+      postgres: 3.4.7
+
   drizzle-zod@0.7.0(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.5))(zod@3.24.2):
     dependencies:
       drizzle-orm: 0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.5)
+      zod: 3.24.2
+
+  drizzle-zod@0.7.0(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.7))(zod@3.24.2):
+    dependencies:
+      drizzle-orm: 0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.7)
       zod: 3.24.2
 
   dunder-proto@1.0.1:
@@ -11518,6 +11681,106 @@ snapshots:
       - supports-color
       - uploadthing
 
+  nitropack@2.11.12(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.7)):
+    dependencies:
+      '@cloudflare/kv-asset-handler': 0.4.0
+      '@netlify/functions': 3.1.10(rollup@4.41.1)
+      '@rollup/plugin-alias': 5.1.1(rollup@4.41.1)
+      '@rollup/plugin-commonjs': 28.0.3(rollup@4.41.1)
+      '@rollup/plugin-inject': 5.0.5(rollup@4.41.1)
+      '@rollup/plugin-json': 6.1.0(rollup@4.41.1)
+      '@rollup/plugin-node-resolve': 16.0.1(rollup@4.41.1)
+      '@rollup/plugin-replace': 6.0.2(rollup@4.41.1)
+      '@rollup/plugin-terser': 0.4.4(rollup@4.41.1)
+      '@vercel/nft': 0.29.3(rollup@4.41.1)
+      archiver: 7.0.1
+      c12: 3.0.4(magicast@0.3.5)
+      chokidar: 4.0.3
+      citty: 0.1.6
+      compatx: 0.2.0
+      confbox: 0.2.2
+      consola: 3.4.2
+      cookie-es: 2.0.0
+      croner: 9.0.0
+      crossws: 0.3.5
+      db0: 0.3.2(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.7))
+      defu: 6.1.4
+      destr: 2.0.5
+      dot-prop: 9.0.0
+      esbuild: 0.25.5
+      escape-string-regexp: 5.0.0
+      etag: 1.8.1
+      exsolve: 1.0.5
+      globby: 14.1.0
+      gzip-size: 7.0.0
+      h3: 1.15.3
+      hookable: 5.5.3
+      httpxy: 0.1.7
+      ioredis: 5.6.1
+      jiti: 2.4.2
+      klona: 2.0.6
+      knitwork: 1.2.0
+      listhen: 1.9.0
+      magic-string: 0.30.17
+      magicast: 0.3.5
+      mime: 4.0.7
+      mlly: 1.7.4
+      node-fetch-native: 1.6.6
+      node-mock-http: 1.0.0
+      ofetch: 1.4.1
+      ohash: 2.0.11
+      pathe: 2.0.3
+      perfect-debounce: 1.0.0
+      pkg-types: 2.1.0
+      pretty-bytes: 6.1.1
+      radix3: 1.1.2
+      rollup: 4.41.1
+      rollup-plugin-visualizer: 5.14.0(rollup@4.41.1)
+      scule: 1.3.0
+      semver: 7.7.2
+      serve-placeholder: 2.0.2
+      serve-static: 2.2.0
+      source-map: 0.7.4
+      std-env: 3.9.0
+      ufo: 1.6.1
+      ultrahtml: 1.6.0
+      uncrypto: 0.1.3
+      unctx: 2.4.1
+      unenv: 2.0.0-rc.17
+      unimport: 5.0.1
+      unplugin-utils: 0.2.4
+      unstorage: 1.16.0(db0@0.3.2(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.7)))(ioredis@5.6.1)
+      untyped: 2.0.0
+      unwasm: 0.3.9
+      youch: 4.1.0-beta.7
+      youch-core: 0.3.2
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@deno/kv'
+      - '@electric-sql/pglite'
+      - '@libsql/client'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@upstash/redis'
+      - '@vercel/blob'
+      - '@vercel/kv'
+      - aws4fetch
+      - better-sqlite3
+      - drizzle-orm
+      - encoding
+      - idb-keyval
+      - mysql2
+      - rolldown
+      - sqlite3
+      - supports-color
+      - uploadthing
+
   node-addon-api@7.1.1: {}
 
   node-domexception@1.0.0: {}
@@ -11821,6 +12084,8 @@ snapshots:
       xtend: 4.0.2
 
   postgres@3.4.5: {}
+
+  postgres@3.4.7: {}
 
   precinct@12.2.0:
     dependencies:
@@ -12659,6 +12924,20 @@ snapshots:
       ufo: 1.6.1
     optionalDependencies:
       db0: 0.3.2(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.5))
+      ioredis: 5.6.1
+
+  unstorage@1.16.0(db0@0.3.2(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.7)))(ioredis@5.6.1):
+    dependencies:
+      anymatch: 3.1.3
+      chokidar: 4.0.3
+      destr: 2.0.5
+      h3: 1.15.3
+      lru-cache: 10.4.3
+      node-fetch-native: 1.6.6
+      ofetch: 1.4.1
+      ufo: 1.6.1
+    optionalDependencies:
+      db0: 0.3.2(drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.7))
       ioredis: 5.6.1
 
   untun@0.1.3:
