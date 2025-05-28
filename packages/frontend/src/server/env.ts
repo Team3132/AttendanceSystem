@@ -24,6 +24,7 @@ const env = createEnv({
      */
     VITE_DISCORD_CLIENT_ID: z.string(),
     VITE_DISCORD_CLIENT_SECRET: z.string(),
+    VITE_DISCORD_PUBLIC_KEY: z.string(),
     VITE_DISCORD_CALLBACK_URL: z
       .string()
       .default("http://localhost:3000/api/auth/discord/callback"),

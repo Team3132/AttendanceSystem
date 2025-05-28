@@ -121,7 +121,7 @@ export const ServerRoute = createServerFileRoute().methods({
       rawBody,
       signature,
       timestamp,
-      env.VITE_DISCORD_CLIENT_ID,
+      env.VITE_DISCORD_PUBLIC_KEY,
     );
 
     console.log(`Request validation result: ${isValidRequest}`);
