@@ -1,5 +1,11 @@
 # frontend
 
+## 5.10.1
+
+### Patch Changes
+
+- [`3e08cae`](https://github.com/Team3132/AttendanceSystem/commit/3e08cae8b9fd6a8470c03389fe17da9f5b3f9654) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add better logger
+
 ## 5.10.0
 
 ### Minor Changes
