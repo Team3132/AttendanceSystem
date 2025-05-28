@@ -42,6 +42,7 @@ import {
   type RSVPUserSchema,
 } from "@/server";
 import db from "@/server/drizzle/db";
+import { consola } from "@/server/logger";
 import {
   editUserRsvpStatus,
   getAutocompleteEvents,
@@ -57,7 +58,6 @@ import { createUser } from "@/server/services/user.service";
 import { verifyKey } from "discord-interactions";
 import { DateTime, Duration } from "luxon";
 import { z } from "zod";
-import { consola } from "@/server/logger";
 
 const reply = (data: APIInteractionResponseCallbackData) =>
   json<APIInteractionResponseChannelMessageWithSource>({
