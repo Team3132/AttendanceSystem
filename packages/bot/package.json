@@ -30,7 +30,7 @@
 		"class-validator": "0.14.1",
 		"discord-api-types": "0.37.119",
 		"discord.js": "14.18.0",
-		"express": "4.21.2",
+		"express": "5.1.0",
 		"frontend": "workspace:*",
 		"luxon": "3.6.1",
 		"necord": "6.8.8",
