@@ -6,7 +6,8 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
-		"start": "PORT=1420 node .output/server/index.mjs"
+		"start": "PORT=1420 node .output/server/index.mjs",
+		"check": "biome check ./src"
 	},
 	"files": [
 		"dist",
