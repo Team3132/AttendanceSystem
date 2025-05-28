@@ -1,5 +1,11 @@
 # frontend
 
+## 5.9.3
+
+### Patch Changes
+
+- [`b5836f2`](https://github.com/Team3132/AttendanceSystem/commit/b5836f2b10efa995bb08cc0004d0186cf8aad40a) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add public key
+
 ## 5.9.2
 
 ### Patch Changes
