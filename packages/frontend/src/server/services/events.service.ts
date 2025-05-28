@@ -9,7 +9,6 @@ import {
   gte,
   ilike,
   lte,
-  not,
   or,
 } from "drizzle-orm";
 import { DateTime } from "luxon";
@@ -31,56 +30,6 @@ import { buildSetWhereColumns } from "../utils/db/buildSetWhereColumns";
 import { ServerError } from "../utils/errors";
 import ee from "../utils/eventEmitter";
 import randomStr from "../utils/randomStr";
-
-/**
- * Get upcoming events in the next 24 hours for the daily bot announcement
- */
-async function getNextEvents() {
-  const startNextDay = DateTime.now().plus({ day: 1 }).startOf("day");
-
-  const endNextDay = startNextDay.endOf("day");
-
-  const [nextEvents, nextEventsError] = await trytm(
-    db.query.eventTable.findMany({
-      where: (event) =>
-        and(
-          between(
-            event.startDate,
-            startNextDay.toJSDate(),
-            endNextDay.toJSDate(),
-          ),
-          not(event.isPosted),
-        ),
-      with: {
-        rsvps: {
-          orderBy: [rsvpTable.status, rsvpTable.updatedAt],
-          with: {
-            user: {
-              columns: {
-                username: true,
-                roles: true,
-              },
-            },
-          },
-        },
-      },
-    }),
-  );
-
-  if (nextEventsError) {
-    throw new ServerError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Failed to get next events",
-    });
-  }
-
-  const nextEventsWithoutSecret = nextEvents.map((event) => {
-    const { secret, ...rest } = event;
-    return rest;
-  });
-
-  return nextEventsWithoutSecret;
-}
 
 /**
  * Get events
@@ -820,7 +769,7 @@ export async function getAutocompleteEvents(like?: string) {
   return events;
 }
 
-async function markEventPosted(eventId: string) {
+export async function markEventPosted(eventId: string) {
   const [updatedEvents, updateEventsError] = await trytm(
     db
       .update(eventTable)
