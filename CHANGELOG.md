@@ -1,5 +1,11 @@
 # frontend
 
+## 5.10.3
+
+### Patch Changes
+
+- [`233860b`](https://github.com/Team3132/AttendanceSystem/commit/233860b6f55f3b490c509ec6c974b05cac19a7e2) Thanks [@sebasptsch](https://github.com/sebasptsch)! - More auth logging
+
 ## 5.10.2
 
 ### Patch Changes
