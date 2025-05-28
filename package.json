@@ -63,6 +63,7 @@
 		"zod": "3.24.2"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
 		"@changesets/cli": "^2.29.4",
 		"@mui/lab": "6.0.0-dev.240424162023-9968b4889d",
 		"@tanstack/router-plugin": "1.115.2",
