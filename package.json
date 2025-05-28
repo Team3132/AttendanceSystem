@@ -45,7 +45,7 @@
 		"consola": "3.4.2",
 		"cron-validate": "1.5.2",
 		"discord-interactions": "4.1.1",
-		"drizzle-orm": "0.40.0",
+		"drizzle-orm": "0.43.1",
 		"drizzle-zod": "0.7.0",
 		"eventemitter3": "5.0.1",
 		"googleapis": "146.0.0",
