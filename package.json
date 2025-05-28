@@ -6,9 +6,7 @@
 	"author": "Sebastian Pietschner <sebastian.pietschner@gmail.com>",
 	"license": "MIT",
 	"private": true,
-	"workspaces": [
-		"packages/*"
-	],
+	"workspaces": ["packages/*"],
 	"packageManager": "pnpm@9.15.9",
 	"scripts": {
 		"build": "pnpm run -r build",

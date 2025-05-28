@@ -48,6 +48,7 @@ import {
   getEvent,
   getEventRsvps,
   getEventSecret,
+  markEventPosted,
   selfCheckin,
   userCheckout,
 } from "@/server/services/events.service";
@@ -232,6 +233,18 @@ export const ServerRoute = createServerFileRoute().methods({
               eventId: meetingId,
             }),
           );
+
+          const [_, eventPostedError] = await trytm(markEventPosted(meetingId));
+
+          if (eventPostedError) {
+            console.error(
+              `Error marking event as posted: ${eventPostedError.message}`,
+            );
+            return reply({
+              content: "Failed to mark event as posted.",
+              flags: MessageFlags.Ephemeral,
+            });
+          }
 
           if (err) {
             return reply({
