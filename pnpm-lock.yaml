@@ -184,8 +184,8 @@ importers:
         specifier: 4.3.4
         version: 4.3.4(vite@6.2.6(@types/node@22.14.0)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3))
       drizzle-kit:
-        specifier: 0.30.5
-        version: 0.30.5
+        specifier: 0.31.1
+        version: 0.31.1
       lefthook:
         specifier: 1.11.13
         version: 1.11.13
@@ -4115,6 +4115,10 @@ packages:
 
   drizzle-kit@0.30.5:
     resolution: {integrity: sha512-l6dMSE100u7sDaTbLczibrQZjA35jLsHNqIV+jmhNVO3O8jzM6kywMOmV9uOz9ZVSCMPQhAZEFjL/qDPVrqpUA==}
+    hasBin: true
+
+  drizzle-kit@0.31.1:
+    resolution: {integrity: sha512-PUjYKWtzOzPtdtQlTHQG3qfv4Y0XT8+Eas6UbxCmxTj7qgMf+39dDujf1BP1I+qqZtw9uzwTh8jYtkMuCq+B0Q==}
     hasBin: true
 
   drizzle-orm@0.40.0:
@@ -10805,6 +10809,15 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  drizzle-kit@0.31.1:
+    dependencies:
+      '@drizzle-team/brocli': 0.10.2
+      '@esbuild-kit/esm-loader': 2.6.5
+      esbuild: 0.25.5
+      esbuild-register: 3.6.0(esbuild@0.25.5)
+    transitivePeerDependencies:
+      - supports-color
+
   drizzle-orm@0.40.0(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(gel@2.0.0)(pg@8.16.0)(postgres@3.4.5):
     optionalDependencies:
       '@opentelemetry/api': 1.9.0
@@ -10899,6 +10912,13 @@ snapshots:
     dependencies:
       debug: 4.4.0
       esbuild: 0.19.12
+    transitivePeerDependencies:
+      - supports-color
+
+  esbuild-register@3.6.0(esbuild@0.25.5):
+    dependencies:
+      debug: 4.4.0
+      esbuild: 0.25.5
     transitivePeerDependencies:
       - supports-color
 
