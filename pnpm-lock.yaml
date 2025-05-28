@@ -12,8 +12,8 @@ importers:
         specifier: 1.10.1
         version: 1.10.1
       '@discordjs/core':
-        specifier: 2.0.1
-        version: 2.0.1
+        specifier: 2.1.0
+        version: 2.1.0
       '@discordjs/rest':
         specifier: 2.5.0
         version: 2.5.0
@@ -445,8 +445,8 @@ packages:
     resolution: {integrity: sha512-LiSusze9Tc7qF03sLCujF5iZp7K+vRNEDBZ86FT9aQAv3vxMLihUvKvpsCWiQ2DJq1tVckopKm1rxomgNUc9hg==}
     engines: {node: '>=18'}
 
-  '@discordjs/core@2.0.1':
-    resolution: {integrity: sha512-tj//rnPhdniq+Clxq0tq5wI7QTMH4IgyXkUFI32+ashIRpFJ1+J1btNG3FA74oATFu2sYy/zT9CKLWW4jp2RGQ==}
+  '@discordjs/core@2.1.0':
+    resolution: {integrity: sha512-baAsFox0HcqFlR74QgUVd7KdCtGXNetByXYCoYgCGfNRh+3NZwM/Tj4OZFVWDn8W91hxDMQqg3SACs29mqmHjw==}
     engines: {node: '>=20'}
 
   '@discordjs/formatters@0.6.1':
@@ -5308,14 +5308,14 @@ snapshots:
 
   '@discordjs/collection@2.1.1': {}
 
-  '@discordjs/core@2.0.1':
+  '@discordjs/core@2.1.0':
     dependencies:
       '@discordjs/rest': 2.5.0
       '@discordjs/util': 1.1.1
       '@discordjs/ws': 2.0.2
       '@sapphire/snowflake': 3.5.5
       '@vladfrangu/async_event_emitter': 2.4.6
-      discord-api-types: 0.37.120
+      discord-api-types: 0.38.8
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
