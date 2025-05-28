@@ -144,7 +144,7 @@ export const ServerRoute = createServerFileRoute().methods({
       "username",
     ];
 
-    const [authedUserData, userUpdateError] = await trytm(
+    const [_authedUserData, userUpdateError] = await trytm(
       db
         .insert(userTable)
         .values({
@@ -173,18 +173,6 @@ export const ServerRoute = createServerFileRoute().methods({
       });
     }
 
-    const [authedUser] = authedUserData;
-
-    if (!authedUser) {
-      consola.error("User not found after authentication");
-      return new Response(null, {
-        status: 302,
-        headers: {
-          location: env.VITE_FRONTEND_URL,
-        },
-      });
-    }
-
     const [session, sessionError] = await trytm(lucia.createSession(id, {}));
 
     if (sessionError) {
@@ -205,9 +193,7 @@ export const ServerRoute = createServerFileRoute().methods({
     );
     consola
       .withTag("auth")
-      .info(
-        `User ${authedUser.username} (${authedUser.id}) authenticated successfully.`,
-      );
+      .info(`User ${nick || username} (${id}) authenticated successfully`);
 
     return new Response(null, {
       status: 302,
