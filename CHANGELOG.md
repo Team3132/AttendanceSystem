@@ -1,5 +1,13 @@
 # frontend
 
+## 5.10.2
+
+### Patch Changes
+
+- [`02f76ba`](https://github.com/Team3132/AttendanceSystem/commit/02f76ba4d2b6691acb088f005fe6b8dd04baa95b) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix login query params
+
+- [`02f76ba`](https://github.com/Team3132/AttendanceSystem/commit/02f76ba4d2b6691acb088f005fe6b8dd04baa95b) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix rule parsing
+
 ## 5.10.1
 
 ### Patch Changes
