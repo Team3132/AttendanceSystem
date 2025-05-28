@@ -1,11 +1,10 @@
-import { Signales } from "@dynamicabot/signales";
+import { createConsola } from "consola";
 
-const mainLogger = new Signales({
-  config: {
-    displayBadge: true,
-    displayLabel: true,
-    displayScope: true,
+export const consola = createConsola({
+  defaults: {
+    tag: "main",
+  },
+  formatOptions: {
+    date: true,
   },
 });
-
-export default mainLogger;

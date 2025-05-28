@@ -1,7 +1,7 @@
 import db from "@/server/drizzle/db";
 import { eventParsingRuleTable, eventTable } from "@/server/drizzle/schema";
 import env from "@/server/env";
-import mainLogger from "@/server/logger";
+import { consola } from "@/server/logger";
 import { generateMessage } from "@/server/services/botService";
 import { getDiscordBotAPI } from "@/server/services/discordService";
 import KronosClient, { ScheduleSchema } from "@/server/utils/KronosClient";
@@ -100,12 +100,12 @@ export const ServerRoute = createServerFileRoute().methods({
         .map((p) => p.reason);
 
       if (rejectedEventsMessages.length > 0) {
-        mainLogger.error(
+        consola.error(
           `Events not posted: ${rejectedEventsMessages.join(", ")}`,
         );
       }
 
-      mainLogger.success(
+      consola.success(
         `Posted ${matchingEventIds.length} events for rule ${ruleId}`,
       );
 
@@ -125,7 +125,7 @@ export const ServerRoute = createServerFileRoute().methods({
       const errorMessage =
         error instanceof Error ? error.message : "An error occurred";
 
-      mainLogger.error("Error triggering reminders", error);
+      consola.error("Error triggering reminders", error);
       return json({ success: false, error: errorMessage });
     }
   },

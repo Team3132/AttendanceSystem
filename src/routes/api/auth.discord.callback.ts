@@ -2,7 +2,7 @@ import { discord, lucia } from "@/server/auth/lucia";
 import db from "@/server/drizzle/db";
 import { userTable } from "@/server/drizzle/schema";
 import env from "@/server/env";
-import mainLogger from "@/server/logger";
+import { consola } from "@/server/logger";
 import type { ColumnNames } from "@/server/utils/db/ColumnNames";
 import { buildConflictUpdateColumns } from "@/server/utils/db/buildConflictUpdateColumns";
 import { buildSetWhereColumns } from "@/server/utils/db/buildSetWhereColumns";
@@ -121,13 +121,13 @@ export const ServerRoute = createServerFileRoute().methods({
       });
     } catch (error) {
       if (error instanceof OAuth2RequestError) {
-        mainLogger.error(error);
+        consola.error(error);
       } else if (error instanceof DiscordAPIError) {
-        mainLogger.error(error);
+        consola.error(error);
       } else if (error instanceof Error) {
-        mainLogger.error(error);
+        consola.error(error);
       } else {
-        mainLogger.error("Unknown error", error);
+        consola.error("Unknown error", error);
       }
 
       return new Response(null, {

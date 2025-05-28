@@ -89,6 +89,9 @@ importers:
       arctic:
         specifier: 1.9.2
         version: 1.9.2
+      consola:
+        specifier: ^3.4.2
+        version: 3.4.2
       cron-validate:
         specifier: 1.5.2
         version: 1.5.2

@@ -7,13 +7,13 @@ import db from "../drizzle/db";
 import { kv } from "../drizzle/kv";
 import { eventParsingRuleTable, eventTable } from "../drizzle/schema";
 import env from "../env";
-import mainLogger from "../logger";
+import { consola } from "../logger";
 import type { ColumnNames } from "../utils/db/ColumnNames";
 import { buildConflictUpdateColumns } from "../utils/db/buildConflictUpdateColumns";
 import { buildSetWhereColumns } from "../utils/db/buildSetWhereColumns";
 import { strToRegex } from "../utils/regexBuilder";
 
-const eventLogger = mainLogger.child("Sync Events");
+const eventLogger = consola.withTag("eventSync");
 
 type EventInsert = typeof eventTable.$inferInsert;
 
@@ -234,7 +234,7 @@ const isMatchingRule = (
  * Syncs events from Google Calendar to the database
  */
 export const syncEvents = async () => {
-  eventLogger.time("Sync Events");
+  eventLogger.info("Sync Events");
 
   /** All the calendar events */
   const calendarEvents = await getCalendarEvents();
@@ -307,7 +307,7 @@ export const syncEvents = async () => {
     eventLogger.info(`Upserted ${upsertedCount} events`);
   }
 
-  eventLogger.timeEnd("Sync Events");
+  eventLogger.success("Sync Events");
 
   return { updatedEvents: upsertedCount, deletedEventCount: deletedCount };
 };

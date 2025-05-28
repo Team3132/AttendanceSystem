@@ -2,13 +2,13 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import { migrate as migrateDB } from "drizzle-orm/postgres-js/migrator";
 import postgres from "postgres";
 import env from "../env";
-import mainLogger from "../logger";
+import { consola } from "../logger";
 import * as schema from "./schema";
 
 const connectionUrl = `postgres://${env.VITE_POSTGRES_USER}:${env.VITE_POSTGRES_PASSWORD}@${env.VITE_POSTGRES_HOST}:5432/${env.VITE_POSTGRES_DB}`;
 
 async function migrate() {
-  const logger = mainLogger.child("DB");
+  const logger = consola.withTag("db");
 
   const migrationPgClient = postgres(connectionUrl, {
     max: 1,
@@ -16,9 +16,9 @@ async function migrate() {
   const migrationClient = drizzle(migrationPgClient, {
     schema,
   });
-  logger.time("Migrating database...");
+  logger.info("Starting database migrations...");
   await migrateDB(migrationClient, { migrationsFolder: "./drizzle" });
-  logger.timeEnd("Migrating database...");
+  logger.success("Database migrations completed successfully");
 }
 
 migrate();

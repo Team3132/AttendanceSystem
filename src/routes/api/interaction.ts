@@ -57,6 +57,7 @@ import { createUser } from "@/server/services/user.service";
 import { verifyKey } from "discord-interactions";
 import { DateTime, Duration } from "luxon";
 import { z } from "zod";
+import { consola } from "@/server/logger";
 
 const reply = (data: APIInteractionResponseCallbackData) =>
   json<APIInteractionResponseChannelMessageWithSource>({
@@ -102,12 +103,14 @@ export default function rsvpToDescription(
   return `${username} - ${statusToEmoji(status)}`;
 }
 
+const logger = consola.withTag("discord-interaction");
+
 export const ServerRoute = createServerFileRoute().methods({
   POST: async ({ request }) => {
     const signature = getHeader("X-Signature-Ed25519");
     const timestamp = getHeader("X-Signature-Timestamp");
 
-    console.log(
+    logger.debug(
       `Received interaction with signature: ${signature}, timestamp: ${timestamp}`,
     );
 
@@ -125,7 +128,7 @@ export const ServerRoute = createServerFileRoute().methods({
       env.VITE_DISCORD_PUBLIC_KEY,
     );
 
-    console.log(`Request validation result: ${isValidRequest}`);
+    logger.debug(`Request validation result: ${isValidRequest}`);
 
     if (!isValidRequest) {
       return new Response("Bad request signature", {
@@ -136,7 +139,7 @@ export const ServerRoute = createServerFileRoute().methods({
     const interaction: APIInteraction = await request.json();
 
     if (interaction.type === InteractionType.Ping) {
-      console.log("Received ping interaction");
+      logger.debug("Received ping interaction");
       return json<APIInteractionResponsePong>({
         type: InteractionResponseType.Pong,
       });
@@ -146,7 +149,7 @@ export const ServerRoute = createServerFileRoute().methods({
       interaction.member === undefined ||
       interaction.guild_id !== env.VITE_GUILD_ID
     ) {
-      console.log(
+      logger.debug(
         "Interaction is not from a guild member or guild ID does not match",
       );
       return reply({
@@ -163,7 +166,7 @@ export const ServerRoute = createServerFileRoute().methods({
        * Respond to typical slash commands
        */
       if (interaction.data.type === ApplicationCommandType.ChatInput) {
-        console.log(`Processing chat input command: ${interaction.data.name}`);
+        logger.debug(`Processing chat input command: ${interaction.data.name}`);
         /**
          * Respond to the "ping" command with "Pong!".
          */
@@ -293,7 +296,7 @@ export const ServerRoute = createServerFileRoute().methods({
        * Handle button interactions.
        */
       if (interaction.data.component_type === ComponentType.Button) {
-        console.log(
+        logger.debug(
           `Processing button interaction with custom ID: ${interaction.data.custom_id}`,
         );
         const { custom_id: customId } = interaction.data;
@@ -645,7 +648,7 @@ export const ServerRoute = createServerFileRoute().methods({
     }
 
     if (interaction.type === InteractionType.ModalSubmit) {
-      console.log(
+      logger.debug(
         `Processing modal submit interaction with custom ID: ${interaction.data.custom_id}`,
       );
       const { custom_id: customId } = interaction.data;
@@ -850,7 +853,7 @@ export const ServerRoute = createServerFileRoute().methods({
     }
 
     if (interaction.type === InteractionType.ApplicationCommandAutocomplete) {
-      console.log(
+      logger.debug(
         `Processing autocomplete interaction for command: ${interaction.data.name}`,
       );
       if (interaction.data.name === "requestrsvp") {
