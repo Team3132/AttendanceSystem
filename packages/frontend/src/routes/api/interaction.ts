@@ -256,6 +256,9 @@ export const ServerRoute = createServerFileRoute().methods({
           );
 
           if (leaderboardPageError) {
+            console.error(
+              `Error creating outreach embed page: ${leaderboardPageError.message}`,
+            );
             return reply({
               content: "Failed to fetch leaderboard page.",
               flags: MessageFlags.Ephemeral,
@@ -611,6 +614,9 @@ export const ServerRoute = createServerFileRoute().methods({
             createOutreachEmbedPage(toPage),
           );
           if (leaderboardPageError) {
+            console.error(
+              `Error creating outreach embed page: ${leaderboardPageError.message}`,
+            );
             return reply({
               content: "Failed to fetch leaderboard page.",
               flags: MessageFlags.Ephemeral,
@@ -922,6 +928,10 @@ const createOutreachEmbedPage = async (page: number) => {
 
   // pages start at 1
   const maxPage = Math.ceil(total / perPage);
+
+  if (maxPage === 0) {
+    throw new Error("No data available for the leaderboard");
+  }
 
   if (page > maxPage || page < 1) throw new Error("Invalid page");
 
