@@ -106,9 +106,14 @@ export const ServerRoute = createServerFileRoute().methods({
     const signature = getHeader("X-Signature-Ed25519");
     const timestamp = getHeader("X-Signature-Timestamp");
 
+    console.log(
+      `Received interaction with signature: ${signature}, timestamp: ${timestamp}`,
+    );
+
     const rawBody = await readRawBody();
 
     if (!signature || !timestamp || !rawBody) {
+      console.error("Missing signature, timestamp, or raw body");
       return json({ message: "Invalid request" }, { status: 401 });
     }
 
@@ -119,6 +124,8 @@ export const ServerRoute = createServerFileRoute().methods({
       env.VITE_DISCORD_CLIENT_ID,
     );
 
+    console.log(`Request validation result: ${isValidRequest}`);
+
     if (!isValidRequest) {
       return new Response("Bad request signature", {
         status: 401,
@@ -128,6 +135,7 @@ export const ServerRoute = createServerFileRoute().methods({
     const interaction: APIInteraction = await request.json();
 
     if (interaction.type === InteractionType.Ping) {
+      console.log("Received ping interaction");
       return json<APIInteractionResponsePong>({
         type: InteractionResponseType.Pong,
       });
@@ -137,6 +145,9 @@ export const ServerRoute = createServerFileRoute().methods({
       interaction.member === undefined ||
       interaction.guild_id !== env.VITE_GUILD_ID
     ) {
+      console.log(
+        "Interaction is not from a guild member or guild ID does not match",
+      );
       return reply({
         content: "You must be a guild member to use this command.",
         flags: MessageFlags.Ephemeral,
@@ -151,6 +162,7 @@ export const ServerRoute = createServerFileRoute().methods({
        * Respond to typical slash commands
        */
       if (interaction.data.type === ApplicationCommandType.ChatInput) {
+        console.log(`Processing chat input command: ${interaction.data.name}`);
         /**
          * Respond to the "ping" command with "Pong!".
          */
@@ -265,6 +277,9 @@ export const ServerRoute = createServerFileRoute().methods({
        * Handle button interactions.
        */
       if (interaction.data.component_type === ComponentType.Button) {
+        console.log(
+          `Processing button interaction with custom ID: ${interaction.data.custom_id}`,
+        );
         const { custom_id: customId } = interaction.data;
 
         /**
@@ -609,6 +624,9 @@ export const ServerRoute = createServerFileRoute().methods({
     }
 
     if (interaction.type === InteractionType.ModalSubmit) {
+      console.log(
+        `Processing modal submit interaction with custom ID: ${interaction.data.custom_id}`,
+      );
       const { custom_id: customId } = interaction.data;
 
       /**
@@ -811,6 +829,9 @@ export const ServerRoute = createServerFileRoute().methods({
     }
 
     if (interaction.type === InteractionType.ApplicationCommandAutocomplete) {
+      console.log(
+        `Processing autocomplete interaction for command: ${interaction.data.name}`,
+      );
       if (interaction.data.name === "requestrsvp") {
         const meetingStringOption = interaction.data.options?.find(
           (option) =>
