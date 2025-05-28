@@ -422,10 +422,12 @@ export const ServerRoute = createServerFileRoute().methods({
 
             const { roleIds: ruleRoles } = rule;
 
+            roles.push(env.VITE_GUILD_ID);
+
             // if there's no overlap between the user's roles and the rule roles, return an error
             const hasRole = roles.some((role) => ruleRoles.includes(role));
 
-            if (!hasRole) {
+            if (!hasRole && ruleRoles.length > 0) {
               return reply({
                 content: "You do not have permission to RSVP to this event.",
                 flags: MessageFlags.Ephemeral,
