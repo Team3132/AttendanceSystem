@@ -8,5 +8,3 @@ export function PagedSchema<TSchema extends z.ZodTypeAny>(schema: TSchema) {
     nextPage: z.number().nullish(),
   });
 }
-
-export type PagedType = z.infer<ReturnType<typeof PagedSchema>>;

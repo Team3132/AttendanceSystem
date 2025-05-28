@@ -8,12 +8,6 @@ import type {
 
 type UserListParams = Omit<z.infer<typeof UserListParamsSchema>, "cursor">;
 
-/**
- * Get the resulting type of a function
- */
-// biome-ignore lint/suspicious/noExplicitAny: Required for the Flatten type, unused in resulting code
-export type Flatten<T> = T extends (...args: any[]) => infer R ? R : T;
-
 export const usersQueryKeys = {
   users: ["users"] as const, // Root key for all user-related queries
   usersList: ["users", "list"] as const, // Key for the list of users

@@ -5,23 +5,15 @@
 	"type": "module",
 	"scripts": {
 		"dev": "PORT=1420 vite dev",
-		"build": "pnpm run buildpkg && vite build",
-		"buildpkg": "vite build --config vite.app.config.ts",
-		"start": "PORT=1420 node .output/server/index.mjs"
+		"build": "vite build",
+		"preview": "vite preview"
 	},
 	"files": [
 		"dist",
 		"dist-ts",
 		"drizzle"
 	],
-	"module": "dist/index.js",
-	"types": "./dist/src/server/index.d.ts",
-	"exports": {
-		".": {
-			"import": "./dist/index.js",
-			"types": "./dist/src/server/index.d.ts"
-		}
-	},
+	
 	"dependencies": {
 		"@discordjs/builders": "1.10.1",
 		"@discordjs/core": "2.0.1",
@@ -42,12 +34,9 @@
 		"@tanstack/react-query-devtools": "5.72.2",
 		"@tanstack/react-router": "1.121.0-alpha.14",
 		"@tanstack/react-router-devtools": "1.121.0-alpha.14",
-		"@tanstack/react-router-with-query": "1.121.0-alpha.14",
 		"@tanstack/react-start": "1.121.0-alpha.17",
-		"@tanstack/react-start-client": "1.121.0-alpha.14",
 		"@tanstack/react-table": "8.21.2",
 		"@tanstack/react-virtual": "3.13.9",
-		"@tanstack/start-server-core": "1.121.0-alpha.17",
 		"@tanstack/table-core": "8.21.2",
 		"@tanstack/zod-adapter": "1.115.2",
 		"@trpc/server": "11.0.4",
@@ -68,14 +57,12 @@
 		"react-error-boundary": "5.0.0",
 		"react-hook-form": "7.55.0",
 		"react-icons": "5.5.0",
-		"superjson": "2.2.2",
 		"ulidx": "2.4.1",
 		"usehooks-ts": "3.1.1",
 		"uuid": "11.1.0",
 		"zod": "3.24.2"
 	},
 	"devDependencies": {
-		"@emotion/babel-plugin": "11.13.5",
 		"@mui/lab": "6.0.0-dev.240424162023-9968b4889d",
 		"@tanstack/router-plugin": "1.115.2",
 		"@trpc/client": "11.0.4",
@@ -85,11 +72,8 @@
 		"@types/react-dom": "19.1.5",
 		"@vitejs/plugin-react": "4.3.4",
 		"drizzle-kit": "0.30.5",
-		"rollup-plugin-visualizer": "5.14.0",
-		"tsup": "8.4.0",
 		"typescript": "5.8.3",
 		"vite": "6.2.6",
-		"vite-plugin-dts": "^4.5.4",
 		"vite-tsconfig-paths": "5.1.4"
 	}
 }

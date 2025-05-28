@@ -30,15 +30,6 @@ services:
   #   env_file: packages/frontend/.env.local
   #   links:
   #     - postgres
-  # bot:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #     target: bot-runner
-  #   links:
-  #     - backend
-  # env_file:
-  #   - packages/bot/.env
 
 volumes:
   postgres-data:

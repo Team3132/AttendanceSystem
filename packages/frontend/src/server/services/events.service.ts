@@ -35,7 +35,7 @@ import randomStr from "../utils/randomStr";
 /**
  * Get upcoming events in the next 24 hours for the daily bot announcement
  */
-export async function getNextEvents() {
+async function getNextEvents() {
   const startNextDay = DateTime.now().plus({ day: 1 }).startOf("day");
 
   const endNextDay = startNextDay.endOf("day");
@@ -820,7 +820,7 @@ export async function getAutocompleteEvents(like?: string) {
   return events;
 }
 
-export async function markEventPosted(eventId: string) {
+async function markEventPosted(eventId: string) {
   const [updatedEvents, updateEventsError] = await trytm(
     db
       .update(eventTable)

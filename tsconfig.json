@@ -5,9 +5,6 @@
 		// All projects in the repository
 		{
 			"path": "./packages/frontend"
-		},
-		{
-			"path": "./packages/bot"
 		}
 		// Future generated projects will automatically be added here by the generator
 	]

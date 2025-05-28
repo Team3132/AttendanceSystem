@@ -14,14 +14,14 @@ const errorName = "StartServerError";
  * Check that value is object
  * @internal
  */
-export function isObject(value: unknown): value is Record<string, unknown> {
+function isObject(value: unknown): value is Record<string, unknown> {
   return !!value && !Array.isArray(value) && typeof value === "object";
 }
 
 class UnknownCauseError extends Error {
   [key: string]: unknown;
 }
-export function getCauseFromUnknown(cause: unknown): Error | undefined {
+function getCauseFromUnknown(cause: unknown): Error | undefined {
   if (cause instanceof Error) {
     return cause;
   }
@@ -49,7 +49,7 @@ export function getCauseFromUnknown(cause: unknown): Error | undefined {
   return undefined;
 }
 
-export function getServerErrorFromUnknown(cause: unknown): ServerError {
+function getServerErrorFromUnknown(cause: unknown): ServerError {
   if (cause instanceof ServerError) {
     return cause;
   }

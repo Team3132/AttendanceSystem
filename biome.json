@@ -10,11 +10,9 @@
 		"ignore": [
 			"./packages/frontend/src/routeTree.gen.ts",
 			"./packages/frontend/package.json",
-			"./packages/bot/package.json",
 			"./packages/frontend/.output/**",
 			"./packages/frontend/.vinxi/**",
-			"./packages/frontend/dist/**",
-			"./packages/bot/dist/**"
+			"./packages/frontend/dist/**"
 		]
 	},
 	"formatter": {
@@ -40,21 +38,6 @@
 		}
 	},
 	"overrides": [
-		{
-			"include": ["./packages/bot/**"],
-			"linter": {
-				"rules": {
-					"style": {
-						"useImportType": "off"
-					}
-				}
-			},
-			"javascript": {
-				"parser": {
-					"unsafeParameterDecoratorsEnabled": true
-				}
-			}
-		},
 		{
 			"include": ["./packages/frontend/**"],
 			"linter": {
