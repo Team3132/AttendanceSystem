@@ -1,5 +1,13 @@
 # frontend
 
+## 5.10.5
+
+### Patch Changes
+
+- [`ca92013`](https://github.com/Team3132/AttendanceSystem/commit/ca920133e5315496cb6844ab22602bd0278c813a) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix user return
+
+  If a user was successfully created but none of the user data was returned due to the setWhere clause. Now if there are no errors then consider the user created and return the user data.
+
 ## 5.10.4
 
 ### Patch Changes
