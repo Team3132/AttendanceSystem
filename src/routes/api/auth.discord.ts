@@ -1,4 +1,5 @@
 import { discord } from "@/server/auth/lucia";
+import { consola } from "@/server/logger";
 import { setCookie } from "@tanstack/react-start/server";
 import { createServerFileRoute } from "@tanstack/react-start/server";
 import { generateState } from "arctic";
@@ -17,7 +18,7 @@ export const ServerRoute = createServerFileRoute().methods({
       maxAge: 60 * 10,
       sameSite: "lax",
     });
-
+    consola.info("Redirecting to Discord OAuth");
     return new Response(null, {
       status: 302,
       headers: {

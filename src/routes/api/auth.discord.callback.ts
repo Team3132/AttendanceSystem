@@ -176,6 +176,7 @@ export const ServerRoute = createServerFileRoute().methods({
     const [authedUser] = authedUserData;
 
     if (!authedUser) {
+      consola.error("User not found after authentication");
       return new Response(null, {
         status: 302,
         headers: {
