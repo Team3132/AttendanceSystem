@@ -1,0 +1,5 @@
+---
+"frontend": minor
+---
+
+Remove bot

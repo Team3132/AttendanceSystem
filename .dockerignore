@@ -1,7 +1,0 @@
-**/node_modules/
-.devcontainer/
-.github/
-.vscode/
-*.md
-.git
-dist/

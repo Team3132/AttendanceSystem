@@ -10,14 +10,14 @@ COPY . .
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 ARG VERSION
 ENV VITE_PUBLIC_APP_VERSION=$VERSION
-RUN pnpm run --filter frontend build
+RUN pnpm run build
 
 FROM base AS frontend-runner
 ARG VERSION
 ENV VERSION=$VERSION
 ENV NODE_ENV=production
-COPY --from=build-frontend /app/packages/frontend/.output /app/.output
-COPY --from=build-frontend /app/packages/frontend/package.json /app/package.json
-COPY --from=build-frontend /app/packages/frontend/drizzle /app/drizzle
+COPY --from=build-frontend /app/.output /app/.output
+COPY --from=build-frontend /app/package.json /app/package.json
+COPY --from=build-frontend /app/drizzle /app/drizzle
 EXPOSE 3000
 CMD [ "pnpm", "start" ]

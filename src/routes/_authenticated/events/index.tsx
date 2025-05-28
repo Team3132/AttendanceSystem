@@ -86,7 +86,8 @@ function EventFromSelector() {
     (date: DateTime<true> | DateTime<false> | null) => {
       const iso = date?.toISODate();
       navigate({
-        search: (prev) => ({ ...prev, from: iso ?? defaultValues.from }),
+        // biome-ignore lint/suspicious/noExplicitAny: it's being fussy about the type
+        search: (prev: any) => ({ ...prev, from: iso ?? defaultValues.from }),
       });
     },
     [navigate],

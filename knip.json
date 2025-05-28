@@ -1,22 +1,17 @@
 {
 	"$schema": "https://unpkg.com/knip@5/schema.json",
-	"workspaces": {
-		"packages/bot": {
-			"entry": "src/main.ts",
-			"ignoreDependencies": ["express"]
-		},
-		"packages/frontend": {
-			"entry": [
-				"app/ssr.tsx",
-				"app/client.tsx",
-				"app/api.ts",
-				"app/routes/api/**/*.ts",
-				"app/routes/*.ts",
-				"app.config.ts"
-			],
-			"ignore": ["app/routeTree.gen.ts"],
-			"ignoreDependencies": ["@tanstack/router-plugin", "@vitejs/plugin-react"]
-		}
-	},
-	"ignoreDependencies": ["@changesets/cli"]
+	"entry": [
+		"app/ssr.tsx",
+		"app/client.tsx",
+		"app/api.ts",
+		"app/routes/api/**/*.ts",
+		"app/routes/*.ts",
+		"app.config.ts"
+	],
+	"ignore": ["app/routeTree.gen.ts"],
+	"ignoreDependencies": [
+		"@tanstack/router-plugin",
+		"@vitejs/plugin-react",
+		"@changesets/cli"
+	]
 }

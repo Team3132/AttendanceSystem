@@ -1,11 +1,22 @@
 {
-	"extends": "./tsconfig.base.json",
-	"files": [], // intentionally empty
-	"references": [
-		// All projects in the repository
-		{
-			"path": "./packages/frontend"
-		}
-		// Future generated projects will automatically be added here by the generator
-	]
+	"include": ["**/*.ts", "**/*.tsx"],
+	"compilerOptions": {
+		"strict": true,
+		"esModuleInterop": true,
+		"jsx": "react-jsx",
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"lib": ["DOM", "DOM.Iterable", "ES2022"],
+		"isolatedModules": true,
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"target": "ES2022",
+		"allowJs": true,
+		"forceConsistentCasingInFileNames": true,
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./src/*"]
+		},
+		"noEmit": true
+	}
 }
