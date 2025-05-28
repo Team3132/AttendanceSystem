@@ -4,9 +4,9 @@
 	"version": "5.9.5",
 	"type": "module",
 	"scripts": {
-		"dev": "PORT=1420 vite dev",
+		"dev": "vite dev",
 		"build": "vite build",
-		"preview": "vite preview"
+		"start": "PORT=1420 node .output/server/index.mjs"
 	},
 	"files": [
 		"dist",
