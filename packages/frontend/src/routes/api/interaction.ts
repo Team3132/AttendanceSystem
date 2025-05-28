@@ -102,7 +102,7 @@ export default function rsvpToDescription(
 }
 
 export const ServerRoute = createServerFileRoute().methods({
-  GET: async ({ request }) => {
+  POST: async ({ request }) => {
     const signature = getHeader("X-Signature-Ed25519");
     const timestamp = getHeader("X-Signature-Timestamp");
 
