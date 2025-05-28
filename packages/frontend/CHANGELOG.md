@@ -1,5 +1,11 @@
 # frontend
 
+## 5.9.1
+
+### Patch Changes
+
+- [`5fbf3ff`](https://github.com/Team3132/AttendanceSystem/commit/5fbf3ffa5401f7e6f50928b5f35c3aab82e80a9c) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Use psot
+
 ## 5.9.0
 
 ### Minor Changes

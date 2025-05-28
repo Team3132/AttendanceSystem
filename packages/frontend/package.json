@@ -1,7 +1,7 @@
 {
 	"name": "frontend",
 	"private": false,
-	"version": "5.9.0",
+	"version": "5.9.1",
 	"type": "module",
 	"scripts": {
 		"dev": "PORT=1420 vite dev",
