@@ -1,7 +1,7 @@
 import { discord } from "@/server/auth/lucia";
+import { setCookie } from "@tanstack/react-start/server";
 import { createServerFileRoute } from "@tanstack/react-start/server";
 import { generateState } from "arctic";
-import { setCookie } from "vinxi/http";
 
 export const ServerRoute = createServerFileRoute().methods({
   GET: async () => {

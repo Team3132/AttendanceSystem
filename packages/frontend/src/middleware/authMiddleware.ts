@@ -5,8 +5,9 @@ import {
   createMiddleware,
   registerGlobalMiddleware,
 } from "@tanstack/react-start";
+import { getCookie, setCookie } from "@tanstack/react-start/server";
+import { getHeader } from "@tanstack/react-start/server";
 import type { Session, User } from "lucia";
-import { getCookie, getHeader, setCookie } from "vinxi/http";
 
 const nullSession = {
   session: null,

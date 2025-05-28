@@ -1,5 +1,5 @@
+import { getHeader } from "@tanstack/react-start/server";
 import { TRPCError } from "@trpc/server";
-import { getHeader } from "vinxi/http";
 import { t } from ".";
 import env from "../env";
 

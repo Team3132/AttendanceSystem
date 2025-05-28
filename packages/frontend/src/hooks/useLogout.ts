@@ -4,7 +4,7 @@ import type FlattenServerFn from "@/types/FlattenServerFn";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
-import { setCookie } from "vinxi/http";
+import { setCookie } from "@tanstack/react-start/server";
 
 const logoutFn = createServerFn({
   method: "POST",

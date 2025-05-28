@@ -8,14 +8,14 @@ import { buildConflictUpdateColumns } from "@/server/utils/db/buildConflictUpdat
 import { buildSetWhereColumns } from "@/server/utils/db/buildSetWhereColumns";
 import { API } from "@discordjs/core";
 import { DiscordAPIError, REST } from "@discordjs/rest";
-import { createServerFileRoute } from "@tanstack/react-start/server";
-import { OAuth2RequestError } from "arctic";
 import {
   deleteCookie,
   getCookie,
   getValidatedQuery,
   setCookie,
-} from "vinxi/http";
+} from "@tanstack/react-start/server";
+import { createServerFileRoute } from "@tanstack/react-start/server";
+import { OAuth2RequestError } from "arctic";
 import { z } from "zod";
 
 export const ServerRoute = createServerFileRoute().methods({
