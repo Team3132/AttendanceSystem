@@ -47,10 +47,10 @@ function RouteComponent() {
       navigate({
         to: "/admin/event-parsing/create",
         search: {
-          name: `${rule.kronosRule.title} (Copy)`,
+          name: `${rule.name} (Copy)`,
           regex: rule.regex,
           roleIds: rule.roleIds,
-          cronExpr: rule.kronosRule.cronExpr,
+          cronExpr: rule.cronExpr,
           channelId: rule.channelId,
           priority: rule.priority,
           isOutreach: rule.isOutreach,
@@ -102,10 +102,7 @@ function RouteComponent() {
               </Stack>
             }
           >
-            <ListItemText
-              primary={rule.kronosRule.title}
-              secondary={rule.priority}
-            />
+            <ListItemText primary={rule.name} secondary={rule.priority} />
           </ListItem>
         ))}
       </List>

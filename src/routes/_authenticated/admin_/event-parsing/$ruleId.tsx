@@ -114,15 +114,11 @@ function RouteComponent() {
     <Stack gap={2} component="form" onSubmit={onSubmit}>
       <Typography variant="h4">Edit Rule</Typography>
 
-      <TextField
-        value={parsingRuleQuery.data?.kronosRule.title}
-        label="Name"
-        disabled
-      />
+      <TextField value={parsingRuleQuery.data?.name} label="Name" disabled />
       <ControlledTextField control={control} name="regex" label="Regex" />
       <TextField
         disabled
-        value={parsingRuleQuery.data?.kronosRule.cronExpr}
+        value={parsingRuleQuery.data?.cronExpr}
         label="Cron Expression"
         helperText="Create a new rule to change this"
       />

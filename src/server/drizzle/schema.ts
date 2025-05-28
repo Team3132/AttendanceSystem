@@ -276,6 +276,10 @@ export const eventParsingRuleTable = pgTable("parsing_rule", {
   priority: integer("priority").notNull().default(0),
   /** Counts for outreach */
   isOutreach: boolean("is_outreach").notNull().default(false),
+  /** The name of the rule */
+  name: text("name").notNull(),
+  /** The Cron Expression */
+  cronExpr: text("cron_expr").notNull(),
 });
 
 export const eventParsingRuleTableRelations = relations(

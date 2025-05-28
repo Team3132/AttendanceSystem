@@ -11,7 +11,6 @@ import { DiscordAPIError, REST } from "@discordjs/rest";
 import {
   deleteCookie,
   getCookie,
-  getValidatedQuery,
   setCookie,
 } from "@tanstack/react-start/server";
 import { createServerFileRoute } from "@tanstack/react-start/server";
@@ -19,13 +18,30 @@ import { OAuth2RequestError } from "arctic";
 import { z } from "zod";
 
 export const ServerRoute = createServerFileRoute().methods({
-  GET: async () => {
-    const { code, state } = await getValidatedQuery(
-      z.object({
+  GET: async ({ request }) => {
+    // request url
+    const url = new URL(request.url);
+    // query parameters
+    const queryParams = Object.fromEntries(url.searchParams.entries());
+
+    const parsedQuery = await z
+      .object({
         code: z.string(),
         state: z.string(),
-      }).parse,
-    );
+      })
+      .safeParseAsync(queryParams);
+
+    if (!parsedQuery.success) {
+      consola.error("Invalid query parameters", parsedQuery.error);
+      return new Response(null, {
+        status: 302,
+        headers: {
+          location: env.VITE_FRONTEND_URL,
+        },
+      });
+    }
+
+    const { code, state } = parsedQuery.data;
 
     const discordState = getCookie("discord_oauth_state");
 
@@ -112,6 +128,11 @@ export const ServerRoute = createServerFileRoute().methods({
         sessionCookie.value,
         sessionCookie.attributes,
       );
+      consola
+        .withTag("auth")
+        .info(
+          `User ${authedUser.username} (${authedUser.id}) authenticated successfully.`,
+        );
 
       return new Response(null, {
         status: 302,

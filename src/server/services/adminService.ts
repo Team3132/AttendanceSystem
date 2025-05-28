@@ -156,6 +156,8 @@ export async function createParsingRule(
         roleIds,
         priority,
         isOutreach,
+        name,
+        cronExpr,
       })
       .returning(),
   );
@@ -201,46 +203,7 @@ export async function getParsingRules() {
       cause: parsingRulesError,
     });
 
-  const promisedKronos = parsingRules.map(async (rule) => {
-    if (!env.VITE_KRONOS_URL) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Kronos URL not set",
-      });
-    }
-
-    const kronosClient = new KronosClient(env.VITE_KRONOS_URL);
-
-    const [kronosRule, error] = await trytm(
-      kronosClient.getSchedule(rule.kronosId),
-    );
-
-    if (error) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error getting parsing rule from Kronos",
-        cause: error,
-      });
-    }
-
-    return {
-      ...rule,
-      kronosRule,
-    };
-  });
-
-  const [promisedData, promiseError] = await trytm(Promise.all(promisedKronos));
-
-  if (promiseError) {
-    if (promiseError instanceof ServerError) throw promiseError;
-    throw new ServerError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Error fetching parsing rules from Kronos",
-      cause: promiseError,
-    });
-  }
-
-  return promisedData;
+  return parsingRules;
 }
 
 /**
@@ -273,30 +236,7 @@ export const getParsingRule = async (id: string) => {
     });
   }
 
-  if (!env.VITE_KRONOS_URL) {
-    throw new ServerError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Kronos URL not set",
-    });
-  }
-
-  const kronosClient = new KronosClient(env.VITE_KRONOS_URL);
-
-  const [kronosRule, kronosRuleError] = await trytm(
-    kronosClient.getSchedule(rule.kronosId),
-  );
-
-  if (kronosRuleError)
-    throw new ServerError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Error getting parsing rule from Kronos",
-      cause: kronosRuleError,
-    });
-
-  return {
-    ...rule,
-    kronosRule,
-  };
+  return rule;
 };
 
 /**
