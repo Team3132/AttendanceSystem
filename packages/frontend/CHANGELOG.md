@@ -1,5 +1,11 @@
 # frontend
 
+## 5.9.5
+
+### Patch Changes
+
+- [`73a326d`](https://github.com/Team3132/AttendanceSystem/commit/73a326d5cee044d21b244b0a91b8c21ef204cdf3) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add zero page check
+
 ## 5.9.4
 
 ### Patch Changes
