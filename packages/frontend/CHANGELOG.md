@@ -1,5 +1,11 @@
 # frontend
 
+## 5.9.0
+
+### Minor Changes
+
+- [`172a567`](https://github.com/Team3132/AttendanceSystem/commit/172a567ccdc14e308277811129043593f867aec9) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Handle discord commands
+
 ## 5.8.0
 
 ### Minor Changes
