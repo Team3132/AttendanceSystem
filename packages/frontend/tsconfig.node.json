@@ -1,10 +1,5 @@
 {
-	"extends": "../../tsconfig.json",
+	"extends": "../../tsconfig.base.json",
 	"compilerOptions": {},
-	"include": [
-		"vite.config.ts",
-		"tsup.config.ts",
-		"drizzle.config.ts",
-		"src/server/env.ts"
-	]
+	"include": ["vite.config.ts", "drizzle.config.ts"]
 }
