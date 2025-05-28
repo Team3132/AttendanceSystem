@@ -1,15 +1,24 @@
 {
 	"extends": "../../tsconfig.json",
+	"include": ["**/*.ts", "**/*.tsx"],
 	"compilerOptions": {
-		"lib": ["ES2023", "DOM", "DOM.Iterable"],
+		"strict": true,
+		"esModuleInterop": true,
 		"jsx": "react-jsx",
-		/* Linting */
-		"baseUrl": "app",
-		"moduleResolution": "bundler",
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"lib": ["DOM", "DOM.Iterable", "ES2022"],
+		"isolatedModules": true,
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"target": "ES2022",
+		"allowJs": true,
+		"forceConsistentCasingInFileNames": true,
+		"baseUrl": ".",
+		"emitDeclarationOnly": true,
+		"outDir": "./dist",
 		"paths": {
-			"@/*": ["./*"]
-		},
-		"outDir": "./dist-ts"
-	},
-	"include": ["app"]
+			"@/*": ["./src/*"]
+		}
+	}
 }

@@ -1,18 +1,24 @@
 {
-	"extends": "../../tsconfig.json",
 	"compilerOptions": {
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"declaration": true,
+		"removeComments": true,
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
-		"useDefineForClassFields": true,
-		"lib": ["ES2023", "DOM", "DOM.Iterable"],
-		"strictPropertyInitialization": false,
-		"moduleResolution": "bundler",
-		"outDir": "./dist-ts",
-		"baseUrl": "./src",
-		"paths": {
-			"@/*": ["./*"]
-		}
+		"allowSyntheticDefaultImports": true,
+		"target": "ES2023",
+		"sourceMap": true,
+		"outDir": "./dist",
+		"emitDeclarationOnly": true,
+		"baseUrl": "./",
+		"incremental": true,
+		"forceConsistentCasingInFileNames": true,
+		"skipLibCheck": true
 	},
-	"include": ["src"],
-	"references": [{ "path": "../frontend" }]
+	"references": [
+		{
+			"path": "../frontend"
+		}
+	]
 }
