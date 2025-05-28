@@ -1,5 +1,11 @@
 # frontend
 
+## 5.10.0
+
+### Minor Changes
+
+- [`3c1d32c`](https://github.com/Team3132/AttendanceSystem/commit/3c1d32ca563e4b4ffbbd49e198be62581b3d22fd) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Remove bot
+
 ## 5.9.5
 
 ### Patch Changes
