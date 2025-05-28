@@ -49,27 +49,27 @@ function getCauseFromUnknown(cause: unknown): Error | undefined {
   return undefined;
 }
 
-function getServerErrorFromUnknown(cause: unknown): ServerError {
-  if (cause instanceof ServerError) {
-    return cause;
-  }
-  if (cause instanceof Error && cause.name === "ServerError") {
-    // https://github.com/trpc/trpc/pull/4848
-    return cause as ServerError;
-  }
+// function getServerErrorFromUnknown(cause: unknown): ServerError {
+//   if (cause instanceof ServerError) {
+//     return cause;
+//   }
+//   if (cause instanceof Error && cause.name === "ServerError") {
+//     // https://github.com/trpc/trpc/pull/4848
+//     return cause as ServerError;
+//   }
 
-  const trpcError = new ServerError({
-    code: "INTERNAL_SERVER_ERROR",
-    cause,
-  });
+//   const trpcError = new ServerError({
+//     code: "INTERNAL_SERVER_ERROR",
+//     cause,
+//   });
 
-  // Inherit stack from error
-  if (cause instanceof Error && cause.stack) {
-    trpcError.stack = cause.stack;
-  }
+//   // Inherit stack from error
+//   if (cause instanceof Error && cause.stack) {
+//     trpcError.stack = cause.stack;
+//   }
 
-  return trpcError;
-}
+//   return trpcError;
+// }
 
 /**
  * Error class for server errors

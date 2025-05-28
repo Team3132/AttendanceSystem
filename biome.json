@@ -12,7 +12,8 @@
 			"./package.json",
 			"./.output/**",
 			"./.vinxi/**",
-			"./dist/**"
+			"./dist/**",
+			"./.tanstack-start/server-routes/routeTree.gen"
 		]
 	},
 	"formatter": {

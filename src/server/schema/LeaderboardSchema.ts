@@ -6,5 +6,3 @@ export const LeaderBoardUser = z.object({
   duration: z.string(),
   rank: z.number(),
 });
-
-const LeaderBoardSchema = z.array(LeaderBoardUser);
