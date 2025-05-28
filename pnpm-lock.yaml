@@ -225,6 +225,9 @@ importers:
       luxon:
         specifier: 3.6.1
         version: 3.6.1
+      path-to-regexp:
+        specifier: ^8.2.0
+        version: 8.2.0
       postgres:
         specifier: 3.4.5
         version: 3.4.5
