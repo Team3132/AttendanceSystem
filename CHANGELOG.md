@@ -1,5 +1,11 @@
 # frontend
 
+## 5.10.7
+
+### Patch Changes
+
+- [`d125391`](https://github.com/Team3132/AttendanceSystem/commit/d125391641ed405191934d3d42f84f8d242a1dbf) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Use regex to validate cron
+
 ## 5.10.6
 
 ### Patch Changes
