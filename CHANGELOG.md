@@ -1,5 +1,11 @@
 # frontend
 
+## 5.10.6
+
+### Patch Changes
+
+- [`223bdb7`](https://github.com/Team3132/AttendanceSystem/commit/223bdb72f9a9468e447b7b1efa575bca23a6a52a) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix broken cron validation
+
 ## 5.10.5
 
 ### Patch Changes
