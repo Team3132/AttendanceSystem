@@ -1,5 +1,11 @@
 # frontend
 
+## 5.10.8
+
+### Patch Changes
+
+- [`9ab832c`](https://github.com/Team3132/AttendanceSystem/commit/9ab832c49a0439028991bf7a631554a3ba317041) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Awesome new webhook trigger update
+
 ## 5.10.7
 
 ### Patch Changes
