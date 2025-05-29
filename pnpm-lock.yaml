@@ -105,8 +105,8 @@ importers:
         specifier: 5.0.1
         version: 5.0.1
       googleapis:
-        specifier: 146.0.0
-        version: 146.0.0
+        specifier: 149.0.0
+        version: 149.0.0
       graphql:
         specifier: ^16.11.0
         version: 16.11.0
@@ -3878,8 +3878,8 @@ packages:
     resolution: {integrity: sha512-/fhDZEJZvOV3X5jmD+fKxMqma5q2Q9nZNSF3kn1F18tpxmA86BcTxAGBQdM0N89Z3bEaIs+HVznSmFJEAmMTjA==}
     engines: {node: '>=14.0.0'}
 
-  googleapis@146.0.0:
-    resolution: {integrity: sha512-NewqvhnBZOJsugCAOo636O0BGE/xY7Cg/v8Rjm1+5LkJCjcqAzLleJ6igd5vrRExJLSKrY9uHy9iKE7r0PrfhQ==}
+  googleapis@149.0.0:
+    resolution: {integrity: sha512-LTMc/njwYy7KTeaUHDcQt7KxftHyghdzm2XzbL46PRLd1AXB09utT9Po2ZJn2X0EApz0pE2T5x5A9zM8iue6zw==}
     engines: {node: '>=14.0.0'}
 
   gopd@1.2.0:
@@ -10086,7 +10086,7 @@ snapshots:
       - encoding
       - supports-color
 
-  googleapis@146.0.0:
+  googleapis@149.0.0:
     dependencies:
       google-auth-library: 9.15.1
       googleapis-common: 7.2.0
