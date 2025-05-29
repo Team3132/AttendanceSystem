@@ -1,0 +1,8 @@
+query Webhooks {
+  cronWebhooks {
+    id
+    url
+    cronExpression
+    enabled
+  }
+}

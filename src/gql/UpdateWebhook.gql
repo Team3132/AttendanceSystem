@@ -1,0 +1,8 @@
+mutation UpdateWebhook ($id: ID!, $url: String, $cronExpression: String, $enabled: Boolean) {
+  updateCronWebhook(id: $id, url: $url, cronExpression: $cronExpression, enabled: $enabled) {
+    id
+    url
+    cronExpression
+    enabled
+  }
+}

@@ -58,7 +58,7 @@ const env = createEnv({
     /**
      * Kronos cron job connection url
      */
-    VITE_KRONOS_URL: z.string().optional(),
+    VITE_WEBHOOK_SERVER: z.string().optional(),
   },
   runtimeEnv: {
     ...((import.meta as unknown as { env: Record<string, string> }).env ?? {}),

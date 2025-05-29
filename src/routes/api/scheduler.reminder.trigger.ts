@@ -1,43 +1,39 @@
 import db from "@/server/drizzle/db";
 import { eventParsingRuleTable, eventTable } from "@/server/drizzle/schema";
-import env from "@/server/env";
 import { consola } from "@/server/logger";
 import { generateMessage } from "@/server/services/botService";
 import { getDiscordBotAPI } from "@/server/services/discordService";
-import KronosClient, { ScheduleSchema } from "@/server/utils/KronosClient";
 import { ChannelType } from "@discordjs/core";
 import { json } from "@tanstack/react-start";
 import { createServerFileRoute } from "@tanstack/react-start/server";
 import { and, between, eq, inArray, not } from "drizzle-orm";
 import { DateTime } from "luxon";
+import { z } from "zod";
 
 export const ServerRoute = createServerFileRoute().methods({
   POST: async ({ request }) => {
     try {
-      const body = await request.json();
-      const validatedBody = await ScheduleSchema.safeParseAsync(body);
+      const searchParamObject = Object.fromEntries(
+        new URL(request.url).searchParams.entries(),
+      );
 
-      if (!validatedBody.success) {
-        return json({ success: false, error: "Invalid schedule" });
+      const searchParamsValidation = await z
+        .object({
+          ruleId: z.string(),
+        })
+        .safeParseAsync(searchParamObject);
+
+      if (!searchParamsValidation.success) {
+        throw new Error("Rule could not be found");
       }
 
-      const { ruleId } = validatedBody.data.metadata;
+      const { ruleId } = searchParamsValidation.data;
 
       const rule = await db.query.eventParsingRuleTable.findFirst({
         where: eq(eventParsingRuleTable.id, ruleId),
       });
 
       if (!rule) {
-        // attempt to delete the kronos schedule
-        if (env.VITE_KRONOS_URL) {
-          const kronosClient = new KronosClient(env.VITE_KRONOS_URL);
-          try {
-            await kronosClient.deleteSchedule(validatedBody.data.id);
-          } catch {
-            console.error("Failed to delete schedule");
-          }
-        }
-
         throw new Error("Rule not found");
       }
 

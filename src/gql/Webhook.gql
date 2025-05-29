@@ -1,0 +1,8 @@
+query Webhook ($id: ID!) {
+  cronWebhook(id: $id) {
+    id
+    url
+    cronExpression
+    enabled
+  }
+}
