@@ -1,9 +1,9 @@
 query Webhooks {
-  cronWebhooks {
-    id
-    url
-    cronExpression
-    enabled
-    nextRun
-  }
+	cronWebhooks {
+		id
+		url
+		cronExpression
+		enabled
+		nextRun
+	}
 }

@@ -1,9 +1,9 @@
-query Webhook ($id: ID!) {
-  cronWebhook(id: $id) {
-    id
-    url
-    cronExpression
-    enabled
-    nextRun
-  }
+query Webhook($id: ID!) {
+	cronWebhook(id: $id) {
+		id
+		url
+		cronExpression
+		enabled
+		nextRun
+	}
 }
