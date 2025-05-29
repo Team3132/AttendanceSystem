@@ -37,7 +37,7 @@ importers:
         version: 2.1.5(keyv@5.3.3)
       '@lucia-auth/adapter-drizzle':
         specifier: 1.1.0
-        version: 1.1.0(drizzle-orm@0.43.1(pg@8.16.0)(postgres@3.4.7))(lucia@3.2.2)
+        version: 1.1.0(drizzle-orm@0.44.0(pg@8.16.0)(postgres@3.4.7))(lucia@3.2.2)
       '@mui/icons-material':
         specifier: 7.1.0
         version: 7.1.0(@mui/material@7.1.0(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(@types/react@19.1.6)(react@19.1.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/react@19.1.6)(react@19.1.0)
@@ -70,7 +70,7 @@ importers:
         version: 1.121.0-alpha.14(@tanstack/react-query@5.72.2(react@19.1.0))(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@tanstack/router-core@1.121.0-alpha.14)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@tanstack/react-start':
         specifier: 1.121.0-alpha.19
-        version: 1.121.0-alpha.19(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@vitejs/plugin-react@4.5.0(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4)))(drizzle-orm@0.43.1(pg@8.16.0)(postgres@3.4.7))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4))
+        version: 1.121.0-alpha.19(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@vitejs/plugin-react@4.5.0(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4)))(drizzle-orm@0.44.0(pg@8.16.0)(postgres@3.4.7))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4))
       '@tanstack/react-table':
         specifier: 8.21.3
         version: 8.21.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -99,11 +99,11 @@ importers:
         specifier: 4.1.1
         version: 4.1.1
       drizzle-orm:
-        specifier: 0.43.1
-        version: 0.43.1(pg@8.16.0)(postgres@3.4.7)
+        specifier: 0.44.0
+        version: 0.44.0(pg@8.16.0)(postgres@3.4.7)
       drizzle-zod:
         specifier: 0.7.0
-        version: 0.7.0(drizzle-orm@0.43.1(pg@8.16.0)(postgres@3.4.7))(zod@3.24.2)
+        version: 0.7.0(drizzle-orm@0.44.0(pg@8.16.0)(postgres@3.4.7))(zod@3.24.2)
       eventemitter3:
         specifier: 5.0.1
         version: 5.0.1
@@ -2756,8 +2756,8 @@ packages:
     resolution: {integrity: sha512-PUjYKWtzOzPtdtQlTHQG3qfv4Y0XT8+Eas6UbxCmxTj7qgMf+39dDujf1BP1I+qqZtw9uzwTh8jYtkMuCq+B0Q==}
     hasBin: true
 
-  drizzle-orm@0.43.1:
-    resolution: {integrity: sha512-dUcDaZtE/zN4RV/xqGrVSMpnEczxd5cIaoDeor7Zst9wOe/HzC/7eAaulywWGYXdDEc9oBPMjayVEDg0ziTLJA==}
+  drizzle-orm@0.44.0:
+    resolution: {integrity: sha512-/8wYepe887Gp1eCVILKitNegclGLPUMdK4oDDyDftKJOeHoCylY+XM++chMJloy9oKTceWOALiQMl2aAuFuPTw==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
       '@cloudflare/workers-types': '>=4'
@@ -2773,6 +2773,7 @@ packages:
       '@types/better-sqlite3': '*'
       '@types/pg': '*'
       '@types/sql.js': '*'
+      '@upstash/redis': '>=1.34.7'
       '@vercel/postgres': '>=0.8.0'
       '@xata.io/client': '*'
       better-sqlite3: '>=7'
@@ -2815,6 +2816,8 @@ packages:
       '@types/pg':
         optional: true
       '@types/sql.js':
+        optional: true
+      '@upstash/redis':
         optional: true
       '@vercel/postgres':
         optional: true
@@ -5754,9 +5757,9 @@ snapshots:
     dependencies:
       buffer: 6.0.3
 
-  '@lucia-auth/adapter-drizzle@1.1.0(drizzle-orm@0.43.1(pg@8.16.0)(postgres@3.4.7))(lucia@3.2.2)':
+  '@lucia-auth/adapter-drizzle@1.1.0(drizzle-orm@0.44.0(pg@8.16.0)(postgres@3.4.7))(lucia@3.2.2)':
     dependencies:
-      drizzle-orm: 0.43.1(pg@8.16.0)(postgres@3.4.7)
+      drizzle-orm: 0.44.0(pg@8.16.0)(postgres@3.4.7)
       lucia: 3.2.2
 
   '@manypkg/find-root@1.1.0':
@@ -6556,10 +6559,10 @@ snapshots:
       tiny-invariant: 1.3.3
       tiny-warning: 1.0.3
 
-  '@tanstack/react-start-plugin@1.121.0-alpha.19(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@vitejs/plugin-react@4.5.0(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4)))(drizzle-orm@0.43.1(pg@8.16.0)(postgres@3.4.7))(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4))':
+  '@tanstack/react-start-plugin@1.121.0-alpha.19(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@vitejs/plugin-react@4.5.0(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4)))(drizzle-orm@0.44.0(pg@8.16.0)(postgres@3.4.7))(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4))':
     dependencies:
       '@tanstack/router-utils': 1.121.0-alpha.2
-      '@tanstack/start-plugin-core': 1.121.0-alpha.19(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(drizzle-orm@0.43.1(pg@8.16.0)(postgres@3.4.7))(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4))
+      '@tanstack/start-plugin-core': 1.121.0-alpha.19(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(drizzle-orm@0.44.0(pg@8.16.0)(postgres@3.4.7))(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4))
       '@vitejs/plugin-react': 4.5.0(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4))
       vite: 6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4)
       zod: 3.24.2
@@ -6611,10 +6614,10 @@ snapshots:
       tiny-warning: 1.0.3
       unctx: 2.4.1
 
-  '@tanstack/react-start@1.121.0-alpha.19(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@vitejs/plugin-react@4.5.0(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4)))(drizzle-orm@0.43.1(pg@8.16.0)(postgres@3.4.7))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4))':
+  '@tanstack/react-start@1.121.0-alpha.19(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@vitejs/plugin-react@4.5.0(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4)))(drizzle-orm@0.44.0(pg@8.16.0)(postgres@3.4.7))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4))':
     dependencies:
       '@tanstack/react-start-client': 1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@tanstack/react-start-plugin': 1.121.0-alpha.19(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@vitejs/plugin-react@4.5.0(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4)))(drizzle-orm@0.43.1(pg@8.16.0)(postgres@3.4.7))(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4))
+      '@tanstack/react-start-plugin': 1.121.0-alpha.19(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@vitejs/plugin-react@4.5.0(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4)))(drizzle-orm@0.44.0(pg@8.16.0)(postgres@3.4.7))(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4))
       '@tanstack/react-start-server': 1.121.0-alpha.17(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@tanstack/start-server-functions-client': 1.121.0-alpha.17(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4))
       '@tanstack/start-server-functions-server': 1.121.0-alpha.8(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4))
@@ -6800,7 +6803,7 @@ snapshots:
       tiny-invariant: 1.3.3
       tiny-warning: 1.0.3
 
-  '@tanstack/start-plugin-core@1.121.0-alpha.19(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(drizzle-orm@0.43.1(pg@8.16.0)(postgres@3.4.7))(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4))':
+  '@tanstack/start-plugin-core@1.121.0-alpha.19(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(drizzle-orm@0.44.0(pg@8.16.0)(postgres@3.4.7))(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4))':
     dependencies:
       '@babel/code-frame': 7.26.2
       '@babel/core': 7.27.3
@@ -6815,7 +6818,7 @@ snapshots:
       babel-dead-code-elimination: 1.0.10
       cheerio: 1.0.0
       h3: 1.13.0
-      nitropack: 2.11.12(drizzle-orm@0.43.1(pg@8.16.0)(postgres@3.4.7))
+      nitropack: 2.11.12(drizzle-orm@0.44.0(pg@8.16.0)(postgres@3.4.7))
       pathe: 2.0.3
       ufo: 1.6.1
       vite: 6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4)
@@ -7466,9 +7469,9 @@ snapshots:
 
   dataloader@1.4.0: {}
 
-  db0@0.3.2(drizzle-orm@0.43.1(pg@8.16.0)(postgres@3.4.7)):
+  db0@0.3.2(drizzle-orm@0.44.0(pg@8.16.0)(postgres@3.4.7)):
     optionalDependencies:
-      drizzle-orm: 0.43.1(pg@8.16.0)(postgres@3.4.7)
+      drizzle-orm: 0.44.0(pg@8.16.0)(postgres@3.4.7)
 
   debug@4.4.1:
     dependencies:
@@ -7602,14 +7605,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.43.1(pg@8.16.0)(postgres@3.4.7):
+  drizzle-orm@0.44.0(pg@8.16.0)(postgres@3.4.7):
     optionalDependencies:
       pg: 8.16.0
       postgres: 3.4.7
 
-  drizzle-zod@0.7.0(drizzle-orm@0.43.1(pg@8.16.0)(postgres@3.4.7))(zod@3.24.2):
+  drizzle-zod@0.7.0(drizzle-orm@0.44.0(pg@8.16.0)(postgres@3.4.7))(zod@3.24.2):
     dependencies:
-      drizzle-orm: 0.43.1(pg@8.16.0)(postgres@3.4.7)
+      drizzle-orm: 0.44.0(pg@8.16.0)(postgres@3.4.7)
       zod: 3.24.2
 
   dunder-proto@1.0.1:
@@ -8577,7 +8580,7 @@ snapshots:
       p-wait-for: 5.0.2
       qs: 6.14.0
 
-  nitropack@2.11.12(drizzle-orm@0.43.1(pg@8.16.0)(postgres@3.4.7)):
+  nitropack@2.11.12(drizzle-orm@0.44.0(pg@8.16.0)(postgres@3.4.7)):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.0
       '@netlify/functions': 3.1.10(rollup@4.41.1)
@@ -8599,7 +8602,7 @@ snapshots:
       cookie-es: 2.0.0
       croner: 9.0.0
       crossws: 0.3.5
-      db0: 0.3.2(drizzle-orm@0.43.1(pg@8.16.0)(postgres@3.4.7))
+      db0: 0.3.2(drizzle-orm@0.44.0(pg@8.16.0)(postgres@3.4.7))
       defu: 6.1.4
       destr: 2.0.5
       dot-prop: 9.0.0
@@ -8645,7 +8648,7 @@ snapshots:
       unenv: 2.0.0-rc.17
       unimport: 5.0.1
       unplugin-utils: 0.2.4
-      unstorage: 1.16.0(db0@0.3.2(drizzle-orm@0.43.1(pg@8.16.0)(postgres@3.4.7)))(ioredis@5.6.1)
+      unstorage: 1.16.0(db0@0.3.2(drizzle-orm@0.44.0(pg@8.16.0)(postgres@3.4.7)))(ioredis@5.6.1)
       untyped: 2.0.0
       unwasm: 0.3.9
       youch: 4.1.0-beta.8
@@ -9574,7 +9577,7 @@ snapshots:
       picomatch: 4.0.2
       webpack-virtual-modules: 0.6.2
 
-  unstorage@1.16.0(db0@0.3.2(drizzle-orm@0.43.1(pg@8.16.0)(postgres@3.4.7)))(ioredis@5.6.1):
+  unstorage@1.16.0(db0@0.3.2(drizzle-orm@0.44.0(pg@8.16.0)(postgres@3.4.7)))(ioredis@5.6.1):
     dependencies:
       anymatch: 3.1.3
       chokidar: 4.0.3
@@ -9585,7 +9588,7 @@ snapshots:
       ofetch: 1.4.1
       ufo: 1.6.1
     optionalDependencies:
-      db0: 0.3.2(drizzle-orm@0.43.1(pg@8.16.0)(postgres@3.4.7))
+      db0: 0.3.2(drizzle-orm@0.44.0(pg@8.16.0)(postgres@3.4.7))
       ioredis: 5.6.1
 
   untun@0.1.3:
