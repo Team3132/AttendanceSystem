@@ -8,7 +8,6 @@ import { strToRegex } from "@/server/utils/regexBuilder";
 import { Button, Divider, Stack, Typography } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { default as cron } from "cron-validate";
 import { useMemo } from "react";
 import { z } from "zod";
 
@@ -31,9 +30,7 @@ export const Route = createFileRoute({
     roleIds: z.array(z.string()).optional(),
     cronExpr: z
       .string()
-      .refine((v) => cron(v).isValid(), {
-        message: "Invalid cron expression",
-      })
+      .regex(/((((\d+,)+\d+|(\d+(\/|-)\d+)|\d+|\*) ?){5,7})/g)
       .optional(),
     isOutreach: z.boolean().optional(),
   }),
@@ -68,9 +65,7 @@ const NewEventParsingRuleFormSchema = z.object({
       }
     }),
   roles: z.array(OptionSchema).min(1),
-  cronExpr: z.string().refine((v) => cron(v).isValid(), {
-    message: "Invalid cron expression",
-  }),
+  cronExpr: z.string().regex(/((((\d+,)+\d+|(\d+(\/|-)\d+)|\d+|\*) ?){5,7})/g),
   isOutreach: z.boolean(),
 });
 
