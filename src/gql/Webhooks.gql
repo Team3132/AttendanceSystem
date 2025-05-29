@@ -4,5 +4,6 @@ query Webhooks {
     url
     cronExpression
     enabled
+    nextRun
   }
 }

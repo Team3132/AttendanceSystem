@@ -391,11 +391,11 @@ export const triggerRule = async (id: string) => {
 
   const [triggerData, triggerError] = await trytm(
     sdk.TriggerWebhook({
-      id,
+      id: rule.cronId,
     }),
   );
 
-  if (triggerError) {
+  if (triggerError || triggerData.errors) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error triggering parsing rule",
@@ -403,7 +403,7 @@ export const triggerRule = async (id: string) => {
     });
   }
 
-  return triggerData;
+  return triggerData.data;
 };
 
 const reapplyRules = async () => {

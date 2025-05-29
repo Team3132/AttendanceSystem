@@ -22,6 +22,7 @@ export type CronWebhook = {
   cronExpression: Scalars['String']['output'];
   enabled: Scalars['Boolean']['output'];
   id: Scalars['ID']['output'];
+  nextRun?: Maybe<Scalars['String']['output']>;
   url: Scalars['String']['output'];
 };
 
@@ -74,7 +75,7 @@ export type CreateWebhookMutationVariables = Exact<{
 }>;
 
 
-export type CreateWebhookMutation = { __typename?: 'Mutation', createCronWebhook: { __typename?: 'CronWebhook', id: string, url: string, cronExpression: string, enabled: boolean } };
+export type CreateWebhookMutation = { __typename?: 'Mutation', createCronWebhook: { __typename?: 'CronWebhook', id: string, url: string, cronExpression: string, enabled: boolean, nextRun?: string | null } };
 
 export type DeleteWebhookMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -98,19 +99,19 @@ export type UpdateWebhookMutationVariables = Exact<{
 }>;
 
 
-export type UpdateWebhookMutation = { __typename?: 'Mutation', updateCronWebhook: { __typename?: 'CronWebhook', id: string, url: string, cronExpression: string, enabled: boolean } };
+export type UpdateWebhookMutation = { __typename?: 'Mutation', updateCronWebhook: { __typename?: 'CronWebhook', id: string, url: string, cronExpression: string, enabled: boolean, nextRun?: string | null } };
 
 export type WebhookQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type WebhookQuery = { __typename?: 'Query', cronWebhook?: { __typename?: 'CronWebhook', id: string, url: string, cronExpression: string, enabled: boolean } | null };
+export type WebhookQuery = { __typename?: 'Query', cronWebhook?: { __typename?: 'CronWebhook', id: string, url: string, cronExpression: string, enabled: boolean, nextRun?: string | null } | null };
 
 export type WebhooksQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type WebhooksQuery = { __typename?: 'Query', cronWebhooks: Array<{ __typename?: 'CronWebhook', id: string, url: string, cronExpression: string, enabled: boolean }> };
+export type WebhooksQuery = { __typename?: 'Query', cronWebhooks: Array<{ __typename?: 'CronWebhook', id: string, url: string, cronExpression: string, enabled: boolean, nextRun?: string | null }> };
 
 
 export const CreateWebhookDocument = `
@@ -120,6 +121,7 @@ export const CreateWebhookDocument = `
     url
     cronExpression
     enabled
+    nextRun
   }
 }
     `;
@@ -145,6 +147,7 @@ export const UpdateWebhookDocument = `
     url
     cronExpression
     enabled
+    nextRun
   }
 }
     `;
@@ -155,6 +158,7 @@ export const WebhookDocument = `
     url
     cronExpression
     enabled
+    nextRun
   }
 }
     `;
@@ -165,6 +169,7 @@ export const WebhooksDocument = `
     url
     cronExpression
     enabled
+    nextRun
   }
 }
     `;

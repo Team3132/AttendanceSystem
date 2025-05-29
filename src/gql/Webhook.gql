@@ -4,5 +4,6 @@ query Webhook ($id: ID!) {
     url
     cronExpression
     enabled
+    nextRun
   }
 }

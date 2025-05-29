@@ -232,6 +232,13 @@
 			"when": 1748472421948,
 			"tag": "0032_thin_chameleon",
 			"breakpoints": true
+		},
+		{
+			"idx": 33,
+			"version": "7",
+			"when": 1748521869574,
+			"tag": "0033_romantic_kang",
+			"breakpoints": true
 		}
 	]
 }

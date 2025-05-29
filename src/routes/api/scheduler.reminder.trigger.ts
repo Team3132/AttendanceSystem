@@ -1,12 +1,16 @@
+import { getSdk } from "@/gql";
 import db from "@/server/drizzle/db";
 import { eventParsingRuleTable, eventTable } from "@/server/drizzle/schema";
+import env from "@/server/env";
 import { consola } from "@/server/logger";
 import { generateMessage } from "@/server/services/botService";
 import { getDiscordBotAPI } from "@/server/services/discordService";
+import { trytm } from "@/utils/trytm";
 import { ChannelType } from "@discordjs/core";
 import { json } from "@tanstack/react-start";
 import { createServerFileRoute } from "@tanstack/react-start/server";
 import { and, between, eq, inArray, not } from "drizzle-orm";
+import { GraphQLClient } from "graphql-request";
 import { DateTime } from "luxon";
 import { z } from "zod";
 
@@ -37,9 +41,34 @@ export const ServerRoute = createServerFileRoute().methods({
         throw new Error("Rule not found");
       }
 
-      const startNextDay = DateTime.now().plus({ day: 1 }).startOf("day");
+      if (!env.VITE_WEBHOOK_SERVER) {
+        throw new Error("Webhook server URL is not configured");
+      }
 
-      const endNextDay = startNextDay.endOf("day");
+      const sdk = getSdk(new GraphQLClient(env.VITE_WEBHOOK_SERVER));
+
+      const [webhookJob, err] = await trytm(
+        sdk.Webhook({
+          id: rule.cronId,
+        }),
+      );
+
+      if (err || webhookJob.errors) {
+        consola.error("Error fetching webhook job", err);
+        throw new Error("Failed to fetch webhook job");
+      }
+
+      const nextRun = webhookJob.data.cronWebhook?.nextRun;
+
+      let eventRangeEnd = DateTime.now()
+        .plus({ day: 1 })
+        .startOf("day")
+        .toJSDate();
+
+      const nextRunDate = nextRun ? DateTime.fromISO(nextRun) : null;
+      if (nextRunDate?.isValid) {
+        eventRangeEnd = nextRunDate.toJSDate();
+      }
 
       // events in the next day and that match the rule
       const matchingEvents = await db
@@ -48,11 +77,7 @@ export const ServerRoute = createServerFileRoute().methods({
         .where(
           and(
             eq(eventTable.ruleId, ruleId),
-            between(
-              eventTable.startDate,
-              startNextDay.toJSDate(),
-              endNextDay.toJSDate(),
-            ),
+            between(eventTable.startDate, new Date(), eventRangeEnd),
             not(eventTable.isPosted),
           ),
         );

@@ -4,5 +4,6 @@ mutation UpdateWebhook ($id: ID!, $url: String, $cronExpression: String, $enable
     url
     cronExpression
     enabled
+    nextRun
   }
 }
