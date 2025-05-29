@@ -49,7 +49,7 @@ importers:
         version: 8.5.0(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(@types/react@19.1.6)(react@19.1.0))(@mui/material@7.1.0(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(@types/react@19.1.6)(react@19.1.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@mui/system@7.1.0(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.1.6)(react@19.1.0))(@types/react@19.1.6)(react@19.1.0))(@types/react@19.1.6)(react@19.1.0))(@types/react@19.1.6)(luxon@3.6.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@t3-oss/env-core':
         specifier: 0.13.6
-        version: 0.13.6(typescript@5.8.3)(zod@3.24.2)
+        version: 0.13.6(typescript@5.8.3)(zod@3.25.36)
       '@tanstack/match-sorter-utils':
         specifier: 8.19.4
         version: 8.19.4
@@ -82,7 +82,7 @@ importers:
         version: 8.21.3
       '@tanstack/zod-adapter':
         specifier: 1.120.11
-        version: 1.120.11(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(zod@3.24.2)
+        version: 1.120.11(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(zod@3.25.36)
       '@trpc/server':
         specifier: 11.0.4
         version: 11.0.4(typescript@5.8.3)
@@ -100,7 +100,7 @@ importers:
         version: 0.44.0(pg@8.16.0)(postgres@3.4.7)
       drizzle-zod:
         specifier: 0.7.0
-        version: 0.7.0(drizzle-orm@0.44.0(pg@8.16.0)(postgres@3.4.7))(zod@3.24.2)
+        version: 0.7.0(drizzle-orm@0.44.0(pg@8.16.0)(postgres@3.4.7))(zod@3.25.36)
       eventemitter3:
         specifier: 5.0.1
         version: 5.0.1
@@ -153,8 +153,8 @@ importers:
         specifier: 11.1.0
         version: 11.1.0
       zod:
-        specifier: 3.24.2
-        version: 3.24.2
+        specifier: 3.25.36
+        version: 3.25.36
     devDependencies:
       '@biomejs/biome':
         specifier: 1.9.4
@@ -5959,8 +5959,8 @@ packages:
     resolution: {integrity: sha512-zK7YHHz4ZXpW89AHXUPbQVGKI7uvkd3hzusTdotCg1UxyaVtg0zFJSTfW/Dq5f7OBBVnq6cZIaC8Ti4hb6dtCA==}
     engines: {node: '>= 14'}
 
-  zod@3.24.2:
-    resolution: {integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==}
+  zod@3.25.36:
+    resolution: {integrity: sha512-eRFS3i8T0IrpGdL8HQyqFAugGOn7jOjyGgGdtv5NY4Wkhi7lJDk732bNZ609YMIGFbLoaj6J69O1Mura23gfIw==}
 
 snapshots:
 
@@ -7859,7 +7859,7 @@ snapshots:
       unixify: 1.0.0
       urlpattern-polyfill: 8.0.2
       yargs: 17.7.2
-      zod: 3.24.2
+      zod: 3.25.36
     transitivePeerDependencies:
       - encoding
       - rollup
@@ -8261,10 +8261,10 @@ snapshots:
 
   '@standard-schema/utils@0.3.0': {}
 
-  '@t3-oss/env-core@0.13.6(typescript@5.8.3)(zod@3.24.2)':
+  '@t3-oss/env-core@0.13.6(typescript@5.8.3)(zod@3.25.36)':
     optionalDependencies:
       typescript: 5.8.3
-      zod: 3.24.2
+      zod: 3.25.36
 
   '@tanstack/directive-functions-plugin@1.121.0-alpha.2(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4)(yaml@2.8.0))':
     dependencies:
@@ -8354,7 +8354,7 @@ snapshots:
       '@tanstack/start-plugin-core': 1.121.0-alpha.19(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(drizzle-orm@0.44.0(pg@8.16.0)(postgres@3.4.7))(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4)(yaml@2.8.0))
       '@vitejs/plugin-react': 4.5.0(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4)(yaml@2.8.0))
       vite: 6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4)(yaml@2.8.0)
-      zod: 3.24.2
+      zod: 3.25.36
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -8492,7 +8492,7 @@ snapshots:
       '@tanstack/virtual-file-routes': 1.115.0
       prettier: 3.5.3
       tsx: 4.19.4
-      zod: 3.24.2
+      zod: 3.25.36
     optionalDependencies:
       '@tanstack/react-router': 1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
@@ -8501,7 +8501,7 @@ snapshots:
       '@tanstack/virtual-file-routes': 1.121.0-alpha.1
       prettier: 3.5.3
       tsx: 4.19.4
-      zod: 3.24.2
+      zod: 3.25.36
     optionalDependencies:
       '@tanstack/react-router': 1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
@@ -8523,7 +8523,7 @@ snapshots:
       babel-dead-code-elimination: 1.0.10
       chokidar: 3.6.0
       unplugin: 2.3.5
-      zod: 3.24.2
+      zod: 3.25.36
     optionalDependencies:
       '@tanstack/react-router': 1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       vite: 6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4)(yaml@2.8.0)
@@ -8548,7 +8548,7 @@ snapshots:
       babel-dead-code-elimination: 1.0.10
       chokidar: 3.6.0
       unplugin: 2.3.5
-      zod: 3.24.2
+      zod: 3.25.36
     optionalDependencies:
       '@tanstack/react-router': 1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       vite: 6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4)(yaml@2.8.0)
@@ -8612,7 +8612,7 @@ snapshots:
       ufo: 1.6.1
       vite: 6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4)(yaml@2.8.0)
       xmlbuilder2: 3.1.1
-      zod: 3.24.2
+      zod: 3.25.36
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -8688,10 +8688,10 @@ snapshots:
 
   '@tanstack/virtual-file-routes@1.121.0-alpha.1': {}
 
-  '@tanstack/zod-adapter@1.120.11(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(zod@3.24.2)':
+  '@tanstack/zod-adapter@1.120.11(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(zod@3.25.36)':
     dependencies:
       '@tanstack/react-router': 1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      zod: 3.24.2
+      zod: 3.25.36
 
   '@trpc/client@11.0.4(@trpc/server@11.0.4(typescript@5.8.3))(typescript@5.8.3)':
     dependencies:
@@ -9586,10 +9586,10 @@ snapshots:
       pg: 8.16.0
       postgres: 3.4.7
 
-  drizzle-zod@0.7.0(drizzle-orm@0.44.0(pg@8.16.0)(postgres@3.4.7))(zod@3.24.2):
+  drizzle-zod@0.7.0(drizzle-orm@0.44.0(pg@8.16.0)(postgres@3.4.7))(zod@3.25.36):
     dependencies:
       drizzle-orm: 0.44.0(pg@8.16.0)(postgres@3.4.7)
-      zod: 3.24.2
+      zod: 3.25.36
 
   dset@3.1.4: {}
 
@@ -12193,4 +12193,4 @@ snapshots:
       compress-commons: 6.0.2
       readable-stream: 4.7.0
 
-  zod@3.24.2: {}
+  zod@3.25.36: {}
