@@ -8,7 +8,7 @@ import { strToRegex } from "@/server/utils/regexBuilder";
 import { Button, Divider, Stack, Typography } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import cron from "cron-validate";
+import { default as cron } from "cron-validate";
 import { useMemo } from "react";
 import { z } from "zod";
 

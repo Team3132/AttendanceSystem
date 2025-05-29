@@ -1,4 +1,4 @@
-import cron from "cron-validate";
+import { default as cron } from "cron-validate";
 import { z } from "zod";
 import { strToRegex } from "../utils/regexBuilder";
 
