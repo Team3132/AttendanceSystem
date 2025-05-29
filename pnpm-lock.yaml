@@ -93,8 +93,8 @@ importers:
         specifier: 3.4.2
         version: 3.4.2
       discord-interactions:
-        specifier: 4.1.1
-        version: 4.1.1
+        specifier: 4.3.0
+        version: 4.3.0
       drizzle-orm:
         specifier: 0.44.0
         version: 0.44.0(pg@8.16.0)(postgres@3.4.7)
@@ -2714,8 +2714,8 @@ packages:
   discord-api-types@0.38.8:
     resolution: {integrity: sha512-xuRXPD44FcbKHrQK15FS1HFlMRNJtsaZou/SVws18vQ7zHqmlxyDktMkZpyvD6gE2ctGOVYC/jUyoMMAyBWfcw==}
 
-  discord-interactions@4.1.1:
-    resolution: {integrity: sha512-dCrdJFSHQrEHXB8tk+LpIhAL7/+/UXCFDzooYmB6jj7b/zuhdbETpcZXLYQpSfcSRpF5wjmnu1XwuHlvdF1KpQ==}
+  discord-interactions@4.3.0:
+    resolution: {integrity: sha512-qCJEnuQeIDIo26MPEqYlIiYokqwFAMoRsmEE0PgAuiTYNXIMB9Z40LmqlgYe0yBO+743+AOnfTQdUK1WLg8+pw==}
     engines: {node: '>=18.4.0'}
 
   dom-helpers@5.2.1:
@@ -7537,7 +7537,7 @@ snapshots:
 
   discord-api-types@0.38.8: {}
 
-  discord-interactions@4.1.1: {}
+  discord-interactions@4.3.0: {}
 
   dom-helpers@5.2.1:
     dependencies:
