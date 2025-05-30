@@ -1,5 +1,13 @@
 # frontend
 
+## 5.10.9
+
+### Patch Changes
+
+- [`0ee5fbc`](https://github.com/Team3132/AttendanceSystem/commit/0ee5fbce0a40630b703bfbd2419425d467391398) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add Navigation Progress bar
+
+- [`0ee5fbc`](https://github.com/Team3132/AttendanceSystem/commit/0ee5fbce0a40630b703bfbd2419425d467391398) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Order discord message rsvps by username
+
 ## 5.10.8
 
 ### Patch Changes
