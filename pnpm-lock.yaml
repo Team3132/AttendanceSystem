@@ -84,8 +84,8 @@ importers:
         specifier: 1.120.11
         version: 1.120.11(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(zod@3.25.36)
       '@trpc/server':
-        specifier: 11.0.4
-        version: 11.0.4(typescript@5.8.3)
+        specifier: 11.1.4
+        version: 11.1.4(typescript@5.8.3)
       arctic:
         specifier: 1.9.2
         version: 1.9.2
@@ -181,8 +181,8 @@ importers:
         specifier: 1.120.11
         version: 1.120.11(@tanstack/react-router@1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(vite@6.3.5(@types/node@22.15.24)(jiti@2.4.2)(terser@5.40.0)(tsx@4.19.4)(yaml@2.8.0))
       '@trpc/client':
-        specifier: 11.0.4
-        version: 11.0.4(@trpc/server@11.0.4(typescript@5.8.3))(typescript@5.8.3)
+        specifier: 11.1.4
+        version: 11.1.4(@trpc/server@11.1.4(typescript@5.8.3))(typescript@5.8.3)
       '@types/luxon':
         specifier: 3.6.2
         version: 3.6.2
@@ -2591,14 +2591,14 @@ packages:
       '@tanstack/react-router': '>=1.43.2'
       zod: ^3.23.8
 
-  '@trpc/client@11.0.4':
-    resolution: {integrity: sha512-2xIXqRNc8wH3zgcGp1yZ8P2ZL15BoFWq2RS8S3ldjvxsdJfnoYmcvCNzySw8nIrWbKiXl9prdw+bGIUOdG/omw==}
+  '@trpc/client@11.1.4':
+    resolution: {integrity: sha512-QDaIdwhZlHKMhDAr5m4dJNAYkX4ydo63Up0M01mGcdpnOOmGlvGMRWzdVSLIvGc1JasPSvC15RsgrjMzXpElzw==}
     peerDependencies:
-      '@trpc/server': 11.0.4
+      '@trpc/server': 11.1.4
       typescript: '>=5.7.2'
 
-  '@trpc/server@11.0.4':
-    resolution: {integrity: sha512-beDEGEw+slNiYxLUpZ8HKU1mnZBoP/VLMtrKh2ABKl7VC0PQV9XcDMVjB0GcSW15nTSiOnGDGyFDeudp4dH2qw==}
+  '@trpc/server@11.1.4':
+    resolution: {integrity: sha512-X3TSLwQQh5+zi+yY7BnnmUUwVNdeBj3BAt580sAJ+Qd5PvDhz1gSNHGOAlOLulCFn6g/JHf8n+DbnPF/Gb63SA==}
     peerDependencies:
       typescript: '>=5.7.2'
 
@@ -8693,12 +8693,12 @@ snapshots:
       '@tanstack/react-router': 1.121.0-alpha.14(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       zod: 3.25.36
 
-  '@trpc/client@11.0.4(@trpc/server@11.0.4(typescript@5.8.3))(typescript@5.8.3)':
+  '@trpc/client@11.1.4(@trpc/server@11.1.4(typescript@5.8.3))(typescript@5.8.3)':
     dependencies:
-      '@trpc/server': 11.0.4(typescript@5.8.3)
+      '@trpc/server': 11.1.4(typescript@5.8.3)
       typescript: 5.8.3
 
-  '@trpc/server@11.0.4(typescript@5.8.3)':
+  '@trpc/server@11.1.4(typescript@5.8.3)':
     dependencies:
       typescript: 5.8.3
 
