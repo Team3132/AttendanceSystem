@@ -70,7 +70,7 @@ function NavigationProgress() {
     select: (s) => s.status,
   });
 
-  if (navigationStatus !== "idle") {
+  if (navigationStatus === "idle") {
     return null;
   }
 
