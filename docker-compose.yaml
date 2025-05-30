@@ -14,6 +14,7 @@ services:
     image: ghcr.io/sebasptsch/cron-webhook:latest
     environment:
       - DATABASE_URL=/data/cron-webhook.db
+      - CRON_TZ=Australia/Sydney
     volumes:
       - webhook-data:/data
     ports:
