@@ -4,7 +4,7 @@ import { setCookie } from "@tanstack/react-start/server";
 import { createServerFileRoute } from "@tanstack/react-start/server";
 import { generateState } from "arctic";
 
-export const ServerRoute = createServerFileRoute("/api/auth/discord").methods({
+export const ServerRoute = createServerFileRoute().methods({
   GET: async () => {
     const state = generateState();
     const url = await discord.createAuthorizationURL(state, {

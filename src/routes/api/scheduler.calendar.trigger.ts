@@ -2,9 +2,7 @@ import { syncEvents } from "@/server/services/calalendarSync.service";
 import { json } from "@tanstack/react-start";
 import { createServerFileRoute } from "@tanstack/react-start/server";
 
-export const ServerRoute = createServerFileRoute(
-  "/api/scheduler/calendar/trigger",
-).methods({
+export const ServerRoute = createServerFileRoute().methods({
   POST: async () => {
     try {
       const result = await syncEvents();

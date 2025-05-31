@@ -105,7 +105,7 @@ export default function rsvpToDescription(
 
 const logger = consola.withTag("discord-interaction");
 
-export const ServerRoute = createServerFileRoute("/api/interaction").methods({
+export const ServerRoute = createServerFileRoute().methods({
   POST: async ({ request }) => {
     const signature = getHeader("X-Signature-Ed25519");
     const timestamp = getHeader("X-Signature-Timestamp");
