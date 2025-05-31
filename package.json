@@ -43,7 +43,7 @@
 		"consola": "3.4.2",
 		"discord-interactions": "4.3.0",
 		"drizzle-orm": "0.44.1",
-		"drizzle-zod": "0.7.0",
+		"drizzle-zod": "0.8.2",
 		"eventemitter3": "5.0.1",
 		"googleapis": "149.0.0",
 		"graphql": "16.11.0",
