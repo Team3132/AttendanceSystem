@@ -17,9 +17,7 @@ import {
 import { createServerFileRoute } from "@tanstack/react-start/server";
 import { z } from "zod";
 
-export const ServerRoute = createServerFileRoute(
-  "/api/auth/discord/callback",
-).methods({
+export const ServerRoute = createServerFileRoute().methods({
   GET: async ({ request }) => {
     // request url
     const url = new URL(request.url);
