@@ -54,8 +54,9 @@ const env = createEnv({
     GOOGLE_CALENDAR_ID: process.env.GOOGLE_CALENDAR_ID,
     MENTOR_ROLE_ID: process.env.MENTOR_ROLE_ID,
     WEBHOOK_SERVER: process.env.WEBHOOK_SERVER,
-    VITE_FRONTEND_URL: import.meta.env.VITE_FRONTEND_URL,
-    VITE_VERSION: import.meta.env.VITE_VERSION,
+    VITE_FRONTEND_URL:
+      process.env.VITE_FRONTEND_URL ?? import.meta.env.VITE_FRONTEND_URL,
+    VITE_VERSION: import.meta.env.VITE_VERSION ?? process.env.VITE_VERSION,
   },
   clientPrefix: "VITE_",
   client: {
