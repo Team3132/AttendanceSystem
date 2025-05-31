@@ -27,7 +27,7 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
-        
+
       - uses: oven-sh/setup-bun@v2
         name: Setup Bun
 
@@ -40,7 +40,7 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Check Types
-        run: bun tsc --noEmit
+        run: bun typecheck
 
       - name: Lint & Format Packages
         run: bun check --reporter=github
