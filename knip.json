@@ -1,17 +1,10 @@
 {
 	"$schema": "https://unpkg.com/knip@5/schema.json",
-	"entry": [
-		"app/ssr.tsx",
-		"app/client.tsx",
-		"app/api.ts",
-		"app/routes/api/**/*.ts",
-		"app/routes/*.ts",
-		"app.config.ts"
+	"entry": ["src/router.tsx"],
+	"ignore": [
+		"src/gql/index.ts",
+		".tanstack-start/server-routes/routeTree.gen.ts",
+		"src/routeTree.gen.ts"
 	],
-	"ignore": ["app/routeTree.gen.ts"],
-	"ignoreDependencies": [
-		"@tanstack/router-plugin",
-		"@vitejs/plugin-react",
-		"@changesets/cli"
-	]
+	"ignoreDependencies": ["@changesets/cli"]
 }

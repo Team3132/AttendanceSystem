@@ -3,7 +3,7 @@ import { trytm } from "@/utils/trytm";
 import { asc, eq } from "drizzle-orm";
 import { GraphQLClient } from "graphql-request";
 import { ulid } from "ulidx";
-import { z } from "zod";
+import type { z } from "zod";
 import db from "../drizzle/db";
 import {
   apiKeyTable,
@@ -89,10 +89,6 @@ export async function createApiKey(userId: string, name: string) {
 
   return apiKey;
 }
-
-export const EventParsingRuleMetadataSchema = z.object({
-  ruleId: z.string(),
-});
 
 /**
  * Create a new parsing rule

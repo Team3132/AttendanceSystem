@@ -77,9 +77,7 @@ const updateMessage = (data: APIInteractionResponseCallbackData) =>
     data,
   });
 
-export const statusToEmoji = (
-  status: z.infer<typeof RSVPUserSchema>["status"],
-) => {
+const statusToEmoji = (status: z.infer<typeof RSVPUserSchema>["status"]) => {
   switch (status) {
     case "YES":
       return ":white_check_mark:";
@@ -96,7 +94,7 @@ export const statusToEmoji = (
   }
 };
 
-export default function rsvpToDescription(
+function rsvpToDescription(
   username: string,
   status: z.infer<typeof RSVPUserSchema>["status"],
 ) {

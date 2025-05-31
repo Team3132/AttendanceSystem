@@ -8,7 +8,8 @@
 		"build": "bun --bun vite build",
 		"start": "PORT=1420 bun run .output/server/index.mjs",
 		"check": "bun --bun biome check ./src",
-		"typecheck": "bun --bun tsc --noEmit"
+		"typecheck": "bun --bun tsc --noEmit",
+		"knip": "knip-bun --config knip.json"
 	},
 	"main": ".output/server/index.mjs",
 	"files": [
@@ -69,15 +70,16 @@
 		"@changesets/changelog-github": "0.5.1",
 		"@changesets/cli": "2.29.4",
 		"@graphql-codegen/cli": "5.0.6",
+		"@graphql-codegen/typescript": "^4.1.6",
 		"@graphql-codegen/typescript-graphql-request": "6.3.0",
 		"@graphql-codegen/typescript-operations": "4.6.1",
 		"@mui/lab": "6.0.0-dev.240424162023-9968b4889d",
-		"@tanstack/router-plugin": "1.121.0-alpha.14",
 		"@types/luxon": "3.6.2",
 		"@types/react": "19.1.6",
 		"@types/react-dom": "19.1.5",
 		"@vitejs/plugin-react": "4.5.0",
 		"drizzle-kit": "0.31.1",
+		"knip": "^5.59.1",
 		"lefthook": "1.11.13",
 		"typescript": "5.8.3",
 		"vite": "6.3.5",
