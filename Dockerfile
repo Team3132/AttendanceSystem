@@ -23,9 +23,8 @@ COPY . .
 
 # [optional] tests & build
 ENV NODE_ENV=production
-ARG VERSION
-ENV VITE_PUBLIC_APP_VERSION=$VERSION
-ENV VERSION=$VERSION
+ARG VITE_VERSION
+ENV VITE_VERSION=$VITE_VERSION
 RUN bun run build
 
 # copy production dependencies and source code into final image
@@ -34,9 +33,8 @@ FROM base AS release
 COPY --from=prerelease /usr/src/app/drizzle drizzle
 COPY --from=prerelease /usr/src/app/.output .output
 COPY --from=prerelease /usr/src/app/package.json .
-ARG VERSION
-ENV VITE_PUBLIC_APP_VERSION=$VERSION
-ENV VERSION=$VERSION
+ARG VITE_VERSION
+ENV VITE_VERSION=$VITE_VERSION
 
 # run the app
 USER bun

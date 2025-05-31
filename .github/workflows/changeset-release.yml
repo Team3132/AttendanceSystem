@@ -93,7 +93,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           build-args: |
-            VERSION=${{ matrix.package.version }}
+            VITE_VERSION=${{ matrix.package.version }}
           tags: ${{ steps.meta.outputs.tags }}
           push: true
           labels: ${{ steps.meta.outputs.labels }}
