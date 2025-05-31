@@ -4,13 +4,13 @@ import roboto300 from "@fontsource/roboto/300.css?inline";
 import robot400 from "@fontsource/roboto/400.css?inline";
 import roboto500 from "@fontsource/roboto/500.css?inline";
 import roboto700 from "@fontsource/roboto/700.css?inline";
-import { CssBaseline, LinearProgress } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import type { QueryClient } from "@tanstack/react-query";
-import { HeadContent, useRouterState } from "@tanstack/react-router";
+import { HeadContent } from "@tanstack/react-router";
 import {
   ErrorComponent,
   Outlet,
@@ -65,19 +65,19 @@ const theme = createTheme({
   },
 });
 
-function NavigationProgress() {
-  const navigationStatus = useRouterState({
-    select: (s) => s.status,
-  });
+// function NavigationProgress() {
+//   const navigationStatus = useRouterState({
+//     select: (s) => s.status,
+//   });
 
-  if (navigationStatus === "idle") {
-    return null;
-  }
+//   if (navigationStatus === "idle") {
+//     return null;
+//   }
 
-  return (
-    <LinearProgress sx={{ position: "fixed", top: 0, left: 0, right: 0 }} />
-  );
-}
+//   return (
+//     <LinearProgress sx={{ position: "fixed", top: 0, left: 0, right: 0 }} />
+//   );
+// }
 
 function RootComponent() {
   return (
@@ -88,7 +88,7 @@ function RootComponent() {
           adapterLocale={"en-au"}
           dateAdapter={AdapterLuxon}
         >
-          <NavigationProgress />
+          {/* <NavigationProgress /> */}
           <GenericServerErrorBoundary>
             <Outlet />
           </GenericServerErrorBoundary>
