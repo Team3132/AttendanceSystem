@@ -1,5 +1,11 @@
 # frontend
 
+## 5.10.14
+
+### Patch Changes
+
+- [`6210db1`](https://github.com/Team3132/AttendanceSystem/commit/6210db1187f5fe2132c954c01af6ba612d412ac3) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Try and fix frontend url
+
 ## 5.10.13
 
 ### Patch Changes
