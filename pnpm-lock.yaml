@@ -108,10 +108,10 @@ importers:
         specifier: 149.0.0
         version: 149.0.0
       graphql:
-        specifier: ^16.11.0
+        specifier: 16.11.0
         version: 16.11.0
       graphql-request:
-        specifier: ^7.2.0
+        specifier: 7.2.0
         version: 7.2.0(graphql@16.11.0)
       keyv:
         specifier: 5.3.3
@@ -166,13 +166,13 @@ importers:
         specifier: 2.29.4
         version: 2.29.4
       '@graphql-codegen/cli':
-        specifier: ^5.0.6
+        specifier: 5.0.6
         version: 5.0.6(@parcel/watcher@2.5.1)(@types/node@22.15.24)(crossws@0.3.5)(enquirer@2.4.1)(graphql@16.11.0)(typescript@5.8.3)
       '@graphql-codegen/typescript-graphql-request':
-        specifier: ^6.3.0
+        specifier: 6.3.0
         version: 6.3.0(graphql-request@7.2.0(graphql@16.11.0))(graphql-tag@2.12.6(graphql@16.11.0))(graphql@16.11.0)
       '@graphql-codegen/typescript-operations':
-        specifier: ^4.6.1
+        specifier: 4.6.1
         version: 4.6.1(graphql@16.11.0)
       '@mui/lab':
         specifier: 6.0.0-dev.240424162023-9968b4889d
@@ -10983,7 +10983,7 @@ snapshots:
 
   parse-json@8.3.0:
     dependencies:
-      '@babel/code-frame': 7.26.2
+      '@babel/code-frame': 7.27.1
       index-to-position: 1.1.0
       type-fest: 4.41.0
 
