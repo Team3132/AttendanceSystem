@@ -4,7 +4,7 @@ import { Paper, Stack, Typography } from "@mui/material";
 import {} from "@tanstack/react-router";
 import ActiveEventsList from "../../components/ActiveEventsList";
 
-const appVersion = env.VITE_PUBLIC_APP_VERSION;
+const appVersion = env.VITE_VERSION;
 
 export const Route = createFileRoute({
   loader: ({ context: { queryClient } }) => {

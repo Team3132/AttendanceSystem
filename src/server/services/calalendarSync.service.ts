@@ -18,9 +18,9 @@ const eventLogger = consola.withTag("eventSync");
 type EventInsert = typeof eventTable.$inferInsert;
 
 const client = new google.auth.JWT(
-  env.VITE_GOOGLE_CLIENT_EMAIL,
+  env.GOOGLE_CLIENT_EMAIL,
   undefined,
-  env.VITE_GOOGLE_PRIVATE_KEY,
+  env.GOOGLE_PRIVATE_KEY,
   ["https://www.googleapis.com/auth/calendar.readonly"],
 );
 
@@ -62,7 +62,7 @@ async function getCalendarEvents() {
 
   /** The google calendar parameters */
   const params: calendar_v3.Params$Resource$Events$List = {
-    calendarId: env.VITE_GOOGLE_CALENDAR_ID,
+    calendarId: env.GOOGLE_CALENDAR_ID,
     showDeleted: true,
     singleEvents: true,
     syncToken: kvSyncToken,

@@ -109,10 +109,10 @@ export async function generateMessage(data: MessageParams) {
   const roleIds: string[] = [];
 
   if (ruleId === null) {
-    roleIds.push(env.VITE_GUILD_ID);
+    roleIds.push(env.GUILD_ID);
 
     if (eventData.type === "Mentor") {
-      roleIds.push(env.VITE_MENTOR_ROLE_ID);
+      roleIds.push(env.MENTOR_ROLE_ID);
     }
   } else {
     const [eventRule, eventRuleError] = await trytm(
@@ -132,11 +132,11 @@ export async function generateMessage(data: MessageParams) {
   }
 
   const mentorRSVPs = eventRSVPs.filter((rsvpUser) =>
-    rsvpUser.user.roles?.includes(env.VITE_MENTOR_ROLE_ID),
+    rsvpUser.user.roles?.includes(env.MENTOR_ROLE_ID),
   );
 
   const otherRSVPs = eventRSVPs.filter(
-    (rsvpUser) => !rsvpUser.user.roles?.includes(env.VITE_MENTOR_ROLE_ID),
+    (rsvpUser) => !rsvpUser.user.roles?.includes(env.MENTOR_ROLE_ID),
   );
 
   /** A list of role mentionds seperated by commas and "and" at the end */

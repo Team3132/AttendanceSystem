@@ -93,14 +93,10 @@ export const ServerRoute = createServerFileRoute(
     }
 
     const validGuild =
-      discordUserGuilds.findIndex((guild) => guild.id === env.VITE_GUILD_ID) !==
-      -1;
+      discordUserGuilds.findIndex((guild) => guild.id === env.GUILD_ID) !== -1;
 
     if (!validGuild) {
-      consola.error(
-        "User is not a member of the required guild",
-        env.VITE_GUILD_ID,
-      );
+      consola.error("User is not a member of the required guild", env.GUILD_ID);
       return new Response(null, {
         status: 302,
         headers: {
@@ -123,7 +119,7 @@ export const ServerRoute = createServerFileRoute(
     const { id, username } = meData;
 
     const [guildMemberData, guildMemberError] = await trytm(
-      api.users.getGuildMember(env.VITE_GUILD_ID),
+      api.users.getGuildMember(env.GUILD_ID),
     );
     if (guildMemberError) {
       consola.error("Failed to fetch guild member data", guildMemberError);

@@ -5,12 +5,10 @@ import env from "../env";
 import { consola } from "../logger";
 import * as schema from "./schema";
 
-const connectionUrl = `postgres://${env.VITE_POSTGRES_USER}:${env.VITE_POSTGRES_PASSWORD}@${env.VITE_POSTGRES_HOST}:5432/${env.VITE_POSTGRES_DB}`;
-
 async function migrate() {
   const logger = consola.withTag("db");
 
-  const migrationPgClient = postgres(connectionUrl, {
+  const migrationPgClient = postgres(env.DATABASE_URL, {
     max: 1,
   });
   const migrationClient = drizzle(migrationPgClient, {
@@ -23,7 +21,7 @@ async function migrate() {
 
 migrate();
 
-const pgClient = postgres(connectionUrl, {
+const pgClient = postgres(env.DATABASE_URL, {
   transform: {
     value(value) {
       if (value instanceof Date) {

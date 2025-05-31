@@ -43,11 +43,11 @@ export const ServerRoute = createServerFileRoute(
         throw new Error("Rule not found");
       }
 
-      if (!env.VITE_WEBHOOK_SERVER) {
+      if (!env.WEBHOOK_SERVER) {
         throw new Error("Webhook server URL is not configured");
       }
 
-      const sdk = getSdk(new GraphQLClient(env.VITE_WEBHOOK_SERVER));
+      const sdk = getSdk(new GraphQLClient(env.WEBHOOK_SERVER));
 
       const [webhookJob, err] = await trytm(
         sdk.Webhook({

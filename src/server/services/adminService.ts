@@ -101,7 +101,7 @@ export async function createParsingRule(
   const { name, regex, cronExpr, channelId, roleIds, priority, isOutreach } =
     data;
 
-  const webhookServerUrl = env.VITE_WEBHOOK_SERVER;
+  const webhookServerUrl = env.WEBHOOK_SERVER;
 
   if (!webhookServerUrl) {
     throw new ServerError({
@@ -231,14 +231,14 @@ export const getParsingRule = async (id: string) => {
  * @returns The deleted parsing rule
  */
 export async function deleteParsingRule(id: string) {
-  if (!env.VITE_WEBHOOK_SERVER) {
+  if (!env.WEBHOOK_SERVER) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Webhook server URL not set",
     });
   }
 
-  const sdk = getSdk(new GraphQLClient(env.VITE_WEBHOOK_SERVER));
+  const sdk = getSdk(new GraphQLClient(env.WEBHOOK_SERVER));
 
   const [rules, ruleFetchError] = await trytm(
     db
@@ -376,14 +376,14 @@ export const triggerRule = async (id: string) => {
     });
   }
 
-  if (!env.VITE_WEBHOOK_SERVER) {
+  if (!env.WEBHOOK_SERVER) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Webhook server URL not set",
     });
   }
 
-  const sdk = getSdk(new GraphQLClient(env.VITE_WEBHOOK_SERVER));
+  const sdk = getSdk(new GraphQLClient(env.WEBHOOK_SERVER));
 
   const [triggerData, triggerError] = await trytm(
     sdk.TriggerWebhook({
