@@ -6,7 +6,7 @@
 	"scripts": {
 		"dev": "bun --bun vite dev",
 		"build": "bun --bun vite build",
-		"start": "bun run .output/server/index.mjs",
+		"start": "PORT=1420 bun run .output/server/index.mjs",
 		"check": "bun --bun biome check ./src"
 	},
 	"main": ".output/server/index.mjs",
