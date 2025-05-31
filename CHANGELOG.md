@@ -1,5 +1,13 @@
 # frontend
 
+## 5.10.10
+
+### Patch Changes
+
+- [`7fb8e7a`](https://github.com/Team3132/AttendanceSystem/commit/7fb8e7a98ee2b1454ab65d049b519bedfa75da51) Thanks [@sebasptsch](https://github.com/sebasptsch)! - switch to bun
+
+- [`6c5a56a`](https://github.com/Team3132/AttendanceSystem/commit/6c5a56ad468d8871349181cbcfb5b6113fa792be) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix loading bar
+
 ## 5.10.9
 
 ### Patch Changes
