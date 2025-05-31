@@ -56,7 +56,7 @@ const env = createEnv({
     WEBHOOK_SERVER: process.env.WEBHOOK_SERVER,
     VITE_FRONTEND_URL:
       process.env.VITE_FRONTEND_URL ?? import.meta.env.VITE_FRONTEND_URL,
-    VITE_VERSION: import.meta.env.VITE_VERSION ?? process.env.VITE_VERSION,
+    VITE_VERSION: process.env.VITE_VERSION ?? import.meta.env.VITE_VERSION,
   },
   clientPrefix: "VITE_",
   client: {
