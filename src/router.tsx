@@ -26,7 +26,6 @@ export function createRouter() {
       scrollToTopSelectors: ["#main-area"],
       defaultPreload: "intent",
       scrollRestoration: !import.meta.env.SSR, // Disable scroll restoration in SSR
-      defaultPendingMinMs: 0, // Disable pending state for queries by default
     }),
     queryClient,
   );

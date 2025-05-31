@@ -3,9 +3,9 @@ import GenericServerErrorBoundary from "@/components/GenericServerErrorBoundary"
 import TopBar from "@/components/TopBar";
 import { authQueryOptions } from "@/queries/auth.queries";
 import { consola } from "@/server/logger";
-import { Box, Container, LinearProgress } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { Outlet, redirect, useRouterState } from "@tanstack/react-router";
+import { Outlet, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute({
   beforeLoad: async ({ context: { queryClient } }) => {
@@ -36,23 +36,9 @@ const RootContainer = styled(Container)({
   overflowY: "auto",
 });
 
-function NavigationProgress() {
-  const navigationStatus = useRouterState({
-    select: (s) => s.status,
-  });
-
-  return (
-    <LinearProgress
-      sx={{ position: "fixed", top: 0, left: 0, right: 0 }}
-      hidden={navigationStatus === "idle"}
-    />
-  );
-}
-
 function Component() {
   return (
     <RootWrapper>
-      <NavigationProgress />
       <TopBar />
       <RootContainer id="main-area">
         {/* Catch any errors in authenticated routes */}
