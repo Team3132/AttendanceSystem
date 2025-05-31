@@ -1,5 +1,11 @@
 # frontend
 
+## 5.10.12
+
+### Patch Changes
+
+- [`25a24d5`](https://github.com/Team3132/AttendanceSystem/commit/25a24d5b50ed5dafac6bd013b8599bf6c766ec2f) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Remove loading indicator
+
 ## 5.10.11
 
 ### Patch Changes
