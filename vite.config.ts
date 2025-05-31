@@ -7,6 +7,7 @@ export default defineConfig({
   plugins: [
     viteTsconfigPaths(),
     tanstackStart({
+      target: "bun",
       react: {
         babel: {
           plugins: [

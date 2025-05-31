@@ -4,21 +4,20 @@
 	"version": "5.10.9",
 	"type": "module",
 	"scripts": {
-		"dev": "vite dev",
-		"build": "vite build",
-		"start": "PORT=1420 node .output/server/index.mjs",
-		"check": "biome check ./src"
+		"dev": "bun --bun vite dev",
+		"build": "bun --bun vite build",
+		"start": "bun run .output/server/index.mjs",
+		"check": "bun --bun biome check ./src"
 	},
+	"main": ".output/server/index.mjs",
 	"files": [
-		"dist",
-		"dist-ts",
-		"drizzle"
+		"drizzle",
+		".output"
 	],
 	"dependencies": {
 		"@discordjs/builders": "1.11.2",
 		"@discordjs/core": "2.1.0",
 		"@discordjs/rest": "2.5.0",
-		"@dynamicabot/signales": "2.1.2",
 		"@emotion/react": "11.14.0",
 		"@emotion/styled": "11.14.0",
 		"@fontsource/roboto": "5.2.5",
@@ -40,7 +39,6 @@
 		"@tanstack/react-virtual": "3.13.9",
 		"@tanstack/table-core": "8.21.3",
 		"@tanstack/zod-adapter": "1.121.0-alpha.14",
-		"@trpc/server": "11.1.4",
 		"arctic": "1.9.2",
 		"consola": "3.4.2",
 		"discord-interactions": "4.3.0",
@@ -74,8 +72,6 @@
 		"@graphql-codegen/typescript-operations": "4.6.1",
 		"@mui/lab": "6.0.0-dev.240424162023-9968b4889d",
 		"@tanstack/router-plugin": "1.121.0-alpha.14",
-		"@trpc/client": "11.1.4",
-		"@trpc/server": "11.1.4",
 		"@types/luxon": "3.6.2",
 		"@types/react": "19.1.6",
 		"@types/react-dom": "19.1.5",
