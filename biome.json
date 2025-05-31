@@ -13,7 +13,7 @@
 			"./.output/**",
 			"./.vinxi/**",
 			"./dist/**",
-			"./.tanstack-start/server-routes/routeTree.gen",
+			"./.tanstack-start/server-routes/routeTree.gen.ts",
 			"src/gql/index.ts"
 		]
 	},

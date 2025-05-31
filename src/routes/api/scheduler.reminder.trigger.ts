@@ -14,7 +14,9 @@ import { GraphQLClient } from "graphql-request";
 import { DateTime } from "luxon";
 import { z } from "zod";
 
-export const ServerRoute = createServerFileRoute().methods({
+export const ServerRoute = createServerFileRoute(
+  "/api/scheduler/reminder/trigger",
+).methods({
   POST: async ({ request }) => {
     try {
       const searchParamObject = Object.fromEntries(
