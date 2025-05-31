@@ -1,5 +1,11 @@
 # frontend
 
+## 5.10.13
+
+### Patch Changes
+
+- [`2547465`](https://github.com/Team3132/AttendanceSystem/commit/25474658b3ab893e3342e28e7cdce03341db0104) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix leaking env
+
 ## 5.10.12
 
 ### Patch Changes
