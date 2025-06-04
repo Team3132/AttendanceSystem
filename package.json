@@ -76,7 +76,7 @@
 		"@mui/lab": "6.0.0-dev.240424162023-9968b4889d",
 		"@types/luxon": "3.6.2",
 		"@types/react": "19.1.6",
-		"@types/react-dom": "19.1.5",
+		"@types/react-dom": "19.1.6",
 		"@vitejs/plugin-react": "4.5.1",
 		"drizzle-kit": "0.31.1",
 		"knip": "5.59.1",
