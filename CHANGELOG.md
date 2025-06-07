@@ -1,5 +1,13 @@
 # frontend
 
+## 5.10.15
+
+### Patch Changes
+
+- [`9002374`](https://github.com/Team3132/AttendanceSystem/commit/900237489c748b85e1a62d4c18b19dc38db63119) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix end time window to include up until the end of the day
+
+- [`eb6f2fe`](https://github.com/Team3132/AttendanceSystem/commit/eb6f2fefdb919b4f0934370591b3a393fd174e33) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Update dependancies
+
 ## 5.10.14
 
 ### Patch Changes
