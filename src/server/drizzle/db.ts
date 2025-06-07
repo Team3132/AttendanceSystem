@@ -13,6 +13,16 @@ async function migrate() {
   });
   const migrationClient = drizzle(migrationPgClient, {
     schema,
+    logger: {
+      logQuery: (query, params) => {
+        logger.debug(
+          "Executing query in migration:",
+          query,
+          "with params:",
+          params,
+        );
+      },
+    },
   });
   logger.info("Starting database migrations...");
   await migrateDB(migrationClient, { migrationsFolder: "./drizzle" });
@@ -32,6 +42,13 @@ const pgClient = postgres(env.DATABASE_URL, {
   },
 });
 
-const db = drizzle(pgClient, { schema });
+const db = drizzle(pgClient, {
+  schema,
+  logger: {
+    logQuery: (query, params) => {
+      consola.debug("Executing query:", query, "with params:", params);
+    },
+  },
+});
 
 export default db;

@@ -69,7 +69,7 @@ export const ServerRoute = createServerFileRoute(
 
       const nextRunDate = nextRun ? DateTime.fromISO(nextRun) : null;
       if (nextRunDate?.isValid) {
-        eventRangeEnd = nextRunDate.toJSDate();
+        eventRangeEnd = nextRunDate.endOf("day").toJSDate();
       }
 
       // events in the next day and that match the rule
