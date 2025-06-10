@@ -8,11 +8,14 @@ import { discordQueryOptions } from "@/queries/discord.queries";
 import { strToRegex } from "@/server/utils/regexBuilder";
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
 import {} from "@tanstack/react-router";
 import { useMemo } from "react";
 import { z } from "zod";
 
-export const Route = createFileRoute({
+export const Route = createFileRoute(
+  "/_authenticated/admin_/event-parsing/$ruleId",
+)({
   head: () => ({
     meta: [
       {
