@@ -6,11 +6,11 @@ import { eventQueryOptions } from "@/queries/events.queries";
 import { Skeleton, Stack, Typography, styled } from "@mui/material";
 
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Outlet } from "@tanstack/react-router";
+import { Outlet, createFileRoute } from "@tanstack/react-router";
 import { DateTime } from "luxon";
 import { Suspense, useMemo } from "react";
 
-export const Route = createFileRoute({
+export const Route = createFileRoute("/_authenticated/events/$eventId")({
   loader: ({ context: { queryClient }, params: { eventId } }) => {
     queryClient.prefetchQuery(authQueryOptions.status());
 

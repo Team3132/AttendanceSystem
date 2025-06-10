@@ -18,4 +18,5 @@ pnpm-lock.yaml
 /blob-report/
 /playwright/.cache/
 .tanstack-start
+.tanstack
 .env.local
