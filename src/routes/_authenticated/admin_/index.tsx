@@ -1,8 +1,9 @@
 import { LinkMenuItem } from "@/components/LinkMenuItem";
 import { MenuList } from "@mui/material";
+import { createFileRoute } from "@tanstack/react-router";
 import {} from "@tanstack/react-router";
 
-export const Route = createFileRoute({
+export const Route = createFileRoute("/_authenticated/admin_/")({
   head: () => ({
     meta: [
       {

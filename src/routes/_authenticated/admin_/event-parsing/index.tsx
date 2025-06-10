@@ -13,11 +13,12 @@ import {
   Stack,
 } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
 import {} from "@tanstack/react-router";
 import { useCallback } from "react";
 import { FaCopy, FaPen, FaPlay, FaTrash } from "react-icons/fa6";
 
-export const Route = createFileRoute({
+export const Route = createFileRoute("/_authenticated/admin_/event-parsing/")({
   head: () => ({
     meta: [
       {

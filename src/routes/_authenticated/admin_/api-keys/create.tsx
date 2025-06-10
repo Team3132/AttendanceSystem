@@ -2,10 +2,11 @@ import ControlledTextField from "@/components/ControlledTextField";
 import useCreateKey from "@/features/admin/hooks/useCreateKey";
 import useZodForm from "@/hooks/useZodForm";
 import { Button, Stack } from "@mui/material";
+import { createFileRoute } from "@tanstack/react-router";
 import {} from "@tanstack/react-router";
 import { z } from "zod";
 
-export const Route = createFileRoute({
+export const Route = createFileRoute("/_authenticated/admin_/api-keys/create")({
   head: () => ({
     meta: [
       {

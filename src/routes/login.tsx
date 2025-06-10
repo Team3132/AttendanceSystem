@@ -2,10 +2,11 @@ import useLogout from "@/hooks/useLogout";
 import { authQueryOptions } from "@/queries/auth.queries";
 import { Button, Container, Paper, Stack, Typography } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
 import {} from "@tanstack/react-router";
 import { Suspense } from "react";
 
-export const Route = createFileRoute({
+export const Route = createFileRoute("/login")({
   loader: ({ context: { queryClient } }) => {
     queryClient.prefetchQuery(authQueryOptions.status());
   },

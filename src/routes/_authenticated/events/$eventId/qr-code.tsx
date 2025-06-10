@@ -9,38 +9,40 @@ import {
   TextField,
 } from "@mui/material";
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
-import { redirect } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { Suspense, useCallback } from "react";
 import { FaCopy } from "react-icons/fa6";
 import { useCopyToClipboard } from "usehooks-ts";
 
-export const Route = createFileRoute({
-  beforeLoad: async ({ context: { queryClient } }) => {
-    const { isAdmin } = await queryClient.ensureQueryData(
-      authQueryOptions.status(),
-    );
+export const Route = createFileRoute("/_authenticated/events/$eventId/qr-code")(
+  {
+    beforeLoad: async ({ context: { queryClient } }) => {
+      const { isAdmin } = await queryClient.ensureQueryData(
+        authQueryOptions.status(),
+      );
 
-    if (!isAdmin) {
-      throw redirect({
-        to: "/error",
-        search: {
-          message: "You are not an admin",
+      if (!isAdmin) {
+        throw redirect({
+          to: "/error",
+          search: {
+            message: "You are not an admin",
+          },
+        });
+      }
+    },
+    loader: ({ context: { queryClient }, params: { eventId } }) => {
+      queryClient.prefetchQuery(eventQueryOptions.eventSecret(eventId));
+    },
+    head: () => ({
+      meta: [
+        {
+          title: "Event - Code",
         },
-      });
-    }
+      ],
+    }),
+    component: Component,
   },
-  loader: ({ context: { queryClient }, params: { eventId } }) => {
-    queryClient.prefetchQuery(eventQueryOptions.eventSecret(eventId));
-  },
-  head: () => ({
-    meta: [
-      {
-        title: "Event - Code",
-      },
-    ],
-  }),
-  component: Component,
-});
+);
 
 function Component() {
   const { eventId } = Route.useParams();
