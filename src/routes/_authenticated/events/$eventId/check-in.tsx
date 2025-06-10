@@ -4,7 +4,7 @@ import useZodForm from "@/hooks/useZodForm";
 import { SelfCheckinSchema } from "@/server/schema";
 import { isServerError } from "@/server/utils/errors";
 import { Button, Paper, Stack, Typography } from "@mui/material";
-import {, useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute({
   head: () => ({

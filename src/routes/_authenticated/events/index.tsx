@@ -19,7 +19,7 @@ import {
   useSuspenseInfiniteQuery,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import {, stripSearchParams } from "@tanstack/react-router";
+import { stripSearchParams } from "@tanstack/react-router";
 import { DateTime } from "luxon";
 import { Suspense, useCallback } from "react";
 import { z } from "zod";

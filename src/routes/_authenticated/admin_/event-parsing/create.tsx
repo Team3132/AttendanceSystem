@@ -7,7 +7,7 @@ import { discordQueryOptions } from "@/queries/discord.queries";
 import { strToRegex } from "@/server/utils/regexBuilder";
 import { Button, Divider, Stack, Typography } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import {, useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { z } from "zod";
 

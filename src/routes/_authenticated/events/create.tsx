@@ -6,7 +6,7 @@ import { authQueryOptions } from "@/queries/auth.queries";
 import { CreateEventSchema } from "@/server/schema";
 import { Button, Stack, Switch } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers";
-import {, useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { DateTime } from "luxon";
 import { Controller } from "react-hook-form";
 

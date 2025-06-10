@@ -4,7 +4,7 @@ import { LinkButton } from "@/components/LinkButton";
 import { usersQueryOptions } from "@/queries/users.queries";
 import { Button, Skeleton, Stack, TextField } from "@mui/material";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
-import {, stripSearchParams } from "@tanstack/react-router";
+import { stripSearchParams } from "@tanstack/react-router";
 import { createColumnHelper } from "@tanstack/react-table";
 import { Suspense, useMemo } from "react";
 import { useCallback } from "react";

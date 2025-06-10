@@ -9,7 +9,7 @@ import {
   TextField,
 } from "@mui/material";
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
-import {, redirect } from "@tanstack/react-router";
+import { redirect } from "@tanstack/react-router";
 import { Suspense, useCallback } from "react";
 import { FaCopy } from "react-icons/fa6";
 import { useCopyToClipboard } from "usehooks-ts";
