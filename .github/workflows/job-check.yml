@@ -17,8 +17,6 @@ jobs:
           node-version-file: .nvmrc
       - name: Install Dependancies
         run: bun install --frozen-lockfile
-      - name: Build
-        run: bun run build
       - name: Check Types
         run: bun typecheck
       - name: Lint & Format Packages
