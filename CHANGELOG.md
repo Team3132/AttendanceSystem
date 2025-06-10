@@ -1,5 +1,11 @@
 # frontend
 
+## 5.10.16
+
+### Patch Changes
+
+- [`df52854`](https://github.com/Team3132/AttendanceSystem/commit/df528548dfc06f3108419a0e1e8c1e76e3f4636e) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Update start to main
+
 ## 5.10.15
 
 ### Patch Changes
