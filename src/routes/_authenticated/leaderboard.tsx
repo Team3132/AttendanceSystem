@@ -1,4 +1,5 @@
 import type { LeaderBoardUser as LeaderboardUserSchema } from "@/server/schema";
+import { createFileRoute } from "@tanstack/react-router";
 import { createColumnHelper } from "@tanstack/table-core";
 import { Duration } from "luxon";
 import type { z } from "zod";
@@ -55,7 +56,7 @@ const skeletonColumns = [
   }),
 ];
 
-export const Route = createFileRoute({
+export const Route = createFileRoute("/_authenticated/leaderboard")({
   loader: ({ context: { queryClient } }) => {
     queryClient.prefetchInfiniteQuery(leaderboardQueryOptions({ limit: 10 }));
   },

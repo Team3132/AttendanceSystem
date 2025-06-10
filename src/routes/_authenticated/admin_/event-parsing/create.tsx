@@ -7,11 +7,13 @@ import { discordQueryOptions } from "@/queries/discord.queries";
 import { strToRegex } from "@/server/utils/regexBuilder";
 import { Button, Divider, Stack, Typography } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { z } from "zod";
 
-export const Route = createFileRoute({
+export const Route = createFileRoute(
+  "/_authenticated/admin_/event-parsing/create",
+)({
   validateSearch: z.object({
     name: z.string().optional(),
     channelId: z.string().optional(),

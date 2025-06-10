@@ -1,6 +1,7 @@
 import { usersQueryOptions } from "@/queries/users.queries";
 import { EventTypeSchema } from "@/server";
 import { List, ListItem, Paper, Stack, Typography } from "@mui/material";
+import { createFileRoute } from "@tanstack/react-router";
 
 import { fallback } from "@tanstack/zod-adapter";
 import { z } from "zod";
@@ -13,7 +14,9 @@ const QuerySchema = z.object({
   endDate: fallback(z.string().datetime().optional(), undefined),
 });
 
-export const Route = createFileRoute({
+export const Route = createFileRoute(
+  "/_authenticated/admin_/users/$userId/summary",
+)({
   validateSearch: QuerySchema,
   loaderDeps: ({ search }) => search,
   loader: ({ context: { queryClient }, params: { userId } }) => {
