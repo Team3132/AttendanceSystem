@@ -1,8 +1,8 @@
 export default defineNitroConfig({
   routeRules: {
-    "/_build/assets/**": {
+    "/assets/**": {
       headers: {
-        "cache-control": `public, max-age=${365 * 24 * 60 * 60 * 2}, immutable`, // 2 years
+        "cache-control": `public, max-age=${365 * 24 * 60 * 60}, immutable`, // 1 year
       },
     },
   },
