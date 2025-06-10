@@ -136,7 +136,7 @@ export const mentorMiddleware = createMiddleware({
   .server(async ({ context, next }) => {
     const { user } = context;
 
-    if (!user?.roles?.includes(env.VITE_MENTOR_ROLE_ID)) {
+    if (!user?.roles?.includes(env.MENTOR_ROLE_ID)) {
       throw redirect({
         to: "/error",
         search: {

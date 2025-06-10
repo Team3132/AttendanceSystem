@@ -10,7 +10,7 @@ import {
   ButtonStyle,
   type RESTPostAPIChannelMessageJSONBody,
 } from "@discordjs/core";
-import { eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import { DateTime } from "luxon";
 import type { z } from "zod";
 import db from "../drizzle/db";
@@ -18,6 +18,7 @@ import {
   eventParsingRuleTable,
   eventTable,
   rsvpTable,
+  userTable,
 } from "../drizzle/schema";
 import env from "../env";
 import type { RSVPUserSchema } from "../schema";
@@ -54,18 +55,35 @@ const statusToEmoji = (
 export async function generateMessage(data: MessageParams) {
   const { eventId } = data;
 
+  // const [eventRSVPs, eventRsvpsError] = await trytm(
+  //   db.query.rsvpTable.findMany({
+  //     where: eq(rsvpTable.eventId, eventId),
+  //     // order alphabetically by username
+  //     // orderBy: (rsvpTable, { asc }) => asc(rsvpTable.u),
+  //     with: {
+  //       user: {
+  //         columns: {
+  //           roles: true,
+  //           username: true,
+  //         },
+  //       },
+  //     },
+  //   }),
+  // );
   const [eventRSVPs, eventRsvpsError] = await trytm(
-    db.query.rsvpTable.findMany({
-      where: eq(rsvpTable.eventId, eventId),
-      with: {
+    db
+      .select({
+        arrivingAt: rsvpTable.arrivingAt,
+        status: rsvpTable.status,
         user: {
-          columns: {
-            roles: true,
-            username: true,
-          },
+          username: userTable.username,
+          roles: userTable.roles,
         },
-      },
-    }),
+      })
+      .from(rsvpTable)
+      .innerJoin(userTable, eq(rsvpTable.userId, userTable.id))
+      .where(eq(rsvpTable.eventId, eventId))
+      .orderBy(asc(userTable.username)),
   );
 
   if (eventRsvpsError) {
@@ -91,10 +109,10 @@ export async function generateMessage(data: MessageParams) {
   const roleIds: string[] = [];
 
   if (ruleId === null) {
-    roleIds.push(env.VITE_GUILD_ID);
+    roleIds.push(env.GUILD_ID);
 
     if (eventData.type === "Mentor") {
-      roleIds.push(env.VITE_MENTOR_ROLE_ID);
+      roleIds.push(env.MENTOR_ROLE_ID);
     }
   } else {
     const [eventRule, eventRuleError] = await trytm(
@@ -114,11 +132,11 @@ export async function generateMessage(data: MessageParams) {
   }
 
   const mentorRSVPs = eventRSVPs.filter((rsvpUser) =>
-    rsvpUser.user.roles?.includes(env.VITE_MENTOR_ROLE_ID),
+    rsvpUser.user.roles?.includes(env.MENTOR_ROLE_ID),
   );
 
   const otherRSVPs = eventRSVPs.filter(
-    (rsvpUser) => !rsvpUser.user.roles?.includes(env.VITE_MENTOR_ROLE_ID),
+    (rsvpUser) => !rsvpUser.user.roles?.includes(env.MENTOR_ROLE_ID),
   );
 
   /** A list of role mentionds seperated by commas and "and" at the end */

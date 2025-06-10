@@ -7,69 +7,61 @@ const env = createEnv({
     /**
      * Database
      */
-    VITE_POSTGRES_USER: z.string().default("postgres"),
-    VITE_POSTGRES_PASSWORD: z.string().default("postgres"),
-    VITE_POSTGRES_DB: z.string().default("postgres"),
-    VITE_POSTGRES_HOST: z.string().default("localhost"),
-    VITE_DATABASE_URL: z
+    DATABASE_URL: z
       .string()
       .url()
       .default("postgres://postgres:postgres@localhost:5432/postgres"),
     /**
-     * Auth and cookies
-     */
-    VITE_TBA_TOKEN: z.string(),
-    /**
      * Bot stuff
      */
-    VITE_DISCORD_CLIENT_ID: z.string(),
-    VITE_DISCORD_CLIENT_SECRET: z.string(),
-    VITE_DISCORD_PUBLIC_KEY: z.string(),
-    VITE_DISCORD_CALLBACK_URL: z
+    DISCORD_CLIENT_ID: z.string(),
+    DISCORD_CLIENT_SECRET: z.string(),
+    DISCORD_PUBLIC_KEY: z.string(),
+    DISCORD_CALLBACK_URL: z
       .string()
-      .default("http://localhost:3000/api/auth/discord/callback"),
-    VITE_DISCORD_DESKTOP_CALLBACK_URL: z
-      .string()
-      .default("http://localhost:3000/api/auth/discord-desktop/callback"),
-    VITE_DISCORD_TOKEN: z.string(),
+      .default("http://localhost:1420/api/auth/discord/callback"),
+    DISCORD_TOKEN: z.string(),
     /**
      * Misc
      */
-    VITE_GUILD_ID: z.string(),
-    VITE_FRONTEND_URL: z.string().default("http://localhost:3000"),
-    VITE_SESSION_SECRET: z.string().default("secret"),
-    VITE_JWT_SECRET: z.string().default("secret"),
-    VITE_PORT: z.coerce.number().int().default(3000),
+    GUILD_ID: z.string(),
+
     /**
      * Calendar stuff
      */
-    VITE_GOOGLE_CLIENT_EMAIL: z.string(),
-    VITE_GOOGLE_PRIVATE_KEY: z.string(),
-    VITE_GOOGLE_PROJECT_NUMBER: z.string(),
-    VITE_GOOGLE_CALENDAR_ID: z.string(),
-    /**
-     * API Token
-     */
-    VITE_BACKEND_SECRET_TOKEN: z.string().optional(),
+    GOOGLE_CLIENT_EMAIL: z.string(),
+    GOOGLE_PRIVATE_KEY: z.string(),
+    GOOGLE_CALENDAR_ID: z.string(),
     /**
      * Roles
      */
-    VITE_MENTOR_ROLE_ID: z.string(),
+    MENTOR_ROLE_ID: z.string(),
     /**
      * Kronos cron job connection url
      */
-    VITE_KRONOS_URL: z.string().optional(),
+    WEBHOOK_SERVER: z.string().optional(),
   },
-  runtimeEnv: {
-    ...((import.meta as unknown as { env: Record<string, string> }).env ?? {}),
-    ...(typeof process !== "undefined"
-      ? (process.env as Record<string, string>)
-      : {}),
+  runtimeEnvStrict: {
+    DATABASE_URL: process.env.DATABASE_URL,
+    DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
+    DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
+    DISCORD_PUBLIC_KEY: process.env.DISCORD_PUBLIC_KEY,
+    DISCORD_CALLBACK_URL: process.env.DISCORD_CALLBACK_URL,
+    DISCORD_TOKEN: process.env.DISCORD_TOKEN,
+    GUILD_ID: process.env.GUILD_ID,
+    GOOGLE_CLIENT_EMAIL: process.env.GOOGLE_CLIENT_EMAIL,
+    GOOGLE_PRIVATE_KEY: process.env.GOOGLE_PRIVATE_KEY,
+    GOOGLE_CALENDAR_ID: process.env.GOOGLE_CALENDAR_ID,
+    MENTOR_ROLE_ID: process.env.MENTOR_ROLE_ID,
+    WEBHOOK_SERVER: process.env.WEBHOOK_SERVER,
+    VITE_FRONTEND_URL:
+      process.env.VITE_FRONTEND_URL ?? import.meta.env.VITE_FRONTEND_URL,
+    VITE_VERSION: process.env.VITE_VERSION ?? import.meta.env.VITE_VERSION,
   },
-  clientPrefix: "VITE_PUBLIC",
+  clientPrefix: "VITE_",
   client: {
-    VITE_PUBLIC_BACKEND_URL: z.string().default("http://localhost:3000/api"),
-    VITE_PUBLIC_APP_VERSION: z.string().optional(),
+    VITE_FRONTEND_URL: z.string().default("http://localhost:1420"),
+    VITE_VERSION: z.string().optional(),
   },
 });
 

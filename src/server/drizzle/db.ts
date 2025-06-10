@@ -5,16 +5,24 @@ import env from "../env";
 import { consola } from "../logger";
 import * as schema from "./schema";
 
-const connectionUrl = `postgres://${env.VITE_POSTGRES_USER}:${env.VITE_POSTGRES_PASSWORD}@${env.VITE_POSTGRES_HOST}:5432/${env.VITE_POSTGRES_DB}`;
-
 async function migrate() {
   const logger = consola.withTag("db");
 
-  const migrationPgClient = postgres(connectionUrl, {
+  const migrationPgClient = postgres(env.DATABASE_URL, {
     max: 1,
   });
   const migrationClient = drizzle(migrationPgClient, {
     schema,
+    logger: {
+      logQuery: (query, params) => {
+        logger.debug(
+          "Executing query in migration:",
+          query,
+          "with params:",
+          params,
+        );
+      },
+    },
   });
   logger.info("Starting database migrations...");
   await migrateDB(migrationClient, { migrationsFolder: "./drizzle" });
@@ -23,7 +31,7 @@ async function migrate() {
 
 migrate();
 
-const pgClient = postgres(connectionUrl, {
+const pgClient = postgres(env.DATABASE_URL, {
   transform: {
     value(value) {
       if (value instanceof Date) {
@@ -34,6 +42,13 @@ const pgClient = postgres(connectionUrl, {
   },
 });
 
-const db = drizzle(pgClient, { schema });
+const db = drizzle(pgClient, {
+  schema,
+  logger: {
+    logQuery: (query, params) => {
+      consola.debug("Executing query:", query, "with params:", params);
+    },
+  },
+});
 
 export default db;

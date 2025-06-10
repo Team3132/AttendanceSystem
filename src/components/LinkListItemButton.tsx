@@ -14,21 +14,8 @@ const MUILinkComponent = React.forwardRef<HTMLAnchorElement, MUILinkProps>(
 
 const CreatedLinkComponent = createLink(MUILinkComponent);
 
-type FinalProps = Omit<LinkComponentProps<typeof MUILinkComponent>, "ref"> & {
-  ref: React.Ref<HTMLAnchorElement>;
-};
+type FinalProps = LinkComponentProps<typeof MUILinkComponent>;
 
 export const LinkListItemButton = (props: FinalProps) => {
-  const wrappedRef = React.useRef<React.Ref<HTMLAnchorElement>>(null);
-
-  React.useEffect(() => {
-    // If wrappedRef.current is defined, assign it to anchorRef.current
-    if (props.ref) {
-      wrappedRef.current = props.ref;
-    }
-  }, [props.ref]);
-
-  return (
-    <CreatedLinkComponent preload={"intent"} {...props} ref={wrappedRef} />
-  );
+  return <CreatedLinkComponent preload={"intent"} {...props} />;
 };

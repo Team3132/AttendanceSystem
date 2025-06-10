@@ -1,12 +1,12 @@
 import ScancodeListItem from "@/features/user/components/AdminScancodeListItem";
 import NewAdminScancodeListItem from "@/features/user/components/NewAdminScancodeForm";
 import { usersQueryOptions } from "@/queries/users.queries";
+import { createFileRoute } from "@tanstack/react-router";
 
 import { Container, List, Paper, Stack, Typography } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import {} from "@tanstack/react-router";
 
-export const Route = createFileRoute({
+export const Route = createFileRoute("/_authenticated/admin_/users/$userId/")({
   component: Component,
   loader: ({ context: { queryClient }, params: { userId } }) => {
     queryClient.prefetchQuery(usersQueryOptions.userScancodes(userId));

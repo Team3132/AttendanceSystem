@@ -27,9 +27,9 @@ export const lucia = new Lucia(adapter, {
 });
 
 export const discord = new Discord(
-  env.VITE_DISCORD_CLIENT_ID,
-  env.VITE_DISCORD_CLIENT_SECRET,
-  env.VITE_DISCORD_CALLBACK_URL,
+  env.DISCORD_CLIENT_ID,
+  env.DISCORD_CLIENT_SECRET,
+  env.DISCORD_CALLBACK_URL,
 );
 
 // IMPORTANT!

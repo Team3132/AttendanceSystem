@@ -8,11 +8,14 @@ import { discordQueryOptions } from "@/queries/discord.queries";
 import { strToRegex } from "@/server/utils/regexBuilder";
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import {} from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+
 import { useMemo } from "react";
 import { z } from "zod";
 
-export const Route = createFileRoute({
+export const Route = createFileRoute(
+  "/_authenticated/admin_/event-parsing/$ruleId",
+)({
   head: () => ({
     meta: [
       {
@@ -114,15 +117,11 @@ function RouteComponent() {
     <Stack gap={2} component="form" onSubmit={onSubmit}>
       <Typography variant="h4">Edit Rule</Typography>
 
-      <TextField
-        value={parsingRuleQuery.data?.kronosRule.title}
-        label="Name"
-        disabled
-      />
+      <TextField value={parsingRuleQuery.data?.name} label="Name" disabled />
       <ControlledTextField control={control} name="regex" label="Regex" />
       <TextField
         disabled
-        value={parsingRuleQuery.data?.kronosRule.cronExpr}
+        value={parsingRuleQuery.data?.cronExpr}
         label="Cron Expression"
         helperText="Create a new rule to change this"
       />

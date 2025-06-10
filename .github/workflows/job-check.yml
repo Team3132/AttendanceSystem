@@ -9,18 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v2
-        name: Install PNPM
-        with:
-          version: 9
+      - uses: oven-sh/setup-bun@v2
+        name: Setup Bun
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-          cache: "pnpm"
       - name: Install Dependancies
-        run: pnpm install --frozen-lockfile
+        run: bun install --frozen-lockfile
       - name: Check Types
-        run: pnpm tsc --noEmit
+        run: bun typecheck
       - name: Lint & Format Packages
-        run: pnpm check --reporter=github
+        run: bun check --reporter=github

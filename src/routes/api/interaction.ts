@@ -77,9 +77,7 @@ const updateMessage = (data: APIInteractionResponseCallbackData) =>
     data,
   });
 
-export const statusToEmoji = (
-  status: z.infer<typeof RSVPUserSchema>["status"],
-) => {
+const statusToEmoji = (status: z.infer<typeof RSVPUserSchema>["status"]) => {
   switch (status) {
     case "YES":
       return ":white_check_mark:";
@@ -96,7 +94,7 @@ export const statusToEmoji = (
   }
 };
 
-export default function rsvpToDescription(
+function rsvpToDescription(
   username: string,
   status: z.infer<typeof RSVPUserSchema>["status"],
 ) {
@@ -105,7 +103,7 @@ export default function rsvpToDescription(
 
 const logger = consola.withTag("discord-interaction");
 
-export const ServerRoute = createServerFileRoute().methods({
+export const ServerRoute = createServerFileRoute("/api/interaction").methods({
   POST: async ({ request }) => {
     const signature = getHeader("X-Signature-Ed25519");
     const timestamp = getHeader("X-Signature-Timestamp");
@@ -125,7 +123,7 @@ export const ServerRoute = createServerFileRoute().methods({
       rawBody,
       signature,
       timestamp,
-      env.VITE_DISCORD_PUBLIC_KEY,
+      env.DISCORD_PUBLIC_KEY,
     );
 
     logger.debug(`Request validation result: ${isValidRequest}`);
@@ -147,7 +145,7 @@ export const ServerRoute = createServerFileRoute().methods({
 
     if (
       interaction.member === undefined ||
-      interaction.guild_id !== env.VITE_GUILD_ID
+      interaction.guild_id !== env.GUILD_ID
     ) {
       logger.debug(
         "Interaction is not from a guild member or guild ID does not match",
@@ -441,7 +439,7 @@ export const ServerRoute = createServerFileRoute().methods({
 
             const { roleIds: ruleRoles } = rule;
 
-            roles.push(env.VITE_GUILD_ID);
+            roles.push(env.GUILD_ID);
 
             // if there's no overlap between the user's roles and the rule roles, return an error
             const hasRole = roles.some((role) => ruleRoles.includes(role));

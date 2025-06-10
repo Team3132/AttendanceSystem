@@ -65,6 +65,20 @@ const theme = createTheme({
   },
 });
 
+// function NavigationProgress() {
+//   const navigationStatus = useRouterState({
+//     select: (s) => s.status,
+//   });
+
+//   if (navigationStatus === "idle") {
+//     return null;
+//   }
+
+//   return (
+//     <LinearProgress sx={{ position: "fixed", top: 0, left: 0, right: 0 }} />
+//   );
+// }
+
 function RootComponent() {
   return (
     <RootDocument>
@@ -74,6 +88,7 @@ function RootComponent() {
           adapterLocale={"en-au"}
           dateAdapter={AdapterLuxon}
         >
+          {/* <NavigationProgress /> */}
           <GenericServerErrorBoundary>
             <Outlet />
           </GenericServerErrorBoundary>

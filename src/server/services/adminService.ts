@@ -1,7 +1,9 @@
+import { getSdk } from "@/gql";
 import { trytm } from "@/utils/trytm";
 import { asc, eq } from "drizzle-orm";
+import { GraphQLClient } from "graphql-request";
 import { ulid } from "ulidx";
-import { z } from "zod";
+import type { z } from "zod";
 import db from "../drizzle/db";
 import {
   apiKeyTable,
@@ -13,7 +15,6 @@ import type {
   NewEventParsingRuleSchema,
   UpdateEventParsingRuleSchema,
 } from "../schema";
-import KronosClient from "../utils/KronosClient";
 import { ServerError } from "../utils/errors";
 import { strToRegex } from "../utils/regexBuilder";
 
@@ -89,12 +90,6 @@ export async function createApiKey(userId: string, name: string) {
   return apiKey;
 }
 
-export const EventParsingRuleMetadataSchema = z.object({
-  ruleId: z.string(),
-});
-
-const parsingRuleWebhookUrl = `${env.VITE_FRONTEND_URL}/api/scheduler/reminder/trigger`;
-
 /**
  * Create a new parsing rule
  * @param data The data to create a new parsing rule
@@ -106,43 +101,34 @@ export async function createParsingRule(
   const { name, regex, cronExpr, channelId, roleIds, priority, isOutreach } =
     data;
 
-  const kronosURL = env.VITE_KRONOS_URL;
+  const webhookServerUrl = env.WEBHOOK_SERVER;
 
-  if (!kronosURL) {
+  if (!webhookServerUrl) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
-      message: "Kronos URL not set",
+      message: "Webhook server url",
     });
   }
 
-  const kronosClient = new KronosClient(kronosURL);
+  const client = getSdk(new GraphQLClient(webhookServerUrl));
 
   const ruleId = ulid();
 
-  const scheduleMetadata: z.infer<typeof EventParsingRuleMetadataSchema> = {
-    ruleId,
-  };
-
-  const [kronosSchedule, error] = await trytm(
-    kronosClient.createSchedule({
-      // Create a new schedule in Kronos
-      title: name,
-      description: `Parsing rule for ${name}`,
-      url: parsingRuleWebhookUrl,
-      isRecurring: true,
-      cronExpr,
-      metadata: scheduleMetadata,
+  const [cronWebhookResponse, error] = await trytm(
+    client.CreateWebhook({
+      cronExpression: cronExpr,
+      url: `${env.VITE_FRONTEND_URL}/api/scheduler/reminder/trigger?ruleId=${ruleId}`,
     }),
   );
 
-  if (error)
+  if (error || cronWebhookResponse?.errors)
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
-      message: "Error creating parsing rule in Kronos",
+      message: "Error creating cron webhook job",
       cause: error,
     });
 
-  const kronosId = kronosSchedule.id;
+  const cronId = cronWebhookResponse.data.createCronWebhook.id;
 
   // Create a new parsing rule
   const [parsingRules, scheduleError] = await trytm(
@@ -150,12 +136,14 @@ export async function createParsingRule(
       .insert(eventParsingRuleTable)
       .values({
         id: ruleId,
-        kronosId,
+        cronId,
         regex,
         channelId,
         roleIds,
         priority,
         isOutreach,
+        name,
+        cronExpr,
       })
       .returning(),
   );
@@ -201,46 +189,7 @@ export async function getParsingRules() {
       cause: parsingRulesError,
     });
 
-  const promisedKronos = parsingRules.map(async (rule) => {
-    if (!env.VITE_KRONOS_URL) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Kronos URL not set",
-      });
-    }
-
-    const kronosClient = new KronosClient(env.VITE_KRONOS_URL);
-
-    const [kronosRule, error] = await trytm(
-      kronosClient.getSchedule(rule.kronosId),
-    );
-
-    if (error) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error getting parsing rule from Kronos",
-        cause: error,
-      });
-    }
-
-    return {
-      ...rule,
-      kronosRule,
-    };
-  });
-
-  const [promisedData, promiseError] = await trytm(Promise.all(promisedKronos));
-
-  if (promiseError) {
-    if (promiseError instanceof ServerError) throw promiseError;
-    throw new ServerError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Error fetching parsing rules from Kronos",
-      cause: promiseError,
-    });
-  }
-
-  return promisedData;
+  return parsingRules;
 }
 
 /**
@@ -273,30 +222,7 @@ export const getParsingRule = async (id: string) => {
     });
   }
 
-  if (!env.VITE_KRONOS_URL) {
-    throw new ServerError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Kronos URL not set",
-    });
-  }
-
-  const kronosClient = new KronosClient(env.VITE_KRONOS_URL);
-
-  const [kronosRule, kronosRuleError] = await trytm(
-    kronosClient.getSchedule(rule.kronosId),
-  );
-
-  if (kronosRuleError)
-    throw new ServerError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Error getting parsing rule from Kronos",
-      cause: kronosRuleError,
-    });
-
-  return {
-    ...rule,
-    kronosRule,
-  };
+  return rule;
 };
 
 /**
@@ -305,14 +231,14 @@ export const getParsingRule = async (id: string) => {
  * @returns The deleted parsing rule
  */
 export async function deleteParsingRule(id: string) {
-  if (!env.VITE_KRONOS_URL) {
+  if (!env.WEBHOOK_SERVER) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
-      message: "Kronos URL not set",
+      message: "Webhook server URL not set",
     });
   }
 
-  const kronosClient = new KronosClient(env.VITE_KRONOS_URL);
+  const sdk = getSdk(new GraphQLClient(env.WEBHOOK_SERVER));
 
   const [rules, ruleFetchError] = await trytm(
     db
@@ -338,15 +264,17 @@ export async function deleteParsingRule(id: string) {
     });
   }
 
-  const [_deleteData, kronosDeleteError] = await trytm(
-    kronosClient.deleteSchedule(rule.kronosId),
+  const [_deleteData, webhookDeleteError] = await trytm(
+    sdk.DeleteWebhook({
+      id,
+    }),
   );
 
-  if (kronosDeleteError) {
+  if (webhookDeleteError) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
-      message: "Error deleting parsing rule from Kronos",
-      cause: kronosDeleteError,
+      message: "Error deleting parsing rule from the Webhook Server",
+      cause: webhookDeleteError,
     });
   }
 
@@ -448,20 +376,22 @@ export const triggerRule = async (id: string) => {
     });
   }
 
-  if (!env.VITE_KRONOS_URL) {
+  if (!env.WEBHOOK_SERVER) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
-      message: "Kronos URL not set",
+      message: "Webhook server URL not set",
     });
   }
 
-  const kronosClient = new KronosClient(env.VITE_KRONOS_URL);
+  const sdk = getSdk(new GraphQLClient(env.WEBHOOK_SERVER));
 
   const [triggerData, triggerError] = await trytm(
-    kronosClient.triggerSchedule(rule.kronosId),
+    sdk.TriggerWebhook({
+      id: rule.cronId,
+    }),
   );
 
-  if (triggerError) {
+  if (triggerError || triggerData.errors) {
     throw new ServerError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Error triggering parsing rule",
@@ -469,7 +399,7 @@ export const triggerRule = async (id: string) => {
     });
   }
 
-  return triggerData;
+  return triggerData.data;
 };
 
 const reapplyRules = async () => {

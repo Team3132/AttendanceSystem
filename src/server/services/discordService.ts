@@ -10,7 +10,7 @@ import { ServerError } from "../utils/errors";
  */
 export const getDiscordBotAPI = () => {
   const rest = new REST({ version: "10", authPrefix: "Bot" }).setToken(
-    env.VITE_DISCORD_TOKEN,
+    env.DISCORD_TOKEN,
   );
 
   const api = new API(rest);
@@ -23,7 +23,7 @@ export const getDiscordBotAPI = () => {
  * @param userId The ID of the current user
  */
 export const getServerRoles = async () => {
-  const guildId = env.VITE_GUILD_ID;
+  const guildId = env.GUILD_ID;
   const api = await getDiscordBotAPI();
 
   const [guildRoles, rolesFetchError] = await trytm(
@@ -48,7 +48,7 @@ export const getServerRoles = async () => {
  * @returns The channels of the guild
  */
 export const getServerChannels = async () => {
-  const guildId = env.VITE_GUILD_ID;
+  const guildId = env.GUILD_ID;
   const api = await getDiscordBotAPI();
 
   const [channels, channelFetchError] = await trytm(

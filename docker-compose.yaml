@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   postgres:
-    image: postgres:15
+    image: postgres:17
     environment:
       POSTGRES_PASSWORD: postgres
 
@@ -10,16 +10,15 @@ services:
       - postgres-data:/var/lib/postgresql/data
     ports:
       - 5432:5432
-  kronos:
-    image: ghcr.io/ostafen/kronos
-    network_mode: host
+  cron-webhook:
+    image: ghcr.io/sebasptsch/cron-webhook:latest
     environment:
-      - PORT=9175 # configuration properties can be overridden through environment variables
-      - STORE_PATH=/data/kronos.bolt
+      - DATABASE_URL=/data/cron-webhook.db
       - CRON_TZ=Australia/Sydney
-      - TZ=Australia/Sydney
     volumes:
-      - kronos-data:/data
+      - webhook-data:/data
+    ports:
+      - 3000:3000
   # backend:
   #   build:
   #     context: .
@@ -33,4 +32,4 @@ services:
 
 volumes:
   postgres-data:
-  kronos-data:
+  webhook-data:

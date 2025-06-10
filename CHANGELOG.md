@@ -1,5 +1,99 @@
 # frontend
 
+## 5.10.15
+
+### Patch Changes
+
+- [`9002374`](https://github.com/Team3132/AttendanceSystem/commit/900237489c748b85e1a62d4c18b19dc38db63119) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix end time window to include up until the end of the day
+
+- [`eb6f2fe`](https://github.com/Team3132/AttendanceSystem/commit/eb6f2fefdb919b4f0934370591b3a393fd174e33) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Update dependancies
+
+## 5.10.14
+
+### Patch Changes
+
+- [`6210db1`](https://github.com/Team3132/AttendanceSystem/commit/6210db1187f5fe2132c954c01af6ba612d412ac3) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Try and fix frontend url
+
+## 5.10.13
+
+### Patch Changes
+
+- [`2547465`](https://github.com/Team3132/AttendanceSystem/commit/25474658b3ab893e3342e28e7cdce03341db0104) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix leaking env
+
+## 5.10.12
+
+### Patch Changes
+
+- [`25a24d5`](https://github.com/Team3132/AttendanceSystem/commit/25a24d5b50ed5dafac6bd013b8599bf6c766ec2f) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Remove loading indicator
+
+## 5.10.11
+
+### Patch Changes
+
+- [`5da531c`](https://github.com/Team3132/AttendanceSystem/commit/5da531c64b71754e214c8d9901be92a69290806e) Thanks [@sebasptsch](https://github.com/sebasptsch)! - No target
+
+## 5.10.10
+
+### Patch Changes
+
+- [`7fb8e7a`](https://github.com/Team3132/AttendanceSystem/commit/7fb8e7a98ee2b1454ab65d049b519bedfa75da51) Thanks [@sebasptsch](https://github.com/sebasptsch)! - switch to bun
+
+- [`6c5a56a`](https://github.com/Team3132/AttendanceSystem/commit/6c5a56ad468d8871349181cbcfb5b6113fa792be) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix loading bar
+
+## 5.10.9
+
+### Patch Changes
+
+- [`0ee5fbc`](https://github.com/Team3132/AttendanceSystem/commit/0ee5fbce0a40630b703bfbd2419425d467391398) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add Navigation Progress bar
+
+- [`0ee5fbc`](https://github.com/Team3132/AttendanceSystem/commit/0ee5fbce0a40630b703bfbd2419425d467391398) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Order discord message rsvps by username
+
+## 5.10.8
+
+### Patch Changes
+
+- [`9ab832c`](https://github.com/Team3132/AttendanceSystem/commit/9ab832c49a0439028991bf7a631554a3ba317041) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Awesome new webhook trigger update
+
+## 5.10.7
+
+### Patch Changes
+
+- [`d125391`](https://github.com/Team3132/AttendanceSystem/commit/d125391641ed405191934d3d42f84f8d242a1dbf) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Use regex to validate cron
+
+## 5.10.6
+
+### Patch Changes
+
+- [`223bdb7`](https://github.com/Team3132/AttendanceSystem/commit/223bdb72f9a9468e447b7b1efa575bca23a6a52a) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix broken cron validation
+
+## 5.10.5
+
+### Patch Changes
+
+- [`ca92013`](https://github.com/Team3132/AttendanceSystem/commit/ca920133e5315496cb6844ab22602bd0278c813a) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix user return
+
+  If a user was successfully created but none of the user data was returned due to the setWhere clause. Now if there are no errors then consider the user created and return the user data.
+
+## 5.10.4
+
+### Patch Changes
+
+- [`ff4ff44`](https://github.com/Team3132/AttendanceSystem/commit/ff4ff44a759d5a8e01b7fa81c8c832eec31342d7) Thanks [@sebasptsch](https://github.com/sebasptsch)! - more logging
+
+## 5.10.3
+
+### Patch Changes
+
+- [`233860b`](https://github.com/Team3132/AttendanceSystem/commit/233860b6f55f3b490c509ec6c974b05cac19a7e2) Thanks [@sebasptsch](https://github.com/sebasptsch)! - More auth logging
+
+## 5.10.2
+
+### Patch Changes
+
+- [`02f76ba`](https://github.com/Team3132/AttendanceSystem/commit/02f76ba4d2b6691acb088f005fe6b8dd04baa95b) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix login query params
+
+- [`02f76ba`](https://github.com/Team3132/AttendanceSystem/commit/02f76ba4d2b6691acb088f005fe6b8dd04baa95b) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix rule parsing
+
 ## 5.10.1
 
 ### Patch Changes

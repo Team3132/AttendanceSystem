@@ -264,8 +264,8 @@ export const apiKeyTableRelations = relations(apiKeyTable, ({ one }) => ({
 export const eventParsingRuleTable = pgTable("parsing_rule", {
   /** The Id of the rule */
   id: text("id").primaryKey().notNull(),
-  /** Kronos Id */
-  kronosId: integer("kronos_id").notNull(),
+  /** Cron Job Id */
+  cronId: text("cron_id").notNull(),
   /** The title to match */
   regex: text("regex").notNull().default(""),
   /** Channel Id */
@@ -276,6 +276,10 @@ export const eventParsingRuleTable = pgTable("parsing_rule", {
   priority: integer("priority").notNull().default(0),
   /** Counts for outreach */
   isOutreach: boolean("is_outreach").notNull().default(false),
+  /** The name of the rule */
+  name: text("name").notNull(),
+  /** The Cron Expression */
+  cronExpr: text("cron_expr").notNull(),
 });
 
 export const eventParsingRuleTableRelations = relations(

@@ -1,4 +1,3 @@
-import cron from "cron-validate";
 import { z } from "zod";
 import { strToRegex } from "../utils/regexBuilder";
 
@@ -15,8 +14,6 @@ export const NewEventParsingRuleSchema = z.object({
     }
   }),
   roleIds: z.array(z.string()),
-  cronExpr: z.string().refine((v) => cron(v).isValid(), {
-    message: "Invalid cron expression",
-  }),
+  cronExpr: z.string().regex(/((((\d+,)+\d+|(\d+(\/|-)\d+)|\d+|\*) ?){5,7})/g),
   isOutreach: z.boolean(),
 });

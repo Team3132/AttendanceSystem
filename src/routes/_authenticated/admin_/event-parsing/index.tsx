@@ -13,11 +13,12 @@ import {
   Stack,
 } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import {} from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+
 import { useCallback } from "react";
 import { FaCopy, FaPen, FaPlay, FaTrash } from "react-icons/fa6";
 
-export const Route = createFileRoute({
+export const Route = createFileRoute("/_authenticated/admin_/event-parsing/")({
   head: () => ({
     meta: [
       {
@@ -47,10 +48,10 @@ function RouteComponent() {
       navigate({
         to: "/admin/event-parsing/create",
         search: {
-          name: `${rule.kronosRule.title} (Copy)`,
+          name: `${rule.name} (Copy)`,
           regex: rule.regex,
           roleIds: rule.roleIds,
-          cronExpr: rule.kronosRule.cronExpr,
+          cronExpr: rule.cronExpr,
           channelId: rule.channelId,
           priority: rule.priority,
           isOutreach: rule.isOutreach,
@@ -102,10 +103,7 @@ function RouteComponent() {
               </Stack>
             }
           >
-            <ListItemText
-              primary={rule.kronosRule.title}
-              secondary={rule.priority}
-            />
+            <ListItemText primary={rule.name} secondary={rule.priority} />
           </ListItem>
         ))}
       </List>

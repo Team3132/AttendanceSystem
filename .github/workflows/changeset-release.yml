@@ -27,24 +27,23 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 9
 
-      - name: Setup Node.js 21
+      - uses: oven-sh/setup-bun@v2
+        name: Setup Bun
+
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-          cache: 'pnpm'
 
       - name: Install Dependancies
-        run: pnpm install --frozen-lockfile
+        run: bun install --frozen-lockfile
 
       - name: Check Types
-        run: pnpm tsc --noEmit
+        run: bun typecheck
 
       - name: Lint & Format Packages
-        run: pnpm check --reporter=github
+        run: bun check --reporter=github
 
       - name: Create Release Pull Request
         id: changesets
@@ -54,7 +53,7 @@ jobs:
 
         with:
           # this npm script triggers `changeset publish`
-          publish: pnpm changeset tag
+          publish: bun changeset tag
           createGithubReleases: true
   publish-docker:
     name: Publish Docker Images
@@ -94,9 +93,8 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           build-args: |
-            VERSION=${{ matrix.package.version }}
+            VITE_VERSION=${{ matrix.package.version }}
           tags: ${{ steps.meta.outputs.tags }}
           push: true
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=registry,ref=ghcr.io/team3132/attendancesystem-${{ matrix.package.name }}:latest
-          target: ${{ matrix.package.name }}-runner
