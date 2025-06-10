@@ -50,7 +50,7 @@
 		"googleapis": "149.0.0",
 		"graphql": "16.11.0",
 		"graphql-request": "7.2.0",
-		"keyv": "5.3.3",
+		"keyv": "5.3.4",
 		"lucia": "3.2.2",
 		"luxon": "3.6.1",
 		"path-to-regexp": "8.2.0",
