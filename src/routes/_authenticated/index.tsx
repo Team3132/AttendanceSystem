@@ -1,13 +1,12 @@
 import { usersQueryOptions } from "@/queries/users.queries";
 import env from "@/server/env";
 import { Paper, Stack, Typography } from "@mui/material";
-import { createFileRoute } from "@tanstack/react-router";
-import {} from "@tanstack/react-router";
+
 import ActiveEventsList from "../../components/ActiveEventsList";
 
 const appVersion = env.VITE_VERSION;
 
-export const Route = createFileRoute("/_authenticated/")({
+export const Route = createFileRoute({
   loader: ({ context: { queryClient } }) => {
     queryClient.prefetchQuery(usersQueryOptions.userSelfPendingRsvps());
   },

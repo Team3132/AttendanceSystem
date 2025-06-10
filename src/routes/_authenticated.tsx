@@ -5,9 +5,9 @@ import { authQueryOptions } from "@/queries/auth.queries";
 import { consola } from "@/server/logger";
 import { Box, Container } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
+import { Outlet, redirect } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_authenticated")({
+export const Route = createFileRoute({
   beforeLoad: async ({ context: { queryClient } }) => {
     const { isAuthenticated } = await queryClient.ensureQueryData(
       authQueryOptions.status(),

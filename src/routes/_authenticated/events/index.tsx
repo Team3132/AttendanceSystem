@@ -19,7 +19,7 @@ import {
   useSuspenseInfiniteQuery,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { createFileRoute, stripSearchParams } from "@tanstack/react-router";
+import {, stripSearchParams } from "@tanstack/react-router";
 import { DateTime } from "luxon";
 import { Suspense, useCallback } from "react";
 import { z } from "zod";
@@ -36,7 +36,7 @@ const eventsSearchSchema = z.object({
   limit: z.number().default(defaultValues.limit),
 });
 
-export const Route = createFileRoute("/_authenticated/events/")({
+export const Route = createFileRoute({
   validateSearch: eventsSearchSchema,
   search: {
     middlewares: [stripSearchParams(defaultValues)],

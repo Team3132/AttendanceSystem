@@ -6,11 +6,11 @@ import { authQueryOptions } from "@/queries/auth.queries";
 import { CreateEventSchema } from "@/server/schema";
 import { Button, Stack, Switch } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import {, useNavigate } from "@tanstack/react-router";
 import { DateTime } from "luxon";
 import { Controller } from "react-hook-form";
 
-export const Route = createFileRoute("/_authenticated/events/create")({
+export const Route = createFileRoute({
   beforeLoad: async ({ context: { queryClient } }) => {
     const { isAdmin } = await queryClient.ensureQueryData(
       authQueryOptions.status(),

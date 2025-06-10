@@ -1,7 +1,7 @@
 import { authQueryOptions } from "@/queries/auth.queries";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import {, redirect } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_authenticated/admin_")({
+export const Route = createFileRoute({
   beforeLoad: async ({ context: { queryClient } }) => {
     const { isAdmin } = await queryClient.ensureQueryData(
       authQueryOptions.status(),

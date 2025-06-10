@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { fallback } from "@tanstack/zod-adapter";
 import { z } from "zod";
 
@@ -7,7 +6,7 @@ const SerializableErrorSchema = z.object({
   stack: fallback(z.string().optional(), undefined),
 });
 
-export const Route = createFileRoute("/error")({
+export const Route = createFileRoute({
   validateSearch: SerializableErrorSchema,
   component: RouteComponent,
 });

@@ -1,9 +1,7 @@
 import RsvpList from "@/features/events/components/RSVPList";
 import { eventQueryOptions } from "@/queries/events.queries";
-import { createFileRoute } from "@tanstack/react-router";
-import {} from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_authenticated/events/$eventId/")({
+export const Route = createFileRoute({
   loader: ({ context: { queryClient }, params: { eventId } }) => {
     queryClient.prefetchQuery(eventQueryOptions.eventRsvps(eventId));
     queryClient.prefetchQuery(eventQueryOptions.eventRsvp(eventId));

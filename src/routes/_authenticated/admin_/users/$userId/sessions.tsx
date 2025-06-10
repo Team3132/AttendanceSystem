@@ -1,14 +1,11 @@
 import { usersQueryOptions } from "@/queries/users.queries";
 import { List, ListItem, ListItemText, Skeleton } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
-import {} from "@tanstack/react-router";
+
 import { DateTime } from "luxon";
 import { Suspense } from "react";
 
-export const Route = createFileRoute(
-  "/_authenticated/admin_/users/$userId/sessions",
-)({
+export const Route = createFileRoute({
   loader: ({ context: { queryClient }, params: { userId } }) => {
     queryClient.prefetchQuery(usersQueryOptions.userSessions(userId));
   },

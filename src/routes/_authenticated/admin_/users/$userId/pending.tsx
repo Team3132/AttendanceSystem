@@ -2,12 +2,8 @@ import PendingEventListItem from "@/components/AdminPendingEventListItem";
 import { usersQueryOptions } from "@/queries/users.queries";
 import { Container, List, Paper, Stack, Typography } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
-import {} from "@tanstack/react-router";
 
-export const Route = createFileRoute(
-  "/_authenticated/admin_/users/$userId/pending",
-)({
+export const Route = createFileRoute({
   component: Component,
   loader: ({ context: { queryClient }, params: { userId } }) => {
     queryClient.prefetchQuery(usersQueryOptions.userPendingRsvps(userId));

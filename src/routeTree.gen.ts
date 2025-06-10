@@ -8,9 +8,11 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createServerRootRoute } from '@tanstack/react-start/server'
+import type { CreateFileRoute, FileRoutesByPath } from '@tanstack/react-router'
 
-import { Route as rootRouteImport } from './routes/__root'
+// Import Routes
+
+import { Route as rootRoute } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ErrorRouteImport } from './routes/error'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
@@ -39,202 +41,768 @@ import { Route as AuthenticatedAdminUsersUserIdIndexRouteImport } from './routes
 import { Route as AuthenticatedAdminUsersUserIdSummaryRouteImport } from './routes/_authenticated/admin_/users/$userId/summary'
 import { Route as AuthenticatedAdminUsersUserIdSessionsRouteImport } from './routes/_authenticated/admin_/users/$userId/sessions'
 import { Route as AuthenticatedAdminUsersUserIdPendingRouteImport } from './routes/_authenticated/admin_/users/$userId/pending'
-import { ServerRoute as ApiInteractionServerRouteImport } from './routes/api/interaction'
-import { ServerRoute as ApiAuthDiscordServerRouteImport } from './routes/api/auth.discord'
-import { ServerRoute as ApiSchedulerReminderTriggerServerRouteImport } from './routes/api/scheduler.reminder.trigger'
-import { ServerRoute as ApiSchedulerCalendarTriggerServerRouteImport } from './routes/api/scheduler.calendar.trigger'
-import { ServerRoute as ApiAuthDiscordCallbackServerRouteImport } from './routes/api/auth.discord.callback'
 
-const rootServerRouteImport = createServerRootRoute()
+// Create/Update Routes
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => rootRoute,
 } as any)
+
 const ErrorRoute = ErrorRouteImport.update({
   id: '/error',
   path: '/error',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => rootRoute,
 } as any)
+
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => rootRoute,
 } as any)
+
 const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+
 const AuthenticatedLeaderboardRoute =
   AuthenticatedLeaderboardRouteImport.update({
     id: '/leaderboard',
     path: '/leaderboard',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin_',
   path: '/admin',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+
 const AuthenticatedProfileIndexRoute =
   AuthenticatedProfileIndexRouteImport.update({
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedProfileRoute,
   } as any)
+
 const AuthenticatedEventsIndexRoute =
   AuthenticatedEventsIndexRouteImport.update({
     id: '/events/',
     path: '/events/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+
 const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+
 const AuthenticatedProfileSessionsRoute =
   AuthenticatedProfileSessionsRouteImport.update({
     id: '/sessions',
     path: '/sessions',
     getParentRoute: () => AuthenticatedProfileRoute,
   } as any)
+
 const AuthenticatedProfilePendingRoute =
   AuthenticatedProfilePendingRouteImport.update({
     id: '/pending',
     path: '/pending',
     getParentRoute: () => AuthenticatedProfileRoute,
   } as any)
+
 const AuthenticatedEventsCreateRoute =
   AuthenticatedEventsCreateRouteImport.update({
     id: '/events/create',
     path: '/events/create',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+
 const AuthenticatedEventsEventIdRoute =
   AuthenticatedEventsEventIdRouteImport.update({
     id: '/events/$eventId',
     path: '/events/$eventId',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+
 const AuthenticatedEventsEventIdIndexRoute =
   AuthenticatedEventsEventIdIndexRouteImport.update({
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedEventsEventIdRoute,
   } as any)
+
 const AuthenticatedAdminUsersIndexRoute =
   AuthenticatedAdminUsersIndexRouteImport.update({
     id: '/users/',
     path: '/users/',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+
 const AuthenticatedAdminEventParsingIndexRoute =
   AuthenticatedAdminEventParsingIndexRouteImport.update({
     id: '/event-parsing/',
     path: '/event-parsing/',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+
 const AuthenticatedAdminApiKeysIndexRoute =
   AuthenticatedAdminApiKeysIndexRouteImport.update({
     id: '/api-keys/',
     path: '/api-keys/',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+
 const AuthenticatedEventsEventIdQrCodeRoute =
   AuthenticatedEventsEventIdQrCodeRouteImport.update({
     id: '/qr-code',
     path: '/qr-code',
     getParentRoute: () => AuthenticatedEventsEventIdRoute,
   } as any)
+
 const AuthenticatedEventsEventIdCheckInRoute =
   AuthenticatedEventsEventIdCheckInRouteImport.update({
     id: '/check-in',
     path: '/check-in',
     getParentRoute: () => AuthenticatedEventsEventIdRoute,
   } as any)
+
 const AuthenticatedAdminUsersUserIdRoute =
   AuthenticatedAdminUsersUserIdRouteImport.update({
     id: '/users/$userId',
     path: '/users/$userId',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+
 const AuthenticatedAdminEventParsingCreateRoute =
   AuthenticatedAdminEventParsingCreateRouteImport.update({
     id: '/event-parsing/create',
     path: '/event-parsing/create',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+
 const AuthenticatedAdminEventParsingRuleIdRoute =
   AuthenticatedAdminEventParsingRuleIdRouteImport.update({
     id: '/event-parsing/$ruleId',
     path: '/event-parsing/$ruleId',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+
 const AuthenticatedAdminApiKeysCreateRoute =
   AuthenticatedAdminApiKeysCreateRouteImport.update({
     id: '/api-keys/create',
     path: '/api-keys/create',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+
 const AuthenticatedAdminUsersUserIdIndexRoute =
   AuthenticatedAdminUsersUserIdIndexRouteImport.update({
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedAdminUsersUserIdRoute,
   } as any)
+
 const AuthenticatedAdminUsersUserIdSummaryRoute =
   AuthenticatedAdminUsersUserIdSummaryRouteImport.update({
     id: '/summary',
     path: '/summary',
     getParentRoute: () => AuthenticatedAdminUsersUserIdRoute,
   } as any)
+
 const AuthenticatedAdminUsersUserIdSessionsRoute =
   AuthenticatedAdminUsersUserIdSessionsRouteImport.update({
     id: '/sessions',
     path: '/sessions',
     getParentRoute: () => AuthenticatedAdminUsersUserIdRoute,
   } as any)
+
 const AuthenticatedAdminUsersUserIdPendingRoute =
   AuthenticatedAdminUsersUserIdPendingRouteImport.update({
     id: '/pending',
     path: '/pending',
     getParentRoute: () => AuthenticatedAdminUsersUserIdRoute,
   } as any)
-const ApiInteractionServerRoute = ApiInteractionServerRouteImport.update({
-  id: '/api/interaction',
-  path: '/api/interaction',
-  getParentRoute: () => rootServerRouteImport,
-} as any)
-const ApiAuthDiscordServerRoute = ApiAuthDiscordServerRouteImport.update({
-  id: '/api/auth/discord',
-  path: '/api/auth/discord',
-  getParentRoute: () => rootServerRouteImport,
-} as any)
-const ApiSchedulerReminderTriggerServerRoute =
-  ApiSchedulerReminderTriggerServerRouteImport.update({
-    id: '/api/scheduler/reminder/trigger',
-    path: '/api/scheduler/reminder/trigger',
-    getParentRoute: () => rootServerRouteImport,
-  } as any)
-const ApiSchedulerCalendarTriggerServerRoute =
-  ApiSchedulerCalendarTriggerServerRouteImport.update({
-    id: '/api/scheduler/calendar/trigger',
-    path: '/api/scheduler/calendar/trigger',
-    getParentRoute: () => rootServerRouteImport,
-  } as any)
-const ApiAuthDiscordCallbackServerRoute =
-  ApiAuthDiscordCallbackServerRouteImport.update({
-    id: '/callback',
-    path: '/callback',
-    getParentRoute: () => ApiAuthDiscordServerRoute,
-  } as any)
+
+// Populate the FileRoutesByPath interface
+
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRoute
+    }
+    '/error': {
+      id: '/error'
+      path: '/error'
+      fullPath: '/error'
+      preLoaderRoute: typeof ErrorRouteImport
+      parentRoute: typeof rootRoute
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRoute
+    }
+    '/_authenticated/admin_': {
+      id: '/_authenticated/admin_'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/leaderboard': {
+      id: '/_authenticated/leaderboard'
+      path: '/leaderboard'
+      fullPath: '/leaderboard'
+      preLoaderRoute: typeof AuthenticatedLeaderboardRouteImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/': {
+      id: '/_authenticated/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/events/$eventId': {
+      id: '/_authenticated/events/$eventId'
+      path: '/events/$eventId'
+      fullPath: '/events/$eventId'
+      preLoaderRoute: typeof AuthenticatedEventsEventIdRouteImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/events/create': {
+      id: '/_authenticated/events/create'
+      path: '/events/create'
+      fullPath: '/events/create'
+      preLoaderRoute: typeof AuthenticatedEventsCreateRouteImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/profile/pending': {
+      id: '/_authenticated/profile/pending'
+      path: '/pending'
+      fullPath: '/profile/pending'
+      preLoaderRoute: typeof AuthenticatedProfilePendingRouteImport
+      parentRoute: typeof AuthenticatedProfileRouteImport
+    }
+    '/_authenticated/profile/sessions': {
+      id: '/_authenticated/profile/sessions'
+      path: '/sessions'
+      fullPath: '/profile/sessions'
+      preLoaderRoute: typeof AuthenticatedProfileSessionsRouteImport
+      parentRoute: typeof AuthenticatedProfileRouteImport
+    }
+    '/_authenticated/admin_/': {
+      id: '/_authenticated/admin_/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteImport
+    }
+    '/_authenticated/events/': {
+      id: '/_authenticated/events/'
+      path: '/events'
+      fullPath: '/events'
+      preLoaderRoute: typeof AuthenticatedEventsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/profile/': {
+      id: '/_authenticated/profile/'
+      path: '/'
+      fullPath: '/profile/'
+      preLoaderRoute: typeof AuthenticatedProfileIndexRouteImport
+      parentRoute: typeof AuthenticatedProfileRouteImport
+    }
+    '/_authenticated/admin_/api-keys/create': {
+      id: '/_authenticated/admin_/api-keys/create'
+      path: '/api-keys/create'
+      fullPath: '/admin/api-keys/create'
+      preLoaderRoute: typeof AuthenticatedAdminApiKeysCreateRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteImport
+    }
+    '/_authenticated/admin_/event-parsing/$ruleId': {
+      id: '/_authenticated/admin_/event-parsing/$ruleId'
+      path: '/event-parsing/$ruleId'
+      fullPath: '/admin/event-parsing/$ruleId'
+      preLoaderRoute: typeof AuthenticatedAdminEventParsingRuleIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteImport
+    }
+    '/_authenticated/admin_/event-parsing/create': {
+      id: '/_authenticated/admin_/event-parsing/create'
+      path: '/event-parsing/create'
+      fullPath: '/admin/event-parsing/create'
+      preLoaderRoute: typeof AuthenticatedAdminEventParsingCreateRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteImport
+    }
+    '/_authenticated/admin_/users/$userId': {
+      id: '/_authenticated/admin_/users/$userId'
+      path: '/users/$userId'
+      fullPath: '/admin/users/$userId'
+      preLoaderRoute: typeof AuthenticatedAdminUsersUserIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteImport
+    }
+    '/_authenticated/events/$eventId/check-in': {
+      id: '/_authenticated/events/$eventId/check-in'
+      path: '/check-in'
+      fullPath: '/events/$eventId/check-in'
+      preLoaderRoute: typeof AuthenticatedEventsEventIdCheckInRouteImport
+      parentRoute: typeof AuthenticatedEventsEventIdRouteImport
+    }
+    '/_authenticated/events/$eventId/qr-code': {
+      id: '/_authenticated/events/$eventId/qr-code'
+      path: '/qr-code'
+      fullPath: '/events/$eventId/qr-code'
+      preLoaderRoute: typeof AuthenticatedEventsEventIdQrCodeRouteImport
+      parentRoute: typeof AuthenticatedEventsEventIdRouteImport
+    }
+    '/_authenticated/admin_/api-keys/': {
+      id: '/_authenticated/admin_/api-keys/'
+      path: '/api-keys'
+      fullPath: '/admin/api-keys'
+      preLoaderRoute: typeof AuthenticatedAdminApiKeysIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteImport
+    }
+    '/_authenticated/admin_/event-parsing/': {
+      id: '/_authenticated/admin_/event-parsing/'
+      path: '/event-parsing'
+      fullPath: '/admin/event-parsing'
+      preLoaderRoute: typeof AuthenticatedAdminEventParsingIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteImport
+    }
+    '/_authenticated/admin_/users/': {
+      id: '/_authenticated/admin_/users/'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AuthenticatedAdminUsersIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteImport
+    }
+    '/_authenticated/events/$eventId/': {
+      id: '/_authenticated/events/$eventId/'
+      path: '/'
+      fullPath: '/events/$eventId/'
+      preLoaderRoute: typeof AuthenticatedEventsEventIdIndexRouteImport
+      parentRoute: typeof AuthenticatedEventsEventIdRouteImport
+    }
+    '/_authenticated/admin_/users/$userId/pending': {
+      id: '/_authenticated/admin_/users/$userId/pending'
+      path: '/pending'
+      fullPath: '/admin/users/$userId/pending'
+      preLoaderRoute: typeof AuthenticatedAdminUsersUserIdPendingRouteImport
+      parentRoute: typeof AuthenticatedAdminUsersUserIdRouteImport
+    }
+    '/_authenticated/admin_/users/$userId/sessions': {
+      id: '/_authenticated/admin_/users/$userId/sessions'
+      path: '/sessions'
+      fullPath: '/admin/users/$userId/sessions'
+      preLoaderRoute: typeof AuthenticatedAdminUsersUserIdSessionsRouteImport
+      parentRoute: typeof AuthenticatedAdminUsersUserIdRouteImport
+    }
+    '/_authenticated/admin_/users/$userId/summary': {
+      id: '/_authenticated/admin_/users/$userId/summary'
+      path: '/summary'
+      fullPath: '/admin/users/$userId/summary'
+      preLoaderRoute: typeof AuthenticatedAdminUsersUserIdSummaryRouteImport
+      parentRoute: typeof AuthenticatedAdminUsersUserIdRouteImport
+    }
+    '/_authenticated/admin_/users/$userId/': {
+      id: '/_authenticated/admin_/users/$userId/'
+      path: '/'
+      fullPath: '/admin/users/$userId/'
+      preLoaderRoute: typeof AuthenticatedAdminUsersUserIdIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminUsersUserIdRouteImport
+    }
+  }
+}
+
+// Add type-safety to the createFileRoute function across the route tree
+
+declare module './routes/_authenticated' {
+  const createFileRoute: CreateFileRoute<
+    '/_authenticated',
+    FileRoutesByPath['/_authenticated']['parentRoute'],
+    FileRoutesByPath['/_authenticated']['id'],
+    FileRoutesByPath['/_authenticated']['path'],
+    FileRoutesByPath['/_authenticated']['fullPath']
+  >
+}
+declare module './routes/error' {
+  const createFileRoute: CreateFileRoute<
+    '/error',
+    FileRoutesByPath['/error']['parentRoute'],
+    FileRoutesByPath['/error']['id'],
+    FileRoutesByPath['/error']['path'],
+    FileRoutesByPath['/error']['fullPath']
+  >
+}
+declare module './routes/login' {
+  const createFileRoute: CreateFileRoute<
+    '/login',
+    FileRoutesByPath['/login']['parentRoute'],
+    FileRoutesByPath['/login']['id'],
+    FileRoutesByPath['/login']['path'],
+    FileRoutesByPath['/login']['fullPath']
+  >
+}
+declare module './routes/_authenticated/admin_' {
+  const createFileRoute: CreateFileRoute<
+    '/_authenticated/admin_',
+    FileRoutesByPath['/_authenticated/admin_']['parentRoute'],
+    FileRoutesByPath['/_authenticated/admin_']['id'],
+    FileRoutesByPath['/_authenticated/admin_']['path'],
+    FileRoutesByPath['/_authenticated/admin_']['fullPath']
+  >
+}
+declare module './routes/_authenticated/leaderboard' {
+  const createFileRoute: CreateFileRoute<
+    '/_authenticated/leaderboard',
+    FileRoutesByPath['/_authenticated/leaderboard']['parentRoute'],
+    FileRoutesByPath['/_authenticated/leaderboard']['id'],
+    FileRoutesByPath['/_authenticated/leaderboard']['path'],
+    FileRoutesByPath['/_authenticated/leaderboard']['fullPath']
+  >
+}
+declare module './routes/_authenticated/profile' {
+  const createFileRoute: CreateFileRoute<
+    '/_authenticated/profile',
+    FileRoutesByPath['/_authenticated/profile']['parentRoute'],
+    FileRoutesByPath['/_authenticated/profile']['id'],
+    FileRoutesByPath['/_authenticated/profile']['path'],
+    FileRoutesByPath['/_authenticated/profile']['fullPath']
+  >
+}
+declare module './routes/_authenticated/index' {
+  const createFileRoute: CreateFileRoute<
+    '/_authenticated/',
+    FileRoutesByPath['/_authenticated/']['parentRoute'],
+    FileRoutesByPath['/_authenticated/']['id'],
+    FileRoutesByPath['/_authenticated/']['path'],
+    FileRoutesByPath['/_authenticated/']['fullPath']
+  >
+}
+declare module './routes/_authenticated/events/$eventId' {
+  const createFileRoute: CreateFileRoute<
+    '/_authenticated/events/$eventId',
+    FileRoutesByPath['/_authenticated/events/$eventId']['parentRoute'],
+    FileRoutesByPath['/_authenticated/events/$eventId']['id'],
+    FileRoutesByPath['/_authenticated/events/$eventId']['path'],
+    FileRoutesByPath['/_authenticated/events/$eventId']['fullPath']
+  >
+}
+declare module './routes/_authenticated/events/create' {
+  const createFileRoute: CreateFileRoute<
+    '/_authenticated/events/create',
+    FileRoutesByPath['/_authenticated/events/create']['parentRoute'],
+    FileRoutesByPath['/_authenticated/events/create']['id'],
+    FileRoutesByPath['/_authenticated/events/create']['path'],
+    FileRoutesByPath['/_authenticated/events/create']['fullPath']
+  >
+}
+declare module './routes/_authenticated/profile/pending' {
+  const createFileRoute: CreateFileRoute<
+    '/_authenticated/profile/pending',
+    FileRoutesByPath['/_authenticated/profile/pending']['parentRoute'],
+    FileRoutesByPath['/_authenticated/profile/pending']['id'],
+    FileRoutesByPath['/_authenticated/profile/pending']['path'],
+    FileRoutesByPath['/_authenticated/profile/pending']['fullPath']
+  >
+}
+declare module './routes/_authenticated/profile/sessions' {
+  const createFileRoute: CreateFileRoute<
+    '/_authenticated/profile/sessions',
+    FileRoutesByPath['/_authenticated/profile/sessions']['parentRoute'],
+    FileRoutesByPath['/_authenticated/profile/sessions']['id'],
+    FileRoutesByPath['/_authenticated/profile/sessions']['path'],
+    FileRoutesByPath['/_authenticated/profile/sessions']['fullPath']
+  >
+}
+declare module './routes/_authenticated/admin_/index' {
+  const createFileRoute: CreateFileRoute<
+    '/_authenticated/admin_/',
+    FileRoutesByPath['/_authenticated/admin_/']['parentRoute'],
+    FileRoutesByPath['/_authenticated/admin_/']['id'],
+    FileRoutesByPath['/_authenticated/admin_/']['path'],
+    FileRoutesByPath['/_authenticated/admin_/']['fullPath']
+  >
+}
+declare module './routes/_authenticated/events/index' {
+  const createFileRoute: CreateFileRoute<
+    '/_authenticated/events/',
+    FileRoutesByPath['/_authenticated/events/']['parentRoute'],
+    FileRoutesByPath['/_authenticated/events/']['id'],
+    FileRoutesByPath['/_authenticated/events/']['path'],
+    FileRoutesByPath['/_authenticated/events/']['fullPath']
+  >
+}
+declare module './routes/_authenticated/profile/index' {
+  const createFileRoute: CreateFileRoute<
+    '/_authenticated/profile/',
+    FileRoutesByPath['/_authenticated/profile/']['parentRoute'],
+    FileRoutesByPath['/_authenticated/profile/']['id'],
+    FileRoutesByPath['/_authenticated/profile/']['path'],
+    FileRoutesByPath['/_authenticated/profile/']['fullPath']
+  >
+}
+declare module './routes/_authenticated/admin_/api-keys/create' {
+  const createFileRoute: CreateFileRoute<
+    '/_authenticated/admin_/api-keys/create',
+    FileRoutesByPath['/_authenticated/admin_/api-keys/create']['parentRoute'],
+    FileRoutesByPath['/_authenticated/admin_/api-keys/create']['id'],
+    FileRoutesByPath['/_authenticated/admin_/api-keys/create']['path'],
+    FileRoutesByPath['/_authenticated/admin_/api-keys/create']['fullPath']
+  >
+}
+declare module './routes/_authenticated/admin_/event-parsing/$ruleId' {
+  const createFileRoute: CreateFileRoute<
+    '/_authenticated/admin_/event-parsing/$ruleId',
+    FileRoutesByPath['/_authenticated/admin_/event-parsing/$ruleId']['parentRoute'],
+    FileRoutesByPath['/_authenticated/admin_/event-parsing/$ruleId']['id'],
+    FileRoutesByPath['/_authenticated/admin_/event-parsing/$ruleId']['path'],
+    FileRoutesByPath['/_authenticated/admin_/event-parsing/$ruleId']['fullPath']
+  >
+}
+declare module './routes/_authenticated/admin_/event-parsing/create' {
+  const createFileRoute: CreateFileRoute<
+    '/_authenticated/admin_/event-parsing/create',
+    FileRoutesByPath['/_authenticated/admin_/event-parsing/create']['parentRoute'],
+    FileRoutesByPath['/_authenticated/admin_/event-parsing/create']['id'],
+    FileRoutesByPath['/_authenticated/admin_/event-parsing/create']['path'],
+    FileRoutesByPath['/_authenticated/admin_/event-parsing/create']['fullPath']
+  >
+}
+declare module './routes/_authenticated/admin_/users/$userId' {
+  const createFileRoute: CreateFileRoute<
+    '/_authenticated/admin_/users/$userId',
+    FileRoutesByPath['/_authenticated/admin_/users/$userId']['parentRoute'],
+    FileRoutesByPath['/_authenticated/admin_/users/$userId']['id'],
+    FileRoutesByPath['/_authenticated/admin_/users/$userId']['path'],
+    FileRoutesByPath['/_authenticated/admin_/users/$userId']['fullPath']
+  >
+}
+declare module './routes/_authenticated/events/$eventId/check-in' {
+  const createFileRoute: CreateFileRoute<
+    '/_authenticated/events/$eventId/check-in',
+    FileRoutesByPath['/_authenticated/events/$eventId/check-in']['parentRoute'],
+    FileRoutesByPath['/_authenticated/events/$eventId/check-in']['id'],
+    FileRoutesByPath['/_authenticated/events/$eventId/check-in']['path'],
+    FileRoutesByPath['/_authenticated/events/$eventId/check-in']['fullPath']
+  >
+}
+declare module './routes/_authenticated/events/$eventId/qr-code' {
+  const createFileRoute: CreateFileRoute<
+    '/_authenticated/events/$eventId/qr-code',
+    FileRoutesByPath['/_authenticated/events/$eventId/qr-code']['parentRoute'],
+    FileRoutesByPath['/_authenticated/events/$eventId/qr-code']['id'],
+    FileRoutesByPath['/_authenticated/events/$eventId/qr-code']['path'],
+    FileRoutesByPath['/_authenticated/events/$eventId/qr-code']['fullPath']
+  >
+}
+declare module './routes/_authenticated/admin_/api-keys/index' {
+  const createFileRoute: CreateFileRoute<
+    '/_authenticated/admin_/api-keys/',
+    FileRoutesByPath['/_authenticated/admin_/api-keys/']['parentRoute'],
+    FileRoutesByPath['/_authenticated/admin_/api-keys/']['id'],
+    FileRoutesByPath['/_authenticated/admin_/api-keys/']['path'],
+    FileRoutesByPath['/_authenticated/admin_/api-keys/']['fullPath']
+  >
+}
+declare module './routes/_authenticated/admin_/event-parsing/index' {
+  const createFileRoute: CreateFileRoute<
+    '/_authenticated/admin_/event-parsing/',
+    FileRoutesByPath['/_authenticated/admin_/event-parsing/']['parentRoute'],
+    FileRoutesByPath['/_authenticated/admin_/event-parsing/']['id'],
+    FileRoutesByPath['/_authenticated/admin_/event-parsing/']['path'],
+    FileRoutesByPath['/_authenticated/admin_/event-parsing/']['fullPath']
+  >
+}
+declare module './routes/_authenticated/admin_/users/index' {
+  const createFileRoute: CreateFileRoute<
+    '/_authenticated/admin_/users/',
+    FileRoutesByPath['/_authenticated/admin_/users/']['parentRoute'],
+    FileRoutesByPath['/_authenticated/admin_/users/']['id'],
+    FileRoutesByPath['/_authenticated/admin_/users/']['path'],
+    FileRoutesByPath['/_authenticated/admin_/users/']['fullPath']
+  >
+}
+declare module './routes/_authenticated/events/$eventId/index' {
+  const createFileRoute: CreateFileRoute<
+    '/_authenticated/events/$eventId/',
+    FileRoutesByPath['/_authenticated/events/$eventId/']['parentRoute'],
+    FileRoutesByPath['/_authenticated/events/$eventId/']['id'],
+    FileRoutesByPath['/_authenticated/events/$eventId/']['path'],
+    FileRoutesByPath['/_authenticated/events/$eventId/']['fullPath']
+  >
+}
+declare module './routes/_authenticated/admin_/users/$userId/pending' {
+  const createFileRoute: CreateFileRoute<
+    '/_authenticated/admin_/users/$userId/pending',
+    FileRoutesByPath['/_authenticated/admin_/users/$userId/pending']['parentRoute'],
+    FileRoutesByPath['/_authenticated/admin_/users/$userId/pending']['id'],
+    FileRoutesByPath['/_authenticated/admin_/users/$userId/pending']['path'],
+    FileRoutesByPath['/_authenticated/admin_/users/$userId/pending']['fullPath']
+  >
+}
+declare module './routes/_authenticated/admin_/users/$userId/sessions' {
+  const createFileRoute: CreateFileRoute<
+    '/_authenticated/admin_/users/$userId/sessions',
+    FileRoutesByPath['/_authenticated/admin_/users/$userId/sessions']['parentRoute'],
+    FileRoutesByPath['/_authenticated/admin_/users/$userId/sessions']['id'],
+    FileRoutesByPath['/_authenticated/admin_/users/$userId/sessions']['path'],
+    FileRoutesByPath['/_authenticated/admin_/users/$userId/sessions']['fullPath']
+  >
+}
+declare module './routes/_authenticated/admin_/users/$userId/summary' {
+  const createFileRoute: CreateFileRoute<
+    '/_authenticated/admin_/users/$userId/summary',
+    FileRoutesByPath['/_authenticated/admin_/users/$userId/summary']['parentRoute'],
+    FileRoutesByPath['/_authenticated/admin_/users/$userId/summary']['id'],
+    FileRoutesByPath['/_authenticated/admin_/users/$userId/summary']['path'],
+    FileRoutesByPath['/_authenticated/admin_/users/$userId/summary']['fullPath']
+  >
+}
+declare module './routes/_authenticated/admin_/users/$userId/index' {
+  const createFileRoute: CreateFileRoute<
+    '/_authenticated/admin_/users/$userId/',
+    FileRoutesByPath['/_authenticated/admin_/users/$userId/']['parentRoute'],
+    FileRoutesByPath['/_authenticated/admin_/users/$userId/']['id'],
+    FileRoutesByPath['/_authenticated/admin_/users/$userId/']['path'],
+    FileRoutesByPath['/_authenticated/admin_/users/$userId/']['fullPath']
+  >
+}
+
+// Create and export the route tree
+
+interface AuthenticatedAdminUsersUserIdRouteChildren {
+  AuthenticatedAdminUsersUserIdPendingRoute: typeof AuthenticatedAdminUsersUserIdPendingRoute
+  AuthenticatedAdminUsersUserIdSessionsRoute: typeof AuthenticatedAdminUsersUserIdSessionsRoute
+  AuthenticatedAdminUsersUserIdSummaryRoute: typeof AuthenticatedAdminUsersUserIdSummaryRoute
+  AuthenticatedAdminUsersUserIdIndexRoute: typeof AuthenticatedAdminUsersUserIdIndexRoute
+}
+
+const AuthenticatedAdminUsersUserIdRouteChildren: AuthenticatedAdminUsersUserIdRouteChildren =
+  {
+    AuthenticatedAdminUsersUserIdPendingRoute:
+      AuthenticatedAdminUsersUserIdPendingRoute,
+    AuthenticatedAdminUsersUserIdSessionsRoute:
+      AuthenticatedAdminUsersUserIdSessionsRoute,
+    AuthenticatedAdminUsersUserIdSummaryRoute:
+      AuthenticatedAdminUsersUserIdSummaryRoute,
+    AuthenticatedAdminUsersUserIdIndexRoute:
+      AuthenticatedAdminUsersUserIdIndexRoute,
+  }
+
+const AuthenticatedAdminUsersUserIdRouteWithChildren =
+  AuthenticatedAdminUsersUserIdRoute._addFileChildren(
+    AuthenticatedAdminUsersUserIdRouteChildren,
+  )
+
+interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+  AuthenticatedAdminApiKeysCreateRoute: typeof AuthenticatedAdminApiKeysCreateRoute
+  AuthenticatedAdminEventParsingRuleIdRoute: typeof AuthenticatedAdminEventParsingRuleIdRoute
+  AuthenticatedAdminEventParsingCreateRoute: typeof AuthenticatedAdminEventParsingCreateRoute
+  AuthenticatedAdminUsersUserIdRoute: typeof AuthenticatedAdminUsersUserIdRouteWithChildren
+  AuthenticatedAdminApiKeysIndexRoute: typeof AuthenticatedAdminApiKeysIndexRoute
+  AuthenticatedAdminEventParsingIndexRoute: typeof AuthenticatedAdminEventParsingIndexRoute
+  AuthenticatedAdminUsersIndexRoute: typeof AuthenticatedAdminUsersIndexRoute
+}
+
+const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+  AuthenticatedAdminApiKeysCreateRoute: AuthenticatedAdminApiKeysCreateRoute,
+  AuthenticatedAdminEventParsingRuleIdRoute:
+    AuthenticatedAdminEventParsingRuleIdRoute,
+  AuthenticatedAdminEventParsingCreateRoute:
+    AuthenticatedAdminEventParsingCreateRoute,
+  AuthenticatedAdminUsersUserIdRoute:
+    AuthenticatedAdminUsersUserIdRouteWithChildren,
+  AuthenticatedAdminApiKeysIndexRoute: AuthenticatedAdminApiKeysIndexRoute,
+  AuthenticatedAdminEventParsingIndexRoute:
+    AuthenticatedAdminEventParsingIndexRoute,
+  AuthenticatedAdminUsersIndexRoute: AuthenticatedAdminUsersIndexRoute,
+}
+
+const AuthenticatedAdminRouteWithChildren =
+  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
+
+interface AuthenticatedProfileRouteChildren {
+  AuthenticatedProfilePendingRoute: typeof AuthenticatedProfilePendingRoute
+  AuthenticatedProfileSessionsRoute: typeof AuthenticatedProfileSessionsRoute
+  AuthenticatedProfileIndexRoute: typeof AuthenticatedProfileIndexRoute
+}
+
+const AuthenticatedProfileRouteChildren: AuthenticatedProfileRouteChildren = {
+  AuthenticatedProfilePendingRoute: AuthenticatedProfilePendingRoute,
+  AuthenticatedProfileSessionsRoute: AuthenticatedProfileSessionsRoute,
+  AuthenticatedProfileIndexRoute: AuthenticatedProfileIndexRoute,
+}
+
+const AuthenticatedProfileRouteWithChildren =
+  AuthenticatedProfileRoute._addFileChildren(AuthenticatedProfileRouteChildren)
+
+interface AuthenticatedEventsEventIdRouteChildren {
+  AuthenticatedEventsEventIdCheckInRoute: typeof AuthenticatedEventsEventIdCheckInRoute
+  AuthenticatedEventsEventIdQrCodeRoute: typeof AuthenticatedEventsEventIdQrCodeRoute
+  AuthenticatedEventsEventIdIndexRoute: typeof AuthenticatedEventsEventIdIndexRoute
+}
+
+const AuthenticatedEventsEventIdRouteChildren: AuthenticatedEventsEventIdRouteChildren =
+  {
+    AuthenticatedEventsEventIdCheckInRoute:
+      AuthenticatedEventsEventIdCheckInRoute,
+    AuthenticatedEventsEventIdQrCodeRoute:
+      AuthenticatedEventsEventIdQrCodeRoute,
+    AuthenticatedEventsEventIdIndexRoute: AuthenticatedEventsEventIdIndexRoute,
+  }
+
+const AuthenticatedEventsEventIdRouteWithChildren =
+  AuthenticatedEventsEventIdRoute._addFileChildren(
+    AuthenticatedEventsEventIdRouteChildren,
+  )
+
+interface AuthenticatedRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
+  AuthenticatedLeaderboardRoute: typeof AuthenticatedLeaderboardRoute
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRouteWithChildren
+  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedEventsEventIdRoute: typeof AuthenticatedEventsEventIdRouteWithChildren
+  AuthenticatedEventsCreateRoute: typeof AuthenticatedEventsCreateRoute
+  AuthenticatedEventsIndexRoute: typeof AuthenticatedEventsIndexRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
+  AuthenticatedLeaderboardRoute: AuthenticatedLeaderboardRoute,
+  AuthenticatedProfileRoute: AuthenticatedProfileRouteWithChildren,
+  AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedEventsEventIdRoute: AuthenticatedEventsEventIdRouteWithChildren,
+  AuthenticatedEventsCreateRoute: AuthenticatedEventsCreateRoute,
+  AuthenticatedEventsIndexRoute: AuthenticatedEventsIndexRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
 
 export interface FileRoutesByFullPath {
   '': typeof AuthenticatedRouteWithChildren
@@ -266,6 +834,7 @@ export interface FileRoutesByFullPath {
   '/admin/users/$userId/summary': typeof AuthenticatedAdminUsersUserIdSummaryRoute
   '/admin/users/$userId/': typeof AuthenticatedAdminUsersUserIdIndexRoute
 }
+
 export interface FileRoutesByTo {
   '/error': typeof ErrorRoute
   '/login': typeof LoginRoute
@@ -291,8 +860,9 @@ export interface FileRoutesByTo {
   '/admin/users/$userId/summary': typeof AuthenticatedAdminUsersUserIdSummaryRoute
   '/admin/users/$userId': typeof AuthenticatedAdminUsersUserIdIndexRoute
 }
+
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
+  __root__: typeof rootRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/error': typeof ErrorRoute
   '/login': typeof LoginRoute
@@ -322,6 +892,7 @@ export interface FileRoutesById {
   '/_authenticated/admin_/users/$userId/summary': typeof AuthenticatedAdminUsersUserIdSummaryRoute
   '/_authenticated/admin_/users/$userId/': typeof AuthenticatedAdminUsersUserIdIndexRoute
 }
+
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
@@ -410,674 +981,178 @@ export interface FileRouteTypes {
     | '/_authenticated/admin_/users/$userId/'
   fileRoutesById: FileRoutesById
 }
+
 export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   ErrorRoute: typeof ErrorRoute
   LoginRoute: typeof LoginRoute
 }
-export interface FileServerRoutesByFullPath {
-  '/api/interaction': typeof ApiInteractionServerRoute
-  '/api/auth/discord': typeof ApiAuthDiscordServerRouteWithChildren
-  '/api/auth/discord/callback': typeof ApiAuthDiscordCallbackServerRoute
-  '/api/scheduler/calendar/trigger': typeof ApiSchedulerCalendarTriggerServerRoute
-  '/api/scheduler/reminder/trigger': typeof ApiSchedulerReminderTriggerServerRoute
-}
-export interface FileServerRoutesByTo {
-  '/api/interaction': typeof ApiInteractionServerRoute
-  '/api/auth/discord': typeof ApiAuthDiscordServerRouteWithChildren
-  '/api/auth/discord/callback': typeof ApiAuthDiscordCallbackServerRoute
-  '/api/scheduler/calendar/trigger': typeof ApiSchedulerCalendarTriggerServerRoute
-  '/api/scheduler/reminder/trigger': typeof ApiSchedulerReminderTriggerServerRoute
-}
-export interface FileServerRoutesById {
-  __root__: typeof rootServerRouteImport
-  '/api/interaction': typeof ApiInteractionServerRoute
-  '/api/auth/discord': typeof ApiAuthDiscordServerRouteWithChildren
-  '/api/auth/discord/callback': typeof ApiAuthDiscordCallbackServerRoute
-  '/api/scheduler/calendar/trigger': typeof ApiSchedulerCalendarTriggerServerRoute
-  '/api/scheduler/reminder/trigger': typeof ApiSchedulerReminderTriggerServerRoute
-}
-export interface FileServerRouteTypes {
-  fileServerRoutesByFullPath: FileServerRoutesByFullPath
-  fullPaths:
-    | '/api/interaction'
-    | '/api/auth/discord'
-    | '/api/auth/discord/callback'
-    | '/api/scheduler/calendar/trigger'
-    | '/api/scheduler/reminder/trigger'
-  fileServerRoutesByTo: FileServerRoutesByTo
-  to:
-    | '/api/interaction'
-    | '/api/auth/discord'
-    | '/api/auth/discord/callback'
-    | '/api/scheduler/calendar/trigger'
-    | '/api/scheduler/reminder/trigger'
-  id:
-    | '__root__'
-    | '/api/interaction'
-    | '/api/auth/discord'
-    | '/api/auth/discord/callback'
-    | '/api/scheduler/calendar/trigger'
-    | '/api/scheduler/reminder/trigger'
-  fileServerRoutesById: FileServerRoutesById
-}
-export interface RootServerRouteChildren {
-  ApiInteractionServerRoute: typeof ApiInteractionServerRoute
-  ApiAuthDiscordServerRoute: typeof ApiAuthDiscordServerRouteWithChildren
-  ApiSchedulerCalendarTriggerServerRoute: typeof ApiSchedulerCalendarTriggerServerRoute
-  ApiSchedulerReminderTriggerServerRoute: typeof ApiSchedulerReminderTriggerServerRoute
-}
-
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AuthenticatedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/error': {
-      id: '/error'
-      path: '/error'
-      fullPath: '/error'
-      preLoaderRoute: typeof ErrorRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/admin_': {
-      id: '/_authenticated/admin_'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AuthenticatedAdminRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/leaderboard': {
-      id: '/_authenticated/leaderboard'
-      path: '/leaderboard'
-      fullPath: '/leaderboard'
-      preLoaderRoute: typeof AuthenticatedLeaderboardRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/profile': {
-      id: '/_authenticated/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof AuthenticatedProfileRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/api/interaction': {
-      id: '/api/interaction'
-      path: ''
-      fullPath: '/api/interaction'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/': {
-      id: '/_authenticated/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedIndexRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/events/$eventId': {
-      id: '/_authenticated/events/$eventId'
-      path: '/events/$eventId'
-      fullPath: '/events/$eventId'
-      preLoaderRoute: typeof AuthenticatedEventsEventIdRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/events/create': {
-      id: '/_authenticated/events/create'
-      path: '/events/create'
-      fullPath: '/events/create'
-      preLoaderRoute: typeof AuthenticatedEventsCreateRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/profile/pending': {
-      id: '/_authenticated/profile/pending'
-      path: '/pending'
-      fullPath: '/profile/pending'
-      preLoaderRoute: typeof AuthenticatedProfilePendingRouteImport
-      parentRoute: typeof AuthenticatedProfileRoute
-    }
-    '/_authenticated/profile/sessions': {
-      id: '/_authenticated/profile/sessions'
-      path: '/sessions'
-      fullPath: '/profile/sessions'
-      preLoaderRoute: typeof AuthenticatedProfileSessionsRouteImport
-      parentRoute: typeof AuthenticatedProfileRoute
-    }
-    '/api/auth/discord': {
-      id: '/api/auth/discord'
-      path: ''
-      fullPath: '/api/auth/discord'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/admin_/': {
-      id: '/_authenticated/admin_/'
-      path: '/'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/events/': {
-      id: '/_authenticated/events/'
-      path: '/events'
-      fullPath: '/events'
-      preLoaderRoute: typeof AuthenticatedEventsIndexRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/profile/': {
-      id: '/_authenticated/profile/'
-      path: '/'
-      fullPath: '/profile/'
-      preLoaderRoute: typeof AuthenticatedProfileIndexRouteImport
-      parentRoute: typeof AuthenticatedProfileRoute
-    }
-    '/_authenticated/admin_/api-keys/create': {
-      id: '/_authenticated/admin_/api-keys/create'
-      path: '/api-keys/create'
-      fullPath: '/admin/api-keys/create'
-      preLoaderRoute: typeof AuthenticatedAdminApiKeysCreateRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin_/event-parsing/$ruleId': {
-      id: '/_authenticated/admin_/event-parsing/$ruleId'
-      path: '/event-parsing/$ruleId'
-      fullPath: '/admin/event-parsing/$ruleId'
-      preLoaderRoute: typeof AuthenticatedAdminEventParsingRuleIdRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin_/event-parsing/create': {
-      id: '/_authenticated/admin_/event-parsing/create'
-      path: '/event-parsing/create'
-      fullPath: '/admin/event-parsing/create'
-      preLoaderRoute: typeof AuthenticatedAdminEventParsingCreateRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin_/users/$userId': {
-      id: '/_authenticated/admin_/users/$userId'
-      path: '/users/$userId'
-      fullPath: '/admin/users/$userId'
-      preLoaderRoute: typeof AuthenticatedAdminUsersUserIdRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/events/$eventId/check-in': {
-      id: '/_authenticated/events/$eventId/check-in'
-      path: '/check-in'
-      fullPath: '/events/$eventId/check-in'
-      preLoaderRoute: typeof AuthenticatedEventsEventIdCheckInRouteImport
-      parentRoute: typeof AuthenticatedEventsEventIdRoute
-    }
-    '/_authenticated/events/$eventId/qr-code': {
-      id: '/_authenticated/events/$eventId/qr-code'
-      path: '/qr-code'
-      fullPath: '/events/$eventId/qr-code'
-      preLoaderRoute: typeof AuthenticatedEventsEventIdQrCodeRouteImport
-      parentRoute: typeof AuthenticatedEventsEventIdRoute
-    }
-    '/api/auth/discord/callback': {
-      id: '/api/auth/discord/callback'
-      path: ''
-      fullPath: '/api/auth/discord/callback'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/scheduler/calendar/trigger': {
-      id: '/api/scheduler/calendar/trigger'
-      path: ''
-      fullPath: '/api/scheduler/calendar/trigger'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/scheduler/reminder/trigger': {
-      id: '/api/scheduler/reminder/trigger'
-      path: ''
-      fullPath: '/api/scheduler/reminder/trigger'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/admin_/api-keys/': {
-      id: '/_authenticated/admin_/api-keys/'
-      path: '/api-keys'
-      fullPath: '/admin/api-keys'
-      preLoaderRoute: typeof AuthenticatedAdminApiKeysIndexRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin_/event-parsing/': {
-      id: '/_authenticated/admin_/event-parsing/'
-      path: '/event-parsing'
-      fullPath: '/admin/event-parsing'
-      preLoaderRoute: typeof AuthenticatedAdminEventParsingIndexRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin_/users/': {
-      id: '/_authenticated/admin_/users/'
-      path: '/users'
-      fullPath: '/admin/users'
-      preLoaderRoute: typeof AuthenticatedAdminUsersIndexRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/events/$eventId/': {
-      id: '/_authenticated/events/$eventId/'
-      path: '/'
-      fullPath: '/events/$eventId/'
-      preLoaderRoute: typeof AuthenticatedEventsEventIdIndexRouteImport
-      parentRoute: typeof AuthenticatedEventsEventIdRoute
-    }
-    '/_authenticated/admin_/users/$userId/pending': {
-      id: '/_authenticated/admin_/users/$userId/pending'
-      path: '/pending'
-      fullPath: '/admin/users/$userId/pending'
-      preLoaderRoute: typeof AuthenticatedAdminUsersUserIdPendingRouteImport
-      parentRoute: typeof AuthenticatedAdminUsersUserIdRoute
-    }
-    '/_authenticated/admin_/users/$userId/sessions': {
-      id: '/_authenticated/admin_/users/$userId/sessions'
-      path: '/sessions'
-      fullPath: '/admin/users/$userId/sessions'
-      preLoaderRoute: typeof AuthenticatedAdminUsersUserIdSessionsRouteImport
-      parentRoute: typeof AuthenticatedAdminUsersUserIdRoute
-    }
-    '/_authenticated/admin_/users/$userId/summary': {
-      id: '/_authenticated/admin_/users/$userId/summary'
-      path: '/summary'
-      fullPath: '/admin/users/$userId/summary'
-      preLoaderRoute: typeof AuthenticatedAdminUsersUserIdSummaryRouteImport
-      parentRoute: typeof AuthenticatedAdminUsersUserIdRoute
-    }
-    '/_authenticated/admin_/users/$userId/': {
-      id: '/_authenticated/admin_/users/$userId/'
-      path: '/'
-      fullPath: '/admin/users/$userId/'
-      preLoaderRoute: typeof AuthenticatedAdminUsersUserIdIndexRouteImport
-      parentRoute: typeof AuthenticatedAdminUsersUserIdRoute
-    }
-  }
-}
-declare module '@tanstack/react-start/server' {
-  interface ServerFileRoutesByPath {
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/error': {
-      id: '/error'
-      path: '/error'
-      fullPath: '/error'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/admin_': {
-      id: '/_authenticated/admin_'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/leaderboard': {
-      id: '/_authenticated/leaderboard'
-      path: '/leaderboard'
-      fullPath: '/leaderboard'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/profile': {
-      id: '/_authenticated/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/api/interaction': {
-      id: '/api/interaction'
-      path: '/api/interaction'
-      fullPath: '/api/interaction'
-      preLoaderRoute: typeof ApiInteractionServerRouteImport
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/': {
-      id: '/_authenticated/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/events/$eventId': {
-      id: '/_authenticated/events/$eventId'
-      path: '/events/$eventId'
-      fullPath: '/events/$eventId'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/events/create': {
-      id: '/_authenticated/events/create'
-      path: '/events/create'
-      fullPath: '/events/create'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/profile/pending': {
-      id: '/_authenticated/profile/pending'
-      path: '/pending'
-      fullPath: '/profile/pending'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/profile/sessions': {
-      id: '/_authenticated/profile/sessions'
-      path: '/sessions'
-      fullPath: '/profile/sessions'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/api/auth/discord': {
-      id: '/api/auth/discord'
-      path: '/api/auth/discord'
-      fullPath: '/api/auth/discord'
-      preLoaderRoute: typeof ApiAuthDiscordServerRouteImport
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/admin_/': {
-      id: '/_authenticated/admin_/'
-      path: '/'
-      fullPath: '/admin/'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/events/': {
-      id: '/_authenticated/events/'
-      path: '/events'
-      fullPath: '/events'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/profile/': {
-      id: '/_authenticated/profile/'
-      path: '/'
-      fullPath: '/profile/'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/admin_/api-keys/create': {
-      id: '/_authenticated/admin_/api-keys/create'
-      path: '/api-keys/create'
-      fullPath: '/admin/api-keys/create'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/admin_/event-parsing/$ruleId': {
-      id: '/_authenticated/admin_/event-parsing/$ruleId'
-      path: '/event-parsing/$ruleId'
-      fullPath: '/admin/event-parsing/$ruleId'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/admin_/event-parsing/create': {
-      id: '/_authenticated/admin_/event-parsing/create'
-      path: '/event-parsing/create'
-      fullPath: '/admin/event-parsing/create'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/admin_/users/$userId': {
-      id: '/_authenticated/admin_/users/$userId'
-      path: '/users/$userId'
-      fullPath: '/admin/users/$userId'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/events/$eventId/check-in': {
-      id: '/_authenticated/events/$eventId/check-in'
-      path: '/check-in'
-      fullPath: '/events/$eventId/check-in'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/events/$eventId/qr-code': {
-      id: '/_authenticated/events/$eventId/qr-code'
-      path: '/qr-code'
-      fullPath: '/events/$eventId/qr-code'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/api/auth/discord/callback': {
-      id: '/api/auth/discord/callback'
-      path: '/callback'
-      fullPath: '/api/auth/discord/callback'
-      preLoaderRoute: typeof ApiAuthDiscordCallbackServerRouteImport
-      parentRoute: typeof ApiAuthDiscordServerRoute
-    }
-    '/api/scheduler/calendar/trigger': {
-      id: '/api/scheduler/calendar/trigger'
-      path: '/api/scheduler/calendar/trigger'
-      fullPath: '/api/scheduler/calendar/trigger'
-      preLoaderRoute: typeof ApiSchedulerCalendarTriggerServerRouteImport
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/api/scheduler/reminder/trigger': {
-      id: '/api/scheduler/reminder/trigger'
-      path: '/api/scheduler/reminder/trigger'
-      fullPath: '/api/scheduler/reminder/trigger'
-      preLoaderRoute: typeof ApiSchedulerReminderTriggerServerRouteImport
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/admin_/api-keys/': {
-      id: '/_authenticated/admin_/api-keys/'
-      path: '/api-keys'
-      fullPath: '/admin/api-keys'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/admin_/event-parsing/': {
-      id: '/_authenticated/admin_/event-parsing/'
-      path: '/event-parsing'
-      fullPath: '/admin/event-parsing'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/admin_/users/': {
-      id: '/_authenticated/admin_/users/'
-      path: '/users'
-      fullPath: '/admin/users'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/events/$eventId/': {
-      id: '/_authenticated/events/$eventId/'
-      path: '/'
-      fullPath: '/events/$eventId/'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/admin_/users/$userId/pending': {
-      id: '/_authenticated/admin_/users/$userId/pending'
-      path: '/pending'
-      fullPath: '/admin/users/$userId/pending'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/admin_/users/$userId/sessions': {
-      id: '/_authenticated/admin_/users/$userId/sessions'
-      path: '/sessions'
-      fullPath: '/admin/users/$userId/sessions'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/admin_/users/$userId/summary': {
-      id: '/_authenticated/admin_/users/$userId/summary'
-      path: '/summary'
-      fullPath: '/admin/users/$userId/summary'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/admin_/users/$userId/': {
-      id: '/_authenticated/admin_/users/$userId/'
-      path: '/'
-      fullPath: '/admin/users/$userId/'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-  }
-}
-
-interface AuthenticatedAdminUsersUserIdRouteChildren {
-  AuthenticatedAdminUsersUserIdPendingRoute: typeof AuthenticatedAdminUsersUserIdPendingRoute
-  AuthenticatedAdminUsersUserIdSessionsRoute: typeof AuthenticatedAdminUsersUserIdSessionsRoute
-  AuthenticatedAdminUsersUserIdSummaryRoute: typeof AuthenticatedAdminUsersUserIdSummaryRoute
-  AuthenticatedAdminUsersUserIdIndexRoute: typeof AuthenticatedAdminUsersUserIdIndexRoute
-}
-
-const AuthenticatedAdminUsersUserIdRouteChildren: AuthenticatedAdminUsersUserIdRouteChildren =
-  {
-    AuthenticatedAdminUsersUserIdPendingRoute:
-      AuthenticatedAdminUsersUserIdPendingRoute,
-    AuthenticatedAdminUsersUserIdSessionsRoute:
-      AuthenticatedAdminUsersUserIdSessionsRoute,
-    AuthenticatedAdminUsersUserIdSummaryRoute:
-      AuthenticatedAdminUsersUserIdSummaryRoute,
-    AuthenticatedAdminUsersUserIdIndexRoute:
-      AuthenticatedAdminUsersUserIdIndexRoute,
-  }
-
-const AuthenticatedAdminUsersUserIdRouteWithChildren =
-  AuthenticatedAdminUsersUserIdRoute._addFileChildren(
-    AuthenticatedAdminUsersUserIdRouteChildren
-  )
-
-interface AuthenticatedAdminRouteChildren {
-  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
-  AuthenticatedAdminApiKeysCreateRoute: typeof AuthenticatedAdminApiKeysCreateRoute
-  AuthenticatedAdminEventParsingRuleIdRoute: typeof AuthenticatedAdminEventParsingRuleIdRoute
-  AuthenticatedAdminEventParsingCreateRoute: typeof AuthenticatedAdminEventParsingCreateRoute
-  AuthenticatedAdminUsersUserIdRoute: typeof AuthenticatedAdminUsersUserIdRouteWithChildren
-  AuthenticatedAdminApiKeysIndexRoute: typeof AuthenticatedAdminApiKeysIndexRoute
-  AuthenticatedAdminEventParsingIndexRoute: typeof AuthenticatedAdminEventParsingIndexRoute
-  AuthenticatedAdminUsersIndexRoute: typeof AuthenticatedAdminUsersIndexRoute
-}
-
-const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
-  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
-  AuthenticatedAdminApiKeysCreateRoute: AuthenticatedAdminApiKeysCreateRoute,
-  AuthenticatedAdminEventParsingRuleIdRoute:
-    AuthenticatedAdminEventParsingRuleIdRoute,
-  AuthenticatedAdminEventParsingCreateRoute:
-    AuthenticatedAdminEventParsingCreateRoute,
-  AuthenticatedAdminUsersUserIdRoute:
-    AuthenticatedAdminUsersUserIdRouteWithChildren,
-  AuthenticatedAdminApiKeysIndexRoute: AuthenticatedAdminApiKeysIndexRoute,
-  AuthenticatedAdminEventParsingIndexRoute:
-    AuthenticatedAdminEventParsingIndexRoute,
-  AuthenticatedAdminUsersIndexRoute: AuthenticatedAdminUsersIndexRoute,
-}
-
-const AuthenticatedAdminRouteWithChildren =
-  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
-
-interface AuthenticatedProfileRouteChildren {
-  AuthenticatedProfilePendingRoute: typeof AuthenticatedProfilePendingRoute
-  AuthenticatedProfileSessionsRoute: typeof AuthenticatedProfileSessionsRoute
-  AuthenticatedProfileIndexRoute: typeof AuthenticatedProfileIndexRoute
-}
-
-const AuthenticatedProfileRouteChildren: AuthenticatedProfileRouteChildren = {
-  AuthenticatedProfilePendingRoute: AuthenticatedProfilePendingRoute,
-  AuthenticatedProfileSessionsRoute: AuthenticatedProfileSessionsRoute,
-  AuthenticatedProfileIndexRoute: AuthenticatedProfileIndexRoute,
-}
-
-const AuthenticatedProfileRouteWithChildren =
-  AuthenticatedProfileRoute._addFileChildren(AuthenticatedProfileRouteChildren)
-
-interface AuthenticatedEventsEventIdRouteChildren {
-  AuthenticatedEventsEventIdCheckInRoute: typeof AuthenticatedEventsEventIdCheckInRoute
-  AuthenticatedEventsEventIdQrCodeRoute: typeof AuthenticatedEventsEventIdQrCodeRoute
-  AuthenticatedEventsEventIdIndexRoute: typeof AuthenticatedEventsEventIdIndexRoute
-}
-
-const AuthenticatedEventsEventIdRouteChildren: AuthenticatedEventsEventIdRouteChildren =
-  {
-    AuthenticatedEventsEventIdCheckInRoute:
-      AuthenticatedEventsEventIdCheckInRoute,
-    AuthenticatedEventsEventIdQrCodeRoute:
-      AuthenticatedEventsEventIdQrCodeRoute,
-    AuthenticatedEventsEventIdIndexRoute: AuthenticatedEventsEventIdIndexRoute,
-  }
-
-const AuthenticatedEventsEventIdRouteWithChildren =
-  AuthenticatedEventsEventIdRoute._addFileChildren(
-    AuthenticatedEventsEventIdRouteChildren
-  )
-
-interface AuthenticatedRouteChildren {
-  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
-  AuthenticatedLeaderboardRoute: typeof AuthenticatedLeaderboardRoute
-  AuthenticatedProfileRoute: typeof AuthenticatedProfileRouteWithChildren
-  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
-  AuthenticatedEventsEventIdRoute: typeof AuthenticatedEventsEventIdRouteWithChildren
-  AuthenticatedEventsCreateRoute: typeof AuthenticatedEventsCreateRoute
-  AuthenticatedEventsIndexRoute: typeof AuthenticatedEventsIndexRoute
-}
-
-const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
-  AuthenticatedLeaderboardRoute: AuthenticatedLeaderboardRoute,
-  AuthenticatedProfileRoute: AuthenticatedProfileRouteWithChildren,
-  AuthenticatedIndexRoute: AuthenticatedIndexRoute,
-  AuthenticatedEventsEventIdRoute: AuthenticatedEventsEventIdRouteWithChildren,
-  AuthenticatedEventsCreateRoute: AuthenticatedEventsCreateRoute,
-  AuthenticatedEventsIndexRoute: AuthenticatedEventsIndexRoute,
-}
-
-const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
-  AuthenticatedRouteChildren
-)
-
-interface ApiAuthDiscordServerRouteChildren {
-  ApiAuthDiscordCallbackServerRoute: typeof ApiAuthDiscordCallbackServerRoute
-}
-
-const ApiAuthDiscordServerRouteChildren: ApiAuthDiscordServerRouteChildren = {
-  ApiAuthDiscordCallbackServerRoute: ApiAuthDiscordCallbackServerRoute,
-}
-
-const ApiAuthDiscordServerRouteWithChildren =
-  ApiAuthDiscordServerRoute._addFileChildren(ApiAuthDiscordServerRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   ErrorRoute: ErrorRoute,
   LoginRoute: LoginRoute,
 }
-export const routeTree = rootRouteImport
+
+export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-const rootServerRouteChildren: RootServerRouteChildren = {
-  ApiInteractionServerRoute: ApiInteractionServerRoute,
-  ApiAuthDiscordServerRoute: ApiAuthDiscordServerRouteWithChildren,
-  ApiSchedulerCalendarTriggerServerRoute:
-    ApiSchedulerCalendarTriggerServerRoute,
-  ApiSchedulerReminderTriggerServerRoute:
-    ApiSchedulerReminderTriggerServerRoute,
+
+/* ROUTE_MANIFEST_START
+{
+  "routes": {
+    "__root__": {
+      "filePath": "__root.tsx",
+      "children": [
+        "/_authenticated",
+        "/error",
+        "/login"
+      ]
+    },
+    "/_authenticated": {
+      "filePath": "_authenticated.tsx",
+      "children": [
+        "/_authenticated/admin_",
+        "/_authenticated/leaderboard",
+        "/_authenticated/profile",
+        "/_authenticated/",
+        "/_authenticated/events/$eventId",
+        "/_authenticated/events/create",
+        "/_authenticated/events/"
+      ]
+    },
+    "/error": {
+      "filePath": "error.tsx"
+    },
+    "/login": {
+      "filePath": "login.tsx"
+    },
+    "/_authenticated/admin_": {
+      "filePath": "_authenticated/admin_.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/admin_/",
+        "/_authenticated/admin_/api-keys/create",
+        "/_authenticated/admin_/event-parsing/$ruleId",
+        "/_authenticated/admin_/event-parsing/create",
+        "/_authenticated/admin_/users/$userId",
+        "/_authenticated/admin_/api-keys/",
+        "/_authenticated/admin_/event-parsing/",
+        "/_authenticated/admin_/users/"
+      ]
+    },
+    "/_authenticated/leaderboard": {
+      "filePath": "_authenticated/leaderboard.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/profile": {
+      "filePath": "_authenticated/profile.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/profile/pending",
+        "/_authenticated/profile/sessions",
+        "/_authenticated/profile/"
+      ]
+    },
+    "/_authenticated/": {
+      "filePath": "_authenticated/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/events/$eventId": {
+      "filePath": "_authenticated/events/$eventId.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/events/$eventId/check-in",
+        "/_authenticated/events/$eventId/qr-code",
+        "/_authenticated/events/$eventId/"
+      ]
+    },
+    "/_authenticated/events/create": {
+      "filePath": "_authenticated/events/create.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/profile/pending": {
+      "filePath": "_authenticated/profile/pending.tsx",
+      "parent": "/_authenticated/profile"
+    },
+    "/_authenticated/profile/sessions": {
+      "filePath": "_authenticated/profile/sessions.tsx",
+      "parent": "/_authenticated/profile"
+    },
+    "/_authenticated/admin_/": {
+      "filePath": "_authenticated/admin_/index.tsx",
+      "parent": "/_authenticated/admin_"
+    },
+    "/_authenticated/events/": {
+      "filePath": "_authenticated/events/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/profile/": {
+      "filePath": "_authenticated/profile/index.tsx",
+      "parent": "/_authenticated/profile"
+    },
+    "/_authenticated/admin_/api-keys/create": {
+      "filePath": "_authenticated/admin_/api-keys/create.tsx",
+      "parent": "/_authenticated/admin_"
+    },
+    "/_authenticated/admin_/event-parsing/$ruleId": {
+      "filePath": "_authenticated/admin_/event-parsing/$ruleId.tsx",
+      "parent": "/_authenticated/admin_"
+    },
+    "/_authenticated/admin_/event-parsing/create": {
+      "filePath": "_authenticated/admin_/event-parsing/create.tsx",
+      "parent": "/_authenticated/admin_"
+    },
+    "/_authenticated/admin_/users/$userId": {
+      "filePath": "_authenticated/admin_/users/$userId.tsx",
+      "parent": "/_authenticated/admin_",
+      "children": [
+        "/_authenticated/admin_/users/$userId/pending",
+        "/_authenticated/admin_/users/$userId/sessions",
+        "/_authenticated/admin_/users/$userId/summary",
+        "/_authenticated/admin_/users/$userId/"
+      ]
+    },
+    "/_authenticated/events/$eventId/check-in": {
+      "filePath": "_authenticated/events/$eventId/check-in.tsx",
+      "parent": "/_authenticated/events/$eventId"
+    },
+    "/_authenticated/events/$eventId/qr-code": {
+      "filePath": "_authenticated/events/$eventId/qr-code.tsx",
+      "parent": "/_authenticated/events/$eventId"
+    },
+    "/_authenticated/admin_/api-keys/": {
+      "filePath": "_authenticated/admin_/api-keys/index.tsx",
+      "parent": "/_authenticated/admin_"
+    },
+    "/_authenticated/admin_/event-parsing/": {
+      "filePath": "_authenticated/admin_/event-parsing/index.tsx",
+      "parent": "/_authenticated/admin_"
+    },
+    "/_authenticated/admin_/users/": {
+      "filePath": "_authenticated/admin_/users/index.tsx",
+      "parent": "/_authenticated/admin_"
+    },
+    "/_authenticated/events/$eventId/": {
+      "filePath": "_authenticated/events/$eventId/index.tsx",
+      "parent": "/_authenticated/events/$eventId"
+    },
+    "/_authenticated/admin_/users/$userId/pending": {
+      "filePath": "_authenticated/admin_/users/$userId/pending.tsx",
+      "parent": "/_authenticated/admin_/users/$userId"
+    },
+    "/_authenticated/admin_/users/$userId/sessions": {
+      "filePath": "_authenticated/admin_/users/$userId/sessions.tsx",
+      "parent": "/_authenticated/admin_/users/$userId"
+    },
+    "/_authenticated/admin_/users/$userId/summary": {
+      "filePath": "_authenticated/admin_/users/$userId/summary.tsx",
+      "parent": "/_authenticated/admin_/users/$userId"
+    },
+    "/_authenticated/admin_/users/$userId/": {
+      "filePath": "_authenticated/admin_/users/$userId/index.tsx",
+      "parent": "/_authenticated/admin_/users/$userId"
+    }
+  }
 }
-export const serverRouteTree = rootServerRouteImport
-  ._addFileChildren(rootServerRouteChildren)
-  ._addFileTypes<FileServerRouteTypes>()
+ROUTE_MANIFEST_END */

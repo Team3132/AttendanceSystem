@@ -2,10 +2,10 @@ import LinkTabs from "@/components/LinkTabs";
 import type { TabItem } from "@/hooks/useTabIndex";
 import { usersQueryOptions } from "@/queries/users.queries";
 
-import { Outlet, createFileRoute } from "@tanstack/react-router";
+import { Outlet } from "@tanstack/react-router";
 import { useMemo } from "react";
 
-export const Route = createFileRoute("/_authenticated/admin_/users/$userId")({
+export const Route = createFileRoute({
   component: Component,
   loader: ({ params: { userId }, context: { queryClient } }) => {
     return queryClient.ensureQueryData(usersQueryOptions.userDetails(userId));
