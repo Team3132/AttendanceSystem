@@ -1,5 +1,11 @@
 # frontend
 
+## 5.10.17
+
+### Patch Changes
+
+- [`dd53f7d`](https://github.com/Team3132/AttendanceSystem/commit/dd53f7d444ae4e28bb7bbab0dd6859cbcae873da) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix cache control header
+
 ## 5.10.16
 
 ### Patch Changes
