@@ -75,7 +75,7 @@
 		"@graphql-codegen/typescript-operations": "4.6.1",
 		"@mui/lab": "6.0.0-dev.240424162023-9968b4889d",
 		"@types/luxon": "3.6.2",
-		"@types/react": "19.1.7",
+		"@types/react": "19.1.8",
 		"@types/react-dom": "19.1.6",
 		"@vitejs/plugin-react": "4.5.2",
 		"drizzle-kit": "0.31.1",
