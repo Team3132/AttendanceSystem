@@ -13,7 +13,12 @@ import {
 import { DateTime } from "luxon";
 import type { z } from "zod";
 import db from "../drizzle/db";
-import { eventTable, rsvpTable, userTable } from "../drizzle/schema";
+import {
+  eventParsingRuleTable,
+  eventTable,
+  rsvpTable,
+  userTable,
+} from "../drizzle/schema";
 import env from "../env";
 import { OutreachTimeSchema } from "../schema/OutreachTimeSchema";
 import type { PagedLeaderboardSchema } from "../schema/PagedLeaderboardSchema";
@@ -68,11 +73,15 @@ export async function getOutreachTime(
         })
         .from(rsvpTable)
         .innerJoin(eventTable, eq(rsvpTable.eventId, eventTable.id))
+        .innerJoin(
+          eventParsingRuleTable,
+          eq(eventTable.ruleId, eventParsingRuleTable.id),
+        )
         .innerJoin(userTable, eq(rsvpTable.userId, userTable.id))
         .groupBy(userTable.id)
         .where(
           and(
-            eq(eventTable.type, "Outreach"),
+            eq(eventParsingRuleTable.isOutreach, true),
             not(arrayOverlaps(userTable.roles, [env.MENTOR_ROLE_ID])),
             isNotNull(rsvpTable.checkinTime),
             isNotNull(rsvpTable.checkoutTime),
