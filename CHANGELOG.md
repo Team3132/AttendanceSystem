@@ -1,5 +1,11 @@
 # frontend
 
+## 5.10.18
+
+### Patch Changes
+
+- [`0c16b34`](https://github.com/Team3132/AttendanceSystem/commit/0c16b34be0facb1e3e3a153d8ff1d4e387299b5a) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix broken leaderboard
+
 ## 5.10.17
 
 ### Patch Changes
