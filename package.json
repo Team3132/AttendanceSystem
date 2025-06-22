@@ -24,7 +24,7 @@
 		"@emotion/styled": "11.14.0",
 		"@fontsource/roboto": "5.2.6",
 		"@hookform/resolvers": "5.1.1",
-		"@keyv/postgres": "2.1.5",
+		"@keyv/postgres": "2.1.6",
 		"@lucia-auth/adapter-drizzle": "1.1.0",
 		"@mui/icons-material": "7.1.2",
 		"@mui/material": "7.1.2",
