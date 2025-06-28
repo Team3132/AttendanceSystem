@@ -79,7 +79,7 @@
 		"@types/react-dom": "19.1.6",
 		"@vitejs/plugin-react": "4.6.0",
 		"drizzle-kit": "0.31.1",
-		"knip": "5.61.2",
+		"knip": "5.61.3",
 		"lefthook": "1.11.14",
 		"typescript": "5.8.3",
 		"vite": "6.3.5",
