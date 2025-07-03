@@ -80,7 +80,7 @@
 		"@vitejs/plugin-react": "4.6.0",
 		"drizzle-kit": "0.31.4",
 		"knip": "5.61.3",
-		"lefthook": "1.11.14",
+		"lefthook": "1.11.16",
 		"typescript": "5.8.3",
 		"vite": "7.0.1",
 		"vite-tsconfig-paths": "5.1.4"
