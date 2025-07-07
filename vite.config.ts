@@ -3,6 +3,10 @@ import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import { defineConfig } from "vite";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 
+const ReactCompilerConfig = {
+  target: "19",
+};
+
 export default defineConfig({
   plugins: [
     viteTsconfigPaths(),
@@ -11,6 +15,7 @@ export default defineConfig({
       react: {
         babel: {
           plugins: [
+            ["babel-plugin-react-compiler", ReactCompilerConfig],
             [
               "@emotion/babel-plugin",
               {
