@@ -1,5 +1,11 @@
 # frontend
 
+## 5.10.19
+
+### Patch Changes
+
+- [#2917](https://github.com/Team3132/AttendanceSystem/pull/2917) [`0d06581`](https://github.com/Team3132/AttendanceSystem/commit/0d065810745df9c3c8b4f7161190a20322e87dbf) Thanks [@renovate](https://github.com/apps/renovate)! - fix(deps): update tanstack-router monorepo to v1.125.3
+
 ## 5.10.18
 
 ### Patch Changes
