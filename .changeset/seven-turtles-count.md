@@ -1,5 +1,0 @@
----
-"frontend": patch
----
-
-React compiler
