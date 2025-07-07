@@ -237,7 +237,6 @@ const ApiAuthDiscordCallbackServerRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
-  '': typeof AuthenticatedRouteWithChildren
   '/error': typeof ErrorRoute
   '/login': typeof LoginRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
@@ -325,7 +324,6 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | ''
     | '/error'
     | '/login'
     | '/admin'
@@ -470,11 +468,11 @@ export interface RootServerRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AuthenticatedRouteImport
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/error': {
@@ -484,39 +482,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ErrorRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/admin_': {
-      id: '/_authenticated/admin_'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AuthenticatedAdminRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/leaderboard': {
-      id: '/_authenticated/leaderboard'
-      path: '/leaderboard'
-      fullPath: '/leaderboard'
-      preLoaderRoute: typeof AuthenticatedLeaderboardRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/profile': {
-      id: '/_authenticated/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof AuthenticatedProfileRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/api/interaction': {
-      id: '/api/interaction'
+    '/_authenticated': {
+      id: '/_authenticated'
       path: ''
-      fullPath: '/api/interaction'
-      preLoaderRoute: unknown
+      fullPath: ''
+      preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/': {
@@ -526,53 +496,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/events/$eventId': {
-      id: '/_authenticated/events/$eventId'
-      path: '/events/$eventId'
-      fullPath: '/events/$eventId'
-      preLoaderRoute: typeof AuthenticatedEventsEventIdRouteImport
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/events/create': {
-      id: '/_authenticated/events/create'
-      path: '/events/create'
-      fullPath: '/events/create'
-      preLoaderRoute: typeof AuthenticatedEventsCreateRouteImport
+    '/_authenticated/leaderboard': {
+      id: '/_authenticated/leaderboard'
+      path: '/leaderboard'
+      fullPath: '/leaderboard'
+      preLoaderRoute: typeof AuthenticatedLeaderboardRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/profile/pending': {
-      id: '/_authenticated/profile/pending'
-      path: '/pending'
-      fullPath: '/profile/pending'
-      preLoaderRoute: typeof AuthenticatedProfilePendingRouteImport
-      parentRoute: typeof AuthenticatedProfileRoute
-    }
-    '/_authenticated/profile/sessions': {
-      id: '/_authenticated/profile/sessions'
-      path: '/sessions'
-      fullPath: '/profile/sessions'
-      preLoaderRoute: typeof AuthenticatedProfileSessionsRouteImport
-      parentRoute: typeof AuthenticatedProfileRoute
-    }
-    '/api/auth/discord': {
-      id: '/api/auth/discord'
-      path: ''
-      fullPath: '/api/auth/discord'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/admin_/': {
-      id: '/_authenticated/admin_/'
-      path: '/'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/events/': {
-      id: '/_authenticated/events/'
-      path: '/events'
-      fullPath: '/events'
-      preLoaderRoute: typeof AuthenticatedEventsIndexRouteImport
+    '/_authenticated/admin_': {
+      id: '/_authenticated/admin_'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/profile/': {
@@ -582,74 +524,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProfileIndexRouteImport
       parentRoute: typeof AuthenticatedProfileRoute
     }
-    '/_authenticated/admin_/api-keys/create': {
-      id: '/_authenticated/admin_/api-keys/create'
-      path: '/api-keys/create'
-      fullPath: '/admin/api-keys/create'
-      preLoaderRoute: typeof AuthenticatedAdminApiKeysCreateRouteImport
+    '/_authenticated/events/': {
+      id: '/_authenticated/events/'
+      path: '/events'
+      fullPath: '/events'
+      preLoaderRoute: typeof AuthenticatedEventsIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/admin_/': {
+      id: '/_authenticated/admin_/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
-    '/_authenticated/admin_/event-parsing/$ruleId': {
-      id: '/_authenticated/admin_/event-parsing/$ruleId'
-      path: '/event-parsing/$ruleId'
-      fullPath: '/admin/event-parsing/$ruleId'
-      preLoaderRoute: typeof AuthenticatedAdminEventParsingRuleIdRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+    '/_authenticated/profile/sessions': {
+      id: '/_authenticated/profile/sessions'
+      path: '/sessions'
+      fullPath: '/profile/sessions'
+      preLoaderRoute: typeof AuthenticatedProfileSessionsRouteImport
+      parentRoute: typeof AuthenticatedProfileRoute
     }
-    '/_authenticated/admin_/event-parsing/create': {
-      id: '/_authenticated/admin_/event-parsing/create'
-      path: '/event-parsing/create'
-      fullPath: '/admin/event-parsing/create'
-      preLoaderRoute: typeof AuthenticatedAdminEventParsingCreateRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+    '/_authenticated/profile/pending': {
+      id: '/_authenticated/profile/pending'
+      path: '/pending'
+      fullPath: '/profile/pending'
+      preLoaderRoute: typeof AuthenticatedProfilePendingRouteImport
+      parentRoute: typeof AuthenticatedProfileRoute
     }
-    '/_authenticated/admin_/users/$userId': {
-      id: '/_authenticated/admin_/users/$userId'
-      path: '/users/$userId'
-      fullPath: '/admin/users/$userId'
-      preLoaderRoute: typeof AuthenticatedAdminUsersUserIdRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+    '/_authenticated/events/create': {
+      id: '/_authenticated/events/create'
+      path: '/events/create'
+      fullPath: '/events/create'
+      preLoaderRoute: typeof AuthenticatedEventsCreateRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/events/$eventId/check-in': {
-      id: '/_authenticated/events/$eventId/check-in'
-      path: '/check-in'
-      fullPath: '/events/$eventId/check-in'
-      preLoaderRoute: typeof AuthenticatedEventsEventIdCheckInRouteImport
+    '/_authenticated/events/$eventId': {
+      id: '/_authenticated/events/$eventId'
+      path: '/events/$eventId'
+      fullPath: '/events/$eventId'
+      preLoaderRoute: typeof AuthenticatedEventsEventIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/events/$eventId/': {
+      id: '/_authenticated/events/$eventId/'
+      path: '/'
+      fullPath: '/events/$eventId/'
+      preLoaderRoute: typeof AuthenticatedEventsEventIdIndexRouteImport
       parentRoute: typeof AuthenticatedEventsEventIdRoute
     }
-    '/_authenticated/events/$eventId/qr-code': {
-      id: '/_authenticated/events/$eventId/qr-code'
-      path: '/qr-code'
-      fullPath: '/events/$eventId/qr-code'
-      preLoaderRoute: typeof AuthenticatedEventsEventIdQrCodeRouteImport
-      parentRoute: typeof AuthenticatedEventsEventIdRoute
-    }
-    '/api/auth/discord/callback': {
-      id: '/api/auth/discord/callback'
-      path: ''
-      fullPath: '/api/auth/discord/callback'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/scheduler/calendar/trigger': {
-      id: '/api/scheduler/calendar/trigger'
-      path: ''
-      fullPath: '/api/scheduler/calendar/trigger'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/scheduler/reminder/trigger': {
-      id: '/api/scheduler/reminder/trigger'
-      path: ''
-      fullPath: '/api/scheduler/reminder/trigger'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/admin_/api-keys/': {
-      id: '/_authenticated/admin_/api-keys/'
-      path: '/api-keys'
-      fullPath: '/admin/api-keys'
-      preLoaderRoute: typeof AuthenticatedAdminApiKeysIndexRouteImport
+    '/_authenticated/admin_/users/': {
+      id: '/_authenticated/admin_/users/'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AuthenticatedAdminUsersIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin_/event-parsing/': {
@@ -659,32 +587,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminEventParsingIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
-    '/_authenticated/admin_/users/': {
-      id: '/_authenticated/admin_/users/'
-      path: '/users'
-      fullPath: '/admin/users'
-      preLoaderRoute: typeof AuthenticatedAdminUsersIndexRouteImport
+    '/_authenticated/admin_/api-keys/': {
+      id: '/_authenticated/admin_/api-keys/'
+      path: '/api-keys'
+      fullPath: '/admin/api-keys'
+      preLoaderRoute: typeof AuthenticatedAdminApiKeysIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
-    '/_authenticated/events/$eventId/': {
-      id: '/_authenticated/events/$eventId/'
-      path: '/'
-      fullPath: '/events/$eventId/'
-      preLoaderRoute: typeof AuthenticatedEventsEventIdIndexRouteImport
+    '/_authenticated/events/$eventId/qr-code': {
+      id: '/_authenticated/events/$eventId/qr-code'
+      path: '/qr-code'
+      fullPath: '/events/$eventId/qr-code'
+      preLoaderRoute: typeof AuthenticatedEventsEventIdQrCodeRouteImport
       parentRoute: typeof AuthenticatedEventsEventIdRoute
     }
-    '/_authenticated/admin_/users/$userId/pending': {
-      id: '/_authenticated/admin_/users/$userId/pending'
-      path: '/pending'
-      fullPath: '/admin/users/$userId/pending'
-      preLoaderRoute: typeof AuthenticatedAdminUsersUserIdPendingRouteImport
-      parentRoute: typeof AuthenticatedAdminUsersUserIdRoute
+    '/_authenticated/events/$eventId/check-in': {
+      id: '/_authenticated/events/$eventId/check-in'
+      path: '/check-in'
+      fullPath: '/events/$eventId/check-in'
+      preLoaderRoute: typeof AuthenticatedEventsEventIdCheckInRouteImport
+      parentRoute: typeof AuthenticatedEventsEventIdRoute
     }
-    '/_authenticated/admin_/users/$userId/sessions': {
-      id: '/_authenticated/admin_/users/$userId/sessions'
-      path: '/sessions'
-      fullPath: '/admin/users/$userId/sessions'
-      preLoaderRoute: typeof AuthenticatedAdminUsersUserIdSessionsRouteImport
+    '/_authenticated/admin_/users/$userId': {
+      id: '/_authenticated/admin_/users/$userId'
+      path: '/users/$userId'
+      fullPath: '/admin/users/$userId'
+      preLoaderRoute: typeof AuthenticatedAdminUsersUserIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin_/event-parsing/create': {
+      id: '/_authenticated/admin_/event-parsing/create'
+      path: '/event-parsing/create'
+      fullPath: '/admin/event-parsing/create'
+      preLoaderRoute: typeof AuthenticatedAdminEventParsingCreateRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin_/event-parsing/$ruleId': {
+      id: '/_authenticated/admin_/event-parsing/$ruleId'
+      path: '/event-parsing/$ruleId'
+      fullPath: '/admin/event-parsing/$ruleId'
+      preLoaderRoute: typeof AuthenticatedAdminEventParsingRuleIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin_/api-keys/create': {
+      id: '/_authenticated/admin_/api-keys/create'
+      path: '/api-keys/create'
+      fullPath: '/admin/api-keys/create'
+      preLoaderRoute: typeof AuthenticatedAdminApiKeysCreateRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin_/users/$userId/': {
+      id: '/_authenticated/admin_/users/$userId/'
+      path: '/'
+      fullPath: '/admin/users/$userId/'
+      preLoaderRoute: typeof AuthenticatedAdminUsersUserIdIndexRouteImport
       parentRoute: typeof AuthenticatedAdminUsersUserIdRoute
     }
     '/_authenticated/admin_/users/$userId/summary': {
@@ -694,99 +650,29 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminUsersUserIdSummaryRouteImport
       parentRoute: typeof AuthenticatedAdminUsersUserIdRoute
     }
-    '/_authenticated/admin_/users/$userId/': {
-      id: '/_authenticated/admin_/users/$userId/'
-      path: '/'
-      fullPath: '/admin/users/$userId/'
-      preLoaderRoute: typeof AuthenticatedAdminUsersUserIdIndexRouteImport
+    '/_authenticated/admin_/users/$userId/sessions': {
+      id: '/_authenticated/admin_/users/$userId/sessions'
+      path: '/sessions'
+      fullPath: '/admin/users/$userId/sessions'
+      preLoaderRoute: typeof AuthenticatedAdminUsersUserIdSessionsRouteImport
+      parentRoute: typeof AuthenticatedAdminUsersUserIdRoute
+    }
+    '/_authenticated/admin_/users/$userId/pending': {
+      id: '/_authenticated/admin_/users/$userId/pending'
+      path: '/pending'
+      fullPath: '/admin/users/$userId/pending'
+      preLoaderRoute: typeof AuthenticatedAdminUsersUserIdPendingRouteImport
       parentRoute: typeof AuthenticatedAdminUsersUserIdRoute
     }
   }
 }
 declare module '@tanstack/react-start/server' {
   interface ServerFileRoutesByPath {
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/error': {
-      id: '/error'
-      path: '/error'
-      fullPath: '/error'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/admin_': {
-      id: '/_authenticated/admin_'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/leaderboard': {
-      id: '/_authenticated/leaderboard'
-      path: '/leaderboard'
-      fullPath: '/leaderboard'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/profile': {
-      id: '/_authenticated/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
     '/api/interaction': {
       id: '/api/interaction'
       path: '/api/interaction'
       fullPath: '/api/interaction'
       preLoaderRoute: typeof ApiInteractionServerRouteImport
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/': {
-      id: '/_authenticated/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/events/$eventId': {
-      id: '/_authenticated/events/$eventId'
-      path: '/events/$eventId'
-      fullPath: '/events/$eventId'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/events/create': {
-      id: '/_authenticated/events/create'
-      path: '/events/create'
-      fullPath: '/events/create'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/profile/pending': {
-      id: '/_authenticated/profile/pending'
-      path: '/pending'
-      fullPath: '/profile/pending'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/profile/sessions': {
-      id: '/_authenticated/profile/sessions'
-      path: '/sessions'
-      fullPath: '/profile/sessions'
-      preLoaderRoute: unknown
       parentRoute: typeof rootServerRouteImport
     }
     '/api/auth/discord': {
@@ -796,75 +682,12 @@ declare module '@tanstack/react-start/server' {
       preLoaderRoute: typeof ApiAuthDiscordServerRouteImport
       parentRoute: typeof rootServerRouteImport
     }
-    '/_authenticated/admin_/': {
-      id: '/_authenticated/admin_/'
-      path: '/'
-      fullPath: '/admin/'
-      preLoaderRoute: unknown
+    '/api/scheduler/reminder/trigger': {
+      id: '/api/scheduler/reminder/trigger'
+      path: '/api/scheduler/reminder/trigger'
+      fullPath: '/api/scheduler/reminder/trigger'
+      preLoaderRoute: typeof ApiSchedulerReminderTriggerServerRouteImport
       parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/events/': {
-      id: '/_authenticated/events/'
-      path: '/events'
-      fullPath: '/events'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/profile/': {
-      id: '/_authenticated/profile/'
-      path: '/'
-      fullPath: '/profile/'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/admin_/api-keys/create': {
-      id: '/_authenticated/admin_/api-keys/create'
-      path: '/api-keys/create'
-      fullPath: '/admin/api-keys/create'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/admin_/event-parsing/$ruleId': {
-      id: '/_authenticated/admin_/event-parsing/$ruleId'
-      path: '/event-parsing/$ruleId'
-      fullPath: '/admin/event-parsing/$ruleId'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/admin_/event-parsing/create': {
-      id: '/_authenticated/admin_/event-parsing/create'
-      path: '/event-parsing/create'
-      fullPath: '/admin/event-parsing/create'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/admin_/users/$userId': {
-      id: '/_authenticated/admin_/users/$userId'
-      path: '/users/$userId'
-      fullPath: '/admin/users/$userId'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/events/$eventId/check-in': {
-      id: '/_authenticated/events/$eventId/check-in'
-      path: '/check-in'
-      fullPath: '/events/$eventId/check-in'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/events/$eventId/qr-code': {
-      id: '/_authenticated/events/$eventId/qr-code'
-      path: '/qr-code'
-      fullPath: '/events/$eventId/qr-code'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/api/auth/discord/callback': {
-      id: '/api/auth/discord/callback'
-      path: '/callback'
-      fullPath: '/api/auth/discord/callback'
-      preLoaderRoute: typeof ApiAuthDiscordCallbackServerRouteImport
-      parentRoute: typeof ApiAuthDiscordServerRoute
     }
     '/api/scheduler/calendar/trigger': {
       id: '/api/scheduler/calendar/trigger'
@@ -873,68 +696,12 @@ declare module '@tanstack/react-start/server' {
       preLoaderRoute: typeof ApiSchedulerCalendarTriggerServerRouteImport
       parentRoute: typeof rootServerRouteImport
     }
-    '/api/scheduler/reminder/trigger': {
-      id: '/api/scheduler/reminder/trigger'
-      path: '/api/scheduler/reminder/trigger'
-      fullPath: '/api/scheduler/reminder/trigger'
-      preLoaderRoute: typeof ApiSchedulerReminderTriggerServerRouteImport
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/admin_/api-keys/': {
-      id: '/_authenticated/admin_/api-keys/'
-      path: '/api-keys'
-      fullPath: '/admin/api-keys'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/admin_/event-parsing/': {
-      id: '/_authenticated/admin_/event-parsing/'
-      path: '/event-parsing'
-      fullPath: '/admin/event-parsing'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/admin_/users/': {
-      id: '/_authenticated/admin_/users/'
-      path: '/users'
-      fullPath: '/admin/users'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/events/$eventId/': {
-      id: '/_authenticated/events/$eventId/'
-      path: '/'
-      fullPath: '/events/$eventId/'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/admin_/users/$userId/pending': {
-      id: '/_authenticated/admin_/users/$userId/pending'
-      path: '/pending'
-      fullPath: '/admin/users/$userId/pending'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/admin_/users/$userId/sessions': {
-      id: '/_authenticated/admin_/users/$userId/sessions'
-      path: '/sessions'
-      fullPath: '/admin/users/$userId/sessions'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/admin_/users/$userId/summary': {
-      id: '/_authenticated/admin_/users/$userId/summary'
-      path: '/summary'
-      fullPath: '/admin/users/$userId/summary'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/_authenticated/admin_/users/$userId/': {
-      id: '/_authenticated/admin_/users/$userId/'
-      path: '/'
-      fullPath: '/admin/users/$userId/'
-      preLoaderRoute: unknown
-      parentRoute: typeof rootServerRouteImport
+    '/api/auth/discord/callback': {
+      id: '/api/auth/discord/callback'
+      path: '/callback'
+      fullPath: '/api/auth/discord/callback'
+      preLoaderRoute: typeof ApiAuthDiscordCallbackServerRouteImport
+      parentRoute: typeof ApiAuthDiscordServerRoute
     }
   }
 }
