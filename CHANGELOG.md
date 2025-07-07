@@ -1,5 +1,11 @@
 # frontend
 
+## 5.10.20
+
+### Patch Changes
+
+- [`a79032e`](https://github.com/Team3132/AttendanceSystem/commit/a79032eeabbbd366404aedb8f93acb47eccc6e96) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix 500
+
 ## 5.10.19
 
 ### Patch Changes
