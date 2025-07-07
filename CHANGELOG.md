@@ -1,5 +1,11 @@
 # frontend
 
+## 5.10.21
+
+### Patch Changes
+
+- [`f5beaf3`](https://github.com/Team3132/AttendanceSystem/commit/f5beaf3892166654d1376a88b04431cbef1670d1) Thanks [@sebasptsch](https://github.com/sebasptsch)! - React compiler
+
 ## 5.10.20
 
 ### Patch Changes
