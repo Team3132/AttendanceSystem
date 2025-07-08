@@ -188,10 +188,13 @@ export async function generateMessage(data: MessageParams) {
   const groupedRSVPs = groupBy(
     eventRSVPs,
     (rsvp) =>
-      rsvp.user.roles?.filter((role) => roleIds.includes(role))[0] ?? "No Role",
+      rsvp.user.roles
+        ?.concat(env.GUILD_ID) // Ensure the guild ID is included in the user's roles
+        ?.filter((role) => roleIds.includes(role))[0] || "No Role",
   );
 
   for (const [roleId, rsvps] of Object.entries(groupedRSVPs)) {
+    if (rsvps.length === 0) continue;
     const embed = rsvpsToEmbed(
       rsvps,
       eventStart,
