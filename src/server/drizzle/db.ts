@@ -1,3 +1,4 @@
+import path from "node:path";
 import { drizzle } from "drizzle-orm/postgres-js";
 import { migrate as migrateDB } from "drizzle-orm/postgres-js/migrator";
 import postgres from "postgres";
@@ -7,6 +8,9 @@ import * as schema from "./schema";
 
 async function migrate() {
   const logger = consola.withTag("db");
+
+  const migrationPath = path.resolve("./drizzle");
+  logger.info("Migration path:", migrationPath);
 
   const migrationPgClient = postgres(env.DATABASE_URL, {
     max: 1,
@@ -25,7 +29,7 @@ async function migrate() {
     },
   });
   logger.info("Starting database migrations...");
-  await migrateDB(migrationClient, { migrationsFolder: "./drizzle" });
+  await migrateDB(migrationClient, { migrationsFolder: migrationPath });
   logger.success("Database migrations completed successfully");
 }
 
