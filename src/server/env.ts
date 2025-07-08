@@ -35,7 +35,7 @@ const env = createEnv({
     /**
      * Roles
      */
-    MENTOR_ROLE_ID: z.string(),
+    ADMIN_ROLE_ID: z.string(),
     /**
      * Kronos cron job connection url
      */
@@ -52,7 +52,7 @@ const env = createEnv({
     GOOGLE_CLIENT_EMAIL: process.env.GOOGLE_CLIENT_EMAIL,
     GOOGLE_PRIVATE_KEY: process.env.GOOGLE_PRIVATE_KEY,
     GOOGLE_CALENDAR_ID: process.env.GOOGLE_CALENDAR_ID,
-    MENTOR_ROLE_ID: process.env.MENTOR_ROLE_ID,
+    ADMIN_ROLE_ID: process.env.ADMIN_ROLE_ID,
     WEBHOOK_SERVER: process.env.WEBHOOK_SERVER,
     VITE_FRONTEND_URL:
       process.env.VITE_FRONTEND_URL ?? import.meta.env.VITE_FRONTEND_URL,

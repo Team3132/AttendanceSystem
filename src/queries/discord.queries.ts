@@ -1,4 +1,4 @@
-import { mentorMiddleware } from "@/middleware/authMiddleware";
+import { adminMiddleware } from "@/middleware/authMiddleware";
 import { discordQueryKeys } from "@/server/queryKeys";
 import {
   getServerChannels,
@@ -10,12 +10,12 @@ import { z } from "zod";
 
 const discordServerRolesFn = createServerFn({ method: "GET" })
   .validator(z.void())
-  .middleware([mentorMiddleware])
+  .middleware([adminMiddleware])
   .handler(() => getServerRoles());
 
 const discordServerChannelsFn = createServerFn({ method: "GET" })
   .validator(z.void())
-  .middleware([mentorMiddleware])
+  .middleware([adminMiddleware])
   .handler(() => getServerChannels());
 
 export const discordQueryOptions = {

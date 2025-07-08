@@ -1,4 +1,4 @@
-import { mentorMiddleware } from "@/middleware/authMiddleware";
+import { adminMiddleware } from "@/middleware/authMiddleware";
 import { eventQueryKeys } from "@/server/queryKeys";
 import { CreateEventSchema } from "@/server/schema/CreateEventSchema";
 import { createEvent } from "@/server/services/events.service";
@@ -9,7 +9,7 @@ import { createServerFn } from "@tanstack/react-start";
 const createEventFn = createServerFn({
   method: "POST",
 })
-  .middleware([mentorMiddleware])
+  .middleware([adminMiddleware])
   .validator(CreateEventSchema)
   .handler(async ({ data }) => createEvent(data));
 

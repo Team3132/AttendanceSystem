@@ -1,4 +1,4 @@
-import { mentorMiddleware } from "@/middleware/authMiddleware";
+import { adminMiddleware } from "@/middleware/authMiddleware";
 import { adminQueryKeys } from "@/server/queryKeys";
 import { createApiKey } from "@/server/services/adminService";
 import type FlattenServerFn from "@/types/FlattenServerFn";
@@ -9,7 +9,7 @@ import { z } from "zod";
 const createApiKeyFn = createServerFn({
   method: "POST",
 })
-  .middleware([mentorMiddleware])
+  .middleware([adminMiddleware])
   .validator(z.string())
   .handler(({ data, context: { user } }) => createApiKey(user.id, data));
 

@@ -82,7 +82,7 @@ export async function getOutreachTime(
         .where(
           and(
             eq(eventParsingRuleTable.isOutreach, true),
-            not(arrayOverlaps(userTable.roles, [env.MENTOR_ROLE_ID])),
+            not(arrayOverlaps(userTable.roles, [env.ADMIN_ROLE_ID])),
             isNotNull(rsvpTable.checkinTime),
             isNotNull(rsvpTable.checkoutTime),
             eq(rsvpTable.status, "ATTENDED"),

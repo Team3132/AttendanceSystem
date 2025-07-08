@@ -1,4 +1,4 @@
-import { mentorMiddleware } from "@/middleware/authMiddleware";
+import { adminMiddleware } from "@/middleware/authMiddleware";
 import { adminQueryKeys } from "@/server/queryKeys";
 import {
   getApiKeys,
@@ -10,16 +10,16 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 const getAPIKeysFn = createServerFn({ method: "GET" })
-  .middleware([mentorMiddleware])
+  .middleware([adminMiddleware])
   .handler(() => getApiKeys());
 
 const getEventParsingRulesFn = createServerFn({ method: "GET" })
-  .middleware([mentorMiddleware])
+  .middleware([adminMiddleware])
   .handler(() => getParsingRules());
 
 const getEventParsingRuleFn = createServerFn({ method: "GET" })
   .validator(z.string())
-  .middleware([mentorMiddleware])
+  .middleware([adminMiddleware])
   .handler(({ data }) => getParsingRule(data));
 
 export const adminQueries = {

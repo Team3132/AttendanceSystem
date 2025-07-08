@@ -1,4 +1,4 @@
-import { mentorMiddleware } from "@/middleware/authMiddleware";
+import { adminMiddleware } from "@/middleware/authMiddleware";
 import { adminQueryKeys } from "@/server/queryKeys";
 import { triggerRule } from "@/server/services/adminService";
 import type FlattenServerFn from "@/types/FlattenServerFn";
@@ -10,7 +10,7 @@ const triggerRuleFn = createServerFn({
   method: "POST",
 })
   .validator(z.string())
-  .middleware([mentorMiddleware])
+  .middleware([adminMiddleware])
   .handler(({ data }) => triggerRule(data));
 
 type TriggerRuleFn = FlattenServerFn<typeof triggerRuleFn>;

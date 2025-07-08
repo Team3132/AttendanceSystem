@@ -1,5 +1,5 @@
 import {
-  mentorMiddleware,
+  adminMiddleware,
   sessionMiddleware,
 } from "@/middleware/authMiddleware";
 import { usersQueryKeys } from "@/server/queryKeys";
@@ -18,17 +18,17 @@ import { z } from "zod";
 type UserListParams = Omit<z.infer<typeof UserListParamsSchema>, "cursor">;
 
 const getUserListFn = createServerFn({ method: "GET" })
-  .middleware([mentorMiddleware])
+  .middleware([adminMiddleware])
   .validator(UserListParamsSchema)
   .handler(async ({ data }) => getUserList(data));
 
 const getUserFn = createServerFn({ method: "GET" })
-  .middleware([mentorMiddleware])
+  .middleware([adminMiddleware])
   .validator(z.string().describe("The user ID"))
   .handler(async ({ data }) => getUser(data));
 
 const getUserScancodesFn = createServerFn({ method: "GET" })
-  .middleware([mentorMiddleware])
+  .middleware([adminMiddleware])
   .validator(z.string().describe("The user ID"))
   .handler(async ({ data }) => getUserScancodes(data));
 
@@ -45,12 +45,12 @@ const getSelfPendingRsvpsFn = createServerFn({ method: "GET" })
   .handler(async ({ context }) => getPendingUserRsvps(context.user.id));
 
 const getUserPendingRsvpsFn = createServerFn({ method: "GET" })
-  .middleware([mentorMiddleware])
+  .middleware([adminMiddleware])
   .validator(z.string().describe("The user ID"))
   .handler(async ({ data }) => getPendingUserRsvps(data));
 
 const getUserSessionsFn = createServerFn({ method: "GET" })
-  .middleware([mentorMiddleware])
+  .middleware([adminMiddleware])
   .validator(z.string())
   .handler(async ({ data }) => getUserSessions(data));
 

@@ -1,5 +1,5 @@
 import {
-  mentorMiddleware,
+  adminMiddleware,
   sessionMiddleware,
 } from "@/middleware/authMiddleware";
 import { eventQueryKeys } from "@/server/queryKeys";
@@ -28,7 +28,7 @@ const getEventFn = createServerFn({ method: "GET" })
   .handler(async ({ data }) => getEvent(data));
 
 const getEventSecretFn = createServerFn({ method: "GET" })
-  .middleware([mentorMiddleware])
+  .middleware([adminMiddleware])
   .validator(z.string().describe("The event ID"))
   .handler(async ({ data }) => getEventSecret(data));
 

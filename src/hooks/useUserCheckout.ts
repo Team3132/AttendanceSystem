@@ -1,4 +1,4 @@
-import { mentorMiddleware } from "@/middleware/authMiddleware";
+import { adminMiddleware } from "@/middleware/authMiddleware";
 import { eventQueryKeys, usersQueryKeys } from "@/server/queryKeys";
 import { UserCheckoutSchema } from "@/server/schema/UserCheckoutSchema";
 import { userCheckout } from "@/server/services/events.service";
@@ -10,7 +10,7 @@ import { createServerFn } from "@tanstack/react-start";
 const userCheckoutFn = createServerFn({
   method: "POST",
 })
-  .middleware([mentorMiddleware])
+  .middleware([adminMiddleware])
   .validator(UserCheckoutSchema)
   .handler(async ({ data }) => userCheckout(data.userId, data.eventId));
 

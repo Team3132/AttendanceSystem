@@ -1,4 +1,4 @@
-import { mentorMiddleware } from "@/middleware/authMiddleware";
+import { adminMiddleware } from "@/middleware/authMiddleware";
 import { adminQueryKeys } from "@/server/queryKeys";
 import { deleteParsingRule } from "@/server/services/adminService";
 import type FlattenServerFn from "@/types/FlattenServerFn";
@@ -10,7 +10,7 @@ const deleteRuleFn = createServerFn({
   method: "POST",
 })
   .validator(z.string())
-  .middleware([mentorMiddleware])
+  .middleware([adminMiddleware])
   .handler(async ({ data }) => deleteParsingRule(data));
 
 type DeleteRuleFn = FlattenServerFn<typeof deleteRuleFn>;

@@ -129,18 +129,18 @@ export const sessionMiddleware = createMiddleware({
 /**
  * Middleware to check the role of the user
  */
-export const mentorMiddleware = createMiddleware({
+export const adminMiddleware = createMiddleware({
   type: "function",
 })
   .middleware([sessionMiddleware])
   .server(async ({ context, next }) => {
     const { user } = context;
 
-    if (!user?.roles?.includes(env.MENTOR_ROLE_ID)) {
+    if (!user?.roles?.includes(env.ADMIN_ROLE_ID)) {
       throw redirect({
         to: "/error",
         search: {
-          message: "You are not a mentor",
+          message: "You are not an admin",
         },
       });
     }

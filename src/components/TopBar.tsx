@@ -29,7 +29,7 @@ export default function TopBar() {
     <AppBar position="static">
       <SpacedToolbar>
         <GrowingTypography variant="h6" as="div">
-          TDU Attendance
+          Attendance Tracker
         </GrowingTypography>
         <ModeSwitchButton />
         <ProfileMenu />

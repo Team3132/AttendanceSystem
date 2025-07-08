@@ -1,4 +1,4 @@
-import { mentorMiddleware } from "@/middleware/authMiddleware";
+import { adminMiddleware } from "@/middleware/authMiddleware";
 import { eventQueryKeys } from "@/server/queryKeys";
 import { CreateUserRsvpSchema } from "@/server/schema/CreateBlankUserRsvpSchema";
 import { createUserRsvp } from "@/server/services/events.service";
@@ -11,7 +11,7 @@ import type {} from "zod";
 const createUserRsvpFn = createServerFn({
   method: "POST",
 })
-  .middleware([mentorMiddleware])
+  .middleware([adminMiddleware])
   .validator(CreateUserRsvpSchema)
   .handler(async ({ data }) => createUserRsvp(data));
 

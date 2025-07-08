@@ -1,4 +1,4 @@
-import { mentorMiddleware } from "@/middleware/authMiddleware";
+import { adminMiddleware } from "@/middleware/authMiddleware";
 import { eventQueryKeys, usersQueryKeys } from "@/server/queryKeys";
 import { ScaninSchema } from "@/server/schema/ScaninSchema";
 import { userScanin } from "@/server/services/events.service";
@@ -10,7 +10,7 @@ import { createServerFn } from "@tanstack/react-start";
 const scaninFn = createServerFn({
   method: "POST",
 })
-  .middleware([mentorMiddleware])
+  .middleware([adminMiddleware])
   .validator(ScaninSchema)
   .handler(async ({ data }) => userScanin(data));
 

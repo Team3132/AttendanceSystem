@@ -47,6 +47,18 @@ const statusToEmoji = (
   }
 };
 
+// biome-ignore lint/suspicious/noExplicitAny: Using any here is acceptable for grouping logic
+const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => K) =>
+  list.reduce(
+    (previous, currentItem) => {
+      const group = getKey(currentItem);
+      if (!previous[group]) previous[group] = [];
+      previous[group].push(currentItem);
+      return previous;
+    },
+    {} as Record<K, T[]>,
+  );
+
 /**
  * Generates an announcement message for an event
  * @param data The data to generate the message with
@@ -55,21 +67,6 @@ const statusToEmoji = (
 export async function generateMessage(data: MessageParams) {
   const { eventId } = data;
 
-  // const [eventRSVPs, eventRsvpsError] = await trytm(
-  //   db.query.rsvpTable.findMany({
-  //     where: eq(rsvpTable.eventId, eventId),
-  //     // order alphabetically by username
-  //     // orderBy: (rsvpTable, { asc }) => asc(rsvpTable.u),
-  //     with: {
-  //       user: {
-  //         columns: {
-  //           roles: true,
-  //           username: true,
-  //         },
-  //       },
-  //     },
-  //   }),
-  // );
   const [eventRSVPs, eventRsvpsError] = await trytm(
     db
       .select({
@@ -78,6 +75,7 @@ export async function generateMessage(data: MessageParams) {
         user: {
           username: userTable.username,
           roles: userTable.roles,
+          id: userTable.id,
         },
       })
       .from(rsvpTable)
@@ -110,10 +108,6 @@ export async function generateMessage(data: MessageParams) {
 
   if (ruleId === null) {
     roleIds.push(env.GUILD_ID);
-
-    if (eventData.type === "Mentor") {
-      roleIds.push(env.MENTOR_ROLE_ID);
-    }
   } else {
     const [eventRule, eventRuleError] = await trytm(
       db.query.eventParsingRuleTable.findFirst({
@@ -130,14 +124,6 @@ export async function generateMessage(data: MessageParams) {
     }
     roleIds.push(...eventRule.roleIds);
   }
-
-  const mentorRSVPs = eventRSVPs.filter((rsvpUser) =>
-    rsvpUser.user.roles?.includes(env.MENTOR_ROLE_ID),
-  );
-
-  const otherRSVPs = eventRSVPs.filter(
-    (rsvpUser) => !rsvpUser.user.roles?.includes(env.MENTOR_ROLE_ID),
-  );
 
   /** A list of role mentionds seperated by commas and "and" at the end */
   const roleMentionList =
@@ -198,56 +184,16 @@ export async function generateMessage(data: MessageParams) {
 
   const eventStart = DateTime.fromJSDate(eventData.startDate);
 
-  if (mentorRSVPs.length) {
-    const content = mentorRSVPs
-      .map((rawRsvp) => {
-        const arrivingAt = rawRsvp.arrivingAt
-          ? DateTime.fromJSDate(rawRsvp.arrivingAt)
-          : null;
+  // Group RSVPs by role with each user only appearing once
+  const groupedRSVPs = groupBy(
+    eventRSVPs,
+    (rsvp) =>
+      rsvp.user.roles?.filter((role) => roleIds.includes(role))[0] ?? "No Role",
+  );
 
-        const delay =
-          arrivingAt?.isValid && eventStart
-            ? arrivingAt.diff(eventStart, "minutes").rescale().toHuman()
-            : undefined;
-
-        return `${rawRsvp.user.username} - ${statusToEmoji(rawRsvp.status, delay)}`;
-      })
-      .join("\n");
-    const count = mentorRSVPs.filter(
-      (rsvp) => rsvp.status === "YES" || rsvp.status === "LATE",
-    ).length;
-    const mentorEmbed = new EmbedBuilder()
-      .setTitle(`Mentors (${count})`)
-      .setDescription(content)
-      .setColor([80, 69, 6]);
-
-    embeds.push(mentorEmbed);
-  }
-
-  if (otherRSVPs.length) {
-    const content = otherRSVPs
-      .map((rawRsvp) => {
-        const arrivingAt = rawRsvp.arrivingAt
-          ? DateTime.fromJSDate(rawRsvp.arrivingAt)
-          : null;
-
-        const delay =
-          arrivingAt?.isValid && eventStart
-            ? arrivingAt.diff(eventStart, "minutes").rescale().toHuman()
-            : undefined;
-
-        return `${rawRsvp.user.username} - ${statusToEmoji(rawRsvp.status, delay)}`;
-      })
-      .join("\n");
-    const count = otherRSVPs.filter(
-      (rsvp) => rsvp.status === "YES" || rsvp.status === "LATE",
-    ).length;
-    const otherEmbed = new EmbedBuilder()
-      .setTitle(`Others (${count})`)
-      .setDescription(content)
-      .setColor([44, 82, 12]);
-
-    embeds.push(otherEmbed);
+  for (const [roleId, rsvps] of Object.entries(groupedRSVPs)) {
+    const embed = rsvpsToEmbed(rsvps, eventStart, roleId);
+    embeds.push(embed);
   }
 
   return {
@@ -255,4 +201,50 @@ export async function generateMessage(data: MessageParams) {
     embeds: embeds.map((embed) => embed.toJSON()),
     components: [messageComponent.toJSON()],
   } satisfies RESTPostAPIChannelMessageJSONBody;
+}
+
+function rsvpToString(
+  eventStart: DateTime<true> | DateTime<false>,
+): (value: {
+  arrivingAt: Date | null;
+  status: "LATE" | "MAYBE" | "NO" | "YES" | "ATTENDED" | null;
+  user: { username: string };
+}) => string {
+  return (rawRsvp) => {
+    const arrivingAt = rawRsvp.arrivingAt
+      ? DateTime.fromJSDate(rawRsvp.arrivingAt)
+      : null;
+
+    const delay =
+      arrivingAt?.isValid && eventStart
+        ? arrivingAt.diff(eventStart, "minutes").rescale().toHuman()
+        : undefined;
+
+    return `${rawRsvp.user.username} - ${statusToEmoji(rawRsvp.status, delay)}`;
+  };
+}
+
+function rsvpsToEmbed(
+  rsvps: Array<{
+    arrivingAt: Date | null;
+    status: "LATE" | "MAYBE" | "NO" | "YES" | "ATTENDED" | null;
+    user: { username: string };
+  }>,
+  eventStart: DateTime<true> | DateTime<false>,
+  roleId?: string,
+): EmbedBuilder {
+  const content = rsvps.map(rsvpToString(eventStart)).join("\n");
+
+  const count = rsvps.filter(
+    (rsvp) => rsvp.status === "YES" || rsvp.status === "LATE",
+  ).length;
+
+  const embed = new EmbedBuilder()
+    .setTitle(
+      roleId ? `${roleMention(roleId)} (${count})` : `No Role (${count})`,
+    )
+    .setDescription(content)
+    .setColor([44, 82, 12]);
+
+  return embed;
 }

@@ -1,4 +1,4 @@
-import { mentorMiddleware } from "@/middleware/authMiddleware";
+import { adminMiddleware } from "@/middleware/authMiddleware";
 import { UpdateEventParsingRuleSchema } from "@/server";
 import { adminQueryKeys } from "@/server/queryKeys";
 import { updateParsingRule } from "@/server/services/adminService";
@@ -15,7 +15,7 @@ const updateRuleFn = createServerFn({
   method: "POST",
 })
   .validator(UpdateRuleSchema)
-  .middleware([mentorMiddleware])
+  .middleware([adminMiddleware])
   .handler(async ({ data: { id, ...data } }) => updateParsingRule(id, data));
 
 type UpdateRuleFn = FlattenServerFn<typeof updateRuleFn>;

@@ -1,4 +1,4 @@
-import { mentorMiddleware } from "@/middleware/authMiddleware";
+import { adminMiddleware } from "@/middleware/authMiddleware";
 import { NewEventParsingRuleSchema } from "@/server";
 import { adminQueryKeys } from "@/server/queryKeys";
 import { createParsingRule } from "@/server/services/adminService";
@@ -14,7 +14,7 @@ const createRuleFn: ({
   method: "POST",
 })
   .validator(NewEventParsingRuleSchema)
-  .middleware([mentorMiddleware])
+  .middleware([adminMiddleware])
   .handler(({ data }) => createParsingRule(data));
 
 export default function useCreateRule() {

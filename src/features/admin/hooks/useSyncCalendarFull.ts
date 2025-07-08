@@ -1,4 +1,4 @@
-import { mentorMiddleware } from "@/middleware/authMiddleware";
+import { adminMiddleware } from "@/middleware/authMiddleware";
 import { eventQueryKeys } from "@/server/queryKeys";
 import { fullSyncEvents } from "@/server/services/calalendarSync.service";
 import { useMutation } from "@tanstack/react-query";
@@ -8,7 +8,7 @@ const syncCalendarFullFn: () => ReturnType<typeof fullSyncEvents> =
   createServerFn({
     method: "POST",
   })
-    .middleware([mentorMiddleware])
+    .middleware([adminMiddleware])
     .handler(() => fullSyncEvents());
 
 export default function useSyncCalendarFull() {

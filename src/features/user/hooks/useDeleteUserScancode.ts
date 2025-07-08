@@ -1,4 +1,4 @@
-import { mentorMiddleware } from "@/middleware/authMiddleware";
+import { adminMiddleware } from "@/middleware/authMiddleware";
 import { usersQueryKeys } from "@/server/queryKeys";
 import { AddUserScancodeParams } from "@/server/schema/AddUserScancodeParams";
 import { removeScancode } from "@/server/services/user.service";
@@ -10,7 +10,7 @@ import { createServerFn } from "@tanstack/react-start";
 const removeUserScancodeFn = createServerFn({
   method: "POST",
 })
-  .middleware([mentorMiddleware])
+  .middleware([adminMiddleware])
   .validator(AddUserScancodeParams)
   .handler(async ({ data }) => removeScancode(data.userId, data.scancode));
 
