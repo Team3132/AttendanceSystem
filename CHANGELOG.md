@@ -1,5 +1,11 @@
 # frontend
 
+## 5.11.1
+
+### Patch Changes
+
+- [`93e287c`](https://github.com/Team3132/AttendanceSystem/commit/93e287cc5deced1923494783a660de500ef2bf0a) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Rework embed
+
 ## 5.11.0
 
 ### Minor Changes
