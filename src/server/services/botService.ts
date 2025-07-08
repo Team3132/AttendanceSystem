@@ -192,7 +192,11 @@ export async function generateMessage(data: MessageParams) {
   );
 
   for (const [roleId, rsvps] of Object.entries(groupedRSVPs)) {
-    const embed = rsvpsToEmbed(rsvps, eventStart, roleId);
+    const embed = rsvpsToEmbed(
+      rsvps,
+      eventStart,
+      roleId !== "No Role" ? roleId : undefined,
+    );
     embeds.push(embed);
   }
 
