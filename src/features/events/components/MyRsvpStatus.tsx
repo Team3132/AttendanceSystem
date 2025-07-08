@@ -1,17 +1,10 @@
-import ControlledSelect from "@/components/ControlledSelect";
-import useZodForm from "@/hooks/useZodForm";
 import { eventQueryOptions } from "@/queries/events.queries";
 import { Route } from "@/routes/_authenticated/events/$eventId";
-import { RSVPStatusSchema } from "@/server/schema";
-import {} from "@mui/material";
+import { RSVPStatusSchema, RSVPStatusUpdateSchema } from "@/server/schema";
+import { MenuItem, TextField } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useCallback, useEffect, useMemo } from "react";
-import { z } from "zod";
+import { useMemo } from "react";
 import useUpdateRsvp from "../hooks/useUpdateRsvp";
-
-const FormSchema = z.object({
-  status: RSVPStatusSchema.nullable(),
-});
 
 export default function MyRsvpStatus() {
   const { eventId } = Route.useParams();
@@ -22,76 +15,66 @@ export default function MyRsvpStatus() {
 
   const updateRsvpMutation = useUpdateRsvp();
 
-  const {
-    control,
-    handleSubmit,
-    watch,
-    reset,
-    formState: { isSubmitting },
-  } = useZodForm({
-    schema: FormSchema,
-    defaultValues: {
-      status: myRsvpStatusQuery.data?.status ?? undefined,
-    },
-  });
-
-  const onSubmit = useCallback(
-    () =>
-      handleSubmit(async (data) => {
-        if (data.status === null || data.status === "ATTENDED") {
-          return;
-        }
-
-        await updateRsvpMutation.mutateAsync({
-          data: {
-            eventId,
-            status: data.status,
-          },
-        });
-      }),
-    [eventId, handleSubmit, updateRsvpMutation],
-  );
-
-  useEffect(() => {
-    // If the data from the server changes then update it on the client
-    if (myRsvpStatusQuery.data !== null) {
-      // Use reset to that it isn't considered an "update"
-      reset({
-        status: myRsvpStatusQuery.data.status,
-      });
-    }
-  }, [reset, myRsvpStatusQuery.data]);
-
-  useEffect(() => {
-    // Create a subscription to the form's values so that
-    // data is submitted on change
-    const subscription = watch(() => onSubmit());
-
-    return () => subscription.unsubscribe();
-  }, [watch, onSubmit]);
-
   const disabled = useMemo(
-    () => myRsvpStatusQuery.data?.status === "ATTENDED" || isSubmitting,
-    [myRsvpStatusQuery.data?.status, isSubmitting],
+    () =>
+      myRsvpStatusQuery.data?.status === "ATTENDED" ||
+      updateRsvpMutation.isPending,
+    [myRsvpStatusQuery.data?.status, updateRsvpMutation.isPending],
   );
 
   return (
-    <ControlledSelect
-      control={control}
-      name="status"
-      label="RSVP Status"
-      disabled={disabled}
-      options={[
-        {
-          value: "LATE",
-          label: "Late",
-        },
-        { value: "MAYBE", label: "Maybe" },
-        { value: "NO", label: "No" },
-        { value: "YES", label: "Yes", divider: true },
-        { value: "ATTENDED", label: "Attended", disabled: true },
-      ]}
+    <TextField
+      select
       helperText="Select your RSVP status"
-    />
+      fullWidth
+      value={myRsvpStatusQuery.data?.status ?? ""}
+      disabled={disabled}
+      onChange={(e) => {
+        // check to see if the value is submittable
+        const data = RSVPStatusUpdateSchema.safeParse(e.target.value);
+
+        if (data.success) {
+          updateRsvpMutation.mutate({
+            data: {
+              eventId,
+              status: data.data,
+            },
+          });
+        }
+      }}
+    >
+      <MenuItem value="" disabled>
+        Select RSVP Status
+      </MenuItem>
+      <MenuItem value={RSVPStatusSchema.Enum.MAYBE}>Maybe</MenuItem>
+      <MenuItem value={RSVPStatusSchema.Enum.NO}>No</MenuItem>
+      <MenuItem value={RSVPStatusSchema.Enum.YES}>Yes</MenuItem>
+      <MenuItem value={RSVPStatusSchema.Enum.LATE}>Late</MenuItem>
+      <MenuItem value={RSVPStatusSchema.Enum.ATTENDED} disabled>
+        Attended
+      </MenuItem>
+    </TextField>
+    // <ControlledSelect
+    //   control={control}
+    //   name="status"
+    //   label="RSVP Status"
+    //   disabled={disabled}
+    //   options={[
+    //     {
+    //       value: "",
+    //       label: "Select RSVP Status",
+    //       disabled: true,
+    //     },
+    //     {
+    //       value: "LATE",
+    //       label: "Late",
+    //     },
+    //     { value: "MAYBE", label: "Maybe" },
+    //     { value: "NO", label: "No" },
+    //     { value: "YES", label: "Yes", divider: true },
+    //     { value: "ATTENDED", label: "Attended", disabled: true },
+    //   ]}
+    //   helperText="Select your RSVP status"
+    // />
   );
 }
