@@ -63,6 +63,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: release
     if: needs.release.outputs.published == 'true'
+    env:
+      VITE_VERSION: ${{ matrix.package.version }}
     strategy:
       fail-fast: true
       matrix:
@@ -71,6 +73,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - uses: oven-sh/setup-bun@v2
+        name: Setup Bun
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Install Dependencies
+        run: bun install --frozen-lockfile
+      - name: Build Package
+        run: bun run build
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
@@ -101,3 +113,4 @@ jobs:
           push: true
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=registry,ref=ghcr.io/team3132/attendancesystem-${{ matrix.package.name }}:latest
+          context: .
