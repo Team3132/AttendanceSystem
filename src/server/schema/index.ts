@@ -15,7 +15,6 @@ export * from "./SelfCheckinSchema";
 export * from "./UserSchema";
 export * from "./RSVPStatusSchema";
 export * from "./AddUserScancodeParams";
-export * from "./EventTypeSchema";
 export * from "./UserCreateSchema";
 export * from "./PagedSchema";
 export * from "./UserListParamsSchema";

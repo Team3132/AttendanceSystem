@@ -13,12 +13,6 @@ import { ulid } from "ulidx";
 import { v4 } from "uuid";
 import randomStr from "../utils/randomStr";
 
-export const eventTypes = pgEnum("event_type", [
-  "Social",
-  "Regular",
-  "Outreach",
-  "Mentor",
-]);
 export const rsvpStatus = pgEnum("rsvp_status", [
   "LATE",
   "MAYBE",
@@ -176,7 +170,6 @@ export const eventTable = pgTable(
       withTimezone: true,
     }).notNull(),
     allDay: boolean("all_day").default(false).notNull(),
-    type: eventTypes("type").default("Regular").notNull(),
     secret: text("secret")
       .notNull()
       .$defaultFn(() => randomStr(8)),

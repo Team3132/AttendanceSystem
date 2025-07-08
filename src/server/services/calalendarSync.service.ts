@@ -176,7 +176,6 @@ const googleEventToEvent = (
     description: gcalEvent.description ?? "",
     startDate,
     endDate,
-    type: "Regular",
     allDay,
     isSyncedEvent: true,
   };
@@ -191,7 +190,6 @@ const updatableColumns: ColumnNames<typeof eventTable>[] = [
   "endDate",
   "description",
   "allDay",
-  "type",
   "isSyncedEvent",
   "ruleId",
 ];

@@ -19,7 +19,6 @@ import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedLeaderboardRouteImport } from './routes/_authenticated/leaderboard'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin_'
 import { Route as AuthenticatedProfileIndexRouteImport } from './routes/_authenticated/profile/index'
-import { Route as AuthenticatedEventsIndexRouteImport } from './routes/_authenticated/events/index'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin_/index'
 import { Route as AuthenticatedProfileSessionsRouteImport } from './routes/_authenticated/profile/sessions'
 import { Route as AuthenticatedProfilePendingRouteImport } from './routes/_authenticated/profile/pending'
@@ -36,7 +35,6 @@ import { Route as AuthenticatedAdminEventParsingCreateRouteImport } from './rout
 import { Route as AuthenticatedAdminEventParsingRuleIdRouteImport } from './routes/_authenticated/admin_/event-parsing/$ruleId'
 import { Route as AuthenticatedAdminApiKeysCreateRouteImport } from './routes/_authenticated/admin_/api-keys/create'
 import { Route as AuthenticatedAdminUsersUserIdIndexRouteImport } from './routes/_authenticated/admin_/users/$userId/index'
-import { Route as AuthenticatedAdminUsersUserIdSummaryRouteImport } from './routes/_authenticated/admin_/users/$userId/summary'
 import { Route as AuthenticatedAdminUsersUserIdSessionsRouteImport } from './routes/_authenticated/admin_/users/$userId/sessions'
 import { Route as AuthenticatedAdminUsersUserIdPendingRouteImport } from './routes/_authenticated/admin_/users/$userId/pending'
 import { ServerRoute as ApiInteractionServerRouteImport } from './routes/api/interaction'
@@ -87,12 +85,6 @@ const AuthenticatedProfileIndexRoute =
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedProfileRoute,
-  } as any)
-const AuthenticatedEventsIndexRoute =
-  AuthenticatedEventsIndexRouteImport.update({
-    id: '/events/',
-    path: '/events/',
-    getParentRoute: () => AuthenticatedRoute,
   } as any)
 const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   id: '/',
@@ -189,12 +181,6 @@ const AuthenticatedAdminUsersUserIdIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedAdminUsersUserIdRoute,
   } as any)
-const AuthenticatedAdminUsersUserIdSummaryRoute =
-  AuthenticatedAdminUsersUserIdSummaryRouteImport.update({
-    id: '/summary',
-    path: '/summary',
-    getParentRoute: () => AuthenticatedAdminUsersUserIdRoute,
-  } as any)
 const AuthenticatedAdminUsersUserIdSessionsRoute =
   AuthenticatedAdminUsersUserIdSessionsRouteImport.update({
     id: '/sessions',
@@ -248,7 +234,6 @@ export interface FileRoutesByFullPath {
   '/profile/pending': typeof AuthenticatedProfilePendingRoute
   '/profile/sessions': typeof AuthenticatedProfileSessionsRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
-  '/events': typeof AuthenticatedEventsIndexRoute
   '/profile/': typeof AuthenticatedProfileIndexRoute
   '/admin/api-keys/create': typeof AuthenticatedAdminApiKeysCreateRoute
   '/admin/event-parsing/$ruleId': typeof AuthenticatedAdminEventParsingRuleIdRoute
@@ -262,7 +247,6 @@ export interface FileRoutesByFullPath {
   '/events/$eventId/': typeof AuthenticatedEventsEventIdIndexRoute
   '/admin/users/$userId/pending': typeof AuthenticatedAdminUsersUserIdPendingRoute
   '/admin/users/$userId/sessions': typeof AuthenticatedAdminUsersUserIdSessionsRoute
-  '/admin/users/$userId/summary': typeof AuthenticatedAdminUsersUserIdSummaryRoute
   '/admin/users/$userId/': typeof AuthenticatedAdminUsersUserIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -274,7 +258,6 @@ export interface FileRoutesByTo {
   '/profile/pending': typeof AuthenticatedProfilePendingRoute
   '/profile/sessions': typeof AuthenticatedProfileSessionsRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
-  '/events': typeof AuthenticatedEventsIndexRoute
   '/profile': typeof AuthenticatedProfileIndexRoute
   '/admin/api-keys/create': typeof AuthenticatedAdminApiKeysCreateRoute
   '/admin/event-parsing/$ruleId': typeof AuthenticatedAdminEventParsingRuleIdRoute
@@ -287,7 +270,6 @@ export interface FileRoutesByTo {
   '/events/$eventId': typeof AuthenticatedEventsEventIdIndexRoute
   '/admin/users/$userId/pending': typeof AuthenticatedAdminUsersUserIdPendingRoute
   '/admin/users/$userId/sessions': typeof AuthenticatedAdminUsersUserIdSessionsRoute
-  '/admin/users/$userId/summary': typeof AuthenticatedAdminUsersUserIdSummaryRoute
   '/admin/users/$userId': typeof AuthenticatedAdminUsersUserIdIndexRoute
 }
 export interface FileRoutesById {
@@ -304,7 +286,6 @@ export interface FileRoutesById {
   '/_authenticated/profile/pending': typeof AuthenticatedProfilePendingRoute
   '/_authenticated/profile/sessions': typeof AuthenticatedProfileSessionsRoute
   '/_authenticated/admin_/': typeof AuthenticatedAdminIndexRoute
-  '/_authenticated/events/': typeof AuthenticatedEventsIndexRoute
   '/_authenticated/profile/': typeof AuthenticatedProfileIndexRoute
   '/_authenticated/admin_/api-keys/create': typeof AuthenticatedAdminApiKeysCreateRoute
   '/_authenticated/admin_/event-parsing/$ruleId': typeof AuthenticatedAdminEventParsingRuleIdRoute
@@ -318,7 +299,6 @@ export interface FileRoutesById {
   '/_authenticated/events/$eventId/': typeof AuthenticatedEventsEventIdIndexRoute
   '/_authenticated/admin_/users/$userId/pending': typeof AuthenticatedAdminUsersUserIdPendingRoute
   '/_authenticated/admin_/users/$userId/sessions': typeof AuthenticatedAdminUsersUserIdSessionsRoute
-  '/_authenticated/admin_/users/$userId/summary': typeof AuthenticatedAdminUsersUserIdSummaryRoute
   '/_authenticated/admin_/users/$userId/': typeof AuthenticatedAdminUsersUserIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -335,7 +315,6 @@ export interface FileRouteTypes {
     | '/profile/pending'
     | '/profile/sessions'
     | '/admin/'
-    | '/events'
     | '/profile/'
     | '/admin/api-keys/create'
     | '/admin/event-parsing/$ruleId'
@@ -349,7 +328,6 @@ export interface FileRouteTypes {
     | '/events/$eventId/'
     | '/admin/users/$userId/pending'
     | '/admin/users/$userId/sessions'
-    | '/admin/users/$userId/summary'
     | '/admin/users/$userId/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -361,7 +339,6 @@ export interface FileRouteTypes {
     | '/profile/pending'
     | '/profile/sessions'
     | '/admin'
-    | '/events'
     | '/profile'
     | '/admin/api-keys/create'
     | '/admin/event-parsing/$ruleId'
@@ -374,7 +351,6 @@ export interface FileRouteTypes {
     | '/events/$eventId'
     | '/admin/users/$userId/pending'
     | '/admin/users/$userId/sessions'
-    | '/admin/users/$userId/summary'
     | '/admin/users/$userId'
   id:
     | '__root__'
@@ -390,7 +366,6 @@ export interface FileRouteTypes {
     | '/_authenticated/profile/pending'
     | '/_authenticated/profile/sessions'
     | '/_authenticated/admin_/'
-    | '/_authenticated/events/'
     | '/_authenticated/profile/'
     | '/_authenticated/admin_/api-keys/create'
     | '/_authenticated/admin_/event-parsing/$ruleId'
@@ -404,7 +379,6 @@ export interface FileRouteTypes {
     | '/_authenticated/events/$eventId/'
     | '/_authenticated/admin_/users/$userId/pending'
     | '/_authenticated/admin_/users/$userId/sessions'
-    | '/_authenticated/admin_/users/$userId/summary'
     | '/_authenticated/admin_/users/$userId/'
   fileRoutesById: FileRoutesById
 }
@@ -524,13 +498,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProfileIndexRouteImport
       parentRoute: typeof AuthenticatedProfileRoute
     }
-    '/_authenticated/events/': {
-      id: '/_authenticated/events/'
-      path: '/events'
-      fullPath: '/events'
-      preLoaderRoute: typeof AuthenticatedEventsIndexRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
     '/_authenticated/admin_/': {
       id: '/_authenticated/admin_/'
       path: '/'
@@ -643,13 +610,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminUsersUserIdIndexRouteImport
       parentRoute: typeof AuthenticatedAdminUsersUserIdRoute
     }
-    '/_authenticated/admin_/users/$userId/summary': {
-      id: '/_authenticated/admin_/users/$userId/summary'
-      path: '/summary'
-      fullPath: '/admin/users/$userId/summary'
-      preLoaderRoute: typeof AuthenticatedAdminUsersUserIdSummaryRouteImport
-      parentRoute: typeof AuthenticatedAdminUsersUserIdRoute
-    }
     '/_authenticated/admin_/users/$userId/sessions': {
       id: '/_authenticated/admin_/users/$userId/sessions'
       path: '/sessions'
@@ -709,7 +669,6 @@ declare module '@tanstack/react-start/server' {
 interface AuthenticatedAdminUsersUserIdRouteChildren {
   AuthenticatedAdminUsersUserIdPendingRoute: typeof AuthenticatedAdminUsersUserIdPendingRoute
   AuthenticatedAdminUsersUserIdSessionsRoute: typeof AuthenticatedAdminUsersUserIdSessionsRoute
-  AuthenticatedAdminUsersUserIdSummaryRoute: typeof AuthenticatedAdminUsersUserIdSummaryRoute
   AuthenticatedAdminUsersUserIdIndexRoute: typeof AuthenticatedAdminUsersUserIdIndexRoute
 }
 
@@ -719,8 +678,6 @@ const AuthenticatedAdminUsersUserIdRouteChildren: AuthenticatedAdminUsersUserIdR
       AuthenticatedAdminUsersUserIdPendingRoute,
     AuthenticatedAdminUsersUserIdSessionsRoute:
       AuthenticatedAdminUsersUserIdSessionsRoute,
-    AuthenticatedAdminUsersUserIdSummaryRoute:
-      AuthenticatedAdminUsersUserIdSummaryRoute,
     AuthenticatedAdminUsersUserIdIndexRoute:
       AuthenticatedAdminUsersUserIdIndexRoute,
   }
@@ -801,7 +758,6 @@ interface AuthenticatedRouteChildren {
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedEventsEventIdRoute: typeof AuthenticatedEventsEventIdRouteWithChildren
   AuthenticatedEventsCreateRoute: typeof AuthenticatedEventsCreateRoute
-  AuthenticatedEventsIndexRoute: typeof AuthenticatedEventsIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
@@ -811,7 +767,6 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedEventsEventIdRoute: AuthenticatedEventsEventIdRouteWithChildren,
   AuthenticatedEventsCreateRoute: AuthenticatedEventsCreateRoute,
-  AuthenticatedEventsIndexRoute: AuthenticatedEventsIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

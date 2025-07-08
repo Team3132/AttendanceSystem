@@ -1,20 +1,61 @@
-import { usersQueryOptions } from "@/queries/users.queries";
-import env from "@/server/env";
-import { Paper, Stack, Typography } from "@mui/material";
-import { createFileRoute } from "@tanstack/react-router";
+import InfiniteList from "@/components/InfiniteList";
+import { LinkButton } from "@/components/LinkButton";
+import { LinkListItemButton } from "@/components/LinkListItemButton";
+import UpcomingEventListItem from "@/features/events/components/UpcomingEventListItem";
+import { authQueryOptions } from "@/queries/auth.queries";
+import { eventQueryOptions } from "@/queries/events.queries";
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+  Skeleton,
+  Stack,
+  Typography,
+} from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers";
+import {
+  useSuspenseInfiniteQuery,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
+import { createFileRoute, stripSearchParams } from "@tanstack/react-router";
+import { DateTime } from "luxon";
+import { Suspense, useCallback } from "react";
+import { z } from "zod";
 
-import ActiveEventsList from "../../components/ActiveEventsList";
+const defaultValues = {
+  from: DateTime.now().toISODate(),
+  type: undefined,
+  limit: 10,
+};
 
-const appVersion = env.VITE_VERSION;
+const eventsSearchSchema = z.object({
+  from: z.string().default(defaultValues.from),
+  limit: z.number().default(defaultValues.limit),
+});
 
 export const Route = createFileRoute("/_authenticated/")({
-  loader: ({ context: { queryClient } }) => {
-    queryClient.prefetchQuery(usersQueryOptions.userSelfPendingRsvps());
+  validateSearch: eventsSearchSchema,
+  search: {
+    middlewares: [stripSearchParams(defaultValues)],
+  },
+
+  loaderDeps: ({ search }) => search,
+
+  loader: ({ context: { queryClient }, deps: { from, limit } }) => {
+    queryClient.prefetchQuery(authQueryOptions.status());
+
+    queryClient.prefetchInfiniteQuery(
+      eventQueryOptions.eventList({
+        from: new Date(from),
+        limit,
+      }),
+    );
   },
   head: () => ({
     meta: [
       {
-        title: "Home",
+        title: "Events",
       },
     ],
   }),
@@ -23,31 +64,129 @@ export const Route = createFileRoute("/_authenticated/")({
 
 function Component() {
   return (
-    <Stack gap={2}>
-      <Paper sx={{ p: 2, textAlign: "center" }}>
-        <Stack gap={2}>
-          <Typography variant="h4">Welcome to the Attendance System</Typography>
-          <Typography variant="body1">
-            This is the attendance system for the FRC team 3132 Thunder Down
-            Under. This system is used to track attendance for team members at
-            events and outreach activities.
-          </Typography>
-        </Stack>
-      </Paper>
-      <Paper sx={{ p: 2, textAlign: "center" }}>
-        <Stack gap={2}>
-          <Typography variant="h4">Active Events</Typography>
-          <ActiveEventsList />
-        </Stack>
-      </Paper>
-      {appVersion ? (
-        <Paper sx={{ p: 2, textAlign: "center" }}>
-          <Stack gap={2}>
-            <Typography variant="h4">Version</Typography>
-            <Typography variant="body1">{appVersion}</Typography>
-          </Stack>
-        </Paper>
-      ) : null}
+    <Stack gap={2} height={"100%"} flexDirection={"column"}>
+      <EventFromSelector />
+      <Suspense fallback={<EventListSkeleton />}>
+        <EventList />
+      </Suspense>
+      <CreateEventButton />
     </Stack>
+  );
+}
+
+function EventFromSelector() {
+  const { from } = Route.useSearch();
+
+  const navigate = Route.useNavigate();
+
+  const handleStartChange = useCallback(
+    (date: DateTime<true> | DateTime<false> | null) => {
+      const iso = date?.toISODate();
+      navigate({
+        // biome-ignore lint/suspicious/noExplicitAny: it's being fussy about the type
+        search: (prev: any) => ({ ...prev, from: iso ?? defaultValues.from }),
+      });
+    },
+    [navigate],
+  );
+
+  return (
+    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+      <DatePicker
+        value={DateTime.fromISO(from ?? defaultValues.from)}
+        label="From"
+        onChange={handleStartChange}
+      />
+    </Box>
+  );
+}
+
+function EventListItemSkeleton() {
+  return (
+    <ListItem>
+      <ListItemText
+        primary={<Skeleton width={300} />}
+        secondary={
+          <Typography variant="body2">
+            <Skeleton width={200} />
+          </Typography>
+        }
+      />
+      <Typography variant="body2">
+        <Skeleton width={100} />
+      </Typography>
+    </ListItem>
+  );
+}
+
+function EventListSkeleton() {
+  return (
+    <List
+      sx={{
+        flex: 1,
+        overflowY: "auto",
+      }}
+    >
+      <EventListItemSkeleton />
+      <EventListItemSkeleton />
+      <EventListItemSkeleton />
+      <EventListItemSkeleton />
+      <EventListItemSkeleton />
+    </List>
+  );
+}
+
+function EventList() {
+  const { from, limit } = Route.useSearch();
+
+  // This doesn't use suspense because we want to show the previous data while fetching new data
+  const infiniteEventsQuery = useSuspenseInfiniteQuery({
+    ...eventQueryOptions.eventList({
+      from: new Date(from),
+      limit,
+    }),
+  });
+
+  return (
+    <InfiniteList
+      data={infiniteEventsQuery.data}
+      fetchNextPage={infiniteEventsQuery.fetchNextPage}
+      isFetching={infiniteEventsQuery.isFetching}
+      scrollRestorationId="events"
+      renderRow={({ row, style, ref, index }) => (
+        <LinkListItemButton
+          ref={ref}
+          key={index}
+          to={"/events/$eventId"}
+          params={{
+            eventId: row.id,
+          }}
+          preloadDelay={500}
+          style={style}
+          data-index={index}
+        >
+          <UpcomingEventListItem event={row} />
+        </LinkListItemButton>
+      )}
+      fixedHeight={72}
+      sx={{
+        flex: 1,
+        overflowY: "auto",
+      }}
+    />
+  );
+}
+
+function CreateEventButton() {
+  const authStatusQuery = useSuspenseQuery(authQueryOptions.status());
+
+  if (!authStatusQuery.data.isAdmin) {
+    return <></>;
+  }
+
+  return (
+    <LinkButton to="/events/create" variant="contained">
+      Create Event
+    </LinkButton>
   );
 }

@@ -5,7 +5,7 @@ import { Route } from "@/routes/_authenticated/events/$eventId";
 import { RSVPStatusSchema } from "@/server/schema";
 import {} from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { z } from "zod";
 import useUpdateRsvp from "../hooks/useUpdateRsvp";
 
@@ -35,18 +35,22 @@ export default function MyRsvpStatus() {
     },
   });
 
-  const onSubmit = handleSubmit(async (data) => {
-    if (data.status === null || data.status === "ATTENDED") {
-      return;
-    }
+  const onSubmit = useCallback(
+    () =>
+      handleSubmit(async (data) => {
+        if (data.status === null || data.status === "ATTENDED") {
+          return;
+        }
 
-    await updateRsvpMutation.mutateAsync({
-      data: {
-        eventId,
-        status: data.status,
-      },
-    });
-  });
+        await updateRsvpMutation.mutateAsync({
+          data: {
+            eventId,
+            status: data.status,
+          },
+        });
+      }),
+    [eventId, handleSubmit, updateRsvpMutation],
+  );
 
   useEffect(() => {
     // If the data from the server changes then update it on the client
