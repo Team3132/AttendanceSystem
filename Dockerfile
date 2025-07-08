@@ -4,7 +4,7 @@ FROM oven/bun:1 AS base
 WORKDIR /usr/src/app
 
 # COPY --from=install /temp/prod/node_modules node_modules
-COPY ./drizzle .
+COPY ./drizzle drizzle
 COPY ./.output .output
 COPY ./package.json .
 ARG VITE_VERSION
