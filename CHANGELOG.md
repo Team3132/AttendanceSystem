@@ -1,5 +1,11 @@
 # frontend
 
+## 5.10.22
+
+### Patch Changes
+
+- [`5be2c2f`](https://github.com/Team3132/AttendanceSystem/commit/5be2c2f8b85016968cae1e760832efcc025e1972) Thanks [@sebasptsch](https://github.com/sebasptsch)! - change pub workflow
+
 ## 5.10.21
 
 ### Patch Changes
