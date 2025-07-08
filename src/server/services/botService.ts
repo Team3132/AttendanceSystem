@@ -203,9 +203,7 @@ export async function generateMessage(data: MessageParams) {
   } satisfies RESTPostAPIChannelMessageJSONBody;
 }
 
-function rsvpToString(
-  eventStart: DateTime<true> | DateTime<false>,
-): (value: {
+function rsvpToString(eventStart: DateTime<true> | DateTime<false>): (value: {
   arrivingAt: Date | null;
   status: "LATE" | "MAYBE" | "NO" | "YES" | "ATTENDED" | null;
   user: { username: string };
