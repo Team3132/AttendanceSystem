@@ -1,5 +1,11 @@
 # frontend
 
+## 5.11.5
+
+### Patch Changes
+
+- [`3cf0bc1`](https://github.com/Team3132/AttendanceSystem/commit/3cf0bc1e45e8079bc3b642126ad79ae95ccd653b) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix checkbox
+
 ## 5.11.4
 
 ### Patch Changes
