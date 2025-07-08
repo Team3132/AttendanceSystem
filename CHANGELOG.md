@@ -1,5 +1,11 @@
 # frontend
 
+## 5.11.2
+
+### Patch Changes
+
+- [`9053dd0`](https://github.com/Team3132/AttendanceSystem/commit/9053dd093c47588ef242692e2b27a5f7bd549f59) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add actual title?
+
 ## 5.11.1
 
 ### Patch Changes
