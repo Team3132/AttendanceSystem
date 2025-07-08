@@ -1,5 +1,11 @@
 # frontend
 
+## 5.10.23
+
+### Patch Changes
+
+- [`4c045cd`](https://github.com/Team3132/AttendanceSystem/commit/4c045cd1bf1fb09e56846592d284eb3f0f1c80cc) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix drizzle import
+
 ## 5.10.22
 
 ### Patch Changes
