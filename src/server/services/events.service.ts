@@ -37,7 +37,7 @@ import randomStr from "../utils/randomStr";
  * @returns A list of events
  */
 export async function getEvents(input: z.infer<typeof GetEventParamsSchema>) {
-  const { from, to, limit, type, cursor: page } = input;
+  const { from, to, limit, cursor: page } = input;
   const conditions: Array<SQL | undefined> = [];
 
   if (from && to) {
@@ -58,10 +58,6 @@ export async function getEvents(input: z.infer<typeof GetEventParamsSchema>) {
         or(lte(eventTable.startDate, to), lte(eventTable.endDate, to)),
       );
     }
-  }
-
-  if (type) {
-    conditions.push(eq(eventTable.type, type));
   }
 
   const offset = page * limit;

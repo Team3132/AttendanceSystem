@@ -1,4 +1,3 @@
-import ControlledSelect from "@/components/ControlledSelect";
 import ControlledTextField from "@/components/ControlledTextField";
 import useCreateEvent from "@/features/events/hooks/useCreateEvent";
 import useZodForm from "@/hooks/useZodForm";
@@ -47,7 +46,6 @@ function Component() {
       startDate: new Date(),
       endDate: new Date(),
       allDay: false,
-      type: "Regular",
     },
   });
 
@@ -104,22 +102,6 @@ function Component() {
         )}
       />
       <Switch {...register("allDay")} />
-      <ControlledSelect
-        control={control}
-        name="type"
-        label="Type"
-        slotProps={{
-          select: {
-            displayEmpty: true,
-          },
-        }}
-        options={[
-          { label: "All", value: undefined },
-          { label: "Outreach", value: "Outreach" },
-          { label: "Regular", value: "Regular" },
-          { label: "Social", value: "Social" },
-        ]}
-      />
       <Button loading={isSubmitting} type="submit">
         Create
       </Button>
