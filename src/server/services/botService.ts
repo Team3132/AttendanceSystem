@@ -231,18 +231,17 @@ function rsvpsToEmbed(
   eventStart: DateTime<true> | DateTime<false>,
   roleId?: string,
 ): EmbedBuilder {
-  const content = rsvps.map(rsvpToString(eventStart)).join("\n");
-
   const count = rsvps.filter(
     (rsvp) => rsvp.status === "YES" || rsvp.status === "LATE",
   ).length;
+  const rsvpTitle = roleId
+    ? `${roleMention(roleId)} (${count})`
+    : `No Role (${count})`;
 
-  const embed = new EmbedBuilder()
-    .setTitle(
-      roleId ? `${roleMention(roleId)} (${count})` : `No Role (${count})`,
-    )
-    .setDescription(content)
-    .setColor([44, 82, 12]);
+  const rsvpsContent = rsvps.map(rsvpToString(eventStart)).join("\n");
 
+  const content = `${rsvpTitle}\n${rsvpsContent}`;
+
+  const embed = new EmbedBuilder().setDescription(content);
   return embed;
 }
