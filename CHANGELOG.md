@@ -1,5 +1,11 @@
 # frontend
 
+## 5.11.4
+
+### Patch Changes
+
+- [`d1020b5`](https://github.com/Team3132/AttendanceSystem/commit/d1020b5883bccbd16d1e95989e450c70f101a9ec) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add the guild ID to the users' roles
+
 ## 5.11.3
 
 ### Patch Changes
