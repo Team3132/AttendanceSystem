@@ -1,5 +1,11 @@
 # frontend
 
+## 5.11.3
+
+### Patch Changes
+
+- [`090c536`](https://github.com/Team3132/AttendanceSystem/commit/090c536034e568d87c768701b07ed2c5dac49d27) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix no role title
+
 ## 5.11.2
 
 ### Patch Changes
