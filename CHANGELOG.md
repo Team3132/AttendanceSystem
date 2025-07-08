@@ -1,5 +1,15 @@
 # frontend
 
+## 5.11.0
+
+### Minor Changes
+
+- [`ce052f9`](https://github.com/Team3132/AttendanceSystem/commit/ce052f9d9426504410cbd2e347c89e84c8c65b50) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Group by based on roles
+
+### Patch Changes
+
+- [`91dc7c2`](https://github.com/Team3132/AttendanceSystem/commit/91dc7c2e7e0fb48b923b8176f08af44b19d241ce) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix status selector
+
 ## 5.10.23
 
 ### Patch Changes
