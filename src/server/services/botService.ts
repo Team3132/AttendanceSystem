@@ -235,8 +235,8 @@ function rsvpsToEmbed(
     (rsvp) => rsvp.status === "YES" || rsvp.status === "LATE",
   ).length;
   const rsvpTitle = roleId
-    ? `${roleMention(roleId)} (${count})`
-    : `No Role (${count})`;
+    ? `### ${roleMention(roleId)} (${count})`
+    : `### No Role (${count})`;
 
   const rsvpsContent = rsvps.map(rsvpToString(eventStart)).join("\n");
 
