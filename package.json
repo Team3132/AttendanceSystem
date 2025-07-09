@@ -48,7 +48,7 @@
 		"drizzle-orm": "0.44.2",
 		"drizzle-zod": "0.7.0",
 		"eventemitter3": "5.0.1",
-		"googleapis": "150.0.1",
+		"googleapis": "152.0.0",
 		"graphql": "16.11.0",
 		"graphql-request": "7.2.0",
 		"keyv": "5.3.4",
