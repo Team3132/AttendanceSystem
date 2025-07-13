@@ -81,11 +81,12 @@ async function getCalendarEvents() {
     if (initialData.nextPageToken) {
       pageToken = initialData.nextPageToken;
     }
-  } catch {
+  } catch (e) {
     // Throw an error if the sync token is not present
     // If the first request failed without a sync token
     // then it failed for another reason
     if (!kvSyncToken) {
+      eventLogger.error("Failed to fetch initial data", e);
       throw new Error("Failed to fetch initial data");
     }
 
