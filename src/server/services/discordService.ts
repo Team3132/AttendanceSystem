@@ -1,5 +1,11 @@
 import { trytm } from "@/utils/trytm";
-import { API, ChannelType } from "@discordjs/core";
+import { SlashCommandBuilder } from "@discordjs/builders";
+import {
+  API,
+  ChannelType,
+  InteractionContextType,
+  PermissionFlagsBits,
+} from "@discordjs/core";
 import { REST } from "@discordjs/rest";
 import env from "../env";
 import { ServerError } from "../utils/errors";
@@ -70,3 +76,62 @@ export const getServerChannels = async () => {
   // return in name, id format
   return textChannels.map(({ name, id }) => ({ name, id }));
 };
+
+export async function deployCommands() {
+  const rest = new REST().setToken(env.DISCORD_TOKEN);
+
+  const api = new API(rest);
+
+  const [data, err] = await trytm(
+    api.applicationCommands.bulkOverwriteGuildCommands(
+      env.DISCORD_CLIENT_ID,
+      env.GUILD_ID,
+      [
+        new SlashCommandBuilder()
+          .setName("syncplz")
+          .setDescription(
+            "Send a humble request to the bot to sync the calendar.",
+          )
+          .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles)
+          .setContexts(InteractionContextType.Guild)
+          .toJSON(),
+        new SlashCommandBuilder()
+          .setName("ping")
+          .setDescription("Ping the bot to check if it's online.")
+          .toJSON(),
+        new SlashCommandBuilder()
+          .setName("requestrsvp")
+          .setDescription(
+            "Send a message for people to RSVP to a specific event.",
+          )
+          .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles)
+          .setContexts(InteractionContextType.Guild)
+          .addStringOption((option) =>
+            option
+              .setAutocomplete(true)
+              .setName("meeting")
+              .setDescription("The event to RSVP to")
+              .setRequired(true),
+          )
+          .toJSON(),
+        new SlashCommandBuilder()
+          .setName("leaderboard")
+          .setDescription("Get the leaderboard for outreach hours")
+          .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles)
+          .setContexts(InteractionContextType.Guild)
+          .toJSON(),
+      ],
+    ),
+  );
+
+  if (err) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Error deploying commands",
+      cause: err,
+    });
+  }
+  console.log("Successfully deployed commands:", data);
+
+  return;
+}
