@@ -258,6 +258,7 @@ export const ServerRoute = createServerFileRoute("/api/interaction").methods({
             content: response.content,
             embeds: response.embeds,
             components: response.components,
+            allowed_mentions: response.allowed_mentions,
           });
         }
 
@@ -502,6 +503,7 @@ export const ServerRoute = createServerFileRoute("/api/interaction").methods({
             content: generatedMessage.content,
             embeds: generatedMessage.embeds,
             components: generatedMessage.components,
+            allowed_mentions: generatedMessage.allowed_mentions,
           });
         }
 
@@ -600,6 +602,7 @@ export const ServerRoute = createServerFileRoute("/api/interaction").methods({
             content: generatedMessage.content,
             embeds: generatedMessage.embeds,
             components: generatedMessage.components,
+            allowed_mentions: generatedMessage.allowed_mentions,
           });
         }
 
@@ -748,6 +751,7 @@ export const ServerRoute = createServerFileRoute("/api/interaction").methods({
           content: generatedMessage.content,
           embeds: generatedMessage.embeds,
           components: generatedMessage.components,
+          allowed_mentions: generatedMessage.allowed_mentions,
         });
       }
 
@@ -846,6 +850,7 @@ export const ServerRoute = createServerFileRoute("/api/interaction").methods({
           content: generatedMessage.content,
           embeds: generatedMessage.embeds,
           components: generatedMessage.components,
+          allowed_mentions: generatedMessage.allowed_mentions,
         });
       }
     }
