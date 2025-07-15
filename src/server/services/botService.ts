@@ -207,6 +207,9 @@ export async function generateMessage(data: MessageParams) {
     content: `Please RSVP (${roleMentionList})`,
     embeds: embeds.map((embed) => embed.toJSON()),
     components: [messageComponent.toJSON()],
+    allowed_mentions: {
+      roles: roleIds,
+    },
   } satisfies RESTPostAPIChannelMessageJSONBody;
 }
 
