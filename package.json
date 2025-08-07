@@ -84,7 +84,7 @@
 		"knip": "5.62.0",
 		"lefthook": "1.12.2",
 		"typescript": "5.9.2",
-		"vite": "7.0.6",
+		"vite": "7.1.0",
 		"vite-tsconfig-paths": "5.1.4"
 	},
 	"trustedDependencies": [
