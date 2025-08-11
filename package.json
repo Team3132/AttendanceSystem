@@ -76,7 +76,7 @@
 		"@graphql-codegen/typescript-operations": "4.6.1",
 		"@mui/lab": "6.0.0-dev.240424162023-9968b4889d",
 		"@types/luxon": "3.7.1",
-		"@types/react": "19.1.9",
+		"@types/react": "19.1.10",
 		"@types/react-dom": "19.1.7",
 		"@vitejs/plugin-react": "4.7.0",
 		"babel-plugin-react-compiler": "19.1.0-rc.2",
