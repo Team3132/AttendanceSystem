@@ -81,7 +81,7 @@
 		"@vitejs/plugin-react": "4.7.0",
 		"babel-plugin-react-compiler": "19.1.0-rc.2",
 		"drizzle-kit": "0.31.4",
-		"knip": "5.62.0",
+		"knip": "5.63.0",
 		"lefthook": "1.12.3",
 		"typescript": "5.9.2",
 		"vite": "7.1.3",
