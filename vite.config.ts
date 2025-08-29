@@ -1,5 +1,6 @@
 // import { defineConfig } from "@tanstack/react-start/config";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import viteReact from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 
@@ -12,37 +13,38 @@ export default defineConfig({
     viteTsconfigPaths(),
     tanstackStart({
       target: "bun",
-      react: {
-        babel: {
-          plugins: [
-            ["babel-plugin-react-compiler", ReactCompilerConfig],
-            [
-              "@emotion/babel-plugin",
-              {
-                importMap: {
-                  "@mui/system": {
-                    styled: {
-                      canonicalImport: ["@emotion/styled", "default"],
-                      styledBaseImport: ["@mui/system", "styled"],
-                    },
+      customViteReactPlugin: true,
+    }),
+    viteReact({
+      babel: {
+        plugins: [
+          ["babel-plugin-react-compiler", ReactCompilerConfig],
+          [
+            "@emotion/babel-plugin",
+            {
+              importMap: {
+                "@mui/system": {
+                  styled: {
+                    canonicalImport: ["@emotion/styled", "default"],
+                    styledBaseImport: ["@mui/system", "styled"],
                   },
-                  "@mui/material": {
-                    styled: {
-                      canonicalImport: ["@emotion/styled", "default"],
-                      styledBaseImport: ["@mui/material", "styled"],
-                    },
+                },
+                "@mui/material": {
+                  styled: {
+                    canonicalImport: ["@emotion/styled", "default"],
+                    styledBaseImport: ["@mui/material", "styled"],
                   },
-                  "@mui/material/styles": {
-                    styled: {
-                      canonicalImport: ["@emotion/styled", "default"],
-                      styledBaseImport: ["@mui/material/styles", "styled"],
-                    },
+                },
+                "@mui/material/styles": {
+                  styled: {
+                    canonicalImport: ["@emotion/styled", "default"],
+                    styledBaseImport: ["@mui/material/styles", "styled"],
                   },
                 },
               },
-            ],
+            },
           ],
-        },
+        ],
       },
     }),
   ],
