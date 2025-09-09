@@ -85,7 +85,7 @@
 		"lefthook": "1.12.4",
 		"typescript": "5.9.2",
 		"vite": "7.1.5",
-		"vite-plugin-react": "^4.0.1",
+		"vite-plugin-react": "4.0.1",
 		"vite-tsconfig-paths": "5.1.4"
 	},
 	"trustedDependencies": [
