@@ -6,7 +6,7 @@
       "dependencies": {
         "@babel/runtime": "7.28.4",
         "@discordjs/builders": "1.11.3",
-        "@discordjs/core": "2.2.1",
+        "@discordjs/core": "2.2.2",
         "@discordjs/rest": "2.6.0",
         "@emotion/react": "11.14.0",
         "@emotion/styled": "11.14.1",
@@ -267,7 +267,7 @@
 
     "@discordjs/collection": ["@discordjs/collection@2.1.1", "", {}, "sha512-LiSusze9Tc7qF03sLCujF5iZp7K+vRNEDBZ86FT9aQAv3vxMLihUvKvpsCWiQ2DJq1tVckopKm1rxomgNUc9hg=="],
 
-    "@discordjs/core": ["@discordjs/core@2.2.1", "", { "dependencies": { "@discordjs/rest": "^2.6.0", "@discordjs/util": "^1.1.1", "@discordjs/ws": "^2.0.3", "@sapphire/snowflake": "^3.5.3", "@vladfrangu/async_event_emitter": "^2.4.6", "discord-api-types": "^0.38.16" } }, "sha512-XxSV1YhwWVad0PGzV7TLUCni9NlXHABpoL6SBKuoAqotqN/yJuyeRwFcp2U0S40ktVbUW/oNimatWfVIDvCk2A=="],
+    "@discordjs/core": ["@discordjs/core@2.2.2", "", { "dependencies": { "@discordjs/rest": "^2.6.0", "@discordjs/util": "^1.1.1", "@discordjs/ws": "^2.0.3", "@sapphire/snowflake": "^3.5.3", "@vladfrangu/async_event_emitter": "^2.4.6", "discord-api-types": "^0.38.24" } }, "sha512-J2YBG9AclyALcamdEyT+so6bhW+Ys6TslXIaNLw0lN0lkGKUaaqXwUccQBnzZmJt1s4k29dXrdY0pqSnVsl7JA=="],
 
     "@discordjs/formatters": ["@discordjs/formatters@0.6.1", "", { "dependencies": { "discord-api-types": "^0.38.1" } }, "sha512-5cnX+tASiPCqCWtFcFslxBVUaCetB0thvM/JyavhbXInP1HJIEU+Qv/zMrnuwSsX3yWH2lVXNJZeDK3EiP4HHg=="],
 
@@ -2362,6 +2362,8 @@
     "@changesets/parse/js-yaml": ["js-yaml@3.14.1", "", { "dependencies": { "argparse": "^1.0.7", "esprima": "^4.0.0" }, "bin": { "js-yaml": "bin/js-yaml.js" } }, "sha512-okMH7OXXJ7YrN9Ok3/SXrnu4iX9yOk+25nqX4imS2npuvTYDmo/QEZoqwZkYaIDk3jVvBOTOIEgEhaLOynBS9g=="],
 
     "@cloudflare/kv-asset-handler/mime": ["mime@3.0.0", "", { "bin": { "mime": "cli.js" } }, "sha512-jSCU7/VB1loIWBZe14aEYHU/+1UMEHoaO7qxCOVJOw9GgH72VAWppxNcjU+x9a2k3GSIBXNKxXQFqRvvZ7vr3A=="],
+
+    "@discordjs/core/discord-api-types": ["discord-api-types@0.38.25", "", {}, "sha512-3edaLHuCdzzfTL1OCpl98G3mrlf+45FpxY+8f+5dRLnZD8R6QzIhapoCefqz6mhaygD+iqTVLtD4u6j57PRiFw=="],
 
     "@discordjs/formatters/discord-api-types": ["discord-api-types@0.38.8", "", {}, "sha512-xuRXPD44FcbKHrQK15FS1HFlMRNJtsaZou/SVws18vQ7zHqmlxyDktMkZpyvD6gE2ctGOVYC/jUyoMMAyBWfcw=="],
 
