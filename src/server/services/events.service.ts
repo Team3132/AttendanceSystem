@@ -15,7 +15,6 @@ import { DateTime } from "luxon";
 import type { z } from "zod";
 import db from "../drizzle/db";
 import { eventTable, rsvpTable, userTable } from "../drizzle/schema";
-import { eventQueryKeys } from "../queryKeys";
 import type { RSVPUserSchema, UserCheckinSchema } from "../schema";
 import type { CreateUserRsvpSchema } from "../schema/CreateBlankUserRsvpSchema";
 import type { CreateEventSchema } from "../schema/CreateEventSchema";
@@ -28,7 +27,6 @@ import clampDateTime from "../utils/clampDateTime";
 import { buildConflictUpdateColumns } from "../utils/db/buildConflictUpdateColumns";
 import { buildSetWhereColumns } from "../utils/db/buildSetWhereColumns";
 import { ServerError } from "../utils/errors";
-import ee from "../utils/eventEmitter";
 import randomStr from "../utils/randomStr";
 
 /**
@@ -289,7 +287,7 @@ export async function createEvent(params: z.infer<typeof CreateEventSchema>) {
 
   const { secret, ...data } = createdEvent;
 
-  ee.emit("invalidate", eventQueryKeys.eventsList);
+  // ee.emit("invalidate", eventQueryKeys.eventsList);
 
   return data;
 }
@@ -320,7 +318,7 @@ export async function editUserRsvpStatus(
   if (existingRsvp?.status === "ATTENDED") {
     throw new ServerError({
       code: "BAD_REQUEST",
-      message: "User ihas already attended the event",
+      message: "User has already attended the event",
     });
   }
 
@@ -359,7 +357,7 @@ export async function editUserRsvpStatus(
     });
   }
 
-  ee.emit("invalidate", eventQueryKeys.eventRsvps(eventId));
+  // ee.emit("invalidate", eventQueryKeys.eventRsvps(eventId));
 
   return updatedRsvp;
 }
@@ -458,7 +456,7 @@ async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
     });
   }
 
-  ee.emit("invalidate", eventQueryKeys.eventRsvps(eventId));
+  // ee.emit("invalidate", eventQueryKeys.eventRsvps(eventId));
 
   return updatedRsvp;
 }
@@ -609,7 +607,7 @@ export async function userCheckout(userId: string, eventId: string) {
     });
   }
 
-  ee.emit("invalidate", eventQueryKeys.eventRsvps(eventId));
+  // ee.emit("invalidate", eventQueryKeys.eventRsvps(eventId));
 
   return updatedRsvp;
 }
@@ -723,7 +721,7 @@ export async function createUserRsvp(
     });
   }
 
-  ee.emit("invalidate", eventQueryKeys.eventRsvps(eventId));
+  // ee.emit("invalidate", eventQueryKeys.eventRsvps(eventId));
 
   return createdRsvp;
 }

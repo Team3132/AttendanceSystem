@@ -220,8 +220,8 @@ export async function createUserScancode(userId: string, scancodeCode: string) {
     });
   }
 
-  // ee.emit("invalidate", getQueryKey(rtrpc.users.getUserScancodes, userId)); // Don't broadcast the user id
-  // ee.emit("invalidate", getQueryKey(getUserScancodes, userId)); // Don't broadcast the user id
+  // // ee.emit("invalidate", getQueryKey(rtrpc.users.getUserScancodes, userId)); // Don't broadcast the user id
+  // // ee.emit("invalidate", getQueryKey(getUserScancodes, userId)); // Don't broadcast the user id
 
   return createdScancode;
 }
@@ -286,7 +286,7 @@ export async function removeScancode(userId: string, code: string) {
   //     message: "Scancode does not exist",
   //   });
   // }
-  // ee.emit("invalidate", getQueryKey(rtrpc.users.getUserScancodes, userId)); // Don't broadcast the user id
+  // // ee.emit("invalidate", getQueryKey(rtrpc.users.getUserScancodes, userId)); // Don't broadcast the user id
 
   return dbScancode;
 }
