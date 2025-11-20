@@ -23,7 +23,7 @@
 		"@discordjs/rest": "2.6.0",
 		"@emotion/react": "11.14.0",
 		"@emotion/styled": "11.14.1",
-		"@fontsource/roboto": "5.2.6",
+		"@fontsource/roboto": "5.2.8",
 		"@hookform/resolvers": "5.2.1",
 		"@keyv/postgres": "2.1.7",
 		"@lucia-auth/adapter-drizzle": "1.1.0",
