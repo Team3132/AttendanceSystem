@@ -32,7 +32,7 @@
         "@tanstack/zod-adapter": "1.131.36",
         "arctic": "1.9.2",
         "consola": "3.4.2",
-        "discord-interactions": "4.3.0",
+        "discord-interactions": "4.4.0",
         "drizzle-orm": "0.44.2",
         "drizzle-zod": "0.7.0",
         "eventemitter3": "5.0.1",
@@ -1200,7 +1200,7 @@
 
     "discord-api-types": ["discord-api-types@0.38.18", "", {}, "sha512-ygenySjZKUaBf5JT8BNhZSxLzwpwdp41O0wVroOTu/N2DxFH7dxYTZUSnFJ6v+/2F3BMcnD47PC47u4aLOLxrQ=="],
 
-    "discord-interactions": ["discord-interactions@4.3.0", "", {}, "sha512-qCJEnuQeIDIo26MPEqYlIiYokqwFAMoRsmEE0PgAuiTYNXIMB9Z40LmqlgYe0yBO+743+AOnfTQdUK1WLg8+pw=="],
+    "discord-interactions": ["discord-interactions@4.4.0", "", {}, "sha512-jjJx8iwAeJcj8oEauV43fue9lNqkf38fy60aSs2+G8D1nJmDxUIrk08o3h0F3wgwuBWWJUZO+X/VgfXsxpCiJA=="],
 
     "dom-helpers": ["dom-helpers@5.2.1", "", { "dependencies": { "@babel/runtime": "^7.8.7", "csstype": "^3.0.2" } }, "sha512-nRCa7CK3VTrM2NmGkIy4cbK7IZlgBE/PYMn55rrXefr5xXDP0LdtfPnblFDoVdcAfslJ7or6iqAUnx0CCGIWQA=="],
 
