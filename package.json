@@ -80,7 +80,7 @@
 		"@types/react-dom": "19.1.9",
 		"@vitejs/plugin-react": "4.7.0",
 		"babel-plugin-react-compiler": "19.1.0-rc.3",
-		"drizzle-kit": "0.31.4",
+		"drizzle-kit": "0.31.7",
 		"knip": "5.70.1",
 		"lefthook": "1.12.4",
 		"typescript": "5.9.3",
