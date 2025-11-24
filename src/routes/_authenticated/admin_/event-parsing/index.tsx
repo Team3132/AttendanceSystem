@@ -2,7 +2,6 @@ import { LinkIconButton } from "@/components/LinkIconButton";
 import useDeleteRule from "@/features/admin/hooks/useDeleteRule";
 import useDeployCommands from "@/features/admin/hooks/useDeployCommands";
 import useSyncCalendar from "@/features/admin/hooks/useSyncCalendar";
-import useSyncCalendarFull from "@/features/admin/hooks/useSyncCalendarFull";
 import useTriggerRule from "@/features/admin/hooks/useTriggerRule";
 import { adminQueries } from "@/queries/adminQueries";
 import {
@@ -110,7 +109,6 @@ function RouteComponent() {
       </List>
       <Stack direction={"row"} gap={2}>
         <SyncEventsButton />
-        <SyncEventsFullButton />
         <DeployDiscordCommandsButton />
       </Stack>
     </>
@@ -128,22 +126,6 @@ function SyncEventsButton() {
       variant="contained"
     >
       Sync Events
-    </Button>
-  );
-}
-
-function SyncEventsFullButton() {
-  const syncEventsFullMutation = useSyncCalendarFull();
-  const syncEventsFull = () => syncEventsFullMutation.mutate();
-
-  return (
-    <Button
-      onClick={syncEventsFull}
-      loading={syncEventsFullMutation.isPending}
-      variant="contained"
-      color="warning"
-    >
-      Sync Events Full
     </Button>
   );
 }

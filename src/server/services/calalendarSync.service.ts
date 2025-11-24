@@ -1,4 +1,4 @@
-import { type calendar_v3, google } from "googleapis";
+import { Common, type calendar_v3, google } from "googleapis";
 
 import { trytm } from "@/utils/trytm";
 import { asc, inArray } from "drizzle-orm";
@@ -29,88 +29,70 @@ const calendar = google.calendar({
 });
 
 /**
- * Promisified version of the Google Calendar API events.list method
- * @param params Google Calendar API parameters
- * @returns Promise of the Google Calendar API response
- */
-const promiseifiedCalEventsList = (
-  params: calendar_v3.Params$Resource$Events$List,
-) =>
-  new Promise<calendar_v3.Schema$Events>((res, rej) => {
-    calendar.events.list(params, (error, result) => {
-      if (error) {
-        return rej(error);
-      }
-      if (result === null || result === undefined) {
-        return rej(new Error("Result is null or undefined"));
-      }
-      res(result.data);
-    });
-  });
-
-/**
  * Generator function to get all calendar events
  */
-async function getCalendarEvents() {
+async function incrementalSync(syncToken?: string) {
   /** All the calendar events */
   let allData: calendar_v3.Schema$Event[] = [];
-  /** The page token */
-  let pageToken: string | undefined;
-  /** The stored sync token */
-  const kvSyncToken = await kv.get<string>("syncToken");
 
   /** The google calendar parameters */
   const params: calendar_v3.Params$Resource$Events$List = {
     calendarId: env.GOOGLE_CALENDAR_ID,
     showDeleted: true,
     singleEvents: true,
-    syncToken: kvSyncToken,
+    syncToken,
   };
 
-  try {
-    const initialData = await promiseifiedCalEventsList(params);
+  const [responseData, error] = await trytm(calendar.events.list(params));
 
-    if (initialData.items) {
-      allData = allData.concat(initialData.items);
+  if (error) {
+    if (error instanceof Common.GaxiosError && error.status === 410) {
+      // Sync token is invalid, need to do a full sync
+      eventLogger.warn("Sync token is invalid, performing full sync");
+      await kv.delete("syncToken");
+      return incrementalSync();
     }
 
-    if (initialData.nextSyncToken) {
-      kv.set("syncToken", initialData.nextSyncToken);
-    }
+    throw error;
+  }
 
-    if (initialData.nextPageToken) {
-      pageToken = initialData.nextPageToken;
-    }
-  } catch (e) {
-    // Throw an error if the sync token is not present
-    // If the first request failed without a sync token
-    // then it failed for another reason
-    if (!kvSyncToken) {
-      eventLogger.error("Failed to fetch initial data", e);
-      throw new Error("Failed to fetch initial data");
-    }
+  const initialData = responseData.data;
 
-    const initialData = await promiseifiedCalEventsList({
-      ...params,
-      syncToken: undefined,
-    });
+  if (initialData.items) {
+    allData = allData.concat(initialData.items);
+  }
 
-    if (initialData.items) {
-      allData = allData.concat(initialData.items);
-    }
+  if (initialData.nextSyncToken) {
+    await kv.set("syncToken", initialData.nextSyncToken);
+  }
 
-    if (initialData.nextSyncToken) {
-      kv.set("syncToken", initialData.nextSyncToken);
-    }
+  /** The page token */
+  let pageToken: string | undefined;
 
-    pageToken = initialData.nextPageToken ?? undefined;
+  if (initialData.nextPageToken) {
+    pageToken = initialData.nextPageToken;
   }
 
   while (pageToken) {
-    const data = await promiseifiedCalEventsList({
-      ...params,
-      pageToken,
-    });
+    const [response, error] = await trytm(
+      calendar.events.list({
+        ...params,
+        pageToken,
+      }),
+    );
+
+    if (error) {
+      if (error instanceof Common.GaxiosError && error.status === 410) {
+        // Sync token is invalid, need to do a full sync
+        eventLogger.warn("Sync token is invalid, performing full sync");
+        await kv.delete("syncToken");
+        return incrementalSync();
+      }
+
+      throw error;
+    }
+
+    const data = response.data;
 
     // If there are items, push them to the allData array
     if (data.items) {
@@ -123,7 +105,7 @@ async function getCalendarEvents() {
 
     // If the sync token is present, update it
     if (data.nextSyncToken) {
-      kv.set("syncToken", data.nextSyncToken);
+      await kv.set("syncToken", data.nextSyncToken);
     }
   }
 
@@ -231,11 +213,12 @@ const isMatchingRule = (
 /**
  * Syncs events from Google Calendar to the database
  */
-export const syncEvents = async () => {
+export async function syncEvents() {
   eventLogger.info("Sync Events");
+  const syncToken = await kv.get<string>("syncToken");
 
   /** All the calendar events */
-  const calendarEvents = await getCalendarEvents();
+  const calendarEvents = await incrementalSync(syncToken);
 
   /** Filters to map events to */
   const filters = await db
@@ -308,12 +291,7 @@ export const syncEvents = async () => {
   eventLogger.success("Sync Events");
 
   return { updatedEvents: upsertedCount, deletedEventCount: deletedCount };
-};
-
-export const fullSyncEvents = async () => {
-  await kv.delete("syncToken");
-  return syncEvents();
-};
+}
 
 /**
  * Maps an event to a rule
