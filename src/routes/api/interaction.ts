@@ -183,7 +183,7 @@ export const Route = createFileRoute("/api/interaction")({
 
               if (err) {
                 return reply({
-                  content: "Failed to sync calendar.",
+                  content: err.message,
                   flags: MessageFlags.Ephemeral,
                 });
               }
