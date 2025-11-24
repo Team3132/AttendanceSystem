@@ -64,7 +64,7 @@
 		"ulidx": "2.4.1",
 		"usehooks-ts": "3.1.1",
 		"uuid": "11.1.0",
-		"zod": "3.25.76"
+		"zod": "4.1.13"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
