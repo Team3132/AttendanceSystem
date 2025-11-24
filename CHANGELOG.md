@@ -1,5 +1,11 @@
 # frontend
 
+## 5.13.0
+
+### Minor Changes
+
+- [`8f859ce`](https://github.com/Team3132/AttendanceSystem/commit/8f859ce3b499828e55f7cd401b8ded562cde7f74) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Use async generators to add stuff to db
+
 ## 5.12.0
 
 ### Minor Changes
