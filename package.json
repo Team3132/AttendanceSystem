@@ -17,8 +17,8 @@
 		".output"
 	],
 	"dependencies": {
-		"@discordjs/builders": "^1.13.0",
-		"@discordjs/core": "^2.4.0",
+		"@discordjs/builders": "1.13.0",
+		"@discordjs/core": "2.4.0",
 		"@discordjs/rest": "2.6.0",
 		"@emotion/react": "11.14.0",
 		"@emotion/styled": "11.14.1",
