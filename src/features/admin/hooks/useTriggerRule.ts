@@ -9,7 +9,7 @@ import { z } from "zod";
 const triggerRuleFn = createServerFn({
   method: "POST",
 })
-  .validator(z.string())
+  .inputValidator(z.string())
   .middleware([adminMiddleware])
   .handler(({ data }) => triggerRule(data));
 

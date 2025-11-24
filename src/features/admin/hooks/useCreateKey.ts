@@ -3,21 +3,21 @@ import { adminQueryKeys } from "@/server/queryKeys";
 import { createApiKey } from "@/server/services/adminService";
 import type FlattenServerFn from "@/types/FlattenServerFn";
 import { useMutation } from "@tanstack/react-query";
-import { createServerFn } from "@tanstack/react-start";
+import { createServerFn, useServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 const createApiKeyFn = createServerFn({
   method: "POST",
 })
   .middleware([adminMiddleware])
-  .validator(z.string())
+  .inputValidator(z.string())
   .handler(({ data, context: { user } }) => createApiKey(user.id, data));
 
 type CreateApiKeyFn = FlattenServerFn<typeof createApiKeyFn>;
 
 export default function useCreateKey() {
   return useMutation({
-    mutationFn: createApiKeyFn as CreateApiKeyFn,
+    mutationFn: useServerFn(createApiKeyFn) as CreateApiKeyFn,
     meta: {
       invalidates: [adminQueryKeys.apiKeys],
     },

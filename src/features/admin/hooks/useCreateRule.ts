@@ -13,7 +13,7 @@ const createRuleFn: ({
 > = createServerFn({
   method: "POST",
 })
-  .validator(NewEventParsingRuleSchema)
+  .inputValidator(NewEventParsingRuleSchema)
   .middleware([adminMiddleware])
   .handler(({ data }) => createParsingRule(data));
 

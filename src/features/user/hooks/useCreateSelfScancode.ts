@@ -10,7 +10,7 @@ const createSelfScancodeFn = createServerFn({
   method: "POST",
 })
   .middleware([sessionMiddleware])
-  .validator(z.string())
+  .inputValidator(z.string())
   .handler(async ({ data, context }) =>
     createUserScancode(context.user.id, data),
   );

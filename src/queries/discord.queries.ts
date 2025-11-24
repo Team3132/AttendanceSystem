@@ -9,12 +9,12 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 const discordServerRolesFn = createServerFn({ method: "GET" })
-  .validator(z.void())
+  .inputValidator(z.void())
   .middleware([adminMiddleware])
   .handler(() => getServerRoles());
 
 const discordServerChannelsFn = createServerFn({ method: "GET" })
-  .validator(z.void())
+  .inputValidator(z.void())
   .middleware([adminMiddleware])
   .handler(() => getServerChannels());
 

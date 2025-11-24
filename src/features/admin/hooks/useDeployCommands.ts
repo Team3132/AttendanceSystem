@@ -4,9 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/react-start";
 
 const deployCommandsFn = createServerFn({
-  type: "dynamic",
   method: "POST",
-  response: "data",
 })
   .middleware([adminMiddleware])
   .handler(async () => deployCommands());

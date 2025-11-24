@@ -18,7 +18,7 @@ const getEventParsingRulesFn = createServerFn({ method: "GET" })
   .handler(() => getParsingRules());
 
 const getEventParsingRuleFn = createServerFn({ method: "GET" })
-  .validator(z.string())
+  .inputValidator(z.string())
   .middleware([adminMiddleware])
   .handler(({ data }) => getParsingRule(data));
 

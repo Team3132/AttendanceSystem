@@ -53,7 +53,7 @@ export const Route = createRootRouteWithContext<{
   errorComponent: ErrorComponent,
 });
 
-const attribute: "media" | "class" | "data" = "class";
+const attribute = "data";
 
 const theme = createTheme({
   colorSchemes: {
@@ -84,6 +84,7 @@ function RootComponent() {
     <RootDocument>
       <InitColorSchemeScript attribute={attribute} />
       <ThemeProvider theme={theme}>
+        <CssBaseline enableColorScheme />
         <LocalizationProvider
           adapterLocale={"en-au"}
           dateAdapter={AdapterLuxon}
@@ -92,7 +93,6 @@ function RootComponent() {
           <GenericServerErrorBoundary>
             <Outlet />
           </GenericServerErrorBoundary>
-          <CssBaseline enableColorScheme />
         </LocalizationProvider>
       </ThemeProvider>
       <Devtools />

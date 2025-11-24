@@ -9,7 +9,7 @@ import { z } from "zod";
 const deleteRuleFn = createServerFn({
   method: "POST",
 })
-  .validator(z.string())
+  .inputValidator(z.string())
   .middleware([adminMiddleware])
   .handler(async ({ data }) => deleteParsingRule(data));
 

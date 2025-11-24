@@ -5,7 +5,7 @@ import { styled } from "@mui/material/styles";
 import { useCallback, useState } from "react";
 import { z } from "zod";
 import { useDisclosure } from "../../../hooks/useDisclosure";
-import useZodForm, { type ZodSubmitHandler } from "../../../hooks/useZodForm";
+import useZodForm from "../../../hooks/useZodForm";
 import useScanin from "../hooks/useScanin";
 import UnknownCodeModal from "./UnknownCodeModal";
 
@@ -35,6 +35,7 @@ export default function ScaninCard(props: ScaninCardProps) {
     formState: { isSubmitting },
     handleSubmit,
     reset,
+    setValue,
   } = useZodForm({
     schema: ScaninSchema,
     defaultValues: {
@@ -44,40 +45,40 @@ export default function ScaninCard(props: ScaninCardProps) {
 
   const scanInMutation = useScanin();
 
-  const onSubmit: ZodSubmitHandler<typeof ScaninSchema> = useCallback(
-    async (data) => {
-      try {
-        await scanInMutation.mutateAsync({
-          data: { eventId, scancode: data.code },
-        });
-        reset({
-          code: "",
-        });
+  const onSubmit = useCallback(
+    () =>
+      handleSubmit(async (data) => {
+        try {
+          await scanInMutation.mutateAsync({
+            data: { eventId, scancode: data.code },
+          });
+          reset({
+            code: "",
+          });
 
-        setUnknownCode(undefined);
-        setFocus("code");
-      } catch (error) {
-        if (isServerError(error) && error.code === "NOT_FOUND") {
-          setUnknownCode(data.code);
-          onOpen();
+          setUnknownCode(undefined);
+          setFocus("code");
+        } catch (error) {
+          if (isServerError(error) && error.code === "NOT_FOUND") {
+            setUnknownCode(data.code);
+            onOpen();
+          }
         }
-      }
-    },
-    [eventId, onOpen, reset, scanInMutation, setFocus],
+      }),
+    [eventId, onOpen, reset, scanInMutation, setFocus, handleSubmit],
   );
 
   const codeCreatedCallback = useCallback(
     (createdCode: string) => {
-      onSubmit({
-        code: createdCode,
-      });
+      setValue("code", createdCode);
+      onSubmit();
     },
-    [onSubmit],
+    [onSubmit, setValue],
   );
 
   return (
     <PaddedPaper>
-      <Stack gap={2} component={"form"} onSubmit={handleSubmit(onSubmit)}>
+      <Stack gap={2} component={"form"} onSubmit={onSubmit}>
         <Typography variant="h5" textAlign={"center"}>
           Scan In
         </Typography>

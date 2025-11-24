@@ -1,29 +1,50 @@
 import { discord } from "@/server/auth/lucia";
 import { consola } from "@/server/logger";
-import { setCookie } from "@tanstack/react-start/server";
-import { createServerFileRoute } from "@tanstack/react-start/server";
-import { generateState } from "arctic";
+import { createFileRoute } from "@tanstack/react-router";
+import { setResponseHeader } from "@tanstack/react-start/server";
+import { generateCodeVerifier, generateState } from "arctic";
+import { Cookie } from "lucia";
 
-export const ServerRoute = createServerFileRoute("/api/auth/discord").methods({
-  GET: async () => {
-    const state = generateState();
-    const url = await discord.createAuthorizationURL(state, {
-      scopes: ["identify", "guilds", "guilds.members.read"],
-    });
+export const Route = createFileRoute("/api/auth/discord")({
+  server: {
+    handlers: {
+      GET: async () => {
+        const state = generateState();
+        const codeVerifier = generateCodeVerifier();
+        const url = await discord.createAuthorizationURL(state, codeVerifier, [
+          "identify",
+          "guilds",
+          "guilds.members.read",
+        ]);
 
-    setCookie("discord_oauth_state", state, {
-      path: "/",
-      secure: import.meta.env.PROD,
-      httpOnly: true,
-      maxAge: 60 * 10,
-      sameSite: "lax",
-    });
-    consola.info("Redirecting to Discord OAuth");
-    return new Response(null, {
-      status: 302,
-      headers: {
-        location: url.toString(),
+        const stateCookie = new Cookie("discord_oauth_state", state, {
+          secure: import.meta.env.PROD, // set to false in localhost
+          path: "/",
+          httpOnly: true,
+          maxAge: 60 * 10, // 10 minutes
+        });
+        const codeVerifierCookie = new Cookie(
+          "discord_oauth_code_verifier",
+          codeVerifier,
+          {
+            secure: import.meta.env.PROD, // set to false in localhost
+            path: "/",
+            httpOnly: true,
+            maxAge: 60 * 10, // 10 minutes
+          },
+        );
+        setResponseHeader("Set-Cookie", [
+          stateCookie.serialize(),
+          codeVerifierCookie.serialize(),
+        ]);
+        consola.info("Redirecting to Discord OAuth");
+        return new Response(null, {
+          status: 302,
+          headers: {
+            location: url.toString(),
+          },
+        });
       },
-    });
+    },
   },
 });

@@ -1,12 +1,11 @@
 import { lucia } from "@/server/auth/lucia";
 import env from "@/server/env";
 import { redirect } from "@tanstack/react-router";
+import { createMiddleware } from "@tanstack/react-start";
 import {
-  createMiddleware,
-  registerGlobalMiddleware,
-} from "@tanstack/react-start";
-import { getCookie, setCookie } from "@tanstack/react-start/server";
-import { getHeader } from "@tanstack/react-start/server";
+  getRequestHeader,
+  setResponseHeader,
+} from "@tanstack/react-start/server";
 import type { Session, User } from "lucia";
 
 const nullSession = {
@@ -35,7 +34,7 @@ type SessionContext = FilledSession | NullSession;
 export const authBaseMiddleware = createMiddleware({
   type: "function",
 }).server(async ({ next }) => {
-  const authorizationHeader = getHeader("Authorization");
+  const authorizationHeader = getRequestHeader("Authorization");
 
   // Get the bearer token session
   const sessionIdAuthorization = lucia.readBearerToken(
@@ -54,16 +53,13 @@ export const authBaseMiddleware = createMiddleware({
   }
 
   // If we're in a HTTP context, we can use cookies
-  const sessionId = getCookie(lucia.sessionCookieName);
+  const cookieHeader = getRequestHeader("Cookie");
+  const sessionId = cookieHeader ? lucia.readSessionCookie(cookieHeader) : null;
 
   // If there's no session cookie, we're not logged in so create a blank cookie
   if (!sessionId) {
     const sessionCookie = lucia.createBlankSessionCookie();
-    setCookie(
-      sessionCookie.name,
-      sessionCookie.value,
-      sessionCookie.attributes,
-    );
+    setResponseHeader("Set-Cookie", sessionCookie.serialize());
 
     return next({
       context: nullSession as SessionContext,
@@ -76,21 +72,13 @@ export const authBaseMiddleware = createMiddleware({
   if (!validSession.session) {
     const sessionCookie = lucia.createBlankSessionCookie();
 
-    setCookie(
-      sessionCookie.name,
-      sessionCookie.value,
-      sessionCookie.attributes,
-    );
+    setResponseHeader("Set-Cookie", sessionCookie.serialize());
   }
 
   // If the session is fresh, we need to update the cookie to extend the expiry
   if (validSession.session?.fresh) {
     const sessionCookie = lucia.createSessionCookie(validSession.session.id);
-    setCookie(
-      sessionCookie.name,
-      sessionCookie.value,
-      sessionCookie.attributes,
-    );
+    setResponseHeader("Set-Cookie", sessionCookie.serialize());
   }
 
   return next({
@@ -149,8 +137,3 @@ export const adminMiddleware = createMiddleware({
       context,
     });
   });
-
-// Register the global middleware
-registerGlobalMiddleware({
-  middleware: [authBaseMiddleware],
-});

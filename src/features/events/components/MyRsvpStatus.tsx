@@ -46,11 +46,11 @@ export default function MyRsvpStatus() {
       <MenuItem value="" disabled>
         Select RSVP Status
       </MenuItem>
-      <MenuItem value={RSVPStatusSchema.Enum.MAYBE}>Maybe</MenuItem>
-      <MenuItem value={RSVPStatusSchema.Enum.NO}>No</MenuItem>
-      <MenuItem value={RSVPStatusSchema.Enum.YES}>Yes</MenuItem>
-      <MenuItem value={RSVPStatusSchema.Enum.LATE}>Late</MenuItem>
-      <MenuItem value={RSVPStatusSchema.Enum.ATTENDED} disabled>
+      <MenuItem value={RSVPStatusSchema.enum.MAYBE}>Maybe</MenuItem>
+      <MenuItem value={RSVPStatusSchema.enum.NO}>No</MenuItem>
+      <MenuItem value={RSVPStatusSchema.enum.YES}>Yes</MenuItem>
+      <MenuItem value={RSVPStatusSchema.enum.LATE}>Late</MenuItem>
+      <MenuItem value={RSVPStatusSchema.enum.ATTENDED} disabled>
         Attended
       </MenuItem>
     </TextField>

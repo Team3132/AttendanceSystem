@@ -29,11 +29,6 @@ import {
   TextInputStyle,
 } from "@discordjs/core";
 import { json } from "@tanstack/react-start";
-import {
-  createServerFileRoute,
-  getHeader,
-  readRawBody,
-} from "@tanstack/react-start/server";
 import { match } from "path-to-regexp";
 
 import {
@@ -55,6 +50,8 @@ import {
 } from "@/server/services/events.service";
 import { getOutreachTime } from "@/server/services/outreach.service";
 import { createUser } from "@/server/services/user.service";
+import { createFileRoute } from "@tanstack/react-router";
+import { getRequestHeader } from "@tanstack/react-start/server";
 import { verifyKey } from "discord-interactions";
 import { DateTime, Duration } from "luxon";
 import { z } from "zod";
@@ -103,798 +100,817 @@ function rsvpToDescription(
 
 const logger = consola.withTag("discord-interaction");
 
-export const ServerRoute = createServerFileRoute("/api/interaction").methods({
-  POST: async ({ request }) => {
-    const signature = getHeader("X-Signature-Ed25519");
-    const timestamp = getHeader("X-Signature-Timestamp");
+export const Route = createFileRoute("/api/interaction")({
+  server: {
+    handlers: {
+      POST: async ({ request }) => {
+        const signature = getRequestHeader("X-Signature-Ed25519");
+        const timestamp = getRequestHeader("X-Signature-Timestamp");
 
-    logger.debug(
-      `Received interaction with signature: ${signature}, timestamp: ${timestamp}`,
-    );
-
-    const rawBody = await readRawBody();
-
-    if (!signature || !timestamp || !rawBody) {
-      console.error("Missing signature, timestamp, or raw body");
-      return json({ message: "Invalid request" }, { status: 401 });
-    }
-
-    const isValidRequest = await verifyKey(
-      rawBody,
-      signature,
-      timestamp,
-      env.DISCORD_PUBLIC_KEY,
-    );
-
-    logger.debug(`Request validation result: ${isValidRequest}`);
-
-    if (!isValidRequest) {
-      return new Response("Bad request signature", {
-        status: 401,
-      });
-    }
-
-    const interaction: APIInteraction = await request.json();
-
-    if (interaction.type === InteractionType.Ping) {
-      logger.debug("Received ping interaction");
-      return json<APIInteractionResponsePong>({
-        type: InteractionResponseType.Pong,
-      });
-    }
-
-    if (
-      interaction.member === undefined ||
-      interaction.guild_id !== env.GUILD_ID
-    ) {
-      logger.debug(
-        "Interaction is not from a guild member or guild ID does not match",
-      );
-      return reply({
-        content: "You must be a guild member to use this command.",
-        flags: MessageFlags.Ephemeral,
-      });
-    }
-
-    /**
-     * Handle application command interactions.
-     */
-    if (interaction.type === InteractionType.ApplicationCommand) {
-      /**
-       * Respond to typical slash commands
-       */
-      if (interaction.data.type === ApplicationCommandType.ChatInput) {
-        logger.debug(`Processing chat input command: ${interaction.data.name}`);
-        /**
-         * Respond to the "ping" command with "Pong!".
-         */
-        if (interaction.data.name === "ping") {
-          return reply({
-            content: "Pong!",
-          });
-        }
-
-        /**
-         * Sync Please command.
-         */
-        if (interaction.data.name === "syncplz") {
-          const [response, err] = await trytm(syncEvents());
-
-          if (err) {
-            return reply({
-              content: "Failed to sync calendar.",
-              flags: MessageFlags.Ephemeral,
-            });
-          }
-
-          const embed = new EmbedBuilder()
-            .setColor([0, 255, 0])
-            .setTitle("Calendar Synced")
-            .setDescription("Calendar synced successfully")
-            .setFields([
-              {
-                name: "Deleted Events",
-                value: response.deletedEventCount.toString(),
-                inline: true,
-              },
-              {
-                name: "Updated/Created Events",
-                value: response.updatedEvents.toString(),
-                inline: true,
-              },
-            ]);
-
-          return reply({
-            content: "Calendar synced",
-            embeds: [embed.toJSON()],
-          });
-        }
-
-        /**
-         * Request RSVP command.
-         */
-        if (interaction.data.name === "requestrsvp") {
-          const meetingStringOption = interaction.data.options?.find(
-            (option) =>
-              option.type === ApplicationCommandOptionType.String &&
-              option.name === "meeting",
-          ) as APIApplicationCommandInteractionDataStringOption | undefined;
-
-          const meetingId = meetingStringOption?.value;
-
-          if (!meetingId) {
-            return reply({
-              content: "Please provide a meeting ID.",
-              flags: MessageFlags.Ephemeral,
-            });
-          }
-
-          const [response, err] = await trytm(
-            generateMessage({
-              eventId: meetingId,
-            }),
-          );
-
-          const [_, eventPostedError] = await trytm(markEventPosted(meetingId));
-
-          if (eventPostedError) {
-            console.error(
-              `Error marking event as posted: ${eventPostedError.message}`,
-            );
-            return reply({
-              content: "Failed to mark event as posted.",
-              flags: MessageFlags.Ephemeral,
-            });
-          }
-
-          if (err) {
-            return reply({
-              content: "Failed to generate RSVP message.",
-              flags: MessageFlags.Ephemeral,
-            });
-          }
-
-          return reply({
-            content: response.content,
-            embeds: response.embeds,
-            components: response.components,
-            allowed_mentions: response.allowed_mentions,
-          });
-        }
-
-        /**
-         * Outreach Leaderboard command.
-         */
-        if (interaction.data.name === "leaderboard") {
-          const [leaderboardPageEmbed, leaderboardPageError] = await trytm(
-            createOutreachEmbedPage(1),
-          );
-
-          if (leaderboardPageError) {
-            console.error(
-              `Error creating outreach embed page: ${leaderboardPageError.message}`,
-            );
-            return reply({
-              content: "Failed to fetch leaderboard page.",
-              flags: MessageFlags.Ephemeral,
-            });
-          }
-          return reply({
-            embeds: [leaderboardPageEmbed.embed.toJSON()],
-            components: [leaderboardPageEmbed.messageComponent.toJSON()],
-          });
-        }
-      }
-    }
-
-    /**
-     * Handle message component interactions.
-     */
-    if (interaction.type === InteractionType.MessageComponent) {
-      /**
-       * Handle button interactions.
-       */
-      if (interaction.data.component_type === ComponentType.Button) {
         logger.debug(
-          `Processing button interaction with custom ID: ${interaction.data.custom_id}`,
+          `Received interaction with signature: ${signature}, timestamp: ${timestamp}`,
         );
-        const { custom_id: customId } = interaction.data;
 
-        /**
-         * RSVPs button.
-         */
-        const rsvpsFn = match("event/:eventId/rsvps");
-        const rsvpsButtonMatch = rsvpsFn(customId);
+        const rawBody = await request.text();
 
-        if (rsvpsButtonMatch !== false) {
-          const paramObject = await z
-            .object({
-              eventId: z.string(),
-            })
-            .safeParseAsync(rsvpsButtonMatch.params);
+        if (!signature || !timestamp || !rawBody) {
+          console.error("Missing signature, timestamp, or raw body");
+          return json({ message: "Invalid request" }, { status: 401 });
+        }
 
-          if (!paramObject.success) {
-            return reply({
-              content: "Invalid RSVP status.",
-              flags: MessageFlags.Ephemeral,
-            });
-          }
+        const isValidRequest = await verifyKey(
+          rawBody,
+          signature,
+          timestamp,
+          env.DISCORD_PUBLIC_KEY,
+        );
 
-          const { eventId } = paramObject.data;
+        logger.debug(`Request validation result: ${isValidRequest}`);
 
-          const [rsvpEvent, eventErr] = await trytm(getEvent(eventId));
+        if (!isValidRequest) {
+          return new Response("Bad request signature", {
+            status: 401,
+          });
+        }
 
-          if (eventErr) {
-            return reply({
-              content: "Failed to fetch event details.",
-              flags: MessageFlags.Ephemeral,
-            });
-          }
+        const interaction: APIInteraction = await request.json();
 
-          const [eventRsvps, rsvpsErr] = await trytm(getEventRsvps(eventId));
+        if (interaction.type === InteractionType.Ping) {
+          logger.debug("Received ping interaction");
+          return json<APIInteractionResponsePong>({
+            type: InteractionResponseType.Pong,
+          });
+        }
 
-          if (rsvpsErr) {
-            return reply({
-              content: "Failed to fetch event RSVPs.",
-              flags: MessageFlags.Ephemeral,
-            });
-          }
-
-          const description = eventRsvps
-            .map((rsvp) => rsvpToDescription(rsvp.user.username, rsvp.status))
-            .join("\n");
-
-          const rsvpEmbed = new EmbedBuilder()
-            .setTitle(
-              `RSVPs for ${rsvpEvent.title} at ${DateTime.fromJSDate(
-                rsvpEvent.startDate,
-              ).toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}`,
-            )
-            .setDescription(description)
-            .setTimestamp(new Date())
-            .setURL(`${env.VITE_FRONTEND_URL}/event/${rsvpEvent.id}`);
-
+        if (
+          interaction.member === undefined ||
+          interaction.guild_id !== env.GUILD_ID
+        ) {
+          logger.debug(
+            "Interaction is not from a guild member or guild ID does not match",
+          );
           return reply({
+            content: "You must be a guild member to use this command.",
             flags: MessageFlags.Ephemeral,
-            embeds: [rsvpEmbed.toJSON()],
           });
         }
 
         /**
-         * RSVP button.
+         * Handle application command interactions.
          */
-        const rsvpFn = match("event/:eventId/rsvp/:rsvpStatus");
+        if (interaction.type === InteractionType.ApplicationCommand) {
+          /**
+           * Respond to typical slash commands
+           */
+          if (interaction.data.type === ApplicationCommandType.ChatInput) {
+            logger.debug(
+              `Processing chat input command: ${interaction.data.name}`,
+            );
+            /**
+             * Respond to the "ping" command with "Pong!".
+             */
+            if (interaction.data.name === "ping") {
+              return reply({
+                content: "Pong!",
+              });
+            }
 
-        const rsvpButtonMatch = rsvpFn(customId);
-        if (rsvpButtonMatch !== false) {
-          const paramObject = await z
-            .object({
-              eventId: z.string(),
-              rsvpStatus: RSVPStatusUpdateSchema,
-            })
-            .safeParseAsync(rsvpButtonMatch.params);
+            /**
+             * Sync Please command.
+             */
+            if (interaction.data.name === "syncplz") {
+              const [response, err] = await trytm(syncEvents());
 
-          if (!paramObject.success) {
-            return reply({
-              content: "Invalid RSVP status.",
-              flags: MessageFlags.Ephemeral,
-            });
+              if (err) {
+                return reply({
+                  content: "Failed to sync calendar.",
+                  flags: MessageFlags.Ephemeral,
+                });
+              }
+
+              const embed = new EmbedBuilder()
+                .setColor([0, 255, 0])
+                .setTitle("Calendar Synced")
+                .setDescription("Calendar synced successfully")
+                .setFields([
+                  {
+                    name: "Deleted Events",
+                    value: response.deletedEventCount.toString(),
+                    inline: true,
+                  },
+                  {
+                    name: "Updated/Created Events",
+                    value: response.updatedEvents.toString(),
+                    inline: true,
+                  },
+                ]);
+
+              return reply({
+                content: "Calendar synced",
+                embeds: [embed.toJSON()],
+              });
+            }
+
+            /**
+             * Request RSVP command.
+             */
+            if (interaction.data.name === "requestrsvp") {
+              const meetingStringOption = interaction.data.options?.find(
+                (option) =>
+                  option.type === ApplicationCommandOptionType.String &&
+                  option.name === "meeting",
+              ) as APIApplicationCommandInteractionDataStringOption | undefined;
+
+              const meetingId = meetingStringOption?.value;
+
+              if (!meetingId) {
+                return reply({
+                  content: "Please provide a meeting ID.",
+                  flags: MessageFlags.Ephemeral,
+                });
+              }
+
+              const [response, err] = await trytm(
+                generateMessage({
+                  eventId: meetingId,
+                }),
+              );
+
+              const [_, eventPostedError] = await trytm(
+                markEventPosted(meetingId),
+              );
+
+              if (eventPostedError) {
+                console.error(
+                  `Error marking event as posted: ${eventPostedError.message}`,
+                );
+                return reply({
+                  content: "Failed to mark event as posted.",
+                  flags: MessageFlags.Ephemeral,
+                });
+              }
+
+              if (err) {
+                return reply({
+                  content: "Failed to generate RSVP message.",
+                  flags: MessageFlags.Ephemeral,
+                });
+              }
+
+              return reply({
+                content: response.content,
+                embeds: response.embeds,
+                components: response.components,
+                allowed_mentions: response.allowed_mentions,
+              });
+            }
+
+            /**
+             * Outreach Leaderboard command.
+             */
+            if (interaction.data.name === "leaderboard") {
+              const [leaderboardPageEmbed, leaderboardPageError] = await trytm(
+                createOutreachEmbedPage(1),
+              );
+
+              if (leaderboardPageError) {
+                console.error(
+                  `Error creating outreach embed page: ${leaderboardPageError.message}`,
+                );
+                return reply({
+                  content: "Failed to fetch leaderboard page.",
+                  flags: MessageFlags.Ephemeral,
+                });
+              }
+              return reply({
+                embeds: [leaderboardPageEmbed.embed.toJSON()],
+                components: [leaderboardPageEmbed.messageComponent.toJSON()],
+              });
+            }
           }
+        }
 
-          const { eventId, rsvpStatus } = paramObject.data;
+        /**
+         * Handle message component interactions.
+         */
+        if (interaction.type === InteractionType.MessageComponent) {
+          /**
+           * Handle button interactions.
+           */
+          if (interaction.data.component_type === ComponentType.Button) {
+            logger.debug(
+              `Processing button interaction with custom ID: ${interaction.data.custom_id}`,
+            );
+            const { custom_id: customId } = interaction.data;
 
-          const [fetchedEvent, fetchedEventErr] = await trytm(
-            getEvent(eventId),
+            /**
+             * RSVPs button.
+             */
+            const rsvpsFn = match("event/:eventId/rsvps");
+            const rsvpsButtonMatch = rsvpsFn(customId);
+
+            if (rsvpsButtonMatch !== false) {
+              const paramObject = await z
+                .object({
+                  eventId: z.string(),
+                })
+                .safeParseAsync(rsvpsButtonMatch.params);
+
+              if (!paramObject.success) {
+                return reply({
+                  content: "Invalid RSVP status.",
+                  flags: MessageFlags.Ephemeral,
+                });
+              }
+
+              const { eventId } = paramObject.data;
+
+              const [rsvpEvent, eventErr] = await trytm(getEvent(eventId));
+
+              if (eventErr) {
+                return reply({
+                  content: "Failed to fetch event details.",
+                  flags: MessageFlags.Ephemeral,
+                });
+              }
+
+              const [eventRsvps, rsvpsErr] = await trytm(
+                getEventRsvps(eventId),
+              );
+
+              if (rsvpsErr) {
+                return reply({
+                  content: "Failed to fetch event RSVPs.",
+                  flags: MessageFlags.Ephemeral,
+                });
+              }
+
+              const description = eventRsvps
+                .map((rsvp) =>
+                  rsvpToDescription(rsvp.user.username, rsvp.status),
+                )
+                .join("\n");
+
+              const rsvpEmbed = new EmbedBuilder()
+                .setTitle(
+                  `RSVPs for ${rsvpEvent.title} at ${DateTime.fromJSDate(
+                    rsvpEvent.startDate,
+                  ).toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY)}`,
+                )
+                .setDescription(description)
+                .setTimestamp(new Date())
+                .setURL(`${env.VITE_FRONTEND_URL}/event/${rsvpEvent.id}`);
+
+              return reply({
+                flags: MessageFlags.Ephemeral,
+                embeds: [rsvpEmbed.toJSON()],
+              });
+            }
+
+            /**
+             * RSVP button.
+             */
+            const rsvpFn = match("event/:eventId/rsvp/:rsvpStatus");
+
+            const rsvpButtonMatch = rsvpFn(customId);
+            if (rsvpButtonMatch !== false) {
+              const paramObject = await z
+                .object({
+                  eventId: z.string(),
+                  rsvpStatus: RSVPStatusUpdateSchema,
+                })
+                .safeParseAsync(rsvpButtonMatch.params);
+
+              if (!paramObject.success) {
+                return reply({
+                  content: "Invalid RSVP status.",
+                  flags: MessageFlags.Ephemeral,
+                });
+              }
+
+              const { eventId, rsvpStatus } = paramObject.data;
+
+              const [fetchedEvent, fetchedEventErr] = await trytm(
+                getEvent(eventId),
+              );
+
+              if (fetchedEventErr || !fetchedEvent) {
+                return reply({
+                  content: "Failed to fetch event details.",
+                  flags: MessageFlags.Ephemeral,
+                });
+              }
+
+              const { member } = interaction;
+
+              if (!member) {
+                return reply({
+                  content: "You must be a guild member to RSVP.",
+                  flags: MessageFlags.Ephemeral,
+                });
+              }
+
+              const { roles, user, nick } = member;
+
+              const username = nick ?? user.username;
+
+              const [_userUpsert, userUpsertErr] = await trytm(
+                createUser({
+                  id: user.id,
+                  username,
+                  roles,
+                }),
+              );
+
+              if (userUpsertErr) {
+                return reply({
+                  content: "Failed to create user.",
+                  flags: MessageFlags.Ephemeral,
+                });
+              }
+
+              const { ruleId } = fetchedEvent;
+
+              if (ruleId !== null) {
+                const [rule, ruleGetError] = await trytm(
+                  db.query.eventParsingRuleTable.findFirst({
+                    where: (table, { eq }) => eq(table.id, ruleId),
+                  }),
+                );
+
+                if (ruleGetError || !rule) {
+                  return reply({
+                    content: "Failed to fetch event parsing rules.",
+                    flags: MessageFlags.Ephemeral,
+                  });
+                }
+
+                const { roleIds: ruleRoles } = rule;
+
+                roles.push(env.GUILD_ID);
+
+                // if there's no overlap between the user's roles and the rule roles, return an error
+                const hasRole = roles.some((role) => ruleRoles.includes(role));
+
+                if (!hasRole && ruleRoles.length > 0) {
+                  return reply({
+                    content:
+                      "You do not have permission to RSVP to this event.",
+                    flags: MessageFlags.Ephemeral,
+                  });
+                }
+              }
+
+              if (rsvpStatus === "LATE") {
+                const delayModal = new ModalBuilder()
+                  .setTitle("Delay")
+                  .setCustomId(`event/${eventId}/delay`)
+                  .setComponents([
+                    new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
+                      [
+                        new TextInputBuilder()
+                          .setCustomId("delay")
+                          .setPlaceholder("Delay")
+                          .setLabel("Delay (in minutes)")
+                          .setStyle(TextInputStyle.Short),
+                      ],
+                    ),
+                  ]);
+
+                return modalReply(delayModal.toJSON());
+              }
+
+              const [_, err] = await trytm(
+                editUserRsvpStatus(user.id, {
+                  eventId,
+                  status: rsvpStatus,
+                }),
+              );
+
+              if (err) {
+                return reply({
+                  content: "Failed to update RSVP status.",
+                  flags: MessageFlags.Ephemeral,
+                });
+              }
+
+              const [generatedMessage, genMsgErr] = await trytm(
+                generateMessage({
+                  eventId,
+                }),
+              );
+
+              if (genMsgErr) {
+                return reply({
+                  content: "Failed to generate RSVP message.",
+                  flags: MessageFlags.Ephemeral,
+                });
+              }
+
+              return updateMessage({
+                content: generatedMessage.content,
+                embeds: generatedMessage.embeds,
+                components: generatedMessage.components,
+                allowed_mentions: generatedMessage.allowed_mentions,
+              });
+            }
+
+            /**
+             * Check-in button.
+             */
+            const checkinFn = match("event/:eventId/checkin");
+            const checkinButtonMatch = checkinFn(customId);
+            if (checkinButtonMatch !== false) {
+              const paramObject = await z
+                .object({
+                  eventId: z.string(),
+                })
+                .safeParseAsync(checkinButtonMatch.params);
+              if (!paramObject.success) {
+                return reply({
+                  content: "Invalid event ID.",
+                  flags: MessageFlags.Ephemeral,
+                });
+              }
+              const { eventId } = paramObject.data;
+
+              const checkinModal = new ModalBuilder()
+                .setTitle("Checkin")
+                .setCustomId(`event/${eventId}/checkin`)
+                .setComponents([
+                  new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
+                    [
+                      new TextInputBuilder()
+                        .setCustomId("code")
+                        .setPlaceholder("8 digit code")
+                        .setRequired(true)
+                        .setMinLength(8)
+                        .setMaxLength(8)
+                        .setLabel("The event code")
+                        .setStyle(TextInputStyle.Short),
+                    ],
+                  ),
+                ]);
+
+              return modalReply(checkinModal.toJSON());
+            }
+
+            /**
+             * Check out button.
+             */
+            const checkoutFn = match("event/:eventId/checkout");
+            const checkoutButtonMatch = checkoutFn(customId);
+            if (checkoutButtonMatch !== false) {
+              const paramObject = await z
+                .object({
+                  eventId: z.string(),
+                })
+                .safeParseAsync(checkoutButtonMatch.params);
+
+              if (!paramObject.success) {
+                return reply({
+                  content: "Invalid event ID.",
+                  flags: MessageFlags.Ephemeral,
+                });
+              }
+
+              const { eventId } = paramObject.data;
+
+              const { member } = interaction;
+
+              if (!member) {
+                return reply({
+                  content: "You must be a guild member to check out.",
+                  flags: MessageFlags.Ephemeral,
+                });
+              }
+
+              const [_, checkoutErr] = await trytm(
+                userCheckout(member.user.id, eventId),
+              );
+
+              if (checkoutErr) {
+                return reply({
+                  content: "Failed to check out.",
+                  flags: MessageFlags.Ephemeral,
+                });
+              }
+              const [generatedMessage, genMsgErr] = await trytm(
+                generateMessage({
+                  eventId,
+                }),
+              );
+              if (genMsgErr) {
+                return reply({
+                  content: "Failed to generate RSVP message.",
+                  flags: MessageFlags.Ephemeral,
+                });
+              }
+              return updateMessage({
+                content: generatedMessage.content,
+                embeds: generatedMessage.embeds,
+                components: generatedMessage.components,
+                allowed_mentions: generatedMessage.allowed_mentions,
+              });
+            }
+
+            /**
+             * Leaderboard Page Button.
+             */
+            const leaderboardPageFn = match("leaderboard/:toPage/:random");
+            const initialLeaderboardMatch = leaderboardPageFn(customId);
+            if (initialLeaderboardMatch !== false) {
+              const paramObject = await z
+                .object({
+                  toPage: z.coerce.number().int().min(1),
+                })
+                .safeParseAsync(initialLeaderboardMatch.params);
+
+              if (!paramObject.success) {
+                return reply({
+                  content: "Invalid page number.",
+                  flags: MessageFlags.Ephemeral,
+                });
+              }
+
+              const { toPage } = paramObject.data;
+
+              const [leaderboardPageEmbed, leaderboardPageError] = await trytm(
+                createOutreachEmbedPage(toPage),
+              );
+              if (leaderboardPageError) {
+                console.error(
+                  `Error creating outreach embed page: ${leaderboardPageError.message}`,
+                );
+                return reply({
+                  content: "Failed to fetch leaderboard page.",
+                  flags: MessageFlags.Ephemeral,
+                });
+              }
+
+              return updateMessage({
+                embeds: [leaderboardPageEmbed.embed.toJSON()],
+                components: [leaderboardPageEmbed.messageComponent.toJSON()],
+              });
+            }
+          }
+        }
+
+        if (interaction.type === InteractionType.ModalSubmit) {
+          logger.debug(
+            `Processing modal submit interaction with custom ID: ${interaction.data.custom_id}`,
           );
+          const { custom_id: customId } = interaction.data;
 
-          if (fetchedEventErr || !fetchedEvent) {
-            return reply({
-              content: "Failed to fetch event details.",
-              flags: MessageFlags.Ephemeral,
-            });
-          }
+          /**
+           * Late RSVP modal.
+           * This modal is triggered when a user clicks the "Late" button in the RSVP message.
+           */
+          const delayFn = match("event/:eventId/delay");
+          const delayMatch = delayFn(customId);
+          if (delayMatch !== false) {
+            const paramObject = await z
+              .object({
+                eventId: z.string(),
+              })
+              .safeParseAsync(delayMatch.params);
 
-          const { member } = interaction;
+            if (!paramObject.success) {
+              return reply({
+                content: "Invalid event ID.",
+                flags: MessageFlags.Ephemeral,
+              });
+            }
 
-          if (!member) {
-            return reply({
-              content: "You must be a guild member to RSVP.",
-              flags: MessageFlags.Ephemeral,
-            });
-          }
+            const { eventId } = paramObject.data;
 
-          const { roles, user, nick } = member;
+            const delay = interaction.data.components
+              .filter((row) => row.type === ComponentType.ActionRow)
+              .flatMap((componentRow) => componentRow.components)
+              .find(
+                (component) =>
+                  component.type === ComponentType.TextInput &&
+                  component.custom_id === "delay",
+              )?.value;
 
-          const username = nick ?? user.username;
+            const parsedValueSchema = await z.coerce
+              .number()
+              .int()
+              .min(0, "Delay must be a positive number")
+              .safeParseAsync(delay);
 
-          const [_userUpsert, userUpsertErr] = await trytm(
-            createUser({
-              id: user.id,
-              username,
-              roles,
-            }),
-          );
+            if (!parsedValueSchema.success) {
+              return reply({
+                content: parsedValueSchema.error
+                  .flatten()
+                  .formErrors.join(", "),
+                flags: MessageFlags.Ephemeral,
+              });
+            }
 
-          if (userUpsertErr) {
-            return reply({
-              content: "Failed to create user.",
-              flags: MessageFlags.Ephemeral,
-            });
-          }
+            const { data: value } = parsedValueSchema;
 
-          const { ruleId } = fetchedEvent;
+            const [eventData, eventDataError] = await trytm(getEvent(eventId));
 
-          if (ruleId !== null) {
-            const [rule, ruleGetError] = await trytm(
-              db.query.eventParsingRuleTable.findFirst({
-                where: (table, { eq }) => eq(table.id, ruleId),
+            if (eventDataError || !eventData) {
+              return reply({
+                content: "Failed to fetch event details.",
+                flags: MessageFlags.Ephemeral,
+              });
+            }
+
+            const startDateTime = DateTime.fromJSDate(eventData.startDate);
+
+            const { member } = interaction;
+            if (!member) {
+              return reply({
+                content: "You must be a guild member to RSVP.",
+                flags: MessageFlags.Ephemeral,
+              });
+            }
+            const { user } = member;
+
+            const arrivingAt =
+              startDateTime.plus({ minutes: value }).toJSDate() ?? undefined;
+
+            const [_updatedRsvp, updateRsvpError] = await trytm(
+              editUserRsvpStatus(user.id, {
+                eventId,
+                status: "LATE",
+                arrivingAt,
               }),
             );
 
-            if (ruleGetError || !rule) {
+            if (updateRsvpError) {
               return reply({
-                content: "Failed to fetch event parsing rules.",
+                content: "Failed to update RSVP status.",
                 flags: MessageFlags.Ephemeral,
               });
             }
-
-            const { roleIds: ruleRoles } = rule;
-
-            roles.push(env.GUILD_ID);
-
-            // if there's no overlap between the user's roles and the rule roles, return an error
-            const hasRole = roles.some((role) => ruleRoles.includes(role));
-
-            if (!hasRole && ruleRoles.length > 0) {
-              return reply({
-                content: "You do not have permission to RSVP to this event.",
-                flags: MessageFlags.Ephemeral,
-              });
-            }
-          }
-
-          if (rsvpStatus === "LATE") {
-            const delayModal = new ModalBuilder()
-              .setTitle("Delay")
-              .setCustomId(`event/${eventId}/delay`)
-              .setComponents([
-                new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
-                  [
-                    new TextInputBuilder()
-                      .setCustomId("delay")
-                      .setPlaceholder("Delay")
-                      .setLabel("Delay (in minutes)")
-                      .setStyle(TextInputStyle.Short),
-                  ],
-                ),
-              ]);
-
-            return modalReply(delayModal.toJSON());
-          }
-
-          const [_, err] = await trytm(
-            editUserRsvpStatus(user.id, {
-              eventId,
-              status: rsvpStatus,
-            }),
-          );
-
-          if (err) {
-            return reply({
-              content: "Failed to update RSVP status.",
-              flags: MessageFlags.Ephemeral,
-            });
-          }
-
-          const [generatedMessage, genMsgErr] = await trytm(
-            generateMessage({
-              eventId,
-            }),
-          );
-
-          if (genMsgErr) {
-            return reply({
-              content: "Failed to generate RSVP message.",
-              flags: MessageFlags.Ephemeral,
-            });
-          }
-
-          return updateMessage({
-            content: generatedMessage.content,
-            embeds: generatedMessage.embeds,
-            components: generatedMessage.components,
-            allowed_mentions: generatedMessage.allowed_mentions,
-          });
-        }
-
-        /**
-         * Check-in button.
-         */
-        const checkinFn = match("event/:eventId/checkin");
-        const checkinButtonMatch = checkinFn(customId);
-        if (checkinButtonMatch !== false) {
-          const paramObject = await z
-            .object({
-              eventId: z.string(),
-            })
-            .safeParseAsync(checkinButtonMatch.params);
-          if (!paramObject.success) {
-            return reply({
-              content: "Invalid event ID.",
-              flags: MessageFlags.Ephemeral,
-            });
-          }
-          const { eventId } = paramObject.data;
-
-          const checkinModal = new ModalBuilder()
-            .setTitle("Checkin")
-            .setCustomId(`event/${eventId}/checkin`)
-            .setComponents([
-              new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
-                [
-                  new TextInputBuilder()
-                    .setCustomId("code")
-                    .setPlaceholder("8 digit code")
-                    .setRequired(true)
-                    .setMinLength(8)
-                    .setMaxLength(8)
-                    .setLabel("The event code")
-                    .setStyle(TextInputStyle.Short),
-                ],
-              ),
-            ]);
-
-          return modalReply(checkinModal.toJSON());
-        }
-
-        /**
-         * Check out button.
-         */
-        const checkoutFn = match("event/:eventId/checkout");
-        const checkoutButtonMatch = checkoutFn(customId);
-        if (checkoutButtonMatch !== false) {
-          const paramObject = await z
-            .object({
-              eventId: z.string(),
-            })
-            .safeParseAsync(checkoutButtonMatch.params);
-
-          if (!paramObject.success) {
-            return reply({
-              content: "Invalid event ID.",
-              flags: MessageFlags.Ephemeral,
-            });
-          }
-
-          const { eventId } = paramObject.data;
-
-          const { member } = interaction;
-
-          if (!member) {
-            return reply({
-              content: "You must be a guild member to check out.",
-              flags: MessageFlags.Ephemeral,
-            });
-          }
-
-          const [_, checkoutErr] = await trytm(
-            userCheckout(member.user.id, eventId),
-          );
-
-          if (checkoutErr) {
-            return reply({
-              content: "Failed to check out.",
-              flags: MessageFlags.Ephemeral,
-            });
-          }
-          const [generatedMessage, genMsgErr] = await trytm(
-            generateMessage({
-              eventId,
-            }),
-          );
-          if (genMsgErr) {
-            return reply({
-              content: "Failed to generate RSVP message.",
-              flags: MessageFlags.Ephemeral,
-            });
-          }
-          return updateMessage({
-            content: generatedMessage.content,
-            embeds: generatedMessage.embeds,
-            components: generatedMessage.components,
-            allowed_mentions: generatedMessage.allowed_mentions,
-          });
-        }
-
-        /**
-         * Leaderboard Page Button.
-         */
-        const leaderboardPageFn = match("leaderboard/:toPage/:random");
-        const initialLeaderboardMatch = leaderboardPageFn(customId);
-        if (initialLeaderboardMatch !== false) {
-          const paramObject = await z
-            .object({
-              toPage: z.coerce.number().int().min(1),
-            })
-            .safeParseAsync(initialLeaderboardMatch.params);
-
-          if (!paramObject.success) {
-            return reply({
-              content: "Invalid page number.",
-              flags: MessageFlags.Ephemeral,
-            });
-          }
-
-          const { toPage } = paramObject.data;
-
-          const [leaderboardPageEmbed, leaderboardPageError] = await trytm(
-            createOutreachEmbedPage(toPage),
-          );
-          if (leaderboardPageError) {
-            console.error(
-              `Error creating outreach embed page: ${leaderboardPageError.message}`,
+            const [generatedMessage, genMsgErr] = await trytm(
+              generateMessage({
+                eventId,
+              }),
             );
-            return reply({
-              content: "Failed to fetch leaderboard page.",
-              flags: MessageFlags.Ephemeral,
+            if (genMsgErr) {
+              return reply({
+                content: "Failed to generate RSVP message.",
+                flags: MessageFlags.Ephemeral,
+              });
+            }
+            return updateMessage({
+              content: generatedMessage.content,
+              embeds: generatedMessage.embeds,
+              components: generatedMessage.components,
+              allowed_mentions: generatedMessage.allowed_mentions,
             });
           }
 
-          return updateMessage({
-            embeds: [leaderboardPageEmbed.embed.toJSON()],
-            components: [leaderboardPageEmbed.messageComponent.toJSON()],
-          });
-        }
-      }
-    }
+          /**
+           * Self check-in modal.
+           * This modal is triggered when a user clicks the "Check In" button in the RSVP message.
+           */
+          const checkinFn = match("event/:eventId/checkin");
+          const checkinMatch = checkinFn(customId);
+          if (checkinMatch !== false) {
+            const code = interaction.data.components
+              .filter((row) => row.type === ComponentType.ActionRow)
+              .flatMap((componentRow) => componentRow.components)
+              .find(
+                (component) =>
+                  component.type === ComponentType.TextInput &&
+                  component.custom_id === "code",
+              )?.value;
 
-    if (interaction.type === InteractionType.ModalSubmit) {
-      logger.debug(
-        `Processing modal submit interaction with custom ID: ${interaction.data.custom_id}`,
-      );
-      const { custom_id: customId } = interaction.data;
+            const paramObject = await z
+              .object({
+                eventId: z.string(),
+              })
+              .safeParseAsync(checkinMatch.params);
 
-      /**
-       * Late RSVP modal.
-       * This modal is triggered when a user clicks the "Late" button in the RSVP message.
-       */
-      const delayFn = match("event/:eventId/delay");
-      const delayMatch = delayFn(customId);
-      if (delayMatch !== false) {
-        const paramObject = await z
-          .object({
-            eventId: z.string(),
-          })
-          .safeParseAsync(delayMatch.params);
+            if (!paramObject.success) {
+              return reply({
+                content: "Invalid event ID.",
+                flags: MessageFlags.Ephemeral,
+              });
+            }
+            const { eventId } = paramObject.data;
 
-        if (!paramObject.success) {
-          return reply({
-            content: "Invalid event ID.",
-            flags: MessageFlags.Ephemeral,
-          });
-        }
+            const [secret, secretErr] = await trytm(getEventSecret(eventId));
 
-        const { eventId } = paramObject.data;
+            if (secretErr || !secret) {
+              return reply({
+                content: "Failed to fetch event secret.",
+                flags: MessageFlags.Ephemeral,
+              });
+            }
 
-        const delay = interaction.data.components
-          .flatMap((componentRow) => componentRow.components)
-          .find(
-            (component) =>
-              component.type === ComponentType.TextInput &&
-              component.custom_id === "delay",
-          )?.value;
+            if (secret.secret !== code) {
+              return reply({
+                content: "Invalid code.",
+                flags: MessageFlags.Ephemeral,
+              });
+            }
 
-        const parsedValueSchema = await z.coerce
-          .number()
-          .int()
-          .min(0, "Delay must be a positive number")
-          .safeParseAsync(delay);
+            const { member } = interaction;
 
-        if (!parsedValueSchema.success) {
-          return reply({
-            content: parsedValueSchema.error.flatten().formErrors.join(", "),
-            flags: MessageFlags.Ephemeral,
-          });
-        }
-
-        const { data: value } = parsedValueSchema;
-
-        const [eventData, eventDataError] = await trytm(getEvent(eventId));
-
-        if (eventDataError || !eventData) {
-          return reply({
-            content: "Failed to fetch event details.",
-            flags: MessageFlags.Ephemeral,
-          });
-        }
-
-        const startDateTime = DateTime.fromJSDate(eventData.startDate);
-
-        const { member } = interaction;
-        if (!member) {
-          return reply({
-            content: "You must be a guild member to RSVP.",
-            flags: MessageFlags.Ephemeral,
-          });
-        }
-        const { user } = member;
-
-        const arrivingAt =
-          startDateTime.plus({ minutes: value }).toJSDate() ?? undefined;
-
-        const [_updatedRsvp, updateRsvpError] = await trytm(
-          editUserRsvpStatus(user.id, {
-            eventId,
-            status: "LATE",
-            arrivingAt,
-          }),
-        );
-
-        if (updateRsvpError) {
-          return reply({
-            content: "Failed to update RSVP status.",
-            flags: MessageFlags.Ephemeral,
-          });
-        }
-        const [generatedMessage, genMsgErr] = await trytm(
-          generateMessage({
-            eventId,
-          }),
-        );
-        if (genMsgErr) {
-          return reply({
-            content: "Failed to generate RSVP message.",
-            flags: MessageFlags.Ephemeral,
-          });
-        }
-        return updateMessage({
-          content: generatedMessage.content,
-          embeds: generatedMessage.embeds,
-          components: generatedMessage.components,
-          allowed_mentions: generatedMessage.allowed_mentions,
-        });
-      }
-
-      /**
-       * Self check-in modal.
-       * This modal is triggered when a user clicks the "Check In" button in the RSVP message.
-       */
-      const checkinFn = match("event/:eventId/checkin");
-      const checkinMatch = checkinFn(customId);
-      if (checkinMatch !== false) {
-        const code = interaction.data.components
-          .flatMap((componentRow) => componentRow.components)
-          .find(
-            (component) =>
-              component.type === ComponentType.TextInput &&
-              component.custom_id === "code",
-          )?.value;
-
-        const paramObject = await z
-          .object({
-            eventId: z.string(),
-          })
-          .safeParseAsync(checkinMatch.params);
-
-        if (!paramObject.success) {
-          return reply({
-            content: "Invalid event ID.",
-            flags: MessageFlags.Ephemeral,
-          });
-        }
-        const { eventId } = paramObject.data;
-
-        const [secret, secretErr] = await trytm(getEventSecret(eventId));
-
-        if (secretErr || !secret) {
-          return reply({
-            content: "Failed to fetch event secret.",
-            flags: MessageFlags.Ephemeral,
-          });
+            if (!member) {
+              return reply({
+                content: "You must be a guild member to check in.",
+                flags: MessageFlags.Ephemeral,
+              });
+            }
+            const { roles, user, nick } = member;
+            const username = nick ?? user.username;
+            const [_userUpsert, userUpsertErr] = await trytm(
+              createUser({
+                id: user.id,
+                username,
+                roles,
+              }),
+            );
+            if (userUpsertErr) {
+              return reply({
+                content: "Failed to create user.",
+                flags: MessageFlags.Ephemeral,
+              });
+            }
+            const [_checkinResponse, checkinErr] = await trytm(
+              selfCheckin(user.id, {
+                eventId,
+                secret: secret.secret,
+              }),
+            );
+            if (checkinErr) {
+              return reply({
+                content: "Failed to check in.",
+                flags: MessageFlags.Ephemeral,
+              });
+            }
+            const [generatedMessage, genMsgErr] = await trytm(
+              generateMessage({
+                eventId,
+              }),
+            );
+            if (genMsgErr) {
+              return reply({
+                content: "Failed to generate RSVP message.",
+                flags: MessageFlags.Ephemeral,
+              });
+            }
+            return updateMessage({
+              content: generatedMessage.content,
+              embeds: generatedMessage.embeds,
+              components: generatedMessage.components,
+              allowed_mentions: generatedMessage.allowed_mentions,
+            });
+          }
         }
 
-        if (secret.secret !== code) {
-          return reply({
-            content: "Invalid code.",
-            flags: MessageFlags.Ephemeral,
-          });
+        if (
+          interaction.type === InteractionType.ApplicationCommandAutocomplete
+        ) {
+          logger.debug(
+            `Processing autocomplete interaction for command: ${interaction.data.name}`,
+          );
+          if (interaction.data.name === "requestrsvp") {
+            const meetingStringOption = interaction.data.options?.find(
+              (option) =>
+                option.type === ApplicationCommandOptionType.String &&
+                option.name === "meeting",
+            ) as APIApplicationCommandInteractionDataStringOption | undefined;
+
+            if (!meetingStringOption) {
+              return json({
+                type: InteractionResponseType.ApplicationCommandAutocompleteResult,
+                data: { choices: [] },
+              });
+            }
+
+            const query = meetingStringOption.value.toLowerCase();
+
+            const [events, err] = await trytm(getAutocompleteEvents(query));
+
+            if (err) {
+              return json({
+                type: InteractionResponseType.ApplicationCommandAutocompleteResult,
+                data: { choices: [] },
+              });
+            }
+
+            const choices = events.map((event) => ({
+              name: event.title,
+              value: event.id,
+            }));
+
+            return json({
+              type: InteractionResponseType.ApplicationCommandAutocompleteResult,
+              data: { choices },
+            });
+          }
         }
-
-        const { member } = interaction;
-
-        if (!member) {
-          return reply({
-            content: "You must be a guild member to check in.",
-            flags: MessageFlags.Ephemeral,
-          });
-        }
-        const { roles, user, nick } = member;
-        const username = nick ?? user.username;
-        const [_userUpsert, userUpsertErr] = await trytm(
-          createUser({
-            id: user.id,
-            username,
-            roles,
-          }),
-        );
-        if (userUpsertErr) {
-          return reply({
-            content: "Failed to create user.",
-            flags: MessageFlags.Ephemeral,
-          });
-        }
-        const [_checkinResponse, checkinErr] = await trytm(
-          selfCheckin(user.id, {
-            eventId,
-            secret: secret.secret,
-          }),
-        );
-        if (checkinErr) {
-          return reply({
-            content: "Failed to check in.",
-            flags: MessageFlags.Ephemeral,
-          });
-        }
-        const [generatedMessage, genMsgErr] = await trytm(
-          generateMessage({
-            eventId,
-          }),
-        );
-        if (genMsgErr) {
-          return reply({
-            content: "Failed to generate RSVP message.",
-            flags: MessageFlags.Ephemeral,
-          });
-        }
-        return updateMessage({
-          content: generatedMessage.content,
-          embeds: generatedMessage.embeds,
-          components: generatedMessage.components,
-          allowed_mentions: generatedMessage.allowed_mentions,
-        });
-      }
-    }
-
-    if (interaction.type === InteractionType.ApplicationCommandAutocomplete) {
-      logger.debug(
-        `Processing autocomplete interaction for command: ${interaction.data.name}`,
-      );
-      if (interaction.data.name === "requestrsvp") {
-        const meetingStringOption = interaction.data.options?.find(
-          (option) =>
-            option.type === ApplicationCommandOptionType.String &&
-            option.name === "meeting",
-        ) as APIApplicationCommandInteractionDataStringOption | undefined;
-
-        if (!meetingStringOption) {
-          return json({
-            type: InteractionResponseType.ApplicationCommandAutocompleteResult,
-            data: { choices: [] },
-          });
-        }
-
-        const query = meetingStringOption.value.toLowerCase();
-
-        const [events, err] = await trytm(getAutocompleteEvents(query));
-
-        if (err) {
-          return json({
-            type: InteractionResponseType.ApplicationCommandAutocompleteResult,
-            data: { choices: [] },
-          });
-        }
-
-        const choices = events.map((event) => ({
-          name: event.title,
-          value: event.id,
-        }));
-
-        return json({
-          type: InteractionResponseType.ApplicationCommandAutocompleteResult,
-          data: { choices },
-        });
-      }
-    }
+      },
+    },
   },
 });
 

@@ -4,7 +4,7 @@ import type FlattenServerFn from "@/types/FlattenServerFn";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
-import { setCookie } from "@tanstack/react-start/server";
+import { setResponseHeader } from "@tanstack/react-start/server";
 
 const logoutFn = createServerFn({
   method: "POST",
@@ -15,7 +15,7 @@ const logoutFn = createServerFn({
       await lucia.invalidateSession(session.id);
       // Clear the session cookie
       const blankCookie = lucia.createBlankSessionCookie();
-      setCookie(blankCookie.name, blankCookie.value, blankCookie.attributes);
+      setResponseHeader("Set-Cookie", blankCookie.serialize());
 
       // throw redirect({
       //   to: "/login",

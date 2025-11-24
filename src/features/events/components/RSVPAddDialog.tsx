@@ -26,7 +26,7 @@ import type {
 } from "react-hook-form";
 import { useDebounceValue } from "usehooks-ts";
 import { z } from "zod";
-import useZodForm, { type ZodSubmitHandler } from "../../../hooks/useZodForm";
+import useZodForm from "../../../hooks/useZodForm";
 import useAddUserRsvp from "../hooks/useAddRsvp";
 
 interface RSVPAddDialogProps {
@@ -72,40 +72,44 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
 
   const addUserEventRsvpMutation = useAddUserRsvp();
 
-  const onSubmit: ZodSubmitHandler<typeof AddUserRsvpSchema> = async (data) => {
-    try {
-      const { userOption, status, ...rest } = data;
-      const userOptionVal = userOption?.value;
+  const onSubmit = useCallback(
+    () =>
+      handleSubmit(async (data) => {
+        try {
+          const { userOption, status, ...rest } = data;
+          const userOptionVal = userOption?.value;
 
-      if (!userOptionVal) {
-        setError("userOption", {
-          message: "Please select a user",
-        });
-        return;
-      }
+          if (!userOptionVal) {
+            setError("userOption", {
+              message: "Please select a user",
+            });
+            return;
+          }
 
-      await addUserEventRsvpMutation.mutateAsync({
-        data: {
-          eventId,
-          userId: userOptionVal,
-          status: status === "" ? undefined : status,
-          ...rest,
-        },
-      });
-      reset();
-      onClose();
-    } catch (error) {
-      if (isServerError(error)) {
-        setError("userOption", {
-          message: error.message,
-        });
-      } else {
-        setError("userOption", {
-          message: "An unknown error occurred",
-        });
-      }
-    }
-  };
+          await addUserEventRsvpMutation.mutateAsync({
+            data: {
+              eventId,
+              userId: userOptionVal,
+              status: status === "" ? undefined : status,
+              ...rest,
+            },
+          });
+          reset();
+          onClose();
+        } catch (error) {
+          if (isServerError(error)) {
+            setError("userOption", {
+              message: error.message,
+            });
+          } else {
+            setError("userOption", {
+              message: "An unknown error occurred",
+            });
+          }
+        }
+      }),
+    [addUserEventRsvpMutation, eventId, onClose, reset, setError, handleSubmit],
+  );
 
   /**
    * Handle the user selection
@@ -178,7 +182,7 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
       open={open}
       onClose={onClose}
       component={"form"}
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={onSubmit}
     >
       <DialogTitle>Add or Update an RSVP</DialogTitle>
       <DialogContent>

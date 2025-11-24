@@ -10,7 +10,7 @@ const createEventFn = createServerFn({
   method: "POST",
 })
   .middleware([adminMiddleware])
-  .validator(CreateEventSchema)
+  .inputValidator(CreateEventSchema)
   .handler(async ({ data }) => createEvent(data));
 
 type CreateEventFn = FlattenServerFn<typeof createEventFn>;

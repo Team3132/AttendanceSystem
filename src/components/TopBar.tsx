@@ -51,6 +51,7 @@ function ProfileMenu() {
         aria-controls={isOpen ? `${menuId}-menu` : undefined}
         aria-haspopup="true"
         aria-expanded={isOpen ? "true" : undefined}
+        color="inherit"
         {...getButtonProps()}
         ref={anchorEl}
       >

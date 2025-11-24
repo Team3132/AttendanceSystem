@@ -11,7 +11,7 @@ const selfCheckinFn = createServerFn({
   method: "POST",
 })
   .middleware([sessionMiddleware])
-  .validator(SelfCheckinSchema)
+  .inputValidator(SelfCheckinSchema)
   .handler(async ({ data, context }) => selfCheckin(context.user.id, data));
 
 type SelfCheckinFn = FlattenServerFn<typeof selfCheckinFn>;

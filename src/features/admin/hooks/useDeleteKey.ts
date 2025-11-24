@@ -9,7 +9,7 @@ import { z } from "zod";
 const deleteApiKeyFn = createServerFn({
   method: "POST",
 })
-  .validator(z.string())
+  .inputValidator(z.string())
   .middleware([adminMiddleware])
   .handler(({ data }) => deleteApiKey(data));
 

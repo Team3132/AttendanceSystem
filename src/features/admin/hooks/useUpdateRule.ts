@@ -14,7 +14,7 @@ const UpdateRuleSchema = UpdateEventParsingRuleSchema.extend({
 const updateRuleFn = createServerFn({
   method: "POST",
 })
-  .validator(UpdateRuleSchema)
+  .inputValidator(UpdateRuleSchema)
   .middleware([adminMiddleware])
   .handler(async ({ data: { id, ...data } }) => updateParsingRule(id, data));
 

@@ -10,7 +10,7 @@ const addUserScanCodeFn = createServerFn({
   method: "POST",
 })
   .middleware([adminMiddleware])
-  .validator(AddUserScancodeParams)
+  .inputValidator(AddUserScancodeParams)
   .handler(async ({ data }) => createUserScancode(data.userId, data.scancode));
 
 type AddUserScanCodeFn = FlattenServerFn<typeof addUserScanCodeFn>;

@@ -19,17 +19,17 @@ type UserListParams = Omit<z.infer<typeof UserListParamsSchema>, "cursor">;
 
 const getUserListFn = createServerFn({ method: "GET" })
   .middleware([adminMiddleware])
-  .validator(UserListParamsSchema)
+  .inputValidator(UserListParamsSchema)
   .handler(async ({ data }) => getUserList(data));
 
 const getUserFn = createServerFn({ method: "GET" })
   .middleware([adminMiddleware])
-  .validator(z.string().describe("The user ID"))
+  .inputValidator(z.string().describe("The user ID"))
   .handler(async ({ data }) => getUser(data));
 
 const getUserScancodesFn = createServerFn({ method: "GET" })
   .middleware([adminMiddleware])
-  .validator(z.string().describe("The user ID"))
+  .inputValidator(z.string().describe("The user ID"))
   .handler(async ({ data }) => getUserScancodes(data));
 
 const getSelfFn = createServerFn({ method: "GET" })
@@ -46,12 +46,12 @@ const getSelfPendingRsvpsFn = createServerFn({ method: "GET" })
 
 const getUserPendingRsvpsFn = createServerFn({ method: "GET" })
   .middleware([adminMiddleware])
-  .validator(z.string().describe("The user ID"))
+  .inputValidator(z.string().describe("The user ID"))
   .handler(async ({ data }) => getPendingUserRsvps(data));
 
 const getUserSessionsFn = createServerFn({ method: "GET" })
   .middleware([adminMiddleware])
-  .validator(z.string())
+  .inputValidator(z.string())
   .handler(async ({ data }) => getUserSessions(data));
 
 const getSelfSessionsFn = createServerFn({ method: "GET" })

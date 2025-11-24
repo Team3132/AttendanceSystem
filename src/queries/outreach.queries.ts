@@ -10,7 +10,7 @@ type Options = Omit<z.infer<typeof OutreachTimeSchema>, "cursor">;
 
 const getOutreachLeaderboardFn = createServerFn({ method: "GET" })
   .middleware([sessionMiddleware])
-  .validator(OutreachTimeSchema)
+  .inputValidator(OutreachTimeSchema)
   .handler(async ({ data }) => getOutreachTime(data));
 
 export const leaderboardQueryOptions = (options: Options) =>

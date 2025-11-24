@@ -11,7 +11,7 @@ const editSelfRsvpFn = createServerFn({
   method: "POST",
 })
   .middleware([sessionMiddleware])
-  .validator(EditRSVPSelfSchema)
+  .inputValidator(EditRSVPSelfSchema)
   .handler(async ({ data, context }) =>
     editUserRsvpStatus(context.user.id, data),
   );

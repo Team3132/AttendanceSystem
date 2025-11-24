@@ -9,195 +9,241 @@ import { buildSetWhereColumns } from "@/server/utils/db/buildSetWhereColumns";
 import { trytm } from "@/utils/trytm";
 import { API } from "@discordjs/core";
 import { REST } from "@discordjs/rest";
+import { createFileRoute } from "@tanstack/react-router";
 import {
-  deleteCookie,
-  getCookie,
-  setCookie,
+  getRequestHeader,
+  setResponseHeader,
 } from "@tanstack/react-start/server";
-import { createServerFileRoute } from "@tanstack/react-start/server";
+import { Cookie } from "lucia";
+import { parseCookies } from "lucia/dist/cookie";
 import { z } from "zod";
 
-export const ServerRoute = createServerFileRoute(
-  "/api/auth/discord/callback",
-).methods({
-  GET: async ({ request }) => {
-    // request url
-    const url = new URL(request.url);
-    // query parameters
-    const queryParams = Object.fromEntries(url.searchParams.entries());
+export const Route = createFileRoute("/api/auth/discord/callback")({
+  server: {
+    handlers: {
+      GET: async ({ request }) => {
+        // request url
+        const url = new URL(request.url);
+        // query parameters
+        const queryParams = Object.fromEntries(url.searchParams.entries());
 
-    const parsedQuery = await z
-      .object({
-        code: z.string(),
-        state: z.string(),
-      })
-      .safeParseAsync(queryParams);
+        const parsedQuery = await z
+          .object({
+            code: z.string(),
+            state: z.string(),
+          })
+          .safeParseAsync(queryParams);
 
-    if (!parsedQuery.success) {
-      consola.error("Invalid query parameters", parsedQuery.error);
-      return new Response(null, {
-        status: 302,
-        headers: {
-          location: env.VITE_FRONTEND_URL,
-        },
-      });
-    }
+        if (!parsedQuery.success) {
+          consola.error("Invalid query parameters", parsedQuery.error);
+          return new Response(null, {
+            status: 302,
+            headers: {
+              location: env.VITE_FRONTEND_URL,
+            },
+          });
+        }
 
-    const { code, state } = parsedQuery.data;
+        const { code, state } = parsedQuery.data;
 
-    const discordState = getCookie("discord_oauth_state");
+        const cookieHeader = getRequestHeader("Cookie");
+        const cookies = parseCookies(cookieHeader || "");
+        const discordState = cookies.get("discord_oauth_state");
+        const codeVerifier = cookies.get("discord_oauth_code_verifier");
 
-    if (discordState !== state) {
-      consola.error("State mismatch", {
-        expected: discordState,
-        received: state,
-      });
-      deleteCookie("discord_oauth_state");
-      return new Response(null, {
-        status: 302,
-        headers: {
-          location: env.VITE_FRONTEND_URL,
-        },
-      });
-    }
+        if (discordState !== state || !codeVerifier) {
+          consola.error("State mismatch", {
+            expected: discordState,
+            received: state,
+          });
+          // deleteCookie("discord_oauth_state");
+          // deleteCookie("discord_oauth_code_verifier");
+          setResponseHeader(
+            "Set-Cookie",
+            [
+              new Cookie("discord_oauth_state", "", {
+                secure: import.meta.env.PROD, // set to false in localhost
+                path: "/",
+                httpOnly: true,
+                maxAge: 60 * 10, // 10 minutes
+              }).serialize(),
+              new Cookie("discord_oauth_code_verifier", "", {
+                secure: import.meta.env.PROD, // set to false in localhost
+                path: "/",
+                httpOnly: true,
+                maxAge: 60 * 10, // 10 minutes
+              }).serialize(),
+            ].join(", "),
+          );
 
-    deleteCookie("discord_oauth_state");
+          return new Response(null, {
+            status: 302,
+            headers: {
+              location: env.VITE_FRONTEND_URL,
+            },
+          });
+        }
 
-    const [tokens, tokensError] = await trytm(
-      discord.validateAuthorizationCode(code),
-    );
-    if (tokensError) {
-      consola.error("Failed to validate authorization code", tokensError);
-      return new Response(null, {
-        status: 302,
-        headers: {
-          location: env.VITE_FRONTEND_URL,
-        },
-      });
-    }
+        setResponseHeader(
+          "Set-Cookie",
+          [
+            new Cookie("discord_oauth_state", "", {
+              secure: import.meta.env.PROD, // set to false in localhost
+              path: "/",
+              httpOnly: true,
+              maxAge: 60 * 10, // 10 minutes
+            }).serialize(),
+            new Cookie("discord_oauth_code_verifier", "", {
+              secure: import.meta.env.PROD, // set to false in localhost
+              path: "/",
+              httpOnly: true,
+              maxAge: 60 * 10, // 10 minutes
+            }).serialize(),
+          ].join(", "),
+        );
 
-    const rest = new REST({ version: "10", authPrefix: "Bearer" }).setToken(
-      tokens.accessToken,
-    );
-    const api = new API(rest);
+        const [tokens, tokensError] = await trytm(
+          discord.validateAuthorizationCode(code, codeVerifier),
+        );
+        if (tokensError) {
+          consola.error("Failed to validate authorization code", tokensError);
+          return new Response(null, {
+            status: 302,
+            headers: {
+              location: env.VITE_FRONTEND_URL,
+            },
+          });
+        }
 
-    const [discordUserGuilds, guildsError] = await trytm(api.users.getGuilds());
-    if (guildsError) {
-      consola.error("Failed to fetch user guilds", guildsError);
-      return new Response(null, {
-        status: 302,
-        headers: {
-          location: env.VITE_FRONTEND_URL,
-        },
-      });
-    }
+        const rest = new REST({ version: "10", authPrefix: "Bearer" }).setToken(
+          tokens.accessToken(),
+        );
+        const api = new API(rest);
 
-    const validGuild =
-      discordUserGuilds.findIndex((guild) => guild.id === env.GUILD_ID) !== -1;
+        const [discordUserGuilds, guildsError] = await trytm(
+          api.users.getGuilds(),
+        );
+        if (guildsError) {
+          consola.error("Failed to fetch user guilds", guildsError);
+          return new Response(null, {
+            status: 302,
+            headers: {
+              location: env.VITE_FRONTEND_URL,
+            },
+          });
+        }
 
-    if (!validGuild) {
-      consola.error("User is not a member of the required guild", env.GUILD_ID);
-      return new Response(null, {
-        status: 302,
-        headers: {
-          location: env.VITE_FRONTEND_URL,
-        },
-      });
-    }
+        const validGuild =
+          discordUserGuilds.findIndex((guild) => guild.id === env.GUILD_ID) !==
+          -1;
 
-    const [meData, meError] = await trytm(api.users.get("@me"));
+        if (!validGuild) {
+          consola.error(
+            "User is not a member of the required guild",
+            env.GUILD_ID,
+          );
+          return new Response(null, {
+            status: 302,
+            headers: {
+              location: env.VITE_FRONTEND_URL,
+            },
+          });
+        }
 
-    if (meError) {
-      consola.error("Failed to fetch user data", meError);
-      return new Response(null, {
-        status: 302,
-        headers: {
-          location: env.VITE_FRONTEND_URL,
-        },
-      });
-    }
-    const { id, username } = meData;
+        const [meData, meError] = await trytm(api.users.get("@me"));
 
-    const [guildMemberData, guildMemberError] = await trytm(
-      api.users.getGuildMember(env.GUILD_ID),
-    );
-    if (guildMemberError) {
-      consola.error("Failed to fetch guild member data", guildMemberError);
-      return new Response(null, {
-        status: 302,
-        headers: {
-          location: env.VITE_FRONTEND_URL,
-        },
-      });
-    }
-    const { roles, nick } = guildMemberData;
+        if (meError) {
+          consola.error("Failed to fetch user data", meError);
+          return new Response(null, {
+            status: 302,
+            headers: {
+              location: env.VITE_FRONTEND_URL,
+            },
+          });
+        }
+        const { id, username } = meData;
 
-    const { accessToken, refreshToken, accessTokenExpiresAt } = tokens;
+        const [guildMemberData, guildMemberError] = await trytm(
+          api.users.getGuildMember(env.GUILD_ID),
+        );
+        if (guildMemberError) {
+          consola.error("Failed to fetch guild member data", guildMemberError);
+          return new Response(null, {
+            status: 302,
+            headers: {
+              location: env.VITE_FRONTEND_URL,
+            },
+          });
+        }
+        const { roles, nick } = guildMemberData;
 
-    const updateColumns: ColumnNames<typeof userTable>[] = [
-      "accessToken",
-      "roles",
-      "refreshToken",
-      "accessTokenExpiresAt",
-      "username",
-    ];
+        const updateColumns: ColumnNames<typeof userTable>[] = [
+          "accessToken",
+          "roles",
+          "refreshToken",
+          "accessTokenExpiresAt",
+          "username",
+        ];
 
-    const [_authedUserData, userUpdateError] = await trytm(
-      db
-        .insert(userTable)
-        .values({
-          id,
-          username: nick || username,
-          roles: roles,
-          accessToken,
-          refreshToken,
-          accessTokenExpiresAt,
-        })
-        .onConflictDoUpdate({
-          target: userTable.id,
-          set: buildConflictUpdateColumns(userTable, updateColumns),
-          setWhere: buildSetWhereColumns(userTable, updateColumns),
-        })
-        .returning(),
-    );
+        const [_authedUserData, userUpdateError] = await trytm(
+          db
+            .insert(userTable)
+            .values({
+              id,
+              username: nick || username,
+              roles: roles,
+              accessToken: tokens.accessToken(),
+              refreshToken: tokens.refreshToken(),
+              accessTokenExpiresAt: tokens.accessTokenExpiresAt(),
+            })
+            .onConflictDoUpdate({
+              target: userTable.id,
+              set: buildConflictUpdateColumns(userTable, updateColumns),
+              setWhere: buildSetWhereColumns(userTable, updateColumns),
+            })
+            .returning(),
+        );
 
-    if (userUpdateError) {
-      consola.error("Failed to update or insert user data", userUpdateError);
-      return new Response(null, {
-        status: 302,
-        headers: {
-          location: env.VITE_FRONTEND_URL,
-        },
-      });
-    }
+        if (userUpdateError) {
+          consola.error(
+            "Failed to update or insert user data",
+            userUpdateError,
+          );
+          return new Response(null, {
+            status: 302,
+            headers: {
+              location: env.VITE_FRONTEND_URL,
+            },
+          });
+        }
 
-    const [session, sessionError] = await trytm(lucia.createSession(id, {}));
+        const [session, sessionError] = await trytm(
+          lucia.createSession(id, {}),
+        );
 
-    if (sessionError) {
-      consola.error("Failed to create session", sessionError);
-      return new Response(null, {
-        status: 302,
-        headers: {
-          location: env.VITE_FRONTEND_URL,
-        },
-      });
-    }
+        if (sessionError) {
+          consola.error("Failed to create session", sessionError);
+          return new Response(null, {
+            status: 302,
+            headers: {
+              location: env.VITE_FRONTEND_URL,
+            },
+          });
+        }
 
-    const sessionCookie = lucia.createSessionCookie(session.id);
-    setCookie(
-      sessionCookie.name,
-      sessionCookie.value,
-      sessionCookie.attributes,
-    );
-    consola
-      .withTag("auth")
-      .info(`User ${nick || username} (${id}) authenticated successfully`);
+        const sessionCookie = lucia.createSessionCookie(session.id);
+        setResponseHeader("Set-Cookie", sessionCookie.serialize());
+        consola
+          .withTag("auth")
+          .info(`User ${nick || username} (${id}) authenticated successfully`);
 
-    return new Response(null, {
-      status: 302,
-      headers: {
-        location: env.VITE_FRONTEND_URL,
+        return new Response(null, {
+          status: 302,
+          headers: {
+            location: env.VITE_FRONTEND_URL,
+          },
+        });
       },
-    });
+    },
   },
 });
