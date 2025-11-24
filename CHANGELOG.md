@@ -1,5 +1,15 @@
 # frontend
 
+## 5.12.0
+
+### Minor Changes
+
+- [`5a32b8c`](https://github.com/Team3132/AttendanceSystem/commit/5a32b8c6ed6fbd6351c1852fabdeec8c829a244e) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Update dependancies and tanstack start
+
+### Patch Changes
+
+- [`e644ea3`](https://github.com/Team3132/AttendanceSystem/commit/e644ea302447376f6916ab3d191cf354f28f6589) Thanks [@sebasptsch](https://github.com/sebasptsch)! - changes
+
 ## 5.11.7
 
 ### Patch Changes
