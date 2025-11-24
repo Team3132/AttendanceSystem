@@ -133,7 +133,7 @@ export const Route = createFileRoute("/api/interaction")({
           });
         }
 
-        const interaction: APIInteraction = await request.json();
+        const interaction: APIInteraction = JSON.parse(rawBody);
 
         if (interaction.type === InteractionType.Ping) {
           logger.debug("Received ping interaction");
