@@ -1,5 +1,11 @@
 # frontend
 
+## 5.13.1
+
+### Patch Changes
+
+- [`862a8d7`](https://github.com/Team3132/AttendanceSystem/commit/862a8d7889290fcd1e80c84a415e843a38ee8330) Thanks [@sebasptsch](https://github.com/sebasptsch)! - fix discord
+
 ## 5.13.0
 
 ### Minor Changes
