@@ -1,5 +1,7 @@
 import Devtools from "@/components/Devtools";
 import GenericServerErrorBoundary from "@/components/GenericServerErrorBoundary";
+import createCache from "@emotion/cache";
+import { CacheProvider } from "@emotion/react";
 import roboto300 from "@fontsource/roboto/300.css?inline";
 import robot400 from "@fontsource/roboto/400.css?inline";
 import roboto500 from "@fontsource/roboto/500.css?inline";
@@ -13,10 +15,10 @@ import type { QueryClient } from "@tanstack/react-query";
 import { HeadContent } from "@tanstack/react-router";
 import {
   ErrorComponent,
-  Outlet,
   createRootRouteWithContext,
 } from "@tanstack/react-router";
 import { Scripts } from "@tanstack/react-router";
+import { Outlet } from "@tanstack/react-router";
 import type * as React from "react";
 import rootCss from "./root.css?inline";
 
@@ -53,6 +55,14 @@ export const Route = createRootRouteWithContext<{
   errorComponent: ErrorComponent,
 });
 
+function RootComponent() {
+  return (
+    <RootDocument>
+      <Outlet />
+    </RootDocument>
+  );
+}
+
 const attribute = "data";
 
 const theme = createTheme({
@@ -65,42 +75,32 @@ const theme = createTheme({
   },
 });
 
-// function NavigationProgress() {
-//   const navigationStatus = useRouterState({
-//     select: (s) => s.status,
-//   });
+function ThemeProviderWrapper({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
+  const emotionCache = createCache({ key: "css" });
 
-//   if (navigationStatus === "idle") {
-//     return null;
-//   }
-
-//   return (
-//     <LinearProgress sx={{ position: "fixed", top: 0, left: 0, right: 0 }} />
-//   );
-// }
-
-function RootComponent() {
   return (
-    <RootDocument>
-      <InitColorSchemeScript attribute={attribute} />
+    <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
         <CssBaseline enableColorScheme />
-        <LocalizationProvider
-          adapterLocale={"en-au"}
-          dateAdapter={AdapterLuxon}
-        >
-          {/* <NavigationProgress /> */}
-          <GenericServerErrorBoundary>
-            <Outlet />
-          </GenericServerErrorBoundary>
-        </LocalizationProvider>
+        {children}
       </ThemeProvider>
-      <Devtools />
-    </RootDocument>
+    </CacheProvider>
   );
 }
 
-function RootDocument({ children }: Readonly<{ children: React.ReactNode }>) {
+function Providers({ children }: { children: React.ReactNode }) {
+  return (
+    <ThemeProviderWrapper>
+      <LocalizationProvider adapterLocale={"en-au"} dateAdapter={AdapterLuxon}>
+        {children}
+      </LocalizationProvider>
+    </ThemeProviderWrapper>
+  );
+}
+
+function RootDocument({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -112,7 +112,11 @@ function RootDocument({ children }: Readonly<{ children: React.ReactNode }>) {
         <style>{roboto700}</style>
       </head>
       <body>
-        {children}
+        <InitColorSchemeScript attribute={attribute} />
+        <Providers>
+          <GenericServerErrorBoundary>{children}</GenericServerErrorBoundary>
+        </Providers>
+        <Devtools />
         <Scripts />
       </body>
     </html>
