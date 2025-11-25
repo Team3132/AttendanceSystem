@@ -1,10 +1,8 @@
 import env from "@/server/env";
 import { generateMessage } from "@/server/services/botService";
-import { syncEvents } from "@/server/services/calalendarSync.service";
 import { trytm } from "@/utils/trytm";
 import {
   ActionRowBuilder,
-  ButtonBuilder,
   EmbedBuilder,
   type ModalActionRowComponentBuilder,
   ModalBuilder,
@@ -12,16 +10,8 @@ import {
 } from "@discordjs/builders";
 import {
   type APIApplicationCommandInteractionDataStringOption,
-  type APIInteraction,
-  type APIInteractionResponseCallbackData,
-  type APIInteractionResponseChannelMessageWithSource,
-  type APIInteractionResponsePong,
-  type APIInteractionResponseUpdateMessage,
-  type APIModalInteractionResponse,
-  type APIModalInteractionResponseCallbackData,
   ApplicationCommandOptionType,
   ApplicationCommandType,
-  ButtonStyle,
   ComponentType,
   InteractionResponseType,
   InteractionType,
@@ -31,48 +21,33 @@ import {
 import { json } from "@tanstack/react-start";
 import { match } from "path-to-regexp";
 
-import {
-  type LeaderBoardUser,
-  RSVPStatusUpdateSchema,
-  type RSVPUserSchema,
-} from "@/server";
+import { RSVPStatusUpdateSchema, type RSVPUserSchema } from "@/server";
 import db from "@/server/drizzle/db";
-import { consola } from "@/server/logger";
 import {
   editUserRsvpStatus,
   getAutocompleteEvents,
   getEvent,
   getEventRsvps,
   getEventSecret,
-  markEventPosted,
   selfCheckin,
   userCheckout,
 } from "@/server/services/events.service";
-import { getOutreachTime } from "@/server/services/outreach.service";
 import { createUser } from "@/server/services/user.service";
 import { createFileRoute } from "@tanstack/react-router";
-import { getRequestHeader } from "@tanstack/react-start/server";
-import { verifyKey } from "discord-interactions";
-import { DateTime, Duration } from "luxon";
+import { DateTime } from "luxon";
 import { z } from "zod";
-
-const reply = (data: APIInteractionResponseCallbackData) =>
-  json<APIInteractionResponseChannelMessageWithSource>({
-    type: InteractionResponseType.ChannelMessageWithSource,
-    data,
-  });
-
-const modalReply = (data: APIModalInteractionResponseCallbackData) =>
-  json<APIModalInteractionResponse>({
-    type: InteractionResponseType.Modal,
-    data,
-  });
-
-const updateMessage = (data: APIInteractionResponseCallbackData) =>
-  json<APIInteractionResponseUpdateMessage>({
-    type: InteractionResponseType.UpdateMessage,
-    data,
-  });
+import {
+  createOutreachEmbedPage,
+  leaderboardCommand,
+} from "./-interaction/commands/leaderboard";
+import { requestRSVPCommand } from "./-interaction/commands/requestRSVP";
+import { syncplzCommand } from "./-interaction/commands/syncplz";
+import {
+  modalReply,
+  reply,
+  updateMessage,
+} from "./-interaction/interactionReply";
+import { verifyDiscordMiddleware } from "./-interaction/verifyKeyMiddleware";
 
 const statusToEmoji = (status: z.infer<typeof RSVPUserSchema>["status"]) => {
   switch (status) {
@@ -98,50 +73,11 @@ function rsvpToDescription(
   return `${username} - ${statusToEmoji(status)}`;
 }
 
-const logger = consola.withTag("discord-interaction");
-
 export const Route = createFileRoute("/api/interaction")({
   server: {
+    middleware: [verifyDiscordMiddleware],
     handlers: {
-      POST: async ({ request }) => {
-        const signature = getRequestHeader("X-Signature-Ed25519");
-        const timestamp = getRequestHeader("X-Signature-Timestamp");
-
-        logger.debug(
-          `Received interaction with signature: ${signature}, timestamp: ${timestamp}`,
-        );
-
-        const rawBody = await request.text();
-
-        if (!signature || !timestamp || !rawBody) {
-          console.error("Missing signature, timestamp, or raw body");
-          return json({ message: "Invalid request" }, { status: 401 });
-        }
-
-        const isValidRequest = await verifyKey(
-          rawBody,
-          signature,
-          timestamp,
-          env.DISCORD_PUBLIC_KEY,
-        );
-
-        logger.debug(`Request validation result: ${isValidRequest}`);
-
-        if (!isValidRequest) {
-          return new Response("Bad request signature", {
-            status: 401,
-          });
-        }
-
-        const interaction: APIInteraction = JSON.parse(rawBody);
-
-        if (interaction.type === InteractionType.Ping) {
-          logger.debug("Received ping interaction");
-          return json<APIInteractionResponsePong>({
-            type: InteractionResponseType.Pong,
-          });
-        }
-
+      POST: async ({ context: { interaction, logger } }) => {
         if (
           interaction.member === undefined ||
           interaction.guild_id !== env.GUILD_ID
@@ -158,135 +94,34 @@ export const Route = createFileRoute("/api/interaction")({
         /**
          * Handle application command interactions.
          */
-        if (interaction.type === InteractionType.ApplicationCommand) {
+        if (
+          interaction.type === InteractionType.ApplicationCommand &&
+          interaction.data.type === ApplicationCommandType.ChatInput
+        ) {
           /**
            * Respond to typical slash commands
            */
-          if (interaction.data.type === ApplicationCommandType.ChatInput) {
-            logger.debug(
-              `Processing chat input command: ${interaction.data.name}`,
-            );
-            /**
-             * Respond to the "ping" command with "Pong!".
-             */
-            if (interaction.data.name === "ping") {
+          logger.debug(
+            `Processing chat input command: ${interaction.data.name}`,
+          );
+
+          switch (interaction.data.name) {
+            case "ping":
               return reply({
                 content: "Pong!",
               });
-            }
-
-            /**
-             * Sync Please command.
-             */
-            if (interaction.data.name === "syncplz") {
-              const [response, err] = await trytm(syncEvents());
-
-              if (err) {
-                return reply({
-                  content: err.message,
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-
-              const embed = new EmbedBuilder()
-                .setColor([0, 255, 0])
-                .setTitle("Calendar Synced")
-                .setDescription("Calendar synced successfully")
-                .setFields([
-                  {
-                    name: "Deleted Events",
-                    value: response.deletedEventCount.toString(),
-                    inline: true,
-                  },
-                  {
-                    name: "Updated/Created Events",
-                    value: response.updatedEvents.toString(),
-                    inline: true,
-                  },
-                ]);
-
+            case "syncplz":
+              return syncplzCommand(interaction.data);
+            case "requestrsvp":
+              return requestRSVPCommand(interaction.data);
+            case "leaderboard":
+              return leaderboardCommand(interaction.data);
+            default:
+              logger.debug(`Unknown command: ${interaction.data.name}`);
               return reply({
-                content: "Calendar synced",
-                embeds: [embed.toJSON()],
+                content: "Unknown command.",
+                flags: MessageFlags.Ephemeral,
               });
-            }
-
-            /**
-             * Request RSVP command.
-             */
-            if (interaction.data.name === "requestrsvp") {
-              const meetingStringOption = interaction.data.options?.find(
-                (option) =>
-                  option.type === ApplicationCommandOptionType.String &&
-                  option.name === "meeting",
-              ) as APIApplicationCommandInteractionDataStringOption | undefined;
-
-              const meetingId = meetingStringOption?.value;
-
-              if (!meetingId) {
-                return reply({
-                  content: "Please provide a meeting ID.",
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-
-              const [response, err] = await trytm(
-                generateMessage({
-                  eventId: meetingId,
-                }),
-              );
-
-              const [_, eventPostedError] = await trytm(
-                markEventPosted(meetingId),
-              );
-
-              if (eventPostedError) {
-                console.error(
-                  `Error marking event as posted: ${eventPostedError.message}`,
-                );
-                return reply({
-                  content: "Failed to mark event as posted.",
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-
-              if (err) {
-                return reply({
-                  content: "Failed to generate RSVP message.",
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-
-              return reply({
-                content: response.content,
-                embeds: response.embeds,
-                components: response.components,
-                allowed_mentions: response.allowed_mentions,
-              });
-            }
-
-            /**
-             * Outreach Leaderboard command.
-             */
-            if (interaction.data.name === "leaderboard") {
-              const [leaderboardPageEmbed, leaderboardPageError] = await trytm(
-                createOutreachEmbedPage(1),
-              );
-
-              if (leaderboardPageError) {
-                console.error(
-                  `Error creating outreach embed page: ${leaderboardPageError.message}`,
-                );
-                return reply({
-                  content: "Failed to fetch leaderboard page.",
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-              return reply({
-                embeds: [leaderboardPageEmbed.embed.toJSON()],
-                components: [leaderboardPageEmbed.messageComponent.toJSON()],
-              });
-            }
           }
         }
 
@@ -914,97 +749,6 @@ export const Route = createFileRoute("/api/interaction")({
   },
 });
 
-const roundDuration = (duration: Duration) => {
-  const millis = duration.toMillis();
-  // round to the nearest minute
-  const rounded = Math.round(millis / 60000) * 60000;
-  const hours = Math.floor(rounded / 3600000);
-  const minutes = Math.floor((rounded % 3600000) / 60000);
-  return Duration.fromObject({ hours, minutes });
-};
+// function registerButtonHandler<T extends $ZodType>(pattern: string, schema: T, handler: (params: z.output<T>) => Promise<JSONReply | JSONUpdateMessage | JSONModalReply>) {
 
-const leaderboardLine = (data: z.infer<typeof LeaderBoardUser>) =>
-  `${data.rank}. **${data.username}** - ${roundDuration(
-    Duration.fromISO(data.duration),
-  ).toHuman()}`;
-
-function randomStr(length = 8): string {
-  const alphanumericCharacters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let result = "";
-
-  for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(
-      Math.random() * alphanumericCharacters.length,
-    );
-    result += alphanumericCharacters[randomIndex];
-  }
-
-  return result;
-}
-
-const createOutreachEmbedPage = async (page: number) => {
-  const perPage = 10;
-
-  const [leaderboardResponse, leaderboardError] = await trytm(
-    getOutreachTime({
-      cursor: page - 1,
-      limit: perPage,
-    }),
-  );
-
-  if (leaderboardError) {
-    throw new Error(
-      `Error fetching outreach leaderboard: ${leaderboardError.message}`,
-    );
-  }
-
-  const { items: leaderBoardData, total } = leaderboardResponse;
-
-  // pages start at 1
-  const maxPage = Math.ceil(total / perPage);
-
-  if (maxPage === 0) {
-    throw new Error("No data available for the leaderboard");
-  }
-
-  if (page > maxPage || page < 1) throw new Error("Invalid page");
-
-  const embed = new EmbedBuilder()
-    .setTitle(`Outreach Leaderboard ${page}/${maxPage}`)
-    .setTimestamp(new Date());
-
-  const lines = leaderBoardData.map(leaderboardLine).join("\n");
-
-  embed.setDescription(lines);
-
-  const messageComponent = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    new ButtonBuilder()
-      .setCustomId(`leaderboard/${1}/${randomStr(4)}`)
-      .setLabel("First")
-      .setStyle(ButtonStyle.Secondary)
-      .setDisabled(page === 1),
-    new ButtonBuilder()
-      .setCustomId(`leaderboard/${page - 1}/${randomStr(4)}`)
-      .setLabel("Previous")
-      .setStyle(ButtonStyle.Secondary)
-      .setDisabled(page === 1),
-    new ButtonBuilder()
-      .setCustomId(`leaderboard/${page}/${randomStr(4)}`)
-      .setLabel("Refresh")
-      .setStyle(ButtonStyle.Primary)
-      .setDisabled(false),
-    new ButtonBuilder()
-      .setCustomId(`leaderboard/${page + 1}/${randomStr(4)}`)
-      .setLabel("Next")
-      .setStyle(ButtonStyle.Secondary)
-      .setDisabled(page === maxPage),
-    new ButtonBuilder()
-      .setCustomId(`leaderboard/${maxPage}/${randomStr(4)}`)
-      .setLabel("Last")
-      .setStyle(ButtonStyle.Secondary)
-      .setDisabled(page === maxPage),
-  );
-
-  return { embed, messageComponent };
-};
+// }
