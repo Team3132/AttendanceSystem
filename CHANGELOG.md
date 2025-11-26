@@ -1,5 +1,11 @@
 # frontend
 
+## 5.13.3
+
+### Patch Changes
+
+- [`229e929`](https://github.com/Team3132/AttendanceSystem/commit/229e9292042a28f24e0323a698c75ff4ff351397) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Use query for live
+
 ## 5.13.2
 
 ### Patch Changes
