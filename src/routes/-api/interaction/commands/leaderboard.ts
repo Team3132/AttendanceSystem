@@ -1,4 +1,4 @@
-import type { LeaderBoardUser } from "@/server";
+import type { LeaderBoardUser } from "@/server/schema";
 import { getOutreachTime } from "@/server/services/outreach.service";
 import randomStr from "@/server/utils/randomStr";
 import { trytm } from "@/utils/trytm";

@@ -4,7 +4,7 @@ import { syncEvents } from "@/server/services/calalendarSync.service";
 import { useMutation } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/react-start";
 
-const syncCalendarFn: () => ReturnType<typeof syncEvents> = createServerFn({
+const syncCalendarFn = createServerFn({
   method: "POST",
 })
   .middleware([adminMiddleware])

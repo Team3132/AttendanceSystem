@@ -19,8 +19,8 @@ import {
 } from "@discordjs/core";
 import { match } from "path-to-regexp";
 
-import { RSVPStatusUpdateSchema, type RSVPUserSchema } from "@/server";
 import db from "@/server/drizzle/db";
+import { RSVPStatusUpdateSchema, type RSVPUserSchema } from "@/server/schema";
 import {
   editUserRsvpStatus,
   getAutocompleteEvents,

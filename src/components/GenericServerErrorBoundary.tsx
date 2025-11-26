@@ -1,4 +1,4 @@
-import { isServerError } from "@/server";
+import { isServerError } from "@/server/utils/errors";
 import { Button, Stack, Typography } from "@mui/material";
 import { FaArrowLeft } from "react-icons/fa6";
 import { MdRefresh } from "react-icons/md";

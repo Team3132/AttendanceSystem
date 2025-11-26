@@ -5,7 +5,7 @@ import { useDisclosure } from "@/hooks/useDisclosure";
 import { eventQueryOptions } from "@/queries/events.queries";
 import { usersQueryOptions } from "@/queries/users.queries";
 import { Route } from "@/routes/_authenticated/events/$eventId/index";
-import { RSVPStatusUpdateSchema } from "@/server";
+import { RSVPStatusUpdateSchema } from "@/server/schema/RSVPStatusSchema";
 import { isServerError } from "@/server/utils/errors";
 import {
   Button,

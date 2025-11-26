@@ -1,6 +1,6 @@
 import { adminMiddleware } from "@/middleware/authMiddleware";
-import { UpdateEventParsingRuleSchema } from "@/server";
 import { adminQueryKeys } from "@/server/queryKeys";
+import { UpdateEventParsingRuleSchema } from "@/server/schema";
 import { updateParsingRule } from "@/server/services/adminService";
 import type FlattenServerFn from "@/types/FlattenServerFn";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

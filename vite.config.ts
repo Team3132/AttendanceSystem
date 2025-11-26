@@ -1,6 +1,5 @@
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
-import { nitro } from "nitro/vite";
 import { defineConfig } from "vite";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 
@@ -12,7 +11,7 @@ export default defineConfig({
   plugins: [
     viteTsconfigPaths(),
     tanstackStart(),
-    nitro({ preset: "bun" }),
+    // nitro({ preset: "bun" }),
     viteReact({
       babel: {
         plugins: [
@@ -54,14 +53,14 @@ export default defineConfig({
         noExternal: ["@mui/*"],
       }
     : undefined,
-  nitro: {
-    routeRules: {
-      "/assets/**": {
-        static: true,
-        headers: {
-          "cache-control": `public, max-age=${365 * 24 * 60 * 60}, immutable`, // 1 year
-        },
-      },
-    },
-  },
+  // nitro: {
+  //   routeRules: {
+  //     "/assets/**": {
+  //       static: true,
+  //       headers: {
+  //         "cache-control": `public, max-age=${365 * 24 * 60 * 60}, immutable`, // 1 year
+  //       },
+  //     },
+  //   },
+  // },
 });

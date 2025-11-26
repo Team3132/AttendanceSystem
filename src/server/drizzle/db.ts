@@ -6,7 +6,7 @@ import env from "../env";
 import { consola } from "../logger";
 import * as schema from "./schema";
 
-async function migrate() {
+export async function migrate() {
   const logger = consola.withTag("db");
 
   const migrationPath = path.resolve("./drizzle");
@@ -32,8 +32,6 @@ async function migrate() {
   await migrateDB(migrationClient, { migrationsFolder: migrationPath });
   logger.success("Database migrations completed successfully");
 }
-
-migrate();
 
 const pgClient = postgres(env.DATABASE_URL, {
   transform: {
