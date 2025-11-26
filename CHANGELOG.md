@@ -1,5 +1,11 @@
 # frontend
 
+## 5.13.2
+
+### Patch Changes
+
+- [`748611d`](https://github.com/Team3132/AttendanceSystem/commit/748611d26c4208449b88775a31cb918c48b1fb17) Thanks [@sebasptsch](https://github.com/sebasptsch)! - subscribe to specific event rsvp updates
+
 ## 5.13.1
 
 ### Patch Changes
