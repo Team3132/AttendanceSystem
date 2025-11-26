@@ -34,6 +34,9 @@ export default function useRSVPListInvalidator(eventId: string) {
 
   useQuery({
     queryKey: ["eventInvalidator", eventId, authInfo.data?.id ?? "no-auth"],
+    retry() {
+      return true;
+    },
     queryFn: async ({ signal }) => {
       for await (const msg of await eventRsvpInvalidatorListenerFn({
         data: { eventId },
