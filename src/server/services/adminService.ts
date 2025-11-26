@@ -5,11 +5,7 @@ import { GraphQLClient } from "graphql-request";
 import { ulid } from "ulidx";
 import type { z } from "zod";
 import db from "../drizzle/db";
-import {
-  apiKeyTable,
-  eventParsingRuleTable,
-  eventTable,
-} from "../drizzle/schema";
+import { eventParsingRuleTable, eventTable } from "../drizzle/schema";
 import env from "../env";
 import type {
   NewEventParsingRuleSchema,
@@ -17,78 +13,6 @@ import type {
 } from "../schema";
 import { ServerError } from "../utils/errors";
 import { strToRegex } from "../utils/regexBuilder";
-
-/**
- * Get all API keys
- * @returns A list of all API keys
- */
-export async function getApiKeys() {
-  const [apiKeys, error] = await trytm(db.query.apiKeyTable.findMany());
-
-  if (error)
-    throw new ServerError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "An error occured fetching API Keys",
-      cause: error,
-    });
-
-  return apiKeys;
-}
-
-/**
- * Delete an API key
- * @param id The ID of the API key to delete
- * @returns The deleted API key
- */
-export async function deleteApiKey(id: string) {
-  const [deleted, error] = await trytm(
-    db.delete(apiKeyTable).where(eq(apiKeyTable.id, id)).returning(),
-  );
-
-  if (error)
-    throw new ServerError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "An error occured deleting API Key",
-      cause: error,
-    });
-
-  return deleted;
-}
-
-/**
- * Create a new API key
- * @param userId The ID of the user creating the API key
- * @returns The created API key
- */
-export async function createApiKey(userId: string, name: string) {
-  const [apiKeys, error] = await trytm(
-    db
-      .insert(apiKeyTable)
-      .values({
-        name,
-        createdBy: userId,
-      })
-      .returning(),
-  );
-
-  if (error)
-    throw new ServerError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "An error occured creating API Key",
-      cause: error,
-    });
-
-  const [apiKey] = apiKeys;
-
-  if (!apiKey)
-    throw new ServerError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "An error occured creating API Key",
-      cause: error,
-    });
-
-  return apiKey;
-}
 
 /**
  * Create a new parsing rule

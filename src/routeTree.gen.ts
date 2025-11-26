@@ -26,13 +26,11 @@ import { Route as AuthenticatedEventsEventIdRouteImport } from './routes/_authen
 import { Route as AuthenticatedEventsEventIdIndexRouteImport } from './routes/_authenticated/events/$eventId/index'
 import { Route as AuthenticatedAdminUsersIndexRouteImport } from './routes/_authenticated/admin_/users/index'
 import { Route as AuthenticatedAdminEventParsingIndexRouteImport } from './routes/_authenticated/admin_/event-parsing/index'
-import { Route as AuthenticatedAdminApiKeysIndexRouteImport } from './routes/_authenticated/admin_/api-keys/index'
 import { Route as AuthenticatedEventsEventIdQrCodeRouteImport } from './routes/_authenticated/events/$eventId/qr-code'
 import { Route as AuthenticatedEventsEventIdCheckInRouteImport } from './routes/_authenticated/events/$eventId/check-in'
 import { Route as AuthenticatedAdminUsersUserIdRouteImport } from './routes/_authenticated/admin_/users/$userId'
 import { Route as AuthenticatedAdminEventParsingCreateRouteImport } from './routes/_authenticated/admin_/event-parsing/create'
 import { Route as AuthenticatedAdminEventParsingRuleIdRouteImport } from './routes/_authenticated/admin_/event-parsing/$ruleId'
-import { Route as AuthenticatedAdminApiKeysCreateRouteImport } from './routes/_authenticated/admin_/api-keys/create'
 import { Route as AuthenticatedAdminUsersUserIdIndexRouteImport } from './routes/_authenticated/admin_/users/$userId/index'
 import { Route as AuthenticatedAdminUsersUserIdSessionsRouteImport } from './routes/_authenticated/admin_/users/$userId/sessions'
 import { Route as AuthenticatedAdminUsersUserIdPendingRouteImport } from './routes/_authenticated/admin_/users/$userId/pending'
@@ -130,12 +128,6 @@ const AuthenticatedAdminEventParsingIndexRoute =
     path: '/event-parsing/',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
-const AuthenticatedAdminApiKeysIndexRoute =
-  AuthenticatedAdminApiKeysIndexRouteImport.update({
-    id: '/api-keys/',
-    path: '/api-keys/',
-    getParentRoute: () => AuthenticatedAdminRoute,
-  } as any)
 const AuthenticatedEventsEventIdQrCodeRoute =
   AuthenticatedEventsEventIdQrCodeRouteImport.update({
     id: '/qr-code',
@@ -164,12 +156,6 @@ const AuthenticatedAdminEventParsingRuleIdRoute =
   AuthenticatedAdminEventParsingRuleIdRouteImport.update({
     id: '/event-parsing/$ruleId',
     path: '/event-parsing/$ruleId',
-    getParentRoute: () => AuthenticatedAdminRoute,
-  } as any)
-const AuthenticatedAdminApiKeysCreateRoute =
-  AuthenticatedAdminApiKeysCreateRouteImport.update({
-    id: '/api-keys/create',
-    path: '/api-keys/create',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminUsersUserIdIndexRoute =
@@ -205,13 +191,11 @@ export interface FileRoutesByFullPath {
   '/profile/sessions': typeof AuthenticatedProfileSessionsRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/profile/': typeof AuthenticatedProfileIndexRoute
-  '/admin/api-keys/create': typeof AuthenticatedAdminApiKeysCreateRoute
   '/admin/event-parsing/$ruleId': typeof AuthenticatedAdminEventParsingRuleIdRoute
   '/admin/event-parsing/create': typeof AuthenticatedAdminEventParsingCreateRoute
   '/admin/users/$userId': typeof AuthenticatedAdminUsersUserIdRouteWithChildren
   '/events/$eventId/check-in': typeof AuthenticatedEventsEventIdCheckInRoute
   '/events/$eventId/qr-code': typeof AuthenticatedEventsEventIdQrCodeRoute
-  '/admin/api-keys': typeof AuthenticatedAdminApiKeysIndexRoute
   '/admin/event-parsing': typeof AuthenticatedAdminEventParsingIndexRoute
   '/admin/users': typeof AuthenticatedAdminUsersIndexRoute
   '/events/$eventId/': typeof AuthenticatedEventsEventIdIndexRoute
@@ -230,12 +214,10 @@ export interface FileRoutesByTo {
   '/profile/sessions': typeof AuthenticatedProfileSessionsRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/profile': typeof AuthenticatedProfileIndexRoute
-  '/admin/api-keys/create': typeof AuthenticatedAdminApiKeysCreateRoute
   '/admin/event-parsing/$ruleId': typeof AuthenticatedAdminEventParsingRuleIdRoute
   '/admin/event-parsing/create': typeof AuthenticatedAdminEventParsingCreateRoute
   '/events/$eventId/check-in': typeof AuthenticatedEventsEventIdCheckInRoute
   '/events/$eventId/qr-code': typeof AuthenticatedEventsEventIdQrCodeRoute
-  '/admin/api-keys': typeof AuthenticatedAdminApiKeysIndexRoute
   '/admin/event-parsing': typeof AuthenticatedAdminEventParsingIndexRoute
   '/admin/users': typeof AuthenticatedAdminUsersIndexRoute
   '/events/$eventId': typeof AuthenticatedEventsEventIdIndexRoute
@@ -259,13 +241,11 @@ export interface FileRoutesById {
   '/_authenticated/profile/sessions': typeof AuthenticatedProfileSessionsRoute
   '/_authenticated/admin_/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/profile/': typeof AuthenticatedProfileIndexRoute
-  '/_authenticated/admin_/api-keys/create': typeof AuthenticatedAdminApiKeysCreateRoute
   '/_authenticated/admin_/event-parsing/$ruleId': typeof AuthenticatedAdminEventParsingRuleIdRoute
   '/_authenticated/admin_/event-parsing/create': typeof AuthenticatedAdminEventParsingCreateRoute
   '/_authenticated/admin_/users/$userId': typeof AuthenticatedAdminUsersUserIdRouteWithChildren
   '/_authenticated/events/$eventId/check-in': typeof AuthenticatedEventsEventIdCheckInRoute
   '/_authenticated/events/$eventId/qr-code': typeof AuthenticatedEventsEventIdQrCodeRoute
-  '/_authenticated/admin_/api-keys/': typeof AuthenticatedAdminApiKeysIndexRoute
   '/_authenticated/admin_/event-parsing/': typeof AuthenticatedAdminEventParsingIndexRoute
   '/_authenticated/admin_/users/': typeof AuthenticatedAdminUsersIndexRoute
   '/_authenticated/events/$eventId/': typeof AuthenticatedEventsEventIdIndexRoute
@@ -289,13 +269,11 @@ export interface FileRouteTypes {
     | '/profile/sessions'
     | '/admin/'
     | '/profile/'
-    | '/admin/api-keys/create'
     | '/admin/event-parsing/$ruleId'
     | '/admin/event-parsing/create'
     | '/admin/users/$userId'
     | '/events/$eventId/check-in'
     | '/events/$eventId/qr-code'
-    | '/admin/api-keys'
     | '/admin/event-parsing'
     | '/admin/users'
     | '/events/$eventId/'
@@ -314,12 +292,10 @@ export interface FileRouteTypes {
     | '/profile/sessions'
     | '/admin'
     | '/profile'
-    | '/admin/api-keys/create'
     | '/admin/event-parsing/$ruleId'
     | '/admin/event-parsing/create'
     | '/events/$eventId/check-in'
     | '/events/$eventId/qr-code'
-    | '/admin/api-keys'
     | '/admin/event-parsing'
     | '/admin/users'
     | '/events/$eventId'
@@ -342,13 +318,11 @@ export interface FileRouteTypes {
     | '/_authenticated/profile/sessions'
     | '/_authenticated/admin_/'
     | '/_authenticated/profile/'
-    | '/_authenticated/admin_/api-keys/create'
     | '/_authenticated/admin_/event-parsing/$ruleId'
     | '/_authenticated/admin_/event-parsing/create'
     | '/_authenticated/admin_/users/$userId'
     | '/_authenticated/events/$eventId/check-in'
     | '/_authenticated/events/$eventId/qr-code'
-    | '/_authenticated/admin_/api-keys/'
     | '/_authenticated/admin_/event-parsing/'
     | '/_authenticated/admin_/users/'
     | '/_authenticated/events/$eventId/'
@@ -485,13 +459,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminEventParsingIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
-    '/_authenticated/admin_/api-keys/': {
-      id: '/_authenticated/admin_/api-keys/'
-      path: '/api-keys'
-      fullPath: '/admin/api-keys'
-      preLoaderRoute: typeof AuthenticatedAdminApiKeysIndexRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
     '/_authenticated/events/$eventId/qr-code': {
       id: '/_authenticated/events/$eventId/qr-code'
       path: '/qr-code'
@@ -525,13 +492,6 @@ declare module '@tanstack/react-router' {
       path: '/event-parsing/$ruleId'
       fullPath: '/admin/event-parsing/$ruleId'
       preLoaderRoute: typeof AuthenticatedAdminEventParsingRuleIdRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/_authenticated/admin_/api-keys/create': {
-      id: '/_authenticated/admin_/api-keys/create'
-      path: '/api-keys/create'
-      fullPath: '/admin/api-keys/create'
-      preLoaderRoute: typeof AuthenticatedAdminApiKeysCreateRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin_/users/$userId/': {
@@ -581,25 +541,21 @@ const AuthenticatedAdminUsersUserIdRouteWithChildren =
 
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
-  AuthenticatedAdminApiKeysCreateRoute: typeof AuthenticatedAdminApiKeysCreateRoute
   AuthenticatedAdminEventParsingRuleIdRoute: typeof AuthenticatedAdminEventParsingRuleIdRoute
   AuthenticatedAdminEventParsingCreateRoute: typeof AuthenticatedAdminEventParsingCreateRoute
   AuthenticatedAdminUsersUserIdRoute: typeof AuthenticatedAdminUsersUserIdRouteWithChildren
-  AuthenticatedAdminApiKeysIndexRoute: typeof AuthenticatedAdminApiKeysIndexRoute
   AuthenticatedAdminEventParsingIndexRoute: typeof AuthenticatedAdminEventParsingIndexRoute
   AuthenticatedAdminUsersIndexRoute: typeof AuthenticatedAdminUsersIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
-  AuthenticatedAdminApiKeysCreateRoute: AuthenticatedAdminApiKeysCreateRoute,
   AuthenticatedAdminEventParsingRuleIdRoute:
     AuthenticatedAdminEventParsingRuleIdRoute,
   AuthenticatedAdminEventParsingCreateRoute:
     AuthenticatedAdminEventParsingCreateRoute,
   AuthenticatedAdminUsersUserIdRoute:
     AuthenticatedAdminUsersUserIdRouteWithChildren,
-  AuthenticatedAdminApiKeysIndexRoute: AuthenticatedAdminApiKeysIndexRoute,
   AuthenticatedAdminEventParsingIndexRoute:
     AuthenticatedAdminEventParsingIndexRoute,
   AuthenticatedAdminUsersIndexRoute: AuthenticatedAdminUsersIndexRoute,

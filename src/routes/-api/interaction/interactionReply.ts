@@ -27,7 +27,7 @@ export const modalReply = (
     data,
   });
 
-export type JSONModalReply = ReturnType<typeof modalReply>;
+// export type JSONModalReply = ReturnType<typeof modalReply>;
 
 export const updateMessage = (
   c: Context,
@@ -38,7 +38,7 @@ export const updateMessage = (
     data,
   });
 
-export type JSONUpdateMessage = ReturnType<typeof updateMessage>;
+// export type JSONUpdateMessage = ReturnType<typeof updateMessage>;
 
 export const autocompleteReply = (
   c: Context,
@@ -49,4 +49,4 @@ export const autocompleteReply = (
     data,
   });
 
-export type JSONAutocompleteReply = ReturnType<typeof autocompleteReply>;
+// export type JSONAutocompleteReply = ReturnType<typeof autocompleteReply>;

@@ -48,7 +48,6 @@
 		"discord-interactions": "4.4.0",
 		"drizzle-orm": "0.44.7",
 		"drizzle-zod": "0.8.3",
-		"eventemitter3": "5.0.1",
 		"googleapis": "166.0.0",
 		"graphql": "16.12.0",
 		"graphql-request": "7.3.5",
@@ -73,6 +72,8 @@
 		"@biomejs/biome": "1.9.4",
 		"@changesets/changelog-github": "0.5.1",
 		"@changesets/cli": "2.29.7",
+		"@emotion/babel-plugin": "^11.13.5",
+		"@emotion/cache": "^11.14.0",
 		"@graphql-codegen/cli": "6.1.0",
 		"@graphql-codegen/typescript": "5.0.5",
 		"@graphql-codegen/typescript-graphql-request": "6.3.0",
@@ -89,7 +90,6 @@
 		"lefthook": "2.0.4",
 		"typescript": "5.9.3",
 		"vite": "7.2.4",
-		"vite-plugin-react": "4.0.1",
 		"vite-tsconfig-paths": "5.1.4"
 	},
 	"trustedDependencies": [
