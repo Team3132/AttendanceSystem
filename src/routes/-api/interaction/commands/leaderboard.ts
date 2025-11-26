@@ -12,11 +12,13 @@ import {
   ButtonStyle,
   MessageFlags,
 } from "@discordjs/core";
+import type { Context } from "hono";
 import { Duration } from "luxon";
 import type z from "zod";
 import { type JSONReply, reply } from "../interactionReply";
 
 export async function leaderboardCommand(
+  c: Context,
   _interaction: APIChatInputApplicationCommandInteractionData,
 ): Promise<JSONReply> {
   const [leaderboardPageEmbed, leaderboardPageError] = await trytm(
@@ -27,12 +29,12 @@ export async function leaderboardCommand(
     console.error(
       `Error creating outreach embed page: ${leaderboardPageError.message}`,
     );
-    return reply({
+    return reply(c, {
       content: "Failed to fetch leaderboard page.",
       flags: MessageFlags.Ephemeral,
     });
   }
-  return reply({
+  return reply(c, {
     embeds: [leaderboardPageEmbed.embed.toJSON()],
     components: [leaderboardPageEmbed.messageComponent.toJSON()],
   });

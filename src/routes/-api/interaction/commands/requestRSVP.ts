@@ -7,9 +7,11 @@ import {
   ApplicationCommandOptionType,
   MessageFlags,
 } from "@discordjs/core";
+import type { Context } from "hono";
 import { type JSONReply, reply } from "../interactionReply";
 
 export async function requestRSVPCommand(
+  c: Context,
   interaction: APIChatInputApplicationCommandInteractionData,
 ): Promise<JSONReply> {
   const meetingStringOption = interaction.options?.find(
@@ -21,7 +23,7 @@ export async function requestRSVPCommand(
   const meetingId = meetingStringOption?.value;
 
   if (!meetingId) {
-    return reply({
+    return reply(c, {
       content: "Please provide a meeting ID.",
       flags: MessageFlags.Ephemeral,
     });
@@ -37,20 +39,20 @@ export async function requestRSVPCommand(
 
   if (eventPostedError) {
     console.error(`Error marking event as posted: ${eventPostedError.message}`);
-    return reply({
+    return reply(c, {
       content: "Failed to mark event as posted.",
       flags: MessageFlags.Ephemeral,
     });
   }
 
   if (err) {
-    return reply({
+    return reply(c, {
       content: "Failed to generate RSVP message.",
       flags: MessageFlags.Ephemeral,
     });
   }
 
-  return reply({
+  return reply(c, {
     content: response.content,
     embeds: response.embeds,
     components: response.components,

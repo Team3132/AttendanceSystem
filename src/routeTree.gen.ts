@@ -13,13 +13,12 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as ErrorRouteImport } from './routes/error'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
-import { Route as ApiInteractionRouteImport } from './routes/api/interaction'
+import { Route as ApiSplatRouteImport } from './routes/api.$'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedLeaderboardRouteImport } from './routes/_authenticated/leaderboard'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin_'
 import { Route as AuthenticatedProfileIndexRouteImport } from './routes/_authenticated/profile/index'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin_/index'
-import { Route as ApiAuthDiscordRouteImport } from './routes/api/auth.discord'
 import { Route as AuthenticatedProfileSessionsRouteImport } from './routes/_authenticated/profile/sessions'
 import { Route as AuthenticatedProfilePendingRouteImport } from './routes/_authenticated/profile/pending'
 import { Route as AuthenticatedEventsCreateRouteImport } from './routes/_authenticated/events/create'
@@ -28,9 +27,6 @@ import { Route as AuthenticatedEventsEventIdIndexRouteImport } from './routes/_a
 import { Route as AuthenticatedAdminUsersIndexRouteImport } from './routes/_authenticated/admin_/users/index'
 import { Route as AuthenticatedAdminEventParsingIndexRouteImport } from './routes/_authenticated/admin_/event-parsing/index'
 import { Route as AuthenticatedAdminApiKeysIndexRouteImport } from './routes/_authenticated/admin_/api-keys/index'
-import { Route as ApiSchedulerReminderTriggerRouteImport } from './routes/api/scheduler.reminder.trigger'
-import { Route as ApiSchedulerCalendarTriggerRouteImport } from './routes/api/scheduler.calendar.trigger'
-import { Route as ApiAuthDiscordCallbackRouteImport } from './routes/api/auth.discord.callback'
 import { Route as AuthenticatedEventsEventIdQrCodeRouteImport } from './routes/_authenticated/events/$eventId/qr-code'
 import { Route as AuthenticatedEventsEventIdCheckInRouteImport } from './routes/_authenticated/events/$eventId/check-in'
 import { Route as AuthenticatedAdminUsersUserIdRouteImport } from './routes/_authenticated/admin_/users/$userId'
@@ -60,9 +56,9 @@ const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const ApiInteractionRoute = ApiInteractionRouteImport.update({
-  id: '/api/interaction',
-  path: '/api/interaction',
+const ApiSplatRoute = ApiSplatRouteImport.update({
+  id: '/api/$',
+  path: '/api/$',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
@@ -91,11 +87,6 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthenticatedAdminRoute,
-} as any)
-const ApiAuthDiscordRoute = ApiAuthDiscordRouteImport.update({
-  id: '/api/auth/discord',
-  path: '/api/auth/discord',
-  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedProfileSessionsRoute =
   AuthenticatedProfileSessionsRouteImport.update({
@@ -145,23 +136,6 @@ const AuthenticatedAdminApiKeysIndexRoute =
     path: '/api-keys/',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
-const ApiSchedulerReminderTriggerRoute =
-  ApiSchedulerReminderTriggerRouteImport.update({
-    id: '/api/scheduler/reminder/trigger',
-    path: '/api/scheduler/reminder/trigger',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ApiSchedulerCalendarTriggerRoute =
-  ApiSchedulerCalendarTriggerRouteImport.update({
-    id: '/api/scheduler/calendar/trigger',
-    path: '/api/scheduler/calendar/trigger',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ApiAuthDiscordCallbackRoute = ApiAuthDiscordCallbackRouteImport.update({
-  id: '/callback',
-  path: '/callback',
-  getParentRoute: () => ApiAuthDiscordRoute,
-} as any)
 const AuthenticatedEventsEventIdQrCodeRoute =
   AuthenticatedEventsEventIdQrCodeRouteImport.update({
     id: '/qr-code',
@@ -223,13 +197,12 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/leaderboard': typeof AuthenticatedLeaderboardRoute
   '/profile': typeof AuthenticatedProfileRouteWithChildren
-  '/api/interaction': typeof ApiInteractionRoute
+  '/api/$': typeof ApiSplatRoute
   '/': typeof AuthenticatedIndexRoute
   '/events/$eventId': typeof AuthenticatedEventsEventIdRouteWithChildren
   '/events/create': typeof AuthenticatedEventsCreateRoute
   '/profile/pending': typeof AuthenticatedProfilePendingRoute
   '/profile/sessions': typeof AuthenticatedProfileSessionsRoute
-  '/api/auth/discord': typeof ApiAuthDiscordRouteWithChildren
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/profile/': typeof AuthenticatedProfileIndexRoute
   '/admin/api-keys/create': typeof AuthenticatedAdminApiKeysCreateRoute
@@ -238,9 +211,6 @@ export interface FileRoutesByFullPath {
   '/admin/users/$userId': typeof AuthenticatedAdminUsersUserIdRouteWithChildren
   '/events/$eventId/check-in': typeof AuthenticatedEventsEventIdCheckInRoute
   '/events/$eventId/qr-code': typeof AuthenticatedEventsEventIdQrCodeRoute
-  '/api/auth/discord/callback': typeof ApiAuthDiscordCallbackRoute
-  '/api/scheduler/calendar/trigger': typeof ApiSchedulerCalendarTriggerRoute
-  '/api/scheduler/reminder/trigger': typeof ApiSchedulerReminderTriggerRoute
   '/admin/api-keys': typeof AuthenticatedAdminApiKeysIndexRoute
   '/admin/event-parsing': typeof AuthenticatedAdminEventParsingIndexRoute
   '/admin/users': typeof AuthenticatedAdminUsersIndexRoute
@@ -253,12 +223,11 @@ export interface FileRoutesByTo {
   '/error': typeof ErrorRoute
   '/login': typeof LoginRoute
   '/leaderboard': typeof AuthenticatedLeaderboardRoute
-  '/api/interaction': typeof ApiInteractionRoute
+  '/api/$': typeof ApiSplatRoute
   '/': typeof AuthenticatedIndexRoute
   '/events/create': typeof AuthenticatedEventsCreateRoute
   '/profile/pending': typeof AuthenticatedProfilePendingRoute
   '/profile/sessions': typeof AuthenticatedProfileSessionsRoute
-  '/api/auth/discord': typeof ApiAuthDiscordRouteWithChildren
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/profile': typeof AuthenticatedProfileIndexRoute
   '/admin/api-keys/create': typeof AuthenticatedAdminApiKeysCreateRoute
@@ -266,9 +235,6 @@ export interface FileRoutesByTo {
   '/admin/event-parsing/create': typeof AuthenticatedAdminEventParsingCreateRoute
   '/events/$eventId/check-in': typeof AuthenticatedEventsEventIdCheckInRoute
   '/events/$eventId/qr-code': typeof AuthenticatedEventsEventIdQrCodeRoute
-  '/api/auth/discord/callback': typeof ApiAuthDiscordCallbackRoute
-  '/api/scheduler/calendar/trigger': typeof ApiSchedulerCalendarTriggerRoute
-  '/api/scheduler/reminder/trigger': typeof ApiSchedulerReminderTriggerRoute
   '/admin/api-keys': typeof AuthenticatedAdminApiKeysIndexRoute
   '/admin/event-parsing': typeof AuthenticatedAdminEventParsingIndexRoute
   '/admin/users': typeof AuthenticatedAdminUsersIndexRoute
@@ -285,13 +251,12 @@ export interface FileRoutesById {
   '/_authenticated/admin_': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/leaderboard': typeof AuthenticatedLeaderboardRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRouteWithChildren
-  '/api/interaction': typeof ApiInteractionRoute
+  '/api/$': typeof ApiSplatRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/events/$eventId': typeof AuthenticatedEventsEventIdRouteWithChildren
   '/_authenticated/events/create': typeof AuthenticatedEventsCreateRoute
   '/_authenticated/profile/pending': typeof AuthenticatedProfilePendingRoute
   '/_authenticated/profile/sessions': typeof AuthenticatedProfileSessionsRoute
-  '/api/auth/discord': typeof ApiAuthDiscordRouteWithChildren
   '/_authenticated/admin_/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/profile/': typeof AuthenticatedProfileIndexRoute
   '/_authenticated/admin_/api-keys/create': typeof AuthenticatedAdminApiKeysCreateRoute
@@ -300,9 +265,6 @@ export interface FileRoutesById {
   '/_authenticated/admin_/users/$userId': typeof AuthenticatedAdminUsersUserIdRouteWithChildren
   '/_authenticated/events/$eventId/check-in': typeof AuthenticatedEventsEventIdCheckInRoute
   '/_authenticated/events/$eventId/qr-code': typeof AuthenticatedEventsEventIdQrCodeRoute
-  '/api/auth/discord/callback': typeof ApiAuthDiscordCallbackRoute
-  '/api/scheduler/calendar/trigger': typeof ApiSchedulerCalendarTriggerRoute
-  '/api/scheduler/reminder/trigger': typeof ApiSchedulerReminderTriggerRoute
   '/_authenticated/admin_/api-keys/': typeof AuthenticatedAdminApiKeysIndexRoute
   '/_authenticated/admin_/event-parsing/': typeof AuthenticatedAdminEventParsingIndexRoute
   '/_authenticated/admin_/users/': typeof AuthenticatedAdminUsersIndexRoute
@@ -319,13 +281,12 @@ export interface FileRouteTypes {
     | '/admin'
     | '/leaderboard'
     | '/profile'
-    | '/api/interaction'
+    | '/api/$'
     | '/'
     | '/events/$eventId'
     | '/events/create'
     | '/profile/pending'
     | '/profile/sessions'
-    | '/api/auth/discord'
     | '/admin/'
     | '/profile/'
     | '/admin/api-keys/create'
@@ -334,9 +295,6 @@ export interface FileRouteTypes {
     | '/admin/users/$userId'
     | '/events/$eventId/check-in'
     | '/events/$eventId/qr-code'
-    | '/api/auth/discord/callback'
-    | '/api/scheduler/calendar/trigger'
-    | '/api/scheduler/reminder/trigger'
     | '/admin/api-keys'
     | '/admin/event-parsing'
     | '/admin/users'
@@ -349,12 +307,11 @@ export interface FileRouteTypes {
     | '/error'
     | '/login'
     | '/leaderboard'
-    | '/api/interaction'
+    | '/api/$'
     | '/'
     | '/events/create'
     | '/profile/pending'
     | '/profile/sessions'
-    | '/api/auth/discord'
     | '/admin'
     | '/profile'
     | '/admin/api-keys/create'
@@ -362,9 +319,6 @@ export interface FileRouteTypes {
     | '/admin/event-parsing/create'
     | '/events/$eventId/check-in'
     | '/events/$eventId/qr-code'
-    | '/api/auth/discord/callback'
-    | '/api/scheduler/calendar/trigger'
-    | '/api/scheduler/reminder/trigger'
     | '/admin/api-keys'
     | '/admin/event-parsing'
     | '/admin/users'
@@ -380,13 +334,12 @@ export interface FileRouteTypes {
     | '/_authenticated/admin_'
     | '/_authenticated/leaderboard'
     | '/_authenticated/profile'
-    | '/api/interaction'
+    | '/api/$'
     | '/_authenticated/'
     | '/_authenticated/events/$eventId'
     | '/_authenticated/events/create'
     | '/_authenticated/profile/pending'
     | '/_authenticated/profile/sessions'
-    | '/api/auth/discord'
     | '/_authenticated/admin_/'
     | '/_authenticated/profile/'
     | '/_authenticated/admin_/api-keys/create'
@@ -395,9 +348,6 @@ export interface FileRouteTypes {
     | '/_authenticated/admin_/users/$userId'
     | '/_authenticated/events/$eventId/check-in'
     | '/_authenticated/events/$eventId/qr-code'
-    | '/api/auth/discord/callback'
-    | '/api/scheduler/calendar/trigger'
-    | '/api/scheduler/reminder/trigger'
     | '/_authenticated/admin_/api-keys/'
     | '/_authenticated/admin_/event-parsing/'
     | '/_authenticated/admin_/users/'
@@ -411,10 +361,7 @@ export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   ErrorRoute: typeof ErrorRoute
   LoginRoute: typeof LoginRoute
-  ApiInteractionRoute: typeof ApiInteractionRoute
-  ApiAuthDiscordRoute: typeof ApiAuthDiscordRouteWithChildren
-  ApiSchedulerCalendarTriggerRoute: typeof ApiSchedulerCalendarTriggerRoute
-  ApiSchedulerReminderTriggerRoute: typeof ApiSchedulerReminderTriggerRoute
+  ApiSplatRoute: typeof ApiSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -447,11 +394,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/api/interaction': {
-      id: '/api/interaction'
-      path: '/api/interaction'
-      fullPath: '/api/interaction'
-      preLoaderRoute: typeof ApiInteractionRouteImport
+    '/api/$': {
+      id: '/api/$'
+      path: '/api/$'
+      fullPath: '/api/$'
+      preLoaderRoute: typeof ApiSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/profile': {
@@ -488,13 +435,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/'
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/api/auth/discord': {
-      id: '/api/auth/discord'
-      path: '/api/auth/discord'
-      fullPath: '/api/auth/discord'
-      preLoaderRoute: typeof ApiAuthDiscordRouteImport
-      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/profile/sessions': {
       id: '/_authenticated/profile/sessions'
@@ -551,27 +491,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/api-keys'
       preLoaderRoute: typeof AuthenticatedAdminApiKeysIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
-    }
-    '/api/scheduler/reminder/trigger': {
-      id: '/api/scheduler/reminder/trigger'
-      path: '/api/scheduler/reminder/trigger'
-      fullPath: '/api/scheduler/reminder/trigger'
-      preLoaderRoute: typeof ApiSchedulerReminderTriggerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/scheduler/calendar/trigger': {
-      id: '/api/scheduler/calendar/trigger'
-      path: '/api/scheduler/calendar/trigger'
-      fullPath: '/api/scheduler/calendar/trigger'
-      preLoaderRoute: typeof ApiSchedulerCalendarTriggerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/auth/discord/callback': {
-      id: '/api/auth/discord/callback'
-      path: '/callback'
-      fullPath: '/api/auth/discord/callback'
-      preLoaderRoute: typeof ApiAuthDiscordCallbackRouteImport
-      parentRoute: typeof ApiAuthDiscordRoute
     }
     '/_authenticated/events/$eventId/qr-code': {
       id: '/_authenticated/events/$eventId/qr-code'
@@ -746,26 +665,11 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
   AuthenticatedRouteChildren,
 )
 
-interface ApiAuthDiscordRouteChildren {
-  ApiAuthDiscordCallbackRoute: typeof ApiAuthDiscordCallbackRoute
-}
-
-const ApiAuthDiscordRouteChildren: ApiAuthDiscordRouteChildren = {
-  ApiAuthDiscordCallbackRoute: ApiAuthDiscordCallbackRoute,
-}
-
-const ApiAuthDiscordRouteWithChildren = ApiAuthDiscordRoute._addFileChildren(
-  ApiAuthDiscordRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   ErrorRoute: ErrorRoute,
   LoginRoute: LoginRoute,
-  ApiInteractionRoute: ApiInteractionRoute,
-  ApiAuthDiscordRoute: ApiAuthDiscordRouteWithChildren,
-  ApiSchedulerCalendarTriggerRoute: ApiSchedulerCalendarTriggerRoute,
-  ApiSchedulerReminderTriggerRoute: ApiSchedulerReminderTriggerRoute,
+  ApiSplatRoute: ApiSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

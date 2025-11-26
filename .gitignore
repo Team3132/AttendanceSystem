@@ -20,3 +20,4 @@ pnpm-lock.yaml
 .tanstack-start
 .tanstack
 .env.local
+dist
