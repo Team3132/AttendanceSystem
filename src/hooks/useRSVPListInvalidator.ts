@@ -2,6 +2,7 @@ import { sessionMiddleware } from "@/middleware/authMiddleware";
 import { usersQueryOptions } from "@/queries/users.queries";
 import { pubSub } from "@/server/pubSub";
 import { eventQueryKeys } from "@/server/queryKeys";
+import { pipe } from "@graphql-yoga/subscription";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/react-start";
 import { useEffect } from "react";
@@ -17,7 +18,10 @@ const eventRsvpInvalidatorListenerFn = createServerFn({
     }),
   )
   .handler(async function* ({ data: { eventId } }) {
-    const iterator = pubSub.subscribe("event:rsvpUpdated", eventId);
+    const iterator = pipe(
+      pubSub.subscribe("event:rsvpUpdated", eventId),
+      //   filter((update) => update.userId !== user.id),
+    );
 
     for await (const payload of iterator) {
       yield payload;
