@@ -4,7 +4,7 @@
 	"version": "5.13.1",
 	"type": "module",
 	"scripts": {
-		"dev": "bunx --bun vite",
+		"dev": "bunx vite",
 		"build": "bun vite build",
 		"start": "PORT=1420 bun run .output/server/index.mjs",
 		"check": "bun biome check ./src",
@@ -23,6 +23,7 @@
 		"@emotion/react": "11.14.0",
 		"@emotion/styled": "11.14.1",
 		"@fontsource/roboto": "5.2.9",
+		"@graphql-yoga/subscription": "^5.0.5",
 		"@hono/zod-validator": "^0.7.5",
 		"@hookform/resolvers": "5.2.2",
 		"@keyv/postgres": "2.2.2",

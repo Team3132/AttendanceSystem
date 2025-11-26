@@ -1,3 +1,4 @@
+import useRSVPListInvalidator from "@/hooks/useRSVPListInvalidator";
 import { authQueryOptions } from "@/queries/auth.queries";
 import { eventQueryOptions } from "@/queries/events.queries";
 import { Route } from "@/routes/_authenticated/events/$eventId";
@@ -76,6 +77,7 @@ function RSVPList() {
 
   const authStatusQuery = useSuspenseQuery(authQueryOptions.status());
   const rsvpsQuery = useSuspenseQuery(eventQueryOptions.eventRsvps(eventId));
+  useRSVPListInvalidator(eventId);
 
   if (authStatusQuery.data.isAdmin) {
     return (
