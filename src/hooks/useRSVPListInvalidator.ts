@@ -5,7 +5,6 @@ import { eventQueryKeys } from "@/server/queryKeys";
 import { pipe } from "@graphql-yoga/subscription";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/react-start";
-import { useEffect } from "react";
 import z from "zod";
 
 const eventRsvpInvalidatorListenerFn = createServerFn({
@@ -33,29 +32,22 @@ export default function useRSVPListInvalidator(eventId: string) {
 
   const authInfo = useQuery(usersQueryOptions.userSelfDetails());
 
-  useEffect(() => {
-    console.log("Setting up RSVP list invalidator for event:", eventId);
-    const abortController = new AbortController();
-
-    (async () => {
+  useQuery({
+    queryKey: ["eventInvalidator", eventId, authInfo.data?.id ?? "no-auth"],
+    queryFn: async ({ signal }) => {
       for await (const msg of await eventRsvpInvalidatorListenerFn({
         data: { eventId },
-        signal: abortController.signal,
+        signal: signal,
       })) {
         queryClient.invalidateQueries({
           queryKey: eventQueryKeys.eventRsvps(eventId),
         });
-        if (authInfo.data?.id === msg.userId) {
+        if (authInfo.data?.id !== msg.userId) {
           queryClient.invalidateQueries({
             queryKey: eventQueryKeys.eventRsvp(eventId),
           });
         }
       }
-    })();
-
-    return () => {
-      abortController.abort();
-      console.log("Torn down RSVP list invalidator for event:", eventId);
-    };
-  }, [eventId, queryClient, authInfo.data?.id]);
+    },
+  });
 }
