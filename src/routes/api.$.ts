@@ -11,7 +11,7 @@ const app = new Hono().basePath("/api");
 app.route("/auth/discord/callback", authDiscordCallback);
 app.route("/auth/discord", authDiscord);
 app.route("/scheduler/reminder/trigger", schedulerReminderTriggerRoute);
-app.route("/scheduler/calender/trigger", schedulerCalendarTriggerRoute);
+app.route("/scheduler/calendar/trigger", schedulerCalendarTriggerRoute);
 app.route("/interaction", interactionRoute);
 app.route("/ws", wsRoute);
 
