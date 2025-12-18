@@ -65,6 +65,8 @@ jobs:
     environment: Production
     env:
       VITE_VERSION: ${{ matrix.package.version }}
+    outputs:
+      version: ${{ matrix.package.version }}
     strategy:
       fail-fast: true
       matrix:
@@ -145,3 +147,8 @@ jobs:
           ADMIN_ROLE_ID: ${{ secrets.ADMIN_ROLE_ID }}
           WEBHOOK_SERVER: ${{ secrets.WEBHOOK_SERVER }}
         run: docker compose up -d
+  deploy:
+    needs: publish-docker
+    uses: './.github/workflows/deploy.yml'
+    with:
+      tag: ${{ needs.publish-docker.outputs.version }}
