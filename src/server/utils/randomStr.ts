@@ -1,14 +1,4 @@
-export default function randomStr(length = 8): string {
-  const alphanumericCharacters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let result = "";
+import { customAlphabet } from "nanoid";
+import { alphanumeric } from "nanoid-dictionary";
 
-  for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(
-      Math.random() * alphanumericCharacters.length,
-    );
-    result += alphanumericCharacters[randomIndex];
-  }
-
-  return result;
-}
+export const randomStr = customAlphabet(alphanumeric, 8);

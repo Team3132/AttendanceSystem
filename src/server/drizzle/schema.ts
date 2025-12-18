@@ -9,9 +9,10 @@ import {
   unique,
   uniqueIndex,
 } from "drizzle-orm/pg-core";
+import { customAlphabet } from "nanoid";
+import { numbers } from "nanoid-dictionary";
 import { ulid } from "ulidx";
 import { v4 } from "uuid";
-import randomStr from "../utils/randomStr";
 
 export const rsvpStatus = pgEnum("rsvp_status", [
   "LATE",
@@ -150,6 +151,8 @@ export const rsvpTableRelations = relations(rsvpTable, ({ one }) => ({
   }),
 }));
 
+const randomSecret = customAlphabet(numbers, 6);
+
 export const eventTable = pgTable(
   "event",
   {
@@ -172,7 +175,7 @@ export const eventTable = pgTable(
     allDay: boolean("all_day").default(false).notNull(),
     secret: text("secret")
       .notNull()
-      .$defaultFn(() => randomStr(8)),
+      .$defaultFn(() => randomSecret()),
     isSyncedEvent: boolean("is_synced_event").default(false).notNull(),
     isPosted: boolean("is_posted").default(false).notNull(),
     ruleId: text("rule_id").references(() => eventParsingRuleTable.id, {
