@@ -51,7 +51,7 @@
 		"drizzle-zod": "0.8.3",
 		"googleapis": "169.0.0",
 		"graphql": "16.12.0",
-		"graphql-request": "7.3.5",
+		"graphql-request": "7.4.0",
 		"hono": "4.11.1",
 		"keyv": "5.5.5",
 		"lucia": "3.2.2",
