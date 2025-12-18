@@ -15,7 +15,6 @@ import { DateTime } from "luxon";
 import type { z } from "zod";
 import db from "../drizzle/db";
 import { eventTable, rsvpTable, userTable } from "../drizzle/schema";
-import { pubSub } from "../pubSub";
 import type { RSVPUserSchema, UserCheckinSchema } from "../schema";
 import type { CreateUserRsvpSchema } from "../schema/CreateBlankUserRsvpSchema";
 import type { CreateEventSchema } from "../schema/CreateEventSchema";
@@ -359,11 +358,11 @@ export async function editUserRsvpStatus(
   }
 
   // ee.emit("invalidate", eventQueryKeys.eventRsvps(eventId));
-  pubSub.publish("event:rsvpUpdated", eventId, {
-    rsvpId: updatedRsvp.id,
-    status: updatedRsvp.status,
-    userId: userId,
-  });
+  // pubSub.publish("event:rsvpUpdated", eventId, {
+  //   rsvpId: updatedRsvp.id,
+  //   status: updatedRsvp.status,
+  //   userId: userId,
+  // });
 
   return updatedRsvp;
 }
@@ -463,11 +462,11 @@ async function userCheckin(params: z.infer<typeof UserCheckinSchema>) {
   }
 
   // ee.emit("invalidate", eventQueryKeys.eventRsvps(eventId));
-  pubSub.publish("event:rsvpUpdated", eventId, {
-    rsvpId: updatedRsvp.id,
-    status: updatedRsvp.status,
-    userId: userId,
-  });
+  // pubSub.publish("event:rsvpUpdated", eventId, {
+  //   rsvpId: updatedRsvp.id,
+  //   status: updatedRsvp.status,
+  //   userId: userId,
+  // });
   console.log("Published RSVP update for event:", eventId);
 
   return updatedRsvp;
@@ -620,11 +619,11 @@ export async function userCheckout(userId: string, eventId: string) {
   }
 
   // ee.emit("invalidate", eventQueryKeys.eventRsvps(eventId));
-  pubSub.publish("event:rsvpUpdated", eventId, {
-    rsvpId: updatedRsvp.id,
-    status: updatedRsvp.status,
-    userId: userId,
-  });
+  // pubSub.publish("event:rsvpUpdated", eventId, {
+  //   rsvpId: updatedRsvp.id,
+  //   status: updatedRsvp.status,
+  //   userId: userId,
+  // });
 
   return updatedRsvp;
 }
@@ -738,11 +737,11 @@ export async function createUserRsvp(
     });
   }
 
-  pubSub.publish("event:rsvpUpdated", eventId, {
-    rsvpId: createdRsvp.id,
-    status: createdRsvp.status,
-    userId: userId,
-  });
+  // pubSub.publish("event:rsvpUpdated", eventId, {
+  //   rsvpId: createdRsvp.id,
+  //   status: createdRsvp.status,
+  //   userId: userId,
+  // });
 
   return createdRsvp;
 }
