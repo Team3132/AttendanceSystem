@@ -1,5 +1,11 @@
 # frontend
 
+## 5.14.12
+
+### Patch Changes
+
+- [`0a96e8d`](https://github.com/Team3132/AttendanceSystem/commit/0a96e8da90573a7d8927b2560c68cdb0b674cbe3) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Prune images
+
 ## 5.14.11
 
 ### Patch Changes
