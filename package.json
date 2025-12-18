@@ -47,7 +47,7 @@
 		"arctic": "3.7.0",
 		"consola": "3.4.2",
 		"discord-interactions": "4.4.0",
-		"drizzle-orm": "0.44.7",
+		"drizzle-orm": "0.45.1",
 		"drizzle-zod": "0.8.3",
 		"googleapis": "166.0.0",
 		"graphql": "16.12.0",
