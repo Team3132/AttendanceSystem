@@ -24,7 +24,7 @@ jobs:
       - name: Set up QEMU Docker
         uses: docker/setup-qemu-action@v3
       - name: Create and Use Context
-        run: docker context create remote --docker "host=${{ secrets.DOCKER_HOST }}" remote
+        run: docker context create remote --docker "host=${{ secrets.DOCKER_HOST }}"
       - name: List Contexts
         run: docker context ls
       - name: Remote PS
