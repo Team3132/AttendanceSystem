@@ -1,5 +1,0 @@
----
-"frontend": patch
----
-
-Prune images
