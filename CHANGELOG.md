@@ -1,5 +1,11 @@
 # frontend
 
+## 5.14.10
+
+### Patch Changes
+
+- [`5f45f58`](https://github.com/Team3132/AttendanceSystem/commit/5f45f586ba5606a3133899b552a67ab38ae76789) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Remove create Event Page
+
 ## 5.14.9
 
 ### Patch Changes
