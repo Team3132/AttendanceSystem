@@ -1,5 +1,7 @@
 name: Deploy Stack
 
+concurrency: deploy
+
 on:
   workflow_dispatch: 
     inputs:
@@ -26,12 +28,10 @@ jobs:
           tags: tag:ci
       - name: Set up QEMU Docker
         uses: docker/setup-qemu-action@v3
-      - name: Create and Use Context
-        run: docker context create remote --docker "host=${{ secrets.DOCKER_HOST }}"
-      - name: List Contexts
-        run: docker context ls
-      - name: Remote PS
-        run: docker --context remote ps
+      - name: Setup Context
+        run: | 
+          docker context create remote --docker "host=${{ secrets.DOCKER_HOST }}"
+          docker context use remote
       - name: Deploy Compose
         working-directory: deploy
         env: 
@@ -48,4 +48,4 @@ jobs:
           GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_ID }}
           ADMIN_ROLE_ID: ${{ secrets.ADMIN_ROLE_ID }}
           WEBHOOK_SERVER: ${{ secrets.WEBHOOK_SERVER }}
-        run: docker --context remote compose up -d
+        run: docker compose up -d
