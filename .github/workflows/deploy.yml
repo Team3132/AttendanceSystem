@@ -21,3 +21,21 @@ jobs:
           tags: tag:ci
       - name: Ping
         run: ping server1
+      - name: Deploy Compose
+        working-directory: deploy
+        env: 
+          DOCKER_HOST: ${{ secrets.DOCKER_HOST }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DISCORD_CLIENT_ID: ${{ secrets.DISCORD_CLIENT_ID }}
+          DISCORD_CLIENT_SECRET: ${{ secrets.DISCORD_CLIENT_SECRET }}
+          DISCORD_CALLBACK_URL: ${{ secrets.DISCORD_CALLBACK_URL }}
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+          DISCORD_PUBLIC_KEY: ${{ secrets.DISCORD_PUBLIC_KEY }}
+          GUILD_ID: ${{ secrets.GUILD_ID }}
+          VITE_FRONTEND_URL: ${{ secrets.VITE_FRONTEND_URL }}
+          GOOGLE_CLIENT_EMAIL: ${{ secrets.GOOGLE_CLIENT_EMAIL }}
+          GOOGLE_PRIVATE_KEY: ${{ secrets.GOOGLE_PRIVATE_KEY }}
+          GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_ID }}
+          ADMIN_ROLE_ID: ${{ secrets.ADMIN_ROLE_ID }}
+          WEBHOOK_SERVER: ${{ secrets.WEBHOOK_SERVER }}
+        run: docker compose up -d --verbose
