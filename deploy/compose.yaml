@@ -19,7 +19,7 @@ services:
       - webhook-data:/data
   attendance-system:
     restart: unless-stopped
-    build: ../
+    image: ghcr.io/team3132/attendancesystem-frontend:${TAG:-latest}
     ports:
       - 1420:1420
     links:
