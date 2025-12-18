@@ -1,5 +1,11 @@
 # frontend
 
+## 5.14.3
+
+### Patch Changes
+
+- [`898b85a`](https://github.com/Team3132/AttendanceSystem/commit/898b85ab58ef9d6387a3531be5735e55ffda8e64) Thanks [@sebasptsch](https://github.com/sebasptsch)! - add back annoying uuid
+
 ## 5.14.2
 
 ### Patch Changes
