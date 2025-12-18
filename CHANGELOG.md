@@ -1,5 +1,11 @@
 # frontend
 
+## 5.14.0
+
+### Minor Changes
+
+- [`1c679c2`](https://github.com/Team3132/AttendanceSystem/commit/1c679c2ac60d1b561e82e8c49077ce3d32a8dc87) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add websocket server functionality
+
 ## 5.13.3
 
 ### Patch Changes
