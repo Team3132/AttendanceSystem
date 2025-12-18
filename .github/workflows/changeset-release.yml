@@ -74,7 +74,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-
+      - name: Tailscale
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
       - uses: oven-sh/setup-bun@v2
         name: Setup Bun
       - name: Setup Node
@@ -117,29 +122,14 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=registry,ref=ghcr.io/team3132/attendancesystem-${{ matrix.package.name }}:latest
           context: .
-  deploy:
-    needs: publish-docker
-    runs-on: ubuntu-latest
-    environment: "Production"
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-      - name: Tailscale
-        uses: tailscale/github-action@v4
-        with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:ci
-      - name: Set up QEMU Docker
-        uses: docker/setup-qemu-action@v3
-      - name: Setup Context
+      - name: Init Remote Context
         run: |
           docker context create remote --docker "host=${{ secrets.DOCKER_HOST }}"
           docker context use remote
       - name: Deploy Compose
         working-directory: deploy
         env:
-          TAG: ${{ needs.publish-docker.outputs.version }}
+          TAG: ${{ matrix.package.version }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           DISCORD_CLIENT_ID: ${{ secrets.DISCORD_CLIENT_ID }}
           DISCORD_CLIENT_SECRET: ${{ secrets.DISCORD_CLIENT_SECRET }}
