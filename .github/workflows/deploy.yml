@@ -49,4 +49,4 @@ jobs:
           GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_ID }}
           ADMIN_ROLE_ID: ${{ secrets.ADMIN_ROLE_ID }}
           WEBHOOK_SERVER: ${{ secrets.WEBHOOK_SERVER }}
-        run: docker compose --context remote up -d
+        run: docker --context remote compose up -d
