@@ -114,3 +114,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=registry,ref=ghcr.io/team3132/attendancesystem-${{ matrix.package.name }}:latest
           context: .
+  deploy-docker:
+    name: Deploy to Host
+    uses: ./.github/workflows/deploy.yml

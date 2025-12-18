@@ -3,14 +3,19 @@ name: Deploy Stack
 concurrency: deploy
 
 on:
-  workflow_dispatch: 
+  workflow_call:
+    inputs:
+      tag:
+        type: string
+        default: latest
+        required: true
+        description: The tag of the image to deploy
+  workflow_dispatch:
     inputs:
       tag:
         required: false
         description: The tag of the image to deploy
-  push: # Temp
-    branches:
-      - main
+        default: latest
 
 jobs:
   deploy:
@@ -29,12 +34,13 @@ jobs:
       - name: Set up QEMU Docker
         uses: docker/setup-qemu-action@v3
       - name: Setup Context
-        run: | 
+        run: |
           docker context create remote --docker "host=${{ secrets.DOCKER_HOST }}"
           docker context use remote
       - name: Deploy Compose
         working-directory: deploy
-        env: 
+        env:
+          TAG: ${{ inputs.tag }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           DISCORD_CLIENT_ID: ${{ secrets.DISCORD_CLIENT_ID }}
           DISCORD_CLIENT_SECRET: ${{ secrets.DISCORD_CLIENT_SECRET }}
