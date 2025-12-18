@@ -1,5 +1,11 @@
 # frontend
 
+## 5.14.11
+
+### Patch Changes
+
+- [`e689396`](https://github.com/Team3132/AttendanceSystem/commit/e68939694d15e3c7b009f0562e85e45284defac7) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Better secrets
+
 ## 5.14.10
 
 ### Patch Changes
