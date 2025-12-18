@@ -49,7 +49,7 @@
 		"discord-interactions": "4.4.0",
 		"drizzle-orm": "0.45.1",
 		"drizzle-zod": "0.8.3",
-		"googleapis": "166.0.0",
+		"googleapis": "169.0.0",
 		"graphql": "16.12.0",
 		"graphql-request": "7.3.5",
 		"hono": "4.11.1",
