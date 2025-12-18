@@ -1,5 +1,11 @@
 # frontend
 
+## 5.14.1
+
+### Patch Changes
+
+- [`f131465`](https://github.com/Team3132/AttendanceSystem/commit/f131465dccaf5f7c3f80ee6d734d89a165cf99b2) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Remove weird ssr rule
+
 ## 5.14.0
 
 ### Minor Changes
