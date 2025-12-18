@@ -24,7 +24,7 @@
 		"@emotion/styled": "11.14.1",
 		"@fontsource/roboto": "5.2.9",
 		"@graphql-yoga/subscription": "5.0.5",
-		"@hono/zod-validator": "0.7.5",
+		"@hono/zod-validator": "0.7.6",
 		"@hookform/resolvers": "5.2.2",
 		"@keyv/postgres": "2.2.2",
 		"@lucia-auth/adapter-drizzle": "1.1.0",
