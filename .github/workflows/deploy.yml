@@ -23,6 +23,11 @@ jobs:
           tags: tag:ci
       - name: Set up QEMU Docker
         uses: docker/setup-qemu-action@v3
+      - name: Add key
+        run: |
+          mkdir -p ~/.ssh/ && touch ~/.ssh/known_hosts
+          ssh-keyscan server1 >> ~/.ssh/known_hosts
+          eval $(ssh-agent)
       - name: Create and Use Context
         run: docker context create remote --docker "host=${{ secrets.DOCKER_HOST }}"
       - name: List Contexts
