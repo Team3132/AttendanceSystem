@@ -48,7 +48,7 @@ export default defineConfig({
   server: {
     port: 1420,
   },
-  ssr: !import.meta.dev
+  ssr: !import.meta.env.DEV
     ? {
         noExternal: ["@mui/*"],
       }
