@@ -1,0 +1,45 @@
+name: attendance
+
+services:
+  postgres:
+    restart: unless-stopped
+    image: postgres:17
+    environment:
+      - POSTGRES_PASSWORD
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+  cron-webhook:
+    restart: unless-stopped
+    image: ghcr.io/sebasptsch/cron-webhook:latest
+    environment:
+      - DATABASE_URL=/data/cron-webhook.db
+      - CRON_TZ=Australia/Sydney
+      - TZ
+    volumes:
+      - webhook-data:/data
+  attendance-system:
+    restart: unless-stopped
+    image: ghcr.io/team3132/attendancesystem-frontend:${TAG:-latest}
+    ports:
+      - 1420:1420
+    links:
+      - postgres
+      - cron-webhook
+    environment:
+      - DATABASE_URL
+      - DISCORD_CLIENT_ID
+      - DISCORD_CLIENT_SECRET
+      - DISCORD_CALLBACK_URL
+      - DISCORD_TOKEN
+      - DISCORD_PUBLIC_KEY
+      - GUILD_ID
+      - VITE_FRONTEND_URL
+      - GOOGLE_CLIENT_EMAIL
+      - GOOGLE_PRIVATE_KEY
+      - GOOGLE_CALENDAR_ID
+      - ADMIN_ROLE_ID
+      - WEBHOOK_SERVER
+
+volumes:
+  postgres-data:
+  webhook-data:

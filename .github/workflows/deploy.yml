@@ -1,0 +1,23 @@
+name: Deploy Stack
+
+on:
+  workflow_dispatch: 
+    inputs:
+      tag:
+        required: false
+        description: The tag of the image to deploy
+
+jobs:
+  deploy:
+    environment: "Production"
+    runs-on: ubuntu-latest
+    name: Docker Compose Deploy
+    steps:
+      - name: Tailscale
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+      - name: Ping
+        run: ping server1
