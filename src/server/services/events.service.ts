@@ -15,7 +15,6 @@ import { DateTime } from "luxon";
 import type { z } from "zod";
 import db from "../drizzle/db";
 import { eventTable, rsvpTable, userTable } from "../drizzle/schema";
-import { pubSub } from "../pubSub";
 import type { RSVPUserSchema, UserCheckinSchema } from "../schema";
 import type { CreateUserRsvpSchema } from "../schema/CreateBlankUserRsvpSchema";
 import type { CreateEventSchema } from "../schema/CreateEventSchema";

@@ -512,7 +512,7 @@ async function initializeServer() {
   let handler: {
     fetch: (
       request: Request,
-      opts: { context: Register["server"]["requestContext"] },
+      opts: { context: Partial<Register["server"]["requestContext"]> },
     ) => Response | Promise<Response>;
     websocket: BunWebSocketHandler<BunWebSocketData>;
   };
@@ -521,7 +521,7 @@ async function initializeServer() {
       default: {
         fetch: (
           request: Request,
-          opts: { context: Register["server"]["requestContext"] },
+          opts: { context: Partial<Register["server"]["requestContext"]> },
         ) => Response | Promise<Response>;
         websocket: BunWebSocketHandler<BunWebSocketData>;
       };
