@@ -17,7 +17,6 @@ import db from "../drizzle/db";
 import { eventTable, rsvpTable, userTable } from "../drizzle/schema";
 import type { RSVPUserSchema, UserCheckinSchema } from "../schema";
 import type { CreateUserRsvpSchema } from "../schema/CreateBlankUserRsvpSchema";
-import type { CreateEventSchema } from "../schema/CreateEventSchema";
 import type { EditRSVPSelfSchema } from "../schema/EditRSVPSelfSchema";
 import type { EventSchema } from "../schema/EventSchema";
 import type { GetEventParamsSchema } from "../schema/GetEventParamsSchema";
@@ -27,7 +26,6 @@ import clampDateTime from "../utils/clampDateTime";
 import { buildConflictUpdateColumns } from "../utils/db/buildConflictUpdateColumns";
 import { buildSetWhereColumns } from "../utils/db/buildSetWhereColumns";
 import { ServerError } from "../utils/errors";
-import randomStr from "../utils/randomStr";
 
 /**
  * Get events
@@ -249,47 +247,6 @@ export async function getEventRsvps(
   });
 
   return formatted;
-}
-
-/**
- * Create an event
- * @param params The parameters for the event
- * @returns The created event
- */
-export async function createEvent(params: z.infer<typeof CreateEventSchema>) {
-  const [createdEvents, dbInserterror] = await trytm(
-    db
-      .insert(eventTable)
-      .values({
-        ...params,
-        secret: randomStr(8),
-      })
-      .returning(),
-  );
-
-  if (dbInserterror) {
-    throw new ServerError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Failed to create event",
-      cause: dbInserterror,
-    });
-  }
-
-  const [createdEvent] = createdEvents;
-
-  if (!createdEvent) {
-    throw new ServerError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Failed to create event",
-      cause: dbInserterror,
-    });
-  }
-
-  const { secret, ...data } = createdEvent;
-
-  // ee.emit("invalidate", eventQueryKeys.eventsList);
-
-  return data;
 }
 
 /**
