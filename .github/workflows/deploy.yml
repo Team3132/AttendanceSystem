@@ -20,7 +20,7 @@ jobs:
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:ci
       - name: Ping
-        run: ping server1
+        run: ping server1 -c 4
       - name: Deploy Compose
         working-directory: deploy
         env: 
