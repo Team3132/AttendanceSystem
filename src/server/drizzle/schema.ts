@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { relations } from "drizzle-orm";
 import {
   boolean,
@@ -10,7 +11,6 @@ import {
   uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { ulid } from "ulidx";
-import { v4 } from "uuid";
 import randomStr from "../utils/randomStr";
 
 export const rsvpStatus = pgEnum("rsvp_status", [
@@ -73,7 +73,7 @@ export const rsvpTable = pgTable(
     id: text("id")
       .primaryKey()
       .notNull()
-      .$default(() => v4()),
+      .$default(() => randomUUID()),
     eventId: text("event_id")
       .notNull()
       .references(() => eventTable.id, {
@@ -156,7 +156,7 @@ export const eventTable = pgTable(
     id: text("id")
       .primaryKey()
       .notNull()
-      .$defaultFn(() => v4()),
+      .$defaultFn(() => randomUUID()),
     description: text("description").default("").notNull(),
     title: text("title").notNull(),
     startDate: timestamp("start_date", {
