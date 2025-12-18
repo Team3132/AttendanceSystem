@@ -1,5 +1,11 @@
 # frontend
 
+## 5.14.9
+
+### Patch Changes
+
+- [`c62497c`](https://github.com/Team3132/AttendanceSystem/commit/c62497cc14222d0b5ffbf582711aa0491e21f15f) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix spelling mistake in calendar refresh api route
+
 ## 5.14.8
 
 ### Patch Changes
