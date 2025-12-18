@@ -144,3 +144,5 @@ jobs:
           ADMIN_ROLE_ID: ${{ secrets.ADMIN_ROLE_ID }}
           WEBHOOK_SERVER: ${{ secrets.WEBHOOK_SERVER }}
         run: docker compose up -d
+      - name: Prune Images
+        run: docker image prune -af
