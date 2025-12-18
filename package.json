@@ -91,7 +91,7 @@
 		"lefthook": "2.0.12",
 		"typescript": "5.9.3",
 		"vite": "7.3.0",
-		"vite-tsconfig-paths": "5.1.4"
+		"vite-tsconfig-paths": "6.0.2"
 	},
 	"trustedDependencies": [
 		"lefthook"
