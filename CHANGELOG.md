@@ -1,5 +1,11 @@
 # frontend
 
+## 5.14.13
+
+### Patch Changes
+
+- [#3157](https://github.com/Team3132/AttendanceSystem/pull/3157) [`37a8234`](https://github.com/Team3132/AttendanceSystem/commit/37a8234ad0ee08e0081ffecd96d15bd2708d7f66) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): update dependency knip to v5.76.1
+
 ## 5.14.12
 
 ### Patch Changes
