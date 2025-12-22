@@ -1,5 +1,11 @@
 # frontend
 
+## 5.14.15
+
+### Patch Changes
+
+- [#3166](https://github.com/Team3132/AttendanceSystem/pull/3166) [`4f4a744`](https://github.com/Team3132/AttendanceSystem/commit/4f4a744e0eeb230d78489e99f2bc7b773cc14e26) Thanks [@renovate](https://github.com/apps/renovate)! - chore(deps): lock file maintenance
+
 ## 5.14.14
 
 ### Patch Changes
