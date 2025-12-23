@@ -1,4 +1,3 @@
-import { lucia } from "@/server/auth/lucia";
 import env from "@/server/env";
 import { redirect } from "@tanstack/react-router";
 import { createMiddleware } from "@tanstack/react-start";
@@ -33,7 +32,7 @@ type SessionContext = FilledSession | NullSession;
  */
 export const authBaseMiddleware = createMiddleware({
   type: "function",
-}).server(async ({ next }) => {
+}).server(async ({ next, context: { lucia } }) => {
   const authorizationHeader = getRequestHeader("Authorization");
 
   // Get the bearer token session

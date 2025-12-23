@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Hono } from "hono";
+import type { Register } from "@tanstack/react-start";
+import { type Env, Hono } from "hono";
 import { authDiscord } from "./-api/auth.discord";
 import { authDiscordCallback } from "./-api/auth.discord.callback";
 import { interactionRoute } from "./-api/interaction";
@@ -7,7 +8,11 @@ import { schedulerCalendarTriggerRoute } from "./-api/scheduler.calendar.trigger
 import { schedulerReminderTriggerRoute } from "./-api/scheduler.reminder.trigger";
 import { wsRoute } from "./-api/ws";
 
-const app = new Hono().basePath("/api");
+export interface HonoEnv extends Env {
+  Variables: Register["server"]["requestContext"];
+}
+
+const app = new Hono<HonoEnv>().basePath("/api");
 app.route("/auth/discord/callback", authDiscordCallback);
 app.route("/auth/discord", authDiscord);
 app.route("/scheduler/reminder/trigger", schedulerReminderTriggerRoute);
@@ -18,8 +23,7 @@ app.route("/ws", wsRoute);
 export const Route = createFileRoute("/api/$")({
   server: {
     handlers: {
-      ANY: async ({ request, context: { server } }) =>
-        app.fetch(request, server),
+      ANY: async ({ request, context }) => app.fetch(request, context),
     },
   },
 });

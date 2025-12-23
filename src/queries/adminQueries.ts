@@ -1,30 +1,18 @@
-import { adminMiddleware } from "@/middleware/authMiddleware";
 import { adminQueryKeys } from "@/server/queryKeys";
 import {
   getParsingRule,
   getParsingRules,
 } from "@/server/services/adminService";
 import { queryOptions } from "@tanstack/react-query";
-import { createServerFn } from "@tanstack/react-start";
-import { z } from "zod";
-
-const getEventParsingRulesFn = createServerFn({ method: "GET" })
-  .middleware([adminMiddleware])
-  .handler(() => getParsingRules());
-
-const getEventParsingRuleFn = createServerFn({ method: "GET" })
-  .inputValidator(z.string())
-  .middleware([adminMiddleware])
-  .handler(({ data }) => getParsingRule(data));
 
 export const adminQueries = {
   eventParsingRules: queryOptions({
-    queryFn: () => getEventParsingRulesFn(),
+    queryFn: () => getParsingRules(),
     queryKey: adminQueryKeys.parsingRuleList(),
   }),
   eventParsingRule: (id: string) =>
     queryOptions({
-      queryFn: () => getEventParsingRuleFn({ data: id }),
+      queryFn: () => getParsingRule({ data: id }),
       queryKey: adminQueryKeys.parsingRule(id),
     }),
 };

@@ -3,7 +3,7 @@ import {
   sessionMiddleware,
 } from "@/middleware/authMiddleware";
 import { usersQueryKeys } from "@/server/queryKeys";
-import { UserListParamsSchema } from "@/server/schema";
+import type { UserListParamsSchema } from "@/server/schema";
 import {
   getPendingUserRsvps,
   getUser,
@@ -16,16 +16,6 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 type UserListParams = Omit<z.infer<typeof UserListParamsSchema>, "cursor">;
-
-const getUserListFn = createServerFn({ method: "GET" })
-  .middleware([adminMiddleware])
-  .inputValidator(UserListParamsSchema)
-  .handler(async ({ data }) => getUserList(data));
-
-const getUserFn = createServerFn({ method: "GET" })
-  .middleware([adminMiddleware])
-  .inputValidator(z.string().describe("The user ID"))
-  .handler(async ({ data }) => getUser(data));
 
 const getUserScancodesFn = createServerFn({ method: "GET" })
   .middleware([adminMiddleware])
@@ -62,7 +52,7 @@ export const usersQueryOptions = {
   userList: (params: UserListParams) =>
     infiniteQueryOptions({
       queryFn: ({ pageParam }) =>
-        getUserListFn({
+        getUserList({
           data: {
             ...params,
             cursor: pageParam ?? undefined,
@@ -75,7 +65,7 @@ export const usersQueryOptions = {
 
   userDetails: (id: string) =>
     queryOptions({
-      queryFn: () => getUserFn({ data: id }),
+      queryFn: () => getUser({ data: id }),
       queryKey: usersQueryKeys.userDetails(id),
     }),
 

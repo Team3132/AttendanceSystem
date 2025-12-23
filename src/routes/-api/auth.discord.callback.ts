@@ -1,5 +1,4 @@
-import { discord, lucia } from "@/server/auth/lucia";
-import db from "@/server/drizzle/db";
+import { discord } from "@/server/auth/lucia";
 import { userTable } from "@/server/drizzle/schema";
 import env from "@/server/env";
 import { consola } from "@/server/logger";
@@ -13,6 +12,7 @@ import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { deleteCookie, setCookie } from "hono/cookie";
 import { z } from "zod";
+import type { HonoEnv } from "../api.$";
 
 const querySchema = z.object({
   code: z.string(),
@@ -24,7 +24,7 @@ const cookieSchema = z.object({
   discord_oauth_code_verifier: z.string(),
 });
 
-export const authDiscordCallback = new Hono().get(
+export const authDiscordCallback = new Hono<HonoEnv>().get(
   "/",
   zValidator("query", querySchema),
   zValidator("cookie", cookieSchema),
@@ -95,7 +95,7 @@ export const authDiscordCallback = new Hono().get(
     ];
 
     const [_authedUserData, userUpdateError] = await trytm(
-      db
+      c.var.db
         .insert(userTable)
         .values({
           id,
@@ -118,14 +118,16 @@ export const authDiscordCallback = new Hono().get(
       return c.redirect(env.VITE_FRONTEND_URL, 302);
     }
 
-    const [session, sessionError] = await trytm(lucia.createSession(id, {}));
+    const [session, sessionError] = await trytm(
+      c.var.lucia.createSession(id, {}),
+    );
 
     if (sessionError) {
       consola.error("Failed to create session", sessionError);
       return c.redirect(env.VITE_FRONTEND_URL, 302);
     }
 
-    const sessionCookie = lucia.createSessionCookie(session.id);
+    const sessionCookie = c.var.lucia.createSessionCookie(session.id);
     setCookie(
       c,
       sessionCookie.name,

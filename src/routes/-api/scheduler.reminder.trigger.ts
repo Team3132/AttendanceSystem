@@ -1,5 +1,4 @@
 import { getSdk } from "@/gql";
-import db from "@/server/drizzle/db";
 import { eventParsingRuleTable, eventTable } from "@/server/drizzle/schema";
 import env from "@/server/env";
 import { consola } from "@/server/logger";
@@ -13,18 +12,19 @@ import { GraphQLClient } from "graphql-request";
 import { Hono } from "hono";
 import { DateTime } from "luxon";
 import { z } from "zod";
+import type { HonoEnv } from "../api.$";
 
 const querySchema = z.object({
   ruleId: z.string(),
 });
 
-export const schedulerReminderTriggerRoute = new Hono().post(
+export const schedulerReminderTriggerRoute = new Hono<HonoEnv>().post(
   "/",
   zValidator("query", querySchema),
   async (c) => {
     const { ruleId } = c.req.valid("query");
 
-    const rule = await db.query.eventParsingRuleTable.findFirst({
+    const rule = await c.var.db.query.eventParsingRuleTable.findFirst({
       where: eq(eventParsingRuleTable.id, ruleId),
     });
 
@@ -62,7 +62,7 @@ export const schedulerReminderTriggerRoute = new Hono().post(
     }
 
     // events in the next day and that match the rule
-    const matchingEvents = await db
+    const matchingEvents = await c.var.db
       .select({ id: eventTable.id })
       .from(eventTable)
       .where(
@@ -79,7 +79,7 @@ export const schedulerReminderTriggerRoute = new Hono().post(
     const notificationMessages = await Promise.all(
       matchingEventIds.map(
         async (eventId) =>
-          [eventId, await generateMessage({ eventId })] as const,
+          [eventId, await generateMessage({ data: eventId })] as const,
       ),
     );
 
@@ -123,7 +123,7 @@ export const schedulerReminderTriggerRoute = new Hono().post(
       .filter((p) => p.status === "fulfilled")
       .map((p) => p.value[0]);
 
-    await db
+    await c.var.db
       .update(eventTable)
       .set({
         isPosted: true,

@@ -19,7 +19,6 @@ import {
 } from "@discordjs/core";
 import { match } from "path-to-regexp";
 
-import db from "@/server/drizzle/db";
 import { RSVPStatusUpdateSchema, type RSVPUserSchema } from "@/server/schema";
 import {
   editUserRsvpStatus,
@@ -34,6 +33,7 @@ import { createUser } from "@/server/services/user.service";
 import { Hono } from "hono";
 import { DateTime } from "luxon";
 import { z } from "zod";
+import type { HonoEnv } from "../api.$";
 import {
   createOutreachEmbedPage,
   leaderboardCommand,
@@ -72,7 +72,7 @@ function rsvpToDescription(
   return `${username} - ${statusToEmoji(status)}`;
 }
 
-export const interactionRoute = new Hono().post(
+export const interactionRoute = new Hono<HonoEnv>().post(
   "/",
   verifyDiscordMiddleware,
   async (c) => {
@@ -262,7 +262,7 @@ export const interactionRoute = new Hono().post(
 
           if (ruleId !== null) {
             const [rule, ruleGetError] = await trytm(
-              db.query.eventParsingRuleTable.findFirst({
+              c.var.db.query.eventParsingRuleTable.findFirst({
                 where: (table, { eq }) => eq(table.id, ruleId),
               }),
             );
@@ -323,9 +323,7 @@ export const interactionRoute = new Hono().post(
           }
 
           const [generatedMessage, genMsgErr] = await trytm(
-            generateMessage({
-              eventId,
-            }),
+            generateMessage({ data: eventId }),
           );
 
           if (genMsgErr) {
@@ -425,7 +423,7 @@ export const interactionRoute = new Hono().post(
           }
           const [generatedMessage, genMsgErr] = await trytm(
             generateMessage({
-              eventId,
+              data: eventId,
             }),
           );
           if (genMsgErr) {
@@ -575,7 +573,7 @@ export const interactionRoute = new Hono().post(
         }
         const [generatedMessage, genMsgErr] = await trytm(
           generateMessage({
-            eventId,
+            data: eventId,
           }),
         );
         if (genMsgErr) {
@@ -675,7 +673,7 @@ export const interactionRoute = new Hono().post(
         }
         const [generatedMessage, genMsgErr] = await trytm(
           generateMessage({
-            eventId,
+            data: eventId,
           }),
         );
         if (genMsgErr) {

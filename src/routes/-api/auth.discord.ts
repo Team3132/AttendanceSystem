@@ -3,8 +3,9 @@ import { consola } from "@/server/logger";
 import { generateCodeVerifier, generateState } from "arctic";
 import { Hono } from "hono";
 import { setCookie } from "hono/cookie";
+import type { HonoEnv } from "../api.$";
 
-export const authDiscord = new Hono().get("/", async (c) => {
+export const authDiscord = new Hono<HonoEnv>().get("/", async (c) => {
   const state = generateState();
   const codeVerifier = generateCodeVerifier();
   const url = await discord.createAuthorizationURL(state, codeVerifier, [

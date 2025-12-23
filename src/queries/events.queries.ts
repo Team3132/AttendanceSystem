@@ -3,7 +3,7 @@ import {
   sessionMiddleware,
 } from "@/middleware/authMiddleware";
 import { eventQueryKeys } from "@/server/queryKeys";
-import { GetEventParamsSchema } from "@/server/schema";
+import type { GetEventParamsSchema } from "@/server/schema";
 import {
   getEvent,
   getEventRsvp,
@@ -16,11 +16,6 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 type GetEventsParams = Omit<z.infer<typeof GetEventParamsSchema>, "cursor">;
-
-const getEventsFn = createServerFn({ method: "GET" })
-  .middleware([sessionMiddleware])
-  .inputValidator(GetEventParamsSchema)
-  .handler(async ({ data }) => getEvents(data));
 
 const getEventFn = createServerFn({ method: "GET" })
   .middleware([sessionMiddleware])
@@ -56,7 +51,7 @@ export const eventQueryOptions = {
   eventList: (options: GetEventsParams) =>
     infiniteQueryOptions({
       queryFn: ({ pageParam }) =>
-        getEventsFn({
+        getEvents({
           data: { ...options, cursor: pageParam ?? undefined },
         }),
       queryKey: eventQueryKeys.eventsListParams(options),
