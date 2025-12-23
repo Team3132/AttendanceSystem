@@ -1,6 +1,6 @@
 import { createPubSub } from "@graphql-yoga/subscription";
 import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
-import type { Register } from "@tanstack/react-start";
+import { type Register, createServerOnlyFn } from "@tanstack/react-start";
 import type { RequestOptions } from "@tanstack/react-start/server";
 import handler from "@tanstack/react-start/server-entry";
 import type { Server } from "bun";
@@ -76,6 +76,8 @@ declare module "lucia" {
   }
 }
 
+const serverHandler = createServerOnlyFn(handler.fetch);
+
 export default {
   fetch(
     req: Request,
@@ -83,6 +85,6 @@ export default {
   ): Response | Promise<Response> {
     const context = { ...opts?.context, pubSub, db, lucia };
 
-    return handler.fetch(req, { context });
+    return serverHandler(req, { context });
   },
 };

@@ -21,3 +21,5 @@ jobs:
         run: bun typecheck
       - name: Lint & Format Packages
         run: bun check --reporter=github
+      - name: Build
+        run: bun run build
