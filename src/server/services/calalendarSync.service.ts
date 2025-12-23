@@ -1,9 +1,10 @@
 import { Common, type calendar_v3, google } from "googleapis";
 
+import { adminMiddleware } from "@/middleware/authMiddleware";
 import { trytm } from "@/utils/trytm";
+import { createServerFn, createServerOnlyFn } from "@tanstack/react-start";
 import { asc, inArray } from "drizzle-orm";
 import { DateTime } from "luxon";
-import db from "../drizzle/db";
 import { kv } from "../drizzle/kv";
 import { eventParsingRuleTable, eventTable } from "../drizzle/schema";
 import env from "../env";
@@ -17,21 +18,23 @@ const eventLogger = consola.withTag("eventSync");
 
 type EventInsert = typeof eventTable.$inferInsert;
 
-const client = new google.auth.JWT({
-  email: env.GOOGLE_CLIENT_EMAIL,
-  key: env.GOOGLE_PRIVATE_KEY,
-  scopes: ["https://www.googleapis.com/auth/calendar.readonly"],
-});
-
-const calendar = google.calendar({
-  version: "v3",
-  auth: client,
-});
-
 /**
  * Generator function to get all calendar events
  */
-async function* incrementalSync(syncToken?: string) {
+const incrementalSync = createServerOnlyFn(async function* (
+  syncToken?: string,
+) {
+  const client = new google.auth.JWT({
+    email: env.GOOGLE_CLIENT_EMAIL,
+    key: env.GOOGLE_PRIVATE_KEY,
+    scopes: ["https://www.googleapis.com/auth/calendar.readonly"],
+  });
+
+  const calendar = google.calendar({
+    version: "v3",
+    auth: client,
+  });
+
   /** The google calendar parameters */
   const params: calendar_v3.Params$Resource$Events$List = {
     calendarId: env.GOOGLE_CALENDAR_ID,
@@ -105,7 +108,7 @@ async function* incrementalSync(syncToken?: string) {
       await kv.set("syncToken", data.nextSyncToken);
     }
   }
-}
+});
 
 /**
  * Gets the start and end dates of an event
@@ -207,89 +210,92 @@ const isMatchingRule = (
 
 /**
  * Syncs events from Google Calendar to the database
+ * @todo maybe replace with serveronlyfn
  */
-export async function syncEvents() {
-  eventLogger.info("Sync Events");
-  const syncToken = await kv.get<string>("syncToken");
+export const syncEvents = createServerFn({ method: "POST" })
+  .middleware([adminMiddleware])
+  .handler(async ({ context: { db } }) => {
+    eventLogger.info("Sync Events");
+    const syncToken = await kv.get<string>("syncToken");
 
-  /** All the calendar events */
-  const calendarEvents = await incrementalSync(syncToken);
+    /** All the calendar events */
+    const calendarEvents = await incrementalSync(syncToken);
 
-  /** Filters to map events to */
-  const filters = await db
-    .select({
-      id: eventParsingRuleTable.id,
-      regex: eventParsingRuleTable.regex,
-    })
-    .from(eventParsingRuleTable)
-    .orderBy(asc(eventParsingRuleTable.priority)); // Order by priority, lowest to highest (the lower the priority, the higher the precedence)
+    /** Filters to map events to */
+    const filters = await db
+      .select({
+        id: eventParsingRuleTable.id,
+        regex: eventParsingRuleTable.regex,
+      })
+      .from(eventParsingRuleTable)
+      .orderBy(asc(eventParsingRuleTable.priority)); // Order by priority, lowest to highest (the lower the priority, the higher the precedence)
 
-  let totalDeleted = 0;
-  let totalUpserted = 0;
+    let totalDeleted = 0;
+    let totalUpserted = 0;
 
-  for await (const events of calendarEvents) {
-    const toDelete = events
-      .filter((e) => e.status === "cancelled" && !!e.id)
-      .map((e) => e.id) as string[];
+    for await (const events of calendarEvents) {
+      const toDelete = events
+        .filter((e) => e.status === "cancelled" && !!e.id)
+        .map((e) => e.id) as string[];
 
-    /** Events to upsert */
-    const toUpsert = events
-      .filter((e) => e.status !== "cancelled") // Filter out events that are marked as cancelled
-      .map(googleEventToEvent) // Map Google Calendar events to event objects
-      .map((e) => mapEventToRule(e, filters)); // Map events with rules
+      /** Events to upsert */
+      const toUpsert = events
+        .filter((e) => e.status !== "cancelled") // Filter out events that are marked as cancelled
+        .map(googleEventToEvent) // Map Google Calendar events to event objects
+        .map((e) => mapEventToRule(e, filters)); // Map events with rules
 
-    if (toDelete.length) {
-      const [deletedData, deleteError] = await trytm(
-        db
-          .delete(eventTable)
-          .where(inArray(eventTable.id, toDelete))
-          .returning({
-            id: eventTable.id,
-          }),
-      );
+      if (toDelete.length) {
+        const [deletedData, deleteError] = await trytm(
+          db
+            .delete(eventTable)
+            .where(inArray(eventTable.id, toDelete))
+            .returning({
+              id: eventTable.id,
+            }),
+        );
 
-      if (deleteError) {
-        eventLogger.error("Failed to delete events", deleteError);
+        if (deleteError) {
+          eventLogger.error("Failed to delete events", deleteError);
+        }
+
+        if (deletedData?.length) {
+          totalDeleted += deletedData.length;
+        }
       }
 
-      if (deletedData?.length) {
-        totalDeleted += deletedData.length;
+      // Upsert events that are not marked as cancelled
+      if (toUpsert.length) {
+        const [insertedData, insertError] = await trytm(
+          db
+            .insert(eventTable)
+            .values(toUpsert)
+            .onConflictDoUpdate({
+              target: [eventTable.id],
+              set: conflictUpdateColumns,
+              setWhere: conflictWhereColumns,
+            })
+            .returning({
+              id: eventTable.id,
+            }),
+        );
+
+        if (insertError) {
+          eventLogger.error("Failed to insert events", insertError);
+        }
+
+        if (insertedData?.length) {
+          totalUpserted += insertedData.length;
+        }
       }
     }
 
-    // Upsert events that are not marked as cancelled
-    if (toUpsert.length) {
-      const [insertedData, insertError] = await trytm(
-        db
-          .insert(eventTable)
-          .values(toUpsert)
-          .onConflictDoUpdate({
-            target: [eventTable.id],
-            set: conflictUpdateColumns,
-            setWhere: conflictWhereColumns,
-          })
-          .returning({
-            id: eventTable.id,
-          }),
-      );
+    eventLogger.info(`Deleted ${totalDeleted} events`);
+    eventLogger.info(`Upserted ${totalUpserted} events`);
 
-      if (insertError) {
-        eventLogger.error("Failed to insert events", insertError);
-      }
+    eventLogger.success("Sync Events");
 
-      if (insertedData?.length) {
-        totalUpserted += insertedData.length;
-      }
-    }
-  }
-
-  eventLogger.info(`Deleted ${totalDeleted} events`);
-  eventLogger.info(`Upserted ${totalUpserted} events`);
-
-  eventLogger.success("Sync Events");
-
-  return { updatedEvents: totalUpserted, deletedEventCount: totalDeleted };
-}
+    return { updatedEvents: totalUpserted, deletedEventCount: totalDeleted };
+  });
 
 /**
  * Maps an event to a rule

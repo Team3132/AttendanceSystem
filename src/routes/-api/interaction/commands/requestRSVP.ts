@@ -31,7 +31,7 @@ export async function requestRSVPCommand(
 
   const [response, err] = await trytm(
     generateMessage({
-      eventId: meetingId,
+      data: meetingId,
     }),
   );
 

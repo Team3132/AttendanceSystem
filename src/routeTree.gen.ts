@@ -21,7 +21,6 @@ import { Route as AuthenticatedProfileIndexRouteImport } from './routes/_authent
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin_/index'
 import { Route as AuthenticatedProfileSessionsRouteImport } from './routes/_authenticated/profile/sessions'
 import { Route as AuthenticatedProfilePendingRouteImport } from './routes/_authenticated/profile/pending'
-import { Route as AuthenticatedEventsCreateRouteImport } from './routes/_authenticated/events/create'
 import { Route as AuthenticatedEventsEventIdRouteImport } from './routes/_authenticated/events/$eventId'
 import { Route as AuthenticatedEventsEventIdIndexRouteImport } from './routes/_authenticated/events/$eventId/index'
 import { Route as AuthenticatedAdminUsersIndexRouteImport } from './routes/_authenticated/admin_/users/index'
@@ -97,12 +96,6 @@ const AuthenticatedProfilePendingRoute =
     id: '/pending',
     path: '/pending',
     getParentRoute: () => AuthenticatedProfileRoute,
-  } as any)
-const AuthenticatedEventsCreateRoute =
-  AuthenticatedEventsCreateRouteImport.update({
-    id: '/events/create',
-    path: '/events/create',
-    getParentRoute: () => AuthenticatedRoute,
   } as any)
 const AuthenticatedEventsEventIdRoute =
   AuthenticatedEventsEventIdRouteImport.update({
@@ -186,7 +179,6 @@ export interface FileRoutesByFullPath {
   '/api/$': typeof ApiSplatRoute
   '/': typeof AuthenticatedIndexRoute
   '/events/$eventId': typeof AuthenticatedEventsEventIdRouteWithChildren
-  '/events/create': typeof AuthenticatedEventsCreateRoute
   '/profile/pending': typeof AuthenticatedProfilePendingRoute
   '/profile/sessions': typeof AuthenticatedProfileSessionsRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
@@ -209,7 +201,6 @@ export interface FileRoutesByTo {
   '/leaderboard': typeof AuthenticatedLeaderboardRoute
   '/api/$': typeof ApiSplatRoute
   '/': typeof AuthenticatedIndexRoute
-  '/events/create': typeof AuthenticatedEventsCreateRoute
   '/profile/pending': typeof AuthenticatedProfilePendingRoute
   '/profile/sessions': typeof AuthenticatedProfileSessionsRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
@@ -236,7 +227,6 @@ export interface FileRoutesById {
   '/api/$': typeof ApiSplatRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/events/$eventId': typeof AuthenticatedEventsEventIdRouteWithChildren
-  '/_authenticated/events/create': typeof AuthenticatedEventsCreateRoute
   '/_authenticated/profile/pending': typeof AuthenticatedProfilePendingRoute
   '/_authenticated/profile/sessions': typeof AuthenticatedProfileSessionsRoute
   '/_authenticated/admin_/': typeof AuthenticatedAdminIndexRoute
@@ -264,7 +254,6 @@ export interface FileRouteTypes {
     | '/api/$'
     | '/'
     | '/events/$eventId'
-    | '/events/create'
     | '/profile/pending'
     | '/profile/sessions'
     | '/admin/'
@@ -287,7 +276,6 @@ export interface FileRouteTypes {
     | '/leaderboard'
     | '/api/$'
     | '/'
-    | '/events/create'
     | '/profile/pending'
     | '/profile/sessions'
     | '/admin'
@@ -313,7 +301,6 @@ export interface FileRouteTypes {
     | '/api/$'
     | '/_authenticated/'
     | '/_authenticated/events/$eventId'
-    | '/_authenticated/events/create'
     | '/_authenticated/profile/pending'
     | '/_authenticated/profile/sessions'
     | '/_authenticated/admin_/'
@@ -423,13 +410,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/profile/pending'
       preLoaderRoute: typeof AuthenticatedProfilePendingRouteImport
       parentRoute: typeof AuthenticatedProfileRoute
-    }
-    '/_authenticated/events/create': {
-      id: '/_authenticated/events/create'
-      path: '/events/create'
-      fullPath: '/events/create'
-      preLoaderRoute: typeof AuthenticatedEventsCreateRouteImport
-      parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/events/$eventId': {
       id: '/_authenticated/events/$eventId'
@@ -605,7 +585,6 @@ interface AuthenticatedRouteChildren {
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRouteWithChildren
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedEventsEventIdRoute: typeof AuthenticatedEventsEventIdRouteWithChildren
-  AuthenticatedEventsCreateRoute: typeof AuthenticatedEventsCreateRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
@@ -614,7 +593,6 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedProfileRoute: AuthenticatedProfileRouteWithChildren,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedEventsEventIdRoute: AuthenticatedEventsEventIdRouteWithChildren,
-  AuthenticatedEventsCreateRoute: AuthenticatedEventsCreateRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

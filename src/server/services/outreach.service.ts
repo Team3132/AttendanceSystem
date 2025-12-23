@@ -12,7 +12,6 @@ import {
 } from "drizzle-orm";
 import { DateTime } from "luxon";
 import type { z } from "zod";
-import db from "../drizzle/db";
 import {
   eventParsingRuleTable,
   eventTable,
@@ -22,6 +21,7 @@ import {
 import env from "../env";
 import { OutreachTimeSchema } from "../schema/OutreachTimeSchema";
 import type { PagedLeaderboardSchema } from "../schema/PagedLeaderboardSchema";
+import { getServerContext } from "../utils/context";
 import { ServerError } from "../utils/errors";
 
 /**
@@ -35,6 +35,9 @@ export async function getOutreachTime(
   params: z.infer<typeof OutreachTimeSchema>,
 ): Promise<z.infer<typeof PagedLeaderboardSchema>> {
   const { limit, cursor: page } = OutreachTimeSchema.parse(params);
+
+  const { db } = getServerContext();
+
   const lastApril25 = getLastApril25();
 
   if (!lastApril25) {

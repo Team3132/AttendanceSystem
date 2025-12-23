@@ -1,5 +1,4 @@
 import { authBaseMiddleware } from "@/middleware/authMiddleware";
-import { lucia } from "@/server/auth/lucia";
 import type FlattenServerFn from "@/types/FlattenServerFn";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
@@ -10,7 +9,7 @@ const logoutFn = createServerFn({
   method: "POST",
 })
   .middleware([authBaseMiddleware])
-  .handler(async ({ context: { session } }) => {
+  .handler(async ({ context: { session, lucia } }) => {
     if (session) {
       await lucia.invalidateSession(session.id);
       // Clear the session cookie
