@@ -1,4 +1,5 @@
 import GenericServerErrorBoundary from "@/components/GenericServerErrorBoundary";
+import { LinkChip } from "@/components/LinkChip";
 import LinkTabs from "@/components/LinkTabs";
 import type { TabItem } from "@/hooks/useTabIndex";
 import { authQueryOptions } from "@/queries/auth.queries";
@@ -125,7 +126,21 @@ function EventTitle() {
   return (
     <CenteredStack>
       <Typography variant="h4">{eventData.data.title}</Typography>
+
       <Typography variant="subtitle1">{dateText}</Typography>
+      {eventData.data.rule ? (
+        <LinkChip
+          to="/admin/event-parsing/$ruleId"
+          color="primary"
+          params={{
+            ruleId: eventData.data.rule.id,
+          }}
+          label={eventData.data.rule.name}
+          sx={{
+            alignSelf: "center",
+          }}
+        />
+      ) : null}
     </CenteredStack>
   );
 }
