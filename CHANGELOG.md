@@ -1,5 +1,15 @@
 # frontend
 
+## 5.15.0
+
+### Minor Changes
+
+- [#3184](https://github.com/Team3132/AttendanceSystem/pull/3184) [`b6630b8`](https://github.com/Team3132/AttendanceSystem/commit/b6630b8dab5b93d529336b45f71b5b21f6c239d4) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Removes the Cron-Webhook service in favour of the croner library
+
+### Patch Changes
+
+- [#3188](https://github.com/Team3132/AttendanceSystem/pull/3188) [`ef9e906`](https://github.com/Team3132/AttendanceSystem/commit/ef9e9061e1c3c751f15f59e9ced0874e6516c1e8) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Removes Unused API Key Database Table
+
 ## 5.14.16
 
 ### Patch Changes
