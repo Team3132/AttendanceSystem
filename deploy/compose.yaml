@@ -8,15 +8,6 @@ services:
       - POSTGRES_PASSWORD
     volumes:
       - postgres-data:/var/lib/postgresql/data
-  cron-webhook:
-    restart: unless-stopped
-    image: ghcr.io/sebasptsch/cron-webhook:latest
-    environment:
-      - DATABASE_URL=/data/cron-webhook.db
-      - CRON_TZ=Australia/Sydney
-      - TZ
-    volumes:
-      - webhook-data:/data
   attendance-system:
     restart: unless-stopped
     image: ghcr.io/team3132/attendancesystem-frontend:${TAG:-latest}
@@ -38,8 +29,6 @@ services:
       - GOOGLE_PRIVATE_KEY
       - GOOGLE_CALENDAR_ID
       - ADMIN_ROLE_ID
-      - WEBHOOK_SERVER
 
 volumes:
   postgres-data:
-  webhook-data:

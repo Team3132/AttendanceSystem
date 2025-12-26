@@ -142,7 +142,6 @@ jobs:
           GOOGLE_PRIVATE_KEY: ${{ secrets.GOOGLE_PRIVATE_KEY }}
           GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_ID }}
           ADMIN_ROLE_ID: ${{ secrets.ADMIN_ROLE_ID }}
-          WEBHOOK_SERVER: ${{ secrets.WEBHOOK_SERVER }}
-        run: docker compose up -d
+        run: docker compose up -d --remove-orphans
       - name: Prune Images
         run: docker image prune -af

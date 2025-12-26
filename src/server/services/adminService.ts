@@ -1,17 +1,111 @@
-import { getSdk } from "@/gql";
 import { adminMiddleware } from "@/middleware/authMiddleware";
 import { UpdateEventParsingRuleSchema } from "@/server/schema";
 import { trytm } from "@/utils/trytm";
-import { createServerFn } from "@tanstack/react-start";
-import { asc, eq } from "drizzle-orm";
-import { GraphQLClient } from "graphql-request";
+import { ChannelType } from "@discordjs/core";
+import { createServerFn, createServerOnlyFn } from "@tanstack/react-start";
+import { Cron, scheduledJobs } from "croner";
+import { and, asc, between, eq, inArray, not } from "drizzle-orm";
+import { DateTime } from "luxon";
 import { ulid } from "ulidx";
 import { z } from "zod";
 import { eventParsingRuleTable, eventTable } from "../drizzle/schema";
-import env from "../env";
+import { consola } from "../logger";
 import { NewEventParsingRuleSchema } from "../schema";
+import { getServerContext } from "../utils/context";
 import { ServerError } from "../utils/errors";
 import { strToRegex } from "../utils/regexBuilder";
+import { generateMessage } from "./botService";
+import { getDiscordBotAPI } from "./discordService";
+
+/**
+ * This is the function that gets run every time a cron job is triggered
+ */
+export const reminderFn = createServerOnlyFn(async (job: Cron) => {
+  if (!job.name) return;
+
+  const { db } = getServerContext();
+
+  const rule = await db.query.eventParsingRuleTable.findFirst({
+    where: eq(eventParsingRuleTable.id, job.name),
+  });
+
+  if (!rule) {
+    throw new Error("Rule not found");
+  }
+
+  const nextRun = job.nextRun();
+
+  let eventRangeEnd = DateTime.now().plus({ day: 1 }).startOf("day").toJSDate();
+
+  const nextRunDate = nextRun ? DateTime.fromJSDate(nextRun) : null;
+  if (nextRunDate?.isValid) {
+    eventRangeEnd = nextRunDate.endOf("day").toJSDate();
+  }
+
+  // events in the next day and that match the rule
+  const matchingEvents = await db
+    .select({ id: eventTable.id })
+    .from(eventTable)
+    .where(
+      and(
+        eq(eventTable.ruleId, job.name),
+        between(eventTable.startDate, new Date(), eventRangeEnd),
+        not(eventTable.isPosted),
+      ),
+    );
+
+  const matchingEventIds = matchingEvents.map((event) => event.id);
+
+  // generate messages for each event (this fetches RSVPs and the event details)
+  const notificationMessages = await Promise.all(
+    matchingEventIds.map(
+      async (eventId) =>
+        [eventId, await generateMessage({ data: eventId })] as const,
+    ),
+  );
+
+  const botAPI = getDiscordBotAPI();
+
+  const channel = await botAPI.channels.get(rule.channelId);
+
+  if (channel.type !== ChannelType.GuildText) {
+    throw new Error("Channel is not a text channel");
+  }
+
+  const messagedEvents = await Promise.allSettled(
+    notificationMessages.map(
+      async ([eventId, message]) =>
+        [
+          eventId,
+          await botAPI.channels.createMessage(channel.id, message),
+        ] as const,
+    ),
+  );
+
+  // log the events that were not posted
+  const rejectedEventsMessages = messagedEvents
+    .filter((p) => p.status === "rejected")
+    .map((p) => p.reason);
+
+  if (rejectedEventsMessages.length > 0) {
+    consola.error(`Events not posted: ${rejectedEventsMessages.join(", ")}`);
+  }
+
+  consola.success(
+    `Posted ${matchingEventIds.length} events for rule ${job.name}`,
+  );
+
+  const successfullyPostedEvents = messagedEvents
+    .filter((p) => p.status === "fulfilled")
+    .map((p) => p.value[0]);
+
+  await db
+    .update(eventTable)
+    .set({
+      isPosted: true,
+    })
+    .where(inArray(eventTable.id, successfullyPostedEvents));
+});
 
 /**
  * Create a new parsing rule
@@ -27,34 +121,9 @@ export const createParsingRule = createServerFn({
     const { name, regex, cronExpr, channelId, roleIds, priority, isOutreach } =
       data;
 
-    const webhookServerUrl = env.WEBHOOK_SERVER;
-
-    if (!webhookServerUrl) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Webhook server url",
-      });
-    }
-
-    const client = getSdk(new GraphQLClient(webhookServerUrl));
-
     const ruleId = ulid();
 
-    const [cronWebhookResponse, error] = await trytm(
-      client.CreateWebhook({
-        cronExpression: cronExpr,
-        url: `${env.VITE_FRONTEND_URL}/api/scheduler/reminder/trigger?ruleId=${ruleId}`,
-      }),
-    );
-
-    if (error || cronWebhookResponse?.errors)
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error creating cron webhook job",
-        cause: error,
-      });
-
-    const cronId = cronWebhookResponse.data.createCronWebhook.id;
+    const job = new Cron(cronExpr, { name: ruleId }, reminderFn);
 
     // Create a new parsing rule
     const [parsingRules, scheduleError] = await trytm(
@@ -62,7 +131,6 @@ export const createParsingRule = createServerFn({
         .insert(eventParsingRuleTable)
         .values({
           id: ruleId,
-          cronId,
           regex,
           channelId,
           roleIds,
@@ -77,6 +145,7 @@ export const createParsingRule = createServerFn({
     const parsingRule = parsingRules?.[0];
 
     if (!parsingRule || scheduleError) {
+      job.stop();
       throw new ServerError({
         code: "INTERNAL_SERVER_ERROR",
         message: "Error creating parsing rule",
@@ -167,15 +236,6 @@ export const deleteParsingRule = createServerFn({
   .inputValidator(z.string())
   .middleware([adminMiddleware])
   .handler(async ({ data: id, context: { db } }) => {
-    if (!env.WEBHOOK_SERVER) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Webhook server URL not set",
-      });
-    }
-
-    const sdk = getSdk(new GraphQLClient(env.WEBHOOK_SERVER));
-
     const [rules, ruleFetchError] = await trytm(
       db
         .select()
@@ -200,19 +260,7 @@ export const deleteParsingRule = createServerFn({
       });
     }
 
-    const [_deleteData, webhookDeleteError] = await trytm(
-      sdk.DeleteWebhook({
-        id,
-      }),
-    );
-
-    if (webhookDeleteError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error deleting parsing rule from the Webhook Server",
-        cause: webhookDeleteError,
-      });
-    }
+    scheduledJobs.find((job) => job.name === id)?.stop();
 
     const [_deletedRule, _deleteError] = await trytm(
       db.delete(eventParsingRuleTable).where(eq(eventParsingRuleTable.id, id)),
@@ -227,6 +275,8 @@ export const deleteParsingRule = createServerFn({
         cause: reapplyError,
       });
     }
+
+    consola.success(`Successfully Deleted: ${rule.name} (${rule.id})`);
 
     return rule;
   });
@@ -323,30 +373,16 @@ export const triggerRule = createServerFn({
       });
     }
 
-    if (!env.WEBHOOK_SERVER) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Webhook server URL not set",
-      });
-    }
-
-    const sdk = getSdk(new GraphQLClient(env.WEBHOOK_SERVER));
-
-    const [triggerData, triggerError] = await trytm(
-      sdk.TriggerWebhook({
-        id: rule.cronId,
-      }),
-    );
-
-    if (triggerError || triggerData.errors) {
+    try {
+      await scheduledJobs.find((job) => job.name === id)?.trigger();
+      consola.success(`Successfully Triggered: ${rule.name} (${rule.id})`);
+    } catch (error) {
       throw new ServerError({
         code: "INTERNAL_SERVER_ERROR",
         message: "Error triggering parsing rule",
-        cause: triggerError,
+        cause: error,
       });
     }
-
-    return triggerData.data;
   });
 
 const reapplyRules = createServerFn({ method: "POST" })

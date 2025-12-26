@@ -1,3 +1,0 @@
-mutation DeleteWebhook($id: ID!) {
-	deleteCronWebhook(id: $id)
-}

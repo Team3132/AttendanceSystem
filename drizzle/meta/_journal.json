@@ -239,6 +239,13 @@
 			"when": 1748521869574,
 			"tag": "0033_romantic_kang",
 			"breakpoints": true
+		},
+		{
+			"idx": 34,
+			"version": "7",
+			"when": 1766731114843,
+			"tag": "0034_black_boomer",
+			"breakpoints": true
 		}
 	]
 }

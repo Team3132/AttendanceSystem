@@ -1,9 +1,0 @@
-mutation CreateWebhook($url: String!, $cronExpression: String!) {
-	createCronWebhook(url: $url, cronExpression: $cronExpression) {
-		id
-		url
-		cronExpression
-		enabled
-		nextRun
-	}
-}
