@@ -1,5 +1,11 @@
 # frontend
 
+## 5.16.0
+
+### Minor Changes
+
+- [#3191](https://github.com/Team3132/AttendanceSystem/pull/3191) [`9bde9f7`](https://github.com/Team3132/AttendanceSystem/commit/9bde9f736d73a1e94bdb7e41c66119772281ba43) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add rule tags to events
+
 ## 5.15.1
 
 ### Patch Changes
