@@ -1,5 +1,11 @@
 # frontend
 
+## 5.15.1
+
+### Patch Changes
+
+- [`da29091`](https://github.com/Team3132/AttendanceSystem/commit/da29091f474657b7160a8d53785230d2450bbed9) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Remove dep on service
+
 ## 5.15.0
 
 ### Minor Changes
