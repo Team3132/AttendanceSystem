@@ -65,7 +65,6 @@ export const sessionTable = pgTable("session", {
 export const userTableRelations = relations(userTable, ({ many }) => ({
   rsvps: many(rsvpTable),
   scancodes: many(scancodeTable),
-  apiKeys: many(apiKeyTable),
 }));
 
 export const rsvpTable = pgTable(
@@ -221,37 +220,6 @@ export const scancodeTable = pgTable("scancode", {
 export const scancodeTableRelations = relations(scancodeTable, ({ one }) => ({
   user: one(userTable, {
     fields: [scancodeTable.userId],
-    references: [userTable.id],
-  }),
-}));
-
-// API Key
-export const apiKeyTable = pgTable("api_key", {
-  id: text("id")
-    .primaryKey()
-    .notNull()
-    .$default(() => ulid()),
-  name: text("name").notNull(),
-  createdBy: text("created_by").references(() => userTable.id),
-  createdAt: timestamp("created_at", {
-    precision: 3,
-    mode: "date",
-    withTimezone: true,
-  })
-    .notNull()
-    .defaultNow(),
-  updatedAt: timestamp("updated_at", {
-    precision: 3,
-    mode: "date",
-    withTimezone: true,
-  })
-    .defaultNow()
-    .$onUpdateFn(() => new Date()),
-});
-
-export const apiKeyTableRelations = relations(apiKeyTable, ({ one }) => ({
-  createdBy: one(userTable, {
-    fields: [apiKeyTable.createdBy],
     references: [userTable.id],
   }),
 }));
