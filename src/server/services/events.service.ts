@@ -19,7 +19,6 @@ import { eventTable, rsvpTable, userTable } from "../drizzle/schema";
 import type { RSVPUserSchema, UserCheckinSchema } from "../schema";
 import type { CreateUserRsvpSchema } from "../schema/CreateBlankUserRsvpSchema";
 import type { EditRSVPSelfSchema } from "../schema/EditRSVPSelfSchema";
-import type { EventSchema } from "../schema/EventSchema";
 import { GetEventParamsSchema } from "../schema/GetEventParamsSchema";
 import type { ScaninSchema } from "../schema/ScaninSchema";
 import type { SelfCheckinSchema } from "../schema/SelfCheckinSchema";
@@ -132,36 +131,42 @@ export const getEvents = createServerFn({ method: "GET" })
  * @param id The id of the event
  * @returns The event
  */
-export const getEvent = createServerOnlyFn(
-  async (id: string): Promise<z.infer<typeof EventSchema>> => {
-    const { db } = getServerContext();
+export const getEvent = createServerOnlyFn(async (id: string) => {
+  const { db } = getServerContext();
 
-    const [dbEvent, dbError] = await trytm(
-      db.query.eventTable.findFirst({
-        where: (event) => eq(event.id, id),
-      }),
-    );
+  const [dbEvent, dbError] = await trytm(
+    db.query.eventTable.findFirst({
+      where: (event) => eq(event.id, id),
+      with: {
+        rule: {
+          columns: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    }),
+  );
 
-    if (dbError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to fetch event",
-        cause: dbError,
-      });
-    }
+  if (dbError) {
+    throw new ServerError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to fetch event",
+      cause: dbError,
+    });
+  }
 
-    if (!dbEvent) {
-      throw new ServerError({
-        code: "NOT_FOUND",
-        message: "Event not found",
-      });
-    }
+  if (!dbEvent) {
+    throw new ServerError({
+      code: "NOT_FOUND",
+      message: "Event not found",
+    });
+  }
 
-    const { secret, ...rest } = dbEvent;
+  const { secret, ...rest } = dbEvent;
 
-    return rest;
-  },
-);
+  return rest;
+});
 
 /**
  * Get the secret of an event
