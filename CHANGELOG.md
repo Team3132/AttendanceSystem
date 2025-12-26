@@ -1,5 +1,11 @@
 # frontend
 
+## 5.14.16
+
+### Patch Changes
+
+- [#3179](https://github.com/Team3132/AttendanceSystem/pull/3179) [`a0c5d7c`](https://github.com/Team3132/AttendanceSystem/commit/a0c5d7ccb35b4cadcbace10ef31482ac945bd963) Thanks [@renovate](https://github.com/apps/renovate)! - fix(deps): update dependency @tanstack/react-start to v1.143.8
+
 ## 5.14.15
 
 ### Patch Changes
