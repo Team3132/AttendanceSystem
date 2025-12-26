@@ -1,3 +1,0 @@
-mutation TriggerWebhook($id: ID!) {
-	triggerWebhook(id: $id)
-}

@@ -5,7 +5,6 @@ import { authDiscord } from "./-api/auth.discord";
 import { authDiscordCallback } from "./-api/auth.discord.callback";
 import { interactionRoute } from "./-api/interaction";
 import { schedulerCalendarTriggerRoute } from "./-api/scheduler.calendar.trigger";
-import { schedulerReminderTriggerRoute } from "./-api/scheduler.reminder.trigger";
 import { wsRoute } from "./-api/ws";
 
 export interface HonoEnv extends Env {
@@ -15,7 +14,6 @@ export interface HonoEnv extends Env {
 const app = new Hono<HonoEnv>().basePath("/api");
 app.route("/auth/discord/callback", authDiscordCallback);
 app.route("/auth/discord", authDiscord);
-app.route("/scheduler/reminder/trigger", schedulerReminderTriggerRoute);
 app.route("/scheduler/calendar/trigger", schedulerCalendarTriggerRoute);
 app.route("/interaction", interactionRoute);
 app.route("/ws", wsRoute);

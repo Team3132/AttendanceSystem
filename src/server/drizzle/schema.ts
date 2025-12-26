@@ -259,9 +259,10 @@ export const apiKeyTableRelations = relations(apiKeyTable, ({ one }) => ({
 /** Parsing rules for event names */
 export const eventParsingRuleTable = pgTable("parsing_rule", {
   /** The Id of the rule */
-  id: text("id").primaryKey().notNull(),
-  /** Cron Job Id */
-  cronId: text("cron_id").notNull(),
+  id: text("id")
+    .primaryKey()
+    .notNull()
+    .$defaultFn(() => ulid()),
   /** The title to match */
   regex: text("regex").notNull().default(""),
   /** Channel Id */

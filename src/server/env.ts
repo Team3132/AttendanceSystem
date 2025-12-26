@@ -36,10 +36,6 @@ const env = createEnv({
      * Roles
      */
     ADMIN_ROLE_ID: z.string(),
-    /**
-     * Kronos cron job connection url
-     */
-    WEBHOOK_SERVER: z.string().optional(),
   },
   runtimeEnvStrict: {
     DATABASE_URL: process.env.DATABASE_URL,
@@ -53,7 +49,6 @@ const env = createEnv({
     GOOGLE_PRIVATE_KEY: process.env.GOOGLE_PRIVATE_KEY,
     GOOGLE_CALENDAR_ID: process.env.GOOGLE_CALENDAR_ID,
     ADMIN_ROLE_ID: process.env.ADMIN_ROLE_ID,
-    WEBHOOK_SERVER: process.env.WEBHOOK_SERVER,
     VITE_FRONTEND_URL:
       process.env.VITE_FRONTEND_URL ?? import.meta.env.VITE_FRONTEND_URL,
     VITE_VERSION: process.env.VITE_VERSION ?? import.meta.env.VITE_VERSION,
