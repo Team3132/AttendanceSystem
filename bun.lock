@@ -21,7 +21,7 @@
         "@mui/x-date-pickers": "8.23.0",
         "@t3-oss/env-core": "0.13.10",
         "@tanstack/match-sorter-utils": "8.19.4",
-        "@tanstack/react-query": "5.90.14",
+        "@tanstack/react-query": "5.90.15",
         "@tanstack/react-query-devtools": "5.91.2",
         "@tanstack/react-router": "1.144.0",
         "@tanstack/react-router-devtools": "1.144.0",
@@ -665,11 +665,11 @@
 
     "@tanstack/match-sorter-utils": ["@tanstack/match-sorter-utils@8.19.4", "", { "dependencies": { "remove-accents": "0.5.0" } }, "sha512-Wo1iKt2b9OT7d+YGhvEPD3DXvPv2etTusIMhMUoG7fbhmxcXCtIjJDEygy91Y2JFlwGyjqiBPRozme7UD8hoqg=="],
 
-    "@tanstack/query-core": ["@tanstack/query-core@5.90.14", "", {}, "sha512-/6di2yNI+YxpVrH9Ig74Q+puKnkCE+D0LGyagJEGndJHJc6ahkcc/UqirHKy8zCYE/N9KLggxcQvzYCsUBWgdw=="],
+    "@tanstack/query-core": ["@tanstack/query-core@5.90.15", "", {}, "sha512-mInIZNUZftbERE+/Hbtswfse49uUQwch46p+27gP9DWJL927UjnaWEF2t3RMOqBcXbfMdcNkPe06VyUIAZTV1g=="],
 
     "@tanstack/query-devtools": ["@tanstack/query-devtools@5.92.0", "", {}, "sha512-N8D27KH1vEpVacvZgJL27xC6yPFUy0Zkezn5gnB3L3gRCxlDeSuiya7fKge8Y91uMTnC8aSxBQhcK6ocY7alpQ=="],
 
-    "@tanstack/react-query": ["@tanstack/react-query@5.90.14", "", { "dependencies": { "@tanstack/query-core": "5.90.14" }, "peerDependencies": { "react": "^18 || ^19" } }, "sha512-JAMuULej09hrZ14W9+mxoRZ44rR2BuZfCd6oKTQVNfynQxCN3muH3jh3W46gqZNw5ZqY0ZVaS43Imb3dMr6tgw=="],
+    "@tanstack/react-query": ["@tanstack/react-query@5.90.15", "", { "dependencies": { "@tanstack/query-core": "5.90.15" }, "peerDependencies": { "react": "^18 || ^19" } }, "sha512-uQvnDDcTOgJouNtAyrgRej+Azf0U5WDov3PXmHFUBc+t1INnAYhIlpZtCGNBLwCN41b43yO7dPNZu8xWkUFBwQ=="],
 
     "@tanstack/react-query-devtools": ["@tanstack/react-query-devtools@5.91.2", "", { "dependencies": { "@tanstack/query-devtools": "5.92.0" }, "peerDependencies": { "@tanstack/react-query": "^5.90.14", "react": "^18 || ^19" } }, "sha512-ZJ1503ay5fFeEYFUdo7LMNFzZryi6B0Cacrgr2h1JRkvikK1khgIq6Nq2EcblqEdIlgB/r7XDW8f8DQ89RuUgg=="],
 
