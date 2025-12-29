@@ -262,9 +262,14 @@ export const deleteParsingRule = createServerFn({
 
     scheduledJobs.find((job) => job.name === id)?.stop();
 
-    const [_deletedRule, _deleteError] = await trytm(
-      db.delete(eventParsingRuleTable).where(eq(eventParsingRuleTable.id, id)),
-    );
+    try {
+      await db
+        .delete(eventParsingRuleTable)
+        .where(eq(eventParsingRuleTable.id, id));
+    } catch (error) {
+      consola.log(`Error deleting rule: ${rule.name} (${rule.id})`, error);
+      throw error;
+    }
 
     const [_reapplyData, reapplyError] = await trytm(reapplyRules());
 
@@ -447,20 +452,18 @@ const reapplyRules = createServerFn({ method: "POST" })
     }
 
     for (const event of updatedEvents) {
-      const [_updatedEvent, updateEventError] = await trytm(
-        db
+      try {
+        await db
           .update(eventTable)
           .set({
             ruleId: event.ruleId,
           })
-          .where(eq(eventTable.id, event.id)),
-      );
-
-      if (updateEventError) {
+          .where(eq(eventTable.id, event.id));
+      } catch (error) {
         throw new ServerError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Error updating event",
-          cause: updateEventError,
+          cause: error,
         });
       }
     }

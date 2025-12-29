@@ -1,0 +1,33 @@
+import { defineConfig, devices } from "@playwright/test";
+
+const baseURL = "http://localhost:1420";
+/**
+ * See https://playwright.dev/docs/test-configuration.
+ */
+export default defineConfig({
+  testDir: "./tests",
+
+  reporter: [["line"]],
+
+  //   globalSetup: "./tests/setup/global.setup.ts",
+  //   globalTeardown: "./tests/setup/global.teardown.ts",
+
+  use: {
+    /* Base URL to use in actions like `await page.goto('/')`. */
+    baseURL,
+  },
+
+  webServer: {
+    command: `VITE_NODE_ENV="test" bun run build --mode test && VITE_NODE_ENV="test" bun run start`,
+    url: baseURL,
+    reuseExistingServer: !process.env.CI,
+    stdout: "pipe",
+  },
+
+  projects: [
+    {
+      name: "chromium",
+      use: { ...devices["Desktop Chrome"] },
+    },
+  ],
+});

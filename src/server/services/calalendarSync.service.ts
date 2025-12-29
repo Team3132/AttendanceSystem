@@ -249,9 +249,7 @@ export const syncEvents = createServerFn({ method: "POST" })
           db
             .delete(eventTable)
             .where(inArray(eventTable.id, toDelete))
-            .returning({
-              id: eventTable.id,
-            }),
+            .returning(),
         );
 
         if (deleteError) {
@@ -274,9 +272,7 @@ export const syncEvents = createServerFn({ method: "POST" })
               set: conflictUpdateColumns,
               setWhere: conflictWhereColumns,
             })
-            .returning({
-              id: eventTable.id,
-            }),
+            .returning(),
         );
 
         if (insertError) {

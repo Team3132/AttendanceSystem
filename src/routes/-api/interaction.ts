@@ -30,6 +30,7 @@ import {
   userCheckout,
 } from "@/server/services/events.service";
 import { createUser } from "@/server/services/user.service";
+import { getServerContext } from "@/server/utils/context";
 import { Hono } from "hono";
 import { DateTime } from "luxon";
 import { z } from "zod";
@@ -78,6 +79,8 @@ export const interactionRoute = new Hono<HonoEnv>().post(
   async (c) => {
     const interaction = c.get("interaction");
     const logger = c.get("logger");
+    const { db } = getServerContext();
+
     if (
       interaction.member === undefined ||
       interaction.guild_id !== env.GUILD_ID
@@ -262,7 +265,7 @@ export const interactionRoute = new Hono<HonoEnv>().post(
 
           if (ruleId !== null) {
             const [rule, ruleGetError] = await trytm(
-              c.var.db.query.eventParsingRuleTable.findFirst({
+              db.query.eventParsingRuleTable.findFirst({
                 where: (table, { eq }) => eq(table.id, ruleId),
               }),
             );

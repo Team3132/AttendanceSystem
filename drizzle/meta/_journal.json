@@ -253,6 +253,13 @@
 			"when": 1766731673540,
 			"tag": "0035_cold_the_spike",
 			"breakpoints": true
+		},
+		{
+			"idx": 36,
+			"version": "7",
+			"when": 1766975084121,
+			"tag": "0036_yielding_switch",
+			"breakpoints": true
 		}
 	]
 }

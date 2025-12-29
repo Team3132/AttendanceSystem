@@ -11,17 +11,21 @@ export interface HonoEnv extends Env {
   Variables: Register["server"]["requestContext"];
 }
 
-const app = new Hono<HonoEnv>().basePath("/api");
-app.route("/auth/discord/callback", authDiscordCallback);
-app.route("/auth/discord", authDiscord);
-app.route("/scheduler/calendar/trigger", schedulerCalendarTriggerRoute);
-app.route("/interaction", interactionRoute);
-app.route("/ws", wsRoute);
+const app = new Hono<HonoEnv>()
+  .basePath("/api")
+  .route("/auth/discord/callback", authDiscordCallback)
+  .route("/auth/discord", authDiscord)
+  .route("/scheduler/calendar/trigger", schedulerCalendarTriggerRoute)
+  .route("/interaction", interactionRoute)
+  .route("/ws", wsRoute);
 
 export const Route = createFileRoute("/api/$")({
   server: {
     handlers: {
-      ANY: async ({ request, context }) => app.fetch(request, context),
+      ANY: async ({ request, context }) => {
+        console.log({ context });
+        return app.fetch(request, context);
+      },
     },
   },
 });

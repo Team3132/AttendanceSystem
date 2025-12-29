@@ -1,0 +1,1 @@
+ALTER TABLE "event" DROP CONSTRAINT "Event_secret_key";

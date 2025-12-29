@@ -4,14 +4,16 @@
   "version": "5.16.0",
   "type": "module",
   "scripts": {
-    "dev": "bunx vite",
-    "build": "bun vite build",
-    "start": "PORT=1420 bun run .output/server/index.mjs",
-    "check": "bun biome check ./src",
-    "typecheck": "bun tsc --noEmit",
-    "knip": "knip-bun --config knip.json"
+    "dev": "vite",
+    "build": "vite build",
+    "build:test": "vite build --mode test",
+    "start": "PORT=1420 bun run server.ts",
+    "check": "biome check ./src",
+    "typecheck": "tsc --noEmit",
+    "knip": "knip-bun --config knip.json",
+    "test:e2e": "playwright test --project=chromium"
   },
-  "main": ".output/server/index.mjs",
+  "main": "server.ts",
   "files": [
     "drizzle",
     ".output"
@@ -73,6 +75,7 @@
     "@biomejs/biome": "1.9.4",
     "@changesets/changelog-github": "0.5.2",
     "@changesets/cli": "2.29.8",
+    "@electric-sql/pglite": "^0.3.14",
     "@emotion/babel-plugin": "11.13.5",
     "@emotion/cache": "11.14.0",
     "@graphql-codegen/cli": "6.1.0",
@@ -80,6 +83,7 @@
     "@graphql-codegen/typescript-graphql-request": "6.3.0",
     "@graphql-codegen/typescript-operations": "5.0.7",
     "@mui/lab": "7.0.1-beta.20",
+    "@playwright/test": "^1.57.0",
     "@types/bun": "1.3.5",
     "@types/luxon": "3.7.1",
     "@types/react": "19.2.7",

@@ -1,33 +1,55 @@
+import { mkdir } from "node:fs/promises";
 import path from "node:path";
 import { createServerOnlyFn } from "@tanstack/react-start";
-import { drizzle } from "drizzle-orm/postgres-js";
-import { migrate as migrateDB } from "drizzle-orm/postgres-js/migrator";
-import postgres from "postgres";
 import env from "../env";
 import { consola } from "../logger";
 
-export const migrate = createServerOnlyFn(async () => {
+export const getDB = createServerOnlyFn(async () => {
   const logger = consola.withTag("db");
-
+  const schema = await import("./schema");
   const migrationPath = path.resolve("./drizzle");
-  logger.info("Migration path:", migrationPath);
+
+  if (import.meta.env.MODE === "test") {
+    logger.warn("DB Starting in test mode");
+    const { drizzle } = await import("drizzle-orm/pglite");
+    const { migrate } = await import("drizzle-orm/pglite/migrator");
+    const { PGlite } = await import("@electric-sql/pglite");
+
+    const storageDir = path.resolve("./node_modules/.db/data");
+    await mkdir(storageDir, {
+      recursive: true,
+    });
+
+    const client = new PGlite(storageDir);
+
+    const db = drizzle({
+      schema,
+      client,
+    });
+
+    await migrate(db, { migrationsFolder: migrationPath });
+
+    logger.success("Database migrations completed successfully");
+
+    return db;
+  }
+
+  const { default: postgres } = await import("postgres");
+  const { drizzle } = await import("drizzle-orm/postgres-js");
+  const { migrate } = await import("drizzle-orm/postgres-js/migrator");
 
   const migrationPgClient = postgres(env.DATABASE_URL, {
     max: 1,
   });
 
-  const schema = await import("./schema");
-
   const migrationClient = drizzle(migrationPgClient, {
     schema,
   });
 
-  logger.info("Starting database migrations...");
-  await migrateDB(migrationClient, { migrationsFolder: migrationPath });
-  logger.success("Database migrations completed successfully");
-});
+  await migrate(migrationClient, { migrationsFolder: migrationPath });
 
-export const getDB = createServerOnlyFn(async () => {
+  logger.success("Database migrations completed successfully");
+
   const pgClient = postgres(env.DATABASE_URL, {
     transform: {
       value(value) {
@@ -39,15 +61,8 @@ export const getDB = createServerOnlyFn(async () => {
     },
   });
 
-  const schema = await import("./schema");
-
   const db = drizzle(pgClient, {
     schema,
-    logger: {
-      logQuery: (query, params) => {
-        consola.debug("Executing query:", query, "with params:", params);
-      },
-    },
   });
 
   return db;

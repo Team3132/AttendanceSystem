@@ -5,12 +5,11 @@ import type { RequestOptions } from "@tanstack/react-start/server";
 import handler from "@tanstack/react-start/server-entry";
 import type { Server } from "bun";
 import { Cron, scheduledJobs } from "croner";
-import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import type { BunWebSocketData } from "hono/bun";
 import { Lucia, type RegisteredLucia } from "lucia";
 import { DateTime } from "luxon";
 import type z from "zod";
-import { getDB, migrate } from "./server/drizzle/db";
+import { getDB } from "./server/drizzle/db";
 import * as schema from "./server/drizzle/schema";
 import type { RSVPStatusSchema } from "./server/schema";
 import { reminderFn } from "./server/services/adminService";
@@ -28,8 +27,6 @@ const pubSub = createPubSub<{
     },
   ];
 }>();
-
-await migrate();
 
 const db = await getDB();
 
@@ -101,7 +98,7 @@ declare module "lucia" {
 type MyRequestContext = {
   server: Server<BunWebSocketData>;
   pubSub: typeof pubSub;
-  db: PostgresJsDatabase<typeof schema>;
+  db: typeof db;
   lucia: RegisteredLucia;
 };
 

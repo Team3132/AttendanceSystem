@@ -6,7 +6,6 @@ import {
   pgTable,
   text,
   timestamp,
-  unique,
   uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { customAlphabet } from "nanoid";
@@ -181,7 +180,7 @@ export const eventTable = pgTable(
       onDelete: "set null",
     }),
   },
-  (table) => [unique("Event_secret_key").on(table.secret)],
+  (_table) => [],
 );
 
 export const eventTableRelations = relations(eventTable, ({ many, one }) => ({
