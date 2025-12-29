@@ -14,13 +14,13 @@ const env = createEnv({
     /**
      * Bot stuff
      */
-    DISCORD_CLIENT_ID: z.string(),
-    DISCORD_CLIENT_SECRET: z.string(),
-    DISCORD_PUBLIC_KEY: z.string(),
+    DISCORD_CLIENT_ID: z.string().optional(),
+    DISCORD_CLIENT_SECRET: z.string().optional(),
+    DISCORD_PUBLIC_KEY: z.string().optional(),
     DISCORD_CALLBACK_URL: z
       .string()
       .default("http://localhost:1420/api/auth/discord/callback"),
-    DISCORD_TOKEN: z.string(),
+    DISCORD_TOKEN: z.string().optional(),
     /**
      * Misc
      */
@@ -29,9 +29,9 @@ const env = createEnv({
     /**
      * Calendar stuff
      */
-    GOOGLE_CLIENT_EMAIL: z.string(),
-    GOOGLE_PRIVATE_KEY: z.string(),
-    GOOGLE_CALENDAR_ID: z.string(),
+    GOOGLE_CLIENT_EMAIL: z.string().optional(),
+    GOOGLE_PRIVATE_KEY: z.string().optional(),
+    GOOGLE_CALENDAR_ID: z.string().optional(),
     /**
      * Roles
      */

@@ -29,6 +29,10 @@ export const verifyDiscordMiddleware = createMiddleware<{
     throw new Error("Missing required headers or body");
   }
 
+  if (!env.DISCORD_PUBLIC_KEY) {
+    throw new Error("Discord bot not configured correctly!");
+  }
+
   const isValidRequest = await verifyKey(
     rawBody,
     signature,

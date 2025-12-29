@@ -1,4 +1,3 @@
-import { discord } from "@/server/auth/lucia";
 import { userTable } from "@/server/drizzle/schema";
 import env from "@/server/env";
 import { consola } from "@/server/logger";
@@ -10,6 +9,7 @@ import { trytm } from "@/utils/trytm";
 import { API } from "@discordjs/core";
 import { REST } from "@discordjs/rest";
 import { zValidator } from "@hono/zod-validator";
+import { Discord } from "arctic";
 import { Hono } from "hono";
 import { deleteCookie, setCookie } from "hono/cookie";
 import { z } from "zod";
@@ -31,6 +31,20 @@ export const authDiscordCallback = new Hono<HonoEnv>().get(
   zValidator("cookie", cookieSchema),
   async (c) => {
     const { db, lucia } = getServerContext();
+
+    if (
+      !env.DISCORD_CLIENT_ID ||
+      !env.DISCORD_CLIENT_SECRET ||
+      !env.DISCORD_CALLBACK_URL
+    ) {
+      throw new Error("Login with Discord not configured!");
+    }
+
+    const discord = new Discord(
+      env.DISCORD_CLIENT_ID,
+      env.DISCORD_CLIENT_SECRET,
+      env.DISCORD_CALLBACK_URL,
+    );
 
     const { discord_oauth_state, discord_oauth_code_verifier } =
       c.req.valid("cookie");

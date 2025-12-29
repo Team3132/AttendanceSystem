@@ -17,6 +17,10 @@ import { ServerError } from "../utils/errors";
  * @returns The API instance for the bot
  */
 export const getDiscordBotAPI = createServerOnlyFn(() => {
+  if (!env.DISCORD_TOKEN) {
+    throw new Error("Discord not configured!");
+  }
+
   const rest = new REST({ version: "10", authPrefix: "Bot" }).setToken(
     env.DISCORD_TOKEN,
   );
@@ -86,6 +90,10 @@ export const getServerChannels = createServerFn({ method: "GET" })
 export const deployCommands = createServerFn({ method: "POST" })
   .middleware([adminMiddleware])
   .handler(async () => {
+    if (!env.DISCORD_TOKEN || !env.DISCORD_CLIENT_ID) {
+      throw new Error("Discord bot not configured!");
+    }
+
     const rest = new REST().setToken(env.DISCORD_TOKEN);
 
     const api = new API(rest);

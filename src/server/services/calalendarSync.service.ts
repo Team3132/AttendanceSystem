@@ -24,6 +24,14 @@ type EventInsert = typeof eventTable.$inferInsert;
 const incrementalSync = createServerOnlyFn(async function* (
   syncToken?: string,
 ) {
+  if (
+    !env.GOOGLE_CALENDAR_ID ||
+    !env.GOOGLE_PRIVATE_KEY ||
+    !env.GOOGLE_CLIENT_EMAIL
+  ) {
+    throw new Error("Calendar sync not configured!");
+  }
+
   const client = new google.auth.JWT({
     email: env.GOOGLE_CLIENT_EMAIL,
     key: env.GOOGLE_PRIVATE_KEY,
