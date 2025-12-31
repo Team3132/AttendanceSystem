@@ -1,6 +1,7 @@
-import { createConsola } from "consola";
+import { LogLevels, createConsola } from "consola";
 
 export const consola = createConsola({
+  level: LogLevels.debug,
   defaults: {
     tag: "main",
   },

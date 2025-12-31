@@ -21,6 +21,16 @@ export const rsvpStatus = pgEnum("rsvp_status", [
   "ATTENDED",
 ]);
 
+export const kvTable = pgTable("kv", {
+  key: text("key").primaryKey().notNull(),
+  value: text("value"),
+  expiresAt: timestamp("expires_at", {
+    precision: 3,
+    mode: "date",
+    withTimezone: true,
+  }),
+});
+
 export const userTable = pgTable("user", {
   username: text("username").notNull(),
   createdAt: timestamp("created_at", {

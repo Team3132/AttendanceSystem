@@ -21,3 +21,5 @@ pnpm-lock.yaml
 .tanstack
 .env.local
 dist
+
+data

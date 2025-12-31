@@ -5,10 +5,10 @@ import { trytm } from "@/utils/trytm";
 import { createServerFn, createServerOnlyFn } from "@tanstack/react-start";
 import { asc, inArray } from "drizzle-orm";
 import { DateTime } from "luxon";
-import { kv } from "../drizzle/kv";
 import { eventParsingRuleTable, eventTable } from "../drizzle/schema";
 import env from "../env";
 import { consola } from "../logger";
+import { getServerContext } from "../utils/context";
 import type { ColumnNames } from "../utils/db/ColumnNames";
 import { buildConflictUpdateColumns } from "../utils/db/buildConflictUpdateColumns";
 import { buildSetWhereColumns } from "../utils/db/buildSetWhereColumns";
@@ -53,6 +53,8 @@ const incrementalSync = createServerOnlyFn(async function* (
 
   const [responseData, error] = await trytm(calendar.events.list(params));
 
+  const { kv } = getServerContext();
+
   if (error) {
     if (error instanceof Common.GaxiosError && error.status === 410) {
       // Sync token is invalid, need to do a full sync
@@ -72,6 +74,7 @@ const incrementalSync = createServerOnlyFn(async function* (
 
   if (initialData.nextSyncToken) {
     await kv.set("syncToken", initialData.nextSyncToken);
+    eventLogger.debug("Updated sync token", initialData.nextSyncToken);
   }
 
   /** The page token */
@@ -114,6 +117,7 @@ const incrementalSync = createServerOnlyFn(async function* (
     // If the sync token is present, update it
     if (data.nextSyncToken) {
       await kv.set("syncToken", data.nextSyncToken);
+      eventLogger.debug("Updated sync token", data.nextSyncToken);
     }
   }
 });
@@ -222,12 +226,13 @@ const isMatchingRule = (
  */
 export const syncEvents = createServerFn({ method: "POST" })
   .middleware([adminMiddleware])
-  .handler(async ({ context: { db } }) => {
+  .handler(async ({ context: { db, kv } }) => {
     eventLogger.info("Sync Events");
     const syncToken = await kv.get<string>("syncToken");
+    eventLogger.debug("Using sync token", syncToken);
 
     /** All the calendar events */
-    const calendarEvents = await incrementalSync(syncToken);
+    const calendarEvents = incrementalSync(syncToken);
 
     /** Filters to map events to */
     const filters = await db
@@ -293,8 +298,8 @@ export const syncEvents = createServerFn({ method: "POST" })
       }
     }
 
-    eventLogger.info(`Deleted ${totalDeleted} events`);
-    eventLogger.info(`Upserted ${totalUpserted} events`);
+    if (totalDeleted) eventLogger.info(`Deleted ${totalDeleted} events`);
+    if (totalUpserted) eventLogger.info(`Upserted ${totalUpserted} events`);
 
     eventLogger.success("Sync Events");
 

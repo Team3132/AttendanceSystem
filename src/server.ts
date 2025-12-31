@@ -9,7 +9,8 @@ import type { BunWebSocketData } from "hono/bun";
 import { Lucia, type RegisteredLucia } from "lucia";
 import { DateTime } from "luxon";
 import type z from "zod";
-import { getDB } from "./server/drizzle/db";
+import { type DB, getDB } from "./server/drizzle/db";
+import { getKV } from "./server/drizzle/kv";
 import * as schema from "./server/drizzle/schema";
 import type { RSVPStatusSchema } from "./server/schema";
 import { reminderFn } from "./server/services/adminService";
@@ -29,6 +30,8 @@ const pubSub = createPubSub<{
 }>();
 
 const db = await getDB();
+
+const kv = getKV(db);
 
 /**
  * Restore CRON Jobs
@@ -60,7 +63,7 @@ async function restoreCron() {
   }
 }
 
-restoreCron();
+await restoreCron();
 
 const adapter = new DrizzlePostgreSQLAdapter(
   db,
@@ -98,7 +101,8 @@ declare module "lucia" {
 type MyRequestContext = {
   server: Server<BunWebSocketData>;
   pubSub: typeof pubSub;
-  db: typeof db;
+  db: DB;
+  kv: ReturnType<typeof getKV>;
   lucia: RegisteredLucia;
 };
 
@@ -118,7 +122,13 @@ export default {
     req: Request,
     opts: RequestOptions<Register>,
   ): Response | Promise<Response> {
-    const context = { ...opts?.context, pubSub, db, lucia };
+    const context = {
+      ...opts?.context,
+      pubSub,
+      db,
+      lucia,
+      kv,
+    } satisfies MyRequestContext;
 
     return serverHandler(req, { context });
   },
