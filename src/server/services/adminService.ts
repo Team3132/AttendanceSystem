@@ -433,17 +433,27 @@ const reapplyRules = createServerFn({ method: "POST" })
 
     const updatedEvents = [];
     for (const event of futureEvents) {
-      const newRuleId =
+      const newRule =
         filters.find((filter) => {
           const reg = strToRegex(filter.regex);
           return reg.test(event.title) || reg.test(event.description);
-        })?.id ?? null;
+        }) ?? null;
+
+      const newRuleId = newRule ? newRule.id : null;
 
       if (newRuleId !== event.existingRuleId) {
+        consola.debug(
+          `Reapplying rule for event ${event.id}: ${event.existingRuleId} -> ${newRuleId}`,
+        );
+
         updatedEvents.push({
           id: event.id,
           ruleId: newRuleId,
         });
+      } else {
+        consola.debug(
+          `No rule change for event ${event.id}: remains ${event.existingRuleId}`,
+        );
       }
     }
 
