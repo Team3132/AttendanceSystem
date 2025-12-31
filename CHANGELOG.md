@@ -1,5 +1,11 @@
 # frontend
 
+## 5.17.0
+
+### Minor Changes
+
+- [`9a11bb0`](https://github.com/Team3132/AttendanceSystem/commit/9a11bb0b3ce33df6d4568fc3294d5a483d74c805) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Rework how KV storage works (uses the db now)
+
 ## 5.16.1
 
 ### Patch Changes
