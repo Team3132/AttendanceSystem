@@ -439,6 +439,20 @@ const reapplyRules = createServerFn({ method: "POST" })
           return reg.test(event.title) || reg.test(event.description);
         }) ?? null;
 
+      const ruleMatchDebug = filters
+        .map((filter) => {
+          const reg = strToRegex(filter.regex);
+          const matches = reg.test(event.title) || reg.test(event.description);
+          return `Rule ${filter.id} (priority ${filter.priority}, regex: ${filter.regex}, event: ${event.title}): ${
+            matches ? "MATCH" : "no match"
+          }`;
+        })
+        .join("; ");
+
+      consola.debug(
+        `Evaluating event ${event.id} for rule reapplication. ${ruleMatchDebug}`,
+      );
+
       const newRuleId = newRule ? newRule.id : null;
 
       if (newRuleId !== event.existingRuleId) {
@@ -451,9 +465,9 @@ const reapplyRules = createServerFn({ method: "POST" })
           ruleId: newRuleId,
         });
       } else {
-        consola.debug(
-          `No rule change for event ${event.id}: remains ${event.existingRuleId}`,
-        );
+        // consola.debug(
+        //   `No rule change for event ${event.id}: remains ${event.existingRuleId}`,
+        // );
       }
     }
 
