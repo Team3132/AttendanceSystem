@@ -12,6 +12,7 @@ import type z from "zod";
 import { type DB, getDB } from "./server/drizzle/db";
 import { getKV } from "./server/drizzle/kv";
 import * as schema from "./server/drizzle/schema";
+import env from "./server/env";
 import type { RSVPStatusSchema } from "./server/schema";
 import { reminderFn } from "./server/services/adminService";
 
@@ -63,7 +64,7 @@ async function restoreCron() {
   }
 }
 
-await restoreCron();
+if (!env.TSS_PRERENDERING) await restoreCron();
 
 const adapter = new DrizzlePostgreSQLAdapter(
   db,

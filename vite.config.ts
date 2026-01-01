@@ -10,7 +10,11 @@ const ReactCompilerConfig = {
 export default defineConfig({
   plugins: [
     viteTsconfigPaths(),
-    tanstackStart(),
+    tanstackStart({
+      spa: {
+        enabled: true,
+      },
+    }),
     // nitro({ preset: "bun" }),
     viteReact({
       babel: {

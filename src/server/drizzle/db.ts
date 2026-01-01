@@ -21,8 +21,7 @@ export const getDB = createServerOnlyFn(async (): Promise<DB> => {
   const logger = consola.withTag("db"); // Create a logger instance with "db" tag
   const schema = await import("./schema"); // Import the database schema
   const migrationPath = path.resolve("./drizzle"); // Path to migration files, SQL and metadata
-
-  if (import.meta.env.DEV) {
+  if (import.meta.env.DEV || env.TSS_PRERENDERING) {
     logger.warn("Using PGlite database in development mode");
 
     const { drizzle } = await import("drizzle-orm/pglite");

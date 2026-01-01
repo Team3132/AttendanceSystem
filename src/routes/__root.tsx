@@ -2,10 +2,7 @@ import Devtools from "@/components/Devtools";
 import GenericServerErrorBoundary from "@/components/GenericServerErrorBoundary";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
-import roboto300 from "@fontsource/roboto/300.css?inline";
-import robot400 from "@fontsource/roboto/400.css?inline";
-import roboto500 from "@fontsource/roboto/500.css?inline";
-import roboto700 from "@fontsource/roboto/700.css?inline";
+import fontsourceVariableRobotoCss from "@fontsource-variable/roboto?url";
 import { CssBaseline } from "@mui/material";
 import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -26,6 +23,7 @@ export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
 }>()({
   component: RootComponent,
+  shellComponent: RootShell,
   head: () => ({
     meta: [
       {
@@ -42,6 +40,12 @@ export const Route = createRootRouteWithContext<{
         type: "image/x-icon",
         href: "/favicon.ico",
       },
+      { rel: "stylesheet", href: fontsourceVariableRobotoCss },
+    ],
+    styles: [
+      {
+        children: rootCss,
+      },
     ],
 
     // scripts: import.meta.env.DEV
@@ -55,11 +59,31 @@ export const Route = createRootRouteWithContext<{
   errorComponent: ErrorComponent,
 });
 
+function RootShell({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <head>
+        <HeadContent />
+      </head>
+      <body>
+        <InitColorSchemeScript attribute={attribute} />
+        {children}
+        <Scripts />
+      </body>
+    </html>
+  );
+}
+
 function RootComponent() {
   return (
-    <RootDocument>
-      <Outlet />
-    </RootDocument>
+    <>
+      <Providers>
+        <GenericServerErrorBoundary>
+          <Outlet />
+        </GenericServerErrorBoundary>
+      </Providers>
+      <Devtools />
+    </>
   );
 }
 
@@ -72,6 +96,9 @@ const theme = createTheme({
   },
   cssVariables: {
     colorSchemeSelector: attribute,
+  },
+  typography: {
+    fontFamily: "'Roboto Variable', sans-serif",
   },
 });
 
@@ -97,28 +124,5 @@ function Providers({ children }: { children: React.ReactNode }) {
         {children}
       </LocalizationProvider>
     </ThemeProviderWrapper>
-  );
-}
-
-function RootDocument({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <HeadContent />
-        <style>{rootCss}</style>
-        <style>{roboto300}</style>
-        <style>{robot400}</style>
-        <style>{roboto500}</style>
-        <style>{roboto700}</style>
-      </head>
-      <body>
-        <InitColorSchemeScript attribute={attribute} />
-        <Providers>
-          <GenericServerErrorBoundary>{children}</GenericServerErrorBoundary>
-        </Providers>
-        <Devtools />
-        <Scripts />
-      </body>
-    </html>
   );
 }

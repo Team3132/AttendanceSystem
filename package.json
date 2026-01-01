@@ -24,7 +24,7 @@
     "@discordjs/rest": "2.6.0",
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.1",
-    "@fontsource/roboto": "5.2.9",
+    "@fontsource-variable/roboto": "^5.2.9",
     "@graphql-yoga/subscription": "5.0.5",
     "@hono/zod-validator": "0.7.6",
     "@hookform/resolvers": "5.2.2",
