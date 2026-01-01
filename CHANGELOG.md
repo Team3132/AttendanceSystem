@@ -1,5 +1,11 @@
 # frontend
 
+## 6.0.0
+
+### Major Changes
+
+- [`43d8864`](https://github.com/Team3132/attendance/commit/43d88640d65a49b396cd0685b69271d33ee8bcf3) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Package name has changed to ghcr.io/team3132/attendance
+
 ## 5.17.9
 
 ### Patch Changes
