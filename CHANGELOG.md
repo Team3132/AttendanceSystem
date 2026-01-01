@@ -1,5 +1,11 @@
 # frontend
 
+## 5.17.6
+
+### Patch Changes
+
+- [`a552347`](https://github.com/Team3132/AttendanceSystem/commit/a55234799a092ad63b62a235ad5c4b30e1fb24b5) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix checkout deploy
+
 ## 5.17.5
 
 ### Patch Changes
