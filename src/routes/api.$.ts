@@ -22,10 +22,7 @@ const app = new Hono<HonoEnv>()
 export const Route = createFileRoute("/api/$")({
   server: {
     handlers: {
-      ANY: async ({ request, context }) => {
-        console.log({ context });
-        return app.fetch(request, context);
-      },
+      ANY: ({ request, context }) => app.fetch(request, context),
     },
   },
 });

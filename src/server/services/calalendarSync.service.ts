@@ -1,9 +1,7 @@
-import { Common, type calendar_v3, google } from "googleapis";
-
-import { adminMiddleware } from "@/middleware/authMiddleware";
 import { trytm } from "@/utils/trytm";
-import { createServerFn, createServerOnlyFn } from "@tanstack/react-start";
+import { createServerOnlyFn } from "@tanstack/react-start";
 import { asc, inArray } from "drizzle-orm";
+import { Common, type calendar_v3, google } from "googleapis";
 import { DateTime } from "luxon";
 import { eventParsingRuleTable, eventTable } from "../drizzle/schema";
 import env from "../env";
@@ -224,87 +222,87 @@ const isMatchingRule = (
  * Syncs events from Google Calendar to the database
  * @todo maybe replace with serveronlyfn
  */
-export const syncEvents = createServerFn({ method: "POST" })
-  .middleware([adminMiddleware])
-  .handler(async ({ context: { db, kv } }) => {
-    eventLogger.info("Sync Events");
-    const syncToken = await kv.get<string>("syncToken");
-    eventLogger.debug("Using sync token", syncToken);
+export const syncEvents = createServerOnlyFn(async () => {
+  const { kv, db } = getServerContext();
 
-    /** All the calendar events */
-    const calendarEvents = incrementalSync(syncToken);
+  eventLogger.info("Sync Events");
+  const syncToken = await kv.get<string>("syncToken");
+  eventLogger.debug("Using sync token", syncToken);
 
-    /** Filters to map events to */
-    const filters = await db
-      .select({
-        id: eventParsingRuleTable.id,
-        regex: eventParsingRuleTable.regex,
-      })
-      .from(eventParsingRuleTable)
-      .orderBy(asc(eventParsingRuleTable.priority)); // Order by priority, lowest to highest (the lower the priority, the higher the precedence)
+  /** All the calendar events */
+  const calendarEvents = incrementalSync(syncToken);
 
-    let totalDeleted = 0;
-    let totalUpserted = 0;
+  /** Filters to map events to */
+  const filters = await db
+    .select({
+      id: eventParsingRuleTable.id,
+      regex: eventParsingRuleTable.regex,
+    })
+    .from(eventParsingRuleTable)
+    .orderBy(asc(eventParsingRuleTable.priority)); // Order by priority, lowest to highest (the lower the priority, the higher the precedence)
 
-    for await (const events of calendarEvents) {
-      const toDelete = events
-        .filter((e) => e.status === "cancelled" && !!e.id)
-        .map((e) => e.id) as string[];
+  let totalDeleted = 0;
+  let totalUpserted = 0;
 
-      /** Events to upsert */
-      const toUpsert = events
-        .filter((e) => e.status !== "cancelled") // Filter out events that are marked as cancelled
-        .map(googleEventToEvent) // Map Google Calendar events to event objects
-        .map((e) => mapEventToRule(e, filters)); // Map events with rules
+  for await (const events of calendarEvents) {
+    const toDelete = events
+      .filter((e) => e.status === "cancelled" && !!e.id)
+      .map((e) => e.id) as string[];
 
-      if (toDelete.length) {
-        const [deletedData, deleteError] = await trytm(
-          db
-            .delete(eventTable)
-            .where(inArray(eventTable.id, toDelete))
-            .returning(),
-        );
+    /** Events to upsert */
+    const toUpsert = events
+      .filter((e) => e.status !== "cancelled") // Filter out events that are marked as cancelled
+      .map(googleEventToEvent) // Map Google Calendar events to event objects
+      .map((e) => mapEventToRule(e, filters)); // Map events with rules
 
-        if (deleteError) {
-          eventLogger.error("Failed to delete events", deleteError);
-        }
+    if (toDelete.length) {
+      const [deletedData, deleteError] = await trytm(
+        db
+          .delete(eventTable)
+          .where(inArray(eventTable.id, toDelete))
+          .returning(),
+      );
 
-        if (deletedData?.length) {
-          totalDeleted += deletedData.length;
-        }
+      if (deleteError) {
+        eventLogger.error("Failed to delete events", deleteError);
       }
 
-      // Upsert events that are not marked as cancelled
-      if (toUpsert.length) {
-        const [insertedData, insertError] = await trytm(
-          db
-            .insert(eventTable)
-            .values(toUpsert)
-            .onConflictDoUpdate({
-              target: [eventTable.id],
-              set: conflictUpdateColumns,
-              setWhere: conflictWhereColumns,
-            })
-            .returning(),
-        );
-
-        if (insertError) {
-          eventLogger.error("Failed to insert events", insertError);
-        }
-
-        if (insertedData?.length) {
-          totalUpserted += insertedData.length;
-        }
+      if (deletedData?.length) {
+        totalDeleted += deletedData.length;
       }
     }
 
-    if (totalDeleted) eventLogger.info(`Deleted ${totalDeleted} events`);
-    if (totalUpserted) eventLogger.info(`Upserted ${totalUpserted} events`);
+    // Upsert events that are not marked as cancelled
+    if (toUpsert.length) {
+      const [insertedData, insertError] = await trytm(
+        db
+          .insert(eventTable)
+          .values(toUpsert)
+          .onConflictDoUpdate({
+            target: [eventTable.id],
+            set: conflictUpdateColumns,
+            setWhere: conflictWhereColumns,
+          })
+          .returning(),
+      );
 
-    eventLogger.success("Sync Events");
+      if (insertError) {
+        eventLogger.error("Failed to insert events", insertError);
+      }
 
-    return { updatedEvents: totalUpserted, deletedEventCount: totalDeleted };
-  });
+      if (insertedData?.length) {
+        totalUpserted += insertedData.length;
+      }
+    }
+  }
+
+  if (totalDeleted) eventLogger.info(`Deleted ${totalDeleted} events`);
+  if (totalUpserted) eventLogger.info(`Upserted ${totalUpserted} events`);
+
+  eventLogger.success("Sync Events");
+
+  return { updatedEvents: totalUpserted, deletedEventCount: totalDeleted };
+});
 
 /**
  * Maps an event to a rule
