@@ -1,5 +1,11 @@
 # frontend
 
+## 6.0.1
+
+### Patch Changes
+
+- [`93ef34c`](https://github.com/Team3132/attendance/commit/93ef34c9c26d0c9e93c869821ca2a7ee577fe95e) Thanks [@sebasptsch](https://github.com/sebasptsch)! - use SPA mode
+
 ## 6.0.0
 
 ### Major Changes
