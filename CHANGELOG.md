@@ -1,5 +1,13 @@
 # frontend
 
+## 5.17.5
+
+### Patch Changes
+
+- [`18a9013`](https://github.com/Team3132/AttendanceSystem/commit/18a9013411ac5df9677f7423d7a1d03be112b37c) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add Toaster
+
+- [`4cd9698`](https://github.com/Team3132/AttendanceSystem/commit/4cd96984449fbf843d1ebad6d00ed51ce695a039) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Return the number of updated events
+
 ## 5.17.4
 
 ### Patch Changes
