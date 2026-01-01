@@ -1,5 +1,4 @@
-import type { DateTimePickerProps } from "@mui/lab";
-import { DateTimePicker, type PickerValidDate } from "@mui/x-date-pickers";
+import { DateTimePicker, type DateTimePickerProps } from "@mui/x-date-pickers";
 import { DateTime } from "luxon";
 import {
   type FieldPath,
@@ -9,20 +8,20 @@ import {
 } from "react-hook-form";
 
 type ControlledDateTimeProps<
-  TDate extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = Omit<
-  DateTimePickerProps<TDate>,
+  DateTimePickerProps,
   "onChange" | "value" | "defaultValue" | "onBlur" | "error"
 > &
-  UseControllerProps<TFieldValues, TName>;
+  UseControllerProps<TFieldValues, TName> & {
+    helperText?: string;
+  };
 
 export default function ControlledDateTime<
-  TDate extends PickerValidDate,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
->(props: ControlledDateTimeProps<TDate, TFieldValues, TName>) {
+>(props: ControlledDateTimeProps<TFieldValues, TName>) {
   const {
     control,
     name,
@@ -56,7 +55,7 @@ export default function ControlledDateTime<
       slotProps={{
         textField: {
           error: fieldState.error !== undefined,
-          helperText: fieldState.error?.message,
+          helperText: fieldState.error?.message ?? helperText,
         },
       }}
       {...rest}
