@@ -97,7 +97,7 @@ jobs:
           tags: ${{ steps.install-meta.outputs.tags }}
           push: true
           labels: ${{ steps.install-meta.outputs.labels }}
-          cache-from: ${{ steps.install-meta.outputs.labels }}
+          cache-from: ${{ env.IMAGE }}-${{ matrix.package.name }}:install
           target: install
       - name: Docker meta
         id: final-meta
