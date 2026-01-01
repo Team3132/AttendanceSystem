@@ -84,22 +84,6 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Docker meta
-        id: install-meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.IMAGE }}-${{ matrix.package.name }}
-          tags: |
-            install
-      - name: Build and Push (Install Dependancies)
-        uses: docker/build-push-action@v6
-        id: install-deps
-        with:
-          tags: ${{ steps.install-meta.outputs.tags }}
-          push: true
-          labels: ${{ steps.install-meta.outputs.labels }}
-          cache-from: ${{ env.IMAGE }}-${{ matrix.package.name }}:install
-          target: install
-      - name: Docker meta
         id: final-meta
         uses: docker/metadata-action@v5
         with:
@@ -116,6 +100,8 @@ jobs:
           tags: ${{ steps.final-meta.outputs.tags }}
           push: true
           labels: ${{ steps.final-meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       
   deploy-docker:
     name: Deploy Container
