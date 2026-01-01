@@ -1,5 +1,11 @@
 # frontend
 
+## 6.0.2
+
+### Patch Changes
+
+- [`d252aa8`](https://github.com/Team3132/attendance/commit/d252aa82482d161b6255c4b42e99236b06a1f04f) Thanks [@sebasptsch](https://github.com/sebasptsch)! - disable spa
+
 ## 6.0.1
 
 ### Patch Changes
