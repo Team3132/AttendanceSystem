@@ -153,7 +153,7 @@ export const createParsingRule = createServerFn({
       });
     }
 
-    const [_reapplyData, reapplyError] = await trytm(reapplyRules());
+    const [reapplyData, reapplyError] = await trytm(reapplyRules());
 
     if (reapplyError)
       throw new ServerError({
@@ -162,7 +162,10 @@ export const createParsingRule = createServerFn({
         cause: reapplyError,
       });
 
-    return parsingRule;
+    return {
+      ...parsingRule,
+      updatedEventCount: reapplyData.updatedEventCount,
+    };
   });
 
 /**
@@ -271,7 +274,7 @@ export const deleteParsingRule = createServerFn({
       throw error;
     }
 
-    const [_reapplyData, reapplyError] = await trytm(reapplyRules());
+    const [reapplyData, reapplyError] = await trytm(reapplyRules());
 
     if (reapplyError) {
       throw new ServerError({
@@ -283,7 +286,10 @@ export const deleteParsingRule = createServerFn({
 
     consola.success(`Successfully Deleted: ${rule.name} (${rule.id})`);
 
-    return rule;
+    return {
+      ...rule,
+      updatedEventCount: reapplyData.updatedEventCount,
+    };
   });
 
 const UpdateRuleSchema = UpdateEventParsingRuleSchema.extend({
@@ -334,7 +340,7 @@ export const updateParsingRule = createServerFn({
       });
     }
 
-    const [_reapplyData, reapplyError] = await trytm(reapplyRules());
+    const [reapplyData, reapplyError] = await trytm(reapplyRules());
 
     if (reapplyError) {
       throw new ServerError({
@@ -344,7 +350,10 @@ export const updateParsingRule = createServerFn({
       });
     }
 
-    return rule;
+    return {
+      ...rule,
+      updatedEventCount: reapplyData.updatedEventCount,
+    };
   });
 
 export const triggerRule = createServerFn({
@@ -463,6 +472,8 @@ const reapplyRules = createServerFn({ method: "POST" })
       }
     }
 
+    let updatedEventCount = 0;
+
     for (const event of updatedEvents) {
       try {
         await db
@@ -471,6 +482,7 @@ const reapplyRules = createServerFn({ method: "POST" })
             ruleId: event.ruleId,
           })
           .where(eq(eventTable.id, event.id));
+        updatedEventCount++;
       } catch (error) {
         throw new ServerError({
           code: "INTERNAL_SERVER_ERROR",
@@ -479,4 +491,6 @@ const reapplyRules = createServerFn({ method: "POST" })
         });
       }
     }
+
+    return { updatedEventCount: updatedEventCount };
   });
