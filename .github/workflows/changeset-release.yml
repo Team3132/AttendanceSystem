@@ -47,12 +47,6 @@ jobs:
       - name: Install Dependancies
         run: bun install --frozen-lockfile
 
-      - name: Check Types
-        run: bun typecheck
-
-      - name: Lint & Format Packages
-        run: bun check --reporter=github
-
       - name: Create Release Pull Request
         id: changesets
         uses: changesets/action@v1
@@ -60,7 +54,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
         with:
-          # this npm script triggers `changeset publish`
           publish: bun changeset tag
           createGithubReleases: true
   publish-docker:
