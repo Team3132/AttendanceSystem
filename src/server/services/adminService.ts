@@ -401,7 +401,8 @@ const reapplyRules = createServerFn({ method: "POST" })
           description: eventTable.description,
           existingRuleId: eventTable.ruleId,
         })
-        .from(eventTable),
+        .from(eventTable)
+        .orderBy(asc(eventTable.startDate)),
     );
 
     if (futureEventsError) {
@@ -433,27 +434,22 @@ const reapplyRules = createServerFn({ method: "POST" })
 
     const updatedEvents = [];
     for (const event of futureEvents) {
-      const newRule =
-        filters.find((filter) => {
-          const reg = strToRegex(filter.regex);
-          return reg.test(event.title) || reg.test(event.description);
-        }) ?? null;
+      const ruleMatches = filters.map((filter) => {
+        const reg = strToRegex(filter.regex);
+        return {
+          id: filter.id,
+          regex: filter.regex,
+          match: reg.test(event.title) || reg.test(event.description),
+        };
+      });
 
-      const ruleMatchDebug = filters
-        .map((filter) => {
-          const reg = strToRegex(filter.regex);
-          const matches = reg.test(event.title) || reg.test(event.description);
-          return `Rule ${filter.id} (priority ${filter.priority}, regex: ${filter.regex}, event: ${event.title}): ${
-            matches ? "MATCH" : "no match"
-          }`;
-        })
-        .join("; ");
+      const newRuleId = ruleMatches.find((r) => r.match)?.id ?? null;
 
-      consola.debug(
-        `Evaluating event ${event.id} for rule reapplication. ${ruleMatchDebug}`,
-      );
+      consola.debug(`Event "${event.title}" (${event.id}) matches rules:`);
 
-      const newRuleId = newRule ? newRule.id : null;
+      for (const r of ruleMatches) {
+        consola.debug(` - Rule ${r.id} (${r.regex}): ${r.match}`);
+      }
 
       if (newRuleId !== event.existingRuleId) {
         consola.debug(
@@ -464,10 +460,6 @@ const reapplyRules = createServerFn({ method: "POST" })
           id: event.id,
           ruleId: newRuleId,
         });
-      } else {
-        // consola.debug(
-        //   `No rule change for event ${event.id}: remains ${event.existingRuleId}`,
-        // );
       }
     }
 
