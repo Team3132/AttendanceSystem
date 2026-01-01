@@ -117,6 +117,7 @@ jobs:
           context: .
       
   deploy-docker:
+    name: Deploy Container
     runs-on: ubuntu-latest
     environment: Production
     needs:
