@@ -71,14 +71,6 @@ jobs:
       matrix:
         package: ${{ fromJson(needs.release.outputs.publishedPackages) }}
     steps:
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.IMAGE }}-${{ matrix.package.name }}
-          tags: |
-            # use custom value instead of git tag
-            type=semver,pattern={{version}},value=${{ matrix.package.version }}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -91,17 +83,39 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
+      - name: Docker meta
+        id: install-meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE }}-${{ matrix.package.name }}
+          tags: |
+            install
+      - name: Build and Push (Install Dependancies)
+        uses: docker/build-push-action@v6
+        id: install-deps
+        with:
+          tags: ${{ steps.install-meta.outputs.tags }}
+          push: true
+          labels: ${{ steps.install-meta.outputs.labels }}
+          cache-from: ${{ steps.install-meta.outputs.labels }}
+          target: install
+      - name: Docker meta
+        id: final-meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE }}-${{ matrix.package.name }}
+          tags: |
+            # use custom value instead of git tag
+            type=semver,pattern={{version}},value=${{ matrix.package.version }}
       - name: Build and Push
         uses: docker/build-push-action@v6
         id: builder
         with:
           build-args: |
             VITE_VERSION=${{ matrix.package.version }}
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.final-meta.outputs.tags }}
           push: true
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=ghcr.io/team3132/attendancesystem-${{ matrix.package.name }}:latest
+          labels: ${{ steps.final-meta.outputs.labels }}
       
   deploy-docker:
     name: Deploy Container
