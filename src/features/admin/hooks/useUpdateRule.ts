@@ -1,3 +1,4 @@
+import { toaster } from "@/components/Toaster";
 import { adminQueryKeys } from "@/server/queryKeys";
 import { updateParsingRule } from "@/server/services/adminService";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -16,6 +17,9 @@ export default function useUpdateRule() {
       });
       queryClient.invalidateQueries({
         queryKey: adminQueryKeys.parsingRule(data.id),
+      });
+      toaster.success({
+        title: `Successfully Updated Rule, Updated ${data.updatedEventCount} Events`,
       });
     },
   });
