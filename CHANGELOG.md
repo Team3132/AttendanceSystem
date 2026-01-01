@@ -1,5 +1,11 @@
 # frontend
 
+## 5.17.8
+
+### Patch Changes
+
+- [`14b8bf5`](https://github.com/Team3132/AttendanceSystem/commit/14b8bf5091095343093fea698a43d3242b0d60cb) Thanks [@sebasptsch](https://github.com/sebasptsch)! - caching test
+
 ## 5.17.7
 
 ### Patch Changes
