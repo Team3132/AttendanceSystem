@@ -128,7 +128,9 @@ jobs:
       matrix:
         package: ${{ fromJson(needs.release.outputs.publishedPackages) }}
     steps:
-      - name: Tailscale
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup Tailscale
         uses: tailscale/github-action@v4
         with:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
