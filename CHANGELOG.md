@@ -1,5 +1,11 @@
 # frontend
 
+## 5.17.9
+
+### Patch Changes
+
+- [`ccd13f4`](https://github.com/Team3132/AttendanceSystem/commit/ccd13f4dfb999a20829619ce43c8cfe1509a17be) Thanks [@sebasptsch](https://github.com/sebasptsch)! - check cache
+
 ## 5.17.8
 
 ### Patch Changes
