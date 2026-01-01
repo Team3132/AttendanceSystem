@@ -10,7 +10,7 @@ concurrency:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE: ghcr.io/team3132/attendancesystem
+  IMAGE: ghcr.io/team3132/attendance
 
 permissions:
   packages: write
@@ -87,7 +87,7 @@ jobs:
         id: final-meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.IMAGE }}-${{ matrix.package.name }}
+          images: ${{ env.IMAGE }}
           tags: |
             # use custom value instead of git tag
             type=semver,pattern={{version}},value=${{ matrix.package.version }}

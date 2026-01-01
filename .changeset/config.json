@@ -3,7 +3,7 @@
 	"changelog": [
 		"@changesets/changelog-github",
 		{
-			"repo": "team3132/attendancesystem"
+			"repo": "team3132/attendance"
 		}
 	],
 	"commit": false,

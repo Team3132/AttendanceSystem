@@ -10,7 +10,7 @@ services:
       - postgres-data:/var/lib/postgresql/data
   attendance-system:
     restart: unless-stopped
-    image: ghcr.io/team3132/attendancesystem-frontend:${TAG:-latest}
+    image: ghcr.io/team3132/attendance:${TAG:-latest}
     ports:
       - 1420:1420
     links:
