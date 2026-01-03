@@ -1,4 +1,3 @@
-import { adminMiddleware } from "@/middleware/authMiddleware";
 import { trytm } from "@/utils/trytm";
 import {
   ActionRowBuilder,
@@ -14,8 +13,7 @@ import {
 import { createServerOnlyFn } from "@tanstack/react-start";
 import { asc, eq } from "drizzle-orm";
 import { DateTime } from "luxon";
-import { z } from "zod";
-import { getServerContext } from "../utils/context";
+import type { z } from "zod";
 import {
   eventParsingRuleTable,
   eventTable,
@@ -24,6 +22,7 @@ import {
 } from "../drizzle/schema";
 import env from "../env";
 import type { RSVPUserSchema } from "../schema";
+import { getServerContext } from "../utils/context";
 
 const statusToEmoji = (
   status: z.infer<typeof RSVPUserSchema>["status"],
@@ -63,153 +62,152 @@ const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => K) =>
  * @returns The message data
  */
 export const generateMessage = createServerOnlyFn(async (eventId: string) => {
-    const { db } = getServerContext()
-    const [eventRSVPs, eventRsvpsError] = await trytm(
-      db
-        .select({
-          arrivingAt: rsvpTable.arrivingAt,
-          status: rsvpTable.status,
-          user: {
-            username: userTable.username,
-            roles: userTable.roles,
-            id: userTable.id,
-          },
-        })
-        .from(rsvpTable)
-        .innerJoin(userTable, eq(rsvpTable.userId, userTable.id))
-        .where(eq(rsvpTable.eventId, eventId))
-        .orderBy(asc(userTable.username)),
-    );
+  const { db } = getServerContext();
+  const [eventRSVPs, eventRsvpsError] = await trytm(
+    db
+      .select({
+        arrivingAt: rsvpTable.arrivingAt,
+        status: rsvpTable.status,
+        user: {
+          username: userTable.username,
+          roles: userTable.roles,
+          id: userTable.id,
+        },
+      })
+      .from(rsvpTable)
+      .innerJoin(userTable, eq(rsvpTable.userId, userTable.id))
+      .where(eq(rsvpTable.eventId, eventId))
+      .orderBy(asc(userTable.username)),
+  );
 
-    if (eventRsvpsError) {
-      throw new Error("Error fetching RSVPs");
-    }
+  if (eventRsvpsError) {
+    throw new Error("Error fetching RSVPs");
+  }
 
-    const [eventData, eventDataError] = await trytm(
-      db.query.eventTable.findFirst({
-        where: eq(eventTable.id, eventId),
+  const [eventData, eventDataError] = await trytm(
+    db.query.eventTable.findFirst({
+      where: eq(eventTable.id, eventId),
+    }),
+  );
+
+  if (eventDataError) {
+    throw new Error("Error fetching event");
+  }
+
+  if (!eventData) {
+    throw new Error("Event not found");
+  }
+
+  const { ruleId } = eventData;
+
+  const roleIds: string[] = [];
+
+  if (ruleId === null) {
+    roleIds.push(env.GUILD_ID);
+  } else {
+    const [eventRule, eventRuleError] = await trytm(
+      db.query.eventParsingRuleTable.findFirst({
+        where: eq(eventParsingRuleTable.id, ruleId),
       }),
     );
 
-    if (eventDataError) {
-      throw new Error("Error fetching event");
+    if (eventRuleError) {
+      throw new Error("Error fetching event rule");
     }
 
-    if (!eventData) {
-      throw new Error("Event not found");
+    if (!eventRule) {
+      throw new Error("Event Rule not found");
     }
+    roleIds.push(...eventRule.roleIds);
+  }
 
-    const { ruleId } = eventData;
+  /** A list of role mentionds seperated by commas and "and" at the end */
+  const roleMentionList =
+    roleIds.length > 1
+      ? `${roleIds.slice(0, -1).map(roleMention).join(", ")} and ${roleMention(roleIds[roleIds.length - 1])}`
+      : roleMention(roleIds[0]);
 
-    const roleIds: string[] = [];
-
-    if (ruleId === null) {
-      roleIds.push(env.GUILD_ID);
-    } else {
-      const [eventRule, eventRuleError] = await trytm(
-        db.query.eventParsingRuleTable.findFirst({
-          where: eq(eventParsingRuleTable.id, ruleId),
-        }),
-      );
-
-      if (eventRuleError) {
-        throw new Error("Error fetching event rule");
-      }
-
-      if (!eventRule) {
-        throw new Error("Event Rule not found");
-      }
-      roleIds.push(...eventRule.roleIds);
-    }
-
-    /** A list of role mentionds seperated by commas and "and" at the end */
-    const roleMentionList =
-      roleIds.length > 1
-        ? `${roleIds.slice(0, -1).map(roleMention).join(", ")} and ${roleMention(roleIds[roleIds.length - 1])}`
-        : roleMention(roleIds[0]);
-
-    const meetingInfo = new EmbedBuilder({
-      description: eventData.description.length
-        ? eventData.description
-        : undefined,
-    })
-      .setTitle(eventData.title)
-      .addFields(
-        {
-          name: "Roles",
-          value: roleMentionList,
-          inline: true,
-        },
-        {
-          name: "Start Time",
-          value: time(eventData.startDate, "F"),
-          inline: true,
-        },
-        {
-          name: "End Time",
-          value: time(eventData.endDate, "F"),
-          inline: true,
-        },
-      )
-      .setURL(`${env.VITE_FRONTEND_URL}/events/${eventData.id}`)
-      .setColor([49, 49, 96]);
-
-    const messageComponent =
-      new ActionRowBuilder<ButtonBuilder>().addComponents(
-        new ButtonBuilder()
-          .setCustomId(`event/${eventData.id}/rsvp/${"YES"}`)
-          .setStyle(ButtonStyle.Success)
-          .setLabel("Coming"),
-        new ButtonBuilder()
-          .setCustomId(`event/${eventData.id}/rsvp/${"MAYBE"}`)
-          .setStyle(ButtonStyle.Secondary)
-          .setLabel("Maybe"),
-        new ButtonBuilder()
-          .setCustomId(`event/${eventData.id}/rsvp/${"NO"}`)
-          .setStyle(ButtonStyle.Danger)
-          .setLabel("Not Coming"),
-        new ButtonBuilder()
-          .setCustomId(`event/${eventData.id}/rsvp/${"LATE"}`)
-          .setStyle(ButtonStyle.Primary)
-          .setLabel("Late"),
-        new ButtonBuilder()
-          .setCustomId(`event/${eventData.id}/checkin`)
-          .setStyle(ButtonStyle.Primary)
-          .setLabel("Check In"),
-      );
-
-    const embeds: Array<EmbedBuilder> = [meetingInfo];
-
-    const eventStart = DateTime.fromJSDate(eventData.startDate);
-
-    // Group RSVPs by role with each user only appearing once
-    const groupedRSVPs = groupBy(
-      eventRSVPs,
-      (rsvp) =>
-        rsvp.user.roles
-          ?.concat(env.GUILD_ID) // Ensure the guild ID is included in the user's roles
-          ?.filter((role) => roleIds.includes(role))[0] || "No Role",
-    );
-
-    for (const [roleId, rsvps] of Object.entries(groupedRSVPs)) {
-      if (rsvps.length === 0) continue;
-      const embed = rsvpsToEmbed(
-        rsvps,
-        eventStart,
-        roleId !== "No Role" ? roleId : undefined,
-      );
-      embeds.push(embed);
-    }
-
-    return {
-      content: `Please RSVP (${roleMentionList})`,
-      embeds: embeds.map((embed) => embed.toJSON()),
-      components: [messageComponent.toJSON()],
-      allowed_mentions: {
-        roles: roleIds,
+  const meetingInfo = new EmbedBuilder({
+    description: eventData.description.length
+      ? eventData.description
+      : undefined,
+  })
+    .setTitle(eventData.title)
+    .addFields(
+      {
+        name: "Roles",
+        value: roleMentionList,
+        inline: true,
       },
-    } satisfies RESTPostAPIChannelMessageJSONBody;
-  });
+      {
+        name: "Start Time",
+        value: time(eventData.startDate, "F"),
+        inline: true,
+      },
+      {
+        name: "End Time",
+        value: time(eventData.endDate, "F"),
+        inline: true,
+      },
+    )
+    .setURL(`${env.VITE_FRONTEND_URL}/events/${eventData.id}`)
+    .setColor([49, 49, 96]);
+
+  const messageComponent = new ActionRowBuilder<ButtonBuilder>().addComponents(
+    new ButtonBuilder()
+      .setCustomId(`event/${eventData.id}/rsvp/${"YES"}`)
+      .setStyle(ButtonStyle.Success)
+      .setLabel("Coming"),
+    new ButtonBuilder()
+      .setCustomId(`event/${eventData.id}/rsvp/${"MAYBE"}`)
+      .setStyle(ButtonStyle.Secondary)
+      .setLabel("Maybe"),
+    new ButtonBuilder()
+      .setCustomId(`event/${eventData.id}/rsvp/${"NO"}`)
+      .setStyle(ButtonStyle.Danger)
+      .setLabel("Not Coming"),
+    new ButtonBuilder()
+      .setCustomId(`event/${eventData.id}/rsvp/${"LATE"}`)
+      .setStyle(ButtonStyle.Primary)
+      .setLabel("Late"),
+    new ButtonBuilder()
+      .setCustomId(`event/${eventData.id}/checkin`)
+      .setStyle(ButtonStyle.Primary)
+      .setLabel("Check In"),
+  );
+
+  const embeds: Array<EmbedBuilder> = [meetingInfo];
+
+  const eventStart = DateTime.fromJSDate(eventData.startDate);
+
+  // Group RSVPs by role with each user only appearing once
+  const groupedRSVPs = groupBy(
+    eventRSVPs,
+    (rsvp) =>
+      rsvp.user.roles
+        ?.concat(env.GUILD_ID) // Ensure the guild ID is included in the user's roles
+        ?.filter((role) => roleIds.includes(role))[0] || "No Role",
+  );
+
+  for (const [roleId, rsvps] of Object.entries(groupedRSVPs)) {
+    if (rsvps.length === 0) continue;
+    const embed = rsvpsToEmbed(
+      rsvps,
+      eventStart,
+      roleId !== "No Role" ? roleId : undefined,
+    );
+    embeds.push(embed);
+  }
+
+  return {
+    content: `Please RSVP (${roleMentionList})`,
+    embeds: embeds.map((embed) => embed.toJSON()),
+    components: [messageComponent.toJSON()],
+    allowed_mentions: {
+      roles: roleIds,
+    },
+  } satisfies RESTPostAPIChannelMessageJSONBody;
+});
 
 function rsvpToString(eventStart: DateTime<true> | DateTime<false>): (value: {
   arrivingAt: Date | null;

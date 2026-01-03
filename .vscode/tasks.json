@@ -5,9 +5,7 @@
 			"type": "typescript",
 			"tsconfig": "packages/bot/tsconfig.json",
 			"option": "watch",
-			"problemMatcher": [
-				"$tsc-watch"
-			],
+			"problemMatcher": ["$tsc-watch"],
 			"isBackground": true,
 			"group": "build",
 			"label": "tsc: watch - bot"
@@ -16,19 +14,14 @@
 			"type": "typescript",
 			"tsconfig": "packages/frontend/tsconfig.json",
 			"option": "watch",
-			"problemMatcher": [
-				"$tsc-watch"
-			],
+			"problemMatcher": ["$tsc-watch"],
 			"isBackground": true,
 			"group": "build",
 			"label": "tsc: watch - frontend"
 		},
 		{
 			"label": "tsc: watch - all",
-			"dependsOn": [
-				"tsc: watch - bot",
-				"tsc: watch - frontend"
-			],
+			"dependsOn": ["tsc: watch - bot", "tsc: watch - frontend"],
 			"problemMatcher": [],
 			"isBackground": true
 		}

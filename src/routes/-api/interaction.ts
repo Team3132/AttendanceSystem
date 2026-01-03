@@ -326,7 +326,7 @@ export const interactionRoute = new Hono<HonoEnv>().post(
           }
 
           const [generatedMessage, genMsgErr] = await trytm(
-            generateMessage({ data: eventId }),
+            generateMessage(eventId),
           );
 
           if (genMsgErr) {
@@ -425,9 +425,7 @@ export const interactionRoute = new Hono<HonoEnv>().post(
             });
           }
           const [generatedMessage, genMsgErr] = await trytm(
-            generateMessage({
-              data: eventId,
-            }),
+            generateMessage(eventId),
           );
           if (genMsgErr) {
             return reply(c, {
@@ -575,9 +573,7 @@ export const interactionRoute = new Hono<HonoEnv>().post(
           });
         }
         const [generatedMessage, genMsgErr] = await trytm(
-          generateMessage({
-            data: eventId,
-          }),
+          generateMessage(eventId),
         );
         if (genMsgErr) {
           return reply(c, {
@@ -675,9 +671,7 @@ export const interactionRoute = new Hono<HonoEnv>().post(
           });
         }
         const [generatedMessage, genMsgErr] = await trytm(
-          generateMessage({
-            data: eventId,
-          }),
+          generateMessage(eventId),
         );
         if (genMsgErr) {
           return reply(c, {

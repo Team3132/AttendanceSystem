@@ -29,9 +29,7 @@ export async function requestRSVPCommand(
     });
   }
 
-  const [response, err] = await trytm(
-    generateMessage(meetingId),
-  );
+  const [response, err] = await trytm(generateMessage(meetingId));
 
   const [_, eventPostedError] = await trytm(markEventPosted(meetingId));
 
