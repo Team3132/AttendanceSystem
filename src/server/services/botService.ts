@@ -11,7 +11,7 @@ import {
   ButtonStyle,
   type RESTPostAPIChannelMessageJSONBody,
 } from "@discordjs/core";
-import { createServerFn } from "@tanstack/react-start";
+import { createServerOnlyFn } from "@tanstack/react-start";
 import { asc, eq } from "drizzle-orm";
 import { DateTime } from "luxon";
 import { z } from "zod";
@@ -61,10 +61,7 @@ const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => K) =>
  * @param data The data to generate the message with
  * @returns The message data
  */
-export const generateMessage = createServerFn({ method: "POST" })
-  .middleware([adminMiddleware])
-  .inputValidator(z.string())
-  .handler(async ({ data: eventId, context: { db } }) => {
+export const generateMessage = createServerOnlyFn(async (eventId: string) => {
     const [eventRSVPs, eventRsvpsError] = await trytm(
       db
         .select({
