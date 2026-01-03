@@ -60,7 +60,7 @@ export const reminderFn = createServerOnlyFn(async (job: Cron) => {
   const notificationMessages = await Promise.all(
     matchingEventIds.map(
       async (eventId) =>
-        [eventId, await generateMessage({ data: eventId })] as const,
+        [eventId, await generateMessage(eventId)] as const,
     ),
   );
 
