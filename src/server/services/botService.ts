@@ -15,6 +15,7 @@ import { createServerOnlyFn } from "@tanstack/react-start";
 import { asc, eq } from "drizzle-orm";
 import { DateTime } from "luxon";
 import { z } from "zod";
+import { getServerContext } from "../utils/context";
 import {
   eventParsingRuleTable,
   eventTable,
@@ -62,6 +63,7 @@ const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => K) =>
  * @returns The message data
  */
 export const generateMessage = createServerOnlyFn(async (eventId: string) => {
+    const { db } = getServerContext()
     const [eventRSVPs, eventRsvpsError] = await trytm(
       db
         .select({
