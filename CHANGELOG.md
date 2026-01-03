@@ -1,5 +1,11 @@
 # frontend
 
+## 6.0.3
+
+### Patch Changes
+
+- [#3231](https://github.com/Team3132/attendance/pull/3231) [`2387ef5`](https://github.com/Team3132/attendance/commit/2387ef593c96b3109fbdfb71a4fe30ff698f8fa6) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix generatemessage
+
 ## 6.0.2
 
 ### Patch Changes
