@@ -50,3 +50,5 @@ jobs:
         with:
           publish: bun changeset tag
           createGithubReleases: true
+  publish-deploy:
+    uses: ./.github/workflows/publish-deploy.yml
