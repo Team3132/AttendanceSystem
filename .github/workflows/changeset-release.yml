@@ -52,5 +52,6 @@ jobs:
           createGithubReleases: true
   publish-deploy:
     uses: ./.github/workflows/publish-deploy.yml
+    needs: release
     permissions:
       packages: write
