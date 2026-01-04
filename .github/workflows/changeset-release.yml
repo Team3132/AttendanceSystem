@@ -133,6 +133,8 @@ jobs:
         run: |
           docker context create remote --docker "host=${{ secrets.DOCKER_HOST }}"
           docker context use remote
+      - name: PS
+        run: docker ps
       - name: Deploy Compose
         working-directory: deploy
         env:
