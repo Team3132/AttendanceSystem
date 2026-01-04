@@ -1,5 +1,13 @@
 # frontend
 
+## 6.0.10
+
+### Patch Changes
+
+- [`820bd15`](https://github.com/Team3132/attendance/commit/820bd156110d7cae37b65741774bd908fe01ebd5) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Move back all into one file
+
+- [`96f9ba4`](https://github.com/Team3132/attendance/commit/96f9ba4f67e4700b6871eca5ada88c0d9f6ef9a7) Thanks [@sebasptsch](https://github.com/sebasptsch)! - fix secret issue
+
 ## 6.0.9
 
 ### Patch Changes
