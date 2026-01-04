@@ -1,12 +1,11 @@
 on: 
   push: 
-    branches: 
-      - main
     tags: 
       - v**
 
 jobs:
   publish:
+    if: github.ref == 'refs/heads/main'
     permissions:
       packages: write
     name: Publish Docker Image
