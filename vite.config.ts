@@ -13,11 +13,7 @@ export default defineConfig({
   },
   plugins: [
     viteTsconfigPaths(),
-    tanstackStart({
-      spa: {
-        enabled: false,
-      },
-    }),
+    tanstackStart(),
     viteReact({
       babel: {
         plugins: [
