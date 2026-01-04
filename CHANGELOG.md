@@ -1,5 +1,11 @@
 # frontend
 
+## 6.0.6
+
+### Patch Changes
+
+- [`b9241b9`](https://github.com/Team3132/attendance/commit/b9241b97f3e1dcaf3dd21801582508652d873adf) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Call
+
 ## 6.0.5
 
 ### Patch Changes
