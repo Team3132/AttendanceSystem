@@ -1,5 +1,13 @@
 # frontend
 
+## 6.0.4
+
+### Patch Changes
+
+- [`d56095a`](https://github.com/Team3132/attendance/commit/d56095a80c5cb9c05a92696c75a571ab8cbc2284) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Use SSH
+
+- [#3231](https://github.com/Team3132/attendance/pull/3231) [`e72cd94`](https://github.com/Team3132/attendance/commit/e72cd94c4c56cb090533d957b2d213a1bc1c877b) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix generatemessage
+
 ## 6.0.3
 
 ### Patch Changes
