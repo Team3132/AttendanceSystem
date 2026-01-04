@@ -1,8 +1,9 @@
 name: Release
 
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - main
 
 concurrency:
   cancel-in-progress: true
@@ -49,8 +50,12 @@ jobs:
         with:
           publish: bun changeset tag
           createGithubReleases: true
-  publish-deploy:
-    uses: ./.github/workflows/publish-deploy.yml
-    needs: release
-    permissions:
-      packages: write
+          commitMode: "github-api"
+
+  # publish-deploy:
+  #   uses: ./.github/workflows/publish-deploy.yml
+  #   needs: release
+  #   permissions:
+  #     packages: write
+  #   with:
+  #     version: ${{ needs.release.outputs.version }}
