@@ -1,5 +1,11 @@
 # frontend
 
+## 6.0.5
+
+### Patch Changes
+
+- [`520cc39`](https://github.com/Team3132/attendance/commit/520cc39e617bfeebc2de35cbdff94730a5f66cf5) Thanks [@sebasptsch](https://github.com/sebasptsch)! - docker ps
+
 ## 6.0.4
 
 ### Patch Changes
