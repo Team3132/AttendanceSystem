@@ -46,11 +46,12 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PAT }}
         with:
           publish: bun changeset tag
           createGithubReleases: true
           commitMode: "github-api"
+          
 
   # publish-deploy:
   #   uses: ./.github/workflows/publish-deploy.yml
