@@ -75,7 +75,7 @@ export const Route = createFileRoute("/api/interaction")({
   server: {
     middleware: [verifyDiscordMiddleware],
     handlers: {
-      GET: async ({ context: { db, interaction, logger } }) => {
+      POST: async ({ context: { db, interaction, logger } }) => {
         if (
           interaction.member === undefined ||
           interaction.guild_id !== env.GUILD_ID
