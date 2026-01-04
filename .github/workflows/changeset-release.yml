@@ -65,23 +65,87 @@ jobs:
       fail-fast: true
       matrix:
         package: ${{ fromJson(needs.release.outputs.publishedPackages) }}
-    uses: './.github/workflows/publish.yml'
     permissions:
       packages: write
-    with:
-      version: ${{ matrix.package.version }}
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Docker Login
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/team3132/attendance
+          tags: type=semver,pattern={{version}},value=${{ matrix.package.version }}
+
+      - name: Build and Push
+        uses: docker/build-push-action@v6
+        with:
+          tags: ${{ steps.meta.outputs.tags }}
+          push: true
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
   deploy:
     name: Deploy Docker Images
     needs: 
       - publish
-      - release
-    uses: './.github/workflows/deploy.yml'
-    strategy:
-      fail-fast: true
-      matrix:
-        package: ${{ fromJson(needs.release.outputs.publishedPackages) }}
+   
+    
     permissions:
       packages: write
-    with:
-      version: ${{ matrix.package.version }}
+    
+    runs-on: ubuntu-latest
+    environment: Production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup Tailscale
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+      - name: Add to Known Hosts
+        run:
+          |
+          mkdir -p ~/.ssh/
+          touch ~/.ssh/known_hosts
+          ssh-keyscan ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+      - name: Init Remote Context
+        run: |
+          docker context create remote --docker "host=${{ secrets.DOCKER_HOST }}"
+          docker context use remote
+      - name: Deploy Compose
+        working-directory: deploy
+        env:
+          TAG: ${{ needs.publish.outputs.version }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DISCORD_CLIENT_ID: ${{ secrets.DISCORD_CLIENT_ID }}
+          DISCORD_CLIENT_SECRET: ${{ secrets.DISCORD_CLIENT_SECRET }}
+          DISCORD_CALLBACK_URL: ${{ secrets.DISCORD_CALLBACK_URL }}
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+          DISCORD_PUBLIC_KEY: ${{ secrets.DISCORD_PUBLIC_KEY }}
+          GUILD_ID: ${{ secrets.GUILD_ID }}
+          VITE_FRONTEND_URL: ${{ secrets.VITE_FRONTEND_URL }}
+          GOOGLE_CLIENT_EMAIL: ${{ secrets.GOOGLE_CLIENT_EMAIL }}
+          GOOGLE_PRIVATE_KEY: ${{ secrets.GOOGLE_PRIVATE_KEY }}
+          GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_ID }}
+          ADMIN_ROLE_ID: ${{ secrets.ADMIN_ROLE_ID }}
+        run: docker compose up -d --remove-orphans
+      - name: Prune Images
+        run: docker image prune -af
     
