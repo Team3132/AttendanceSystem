@@ -16,5 +16,8 @@
 		}
 	],
 	"rangeStrategy": "pin",
-	"addLabels": ["renovate"]
+	"addLabels": ["renovate"],
+	"automergeSchedule": [
+        "* 0-3 * * 1"
+	]
 }
