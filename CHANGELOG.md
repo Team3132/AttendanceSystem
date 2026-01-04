@@ -1,5 +1,11 @@
 # frontend
 
+## 6.0.7
+
+### Patch Changes
+
+- [`c20d842`](https://github.com/Team3132/attendance/commit/c20d8425c65bbfec2ec9f0df021113eda2a0984d) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Use a PAT to commit
+
 ## 6.0.6
 
 ### Patch Changes
