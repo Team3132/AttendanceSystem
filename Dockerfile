@@ -33,9 +33,6 @@ COPY --from=prerelease /usr/src/app/drizzle drizzle
 COPY --from=prerelease /usr/src/app/server.ts .
 COPY --from=prerelease /usr/src/app/package.json .
 
-ARG VITE_VERSION
-ENV VITE_VERSION=$VITE_VERSION
-
 # run the app
 USER bun
 EXPOSE 1420/tcp

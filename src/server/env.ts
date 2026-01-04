@@ -53,12 +53,10 @@ const env = createEnv({
     TSS_PRERENDERING: process.env.TSS_PRERENDERING,
     VITE_FRONTEND_URL:
       process.env.VITE_FRONTEND_URL ?? import.meta.env.VITE_FRONTEND_URL,
-    VITE_VERSION: process.env.VITE_VERSION ?? import.meta.env.VITE_VERSION,
   },
   clientPrefix: "VITE_",
   client: {
     VITE_FRONTEND_URL: z.string().default("http://localhost:1420"),
-    VITE_VERSION: z.string().optional(),
   },
 });
 
