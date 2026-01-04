@@ -1,5 +1,4 @@
 name: Release
-
 on:
   push:
     branches:
@@ -9,7 +8,13 @@ concurrency:
   cancel-in-progress: true
   group: ${{ github.workflow }}-${{ github.ref }}
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE: ghcr.io/team3132/attendance
+
 permissions:
+  packages: write
+  id-token: write
   contents: write
   pull-requests: write
 
@@ -27,6 +32,9 @@ jobs:
     needs: 
       - check
       - test
+    outputs:
+      published: ${{ steps.changesets.outputs.published }}
+      publishedPackages: ${{ steps.changesets.outputs.publishedPackages }}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v6
@@ -46,17 +54,20 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
         with:
           publish: bun changeset tag
           createGithubReleases: true
-          commitMode: "github-api"
-          
-
-  # publish-deploy:
-  #   uses: ./.github/workflows/publish-deploy.yml
-  #   needs: release
-  #   permissions:
-  #     packages: write
-  #   with:
-  #     version: ${{ needs.release.outputs.version }}
+  publish-docker:
+    name: Publish Docker Images
+    needs: release
+    if: needs.release.outputs.published == 'true'
+    strategy:
+      fail-fast: true
+      matrix:
+        package: ${{ fromJson(needs.release.outputs.publishedPackages) }}
+    uses: './.github/workflows/publish-deploy.yml'
+    with:
+      version: ${{ matrix.package.version }}
+    
