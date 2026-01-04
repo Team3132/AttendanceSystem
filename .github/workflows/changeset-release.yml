@@ -57,7 +57,7 @@ jobs:
         with:
           publish: bun changeset tag
           createGithubReleases: true
-  publish-docker:
+  publish:
     name: Publish Docker Images
     needs: release
     if: needs.release.outputs.published == 'true'
@@ -65,7 +65,21 @@ jobs:
       fail-fast: true
       matrix:
         package: ${{ fromJson(needs.release.outputs.publishedPackages) }}
-    uses: './.github/workflows/publish-deploy.yml'
+    uses: './.github/workflows/publish.yml'
+    permissions:
+      packages: write
+    with:
+      version: ${{ matrix.package.version }}
+  deploy:
+    name: Deploy Docker Images
+    needs: 
+      - publish
+      - release
+    uses: './.github/workflows/deploy.yml'
+    strategy:
+      fail-fast: true
+      matrix:
+        package: ${{ fromJson(needs.release.outputs.publishedPackages) }}
     permissions:
       packages: write
     with:
