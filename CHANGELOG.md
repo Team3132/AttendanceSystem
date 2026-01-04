@@ -1,5 +1,11 @@
 # frontend
 
+## 6.0.9
+
+### Patch Changes
+
+- [`2390fad`](https://github.com/Team3132/attendance/commit/2390fadda22f65132b3ebcb6ed8fee2a0b7f2181) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Do some workflow calling
+
 ## 6.0.8
 
 ### Patch Changes
