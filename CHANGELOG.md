@@ -1,5 +1,11 @@
 # frontend
 
+## 6.0.11
+
+### Patch Changes
+
+- [`1d05b0f`](https://github.com/Team3132/attendance/commit/1d05b0f64f3f0170588ddd1965e209e92ec7cf30) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Move away from hono again
+
 ## 6.0.10
 
 ### Patch Changes
