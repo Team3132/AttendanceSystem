@@ -5,17 +5,15 @@ import {
   type APIChatInputApplicationCommandInteractionData,
   MessageFlags,
 } from "@discordjs/core";
-import type { Context } from "hono";
 import { type JSONReply, reply } from "../interactionReply";
 
 export async function syncplzCommand(
-  c: Context,
   _interaction: APIChatInputApplicationCommandInteractionData,
 ): Promise<JSONReply> {
   const [response, err] = await trytm(syncEvents());
 
   if (err) {
-    return reply(c, {
+    return reply({
       content: err.message,
       flags: MessageFlags.Ephemeral,
     });
@@ -38,7 +36,7 @@ export async function syncplzCommand(
       },
     ]);
 
-  return reply(c, {
+  return reply({
     content: "Calendar synced",
     embeds: [embed.toJSON()],
   });

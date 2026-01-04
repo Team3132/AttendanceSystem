@@ -103,11 +103,8 @@ jobs:
     name: Deploy Docker Images
     needs: 
       - publish
-   
-    
     permissions:
       packages: write
-    
     runs-on: ubuntu-latest
     environment: Production
     steps:

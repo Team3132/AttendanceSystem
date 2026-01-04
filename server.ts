@@ -65,11 +65,6 @@
 
 import path from "node:path";
 import type { Register } from "@tanstack/react-start";
-import {
-  type BunWebSocketData,
-  type BunWebSocketHandler,
-  websocket,
-} from "hono/bun";
 
 // Configuration
 const SERVER_PORT = Number(process.env.PORT ?? 1420);
@@ -518,7 +513,6 @@ async function initializeServer() {
       request: Request,
       opts: { context: Partial<Register["server"]["requestContext"]> },
     ) => Response | Promise<Response>;
-    websocket: BunWebSocketHandler<BunWebSocketData>;
   };
   try {
     const serverModule = (await import(SERVER_ENTRY_POINT)) as {
@@ -527,7 +521,6 @@ async function initializeServer() {
           request: Request,
           opts: { context: Partial<Register["server"]["requestContext"]> },
         ) => Response | Promise<Response>;
-        websocket: BunWebSocketHandler<BunWebSocketData>;
       };
     };
     handler = serverModule.default;
@@ -542,7 +535,6 @@ async function initializeServer() {
   // Create Bun server
   const server = Bun.serve({
     port: SERVER_PORT,
-    websocket: websocket,
     idleTimeout: 0, // Disable idle timeout
     routes: {
       // Serve static assets (preloaded or on-demand)

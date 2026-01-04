@@ -1,6 +1,9 @@
+import type {
+  APIApplicationCommandAutocompleteResponse,
+  APICommandAutocompleteInteractionResponseCallbackData,
+} from "@discordjs/core";
+
 import {
-  type APIApplicationCommandAutocompleteResponse,
-  type APICommandAutocompleteInteractionResponseCallbackData,
   type APIInteractionResponseCallbackData,
   type APIInteractionResponseChannelMessageWithSource,
   type APIInteractionResponseUpdateMessage,
@@ -8,45 +11,39 @@ import {
   type APIModalInteractionResponseCallbackData,
   InteractionResponseType,
 } from "@discordjs/core";
-import type { Context } from "hono";
 
-export const reply = (c: Context, data: APIInteractionResponseCallbackData) =>
-  c.json<APIInteractionResponseChannelMessageWithSource>({
+export const reply = (data: APIInteractionResponseCallbackData) =>
+  Response.json({
     type: InteractionResponseType.ChannelMessageWithSource,
     data,
-  });
+  } satisfies APIInteractionResponseChannelMessageWithSource);
 
 export type JSONReply = ReturnType<typeof reply>;
 
-export const modalReply = (
-  c: Context,
-  data: APIModalInteractionResponseCallbackData,
-) =>
-  c.json<APIModalInteractionResponse>({
+export const modalReply = (data: APIModalInteractionResponseCallbackData) =>
+  Response.json({
     type: InteractionResponseType.Modal,
     data,
-  });
+  } satisfies APIModalInteractionResponse);
 
-// export type JSONModalReply = ReturnType<typeof modalReply>;
+export type JSONModalReply = ReturnType<typeof modalReply>;
 
-export const updateMessage = (
-  c: Context,
-  data: APIInteractionResponseCallbackData,
-) =>
-  c.json<APIInteractionResponseUpdateMessage>({
+export const updateMessage = (data: APIInteractionResponseCallbackData) =>
+  Response.json({
     type: InteractionResponseType.UpdateMessage,
     data,
-  });
+  } satisfies APIInteractionResponseUpdateMessage);
+
+export type JSONUpdateMessage = ReturnType<typeof updateMessage>;
 
 // export type JSONUpdateMessage = ReturnType<typeof updateMessage>;
 
 export const autocompleteReply = (
-  c: Context,
   data: APICommandAutocompleteInteractionResponseCallbackData,
 ) =>
-  c.json<APIApplicationCommandAutocompleteResponse>({
+  Response.json({
     type: InteractionResponseType.ApplicationCommandAutocompleteResult,
     data,
-  });
+  } satisfies APIApplicationCommandAutocompleteResponse);
 
 // export type JSONAutocompleteReply = ReturnType<typeof autocompleteReply>;

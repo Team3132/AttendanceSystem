@@ -5,7 +5,6 @@ import type { RequestOptions } from "@tanstack/react-start/server";
 import handler from "@tanstack/react-start/server-entry";
 import type { Server } from "bun";
 import { Cron, scheduledJobs } from "croner";
-import type { BunWebSocketData } from "hono/bun";
 import { Lucia, type RegisteredLucia } from "lucia";
 import { DateTime } from "luxon";
 import type z from "zod";
@@ -100,7 +99,7 @@ declare module "lucia" {
 }
 
 type MyRequestContext = {
-  server: Server<BunWebSocketData>;
+  server: Server<undefined>;
   pubSub: typeof pubSub;
   db: DB;
   kv: ReturnType<typeof getKV>;
