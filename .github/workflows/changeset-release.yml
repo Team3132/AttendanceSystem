@@ -12,12 +12,6 @@ env:
   REGISTRY: ghcr.io
   IMAGE: ghcr.io/team3132/attendance
 
-permissions:
-  packages: write
-  id-token: write
-  contents: write
-  pull-requests: write
-
 jobs:
   check:
     uses: ./.github/workflows/job-check.yml
@@ -29,6 +23,10 @@ jobs:
   release:
     name: Release Changeset
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+      pull-requests: write
     needs: 
       - check
       - test
@@ -55,7 +53,7 @@ jobs:
         uses: changesets/action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+        
         with:
           publish: bun changeset tag
           createGithubReleases: true
@@ -68,6 +66,8 @@ jobs:
       matrix:
         package: ${{ fromJson(needs.release.outputs.publishedPackages) }}
     uses: './.github/workflows/publish-deploy.yml'
+    permissions:
+      packages: write
     with:
       version: ${{ matrix.package.version }}
     
