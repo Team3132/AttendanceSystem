@@ -1,6 +1,6 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
-	"extends": ["config:recommended", ":semanticCommits"],
+	"extends": ["config:recommended"],
 	"lockFileMaintenance": {
 		"enabled": true
 	},
@@ -13,10 +13,6 @@
 		{
 			"matchSourceUrls": ["https://github.com/TanStack/table"],
 			"groupName": "Tanstack table monorepo packages"
-		},
-		{
-			"matchSourceUrls": ["https://github.com/discordjs/discord.js"],
-			"groupName": "Discord.js monorepo packages"
 		}
 	],
 	"rangeStrategy": "pin",
