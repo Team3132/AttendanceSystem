@@ -8,6 +8,9 @@ const ReactCompilerConfig = {
 };
 
 export default defineConfig({
+  build: {
+    sourcemap: true,
+  },
   plugins: [
     viteTsconfigPaths(),
     tanstackStart({
@@ -15,7 +18,6 @@ export default defineConfig({
         enabled: false,
       },
     }),
-    // nitro({ preset: "bun" }),
     viteReact({
       babel: {
         plugins: [
@@ -52,14 +54,4 @@ export default defineConfig({
   server: {
     port: 1420,
   },
-  // nitro: {
-  //   routeRules: {
-  //     "/assets/**": {
-  //       static: true,
-  //       headers: {
-  //         "cache-control": `public, max-age=${365 * 24 * 60 * 60}, immutable`, // 1 year
-  //       },
-  //     },
-  //   },
-  // },
 });
