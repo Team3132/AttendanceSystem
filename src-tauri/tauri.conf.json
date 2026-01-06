@@ -4,7 +4,7 @@
 	"version": "0.1.0",
 	"identifier": "com.team3132.attendance",
 	"build": {
-		"frontendDist": "https://attendance.team3132.com",
+		"frontendDist": "dist/client",
 		"devUrl": "http://localhost:1420",
 		"beforeDevCommand": "bun dev",
 		"beforeBuildCommand": "bun run build"
@@ -35,7 +35,11 @@
 			"icons/128x128@2x.png",
 			"icons/icon.icns",
 			"icons/icon.ico"
-		]
+		],
+		"android": {
+			"autoIncrementVersionCode": false,
+			"minSdkVersion": 24
+		}
 	},
 	"plugins": {
 		"deep-link": {
