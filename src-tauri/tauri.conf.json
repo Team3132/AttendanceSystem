@@ -6,7 +6,7 @@
 	"build": {
 		"frontendDist": "https://attendance.team3132.com",
 		"devUrl": "http://localhost:1420",
-		"beforeDevCommand": "bun dev --force",
+		"beforeDevCommand": "bun dev",
 		"beforeBuildCommand": "bun run build"
 	},
 	"app": {

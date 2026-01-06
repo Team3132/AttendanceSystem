@@ -1,11 +1,10 @@
 import { toaster } from "@/components/Toaster";
 import useLogout from "@/hooks/useLogout";
 import { authQueryOptions } from "@/queries/auth.queries";
-import { generateRedirect } from "@/server/auth/generateRedirect";
+import env from "@/server/env";
 import { Button, Container, Paper, Stack, Typography } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 import { Suspense } from "react";
 
@@ -17,24 +16,51 @@ export const Route = createFileRoute("/login")({
 });
 
 function Component() {
-  const loginFn = useServerFn(generateRedirect);
-
   const handleLogin = async () => {
     try {
       console.log("handle login called");
 
-      const { url } = await loginFn({
-        data: {
-          // @ts-ignore
-          isMobile: !!window.__TAURI__,
-        },
-      });
+      toaster.info({ description: "test" });
 
       // @ts-ignore
-      if (window.__TAURI__) {
+      if (window?.__TAURI__) {
         const { openUrl } = await import("@tauri-apps/plugin-opener");
-        return openUrl(url);
+        const { onOpenUrl } = await import("@tauri-apps/plugin-deep-link");
+        await openUrl(
+          `${env.VITE_FRONTEND_URL}/api/auth/discord?isMobile=true`,
+        );
+
+        await onOpenUrl(async (urls) => {
+          for (const url of urls) {
+            const deepLinkURL = new URL(url);
+
+            console.log({
+              protocol: deepLinkURL.protocol,
+              host: deepLinkURL.host,
+            });
+
+            if (
+              deepLinkURL.protocol === "attendance:" &&
+              deepLinkURL.host === "login"
+            ) {
+              const { Store } = await import("@tauri-apps/plugin-store");
+              const store = await Store.load("store.json");
+
+              const sessionId = deepLinkURL.searchParams.get("sessionId");
+
+              await store.set("sessionId", sessionId);
+
+              await store.save();
+
+              window.location.href = "/";
+            }
+          }
+        });
       }
+
+      throw redirect({
+        to: "/api/auth/discord",
+      });
     } catch (error) {
       if (error instanceof Error)
         toaster.error({

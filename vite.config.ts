@@ -10,10 +10,11 @@ const ReactCompilerConfig = {
 const host = process.env.TAURI_DEV_HOST;
 
 export default defineConfig({
+  clearScreen: false,
   build: {
     // Tauri uses Chromium on Windows and WebKit on macOS and Linux
-    // target:
-    //   process.env.TAURI_ENV_PLATFORM === "windows" ? "chrome105" : "safari13",
+    target:
+      process.env.TAURI_ENV_PLATFORM === "windows" ? "chrome105" : "safari13",
     // don't minify for debug builds
     minify: !process.env.TAURI_ENV_DEBUG ? "esbuild" : false,
     // produce sourcemaps for debug builds
@@ -23,7 +24,10 @@ export default defineConfig({
     viteTsconfigPaths(),
     tanstackStart({
       spa: {
-        enabled: false,
+        enabled: true,
+        prerender: {
+          outputPath: "/index",
+        },
       },
     }),
     viteReact({

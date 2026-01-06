@@ -32,58 +32,84 @@ type SessionContext = FilledSession | NullSession;
  */
 export const authBaseMiddleware = createMiddleware({
   type: "function",
-}).server(async ({ next, context: { lucia } }) => {
-  const authorizationHeader = getRequestHeader("Authorization");
+})
+  .client(async ({ next }) => {
+    console.log("Triggered1");
+    // @ts-ignore
+    if (typeof window !== "undefined" && window?.__TAURI__) {
+      console.log("Triggered2");
+      const { Store } = await import("@tauri-apps/plugin-store");
+      const store = await Store.load("store.json");
 
-  // Get the bearer token session
-  const sessionIdAuthorization = lucia.readBearerToken(
-    authorizationHeader ?? "",
-  );
+      const storeSesionId = await store.get<string>("sessionId");
 
-  // If the Authorization Bearer strategy is used then we skip any cookie-related logic and just return the session details
-  // It's the client's job to refresh the session should it be required
-  if (sessionIdAuthorization) {
-    const validSession = await lucia.validateSession(sessionIdAuthorization);
+      console.log({ storeSesionId });
 
-    // If there's no valid session then pass the null user (fails rules)
+      if (!storeSesionId) return next();
+
+      return next({
+        headers: {
+          Authorization: `Bearer ${storeSesionId}`,
+        },
+      });
+    }
+
+    return next();
+  })
+  .server(async ({ next, context: { lucia } }) => {
+    const authorizationHeader = getRequestHeader("Authorization");
+    console.log({ authorizationHeader });
+    // Get the bearer token session
+    const sessionIdAuthorization = lucia.readBearerToken(
+      authorizationHeader ?? "",
+    );
+
+    // If the Authorization Bearer strategy is used then we skip any cookie-related logic and just return the session details
+    // It's the client's job to refresh the session should it be required
+    if (sessionIdAuthorization) {
+      const validSession = await lucia.validateSession(sessionIdAuthorization);
+
+      // If there's no valid session then pass the null user (fails rules)
+      return next({
+        context: validSession as SessionContext,
+      });
+    }
+
+    // If we're in a HTTP context, we can use cookies
+    const cookieHeader = getRequestHeader("Cookie");
+    const sessionId = cookieHeader
+      ? lucia.readSessionCookie(cookieHeader)
+      : null;
+
+    // If there's no session cookie, we're not logged in so create a blank cookie
+    if (!sessionId) {
+      const sessionCookie = lucia.createBlankSessionCookie();
+      setResponseHeader("Set-Cookie", sessionCookie.serialize());
+
+      return next({
+        context: nullSession as SessionContext,
+      });
+    }
+
+    const validSession = await lucia.validateSession(sessionId); // Validate the session
+
+    // No session or invalid session so create a blank cookie
+    if (!validSession.session) {
+      const sessionCookie = lucia.createBlankSessionCookie();
+
+      setResponseHeader("Set-Cookie", sessionCookie.serialize());
+    }
+
+    // If the session is fresh, we need to update the cookie to extend the expiry
+    if (validSession.session?.fresh) {
+      const sessionCookie = lucia.createSessionCookie(validSession.session.id);
+      setResponseHeader("Set-Cookie", sessionCookie.serialize());
+    }
+
     return next({
       context: validSession as SessionContext,
     });
-  }
-
-  // If we're in a HTTP context, we can use cookies
-  const cookieHeader = getRequestHeader("Cookie");
-  const sessionId = cookieHeader ? lucia.readSessionCookie(cookieHeader) : null;
-
-  // If there's no session cookie, we're not logged in so create a blank cookie
-  if (!sessionId) {
-    const sessionCookie = lucia.createBlankSessionCookie();
-    setResponseHeader("Set-Cookie", sessionCookie.serialize());
-
-    return next({
-      context: nullSession as SessionContext,
-    });
-  }
-
-  const validSession = await lucia.validateSession(sessionId); // Validate the session
-
-  // No session or invalid session so create a blank cookie
-  if (!validSession.session) {
-    const sessionCookie = lucia.createBlankSessionCookie();
-
-    setResponseHeader("Set-Cookie", sessionCookie.serialize());
-  }
-
-  // If the session is fresh, we need to update the cookie to extend the expiry
-  if (validSession.session?.fresh) {
-    const sessionCookie = lucia.createSessionCookie(validSession.session.id);
-    setResponseHeader("Set-Cookie", sessionCookie.serialize());
-  }
-
-  return next({
-    context: validSession as SessionContext,
   });
-});
 
 /**
  * Middleware to check if the user is authenticated and has a valid session

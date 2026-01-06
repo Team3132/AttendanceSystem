@@ -1,5 +1,4 @@
 import { authBaseMiddleware } from "@/middleware/authMiddleware";
-import type FlattenServerFn from "@/types/FlattenServerFn";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
@@ -25,14 +24,23 @@ const logoutFn = createServerFn({
     return { success: false };
   });
 
-type LogoutFn = FlattenServerFn<typeof logoutFn>;
-
 export default function useLogout() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: logoutFn as LogoutFn,
+    mutationFn: async () => {
+      await logoutFn();
+      // @ts-ignore
+      if (typeof window !== "undefined" && window?.__TAURI__) {
+        const { Store } = await import("@tauri-apps/plugin-store");
+        const store = await Store.load("store.json");
+
+        await store.delete("sessionId");
+
+        await store.save();
+      }
+    },
     onSuccess: () => {
       queryClient.clear();
       navigate({
