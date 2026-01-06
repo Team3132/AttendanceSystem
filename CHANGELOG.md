@@ -1,5 +1,11 @@
 # frontend
 
+## 6.1.0
+
+### Minor Changes
+
+- [#3252](https://github.com/Team3132/attendance/pull/3252) [`53e94b3`](https://github.com/Team3132/attendance/commit/53e94b3448d8f18b364a3d0d31bcff295d9dd32a) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Setup a basic android app
+
 ## 6.0.12
 
 ### Patch Changes
