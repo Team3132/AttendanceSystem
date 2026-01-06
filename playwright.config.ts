@@ -22,6 +22,7 @@ export default defineConfig({
     url: baseURL,
     reuseExistingServer: !process.env.CI,
     stdout: "pipe",
+    timeout: 120_000,
   },
 
   projects: [

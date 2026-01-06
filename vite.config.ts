@@ -75,7 +75,7 @@ export default defineConfig({
       ignored: ["**/src-tauri/**"],
     },
   },
-  clearScreen: false,
+  // clearScreen: false,
 
   envPrefix: ["VITE_", "TAURI_ENV_*"],
 });
