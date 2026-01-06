@@ -1,8 +1,11 @@
+import { toaster } from "@/components/Toaster";
 import useLogout from "@/hooks/useLogout";
 import { authQueryOptions } from "@/queries/auth.queries";
+import { generateRedirect } from "@/server/auth/generateRedirect";
 import { Button, Container, Paper, Stack, Typography } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 
 import { Suspense } from "react";
 
@@ -14,6 +17,32 @@ export const Route = createFileRoute("/login")({
 });
 
 function Component() {
+  const loginFn = useServerFn(generateRedirect);
+
+  const handleLogin = async () => {
+    try {
+      console.log("handle login called");
+
+      const { url } = await loginFn({
+        data: {
+          // @ts-ignore
+          isMobile: !!window.__TAURI__,
+        },
+      });
+
+      // @ts-ignore
+      if (window.__TAURI__) {
+        const { openUrl } = await import("@tauri-apps/plugin-opener");
+        return openUrl(url);
+      }
+    } catch (error) {
+      if (error instanceof Error)
+        toaster.error({
+          description: error.toString(),
+        });
+    }
+  };
+
   return (
     <Container
       sx={{
@@ -41,11 +70,7 @@ function Component() {
             discord account that you use for the team Discord server.
           </Typography>
           <Stack gap={2} direction="row" justifyContent="center">
-            <Button
-              variant="contained"
-              color="primary"
-              href="/api/auth/discord"
-            >
+            <Button variant="contained" color="primary" onClick={handleLogin}>
               Login
             </Button>
             <Suspense fallback={null}>

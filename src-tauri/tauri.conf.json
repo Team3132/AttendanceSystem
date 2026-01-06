@@ -4,9 +4,9 @@
 	"version": "0.1.0",
 	"identifier": "com.team3132.attendance",
 	"build": {
-		"frontendDist": "dist/client",
+		"frontendDist": "https://attendance.team3132.com",
 		"devUrl": "http://localhost:1420",
-		"beforeDevCommand": "bun dev",
+		"beforeDevCommand": "bun dev --force",
 		"beforeBuildCommand": "bun run build"
 	},
 	"app": {
@@ -27,7 +27,7 @@
 		"withGlobalTauri": true
 	},
 	"bundle": {
-		"active": true,
+		"active": false,
 		"targets": "all",
 		"icon": [
 			"icons/32x32.png",
@@ -45,7 +45,13 @@
 		"deep-link": {
 			"desktop": {
 				"schemes": ["attendance"]
-			}
+			},
+			"mobile": [
+				{
+					"scheme": ["attendance"],
+					"appLink": false
+				}
+			]
 		}
 	}
 }

@@ -1,5 +1,6 @@
 import Devtools from "@/components/Devtools";
 import GenericServerErrorBoundary from "@/components/GenericServerErrorBoundary";
+import { Toaster } from "@/components/Toaster";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 import fontsourceVariableRobotoCss from "@fontsource-variable/roboto?url";
@@ -24,6 +25,17 @@ export const Route = createRootRouteWithContext<{
 }>()({
   component: RootComponent,
   shellComponent: RootShell,
+  notFoundComponent: (data) => {
+    return (
+      <>
+        Not Found
+        <br />
+        <code>
+          <pre>{JSON.stringify(data, null, 2)}</pre>
+        </code>
+      </>
+    );
+  },
   head: () => ({
     meta: [
       {
@@ -122,6 +134,7 @@ function Providers({ children }: { children: React.ReactNode }) {
     <ThemeProviderWrapper>
       <LocalizationProvider adapterLocale={"en-au"} dateAdapter={AdapterLuxon}>
         {children}
+        <Toaster />
       </LocalizationProvider>
     </ThemeProviderWrapper>
   );
