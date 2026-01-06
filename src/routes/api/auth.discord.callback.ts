@@ -8,11 +8,7 @@ import { trytm } from "@/utils/trytm";
 import { API } from "@discordjs/core";
 import { REST } from "@discordjs/rest";
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  deleteCookie,
-  getCookie,
-  setCookie,
-} from "@tanstack/react-start/server";
+import { deleteCookie, getCookie } from "@tanstack/react-start/server";
 import { Discord } from "arctic";
 import { z } from "zod";
 
@@ -28,7 +24,7 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
         const { db, lucia } = context;
 
         const safeQuery = await querySchema.safeParseAsync(
-          new URL(request.url).searchParams.toJSON(),
+          Object.fromEntries(new URL(request.url).searchParams.entries()),
         );
 
         if (!safeQuery.success)
@@ -162,16 +158,17 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
         }
 
         const sessionCookie = lucia.createSessionCookie(session.id);
-        setCookie(
-          sessionCookie.name,
-          sessionCookie.value,
-          sessionCookie.attributes,
-        );
+
         consola
           .withTag("auth")
           .info(`User ${nick || username} (${id}) authenticated successfully`);
 
-        return Response.redirect(env.VITE_FRONTEND_URL, 302);
+        const headers = new Headers();
+
+        headers.append("Set-Cookie", sessionCookie.serialize());
+        headers.append("Location", env.VITE_FRONTEND_URL);
+
+        return new Response(null, { headers, status: 302 });
       },
     },
   },

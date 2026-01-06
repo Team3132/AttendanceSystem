@@ -20,6 +20,9 @@ const env = createEnv({
     DISCORD_CALLBACK_URL: z
       .string()
       .default("http://localhost:1420/api/auth/discord/callback"),
+    DISCORD_MOBILE_CALLBACK_URL: z
+      .string()
+      .default("attendance://attendance.team3132.com/api/auth/callback"),
     DISCORD_TOKEN: z.string().optional(),
     /**
      * Misc
@@ -44,6 +47,7 @@ const env = createEnv({
     DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
     DISCORD_PUBLIC_KEY: process.env.DISCORD_PUBLIC_KEY,
     DISCORD_CALLBACK_URL: process.env.DISCORD_CALLBACK_URL,
+    DISCORD_MOBILE_CALLBACK_URL: process.env.DISCORD_MOBILE_CALLBACK_URL,
     DISCORD_TOKEN: process.env.DISCORD_TOKEN,
     GUILD_ID: process.env.GUILD_ID,
     GOOGLE_CLIENT_EMAIL: process.env.GOOGLE_CLIENT_EMAIL,
