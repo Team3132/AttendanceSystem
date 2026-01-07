@@ -150,7 +150,7 @@ export const generateMessage = createServerOnlyFn(async (eventId: string) => {
         inline: true,
       },
     )
-    .setURL(`${env.VITE_FRONTEND_URL}/events/${eventData.id}`)
+    .setURL(`${env.VITE_URL}/events/${eventData.id}`)
     .setColor([49, 49, 96]);
 
   const messageComponent = new ActionRowBuilder<ButtonBuilder>().addComponents(

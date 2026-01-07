@@ -17,15 +17,23 @@ export const Route = createFileRoute("/api/auth/discord")({
         if (
           !env.DISCORD_CLIENT_ID ||
           !env.DISCORD_CLIENT_SECRET ||
-          !env.DISCORD_CALLBACK_URL
+          !env.VITE_URL
         ) {
           throw new Error("Login with Discord not configured!");
         }
 
+        const callbackUrl = new URL(env.VITE_URL);
+
+        callbackUrl.pathname = "/api/auth/discord/callback";
+
+        const deepCallbackUrl = new URL(env.VITE_URL);
+
+        deepCallbackUrl.pathname = "/api/auth/discord/deep-callback";
+
         const discord = new Discord(
           env.DISCORD_CLIENT_ID,
           env.DISCORD_CLIENT_SECRET,
-          isMobile ? env.DISCORD_DEEP_CALLBACK_URL : env.DISCORD_CALLBACK_URL,
+          isMobile ? deepCallbackUrl.toString() : callbackUrl.toString(),
         );
 
         const url = discord.createAuthorizationURL(state, codeVerifier, [

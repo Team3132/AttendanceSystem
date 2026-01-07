@@ -23,7 +23,7 @@ services:
       - DISCORD_TOKEN
       - DISCORD_PUBLIC_KEY
       - GUILD_ID
-      - VITE_FRONTEND_URL
+      - VITE_URL
       - GOOGLE_CLIENT_EMAIL
       - GOOGLE_PRIVATE_KEY
       - GOOGLE_CALENDAR_ID

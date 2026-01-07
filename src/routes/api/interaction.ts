@@ -192,7 +192,7 @@ export const Route = createFileRoute("/api/interaction")({
                 )
                 .setDescription(description)
                 .setTimestamp(new Date())
-                .setURL(`${env.VITE_FRONTEND_URL}/event/${rsvpEvent.id}`);
+                .setURL(`${env.VITE_URL}/event/${rsvpEvent.id}`);
 
               return reply({
                 flags: MessageFlags.Ephemeral,

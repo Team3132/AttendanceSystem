@@ -22,6 +22,9 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
     handlers: {
       GET: async ({ context, request }) => {
         const { db, lucia } = context;
+        const headers = new Headers();
+
+        headers.append("Location", env.VITE_URL);
 
         const safeQuery = await querySchema.safeParseAsync(
           Object.fromEntries(new URL(request.url).searchParams.entries()),
@@ -35,15 +38,19 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
         if (
           !env.DISCORD_CLIENT_ID ||
           !env.DISCORD_CLIENT_SECRET ||
-          !env.DISCORD_CALLBACK_URL
+          !env.VITE_URL
         ) {
           throw new Error("Login with Discord not configured!");
         }
 
+        const callbackUrl = new URL(env.VITE_URL);
+
+        callbackUrl.pathname = "/api/auth/discord/callback";
+
         const discord = new Discord(
           env.DISCORD_CLIENT_ID,
           env.DISCORD_CLIENT_SECRET,
-          env.DISCORD_CALLBACK_URL,
+          callbackUrl.pathname,
         );
 
         const discord_oauth_state = getCookie("discord_oauth_state");
@@ -58,7 +65,10 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
         deleteCookie("discord_oauth_code_verifier");
 
         if (discord_oauth_state !== state) {
-          return Response.redirect(env.VITE_FRONTEND_URL, 302);
+          return new Response(null, {
+            status: 302,
+            headers,
+          });
         }
 
         const [tokens, tokensError] = await trytm(
@@ -67,7 +77,10 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
 
         if (tokensError) {
           consola.error("Failed to validate authorization code", tokensError);
-          return Response.redirect(env.VITE_FRONTEND_URL, 302);
+          return new Response(null, {
+            status: 302,
+            headers,
+          });
         }
 
         const rest = new REST({ version: "10", authPrefix: "Bearer" }).setToken(
@@ -81,7 +94,10 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
         );
         if (guildsError) {
           consola.error("Failed to fetch user guilds", guildsError);
-          return Response.redirect(env.VITE_FRONTEND_URL, 302);
+          return new Response(null, {
+            status: 302,
+            headers,
+          });
         }
 
         const validGuild =
@@ -93,14 +109,20 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
             "User is not a member of the required guild",
             env.GUILD_ID,
           );
-          return Response.redirect(env.VITE_FRONTEND_URL, 302);
+          return new Response(null, {
+            status: 302,
+            headers,
+          });
         }
 
         const [meData, meError] = await trytm(api.users.get("@me"));
 
         if (meError) {
           consola.error("Failed to fetch user data", meError);
-          return Response.redirect(env.VITE_FRONTEND_URL, 302);
+          return new Response(null, {
+            status: 302,
+            headers,
+          });
         }
         const { id, username } = meData;
 
@@ -109,7 +131,10 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
         );
         if (guildMemberError) {
           consola.error("Failed to fetch guild member data", guildMemberError);
-          return Response.redirect(env.VITE_FRONTEND_URL, 302);
+          return new Response(null, {
+            status: 302,
+            headers,
+          });
         }
         const { roles, nick } = guildMemberData;
 
@@ -145,7 +170,10 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
             "Failed to update or insert user data",
             userUpdateError,
           );
-          return Response.redirect(env.VITE_FRONTEND_URL, 302);
+          return new Response(null, {
+            status: 302,
+            headers,
+          });
         }
 
         const [session, sessionError] = await trytm(
@@ -154,7 +182,10 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
 
         if (sessionError) {
           consola.error("Failed to create session", sessionError);
-          return Response.redirect(env.VITE_FRONTEND_URL, 302);
+          return new Response(null, {
+            status: 302,
+            headers,
+          });
         }
 
         const sessionCookie = lucia.createSessionCookie(session.id);
@@ -163,10 +194,7 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
           .withTag("auth")
           .info(`User ${nick || username} (${id}) authenticated successfully`);
 
-        const headers = new Headers();
-
         headers.append("Set-Cookie", sessionCookie.serialize());
-        headers.append("Location", env.VITE_FRONTEND_URL);
 
         return new Response(null, { headers, status: 302 });
       },

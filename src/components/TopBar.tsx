@@ -78,10 +78,7 @@ function ProfileMenu() {
 function LogoutMenuButton() {
   const logout = useLogout();
 
-  const logoutHandler = useCallback(
-    () => logout.mutate({ data: undefined }),
-    [logout.mutate],
-  );
+  const logoutHandler = useCallback(() => logout.mutate(), [logout.mutate]);
 
   return <MenuItem onClick={logoutHandler}>Logout</MenuItem>;
 }

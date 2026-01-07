@@ -17,12 +17,12 @@ const env = createEnv({
     DISCORD_CLIENT_ID: z.string().optional(),
     DISCORD_CLIENT_SECRET: z.string().optional(),
     DISCORD_PUBLIC_KEY: z.string().optional(),
-    DISCORD_CALLBACK_URL: z
-      .string()
-      .default("http://localhost:1420/api/auth/discord/callback"),
-    DISCORD_DEEP_CALLBACK_URL: z
-      .string()
-      .default("http://localhost:1420/api/auth/discord/deep-callback"),
+    // DISCORD_CALLBACK_URL: z
+    //   .string()
+    //   .default("http://localhost:1420/api/auth/discord/callback"),
+    // DISCORD_DEEP_CALLBACK_URL: z
+    //   .string()
+    //   .default("http://localhost:1420/api/auth/discord/deep-callback"),
     DEEPLINK_LOGIN_CALLBACK: z.string().default("attendance://login"),
     DISCORD_TOKEN: z.string().optional(),
     /**
@@ -47,8 +47,8 @@ const env = createEnv({
     DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
     DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
     DISCORD_PUBLIC_KEY: process.env.DISCORD_PUBLIC_KEY,
-    DISCORD_CALLBACK_URL: process.env.DISCORD_CALLBACK_URL,
-    DISCORD_DEEP_CALLBACK_URL: process.env.DISCORD_DEEP_CALLBACK_URL,
+    // DISCORD_CALLBACK_URL: process.env.DISCORD_CALLBACK_URL,
+    // DISCORD_DEEP_CALLBACK_URL: process.env.DISCORD_DEEP_CALLBACK_URL,
     DEEPLINK_LOGIN_CALLBACK: process.env.DEEPLINK_LOGIN_CALLBACK,
     DISCORD_TOKEN: process.env.DISCORD_TOKEN,
     GUILD_ID: process.env.GUILD_ID,
@@ -57,12 +57,11 @@ const env = createEnv({
     GOOGLE_CALENDAR_ID: process.env.GOOGLE_CALENDAR_ID,
     ADMIN_ROLE_ID: process.env.ADMIN_ROLE_ID,
     TSS_PRERENDERING: process.env.TSS_PRERENDERING,
-    VITE_FRONTEND_URL:
-      process.env.VITE_FRONTEND_URL ?? import.meta.env.VITE_FRONTEND_URL,
+    VITE_URL: process.env.VITE_URL ?? import.meta.env.VITE_URL,
   },
   clientPrefix: "VITE_",
   client: {
-    VITE_FRONTEND_URL: z.string().default("http://localhost:1420"),
+    VITE_URL: z.url().default("http://localhost:1420"),
   },
 });
 

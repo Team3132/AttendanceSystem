@@ -23,6 +23,10 @@ export const Route = createFileRoute("/api/auth/discord/deep-callback")({
       GET: async ({ context, request }) => {
         const { db, lucia } = context;
 
+        const headers = new Headers();
+
+        headers.set("Location", env.VITE_URL);
+
         const safeQuery = await querySchema.safeParseAsync(
           Object.fromEntries(new URL(request.url).searchParams.entries()),
         );
@@ -35,15 +39,19 @@ export const Route = createFileRoute("/api/auth/discord/deep-callback")({
         if (
           !env.DISCORD_CLIENT_ID ||
           !env.DISCORD_CLIENT_SECRET ||
-          !env.DISCORD_DEEP_CALLBACK_URL
+          !env.VITE_URL
         ) {
           throw new Error("Login with Discord not configured!");
         }
 
+        const callbackUrl = new URL(env.VITE_URL);
+
+        callbackUrl.pathname = "/api/auth/discord/deep-callback";
+
         const discord = new Discord(
           env.DISCORD_CLIENT_ID,
           env.DISCORD_CLIENT_SECRET,
-          env.DISCORD_DEEP_CALLBACK_URL,
+          callbackUrl.toString(),
         );
 
         const discord_oauth_state = getCookie("discord_oauth_state");
@@ -58,7 +66,10 @@ export const Route = createFileRoute("/api/auth/discord/deep-callback")({
         deleteCookie("discord_oauth_code_verifier");
 
         if (discord_oauth_state !== state) {
-          return Response.redirect(env.VITE_FRONTEND_URL, 302);
+          return new Response(null, {
+            headers,
+            status: 302,
+          });
         }
 
         const [tokens, tokensError] = await trytm(
@@ -67,7 +78,10 @@ export const Route = createFileRoute("/api/auth/discord/deep-callback")({
 
         if (tokensError) {
           consola.error("Failed to validate authorization code", tokensError);
-          return Response.redirect(env.VITE_FRONTEND_URL, 302);
+          return new Response(null, {
+            headers,
+            status: 302,
+          });
         }
 
         const rest = new REST({ version: "10", authPrefix: "Bearer" }).setToken(
@@ -81,7 +95,10 @@ export const Route = createFileRoute("/api/auth/discord/deep-callback")({
         );
         if (guildsError) {
           consola.error("Failed to fetch user guilds", guildsError);
-          return Response.redirect(env.VITE_FRONTEND_URL, 302);
+          return new Response(null, {
+            headers,
+            status: 302,
+          });
         }
 
         const validGuild =
@@ -93,14 +110,20 @@ export const Route = createFileRoute("/api/auth/discord/deep-callback")({
             "User is not a member of the required guild",
             env.GUILD_ID,
           );
-          return Response.redirect(env.VITE_FRONTEND_URL, 302);
+          return new Response(null, {
+            headers,
+            status: 302,
+          });
         }
 
         const [meData, meError] = await trytm(api.users.get("@me"));
 
         if (meError) {
           consola.error("Failed to fetch user data", meError);
-          return Response.redirect(env.VITE_FRONTEND_URL, 302);
+          return new Response(null, {
+            headers,
+            status: 302,
+          });
         }
         const { id, username } = meData;
 
@@ -109,7 +132,10 @@ export const Route = createFileRoute("/api/auth/discord/deep-callback")({
         );
         if (guildMemberError) {
           consola.error("Failed to fetch guild member data", guildMemberError);
-          return Response.redirect(env.VITE_FRONTEND_URL, 302);
+          return new Response(null, {
+            headers,
+            status: 302,
+          });
         }
         const { roles, nick } = guildMemberData;
 
@@ -145,7 +171,10 @@ export const Route = createFileRoute("/api/auth/discord/deep-callback")({
             "Failed to update or insert user data",
             userUpdateError,
           );
-          return Response.redirect(env.VITE_FRONTEND_URL, 302);
+          return new Response(null, {
+            headers,
+            status: 302,
+          });
         }
 
         const [session, sessionError] = await trytm(
@@ -154,7 +183,10 @@ export const Route = createFileRoute("/api/auth/discord/deep-callback")({
 
         if (sessionError) {
           consola.error("Failed to create session", sessionError);
-          return Response.redirect(env.VITE_FRONTEND_URL, 302);
+          return new Response(null, {
+            headers,
+            status: 302,
+          });
         }
 
         consola
@@ -164,8 +196,6 @@ export const Route = createFileRoute("/api/auth/discord/deep-callback")({
         const url = new URL(env.DEEPLINK_LOGIN_CALLBACK);
 
         url.searchParams.set("sessionId", session.id);
-
-        const headers = new Headers();
 
         headers.set("Location", url.toString());
 

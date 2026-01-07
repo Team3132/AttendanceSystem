@@ -58,7 +58,6 @@ export const authBaseMiddleware = createMiddleware({
   })
   .server(async ({ next, context: { lucia } }) => {
     const authorizationHeader = getRequestHeader("Authorization");
-    console.log({ authorizationHeader });
     // Get the bearer token session
     const sessionIdAuthorization = lucia.readBearerToken(
       authorizationHeader ?? "",
