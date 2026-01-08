@@ -7,6 +7,13 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";
 
 export const Route = createFileRoute("/login")({
+  head: () => ({
+    meta: [
+      {
+        title: "Login",
+      },
+    ],
+  }),
   loader: ({ context: { queryClient } }) => {
     queryClient.prefetchQuery(authQueryOptions.status());
   },
