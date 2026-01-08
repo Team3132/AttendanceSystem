@@ -152,7 +152,7 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
           "username",
         ];
 
-        const [createdUserResult, userUpdateError] = await trytm(
+        const [_createdUserResult, userUpdateError] = await trytm(
           db
             .insert(userTable)
             .values({
@@ -182,12 +182,10 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
           });
         }
 
-        const [user] = createdUserResult;
-
         const sessionToken = generateSessionToken();
 
         const [session, sessionError] = await trytm(
-          createSession(sessionToken, user.id),
+          createSession(sessionToken, id),
         );
 
         if (sessionError) {
