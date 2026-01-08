@@ -56,6 +56,7 @@ export const getCurrentSession = createServerOnlyFn(
 
     if (token) {
       const result = await validateSessionToken(token);
+
       return result;
     }
 
