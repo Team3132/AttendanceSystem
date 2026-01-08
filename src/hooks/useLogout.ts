@@ -1,37 +1,40 @@
 import { authBaseMiddleware } from "@/middleware/authMiddleware";
+import {
+  deleteSessionTokenCookie,
+  getCurrentSession,
+  invalidateSession,
+} from "@/server/auth/session";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
-import { setResponseHeader } from "@tanstack/react-start/server";
+import { redirect, useNavigate } from "@tanstack/react-router";
+import { createServerFn, useServerFn } from "@tanstack/react-start";
 
 const logoutFn = createServerFn({
   method: "POST",
 })
   .middleware([authBaseMiddleware])
-  .handler(async ({ context: { session, lucia } }) => {
-    if (session) {
-      await lucia.invalidateSession(session.id);
-      // Clear the session cookie
-      const blankCookie = lucia.createBlankSessionCookie();
-      setResponseHeader("Set-Cookie", blankCookie.serialize());
+  .handler(async () => {
+    const { session } = await getCurrentSession();
 
-      // throw redirect({
-      //   to: "/login",
-      // });
-      return { success: true };
+    if (session === null) {
+      throw new Error("Not authenticated");
     }
 
-    return { success: false };
+    await invalidateSession(session.id);
+
+    deleteSessionTokenCookie();
+
+    throw redirect({
+      to: "/login",
+    });
   });
 
 export default function useLogout() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const logout = useServerFn(logoutFn);
 
   return useMutation({
-    mutationFn: async () => {
-      await logoutFn();
-    },
+    mutationFn: () => logout(),
     onSuccess: () => {
       queryClient.clear();
       navigate({

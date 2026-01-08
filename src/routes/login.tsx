@@ -1,9 +1,8 @@
-import { toaster } from "@/components/Toaster";
 import useLogout from "@/hooks/useLogout";
 import { authQueryOptions } from "@/queries/auth.queries";
 import { Button, Container, Paper, Stack, Typography } from "@mui/material";
-import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
 
 import { Suspense } from "react";
 
@@ -77,34 +76,8 @@ function LogoutButton() {
 }
 
 function LoginButton() {
-  const queryClient = useQueryClient();
-  const navigate = Route.useNavigate();
-
-  const handleLogin = async () => {
-    try {
-      const authStatus = await queryClient.ensureQueryData(
-        authQueryOptions.status(),
-      );
-      if (authStatus.isAuthenticated)
-        navigate({
-          to: "/",
-        });
-
-      console.log("handle login called");
-
-      throw redirect({
-        to: "/api/auth/discord",
-      });
-    } catch (error) {
-      if (error instanceof Error)
-        toaster.error({
-          description: error.toString(),
-        });
-    }
-  };
-
   return (
-    <Button variant="contained" color="primary" onClick={handleLogin}>
+    <Button variant="contained" color="primary" href="/api/auth/discord">
       Login
     </Button>
   );

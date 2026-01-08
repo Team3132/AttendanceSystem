@@ -1,3 +1,8 @@
+import {
+  createSession,
+  generateSessionToken,
+  setSessionTokenCookie,
+} from "@/server/auth/session";
 import { userTable } from "@/server/drizzle/schema";
 import env from "@/server/env";
 import { consola } from "@/server/logger";
@@ -21,10 +26,10 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
   server: {
     handlers: {
       GET: async ({ context, request }) => {
-        const { db, lucia } = context;
-        const headers = new Headers();
-
-        headers.append("Location", env.VITE_URL);
+        const { db } = context;
+        const headers = new Headers({
+          Location: env.VITE_URL,
+        });
 
         const safeQuery = await querySchema.safeParseAsync(
           Object.fromEntries(new URL(request.url).searchParams.entries()),
@@ -50,7 +55,7 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
         const discord = new Discord(
           env.DISCORD_CLIENT_ID,
           env.DISCORD_CLIENT_SECRET,
-          callbackUrl.pathname,
+          callbackUrl.toString(),
         );
 
         const discord_oauth_state = getCookie("discord_oauth_state");
@@ -76,6 +81,7 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
         );
 
         if (tokensError) {
+          console.log(tokensError);
           consola.error("Failed to validate authorization code", tokensError);
           return new Response(null, {
             status: 302,
@@ -100,9 +106,9 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
           });
         }
 
-        const validGuild =
-          discordUserGuilds.findIndex((guild) => guild.id === env.GUILD_ID) !==
-          -1;
+        const validGuild = discordUserGuilds.some(
+          (guild) => guild.id === env.GUILD_ID,
+        );
 
         if (!validGuild) {
           consola.error(
@@ -146,7 +152,7 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
           "username",
         ];
 
-        const [_authedUserData, userUpdateError] = await trytm(
+        const [createdUserResult, userUpdateError] = await trytm(
           db
             .insert(userTable)
             .values({
@@ -176,8 +182,12 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
           });
         }
 
+        const [user] = createdUserResult;
+
+        const sessionToken = generateSessionToken();
+
         const [session, sessionError] = await trytm(
-          lucia.createSession(id, {}),
+          createSession(sessionToken, user.id),
         );
 
         if (sessionError) {
@@ -188,13 +198,11 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
           });
         }
 
-        const sessionCookie = lucia.createSessionCookie(session.id);
+        setSessionTokenCookie(sessionToken, session.expiresAt);
 
         consola
           .withTag("auth")
           .info(`User ${nick || username} (${id}) authenticated successfully`);
-
-        headers.append("Set-Cookie", sessionCookie.serialize());
 
         return new Response(null, { headers, status: 302 });
       },

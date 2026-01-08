@@ -71,9 +71,17 @@ export const sessionTable = pgTable("session", {
   }).notNull(),
 });
 
+export const sessionTableRelations = relations(sessionTable, ({ one }) => ({
+  user: one(userTable, {
+    fields: [sessionTable.userId],
+    references: [userTable.id],
+  }),
+}));
+
 export const userTableRelations = relations(userTable, ({ many }) => ({
   rsvps: many(rsvpTable),
   scancodes: many(scancodeTable),
+  sessions: many(sessionTable),
 }));
 
 export const rsvpTable = pgTable(
@@ -264,3 +272,7 @@ export const eventParsingRuleTableRelations = relations(
     }),
   }),
 );
+
+export type User = typeof userTable.$inferSelect;
+
+export type Session = typeof sessionTable.$inferSelect;

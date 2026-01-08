@@ -7,9 +7,6 @@ export const Route = createFileRoute("/api/auth/discord")({
   server: {
     handlers: {
       GET: async () => {
-        const state = generateState();
-        const codeVerifier = generateCodeVerifier();
-
         if (
           !env.DISCORD_CLIENT_ID ||
           !env.DISCORD_CLIENT_SECRET ||
@@ -17,6 +14,9 @@ export const Route = createFileRoute("/api/auth/discord")({
         ) {
           throw new Error("Login with Discord not configured!");
         }
+
+        const state = generateState();
+        const codeVerifier = generateCodeVerifier();
 
         const callbackUrl = new URL(env.VITE_URL);
 

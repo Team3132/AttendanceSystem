@@ -1,16 +1,13 @@
 import { createPubSub } from "@graphql-yoga/subscription";
-import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
 import { type Register, createServerOnlyFn } from "@tanstack/react-start";
 import type { RequestOptions } from "@tanstack/react-start/server";
 import handler from "@tanstack/react-start/server-entry";
 import type { Server } from "bun";
 import { Cron, scheduledJobs } from "croner";
-import { Lucia, type RegisteredLucia } from "lucia";
 import { DateTime } from "luxon";
 import type z from "zod";
 import { type DB, initialiseDatabase } from "./server/drizzle/db";
 import { getKV } from "./server/drizzle/kv";
-import * as schema from "./server/drizzle/schema";
 import env from "./server/env";
 import type { RSVPStatusSchema } from "./server/schema";
 import { reminderFn } from "./server/services/adminService";
@@ -65,45 +62,11 @@ async function restoreCron() {
 
 if (!env.TSS_PRERENDERING) await restoreCron();
 
-const adapter = new DrizzlePostgreSQLAdapter(
-  db,
-  schema.sessionTable,
-  schema.userTable,
-); // your adapter
-
-type DatabaseUser = typeof schema.userTable.$inferSelect;
-
-const lucia = new Lucia(adapter, {
-  sessionCookie: {
-    name: "l-session",
-    attributes: {
-      // set to `true` when using HTTPS
-      secure: process.env.NODE_ENV === "production",
-    },
-  },
-  getUserAttributes: (attributes) => ({
-    username: attributes.username,
-    createdAt: attributes.createdAt,
-    updatedAt: attributes.updatedAt,
-    roles: attributes.roles,
-    defaultStatus: attributes.defaultStatus,
-  }),
-});
-
-// IMPORTANT!
-declare module "lucia" {
-  interface Register {
-    Lucia: typeof lucia;
-    DatabaseUserAttributes: Omit<DatabaseUser, "id">;
-  }
-}
-
 type MyRequestContext = {
   server: Server<undefined>;
   pubSub: typeof pubSub;
   db: DB;
   kv: ReturnType<typeof getKV>;
-  lucia: RegisteredLucia;
 };
 
 // This needs to be tanstack router, currently incorrect
@@ -126,7 +89,6 @@ export default {
       ...opts?.context,
       pubSub,
       db,
-      lucia,
       kv,
     } satisfies MyRequestContext;
 

@@ -20,15 +20,14 @@ const logger = consola.withTag("db"); // Create a logger instance with "db" tag
  */
 export const initialiseDatabase = createServerOnlyFn(async (): Promise<DB> => {
   const databaseUrl = new URL(env.DATABASE_URL);
-  const { protocol: databaseProtocol } = databaseUrl;
+  const { protocol } = databaseUrl;
   const connectionString = databaseUrl.toString();
 
-  const isPGLite =
-    databaseProtocol === "file:" || databaseProtocol === "memory:";
+  const isPGLite = protocol === "file:" || protocol === "memory:";
 
-  const humanProtocol = databaseProtocol.slice(0, -1);
+  const humanProtocol = protocol.slice(0, -1);
 
-  logger.info(`Using ${humanProtocol} database.`);
+  logger.info(`Using ${humanProtocol} database`);
 
   return isPGLite
     ? await initPGLiteDatabase(connectionString)
