@@ -54,10 +54,6 @@ export const getCurrentSession = createServerOnlyFn(
     const token = getCookie("session");
     const authorizationHeader = getRequestHeader("Authorization");
 
-    if (token === undefined && authorizationHeader === undefined) {
-      return { session: null, user: null };
-    }
-
     if (token) {
       const result = await validateSessionToken(token);
       return result;
