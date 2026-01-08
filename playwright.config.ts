@@ -18,7 +18,7 @@ export default defineConfig({
   },
 
   webServer: {
-    command: `NODE_ENV="test" bun run build --mode test && NODE_ENV="test" bun run start`,
+    command: `bun run build --mode test && NODE_ENV="test" bun run start`,
     url: baseURL,
     reuseExistingServer: !process.env.CI,
     stdout: "pipe",

@@ -11,6 +11,9 @@ export default defineConfig({
   build: {
     sourcemap: true,
   },
+  server: {
+    port: 1420,
+  },
   plugins: [
     viteTsconfigPaths(),
     tanstackStart({
@@ -54,7 +57,4 @@ export default defineConfig({
       },
     }),
   ],
-  server: {
-    port: 1420,
-  },
 });

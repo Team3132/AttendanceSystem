@@ -26,6 +26,10 @@ export const initialiseDatabase = createServerOnlyFn(async (): Promise<DB> => {
   const isPGLite =
     databaseProtocol === "file:" || databaseProtocol === "memory:";
 
+  const humanProtocol = databaseProtocol.slice(0, -1);
+
+  logger.info(`Using ${humanProtocol} database.`);
+
   return isPGLite
     ? await initPGLiteDatabase(connectionString)
     : await initPostgresDatabase(connectionString);
@@ -44,7 +48,7 @@ async function initPostgresDatabase(databaseUrl: string) {
   const { drizzle } = await import("drizzle-orm/postgres-js");
   const { migrate } = await import("drizzle-orm/postgres-js/migrator");
   const schema = await import("./schema"); // Import the database schema
-  const migrationPath = path.resolve("./drizzle"); // Path to migration files, SQL and metadata
+  const migrationsFolder = path.resolve("./drizzle"); // Path to migration files, SQL and metadata
 
   /** The PostgresJS client used for migrations */
   const migrationClient = postgres(env.DATABASE_URL, {
@@ -57,7 +61,7 @@ async function initPostgresDatabase(databaseUrl: string) {
     client: migrationClient,
   });
 
-  await migrate(migrationDrizzle, { migrationsFolder: migrationPath }); // Finally run migrations
+  await migrate(migrationDrizzle, { migrationsFolder }); // Finally run migrations
 
   await migrationClient.end(); // Close migration client
 
@@ -88,7 +92,7 @@ async function initPGLiteDatabase(databaseUrl: string) {
   const { migrate } = await import("drizzle-orm/pglite/migrator");
   const { PGlite } = await import("@electric-sql/pglite");
   const schema = await import("./schema"); // Import the database schema
-  const migrationPath = path.resolve("./drizzle"); // Path to migration files, SQL and metadata
+  const migrationsFolder = path.resolve("./drizzle"); // Path to migration files, SQL and metadata
 
   /** The PGLite client instance */
   const client = new PGlite(databaseUrl); // Create the pglite client
@@ -99,7 +103,7 @@ async function initPGLiteDatabase(databaseUrl: string) {
     client,
   });
 
-  await migrate(db, { migrationsFolder: migrationPath }); // Run migrations
+  await migrate(db, { migrationsFolder }); // Run migrations
 
   logger.success("Database migrations completed successfully");
 

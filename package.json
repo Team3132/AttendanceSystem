@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "build:test": "vite build --mode test",
-    "start": "PORT=1420 bun run server.ts",
+    "start": "PORT=1420 ASSET_PRELOAD_EXCLUDE_PATTERNS=\"*.map\" bun run server.ts",
     "check": "biome check ./src",
     "typecheck": "tsc --noEmit",
     "knip": "knip-bun --config knip.json",
