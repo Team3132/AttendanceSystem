@@ -6,13 +6,9 @@ import { serialize } from "cookie-es";
 export const Route = createFileRoute("/api/auth/discord")({
   server: {
     handlers: {
-      GET: async ({ request }) => {
+      GET: async () => {
         const state = generateState();
         const codeVerifier = generateCodeVerifier();
-        const isMobile =
-          new URL(request.url).searchParams.get("isMobile") === "true";
-
-        console.log("isMobile", isMobile);
 
         if (
           !env.DISCORD_CLIENT_ID ||
@@ -26,14 +22,10 @@ export const Route = createFileRoute("/api/auth/discord")({
 
         callbackUrl.pathname = "/api/auth/discord/callback";
 
-        const deepCallbackUrl = new URL(env.VITE_URL);
-
-        deepCallbackUrl.pathname = "/api/auth/discord/deep-callback";
-
         const discord = new Discord(
           env.DISCORD_CLIENT_ID,
           env.DISCORD_CLIENT_SECRET,
-          isMobile ? deepCallbackUrl.toString() : callbackUrl.toString(),
+          callbackUrl.toString(),
         );
 
         const url = discord.createAuthorizationURL(state, codeVerifier, [

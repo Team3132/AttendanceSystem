@@ -7,18 +7,9 @@ const ReactCompilerConfig = {
   target: "19",
 };
 
-const host = process.env.TAURI_DEV_HOST;
-
 export default defineConfig({
-  clearScreen: false,
   build: {
-    // Tauri uses Chromium on Windows and WebKit on macOS and Linux
-    target:
-      process.env.TAURI_ENV_PLATFORM === "windows" ? "chrome105" : "safari13",
-    // don't minify for debug builds
-    minify: !process.env.TAURI_ENV_DEBUG ? "esbuild" : false,
-    // produce sourcemaps for debug builds
-    sourcemap: !!process.env.TAURI_ENV_DEBUG,
+    sourcemap: true,
   },
   plugins: [
     viteTsconfigPaths(),
@@ -64,22 +55,6 @@ export default defineConfig({
     }),
   ],
   server: {
-    host: host || false,
-    strictPort: true,
     port: 1420,
-    hmr: host
-      ? {
-          protocol: "ws",
-          host,
-          port: 1421,
-        }
-      : undefined,
-    watch: {
-      // tell vite to ignore watching `src-tauri`
-      ignored: ["**/src-tauri/**"],
-    },
   },
-  // clearScreen: false,
-
-  envPrefix: ["VITE_", "TAURI_ENV_*"],
 });

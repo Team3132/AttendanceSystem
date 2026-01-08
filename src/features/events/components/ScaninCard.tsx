@@ -95,10 +95,6 @@ export default function ScaninCard(props: ScaninCardProps) {
             label="Code"
             helperText={"Enter a code to scan in"}
           />
-          {/* @ts-ignore */}
-          {/* {window?.__TAURI__ ? (
-            <TauriScanButton codeCallback={console.log} />
-          ) : null} */}
           <Button
             type="submit"
             variant="contained"
@@ -119,16 +115,3 @@ export default function ScaninCard(props: ScaninCardProps) {
     </PaddedPaper>
   );
 }
-
-// function TauriScanButton(props: { codeCallback: (code: string) => void }) {
-//   const { codeCallback } = props;
-
-//   const handleScan = useCallback(async () => {
-//     // @ts-ignore
-//     const { scan, Format } = window.__TAURI__.barcodeScanner;
-//     const result = await scan({ windowed: true, formats: [Format.EAN13] });
-//     codeCallback(result.content);
-//   }, [codeCallback]);
-
-//   return <Button onClick={handleScan}>Scan</Button>;
-// }

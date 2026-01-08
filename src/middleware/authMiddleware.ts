@@ -34,26 +34,6 @@ export const authBaseMiddleware = createMiddleware({
   type: "function",
 })
   .client(async ({ next }) => {
-    console.log("Triggered1");
-    // @ts-ignore
-    if (typeof window !== "undefined" && window?.__TAURI__) {
-      console.log("Triggered2");
-      const { Store } = await import("@tauri-apps/plugin-store");
-      const store = await Store.load("store.json");
-
-      const storeSesionId = await store.get<string>("sessionId");
-
-      console.log({ storeSesionId });
-
-      if (!storeSesionId) return next();
-
-      return next({
-        headers: {
-          Authorization: `Bearer ${storeSesionId}`,
-        },
-      });
-    }
-
     return next();
   })
   .server(async ({ next, context: { lucia } }) => {

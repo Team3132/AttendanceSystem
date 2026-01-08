@@ -31,15 +31,6 @@ export default function useLogout() {
   return useMutation({
     mutationFn: async () => {
       await logoutFn();
-      // @ts-ignore
-      if (typeof window !== "undefined" && window?.__TAURI__) {
-        const { Store } = await import("@tauri-apps/plugin-store");
-        const store = await Store.load("store.json");
-
-        await store.delete("sessionId");
-
-        await store.save();
-      }
     },
     onSuccess: () => {
       queryClient.clear();

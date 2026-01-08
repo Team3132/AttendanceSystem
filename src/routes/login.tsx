@@ -1,7 +1,6 @@
 import { toaster } from "@/components/Toaster";
 import useLogout from "@/hooks/useLogout";
 import { authQueryOptions } from "@/queries/auth.queries";
-import env from "@/server/env";
 import { Button, Container, Paper, Stack, Typography } from "@mui/material";
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, redirect } from "@tanstack/react-router";
@@ -92,42 +91,6 @@ function LoginButton() {
         });
 
       console.log("handle login called");
-
-      toaster.info({ description: "test" });
-
-      // @ts-ignore
-      if (window?.__TAURI__) {
-        const { openUrl } = await import("@tauri-apps/plugin-opener");
-        const { onOpenUrl } = await import("@tauri-apps/plugin-deep-link");
-        await openUrl(`${env.VITE_URL}/api/auth/discord?isMobile=true`);
-
-        await onOpenUrl(async (urls) => {
-          for (const url of urls) {
-            const deepLinkURL = new URL(url);
-
-            console.log({
-              protocol: deepLinkURL.protocol,
-              host: deepLinkURL.host,
-            });
-
-            if (
-              deepLinkURL.protocol === "attendance:" &&
-              deepLinkURL.host === "login"
-            ) {
-              const { Store } = await import("@tauri-apps/plugin-store");
-              const store = await Store.load("store.json");
-
-              const sessionId = deepLinkURL.searchParams.get("sessionId");
-
-              await store.set("sessionId", sessionId);
-
-              await store.save();
-
-              window.location.href = "/";
-            }
-          }
-        });
-      }
 
       throw redirect({
         to: "/api/auth/discord",
