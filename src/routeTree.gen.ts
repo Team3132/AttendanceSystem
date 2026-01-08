@@ -27,7 +27,6 @@ import { Route as AuthenticatedEventsEventIdIndexRouteImport } from './routes/_a
 import { Route as AuthenticatedAdminUsersIndexRouteImport } from './routes/_authenticated/admin_/users/index'
 import { Route as AuthenticatedAdminEventParsingIndexRouteImport } from './routes/_authenticated/admin_/event-parsing/index'
 import { Route as ApiSchedulerCalendarTriggerRouteImport } from './routes/api/scheduler.calendar.trigger'
-import { Route as ApiAuthDiscordDeepCallbackRouteImport } from './routes/api/auth.discord.deep-callback'
 import { Route as ApiAuthDiscordCallbackRouteImport } from './routes/api/auth.discord.callback'
 import { Route as AuthenticatedEventsEventIdQrCodeRouteImport } from './routes/_authenticated/events/$eventId/qr-code'
 import { Route as AuthenticatedEventsEventIdCheckInRouteImport } from './routes/_authenticated/events/$eventId/check-in'
@@ -136,12 +135,6 @@ const ApiSchedulerCalendarTriggerRoute =
     path: '/api/scheduler/calendar/trigger',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiAuthDiscordDeepCallbackRoute =
-  ApiAuthDiscordDeepCallbackRouteImport.update({
-    id: '/deep-callback',
-    path: '/deep-callback',
-    getParentRoute: () => ApiAuthDiscordRoute,
-  } as any)
 const ApiAuthDiscordCallbackRoute = ApiAuthDiscordCallbackRouteImport.update({
   id: '/callback',
   path: '/callback',
@@ -216,7 +209,6 @@ export interface FileRoutesByFullPath {
   '/events/$eventId/check-in': typeof AuthenticatedEventsEventIdCheckInRoute
   '/events/$eventId/qr-code': typeof AuthenticatedEventsEventIdQrCodeRoute
   '/api/auth/discord/callback': typeof ApiAuthDiscordCallbackRoute
-  '/api/auth/discord/deep-callback': typeof ApiAuthDiscordDeepCallbackRoute
   '/api/scheduler/calendar/trigger': typeof ApiSchedulerCalendarTriggerRoute
   '/admin/event-parsing': typeof AuthenticatedAdminEventParsingIndexRoute
   '/admin/users': typeof AuthenticatedAdminUsersIndexRoute
@@ -241,7 +233,6 @@ export interface FileRoutesByTo {
   '/events/$eventId/check-in': typeof AuthenticatedEventsEventIdCheckInRoute
   '/events/$eventId/qr-code': typeof AuthenticatedEventsEventIdQrCodeRoute
   '/api/auth/discord/callback': typeof ApiAuthDiscordCallbackRoute
-  '/api/auth/discord/deep-callback': typeof ApiAuthDiscordDeepCallbackRoute
   '/api/scheduler/calendar/trigger': typeof ApiSchedulerCalendarTriggerRoute
   '/admin/event-parsing': typeof AuthenticatedAdminEventParsingIndexRoute
   '/admin/users': typeof AuthenticatedAdminUsersIndexRoute
@@ -272,7 +263,6 @@ export interface FileRoutesById {
   '/_authenticated/events/$eventId/check-in': typeof AuthenticatedEventsEventIdCheckInRoute
   '/_authenticated/events/$eventId/qr-code': typeof AuthenticatedEventsEventIdQrCodeRoute
   '/api/auth/discord/callback': typeof ApiAuthDiscordCallbackRoute
-  '/api/auth/discord/deep-callback': typeof ApiAuthDiscordDeepCallbackRoute
   '/api/scheduler/calendar/trigger': typeof ApiSchedulerCalendarTriggerRoute
   '/_authenticated/admin_/event-parsing/': typeof AuthenticatedAdminEventParsingIndexRoute
   '/_authenticated/admin_/users/': typeof AuthenticatedAdminUsersIndexRoute
@@ -303,7 +293,6 @@ export interface FileRouteTypes {
     | '/events/$eventId/check-in'
     | '/events/$eventId/qr-code'
     | '/api/auth/discord/callback'
-    | '/api/auth/discord/deep-callback'
     | '/api/scheduler/calendar/trigger'
     | '/admin/event-parsing'
     | '/admin/users'
@@ -328,7 +317,6 @@ export interface FileRouteTypes {
     | '/events/$eventId/check-in'
     | '/events/$eventId/qr-code'
     | '/api/auth/discord/callback'
-    | '/api/auth/discord/deep-callback'
     | '/api/scheduler/calendar/trigger'
     | '/admin/event-parsing'
     | '/admin/users'
@@ -358,7 +346,6 @@ export interface FileRouteTypes {
     | '/_authenticated/events/$eventId/check-in'
     | '/_authenticated/events/$eventId/qr-code'
     | '/api/auth/discord/callback'
-    | '/api/auth/discord/deep-callback'
     | '/api/scheduler/calendar/trigger'
     | '/_authenticated/admin_/event-parsing/'
     | '/_authenticated/admin_/users/'
@@ -504,13 +491,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/api/scheduler/calendar/trigger'
       preLoaderRoute: typeof ApiSchedulerCalendarTriggerRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/api/auth/discord/deep-callback': {
-      id: '/api/auth/discord/deep-callback'
-      path: '/deep-callback'
-      fullPath: '/api/auth/discord/deep-callback'
-      preLoaderRoute: typeof ApiAuthDiscordDeepCallbackRouteImport
-      parentRoute: typeof ApiAuthDiscordRoute
     }
     '/api/auth/discord/callback': {
       id: '/api/auth/discord/callback'
@@ -681,12 +661,10 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 
 interface ApiAuthDiscordRouteChildren {
   ApiAuthDiscordCallbackRoute: typeof ApiAuthDiscordCallbackRoute
-  ApiAuthDiscordDeepCallbackRoute: typeof ApiAuthDiscordDeepCallbackRoute
 }
 
 const ApiAuthDiscordRouteChildren: ApiAuthDiscordRouteChildren = {
   ApiAuthDiscordCallbackRoute: ApiAuthDiscordCallbackRoute,
-  ApiAuthDiscordDeepCallbackRoute: ApiAuthDiscordDeepCallbackRoute,
 }
 
 const ApiAuthDiscordRouteWithChildren = ApiAuthDiscordRoute._addFileChildren(

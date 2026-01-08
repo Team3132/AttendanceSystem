@@ -1,10 +1,11 @@
-import { mkdir } from "node:fs/promises";
 import path from "node:path";
 import { createServerOnlyFn } from "@tanstack/react-start";
 import type { PgliteDatabase } from "drizzle-orm/pglite";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import env from "../env";
 import { consola } from "../logger";
+
+const logger = consola.withTag("db"); // Create a logger instance with "db" tag
 
 /**
  * Instantiate a PostgreSQL or PGlite database connection using Drizzle ORM.
@@ -17,51 +18,40 @@ import { consola } from "../logger";
  *
  * @returns A Drizzle ORM database instance connected to the appropriate database.
  */
-export const getDB = createServerOnlyFn(async (): Promise<DB> => {
-  const logger = consola.withTag("db"); // Create a logger instance with "db" tag
-  const schema = await import("./schema"); // Import the database schema
-  const migrationPath = path.resolve("./drizzle"); // Path to migration files, SQL and metadata
-  if (import.meta.env.DEV || env.TSS_PRERENDERING) {
-    logger.warn("Using PGlite database in development mode");
+export const initialiseDatabase = createServerOnlyFn(async (): Promise<DB> => {
+  const databaseUrl = new URL(env.DATABASE_URL);
+  const { protocol: databaseProtocol } = databaseUrl;
+  const connectionString = databaseUrl.toString();
 
-    const { drizzle } = await import("drizzle-orm/pglite");
-    const { migrate } = await import("drizzle-orm/pglite/migrator");
-    const { PGlite } = await import("@electric-sql/pglite");
+  const isPGLite =
+    databaseProtocol === "file:" || databaseProtocol === "memory:";
 
-    const databaseDir = path.resolve("./data"); // Directory for the pglite database files
+  return isPGLite
+    ? await initPGLiteDatabase(connectionString)
+    : await initPostgresDatabase(connectionString);
+});
 
-    logger.info(`Ensuring database directory exists at ${databaseDir}`);
-
-    // Ensure the database directory exists
-    await mkdir(databaseDir, {
-      recursive: true,
-    });
-
-    const client = new PGlite(databaseDir); // Create the pglite client
-
-    // Create the drizzle instance
-    const db = drizzle({
-      schema,
-      client,
-    });
-
-    await migrate(db, { migrationsFolder: migrationPath }); // Run migrations
-
-    logger.success("Database migrations completed successfully");
-
-    return db;
-  }
-
+/**
+ * Initialise the Postgres Drizzle ORM
+ *
+ * Performs the required migrations and then returns the Drizzle ORM
+ * instance.
+ *
+ * @returns Drizzle ORM instance backed by PostgresJS
+ */
+async function initPostgresDatabase(databaseUrl: string) {
   const { default: postgres } = await import("postgres");
   const { drizzle } = await import("drizzle-orm/postgres-js");
   const { migrate } = await import("drizzle-orm/postgres-js/migrator");
+  const schema = await import("./schema"); // Import the database schema
+  const migrationPath = path.resolve("./drizzle"); // Path to migration files, SQL and metadata
 
-  // Make a separate postgres client for migrations to avoid pooling migrations and breaking things
+  /** The PostgresJS client used for migrations */
   const migrationClient = postgres(env.DATABASE_URL, {
     max: 1,
   });
 
-  // Make the drizzle instance for migrations
+  /** The Postgres Migration Client backed Drizzle client  */
   const migrationDrizzle = drizzle({
     schema,
     client: migrationClient,
@@ -73,16 +63,48 @@ export const getDB = createServerOnlyFn(async (): Promise<DB> => {
 
   logger.success("Database migrations completed successfully");
 
-  const client = postgres(env.DATABASE_URL); // Make the main postgres client
+  /** The PostgresJS client used for the database. */
+  const client = postgres(databaseUrl);
 
-  // Make the main drizzle instance
+  /** The Postgres backed Drizzle client */
   const db = drizzle({
     schema,
     client,
   });
 
   return db;
-});
+}
+
+/**
+ * Initialise the PGLite Drizzle ORM
+ *
+ * Performs the required migrations and then returns the Drizzle ORM
+ * instance.
+ *
+ * @returns Drizzle ORM instance backed by PGLite
+ */
+async function initPGLiteDatabase(databaseUrl: string) {
+  const { drizzle } = await import("drizzle-orm/pglite");
+  const { migrate } = await import("drizzle-orm/pglite/migrator");
+  const { PGlite } = await import("@electric-sql/pglite");
+  const schema = await import("./schema"); // Import the database schema
+  const migrationPath = path.resolve("./drizzle"); // Path to migration files, SQL and metadata
+
+  /** The PGLite client instance */
+  const client = new PGlite(databaseUrl); // Create the pglite client
+
+  /** The PGLite backed drizzle instance */
+  const db = drizzle({
+    schema,
+    client,
+  });
+
+  await migrate(db, { migrationsFolder: migrationPath }); // Run migrations
+
+  logger.success("Database migrations completed successfully");
+
+  return db;
+}
 
 export type DB =
   | PostgresJsDatabase<Awaited<typeof import("./schema")>>

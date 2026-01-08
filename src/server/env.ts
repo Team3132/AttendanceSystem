@@ -2,15 +2,14 @@ import { createEnv } from "@t3-oss/env-core";
 import { z } from "zod";
 
 const env = createEnv({
-  isServer: import.meta.env.SSR,
+  client: {
+    VITE_URL: z.url().default("http://localhost:1420"),
+  },
   server: {
     /**
      * Database
      */
-    DATABASE_URL: z
-      .string()
-      .url()
-      .default("postgres://postgres:postgres@localhost:5432/postgres"),
+    DATABASE_URL: z.url().default("file://./data"),
     /**
      * Bot stuff
      */
@@ -35,24 +34,9 @@ const env = createEnv({
     ADMIN_ROLE_ID: z.string(),
     TSS_PRERENDERING: z.coerce.boolean(),
   },
-  runtimeEnvStrict: {
-    DATABASE_URL: process.env.DATABASE_URL,
-    DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
-    DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
-    DISCORD_PUBLIC_KEY: process.env.DISCORD_PUBLIC_KEY,
-    DISCORD_TOKEN: process.env.DISCORD_TOKEN,
-    GUILD_ID: process.env.GUILD_ID,
-    GOOGLE_CLIENT_EMAIL: process.env.GOOGLE_CLIENT_EMAIL,
-    GOOGLE_PRIVATE_KEY: process.env.GOOGLE_PRIVATE_KEY,
-    GOOGLE_CALENDAR_ID: process.env.GOOGLE_CALENDAR_ID,
-    ADMIN_ROLE_ID: process.env.ADMIN_ROLE_ID,
-    TSS_PRERENDERING: process.env.TSS_PRERENDERING,
-    VITE_URL: process.env.VITE_URL ?? import.meta.env.VITE_URL,
-  },
+  runtimeEnv: process.env ?? import.meta.env,
+  isServer: import.meta.env.SSR,
   clientPrefix: "VITE_",
-  client: {
-    VITE_URL: z.url().default("http://localhost:1420"),
-  },
 });
 
 export default env;

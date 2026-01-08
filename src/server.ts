@@ -8,7 +8,7 @@ import { Cron, scheduledJobs } from "croner";
 import { Lucia, type RegisteredLucia } from "lucia";
 import { DateTime } from "luxon";
 import type z from "zod";
-import { type DB, getDB } from "./server/drizzle/db";
+import { type DB, initialiseDatabase } from "./server/drizzle/db";
 import { getKV } from "./server/drizzle/kv";
 import * as schema from "./server/drizzle/schema";
 import env from "./server/env";
@@ -29,7 +29,7 @@ const pubSub = createPubSub<{
   ];
 }>();
 
-const db = await getDB();
+const db = await initialiseDatabase();
 
 const kv = getKV(db);
 
