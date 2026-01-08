@@ -1,7 +1,7 @@
 import env from "@/server/env";
 import { createFileRoute } from "@tanstack/react-router";
+import { setCookie } from "@tanstack/react-start/server";
 import { Discord, generateCodeVerifier, generateState } from "arctic";
-import { serialize } from "cookie-es";
 
 export const Route = createFileRoute("/api/auth/discord")({
   server: {
@@ -36,25 +36,19 @@ export const Route = createFileRoute("/api/auth/discord")({
 
         const headers = new Headers();
 
-        headers.append(
-          "Set-Cookie",
-          serialize("discord_oauth_state", state, {
-            secure: import.meta.env.PROD, // set to false in localhost
-            path: "/",
-            httpOnly: true,
-            maxAge: 60 * 10, // 10 minutes
-          }),
-        );
+        setCookie("discord_oauth_state", state, {
+          secure: import.meta.env.PROD, // set to false in localhost
+          path: "/",
+          httpOnly: true,
+          maxAge: 60 * 10, // 10 minutes
+        });
 
-        headers.append(
-          "Set-Cookie",
-          serialize("discord_oauth_code_verifier", codeVerifier, {
-            secure: import.meta.env.PROD, // set to false in localhost
-            path: "/",
-            httpOnly: true,
-            maxAge: 60 * 10, // 10 minutes
-          }),
-        );
+        setCookie("discord_oauth_code_verifier", codeVerifier, {
+          secure: import.meta.env.PROD, // set to false in localhost
+          path: "/",
+          httpOnly: true,
+          maxAge: 60 * 10, // 10 minutes
+        });
 
         headers.append("Location", url.toString());
 
