@@ -1,5 +1,19 @@
 # frontend
 
+## 6.2.0
+
+### Minor Changes
+
+- [`c601525`](https://github.com/Team3132/attendance/commit/c601525cbd3534afc6d10d381f621e839c468932) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Refactor and redo auth
+
+### Patch Changes
+
+- [`2e3a0a2`](https://github.com/Team3132/attendance/commit/2e3a0a227dc7171cad0a1ac078ffb826fc46f6e6) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Refactor the database initialisation
+
+- [`9972d46`](https://github.com/Team3132/attendance/commit/9972d46a4df147a722ba3020c8de5dcf72ae0ffd) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Disable SPA
+
+  Disable SPA because it's unable to be built in docker containers.
+
 ## 6.1.1
 
 ### Patch Changes
