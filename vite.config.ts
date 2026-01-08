@@ -15,7 +15,7 @@ export default defineConfig({
     viteTsconfigPaths(),
     tanstackStart({
       spa: {
-        enabled: true,
+        enabled: false,
         prerender: {
           outputPath: "/index",
         },
