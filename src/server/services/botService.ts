@@ -146,7 +146,7 @@ export const generateMessage = createServerOnlyFn(async (eventId: string) => {
   const rsvpGroups: Record<string, typeof eventRSVPs> = {};
 
   for (const eventRSVP of eventRSVPs) {
-    const roleId = roleIds.findIndex((roleId) =>
+    const roleId = roleIds.find((roleId) =>
       eventRSVP.user.roles?.concat(env.GUILD_ID)?.includes(roleId),
     );
 
