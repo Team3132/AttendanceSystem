@@ -14,12 +14,7 @@ import { createServerOnlyFn } from "@tanstack/react-start";
 import { asc, eq } from "drizzle-orm";
 import { DateTime } from "luxon";
 import type { z } from "zod";
-import {
-  eventParsingRuleTable,
-  eventTable,
-  rsvpTable,
-  userTable,
-} from "../drizzle/schema";
+import { eventTable, rsvpTable, userTable } from "../drizzle/schema";
 import env from "../env";
 import type { RSVPUserSchema } from "../schema";
 import { getServerContext } from "../utils/context";
@@ -75,6 +70,13 @@ export const generateMessage = createServerOnlyFn(async (eventId: string) => {
   const [eventData, eventDataError] = await trytm(
     db.query.eventTable.findFirst({
       where: eq(eventTable.id, eventId),
+      with: {
+        rule: {
+          columns: {
+            roleIds: true,
+          },
+        },
+      },
     }),
   );
 
@@ -86,28 +88,7 @@ export const generateMessage = createServerOnlyFn(async (eventId: string) => {
     throw new Error("Event not found");
   }
 
-  const { ruleId } = eventData;
-
-  const roleIds: string[] = [];
-
-  if (ruleId === null) {
-    roleIds.push(env.GUILD_ID);
-  } else {
-    const [eventRule, eventRuleError] = await trytm(
-      db.query.eventParsingRuleTable.findFirst({
-        where: eq(eventParsingRuleTable.id, ruleId),
-      }),
-    );
-
-    if (eventRuleError) {
-      throw new Error("Error fetching event rule");
-    }
-
-    if (!eventRule) {
-      throw new Error("Event Rule not found");
-    }
-    roleIds.push(...eventRule.roleIds);
-  }
+  const roleIds = eventData.rule?.roleIds ?? [env.GUILD_ID];
 
   /** A list of role mentionds seperated by commas and "and" at the end */
   const roleMentionList = listToText(roleIds.map(roleMention));
