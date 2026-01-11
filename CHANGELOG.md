@@ -1,5 +1,11 @@
 # frontend
 
+## 6.2.2
+
+### Patch Changes
+
+- [`8a6f456`](https://github.com/Team3132/attendance/commit/8a6f4565231df0f10cf1adc3fb60482bc85b0f8b) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix mention order
+
 ## 6.2.1
 
 ### Patch Changes
