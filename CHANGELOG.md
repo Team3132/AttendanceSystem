@@ -1,5 +1,11 @@
 # frontend
 
+## 6.2.4
+
+### Patch Changes
+
+- [`c9955e1`](https://github.com/Team3132/attendance/commit/c9955e17b41be26e5752f39b1bc184f101f0773d) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Create rule button
+
 ## 6.2.3
 
 ### Patch Changes
