@@ -1,3 +1,4 @@
+import { LinkButton } from "@/components/LinkButton";
 import { LinkIconButton } from "@/components/LinkIconButton";
 import useDeleteRule from "@/features/admin/hooks/useDeleteRule";
 import useDeployCommands from "@/features/admin/hooks/useDeployCommands";
@@ -110,6 +111,7 @@ function RouteComponent() {
       <Stack direction={"row"} gap={2}>
         <SyncEventsButton />
         <DeployDiscordCommandsButton />
+        <LinkButton to="/admin/event-parsing/create">Create Rule</LinkButton>
       </Stack>
     </>
   );
