@@ -1,5 +1,11 @@
 # frontend
 
+## 6.2.3
+
+### Patch Changes
+
+- [`5ab3bb1`](https://github.com/Team3132/attendance/commit/5ab3bb1953cca0dadd6f71cb29076e6c849c9aa7) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix hole in logic
+
 ## 6.2.2
 
 ### Patch Changes
