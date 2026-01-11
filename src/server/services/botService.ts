@@ -141,63 +141,38 @@ export const generateMessage = createServerOnlyFn(async (eventId: string) => {
     .setURL(`${env.VITE_URL}/events/${eventData.id}`)
     .setColor([49, 49, 96]);
 
-  const messageComponent = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    new ButtonBuilder()
-      .setCustomId(`event/${eventData.id}/rsvp/${"YES"}`)
-      .setStyle(ButtonStyle.Success)
-      .setLabel("Coming"),
-    new ButtonBuilder()
-      .setCustomId(`event/${eventData.id}/rsvp/${"MAYBE"}`)
-      .setStyle(ButtonStyle.Secondary)
-      .setLabel("Maybe"),
-    new ButtonBuilder()
-      .setCustomId(`event/${eventData.id}/rsvp/${"NO"}`)
-      .setStyle(ButtonStyle.Danger)
-      .setLabel("Not Coming"),
-    new ButtonBuilder()
-      .setCustomId(`event/${eventData.id}/rsvp/${"LATE"}`)
-      .setStyle(ButtonStyle.Primary)
-      .setLabel("Late"),
-    new ButtonBuilder()
-      .setCustomId(`event/${eventData.id}/checkin`)
-      .setStyle(ButtonStyle.Primary)
-      .setLabel("Check In"),
-  );
-
   const eventStart = DateTime.fromJSDate(eventData.startDate);
 
-  const rsvpGroups: Array<typeof eventRSVPs> = new Array(roleIds.length).fill(
-    [],
-  );
+  const rsvpGroups: Record<string, typeof eventRSVPs> = {};
 
   for (const eventRSVP of eventRSVPs) {
-    const roleIndex = roleIds.findIndex((roleId) =>
+    const roleId = roleIds.findIndex((roleId) =>
       eventRSVP.user.roles?.concat(env.GUILD_ID)?.includes(roleId),
     );
 
-    if (roleIndex !== -1) {
-      if (!rsvpGroups[roleIndex]) {
-        rsvpGroups[roleIndex] = []; // Theoretically never triggered but safe.
+    if (roleId) {
+      if (!rsvpGroups[roleId]) {
+        rsvpGroups[roleId] = []; // Theoretically never triggered but safe.
       }
 
-      rsvpGroups[roleIndex].push(eventRSVP);
+      rsvpGroups[roleId].push(eventRSVP);
     }
   }
 
   const embeds = [meetingInfo]
     .concat(
-      rsvpGroups
-        .filter((group) => group.length)
-        .map((rsvpGroup, groupIndex) =>
-          rsvpsToEmbed(rsvpGroup, eventStart, roleIds[groupIndex]),
-        ),
+      roleIds
+        .filter((roleId) => rsvpGroups[roleId]?.length) // Filter out roles with no RSVPs
+        .map((roleId) => rsvpsToEmbed(rsvpGroups[roleId], eventStart, roleId)),
     )
     .map((embed) => embed.toJSON());
+
+  const components = makeRsvpButtons(eventId);
 
   return {
     content: `Please RSVP (${roleMentionList})`,
     embeds,
-    components: [messageComponent.toJSON()],
+    components: [components.toJSON()],
     allowed_mentions: {
       roles: roleIds,
     },
@@ -222,6 +197,30 @@ function rsvpToString(eventStart: DateTime<true> | DateTime<false>): (value: {
     return `${rawRsvp.user.username} - ${statusToEmoji(rawRsvp.status, delay)}`;
   };
 }
+
+const makeRsvpButtons = (eventId: string) =>
+  new ActionRowBuilder<ButtonBuilder>().addComponents(
+    new ButtonBuilder()
+      .setCustomId(`event/${eventId}/rsvp/${"YES"}`)
+      .setStyle(ButtonStyle.Success)
+      .setLabel("Coming"),
+    new ButtonBuilder()
+      .setCustomId(`event/${eventId}/rsvp/${"MAYBE"}`)
+      .setStyle(ButtonStyle.Secondary)
+      .setLabel("Maybe"),
+    new ButtonBuilder()
+      .setCustomId(`event/${eventId}/rsvp/${"NO"}`)
+      .setStyle(ButtonStyle.Danger)
+      .setLabel("Not Coming"),
+    new ButtonBuilder()
+      .setCustomId(`event/${eventId}/rsvp/${"LATE"}`)
+      .setStyle(ButtonStyle.Primary)
+      .setLabel("Late"),
+    new ButtonBuilder()
+      .setCustomId(`event/${eventId}/checkin`)
+      .setStyle(ButtonStyle.Primary)
+      .setLabel("Check In"),
+  );
 
 function rsvpsToEmbed(
   rsvps: Array<{
