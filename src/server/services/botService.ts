@@ -44,18 +44,6 @@ const statusToEmoji = (
   }
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: Using any here is acceptable for grouping logic
-const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => K) =>
-  list.reduce(
-    (previous, currentItem) => {
-      const group = getKey(currentItem);
-      if (!previous[group]) previous[group] = [];
-      previous[group].push(currentItem);
-      return previous;
-    },
-    {} as Record<K, T[]>,
-  );
-
 /**
  * Generates an announcement message for an event
  * @param data The data to generate the message with
@@ -176,32 +164,39 @@ export const generateMessage = createServerOnlyFn(async (eventId: string) => {
       .setLabel("Check In"),
   );
 
-  const embeds: Array<EmbedBuilder> = [meetingInfo];
-
   const eventStart = DateTime.fromJSDate(eventData.startDate);
 
-  // Group RSVPs by role with each user only appearing once
-  const groupedRSVPs = groupBy(
-    eventRSVPs,
-    (rsvp) =>
-      rsvp.user.roles
-        ?.concat(env.GUILD_ID) // Ensure the guild ID is included in the user's roles
-        ?.filter((role) => roleIds.includes(role))[0] || "No Role",
+  const rsvpGroups: Array<typeof eventRSVPs> = new Array(roleIds.length).fill(
+    [],
   );
 
-  for (const [roleId, rsvps] of Object.entries(groupedRSVPs)) {
-    if (rsvps.length === 0) continue;
-    const embed = rsvpsToEmbed(
-      rsvps,
-      eventStart,
-      roleId !== "No Role" ? roleId : undefined,
+  for (const eventRSVP of eventRSVPs) {
+    const roleIndex = roleIds.findIndex((roleId) =>
+      eventRSVP.user.roles?.concat(env.GUILD_ID)?.includes(roleId),
     );
-    embeds.push(embed);
+
+    if (roleIndex !== -1) {
+      if (!rsvpGroups[roleIndex]) {
+        rsvpGroups[roleIndex] = []; // Theoretically never triggered but safe.
+      }
+
+      rsvpGroups[roleIndex].push(eventRSVP);
+    }
   }
+
+  const embeds = [meetingInfo]
+    .concat(
+      rsvpGroups
+        .filter((group) => group.length)
+        .map((rsvpGroup, groupIndex) =>
+          rsvpsToEmbed(rsvpGroup, eventStart, roleIds[groupIndex]),
+        ),
+    )
+    .map((embed) => embed.toJSON());
 
   return {
     content: `Please RSVP (${roleMentionList})`,
-    embeds: embeds.map((embed) => embed.toJSON()),
+    embeds,
     components: [messageComponent.toJSON()],
     allowed_mentions: {
       roles: roleIds,
