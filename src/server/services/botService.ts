@@ -110,10 +110,7 @@ export const generateMessage = createServerOnlyFn(async (eventId: string) => {
   }
 
   /** A list of role mentionds seperated by commas and "and" at the end */
-  const roleMentionList =
-    roleIds.length > 1
-      ? `${roleIds.slice(0, -1).map(roleMention).join(", ")} and ${roleMention(roleIds[roleIds.length - 1])}`
-      : roleMention(roleIds[0]);
+  const roleMentionList = listToText(roleIds.map(roleMention));
 
   const meetingInfo = new EmbedBuilder({
     description: eventData.description.length
@@ -178,6 +175,11 @@ export const generateMessage = createServerOnlyFn(async (eventId: string) => {
     },
   } satisfies RESTPostAPIChannelMessageJSONBody;
 });
+
+const listToText = (list: string[]) =>
+  list.length > 1
+    ? `${list.slice(0, -1).join(", ")} and ${list[list.length - 1]}`
+    : list[0];
 
 function rsvpToString(eventStart: DateTime<true> | DateTime<false>): (value: {
   arrivingAt: Date | null;
