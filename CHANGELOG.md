@@ -1,5 +1,11 @@
 # frontend
 
+## 6.2.5
+
+### Patch Changes
+
+- [#3279](https://github.com/Team3132/attendance/pull/3279) [`c5a9424`](https://github.com/Team3132/attendance/commit/c5a942446e12c71fd14902039d3e91de9b69c391) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Set timezone to Australia/Sydney in compose.yaml
+
 ## 6.2.4
 
 ### Patch Changes
