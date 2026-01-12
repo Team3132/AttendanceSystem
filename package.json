@@ -59,7 +59,7 @@
     "postgres": "3.4.8",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "react-error-boundary": "6.0.2",
+    "react-error-boundary": "6.0.3",
     "react-hook-form": "7.70.0",
     "react-icons": "5.5.0",
     "ulidx": "2.4.1",
