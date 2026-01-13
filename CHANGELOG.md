@@ -1,5 +1,11 @@
 # frontend
 
+## 6.2.6
+
+### Patch Changes
+
+- [`fa54cb0`](https://github.com/Team3132/attendance/commit/fa54cb0be4e02f9e3591cddcf00a0d7dc78ea51f) Thanks [@sebasptsch](https://github.com/sebasptsch)! - add timezone to cron job
+
 ## 6.2.5
 
 ### Patch Changes
