@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { DateTime } from "luxon";
 
 import { useCallback } from "react";
 import { FaCopy, FaPen, FaPlay, FaTrash } from "react-icons/fa6";
@@ -126,7 +127,7 @@ function ParsingRuleListItem(props: { rule: ParsingRule }) {
     >
       <ListItemText
         primary={rule.name}
-        secondary={`Priority: ${rule.priority}`}
+        secondary={`Priority: ${rule.priority}, Last Run: ${rule.lastRun === null ? "Never" : DateTime.fromJSDate(rule.lastRun).toLocaleString(DateTime.DATETIME_MED)}`}
       />
     </ListItem>
   );

@@ -105,6 +105,13 @@ export const reminderFn = createServerOnlyFn(async (job: Cron) => {
       isPosted: true,
     })
     .where(inArray(eventTable.id, successfullyPostedEvents));
+
+  await db
+    .update(eventParsingRuleTable)
+    .set({
+      lastRun: new Date(),
+    })
+    .where(eq(eventParsingRuleTable, job.name));
 });
 
 /**

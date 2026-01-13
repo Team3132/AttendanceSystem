@@ -267,7 +267,7 @@ export const eventParsingRuleTable = pgTable("parsing_rule", {
     precision: 3,
     mode: "date",
     withTimezone: true,
-  }).defaultNow(),
+  }),
 });
 
 export const eventParsingRuleTableRelations = relations(
