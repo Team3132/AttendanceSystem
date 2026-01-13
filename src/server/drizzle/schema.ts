@@ -262,6 +262,12 @@ export const eventParsingRuleTable = pgTable("parsing_rule", {
   name: text("name").notNull(),
   /** The Cron Expression */
   cronExpr: text("cron_expr").notNull(),
+  /** Last run */
+  lastRun: timestamp("last_run", {
+    precision: 3,
+    mode: "date",
+    withTimezone: true,
+  }).defaultNow(),
 });
 
 export const eventParsingRuleTableRelations = relations(
