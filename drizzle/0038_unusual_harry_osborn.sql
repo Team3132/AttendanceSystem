@@ -1,0 +1,1 @@
+ALTER TABLE "parsing_rule" ADD COLUMN "last_run" timestamp (3) with time zone;
