@@ -1,3 +1,4 @@
+import { toaster } from "@/components/Toaster";
 import { adminMiddleware } from "@/middleware/authMiddleware";
 import { eventQueryKeys } from "@/server/queryKeys";
 import { syncEvents } from "@/server/services/calalendarSync.service";
@@ -17,6 +18,12 @@ export default function useSyncCalendar() {
     mutationFn: () => syncCalendar(),
     meta: {
       invalidates: [eventQueryKeys.events],
+    },
+    onSuccess: (data) => {
+      toaster.success({
+        title: "Synced Calendar!",
+        description: `Updated ${data.updatedEvents} events and deleted ${data.deletedEventCount}.`,
+      });
     },
   });
 }
