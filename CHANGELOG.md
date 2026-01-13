@@ -1,5 +1,11 @@
 # frontend
 
+## 6.2.10
+
+### Patch Changes
+
+- [`e111782`](https://github.com/Team3132/attendance/commit/e11178205879c304904226cb054fa521b2ed77a8) Thanks [@sebasptsch](https://github.com/sebasptsch)! - DVH
+
 ## 6.2.9
 
 ### Patch Changes
