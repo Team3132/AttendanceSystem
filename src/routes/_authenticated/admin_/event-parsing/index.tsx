@@ -108,7 +108,7 @@ function ParsingRuleListItem(props: { rule: ParsingRule }) {
             <FaCopy />
           </IconButton>
           <IconButton
-            onClick={() => handleTriggerRule}
+            onClick={handleTriggerRule}
             disabled={triggerRuleMutation.isPending}
           >
             <FaPlay />
