@@ -48,6 +48,7 @@ async function restoreCron() {
       filter.cronExpr,
       {
         name: filter.id,
+        timezone: env.TZ,
       },
       reminderFn,
     );

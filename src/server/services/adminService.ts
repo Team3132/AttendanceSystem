@@ -9,6 +9,7 @@ import { DateTime } from "luxon";
 import { ulid } from "ulidx";
 import { z } from "zod";
 import { eventParsingRuleTable, eventTable } from "../drizzle/schema";
+import env from "../env";
 import { consola } from "../logger";
 import { NewEventParsingRuleSchema } from "../schema";
 import { getServerContext } from "../utils/context";
@@ -122,7 +123,11 @@ export const createParsingRule = createServerFn({
 
     const ruleId = ulid();
 
-    const job = new Cron(cronExpr, { name: ruleId }, reminderFn);
+    const job = new Cron(
+      cronExpr,
+      { name: ruleId, timezone: env.TZ },
+      reminderFn,
+    );
 
     // Create a new parsing rule
     const [parsingRules, scheduleError] = await trytm(

@@ -33,8 +33,9 @@ const env = createEnv({
      */
     ADMIN_ROLE_ID: z.string(),
     TSS_PRERENDERING: z.coerce.boolean(),
+    TZ: z.string().default("Australia/Sydney"),
   },
-  runtimeEnv: process.env ?? import.meta.env,
+  runtimeEnv: import.meta.env.SSR ? process.env : import.meta.env,
   isServer: import.meta.env.SSR,
   clientPrefix: "VITE_",
 });
