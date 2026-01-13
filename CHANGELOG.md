@@ -1,5 +1,11 @@
 # frontend
 
+## 6.2.7
+
+### Patch Changes
+
+- [`db89d17`](https://github.com/Team3132/attendance/commit/db89d17067c8f5f3ba9a58e5bdbaec364b8e337a) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add error toast
+
 ## 6.2.6
 
 ### Patch Changes
