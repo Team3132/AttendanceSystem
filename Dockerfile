@@ -36,4 +36,4 @@ COPY --from=prerelease /usr/src/app/package.json .
 # run the app
 USER bun
 EXPOSE 1420/tcp
-ENTRYPOINT [ "bun", "run", "server.ts" ]
+ENTRYPOINT [ "bun", "run", "start" ]
