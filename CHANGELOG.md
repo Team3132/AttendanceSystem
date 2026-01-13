@@ -1,5 +1,13 @@
 # frontend
 
+## 6.2.9
+
+### Patch Changes
+
+- [`839ce5c`](https://github.com/Team3132/attendance/commit/839ce5c458d59008382493d596b51e5d3f315241) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add lastrun attribute
+
+- [`df3c085`](https://github.com/Team3132/attendance/commit/df3c0859c6db2f102666b59819ca47fdb04f033f) Thanks [@sebasptsch](https://github.com/sebasptsch)! - fix typo in rule trigger
+
 ## 6.2.8
 
 ### Patch Changes
