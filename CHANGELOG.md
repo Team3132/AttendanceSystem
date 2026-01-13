@@ -1,5 +1,15 @@
 # frontend
 
+## 6.2.8
+
+### Patch Changes
+
+- [`d93dbcb`](https://github.com/Team3132/attendance/commit/d93dbcbf7fa5f8aeb446388d0b794b2e4b52e91e) Thanks [@sebasptsch](https://github.com/sebasptsch)! - run start instead of server
+
+- [`3a1da09`](https://github.com/Team3132/attendance/commit/3a1da094eafb255f7487863a2c71044869206b09) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Break down rule item so loading state is the same
+
+- [`4e4a9d0`](https://github.com/Team3132/attendance/commit/4e4a9d02e2028e606b87b574e5b2db96b34bd827) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Cleanup and Signals
+
 ## 6.2.7
 
 ### Patch Changes
