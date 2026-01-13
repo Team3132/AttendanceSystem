@@ -57,34 +57,8 @@ function RouteComponent() {
 function ParsingRuleListItem(props: { rule: ParsingRule }) {
   const { rule } = props;
 
-  const navigate = Route.useNavigate();
-
   const deleteRuleMutation = useDeleteRule();
   const triggerRuleMutation = useTriggerRule();
-
-  const handleDuplicateRule = useCallback(() => {
-    navigate({
-      to: "/admin/event-parsing/create",
-      search: {
-        name: `${rule.name} (Copy)`,
-        regex: rule.regex,
-        roleIds: rule.roleIds,
-        cronExpr: rule.cronExpr,
-        channelId: rule.channelId,
-        priority: rule.priority,
-        isOutreach: rule.isOutreach,
-      },
-    });
-  }, [
-    navigate,
-    rule.channelId,
-    rule.name,
-    rule.regex,
-    rule.roleIds,
-    rule.cronExpr,
-    rule.isOutreach,
-    rule.priority,
-  ]);
 
   const handleDeleteRule = useCallback(
     () => deleteRuleMutation.mutate({ data: rule.id }),
@@ -105,9 +79,20 @@ function ParsingRuleListItem(props: { rule: ParsingRule }) {
           <IconButton onClick={handleDeleteRule}>
             <FaTrash />
           </IconButton>
-          <IconButton onClick={handleDuplicateRule}>
+          <LinkIconButton
+            to="/admin/event-parsing/create"
+            params={{
+              name: `${rule.name} (Copy)`,
+              regex: rule.regex,
+              roleIds: rule.roleIds,
+              cronExpr: rule.cronExpr,
+              channelId: rule.channelId,
+              priority: rule.priority,
+              isOutreach: rule.isOutreach,
+            }}
+          >
             <FaCopy />
-          </IconButton>
+          </LinkIconButton>
           <IconButton
             onClick={handleTriggerRule}
             disabled={triggerRuleMutation.isPending}
