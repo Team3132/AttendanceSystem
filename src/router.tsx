@@ -2,6 +2,7 @@ import { MutationCache, QueryClient, matchQuery } from "@tanstack/react-query";
 // app/router.tsx
 import { createRouter as createTanStackRouter } from "@tanstack/react-router";
 import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query";
+import { toaster } from "./components/Toaster";
 import { routeTree } from "./routeTree.gen";
 import type { StrictlyTypedQueryKeys } from "./server/queryKeys";
 
@@ -15,6 +16,14 @@ export function getRouter() {
               matchQuery({ queryKey }, query),
             ) ?? false,
         });
+      },
+      onError: (error, _vars, _onMutateResult, _mutation, _context) => {
+        if (error instanceof Error) {
+          toaster.error({
+            title: "An error occured",
+            description: error.message,
+          });
+        }
       },
     }),
   });
