@@ -104,7 +104,10 @@ function RouteComponent() {
               </Stack>
             }
           >
-            <ListItemText primary={rule.name} secondary={rule.priority} />
+            <ListItemText
+              primary={rule.name}
+              secondary={`Priority: ${rule.priority}`}
+            />
           </ListItem>
         ))}
       </List>

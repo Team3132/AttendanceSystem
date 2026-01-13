@@ -26,7 +26,7 @@ export const modalReply = (data: APIModalInteractionResponseCallbackData) =>
     data,
   } satisfies APIModalInteractionResponse);
 
-export type JSONModalReply = ReturnType<typeof modalReply>;
+// type JSONModalReply = ReturnType<typeof modalReply>;
 
 export const updateMessage = (data: APIInteractionResponseCallbackData) =>
   Response.json({
@@ -34,7 +34,7 @@ export const updateMessage = (data: APIInteractionResponseCallbackData) =>
     data,
   } satisfies APIInteractionResponseUpdateMessage);
 
-export type JSONUpdateMessage = ReturnType<typeof updateMessage>;
+// type JSONUpdateMessage = ReturnType<typeof updateMessage>;
 
 // export type JSONUpdateMessage = ReturnType<typeof updateMessage>;
 

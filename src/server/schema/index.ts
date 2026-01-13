@@ -1,4 +1,3 @@
-export * from "./CreateEventSchema";
 export * from "./EditRSVPSelfSchema";
 export * from "./EventSchema";
 export * from "./GetEventParamsSchema";

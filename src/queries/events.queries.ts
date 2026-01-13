@@ -50,9 +50,10 @@ const getUserRsvpFn = createServerFn({ method: "GET" })
 export const eventQueryOptions = {
   eventList: (options: GetEventsParams) =>
     infiniteQueryOptions({
-      queryFn: ({ pageParam }) =>
+      queryFn: ({ pageParam, signal }) =>
         getEvents({
           data: { ...options, cursor: pageParam ?? undefined },
+          signal,
         }),
       queryKey: eventQueryKeys.eventsListParams(options),
       getNextPageParam: (lastPage) => lastPage.nextPage,
@@ -61,31 +62,32 @@ export const eventQueryOptions = {
 
   eventDetails: (id: string) =>
     queryOptions({
-      queryFn: () => getEventFn({ data: id }),
+      queryFn: ({ signal }) => getEventFn({ data: id, signal }),
       queryKey: eventQueryKeys.eventDetails(id),
     }),
 
   eventSecret: (id: string) =>
     queryOptions({
-      queryFn: () => getEventSecretFn({ data: id }),
+      queryFn: ({ signal }) => getEventSecretFn({ data: id, signal }),
       queryKey: eventQueryKeys.eventSecret(id),
     }),
 
   eventRsvp: (id: string) =>
     queryOptions({
-      queryFn: () => getSelfEventRsvpFn({ data: id }),
+      queryFn: ({ signal }) => getSelfEventRsvpFn({ data: id, signal }),
       queryKey: eventQueryKeys.eventRsvp(id),
     }),
 
   eventRsvps: (id: string) =>
     queryOptions({
-      queryFn: () => getEventRsvpsFn({ data: id }),
+      queryFn: ({ signal }) => getEventRsvpsFn({ data: id, signal }),
       queryKey: eventQueryKeys.eventRsvps(id),
     }),
 
   userRsvp: (eventId: string, userId: string) =>
     queryOptions({
-      queryFn: () => getUserRsvpFn({ data: { eventId, userId } }),
+      queryFn: ({ signal }) =>
+        getUserRsvpFn({ data: { eventId, userId }, signal }),
       queryKey: eventQueryKeys.eventUserRsvp(eventId, userId),
     }),
 };

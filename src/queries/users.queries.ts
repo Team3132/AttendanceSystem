@@ -51,12 +51,13 @@ const getSelfSessionsFn = createServerFn({ method: "GET" })
 export const usersQueryOptions = {
   userList: (params: UserListParams) =>
     infiniteQueryOptions({
-      queryFn: ({ pageParam }) =>
+      queryFn: ({ pageParam, signal }) =>
         getUserList({
           data: {
             ...params,
             cursor: pageParam ?? undefined,
           },
+          signal,
         }),
       queryKey: usersQueryKeys.usersListParams(params),
       getNextPageParam: (lastPage) => lastPage.nextPage,
@@ -65,49 +66,49 @@ export const usersQueryOptions = {
 
   userDetails: (id: string) =>
     queryOptions({
-      queryFn: () => getUser({ data: id }),
+      queryFn: ({ signal }) => getUser({ data: id, signal }),
       queryKey: usersQueryKeys.userDetails(id),
     }),
 
   userScancodes: (id: string) =>
     queryOptions({
-      queryFn: () => getUserScancodesFn({ data: id }),
+      queryFn: ({ signal }) => getUserScancodesFn({ data: id, signal }),
       queryKey: usersQueryKeys.userScancodes(id),
     }),
 
   userSelfDetails: () =>
     queryOptions({
-      queryFn: () => getSelfFn(),
+      queryFn: ({ signal }) => getSelfFn({ signal }),
       queryKey: usersQueryKeys.userSelfDetails(),
     }),
 
   userSelfScancodes: () =>
     queryOptions({
-      queryFn: () => getSelfScancodesFn(),
+      queryFn: ({ signal }) => getSelfScancodesFn({ signal }),
       queryKey: usersQueryKeys.userSelfScancodes(),
     }),
 
   userPendingRsvps: (id: string) =>
     queryOptions({
-      queryFn: () => getUserPendingRsvpsFn({ data: id }),
+      queryFn: ({ signal }) => getUserPendingRsvpsFn({ data: id, signal }),
       queryKey: usersQueryKeys.userPendingRsvps(id),
     }),
 
   userSelfPendingRsvps: () =>
     queryOptions({
-      queryFn: () => getSelfPendingRsvpsFn(),
+      queryFn: ({ signal }) => getSelfPendingRsvpsFn({ signal }),
       queryKey: usersQueryKeys.userSelfPendingRsvps(),
     }),
 
   userSelfSessions: () =>
     queryOptions({
-      queryFn: getSelfSessionsFn,
+      queryFn: ({ signal }) => getSelfSessionsFn({ signal }),
       queryKey: usersQueryKeys.userSelfSessions(),
     }),
 
   userSessions: (id: string) =>
     queryOptions({
-      queryFn: () => getUserSessionsFn({ data: id }),
+      queryFn: ({ signal }) => getUserSessionsFn({ data: id, signal }),
       queryKey: usersQueryKeys.userSessions(id),
     }),
 };

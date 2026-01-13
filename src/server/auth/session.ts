@@ -10,7 +10,7 @@ import { eq } from "drizzle-orm";
 import { type Session, type User, sessionTable } from "../drizzle/schema";
 import { getServerContext } from "../utils/context";
 
-export const validateSessionToken = createServerOnlyFn(
+const validateSessionToken = createServerOnlyFn(
   async (token: string): Promise<SessionValidationResult> => {
     const { db } = getServerContext();
 

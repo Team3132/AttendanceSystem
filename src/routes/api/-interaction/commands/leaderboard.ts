@@ -1,6 +1,6 @@
 import type { LeaderBoardUser } from "@/server/schema";
 import { getOutreachTime } from "@/server/services/outreach.service";
-import randomStr from "@/server/utils/randomStr";
+import { randomStr } from "@/server/utils/randomStr";
 import { trytm } from "@/utils/trytm";
 import {
   ActionRowBuilder,

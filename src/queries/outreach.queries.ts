@@ -16,12 +16,13 @@ const getOutreachLeaderboardFn = createServerFn({ method: "GET" })
 export const leaderboardQueryOptions = (options: Options) =>
   infiniteQueryOptions({
     queryKey: outreachQueryKeys.leaderboard(options),
-    queryFn: ({ pageParam }) =>
+    queryFn: ({ pageParam, signal }) =>
       getOutreachLeaderboardFn({
         data: {
           ...options,
           cursor: pageParam || undefined,
         },
+        signal,
       }),
     initialPageParam: undefined as number | null | undefined,
     getNextPageParam: (page) => page.nextPage,

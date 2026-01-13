@@ -16,10 +16,6 @@ export const verifyDiscordMiddleware = createMiddleware().server(
     /** Child logger for interaction logging (passed to request context) */
     const logger = consola.withTag("interaction");
 
-    logger.debug(
-      `Received interaction with signature: ${signature}, timestamp: ${timestamp}`,
-    );
-
     const rawBody = await request.text();
 
     if (!signature || !timestamp || !rawBody) {
@@ -33,8 +29,6 @@ export const verifyDiscordMiddleware = createMiddleware().server(
       timestamp,
       env.DISCORD_PUBLIC_KEY,
     );
-
-    logger.debug(`Request validation result: ${isValidRequest}`);
 
     if (!isValidRequest) {
       throw new Error("Invalid request signature");

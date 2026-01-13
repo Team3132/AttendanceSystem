@@ -7,12 +7,12 @@ import { queryOptions } from "@tanstack/react-query";
 
 export const adminQueries = {
   eventParsingRules: queryOptions({
-    queryFn: () => getParsingRules(),
+    queryFn: ({ signal }) => getParsingRules({ signal }),
     queryKey: adminQueryKeys.parsingRuleList(),
   }),
   eventParsingRule: (id: string) =>
     queryOptions({
-      queryFn: () => getParsingRule({ data: id }),
+      queryFn: ({ signal }) => getParsingRule({ data: id, signal }),
       queryKey: adminQueryKeys.parsingRule(id),
     }),
 };

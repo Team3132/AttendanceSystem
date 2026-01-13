@@ -17,6 +17,6 @@ export const authQueryOptions = {
   status: () =>
     queryOptions({
       queryKey: authQueryKeys.status(),
-      queryFn: () => authStatusFn(),
+      queryFn: ({ signal }) => authStatusFn({ signal }),
     }),
 };

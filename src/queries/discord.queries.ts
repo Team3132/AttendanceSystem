@@ -22,11 +22,13 @@ export const discordQueryOptions = {
   serverRoles: () =>
     queryOptions({
       queryKey: discordQueryKeys.serverRoles,
-      queryFn: () => discordServerRolesFn({ data: undefined }),
+      queryFn: ({ signal }) =>
+        discordServerRolesFn({ data: undefined, signal }),
     }),
   serverChannels: () =>
     queryOptions({
       queryKey: discordQueryKeys.serverChannels,
-      queryFn: () => discordServerChannelsFn({ data: undefined }),
+      queryFn: ({ signal }) =>
+        discordServerChannelsFn({ data: undefined, signal }),
     }),
 };

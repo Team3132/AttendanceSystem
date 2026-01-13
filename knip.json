@@ -1,6 +1,6 @@
 {
 	"$schema": "https://unpkg.com/knip@5/schema.json",
-	"entry": ["src/router.tsx"],
+	"entry": ["src/router.tsx", "src/server.ts", "src/client.tsx"],
 	"ignore": [
 		"src/gql/index.ts",
 		".tanstack-start/server-routes/routeTree.gen.ts",
