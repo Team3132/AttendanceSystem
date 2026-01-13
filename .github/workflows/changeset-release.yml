@@ -60,6 +60,7 @@ jobs:
   publish:
     name: Publish Docker Images
     needs: release
+    if: needs.release.outputs.published == 'true'
     strategy:
       fail-fast: true
       matrix:
