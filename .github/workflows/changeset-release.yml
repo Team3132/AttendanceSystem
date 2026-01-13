@@ -60,7 +60,6 @@ jobs:
   publish:
     name: Publish Docker Images
     needs: release
-    if: needs.release.outputs.published == 'true'
     strategy:
       fail-fast: true
       matrix:
@@ -95,14 +94,16 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           tags: ${{ steps.meta.outputs.tags }}
-          push: true
+          push: ${{ needs.release.outputs.published == 'true' }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
   deploy:
     name: Deploy Docker Images
+    if: needs.release.outputs.published == 'true'
     needs: 
       - publish
+      - release
     permissions:
       packages: write
     runs-on: ubuntu-latest
