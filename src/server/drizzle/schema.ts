@@ -276,3 +276,5 @@ export const eventParsingRuleTableRelations = relations(
 export type User = typeof userTable.$inferSelect;
 
 export type Session = typeof sessionTable.$inferSelect;
+
+export type ParsingRule = typeof eventParsingRuleTable.$inferSelect;

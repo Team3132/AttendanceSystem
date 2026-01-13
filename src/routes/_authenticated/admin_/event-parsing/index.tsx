@@ -5,6 +5,7 @@ import useDeployCommands from "@/features/admin/hooks/useDeployCommands";
 import useSyncCalendar from "@/features/admin/hooks/useSyncCalendar";
 import useTriggerRule from "@/features/admin/hooks/useTriggerRule";
 import { adminQueries } from "@/queries/adminQueries";
+import type { ParsingRule } from "@/server/drizzle/schema";
 import {
   Button,
   IconButton,
@@ -35,80 +36,12 @@ export const Route = createFileRoute("/_authenticated/admin_/event-parsing/")({
 
 function RouteComponent() {
   const parsingRulesQuery = useSuspenseQuery(adminQueries.eventParsingRules);
-  const navigate = Route.useNavigate();
-
-  const deleteRuleMutation = useDeleteRule();
-  const triggerRuleMutation = useTriggerRule();
-
-  const handleDuplicateRule = useCallback(
-    (id: string) => {
-      const rule = parsingRulesQuery.data.find((r) => r.id === id);
-
-      if (!rule) return;
-
-      navigate({
-        to: "/admin/event-parsing/create",
-        search: {
-          name: `${rule.name} (Copy)`,
-          regex: rule.regex,
-          roleIds: rule.roleIds,
-          cronExpr: rule.cronExpr,
-          channelId: rule.channelId,
-          priority: rule.priority,
-          isOutreach: rule.isOutreach,
-        },
-      });
-    },
-    [navigate, parsingRulesQuery.data],
-  );
-
-  const handleDeleteRule = useCallback(
-    (id: string) => deleteRuleMutation.mutate({ data: id }),
-    [deleteRuleMutation.mutate],
-  );
-
-  const handleTriggerRule = useCallback(
-    (id: string) => triggerRuleMutation.mutate({ data: id }),
-    [triggerRuleMutation.mutate],
-  );
 
   return (
     <>
       <List>
         {parsingRulesQuery.data.map((rule) => (
-          <ListItem
-            disablePadding
-            key={rule.id}
-            secondaryAction={
-              <Stack direction={"row"} gap={2}>
-                <IconButton onClick={() => handleDeleteRule(rule.id)}>
-                  <FaTrash />
-                </IconButton>
-                <IconButton onClick={() => handleDuplicateRule(rule.id)}>
-                  <FaCopy />
-                </IconButton>
-                <IconButton
-                  onClick={() => handleTriggerRule(rule.id)}
-                  disabled={triggerRuleMutation.isPending}
-                >
-                  <FaPlay />
-                </IconButton>
-                <LinkIconButton
-                  to="/admin/event-parsing/$ruleId"
-                  params={{
-                    ruleId: rule.id,
-                  }}
-                >
-                  <FaPen />
-                </LinkIconButton>
-              </Stack>
-            }
-          >
-            <ListItemText
-              primary={rule.name}
-              secondary={`Priority: ${rule.priority}`}
-            />
-          </ListItem>
+          <ParsingRuleListItem key={rule.id} rule={rule} />
         ))}
       </List>
       <Stack direction={"row"} gap={2}>
@@ -117,6 +50,85 @@ function RouteComponent() {
         <LinkButton to="/admin/event-parsing/create">Create Rule</LinkButton>
       </Stack>
     </>
+  );
+}
+
+function ParsingRuleListItem(props: { rule: ParsingRule }) {
+  const { rule } = props;
+
+  const navigate = Route.useNavigate();
+
+  const deleteRuleMutation = useDeleteRule();
+  const triggerRuleMutation = useTriggerRule();
+
+  const handleDuplicateRule = useCallback(() => {
+    navigate({
+      to: "/admin/event-parsing/create",
+      search: {
+        name: `${rule.name} (Copy)`,
+        regex: rule.regex,
+        roleIds: rule.roleIds,
+        cronExpr: rule.cronExpr,
+        channelId: rule.channelId,
+        priority: rule.priority,
+        isOutreach: rule.isOutreach,
+      },
+    });
+  }, [
+    navigate,
+    rule.channelId,
+    rule.name,
+    rule.regex,
+    rule.roleIds,
+    rule.cronExpr,
+    rule.isOutreach,
+    rule.priority,
+  ]);
+
+  const handleDeleteRule = useCallback(
+    () => deleteRuleMutation.mutate({ data: rule.id }),
+    [deleteRuleMutation.mutate, rule.id],
+  );
+
+  const handleTriggerRule = useCallback(
+    () => triggerRuleMutation.mutate({ data: rule.id }),
+    [triggerRuleMutation.mutate, rule.id],
+  );
+
+  return (
+    <ListItem
+      disablePadding
+      key={rule.id}
+      secondaryAction={
+        <Stack direction={"row"} gap={2}>
+          <IconButton onClick={handleDeleteRule}>
+            <FaTrash />
+          </IconButton>
+          <IconButton onClick={handleDuplicateRule}>
+            <FaCopy />
+          </IconButton>
+          <IconButton
+            onClick={() => handleTriggerRule}
+            disabled={triggerRuleMutation.isPending}
+          >
+            <FaPlay />
+          </IconButton>
+          <LinkIconButton
+            to="/admin/event-parsing/$ruleId"
+            params={{
+              ruleId: rule.id,
+            }}
+          >
+            <FaPen />
+          </LinkIconButton>
+        </Stack>
+      }
+    >
+      <ListItemText
+        primary={rule.name}
+        secondary={`Priority: ${rule.priority}`}
+      />
+    </ListItem>
   );
 }
 
