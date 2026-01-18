@@ -141,14 +141,12 @@ export const rsvpTable = pgTable(
       withTimezone: true,
     }),
   },
-  (table) => {
-    return [
-      primaryKey({
-        name: "RSVP_eventId_userId_key",
-        columns: [table.eventId, table.userId],
-      }),
-    ];
-  },
+  (table) => [
+    primaryKey({
+      name: "RSVP_eventId_userId_key",
+      columns: [table.eventId, table.userId],
+    }),
+  ],
 );
 
 export const rsvpTableRelations = relations(rsvpTable, ({ one }) => ({
