@@ -35,7 +35,10 @@ function Component() {
             </Typography>
             <List>
               {pendingEventsQuery.data.map((rsvp) => (
-                <PendingEventListItem rsvp={rsvp} key={rsvp.id} />
+                <PendingEventListItem
+                  rsvp={rsvp}
+                  key={`${rsvp.eventId}-${rsvp.userId}`}
+                />
               ))}
             </List>
           </Stack>

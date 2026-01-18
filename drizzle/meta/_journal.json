@@ -274,6 +274,13 @@
 			"when": 1768273165257,
 			"tag": "0038_unusual_harry_osborn",
 			"breakpoints": true
+		},
+		{
+			"idx": 39,
+			"version": "7",
+			"when": 1768715981915,
+			"tag": "0039_wandering_master_chief",
+			"breakpoints": true
 		}
 	]
 }

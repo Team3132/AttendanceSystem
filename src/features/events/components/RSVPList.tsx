@@ -83,7 +83,10 @@ function RSVPList() {
     return (
       <List>
         {rsvpsQuery.data.map((rsvp) => (
-          <AdminRSVPListItem rsvp={rsvp} key={rsvp.id} />
+          <AdminRSVPListItem
+            rsvp={rsvp}
+            key={`${rsvp.eventId}-${rsvp.userId}`}
+          />
         ))}
       </List>
     );
@@ -92,7 +95,7 @@ function RSVPList() {
   return (
     <List>
       {rsvpsQuery.data.map((rsvp) => (
-        <RSVPListItem rsvp={rsvp} key={rsvp.id} />
+        <RSVPListItem rsvp={rsvp} key={`${rsvp.eventId}-${rsvp.userId}`} />
       ))}
     </List>
   );

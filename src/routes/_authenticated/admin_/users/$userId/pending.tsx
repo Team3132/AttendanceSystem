@@ -42,7 +42,7 @@ function Component() {
                 <PendingEventListItem
                   rsvp={rsvp}
                   userId={userId}
-                  key={rsvp.id}
+                  key={`${rsvp.eventId}-${rsvp.userId}`}
                 />
               ))}
             </List>

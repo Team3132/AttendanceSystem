@@ -4,14 +4,13 @@ import {
   integer,
   pgEnum,
   pgTable,
+  primaryKey,
   text,
   timestamp,
-  uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { customAlphabet } from "nanoid";
 import { numbers } from "nanoid-dictionary";
 import { ulid } from "ulidx";
-import { v4 } from "uuid";
 
 export const rsvpStatus = pgEnum("rsvp_status", [
   "LATE",
@@ -87,10 +86,6 @@ export const userTableRelations = relations(userTable, ({ many }) => ({
 export const rsvpTable = pgTable(
   "rsvp",
   {
-    id: text("id")
-      .primaryKey()
-      .notNull()
-      .$default(() => v4()),
     eventId: text("event_id")
       .notNull()
       .references(() => eventTable.id, {
@@ -147,12 +142,12 @@ export const rsvpTable = pgTable(
     }),
   },
   (table) => {
-    return {
-      eventIdUserIdKey: uniqueIndex("RSVP_eventId_userId_key").on(
-        table.eventId,
-        table.userId,
-      ),
-    };
+    return [
+      primaryKey({
+        name: "RSVP_eventId_userId_key",
+        columns: [table.eventId, table.userId],
+      }),
+    ];
   },
 );
 
@@ -172,10 +167,7 @@ const randomSecret = customAlphabet(numbers, 6);
 export const eventTable = pgTable(
   "event",
   {
-    id: text("id")
-      .primaryKey()
-      .notNull()
-      .$defaultFn(() => v4()),
+    id: text("id").primaryKey().notNull(),
     description: text("description").default("").notNull(),
     title: text("title").notNull(),
     startDate: timestamp("start_date", {
