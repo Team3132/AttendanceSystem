@@ -7,12 +7,12 @@ import { and, asc, between, eq, inArray, not } from "drizzle-orm";
 import { DateTime } from "luxon";
 import { ulid } from "ulidx";
 import { z } from "zod";
+import type { DB } from "../drizzle/db";
 import { eventParsingRuleTable, eventTable } from "../drizzle/schema";
 import env from "../env";
 import { consola } from "../logger";
 import { NewEventParsingRuleSchema } from "../schema/NewEventParsingRuleSchema";
 import { UpdateEventParsingRuleSchema } from "../schema/UpdateEventParsingRuleSchema";
-import { getServerContext } from "../utils/context";
 import { ServerError } from "../utils/errors";
 import { strToRegex } from "../utils/regexBuilder";
 import { generateMessage } from "./botService";
@@ -21,10 +21,8 @@ import { getDiscordBotAPI } from "./discordService";
 /**
  * This is the function that gets run every time a cron job is triggered
  */
-export const reminderFn = createServerOnlyFn(async (job: Cron) => {
+export const reminderFn = createServerOnlyFn(async (job: Cron, db: DB) => {
   if (!job.name) return;
-
-  const { db } = getServerContext();
 
   const rule = await db.query.eventParsingRuleTable.findFirst({
     where: eq(eventParsingRuleTable.id, job.name),
@@ -111,7 +109,7 @@ export const reminderFn = createServerOnlyFn(async (job: Cron) => {
     .set({
       lastRun: new Date(),
     })
-    .where(eq(eventParsingRuleTable, job.name));
+    .where(eq(eventParsingRuleTable.id, job.name));
 });
 
 /**
@@ -130,10 +128,8 @@ export const createParsingRule = createServerFn({
 
     const ruleId = ulid();
 
-    const job = new Cron(
-      cronExpr,
-      { name: ruleId, timezone: env.TZ },
-      reminderFn,
+    const job = new Cron(cronExpr, { name: ruleId, timezone: env.TZ }, (job) =>
+      reminderFn(job, db),
     );
 
     // Create a new parsing rule

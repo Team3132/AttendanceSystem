@@ -50,7 +50,7 @@ async function restoreCron() {
         name: filter.id,
         timezone: env.TZ,
       },
-      reminderFn,
+      (job) => reminderFn(job, db),
     );
 
     const nextRun = job.nextRun();
