@@ -1,5 +1,15 @@
 # frontend
 
+## 6.2.11
+
+### Patch Changes
+
+- [`cdad23d`](https://github.com/Team3132/attendance/commit/cdad23d60dc3f5480606ca2ad75443fe4f0a6986) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Prevent DB Schema from being included in the client code
+
+- [`eb51407`](https://github.com/Team3132/attendance/commit/eb51407e5c33663bdbf50021978d7824e2fe5a3e) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Remove redundant uuid package
+
+- [`4e5cbf2`](https://github.com/Team3132/attendance/commit/4e5cbf28950c169f7214e4fde79f27d72c54c8f7) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix scheduled event posting
+
 ## 6.2.10
 
 ### Patch Changes
