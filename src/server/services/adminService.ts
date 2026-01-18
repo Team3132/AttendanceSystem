@@ -1,5 +1,4 @@
 import { adminMiddleware } from "@/middleware/authMiddleware";
-import { UpdateEventParsingRuleSchema } from "@/server/schema";
 import { trytm } from "@/utils/trytm";
 import { ChannelType } from "@discordjs/core";
 import { createServerFn, createServerOnlyFn } from "@tanstack/react-start";
@@ -11,7 +10,8 @@ import { z } from "zod";
 import { eventParsingRuleTable, eventTable } from "../drizzle/schema";
 import env from "../env";
 import { consola } from "../logger";
-import { NewEventParsingRuleSchema } from "../schema";
+import { NewEventParsingRuleSchema } from "../schema/NewEventParsingRuleSchema";
+import { UpdateEventParsingRuleSchema } from "../schema/UpdateEventParsingRuleSchema";
 import { getServerContext } from "../utils/context";
 import { ServerError } from "../utils/errors";
 import { strToRegex } from "../utils/regexBuilder";

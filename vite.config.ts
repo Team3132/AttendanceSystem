@@ -1,5 +1,6 @@
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
+import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig } from "vite";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 
@@ -15,6 +16,11 @@ export default defineConfig({
     port: 1420,
   },
   plugins: [
+    visualizer({
+      emitFile: process.env.NODE_ENV === "production",
+      filename: "stats.html",
+      template: "treemap",
+    }),
     viteTsconfigPaths(),
     tanstackStart({
       spa: {

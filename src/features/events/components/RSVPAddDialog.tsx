@@ -7,6 +7,7 @@ import { usersQueryOptions } from "@/queries/users.queries";
 import { Route } from "@/routes/_authenticated/events/$eventId/index";
 import { RSVPStatusUpdateSchema } from "@/server/schema/RSVPStatusSchema";
 import { isServerError } from "@/server/utils/errors";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
   Dialog,
@@ -19,14 +20,14 @@ import {
 import { keepPreviousData, useQueryClient } from "@tanstack/react-query";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useCallback, useMemo } from "react";
-import type {
-  FieldPath,
-  FieldValues,
-  UseControllerProps,
+import {
+  type FieldPath,
+  type FieldValues,
+  type UseControllerProps,
+  useForm,
 } from "react-hook-form";
 import { useDebounceValue } from "usehooks-ts";
 import { z } from "zod";
-import useZodForm from "../../../hooks/useZodForm";
 import useAddUserRsvp from "../hooks/useAddRsvp";
 
 interface RSVPAddDialogProps {
@@ -60,8 +61,8 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
     setError,
     setValue,
     getValues,
-  } = useZodForm({
-    schema: AddUserRsvpSchema,
+  } = useForm({
+    resolver: zodResolver(AddUserRsvpSchema),
     defaultValues: {
       userOption: null,
       checkinTime: null,

@@ -3,7 +3,7 @@ import {
   sessionMiddleware,
 } from "@/middleware/authMiddleware";
 import { usersQueryKeys } from "@/server/queryKeys";
-import type { UserListParamsSchema } from "@/server/schema";
+import type { UserListParamsSchema } from "@/server/schema/UserListParamsSchema";
 import {
   getPendingUserRsvps,
   getUser,

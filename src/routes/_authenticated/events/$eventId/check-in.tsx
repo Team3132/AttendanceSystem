@@ -1,10 +1,11 @@
 import ControlledTextField from "@/components/ControlledTextField";
 import useSelfCheckin from "@/features/events/hooks/useSelfCheckin";
-import useZodForm from "@/hooks/useZodForm";
-import { SelfCheckinSchema } from "@/server/schema";
+import { SelfCheckinSchema } from "@/server/schema/SelfCheckinSchema";
 import { isServerError } from "@/server/utils/errors";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Paper, Stack, Typography } from "@mui/material";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useForm } from "react-hook-form";
 
 export const Route = createFileRoute(
   "/_authenticated/events/$eventId/check-in",
@@ -25,8 +26,8 @@ function Component() {
     handleSubmit,
     formState: { isSubmitting },
     control,
-  } = useZodForm({
-    schema: SelfCheckinSchema,
+  } = useForm({
+    resolver: zodResolver(SelfCheckinSchema),
     defaultValues: {
       secret: "",
       eventId,

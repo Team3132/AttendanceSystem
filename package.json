@@ -14,10 +14,6 @@
     "test:e2e": "playwright test --project=chromium"
   },
   "main": "server.ts",
-  "files": [
-    "drizzle",
-    ".output"
-  ],
   "dependencies": {
     "@discordjs/builders": "1.13.1",
     "@discordjs/core": "2.4.0",
@@ -85,6 +81,7 @@
     "drizzle-kit": "0.31.8",
     "knip": "5.80.2",
     "lefthook": "2.0.14",
+    "rollup-plugin-visualizer": "^6.0.5",
     "typescript": "5.9.3",
     "vite": "7.3.1",
     "vite-tsconfig-paths": "6.0.4"

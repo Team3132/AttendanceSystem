@@ -1,4 +1,4 @@
-import type { RSVPEventSchema } from "@/server/schema";
+import type { RSVPEventSchema } from "@/server/schema/RSVPEventSchema";
 import { Button, ListItem, ListItemText } from "@mui/material";
 import { DateTime } from "luxon";
 import type { z } from "zod";

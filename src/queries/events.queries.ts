@@ -3,7 +3,7 @@ import {
   sessionMiddleware,
 } from "@/middleware/authMiddleware";
 import { eventQueryKeys } from "@/server/queryKeys";
-import type { GetEventParamsSchema } from "@/server/schema";
+import type { GetEventParamsSchema } from "@/server/schema/GetEventParamsSchema";
 import {
   getEvent,
   getEventRsvp,

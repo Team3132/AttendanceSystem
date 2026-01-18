@@ -1,10 +1,8 @@
 import type { QueryKeyValues } from "@/types/QueryKeyUtils";
 import type { z } from "zod";
-import type {
-  GetEventParamsSchema,
-  OutreachTimeSchema,
-  UserListParamsSchema,
-} from "./schema";
+import type { GetEventParamsSchema } from "./schema/GetEventParamsSchema";
+import type { OutreachTimeSchema } from "./schema/OutreachTimeSchema";
+import type { UserListParamsSchema } from "./schema/UserListParamsSchema";
 
 type UserListParams = Omit<z.infer<typeof UserListParamsSchema>, "cursor">;
 

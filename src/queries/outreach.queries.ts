@@ -1,6 +1,6 @@
 import { sessionMiddleware } from "@/middleware/authMiddleware";
 import { outreachQueryKeys } from "@/server/queryKeys";
-import { OutreachTimeSchema } from "@/server/schema";
+import { OutreachTimeSchema } from "@/server/schema/OutreachTimeSchema";
 import { getOutreachTime } from "@/server/services/outreach.service";
 import { infiniteQueryOptions } from "@tanstack/react-query";
 import { createServerFn } from "@tanstack/react-start";

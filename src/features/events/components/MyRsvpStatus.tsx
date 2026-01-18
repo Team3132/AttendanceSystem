@@ -1,6 +1,9 @@
 import { eventQueryOptions } from "@/queries/events.queries";
 import { Route } from "@/routes/_authenticated/events/$eventId";
-import { RSVPStatusSchema, RSVPStatusUpdateSchema } from "@/server/schema";
+import {
+  RSVPStatusSchema,
+  RSVPStatusUpdateSchema,
+} from "@/server/schema/RSVPStatusSchema";
 import { MenuItem, TextField } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo } from "react";

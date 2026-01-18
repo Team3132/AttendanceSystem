@@ -1,8 +1,9 @@
 import ControlledTextField from "@/components/ControlledTextField";
 import { isServerError } from "@/server/utils/errors";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, ListItem } from "@mui/material";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
-import useZodForm from "../../../hooks/useZodForm";
 import useCreateSelfScancode from "../hooks/useCreateSelfScancode";
 
 const NewScancodeSchema = z.object({
@@ -21,8 +22,8 @@ export default function NewScancodeListItem() {
     setError,
     reset,
     control,
-  } = useZodForm({
-    schema: NewScancodeSchema,
+  } = useForm({
+    resolver: zodResolver(NewScancodeSchema),
     defaultValues: {
       code: "",
     },

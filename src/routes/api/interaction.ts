@@ -1,5 +1,17 @@
 import env from "@/server/env";
+import { RSVPStatusUpdateSchema } from "@/server/schema/RSVPStatusSchema";
+import type { RSVPUserSchema } from "@/server/schema/RSVPUserSchema";
 import { generateMessage } from "@/server/services/botService";
+import {
+  editUserRsvpStatus,
+  getAutocompleteEvents,
+  getEvent,
+  getEventRsvps,
+  getEventSecret,
+  selfCheckin,
+  userCheckout,
+} from "@/server/services/events.service";
+import { createUser } from "@/server/services/user.service";
 import { trytm } from "@/utils/trytm";
 import {
   ActionRowBuilder,
@@ -18,20 +30,8 @@ import {
   TextInputStyle,
 } from "@discordjs/core";
 import { createFileRoute } from "@tanstack/react-router";
-import { match } from "path-to-regexp";
-
-import { RSVPStatusUpdateSchema, type RSVPUserSchema } from "@/server/schema";
-import {
-  editUserRsvpStatus,
-  getAutocompleteEvents,
-  getEvent,
-  getEventRsvps,
-  getEventSecret,
-  selfCheckin,
-  userCheckout,
-} from "@/server/services/events.service";
-import { createUser } from "@/server/services/user.service";
 import { DateTime } from "luxon";
+import { match } from "path-to-regexp";
 import { z } from "zod";
 import {
   createOutreachEmbedPage,

@@ -4,7 +4,7 @@ import { createServerFn, createServerOnlyFn } from "@tanstack/react-start";
 import { and, count, eq, ilike, isNotNull, isNull } from "drizzle-orm";
 import { z } from "zod";
 import { scancodeTable, sessionTable, userTable } from "../drizzle/schema";
-import type { UserCreateSchema } from "../schema";
+import type { UserCreateSchema } from "../schema/UserCreateSchema";
 import { UserListParamsSchema } from "../schema/UserListParamsSchema";
 import { getServerContext } from "../utils/context";
 import { buildConflictUpdateColumns } from "../utils/db/buildConflictUpdateColumns";

@@ -2,6 +2,7 @@ import ControlledAutocomplete from "@/components/ControlledAutocomplete";
 import ControlledTextField from "@/components/ControlledTextField";
 import { usersQueryOptions } from "@/queries/users.queries";
 import { isServerError } from "@/server/utils/errors";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
   Dialog,
@@ -14,15 +15,15 @@ import {
 import { keepPreviousData } from "@tanstack/react-query";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
-import type {
-  FieldPath,
-  FieldValues,
-  UseControllerProps,
+import {
+  type FieldPath,
+  type FieldValues,
+  type UseControllerProps,
+  useForm,
 } from "react-hook-form";
 import { useDebounceValue } from "usehooks-ts";
 import { z } from "zod";
 import { useDisclosure } from "../../../hooks/useDisclosure";
-import useZodForm from "../../../hooks/useZodForm";
 import useCreateUserScancode from "../../user/hooks/useCreateUserScancode";
 
 interface UnknownCodeModalProps {
@@ -60,8 +61,8 @@ export default function UnknownCodeModal(props: UnknownCodeModalProps) {
     control,
     reset,
     setError,
-  } = useZodForm({
-    schema: RegisterNewCodeFormSchema,
+  } = useForm({
+    resolver: zodResolver(RegisterNewCodeFormSchema),
     defaultValues: {
       code: "",
       userOption: null,

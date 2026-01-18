@@ -1,11 +1,12 @@
 import ControlledTextField from "@/components/ControlledTextField";
 import { isServerError } from "@/server/utils/errors";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Paper, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useCallback, useState } from "react";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useDisclosure } from "../../../hooks/useDisclosure";
-import useZodForm from "../../../hooks/useZodForm";
 import useScanin from "../hooks/useScanin";
 import UnknownCodeModal from "./UnknownCodeModal";
 
@@ -36,8 +37,8 @@ export default function ScaninCard(props: ScaninCardProps) {
     handleSubmit,
     reset,
     setValue,
-  } = useZodForm({
-    schema: ScaninSchema,
+  } = useForm({
+    resolver: zodResolver(ScaninSchema),
     defaultValues: {
       code: "",
     },

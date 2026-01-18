@@ -1,7 +1,12 @@
-import { z } from "zod";
-import { rsvpTable } from "../drizzle/schema";
+import z from "zod";
 
-export const RSVPStatusSchema = z.enum(rsvpTable.status.enumValues);
+export const RSVPStatusSchema = z.enum([
+  "LATE",
+  "MAYBE",
+  "NO",
+  "YES",
+  "ATTENDED",
+]);
 
 // Omit attended status from the schema
 export const RSVPStatusUpdateSchema = RSVPStatusSchema.exclude(["ATTENDED"]);

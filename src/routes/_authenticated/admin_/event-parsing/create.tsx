@@ -2,13 +2,14 @@ import ControlledAutocomplete from "@/components/ControlledAutocomplete";
 import ControlledCheckbox from "@/components/ControlledCheckbox";
 import ControlledTextField from "@/components/ControlledTextField";
 import useCreateRule from "@/features/admin/hooks/useCreateRule";
-import useZodForm from "@/hooks/useZodForm";
 import { discordQueryOptions } from "@/queries/discord.queries";
 import { strToRegex } from "@/server/utils/regexBuilder";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Divider, Stack, Typography } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMemo } from "react";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 export const Route = createFileRoute(
@@ -100,8 +101,8 @@ function RouteComponent() {
     control,
     handleSubmit,
     formState: { isSubmitting },
-  } = useZodForm({
-    schema: NewEventParsingRuleFormSchema,
+  } = useForm({
+    resolver: zodResolver(NewEventParsingRuleFormSchema),
     defaultValues: {
       channel: searchParams.channelId
         ? channelOptions.find((c) => c.value === searchParams.channelId)

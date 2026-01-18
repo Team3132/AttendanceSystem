@@ -16,7 +16,7 @@ import { DateTime } from "luxon";
 import type { z } from "zod";
 import { eventTable, rsvpTable, userTable } from "../drizzle/schema";
 import env from "../env";
-import type { RSVPUserSchema } from "../schema";
+import type { RSVPUserSchema } from "../schema/RSVPUserSchema";
 import { getServerContext } from "../utils/context";
 
 const statusToEmoji = (

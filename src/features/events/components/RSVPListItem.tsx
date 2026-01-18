@@ -1,4 +1,4 @@
-import type { RSVPUserSchema } from "@/server/schema";
+import type { RSVPUserSchema } from "@/server/schema/RSVPUserSchema";
 import { ListItem, ListItemAvatar, ListItemText, Tooltip } from "@mui/material";
 import { DateTime } from "luxon";
 import type { z } from "zod";

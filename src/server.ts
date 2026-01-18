@@ -9,7 +9,7 @@ import type z from "zod";
 import { type DB, initialiseDatabase } from "./server/drizzle/db";
 import { getKV } from "./server/drizzle/kv";
 import env from "./server/env";
-import type { RSVPStatusSchema } from "./server/schema";
+import type { RSVPStatusSchema } from "./server/schema/RSVPStatusSchema";
 import { reminderFn } from "./server/services/adminService";
 
 /**
