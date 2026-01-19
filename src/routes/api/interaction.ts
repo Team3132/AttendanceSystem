@@ -33,7 +33,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { DateTime } from "luxon";
 import { match } from "path-to-regexp";
 import { z } from "zod";
-import { discordMiddleware } from "../../middleware/verifyKeyMiddleware";
+import { discordMiddleware } from "../../middleware/discordMiddleware";
 import {
   createOutreachEmbedPage,
   leaderboardCommand,

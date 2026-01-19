@@ -41,7 +41,7 @@ async function restoreCron() {
     const existingJobs = scheduledJobs.filter((job) => job.name === filter.id);
 
     for (const job of existingJobs) {
-      logger.info(`Job: ${job.name} deleted`);
+      logger.withTag("Tasks").info(`${job.name} deleted`);
       job.stop();
     }
 
@@ -51,7 +51,7 @@ async function restoreCron() {
         name: filter.id,
         timezone: env.TZ,
         catch: (error) => {
-          logger.withTag("Job").error(error);
+          logger.withTag("Tasks").error(error);
         },
       },
       (job) => reminderFn(job, db),
@@ -59,13 +59,15 @@ async function restoreCron() {
 
     const nextRun = job.nextRun();
 
-    logger.info(
-      `Job: ${job.name} (${filter.name}) created, next run: ${
-        nextRun
-          ? DateTime.fromJSDate(nextRun).toLocaleString(DateTime.DATETIME_MED)
-          : "unknown"
-      }`,
-    );
+    logger
+      .withTag("Tasks")
+      .info(
+        `${job.name} (${filter.name}) created, next run: ${
+          nextRun
+            ? DateTime.fromJSDate(nextRun).toLocaleString(DateTime.DATETIME_MED)
+            : "unknown"
+        }`,
+      );
   }
 }
 

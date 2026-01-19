@@ -8,7 +8,7 @@ const createLogger = createIsomorphicFn()
       formatOptions: {
         date: true,
       },
-    }).withTag("SERVER");
+    }).withTag("Server");
 
     if (import.meta.env.PROD) {
       base.setReporters([
@@ -23,7 +23,7 @@ const createLogger = createIsomorphicFn()
   .client(() =>
     createConsola({
       level: LogLevels.debug,
-    }).withTag("CLIENT"),
+    }).withTag("Client"),
   );
 
 export const logger = createLogger();

@@ -135,7 +135,7 @@ export const createParsingRule = createServerFn({
         name: ruleId,
         timezone: env.TZ,
         catch: (error) => {
-          logger.withTag("Job").error(error);
+          logger.withTag("Tasks").error(error);
         },
       },
       (job) => reminderFn(job, db),

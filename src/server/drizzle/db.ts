@@ -5,6 +5,8 @@ import type { PgliteDatabase } from "drizzle-orm/pglite";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import env from "../env";
 
+const dbLogger = logger.withTag("Database");
+
 /**
  * Instantiate a PostgreSQL or PGlite database connection using Drizzle ORM.
  *
@@ -25,7 +27,7 @@ export const initialiseDatabase = createServerOnlyFn(async (): Promise<DB> => {
 
   const humanProtocol = protocol.slice(0, -1);
 
-  logger.info(`Using ${humanProtocol} database`);
+  dbLogger.info(`Using ${humanProtocol} database`);
 
   return isPGLite
     ? await initPGLiteDatabase(connectionString)
@@ -56,13 +58,16 @@ async function initPostgresDatabase(databaseUrl: string) {
   const migrationDrizzle = drizzle({
     schema,
     client: migrationClient,
+    logger: {
+      logQuery: (query, params) => dbLogger.debug("Ran Query", query, params),
+    },
   });
 
   await migrate(migrationDrizzle, { migrationsFolder }); // Finally run migrations
 
   await migrationClient.end(); // Close migration client
 
-  logger.success("Database migrations completed successfully");
+  dbLogger.success("Database migrations completed successfully");
 
   /** The PostgresJS client used for the database. */
   const client = postgres(databaseUrl);
@@ -71,6 +76,9 @@ async function initPostgresDatabase(databaseUrl: string) {
   const db = drizzle({
     schema,
     client,
+    logger: {
+      logQuery: (query, params) => dbLogger.debug("Ran Query", query, params),
+    },
   });
 
   return db;
@@ -98,11 +106,14 @@ async function initPGLiteDatabase(databaseUrl: string) {
   const db = drizzle({
     schema,
     client,
+    logger: {
+      logQuery: (query, params) => dbLogger.debug("Ran Query", query, params),
+    },
   });
 
   await migrate(db, { migrationsFolder }); // Run migrations
 
-  logger.success("Database migrations completed successfully");
+  dbLogger.success("Database migrations completed successfully");
 
   return db;
 }

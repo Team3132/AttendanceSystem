@@ -14,7 +14,7 @@ export const discordMiddleware = createMiddleware().server(
     const timestamp = getRequestHeader("X-Signature-Timestamp");
 
     /** Child logger for interaction logging (passed to request context) */
-    const logger = parentLogger.withTag("interaction");
+    const logger = parentLogger.withTag("Discord");
 
     const rawBody = await request.text();
 
