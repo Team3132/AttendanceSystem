@@ -1,5 +1,13 @@
 # frontend
 
+## 6.2.12
+
+### Patch Changes
+
+- [`cac6283`](https://github.com/Team3132/attendance/commit/cac6283ccd0f1b761f0994dc278d15caa996cc85) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix broken locale hydration
+
+- [`cac6283`](https://github.com/Team3132/attendance/commit/cac6283ccd0f1b761f0994dc278d15caa996cc85) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Fix event rsvps not loading on web
+
 ## 6.2.11
 
 ### Patch Changes
