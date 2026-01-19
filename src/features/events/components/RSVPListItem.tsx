@@ -1,4 +1,5 @@
 import type { RSVPUserSchema } from "@/server/schema/RSVPUserSchema";
+import { getLocale } from "@/utils/dt";
 import { ListItem, ListItemAvatar, ListItemText, Tooltip } from "@mui/material";
 import { DateTime } from "luxon";
 import type { z } from "zod";
@@ -22,11 +23,13 @@ export default function RSVPListItem({ rsvp }: RSVPListItemProps) {
           rsvp.checkinTime && rsvp.checkoutTime
             ? `Checked out at ${DateTime.fromJSDate(
                 rsvp.checkoutTime,
-              ).toLocaleString(DateTime.TIME_SIMPLE)}`
+              ).toLocaleString(DateTime.TIME_SIMPLE, { locale: getLocale() })}`
             : rsvp.checkinTime
               ? `Checked in at ${DateTime.fromJSDate(
                   rsvp.checkinTime,
-                ).toLocaleString(DateTime.TIME_SIMPLE)}`
+                ).toLocaleString(DateTime.TIME_SIMPLE, {
+                  locale: getLocale(),
+                })}`
               : "No check-in"
         }
       />

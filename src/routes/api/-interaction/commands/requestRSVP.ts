@@ -1,3 +1,4 @@
+import type { DB } from "@/server/drizzle/db";
 import { generateMessage } from "@/server/services/botService";
 import { markEventPosted } from "@/server/services/events.service";
 import { trytm } from "@/utils/trytm";
@@ -11,6 +12,7 @@ import { type JSONReply, reply } from "../interactionReply";
 
 export async function requestRSVPCommand(
   interaction: APIChatInputApplicationCommandInteractionData,
+  db: DB,
 ): Promise<JSONReply> {
   const meetingStringOption = interaction.options?.find(
     (option) =>
@@ -27,7 +29,7 @@ export async function requestRSVPCommand(
     });
   }
 
-  const [response, err] = await trytm(generateMessage(meetingId));
+  const [response, err] = await trytm(generateMessage(db, meetingId));
 
   const [_, eventPostedError] = await trytm(markEventPosted(meetingId));
 

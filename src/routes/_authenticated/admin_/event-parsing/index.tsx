@@ -6,6 +6,7 @@ import useSyncCalendar from "@/features/admin/hooks/useSyncCalendar";
 import useTriggerRule from "@/features/admin/hooks/useTriggerRule";
 import { adminQueries } from "@/queries/adminQueries";
 import type { ParsingRule } from "@/server/drizzle/schema";
+import { getLocale } from "@/utils/dt";
 import {
   Button,
   IconButton,
@@ -112,7 +113,7 @@ function ParsingRuleListItem(props: { rule: ParsingRule }) {
     >
       <ListItemText
         primary={rule.name}
-        secondary={`Priority: ${rule.priority}, Last Run: ${rule.lastRun === null ? "Never" : DateTime.fromJSDate(rule.lastRun).toLocaleString(DateTime.DATETIME_MED)}`}
+        secondary={`Priority: ${rule.priority}, Last Run: ${rule.lastRun === null ? "Never" : DateTime.fromJSDate(rule.lastRun).toLocaleString(DateTime.DATETIME_MED, { locale: getLocale() })}`}
       />
     </ListItem>
   );

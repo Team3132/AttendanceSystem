@@ -1,3 +1,4 @@
+import { logger } from "@/utils/logger";
 import { trytm } from "@/utils/trytm";
 import { createServerOnlyFn } from "@tanstack/react-start";
 import { asc, inArray } from "drizzle-orm";
@@ -5,14 +6,11 @@ import { Common, type calendar_v3, google } from "googleapis";
 import { DateTime } from "luxon";
 import { eventParsingRuleTable, eventTable } from "../drizzle/schema";
 import env from "../env";
-import { consola } from "../logger";
 import { getServerContext } from "../utils/context";
 import type { ColumnNames } from "../utils/db/ColumnNames";
 import { buildConflictUpdateColumns } from "../utils/db/buildConflictUpdateColumns";
 import { buildSetWhereColumns } from "../utils/db/buildSetWhereColumns";
 import { strToRegex } from "../utils/regexBuilder";
-
-const eventLogger = consola.withTag("eventSync");
 
 type EventInsert = typeof eventTable.$inferInsert;
 
@@ -56,7 +54,7 @@ const incrementalSync = createServerOnlyFn(async function* (
   if (error) {
     if (error instanceof Common.GaxiosError && error.status === 410) {
       // Sync token is invalid, need to do a full sync
-      eventLogger.warn("Sync token is invalid, performing full sync");
+      logger.warn("Sync token is invalid, performing full sync");
       await kv.delete("syncToken");
       return incrementalSync();
     }
@@ -72,7 +70,7 @@ const incrementalSync = createServerOnlyFn(async function* (
 
   if (initialData.nextSyncToken) {
     await kv.set("syncToken", initialData.nextSyncToken);
-    eventLogger.debug("Updated sync token", initialData.nextSyncToken);
+    logger.debug("Updated sync token", initialData.nextSyncToken);
   }
 
   /** The page token */
@@ -93,7 +91,7 @@ const incrementalSync = createServerOnlyFn(async function* (
     if (error) {
       if (error instanceof Common.GaxiosError && error.status === 410) {
         // Sync token is invalid, need to do a full sync
-        eventLogger.warn("Sync token is invalid, performing full sync");
+        logger.warn("Sync token is invalid, performing full sync");
         await kv.delete("syncToken");
         return incrementalSync();
       }
@@ -115,7 +113,7 @@ const incrementalSync = createServerOnlyFn(async function* (
     // If the sync token is present, update it
     if (data.nextSyncToken) {
       await kv.set("syncToken", data.nextSyncToken);
-      eventLogger.debug("Updated sync token", data.nextSyncToken);
+      logger.debug("Updated sync token", data.nextSyncToken);
     }
   }
 });
@@ -225,9 +223,9 @@ const isMatchingRule = (
 export const syncEvents = createServerOnlyFn(async () => {
   const { kv, db } = getServerContext();
 
-  eventLogger.info("Sync Events");
+  logger.info("Sync Events");
   const syncToken = await kv.get<string>("syncToken");
-  eventLogger.debug("Using sync token", syncToken);
+  logger.debug("Using sync token", syncToken);
 
   /** All the calendar events */
   const calendarEvents = incrementalSync(syncToken);
@@ -264,7 +262,7 @@ export const syncEvents = createServerOnlyFn(async () => {
       );
 
       if (deleteError) {
-        eventLogger.error("Failed to delete events", deleteError);
+        logger.error("Failed to delete events", deleteError);
       }
 
       if (deletedData?.length) {
@@ -287,7 +285,7 @@ export const syncEvents = createServerOnlyFn(async () => {
       );
 
       if (insertError) {
-        eventLogger.error("Failed to insert events", insertError);
+        logger.error("Failed to insert events", insertError);
       }
 
       if (insertedData?.length) {
@@ -296,10 +294,10 @@ export const syncEvents = createServerOnlyFn(async () => {
     }
   }
 
-  if (totalDeleted) eventLogger.info(`Deleted ${totalDeleted} events`);
-  if (totalUpserted) eventLogger.info(`Upserted ${totalUpserted} events`);
+  if (totalDeleted) logger.info(`Deleted ${totalDeleted} events`);
+  if (totalUpserted) logger.info(`Upserted ${totalUpserted} events`);
 
-  eventLogger.success("Sync Events");
+  logger.success("Sync Events");
 
   return { updatedEvents: totalUpserted, deletedEventCount: totalDeleted };
 });

@@ -11,6 +11,7 @@ import { getKV } from "./server/drizzle/kv";
 import env from "./server/env";
 import type { RSVPStatusSchema } from "./server/schema/RSVPStatusSchema";
 import { reminderFn } from "./server/services/adminService";
+import { logger } from "./utils/logger";
 
 /**
  * A pubsub events manager for future websocket features
@@ -40,7 +41,7 @@ async function restoreCron() {
     const existingJobs = scheduledJobs.filter((job) => job.name === filter.id);
 
     for (const job of existingJobs) {
-      console.log(`Job: ${job.name} deleted`);
+      logger.info(`Job: ${job.name} deleted`);
       job.stop();
     }
 
@@ -55,8 +56,12 @@ async function restoreCron() {
 
     const nextRun = job.nextRun();
 
-    console.log(
-      `Job: ${job.name} (${filter.name}) created, next run: ${nextRun ? DateTime.fromJSDate(nextRun).toLocaleString(DateTime.DATETIME_MED) : "unknown"}`,
+    logger.info(
+      `Job: ${job.name} (${filter.name}) created, next run: ${
+        nextRun
+          ? DateTime.fromJSDate(nextRun).toLocaleString(DateTime.DATETIME_MED)
+          : "unknown"
+      }`,
     );
   }
 }

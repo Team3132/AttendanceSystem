@@ -5,10 +5,10 @@ import {
 } from "@/server/auth/session";
 import { userTable } from "@/server/drizzle/schema";
 import env from "@/server/env";
-import { consola } from "@/server/logger";
 import type { ColumnNames } from "@/server/utils/db/ColumnNames";
 import { buildConflictUpdateColumns } from "@/server/utils/db/buildConflictUpdateColumns";
 import { buildSetWhereColumns } from "@/server/utils/db/buildSetWhereColumns";
+import { logger } from "@/utils/logger";
 import { trytm } from "@/utils/trytm";
 import { API } from "@discordjs/core";
 import { REST } from "@discordjs/rest";
@@ -25,8 +25,7 @@ const querySchema = z.object({
 export const Route = createFileRoute("/api/auth/discord/callback")({
   server: {
     handlers: {
-      GET: async ({ context, request }) => {
-        const { db } = context;
+      GET: async ({ context: { db }, request }) => {
         const headers = new Headers({
           Location: env.VITE_URL,
         });
@@ -81,8 +80,7 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
         );
 
         if (tokensError) {
-          console.log(tokensError);
-          consola.error("Failed to validate authorization code", tokensError);
+          logger.error("Failed to validate authorization code", tokensError);
           return new Response(null, {
             status: 302,
             headers,
@@ -99,7 +97,7 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
           api.users.getGuilds(),
         );
         if (guildsError) {
-          consola.error("Failed to fetch user guilds", guildsError);
+          logger.error("Failed to fetch user guilds", guildsError);
           return new Response(null, {
             status: 302,
             headers,
@@ -111,7 +109,7 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
         );
 
         if (!validGuild) {
-          consola.error(
+          logger.error(
             "User is not a member of the required guild",
             env.GUILD_ID,
           );
@@ -124,7 +122,7 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
         const [meData, meError] = await trytm(api.users.get("@me"));
 
         if (meError) {
-          consola.error("Failed to fetch user data", meError);
+          logger.error("Failed to fetch user data", meError);
           return new Response(null, {
             status: 302,
             headers,
@@ -136,7 +134,7 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
           api.users.getGuildMember(env.GUILD_ID),
         );
         if (guildMemberError) {
-          consola.error("Failed to fetch guild member data", guildMemberError);
+          logger.error("Failed to fetch guild member data", guildMemberError);
           return new Response(null, {
             status: 302,
             headers,
@@ -172,10 +170,7 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
         );
 
         if (userUpdateError) {
-          consola.error(
-            "Failed to update or insert user data",
-            userUpdateError,
-          );
+          logger.error("Failed to update or insert user data", userUpdateError);
           return new Response(null, {
             status: 302,
             headers,
@@ -189,7 +184,7 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
         );
 
         if (sessionError) {
-          consola.error("Failed to create session", sessionError);
+          logger.error("Failed to create session", sessionError);
           return new Response(null, {
             status: 302,
             headers,
@@ -198,9 +193,9 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
 
         setSessionTokenCookie(sessionToken, session.expiresAt);
 
-        consola
-          .withTag("auth")
-          .info(`User ${nick || username} (${id}) authenticated successfully`);
+        logger.info(
+          `User ${nick || username} (${id}) authenticated successfully`,
+        );
 
         return new Response(null, { headers, status: 302 });
       },

@@ -1,4 +1,5 @@
 import { adminMiddleware } from "@/middleware/authMiddleware";
+import { logger } from "@/utils/logger";
 import { trytm } from "@/utils/trytm";
 import { ChannelType } from "@discordjs/core";
 import { createServerFn, createServerOnlyFn } from "@tanstack/react-start";
@@ -10,7 +11,6 @@ import { z } from "zod";
 import type { DB } from "../drizzle/db";
 import { eventParsingRuleTable, eventTable } from "../drizzle/schema";
 import env from "../env";
-import { consola } from "../logger";
 import { NewEventParsingRuleSchema } from "../schema/NewEventParsingRuleSchema";
 import { UpdateEventParsingRuleSchema } from "../schema/UpdateEventParsingRuleSchema";
 import { ServerError } from "../utils/errors";
@@ -58,7 +58,7 @@ export const reminderFn = createServerOnlyFn(async (job: Cron, db: DB) => {
   // generate messages for each event (this fetches RSVPs and the event details)
   const notificationMessages = await Promise.all(
     matchingEventIds.map(
-      async (eventId) => [eventId, await generateMessage(eventId)] as const,
+      async (eventId) => [eventId, await generateMessage(db, eventId)] as const,
     ),
   );
 
@@ -86,10 +86,10 @@ export const reminderFn = createServerOnlyFn(async (job: Cron, db: DB) => {
     .map((p) => p.reason);
 
   if (rejectedEventsMessages.length > 0) {
-    consola.error(`Events not posted: ${rejectedEventsMessages.join(", ")}`);
+    logger.error(`Events not posted: ${rejectedEventsMessages.join(", ")}`);
   }
 
-  consola.success(
+  logger.success(
     `Posted ${matchingEventIds.length} events for rule ${job.name}`,
   );
 
@@ -277,7 +277,7 @@ export const deleteParsingRule = createServerFn({
         .delete(eventParsingRuleTable)
         .where(eq(eventParsingRuleTable.id, id));
     } catch (error) {
-      consola.log(`Error deleting rule: ${rule.name} (${rule.id})`, error);
+      logger.log(`Error deleting rule: ${rule.name} (${rule.id})`, error);
       throw error;
     }
 
@@ -291,7 +291,7 @@ export const deleteParsingRule = createServerFn({
       });
     }
 
-    consola.success(`Successfully Deleted: ${rule.name} (${rule.id})`);
+    logger.success(`Successfully Deleted: ${rule.name} (${rule.id})`);
 
     return {
       ...rule,
@@ -396,7 +396,7 @@ export const triggerRule = createServerFn({
 
     try {
       await scheduledJobs.find((job) => job.name === id)?.trigger();
-      consola.success(`Successfully Triggered: ${rule.name} (${rule.id})`);
+      logger.success(`Successfully Triggered: ${rule.name} (${rule.id})`);
     } catch (error) {
       throw new ServerError({
         code: "INTERNAL_SERVER_ERROR",
@@ -461,14 +461,14 @@ const reapplyRules = createServerFn({ method: "POST" })
 
       const newRuleId = ruleMatches.find((r) => r.match)?.id ?? null;
 
-      consola.debug(`Event "${event.title}" (${event.id}) matches rules:`);
+      logger.debug(`Event "${event.title}" (${event.id}) matches rules:`);
 
       for (const r of ruleMatches) {
-        consola.debug(` - Rule ${r.id} (${r.regex}): ${r.match}`);
+        logger.debug(` - Rule ${r.id} (${r.regex}): ${r.match}`);
       }
 
       if (newRuleId !== event.existingRuleId) {
-        consola.debug(
+        logger.debug(
           `Reapplying rule for event ${event.id}: ${event.existingRuleId} -> ${newRuleId}`,
         );
 

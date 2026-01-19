@@ -1,11 +1,9 @@
 import path from "node:path";
+import { logger } from "@/utils/logger";
 import { createServerOnlyFn } from "@tanstack/react-start";
 import type { PgliteDatabase } from "drizzle-orm/pglite";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import env from "../env";
-import { consola } from "../logger";
-
-const logger = consola.withTag("db"); // Create a logger instance with "db" tag
 
 /**
  * Instantiate a PostgreSQL or PGlite database connection using Drizzle ORM.

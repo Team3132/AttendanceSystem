@@ -4,6 +4,7 @@ import LinkTabs from "@/components/LinkTabs";
 import type { TabItem } from "@/hooks/useTabIndex";
 import { authQueryOptions } from "@/queries/auth.queries";
 import { eventQueryOptions } from "@/queries/events.queries";
+import { getLocale } from "@/utils/dt";
 import { Skeleton, Stack, Typography, styled } from "@mui/material";
 
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -97,15 +98,15 @@ const generateCheckinCheckout = (startTime: Date, endTime: Date) => {
 
   if (isSameDay) {
     // If the checkin and checkout are on the same day, show the time range
-    return `${checkin.toLocaleString(
-      DateTime.DATETIME_MED_WITH_WEEKDAY,
-    )} - ${checkout.toLocaleString(DateTime.TIME_SIMPLE)} (${hours})`;
+    return `${checkin.toLocaleString(DateTime.DATETIME_MED_WITH_WEEKDAY, {
+      locale: getLocale(),
+    })} - ${checkout.toLocaleString(DateTime.TIME_SIMPLE, { locale: getLocale() })} (${hours})`;
   }
 
   // If the checkin and checkout are not on the same day, show the date range
-  return `${checkin.toLocaleString(
-    DateTime.DATETIME_MED,
-  )} - ${checkout.toLocaleString(DateTime.DATETIME_MED)} (${hours})`;
+  return `${checkin.toLocaleString(DateTime.DATETIME_MED, {
+    locale: getLocale(),
+  })} - ${checkout.toLocaleString(DateTime.DATETIME_MED, { locale: getLocale() })} (${hours})`;
 };
 
 const CenteredStack = styled(Stack)(({ theme }) => ({

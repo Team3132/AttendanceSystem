@@ -1,11 +1,11 @@
 import env from "@/server/env";
-import { consola } from "@/server/logger";
+import { logger as parentLogger } from "@/utils/logger";
 import type { APIInteraction } from "@discordjs/core";
 import { createMiddleware } from "@tanstack/react-start";
 import { getRequestHeader } from "@tanstack/react-start/server";
 import { verifyKey } from "discord-interactions";
 
-export const verifyDiscordMiddleware = createMiddleware().server(
+export const discordMiddleware = createMiddleware().server(
   async ({ next, request }) => {
     if (!env.DISCORD_PUBLIC_KEY)
       throw new Error("Discord Public Key not configured");
@@ -14,7 +14,7 @@ export const verifyDiscordMiddleware = createMiddleware().server(
     const timestamp = getRequestHeader("X-Signature-Timestamp");
 
     /** Child logger for interaction logging (passed to request context) */
-    const logger = consola.withTag("interaction");
+    const logger = parentLogger.withTag("interaction");
 
     const rawBody = await request.text();
 

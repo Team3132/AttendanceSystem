@@ -33,6 +33,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { DateTime } from "luxon";
 import { match } from "path-to-regexp";
 import { z } from "zod";
+import { discordMiddleware } from "../../middleware/verifyKeyMiddleware";
 import {
   createOutreachEmbedPage,
   leaderboardCommand,
@@ -45,7 +46,6 @@ import {
   reply,
   updateMessage,
 } from "./-interaction/interactionReply";
-import { verifyDiscordMiddleware } from "./-interaction/verifyKeyMiddleware";
 
 const statusToEmoji = (status: z.infer<typeof RSVPUserSchema>["status"]) => {
   switch (status) {
@@ -73,7 +73,7 @@ function rsvpToDescription(
 
 export const Route = createFileRoute("/api/interaction")({
   server: {
-    middleware: [verifyDiscordMiddleware],
+    middleware: [discordMiddleware],
     handlers: {
       POST: async ({ context: { db, interaction, logger } }) => {
         if (
@@ -111,7 +111,7 @@ export const Route = createFileRoute("/api/interaction")({
             case "syncplz":
               return syncplzCommand(interaction.data);
             case "requestrsvp":
-              return requestRSVPCommand(interaction.data);
+              return requestRSVPCommand(interaction.data, db);
             case "leaderboard":
               return leaderboardCommand(interaction.data);
             default:
@@ -328,7 +328,7 @@ export const Route = createFileRoute("/api/interaction")({
               }
 
               const [generatedMessage, genMsgErr] = await trytm(
-                generateMessage(eventId),
+                generateMessage(db, eventId),
               );
 
               if (genMsgErr) {
@@ -427,7 +427,7 @@ export const Route = createFileRoute("/api/interaction")({
                 });
               }
               const [generatedMessage, genMsgErr] = await trytm(
-                generateMessage(eventId),
+                generateMessage(db, eventId),
               );
               if (genMsgErr) {
                 return reply({
@@ -577,7 +577,7 @@ export const Route = createFileRoute("/api/interaction")({
               });
             }
             const [generatedMessage, genMsgErr] = await trytm(
-              generateMessage(eventId),
+              generateMessage(db, eventId),
             );
             if (genMsgErr) {
               return reply({
@@ -675,7 +675,7 @@ export const Route = createFileRoute("/api/interaction")({
               });
             }
             const [generatedMessage, genMsgErr] = await trytm(
-              generateMessage(eventId),
+              generateMessage(db, eventId),
             );
             if (genMsgErr) {
               return reply({

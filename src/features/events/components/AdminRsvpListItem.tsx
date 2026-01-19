@@ -1,4 +1,5 @@
 import type { RSVPUserSchema } from "@/server/schema/RSVPUserSchema";
+import { getLocale } from "@/utils/dt";
 import {
   ListItem,
   ListItemAvatar,
@@ -29,22 +30,22 @@ const generateCheckinCheckout = (
   if (isSameDay && checkin && checkout) {
     const hours = checkout.diff(checkin, "hours").hours;
     // If the checkin and checkout are on the same day, show the time range
-    return `${checkin.toLocaleString(
-      DateTime.TIME_SIMPLE,
-    )} - ${checkout.toLocaleString(DateTime.TIME_SIMPLE)} (${hours} hours)`;
+    return `${checkin.toLocaleString(DateTime.TIME_SIMPLE, {
+      locale: getLocale(),
+    })} - ${checkout.toLocaleString(DateTime.TIME_SIMPLE, { locale: getLocale() })} (${hours} hours)`;
   }
 
   if (checkin && checkout) {
     const hours = checkout.diff(checkin, "hours").hours;
     // If the checkin and checkout are not on the same day, show the date range
-    return `${checkin.toLocaleString(
-      DateTime.DATETIME_MED,
-    )} - ${checkout.toLocaleString(DateTime.DATETIME_MED)} (${hours} hours)`;
+    return `${checkin.toLocaleString(DateTime.DATETIME_MED, {
+      locale: getLocale(),
+    })} - ${checkout.toLocaleString(DateTime.DATETIME_MED, { locale: getLocale() })} (${hours} hours)`;
   }
 
   if (checkin) {
     // If there is a checkin time, show the checkin time
-    return `Checked in at ${checkin.toLocaleString(DateTime.TIME_SIMPLE)}`;
+    return `Checked in at ${checkin.toLocaleString(DateTime.TIME_SIMPLE, { locale: getLocale() })}`;
   }
 
   // If there is no checkin time, show that there is no checkin

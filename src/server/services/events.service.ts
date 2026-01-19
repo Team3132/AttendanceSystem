@@ -1,6 +1,8 @@
 import { sessionMiddleware } from "@/middleware/authMiddleware";
+import { logger } from "@/utils/logger";
 import { trytm } from "@/utils/trytm";
 import { createServerFn, createServerOnlyFn } from "@tanstack/react-start";
+import { setResponseStatus } from "@tanstack/react-start/server";
 import { type SQL, and, asc, between, eq, gte, lte, or } from "drizzle-orm";
 import { DateTime } from "luxon";
 import type { z } from "zod";
@@ -110,7 +112,7 @@ export const getEvent = createServerOnlyFn(async (id: string) => {
 
   const [dbEvent, dbError] = await trytm(
     db.query.eventTable.findFirst({
-      where: (event, { eq }) => eq(event.id, id),
+      where: eq(eventTable.id, id),
       with: {
         rule: {
           columns: {
@@ -123,18 +125,15 @@ export const getEvent = createServerOnlyFn(async (id: string) => {
   );
 
   if (dbError) {
-    throw new ServerError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Failed to fetch event",
+    setResponseStatus(500);
+    throw new Error("Failed to fetch event", {
       cause: dbError,
     });
   }
 
   if (!dbEvent) {
-    throw new ServerError({
-      code: "NOT_FOUND",
-      message: "Event not found",
-    });
+    setResponseStatus(404);
+    throw new Error("Event not found");
   }
 
   const { secret, ...rest } = dbEvent;
@@ -223,15 +222,13 @@ export const getEventRsvps = createServerOnlyFn(
       db
         .select()
         .from(rsvpTable)
-        .innerJoin(userTable, (rsvp) => eq(rsvp.userId, userTable.id))
-        .where(({ rsvp }) => eq(rsvp.eventId, eventId))
+        .innerJoin(userTable, eq(userTable.id, rsvpTable.userId))
+        .where(eq(rsvpTable.eventId, eventId))
         .orderBy(({ user }) => asc(user.username)),
     );
 
     if (eventRsvpFetchError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to fetch event rsvps",
+      throw new Error("Failed to fetch event rsvps", {
         cause: eventRsvpFetchError,
       });
     }
@@ -426,7 +423,7 @@ const userCheckin = createServerOnlyFn(
     //   status: updatedRsvp.status,
     //   userId: userId,
     // });
-    console.log("Published RSVP update for event:", eventId);
+    logger.log("Published RSVP update for event:", eventId);
 
     return updatedRsvp;
   },

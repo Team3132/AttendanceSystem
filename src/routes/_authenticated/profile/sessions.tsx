@@ -1,4 +1,5 @@
 import { usersQueryOptions } from "@/queries/users.queries";
+import { getLocale } from "@/utils/dt";
 import { List, ListItem, ListItemText, Skeleton } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
@@ -44,6 +45,7 @@ function SessionList() {
           <ListItemText
             primary={DateTime.fromJSDate(session.expiresAt).toLocaleString(
               DateTime.DATETIME_MED,
+              { locale: getLocale() },
             )}
           />
         </ListItem>

@@ -1,3 +1,4 @@
+import { getLocale } from "@/utils/dt";
 import { DateTime } from "luxon";
 
 interface EventDateTypographyProps {
@@ -21,17 +22,23 @@ export default function EventDateText(props: EventDateTypographyProps) {
   if (startDate.hasSame(endDate, "day")) {
     return (
       <span>
-        {startDate.toLocaleString(DateTime.DATE_FULL)}{" "}
-        {startDate.toLocaleString(DateTime.TIME_SIMPLE)} -{" "}
-        {endDate.toLocaleString(DateTime.TIME_SIMPLE)}
+        {startDate.toLocaleString(DateTime.DATE_FULL, { locale: getLocale() })}{" "}
+        {startDate.toLocaleString(DateTime.TIME_SIMPLE, {
+          locale: getLocale(),
+        })}{" "}
+        -{" "}
+        {endDate.toLocaleString(DateTime.TIME_SIMPLE, { locale: getLocale() })}
       </span>
     );
   }
 
   return (
     <span>
-      {startDate.toLocaleString(DateTime.DATETIME_FULL)} -{" "}
-      {endDate.toLocaleString(DateTime.DATETIME_FULL)}
+      {startDate.toLocaleString(DateTime.DATETIME_FULL, {
+        locale: getLocale(),
+      })}{" "}
+      -{" "}
+      {endDate.toLocaleString(DateTime.DATETIME_FULL, { locale: getLocale() })}
     </span>
   );
 }

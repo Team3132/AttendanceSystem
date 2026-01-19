@@ -1,4 +1,5 @@
 import { adminMiddleware } from "@/middleware/authMiddleware";
+import { logger } from "@/utils/logger";
 import { trytm } from "@/utils/trytm";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import {
@@ -147,7 +148,7 @@ export const deployCommands = createServerFn({ method: "POST" })
         cause: err,
       });
     }
-    console.log("Successfully deployed commands:", data);
+    logger.success("Successfully deployed commands:", data);
 
     return;
   });
