@@ -10,8 +10,8 @@ import {
 } from "@discordjs/core";
 import { REST } from "@discordjs/rest";
 import { createServerFn, createServerOnlyFn } from "@tanstack/react-start";
+import { setResponseStatus } from "@tanstack/react-start/server";
 import env from "../env";
-import { ServerError } from "../utils/errors";
 
 /**
  * Get the API instance for the bot
@@ -46,9 +46,8 @@ export const getServerRoles = createServerFn({ method: "GET" })
     );
 
     if (rolesFetchError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error fetching roles",
+      setResponseStatus(500);
+      throw new Error("Error fetching roles from Discord API", {
         cause: rolesFetchError,
       });
     }
@@ -73,9 +72,8 @@ export const getServerChannels = createServerFn({ method: "GET" })
     );
 
     if (channelFetchError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error fetching channels",
+      setResponseStatus(500);
+      throw new Error("Error fetching channels from Discord API", {
         cause: channelFetchError,
       });
     }
@@ -142,9 +140,8 @@ export const deployCommands = createServerFn({ method: "POST" })
     );
 
     if (err) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error deploying commands",
+      setResponseStatus(500);
+      throw new Error("Error deploying commands", {
         cause: err,
       });
     }

@@ -18,7 +18,6 @@ import clampDateTime from "../utils/clampDateTime";
 import { getServerContext } from "../utils/context";
 import { buildConflictUpdateColumns } from "../utils/db/buildConflictUpdateColumns";
 import { buildSetWhereColumns } from "../utils/db/buildSetWhereColumns";
-import { ServerError } from "../utils/errors";
 
 /**
  * Get events
@@ -61,9 +60,8 @@ export const getEvents = createServerFn({ method: "GET" })
     );
 
     if (totalEntriesError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to get total events",
+      setResponseStatus(500);
+      throw new Error("Failed to get total events", {
         cause: totalEntriesError,
       });
     }
@@ -84,9 +82,8 @@ export const getEvents = createServerFn({ method: "GET" })
     );
 
     if (eventFetchError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to get events",
+      setResponseStatus(500);
+      throw new Error("Failed to get events", {
         cause: eventFetchError,
       });
     }
@@ -161,18 +158,15 @@ export const getEventSecret = createServerOnlyFn(
     );
 
     if (dbError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to fetch event",
+      setResponseStatus(500);
+      throw new Error("Failed to fetch event", {
         cause: dbError,
       });
     }
 
     if (!dbEvent) {
-      throw new ServerError({
-        code: "NOT_FOUND",
-        message: "Event not found",
-      });
+      setResponseStatus(404);
+      throw new Error("Event not found");
     }
 
     const { secret } = dbEvent;
@@ -199,9 +193,8 @@ export const getEventRsvp = createServerOnlyFn(
     );
 
     if (eventError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to fetch event rsvp",
+      setResponseStatus(500);
+      throw new Error("Failed to fetch event rsvp", {
         cause: eventError,
       });
     }
@@ -228,6 +221,7 @@ export const getEventRsvps = createServerOnlyFn(
     );
 
     if (eventRsvpFetchError) {
+      setResponseStatus(500);
       throw new Error("Failed to fetch event rsvps", {
         cause: eventRsvpFetchError,
       });
@@ -260,18 +254,15 @@ export const editUserRsvpStatus = createServerOnlyFn(
     );
 
     if (rsvpFetchError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to fetch exsisting RSVP",
+      setResponseStatus(500);
+      throw new Error("Failed to fetch exsisting RSVP", {
         cause: rsvpFetchError,
       });
     }
 
     if (existingRsvp?.status === "ATTENDED") {
-      throw new ServerError({
-        code: "BAD_REQUEST",
-        message: "User has already attended the event",
-      });
+      setResponseStatus(400);
+      throw new Error("User has already attended the event");
     }
 
     const [updatedRsvps, rsvpUpdateError] = await trytm(
@@ -292,9 +283,8 @@ export const editUserRsvpStatus = createServerOnlyFn(
     );
 
     if (rsvpUpdateError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to update RSVP",
+      setResponseStatus(500);
+      throw new Error("Failed to update RSVP", {
         cause: rsvpUpdateError,
       });
     }
@@ -302,9 +292,8 @@ export const editUserRsvpStatus = createServerOnlyFn(
     const [updatedRsvp] = updatedRsvps;
 
     if (!updatedRsvp) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to update RSVP",
+      setResponseStatus(500);
+      throw new Error("Failed to update RSVP", {
         cause: rsvpUpdateError,
       });
     }
@@ -338,18 +327,15 @@ const userCheckin = createServerOnlyFn(
     );
 
     if (dbEventError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to fetch event",
+      setResponseStatus(500);
+      throw new Error("Failed to fetch event", {
         cause: dbEventError,
       });
     }
 
     if (!dbEvent) {
-      throw new ServerError({
-        code: "NOT_FOUND",
-        message: "Event not found",
-      });
+      setResponseStatus(404);
+      throw new Error("Event not found");
     }
 
     const eventStartDateTime = DateTime.fromJSDate(dbEvent.startDate);
@@ -363,18 +349,15 @@ const userCheckin = createServerOnlyFn(
     );
 
     if (rsvpFetchError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to fetch RSVP",
+      setResponseStatus(500);
+      throw new Error("Failed to fetch RSVP", {
         cause: rsvpFetchError,
       });
     }
 
     if (currentRSVP?.checkinTime) {
-      throw new ServerError({
-        code: "BAD_REQUEST",
-        message: "You are already checked in",
-      });
+      setResponseStatus(401);
+      throw new Error("You are already checked in");
     }
 
     const checkinTime = clampDateTime(
@@ -401,9 +384,8 @@ const userCheckin = createServerOnlyFn(
     );
 
     if (updateRSVPError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to check in",
+      setResponseStatus(500);
+      throw new Error("Failed to check in", {
         cause: updateRSVPError,
       });
     }
@@ -411,10 +393,8 @@ const userCheckin = createServerOnlyFn(
     const [updatedRsvp] = updatedRSVPs;
 
     if (!updatedRsvp) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to check in",
-      });
+      setResponseStatus(500);
+      throw new Error("Failed to check in");
     }
 
     // ee.emit("invalidate", eventQueryKeys.eventRsvps(eventId));
@@ -424,6 +404,8 @@ const userCheckin = createServerOnlyFn(
     //   userId: userId,
     // });
     logger.log("Published RSVP update for event:", eventId);
+
+    setResponseStatus(201);
 
     return updatedRsvp;
   },
@@ -449,24 +431,23 @@ export const userScanin = createServerOnlyFn(
     );
 
     if (dbFetchError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to fetch scancode",
+      setResponseStatus(500);
+      throw new Error("Failed to fetch scancode", {
         cause: dbFetchError,
       });
     }
 
     if (!dbScancode) {
-      throw new ServerError({
-        code: "NOT_FOUND",
-        message: "Scancode not found",
-      });
+      setResponseStatus(404);
+      throw new Error("Scancode not found");
     }
 
     const checkedIn = await userCheckin({
       eventId,
       userId: dbScancode.userId,
     });
+
+    setResponseStatus(201);
 
     return checkedIn;
   },
@@ -490,9 +471,8 @@ export const userCheckout = createServerOnlyFn(
     );
 
     if (existingRSVPError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to fetch RSVP",
+      setResponseStatus(500);
+      throw new Error("Failed to fetch RSVP", {
         cause: existingRSVPError,
       });
     }
@@ -504,39 +484,30 @@ export const userCheckout = createServerOnlyFn(
     );
 
     if (existingEventError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to fetch event",
+      setResponseStatus(500);
+      throw new Error("Failed to fetch event", {
         cause: existingEventError,
       });
     }
 
     if (!existingRsvp) {
-      throw new ServerError({
-        code: "NOT_FOUND",
-        message: "RSVP not found, please check in first",
-      });
+      setResponseStatus(404);
+      throw new Error("RSVP not found, please check in first");
     }
 
     if (!existingEvent) {
-      throw new ServerError({
-        code: "NOT_FOUND",
-        message: "Event not found",
-      });
+      setResponseStatus(404);
+      throw new Error("Event not found");
     }
 
     if (!existingRsvp.checkinTime) {
-      throw new ServerError({
-        code: "BAD_REQUEST",
-        message: "User is not checked in",
-      });
+      setResponseStatus(400);
+      throw new Error("User is not checked in");
     }
 
     if (existingRsvp.checkoutTime !== null) {
-      throw new ServerError({
-        code: "BAD_REQUEST",
-        message: "User is already checked out",
-      });
+      setResponseStatus(400);
+      throw new Error("User is already checked out");
     }
 
     const existingRsvpCheckinTime = DateTime.fromJSDate(
@@ -571,9 +542,8 @@ export const userCheckout = createServerOnlyFn(
     );
 
     if (rsvpUpdateError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to check out",
+      setResponseStatus(500);
+      throw new Error("Failed to check out", {
         cause: rsvpUpdateError,
       });
     }
@@ -581,10 +551,8 @@ export const userCheckout = createServerOnlyFn(
     const [updatedRsvp] = updatedRsvps;
 
     if (!updatedRsvp) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to check out",
-      });
+      setResponseStatus(500);
+      throw new Error("Failed to check out");
     }
 
     // ee.emit("invalidate", eventQueryKeys.eventRsvps(eventId));
@@ -611,25 +579,20 @@ export const selfCheckin = createServerOnlyFn(
     );
 
     if (dbEventError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to fetch event",
+      setResponseStatus(500);
+      throw new Error("Failed to fetch event", {
         cause: dbEventError,
       });
     }
 
     if (!dbEvent) {
-      throw new ServerError({
-        code: "NOT_FOUND",
-        message: "Event not found",
-      });
+      setResponseStatus(404);
+      throw new Error("Event not found");
     }
 
     if (dbEvent.secret !== secret) {
-      throw new ServerError({
-        code: "UNAUTHORIZED",
-        message: "Invalid secret",
-      });
+      setResponseStatus(401);
+      throw new Error("Invalid secret");
     }
 
     const updatedRSVP = await userCheckin({
@@ -649,20 +612,16 @@ export const createUserRsvp = createServerOnlyFn(
     const { db } = getServerContext();
 
     if (checkoutTime && !checkinTime) {
-      throw new ServerError({
-        code: "BAD_REQUEST",
-        message: "Cannot check out without checking in",
-      });
+      setResponseStatus(400);
+      throw new Error("Cannot check out without checking in");
     }
 
     if (checkinTime && checkoutTime) {
       if (
         DateTime.fromJSDate(checkinTime) > DateTime.fromJSDate(checkoutTime)
       ) {
-        throw new ServerError({
-          code: "BAD_REQUEST",
-          message: "Checkin time must be before checkout time",
-        });
+        setResponseStatus(400);
+        throw new Error("Checkin time must be before checkout time");
       }
     }
 
@@ -696,9 +655,8 @@ export const createUserRsvp = createServerOnlyFn(
     );
 
     if (rsvpCreateError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to create RSVP",
+      setResponseStatus(500);
+      throw new Error("Failed to create RSVP", {
         cause: rsvpCreateError,
       });
     }
@@ -706,10 +664,8 @@ export const createUserRsvp = createServerOnlyFn(
     const [createdRsvp] = createdRsvps;
 
     if (!createdRsvp) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to create RSVP",
-      });
+      setResponseStatus(500);
+      throw new Error("Failed to create RSVP");
     }
 
     // pubSub.publish("event:rsvpUpdated", eventId, {
@@ -752,9 +708,8 @@ export const getAutocompleteEvents = createServerOnlyFn(
     );
 
     if (eventsError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to fetch events",
+      setResponseStatus(500);
+      throw new Error("Failed to fetch events", {
         cause: eventsError,
       });
     }
@@ -777,9 +732,8 @@ export const markEventPosted = createServerOnlyFn(async (eventId: string) => {
   );
 
   if (updateEventsError) {
-    throw new ServerError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Failed to mark event as posted",
+    setResponseStatus(500);
+    throw new Error("Failed to mark event as posted", {
       cause: updateEventsError,
     });
   }
@@ -787,10 +741,8 @@ export const markEventPosted = createServerOnlyFn(async (eventId: string) => {
   const [updatedEvent] = updatedEvents;
 
   if (!updatedEvent) {
-    throw new ServerError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Failed to mark event as posted",
-    });
+    setResponseStatus(500);
+    throw new Error("Failed to mark event as posted");
   }
 
   return updatedEvent;

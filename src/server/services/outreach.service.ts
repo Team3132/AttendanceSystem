@@ -1,4 +1,5 @@
 import { trytm } from "@/utils/trytm";
+import { setResponseStatus } from "@tanstack/react-start/server";
 import {
   and,
   arrayOverlaps,
@@ -22,7 +23,6 @@ import env from "../env";
 import { OutreachTimeSchema } from "../schema/OutreachTimeSchema";
 import type { PagedLeaderboardSchema } from "../schema/PagedLeaderboardSchema";
 import { getServerContext } from "../utils/context";
-import { ServerError } from "../utils/errors";
 
 /**
  * Get the sum of the difference between the start and end dates of all
@@ -126,9 +126,8 @@ export async function getOutreachTime(
   );
 
   if (dbError) {
-    throw new ServerError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Error fetching outreach time",
+    setResponseStatus(500);
+    throw new Error("Error fetching outreach time", {
       cause: dbError,
     });
   }

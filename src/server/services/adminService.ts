@@ -14,7 +14,6 @@ import { eventParsingRuleTable, eventTable } from "../drizzle/schema";
 import env from "../env";
 import { NewEventParsingRuleSchema } from "../schema/NewEventParsingRuleSchema";
 import { UpdateEventParsingRuleSchema } from "../schema/UpdateEventParsingRuleSchema";
-import { ServerError } from "../utils/errors";
 import { strToRegex } from "../utils/regexBuilder";
 import { generateMessage } from "./botService";
 import { getDiscordBotAPI } from "./discordService";
@@ -197,12 +196,12 @@ export const getParsingRules = createServerFn({ method: "GET" })
         .orderBy(asc(eventParsingRuleTable.priority)),
     );
 
-    if (parsingRulesError)
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error fetching parsing rules",
+    if (parsingRulesError) {
+      setResponseStatus(500);
+      throw new Error("Error fetching parsing rules", {
         cause: parsingRulesError,
       });
+    }
 
     return parsingRules;
   });
@@ -379,9 +378,8 @@ export const triggerRule = createServerFn({
     );
 
     if (ruleFetchError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error fetching parsing rule",
+      setResponseStatus(500);
+      throw new Error("Error fetching parsing rule", {
         cause: ruleFetchError,
       });
     }
@@ -389,21 +387,29 @@ export const triggerRule = createServerFn({
     const [rule] = rules;
 
     if (!rule) {
-      throw new ServerError({
-        code: "NOT_FOUND",
-        message: "Parsing rule not found",
+      setResponseStatus(404);
+      throw new Error("Parsing rule not found", {
         cause: ruleFetchError,
       });
     }
 
-    try {
-      await scheduledJobs.find((job) => job.name === id)?.trigger();
-      logger.success(`Successfully Triggered: ${rule.name} (${rule.id})`);
-    } catch (error) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error triggering parsing rule",
-        cause: error,
+    const runningJob = scheduledJobs.find((job) => job.name === id);
+
+    if (!runningJob) {
+      setResponseStatus(404);
+      throw new Error(
+        "Failed to trigger scheduled task, not currently running",
+      );
+    }
+
+    const [_triggerJobData, triggerJobError] = await trytm(
+      runningJob.trigger(),
+    );
+
+    if (triggerJobError) {
+      setResponseStatus(500);
+      throw new Error("Failed to trigger scheduled task", {
+        cause: triggerJobError,
       });
     }
   });
@@ -424,9 +430,8 @@ const reapplyRules = createServerFn({ method: "POST" })
     );
 
     if (futureEventsError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error fetching future events",
+      setResponseStatus(500);
+      throw new Error("Error fetching future events", {
         cause: futureEventsError,
       });
     }
@@ -443,9 +448,8 @@ const reapplyRules = createServerFn({ method: "POST" })
     );
 
     if (filtersError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error fetching parsing rules",
+      setResponseStatus(500);
+      throw new Error("Error fetching parsing rules", {
         cause: filtersError,
       });
     }
@@ -493,9 +497,8 @@ const reapplyRules = createServerFn({ method: "POST" })
           .where(eq(eventTable.id, event.id));
         updatedEventCount++;
       } catch (error) {
-        throw new ServerError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Error updating event",
+        setResponseStatus(500);
+        throw new Error("Error updating event", {
           cause: error,
         });
       }

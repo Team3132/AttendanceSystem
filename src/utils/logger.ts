@@ -6,7 +6,7 @@ const createLogger = createIsomorphicFn()
     const base = createConsola({
       level: import.meta.env.DEV ? LogLevels.debug : undefined,
       formatOptions: {
-        date: true,
+        date: import.meta.env.PROD,
       },
     }).withTag("Server");
 

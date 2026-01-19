@@ -3,11 +3,13 @@ import { createMiddleware } from "@tanstack/react-start";
 
 export const requestLoggerMiddleware = createMiddleware().server(
   async ({ request, next }) => {
+    if (new URL(request.url).pathname.startsWith("/_serverFn")) return next();
+
     const startTime = performance.now();
 
-    logger
-      .withTag("Request")
-      .start(`${request.method} ${request.url} - Starting`);
+    // logger
+    //   .withTag("Request")
+    //   .start(`${request.method} ${request.url} - Starting`);
 
     try {
       const result = await next();
@@ -35,12 +37,12 @@ export const requestLoggerMiddleware = createMiddleware().server(
 
 export const functionLoggerMiddleware = createMiddleware({
   type: "function",
-}).server(async ({ next, serverFnMeta }) => {
+}).server(async ({ next, serverFnMeta, method }) => {
   const startTime = performance.now();
 
-  logger
-    .withTag("Function")
-    .start(`${serverFnMeta.filename} ${serverFnMeta.name} - Starting`);
+  // logger
+  //   .withTag("Function")
+  //   .start(`${serverFnMeta.filename} ${serverFnMeta.name} - Starting`);
 
   try {
     const result = await next();
@@ -49,7 +51,7 @@ export const functionLoggerMiddleware = createMiddleware({
     logger
       .withTag("Function")
       .success(
-        `${serverFnMeta.filename} ${serverFnMeta.name} - (${Math.round(duration)}ms)`,
+        `${method} ${serverFnMeta.filename} ${serverFnMeta.name} - (${Math.round(duration)}ms)`,
       );
 
     return result;
@@ -58,7 +60,7 @@ export const functionLoggerMiddleware = createMiddleware({
     logger
       .withTag("Function")
       .error(
-        `${serverFnMeta.filename} ${serverFnMeta.name} - Error (${Math.round(duration)}ms):`,
+        `${method} ${serverFnMeta.filename} ${serverFnMeta.name} - Error (${Math.round(duration)}ms):`,
         error,
       );
     throw error;

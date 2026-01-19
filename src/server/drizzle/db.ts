@@ -58,9 +58,6 @@ async function initPostgresDatabase(databaseUrl: string) {
   const migrationDrizzle = drizzle({
     schema,
     client: migrationClient,
-    logger: {
-      logQuery: (query, params) => dbLogger.debug("Ran Query", query, params),
-    },
   });
 
   await migrate(migrationDrizzle, { migrationsFolder }); // Finally run migrations
@@ -76,9 +73,6 @@ async function initPostgresDatabase(databaseUrl: string) {
   const db = drizzle({
     schema,
     client,
-    logger: {
-      logQuery: (query, params) => dbLogger.debug("Ran Query", query, params),
-    },
   });
 
   return db;
@@ -106,9 +100,6 @@ async function initPGLiteDatabase(databaseUrl: string) {
   const db = drizzle({
     schema,
     client,
-    logger: {
-      logQuery: (query, params) => dbLogger.debug("Ran Query", query, params),
-    },
   });
 
   await migrate(db, { migrationsFolder }); // Run migrations
