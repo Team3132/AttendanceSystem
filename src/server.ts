@@ -50,6 +50,9 @@ async function restoreCron() {
       {
         name: filter.id,
         timezone: env.TZ,
+        catch: (error) => {
+          logger.withTag("Job").error(error);
+        },
       },
       (job) => reminderFn(job, db),
     );

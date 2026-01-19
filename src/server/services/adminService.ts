@@ -129,8 +129,16 @@ export const createParsingRule = createServerFn({
 
     const ruleId = ulid();
 
-    const job = new Cron(cronExpr, { name: ruleId, timezone: env.TZ }, (job) =>
-      reminderFn(job, db),
+    const job = new Cron(
+      cronExpr,
+      {
+        name: ruleId,
+        timezone: env.TZ,
+        catch: (error) => {
+          logger.withTag("Job").error(error);
+        },
+      },
+      (job) => reminderFn(job, db),
     );
 
     // Create a new parsing rule
