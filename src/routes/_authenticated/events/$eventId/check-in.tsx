@@ -1,7 +1,7 @@
 import ControlledTextField from "@/components/ControlledTextField";
 import useSelfCheckin from "@/features/events/hooks/useSelfCheckin";
 import { SelfCheckinSchema } from "@/server/schema/SelfCheckinSchema";
-import { isServerError } from "@/server/utils/errors";
+import { logger } from "@/utils/logger";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Paper, Stack, Typography } from "@mui/material";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
@@ -48,8 +48,8 @@ function Component() {
         to: "/",
       });
     } catch (e) {
-      if (isServerError(e)) {
-        console.error(e);
+      if (e instanceof Error) {
+        logger.error(e);
       }
     }
   });

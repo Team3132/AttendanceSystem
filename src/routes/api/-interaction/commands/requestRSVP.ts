@@ -1,6 +1,7 @@
 import type { DB } from "@/server/drizzle/db";
 import { generateMessage } from "@/server/services/botService";
 import { markEventPosted } from "@/server/services/events.service";
+import { logger } from "@/utils/logger";
 import { trytm } from "@/utils/trytm";
 import {
   type APIApplicationCommandInteractionDataStringOption,
@@ -34,7 +35,7 @@ export async function requestRSVPCommand(
   const [_, eventPostedError] = await trytm(markEventPosted(meetingId));
 
   if (eventPostedError) {
-    console.error(`Error marking event as posted: ${eventPostedError.message}`);
+    logger.error(`Error marking event as posted: ${eventPostedError.message}`);
     return reply({
       content: "Failed to mark event as posted.",
       flags: MessageFlags.Ephemeral,

@@ -1,4 +1,3 @@
-import { isServerError } from "@/server/utils/errors";
 import { Button, Stack, Typography } from "@mui/material";
 import { FaArrowLeft } from "react-icons/fa6";
 import { MdRefresh } from "react-icons/md";
@@ -16,11 +15,8 @@ export default function GenericServerErrorBoundary(
   return (
     <QueryErrorBoundary
       fallbackRender={({ resetErrorBoundary, error, handleBack }) => {
-        const errorMessage = isServerError(error)
-          ? error.message
-          : error instanceof Error
-            ? error.message
-            : "An error occurred";
+        const errorMessage =
+          error instanceof Error ? error.message : "An error occurred";
 
         return (
           <Stack

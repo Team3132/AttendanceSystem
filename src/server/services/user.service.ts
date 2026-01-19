@@ -1,6 +1,7 @@
 import { adminMiddleware } from "@/middleware/authMiddleware";
 import { trytm } from "@/utils/trytm";
 import { createServerFn, createServerOnlyFn } from "@tanstack/react-start";
+import { setResponseStatus } from "@tanstack/react-start/server";
 import { and, count, eq, ilike, isNotNull, isNull } from "drizzle-orm";
 import { z } from "zod";
 import { scancodeTable, sessionTable, userTable } from "../drizzle/schema";
@@ -8,7 +9,6 @@ import type { UserCreateSchema } from "../schema/UserCreateSchema";
 import { UserListParamsSchema } from "../schema/UserListParamsSchema";
 import { getServerContext } from "../utils/context";
 import { buildConflictUpdateColumns } from "../utils/db/buildConflictUpdateColumns";
-import { ServerError } from "../utils/errors";
 
 /**
  * Gets a user from the database
@@ -26,18 +26,15 @@ export const getUser = createServerFn({ method: "GET" })
     );
 
     if (dbError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error fetching user",
+      setResponseStatus(500);
+      throw new Error("Error fetching user", {
         cause: dbError,
       });
     }
 
     if (!dbUser) {
-      throw new ServerError({
-        code: "NOT_FOUND",
-        message: "User not found",
-      });
+      setResponseStatus(404);
+      throw new Error("User not found");
     }
 
     return dbUser;
@@ -58,9 +55,8 @@ export const getUserScancodes = createServerOnlyFn(async (userId: string) => {
   );
 
   if (dberror) {
-    throw new ServerError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Error fetching scancodes",
+    setResponseStatus(500);
+    throw new Error("Error fetching scancodes", {
       cause: dberror,
     });
   }
@@ -105,9 +101,8 @@ export const getPendingUserRsvps = createServerOnlyFn(
     );
 
     if (dbError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error fetching rsvps",
+      setResponseStatus(500);
+      throw new Error("Error fetching rsvps", {
         cause: dbError,
       });
     }
@@ -136,9 +131,8 @@ export const getUserList = createServerFn({ method: "GET" })
     );
 
     if (totalDberror) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error fetching total",
+      setResponseStatus(500);
+      throw new Error("Error fetching total", {
         cause: totalDberror,
       });
     }
@@ -164,9 +158,8 @@ export const getUserList = createServerFn({ method: "GET" })
     );
 
     if (userFetchError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error fetching users",
+      setResponseStatus(500);
+      throw new Error("Error fetching users", {
         cause: userFetchError,
       });
     }
@@ -192,9 +185,8 @@ export const createUserScancode = createServerOnlyFn(
     );
 
     if (dbScancodeError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error fetching scancode",
+      setResponseStatus(500);
+      throw new Error("Error fetching scancode", {
         cause: dbScancodeError,
       });
     }
@@ -202,10 +194,8 @@ export const createUserScancode = createServerOnlyFn(
     const dbScancode = dbScancodes[0];
 
     if (dbScancode) {
-      throw new ServerError({
-        code: "BAD_REQUEST",
-        message: "Scancode already exists",
-      });
+      setResponseStatus(400);
+      throw new Error("Scancode already exists");
     }
 
     const [createdScancodes, createError] = await trytm(
@@ -219,9 +209,8 @@ export const createUserScancode = createServerOnlyFn(
     );
 
     if (createError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error creating scancode",
+      setResponseStatus(500);
+      throw new Error("Error creating scancode", {
         cause: createError,
       });
     }
@@ -229,10 +218,8 @@ export const createUserScancode = createServerOnlyFn(
     const createdScancode = createdScancodes[0];
 
     if (!createdScancode) {
-      throw new ServerError({
-        code: "BAD_REQUEST",
-        message: "Scancode does not exist",
-      });
+      setResponseStatus(400);
+      throw new Error("Scancode does not exist");
     }
 
     // // ee.emit("invalidate", getQueryKey(rtrpc.users.getUserScancodes, userId)); // Don't broadcast the user id
@@ -257,9 +244,8 @@ export const removeScancode = createServerOnlyFn(
     );
 
     if (scancodesError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error fetching scancode",
+      setResponseStatus(500);
+      throw new Error("Error fetching scancode", {
         cause: scancodesError,
       });
     }
@@ -267,10 +253,8 @@ export const removeScancode = createServerOnlyFn(
     const dbScancode = dbScancodes[0];
 
     if (!dbScancode) {
-      throw new ServerError({
-        code: "BAD_REQUEST",
-        message: "Scancode does not exist",
-      });
+      setResponseStatus(400);
+      throw new Error("Scancode does not exist");
     }
 
     const [deletedScancodes, deleteScancodesError] = await trytm(
@@ -283,9 +267,7 @@ export const removeScancode = createServerOnlyFn(
     );
 
     if (deleteScancodesError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error deleting scancode",
+      throw new Error("Error deleting scancode", {
         cause: deleteScancodesError,
       });
     }
@@ -293,18 +275,10 @@ export const removeScancode = createServerOnlyFn(
     const deletedScancode = deletedScancodes[0];
 
     if (!deletedScancode) {
-      throw new ServerError({
-        code: "BAD_REQUEST",
-        message: "Scancode does not exist",
-      });
+      setResponseStatus(400);
+      throw new Error("Scancode does not exist");
     }
 
-    // if (!deletedScancode) {
-    //   throw new ServerError({
-    //     code: "BAD_REQUEST",
-    //     message: "Scancode does not exist",
-    //   });
-    // }
     // // ee.emit("invalidate", getQueryKey(rtrpc.users.getUserScancodes, userId)); // Don't broadcast the user id
 
     return dbScancode;
@@ -333,9 +307,8 @@ export const createUser = createServerOnlyFn(
     );
 
     if (dbUsersError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error creating user",
+      setResponseStatus(500);
+      throw new Error("Error creating user", {
         cause: dbUsersError,
       });
     }
@@ -343,10 +316,8 @@ export const createUser = createServerOnlyFn(
     const [dbUser] = dbUsers;
 
     if (!dbUser) {
-      throw new ServerError({
-        code: "BAD_REQUEST",
-        message: "User does not exist",
-      });
+      setResponseStatus(400);
+      throw new Error("User does not exist");
     }
 
     return dbUser;
@@ -362,9 +333,8 @@ export const getUserSessions = createServerOnlyFn(async (userId: string) => {
   );
 
   if (sessionsError) {
-    throw new ServerError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Error fetching sessions",
+    setResponseStatus(500);
+    throw new Error("Error fetching sessions", {
       cause: sessionsError,
     });
   }

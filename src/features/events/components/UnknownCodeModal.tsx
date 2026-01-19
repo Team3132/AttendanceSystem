@@ -1,7 +1,6 @@
 import ControlledAutocomplete from "@/components/ControlledAutocomplete";
 import ControlledTextField from "@/components/ControlledTextField";
 import { usersQueryOptions } from "@/queries/users.queries";
-import { isServerError } from "@/server/utils/errors";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
@@ -97,7 +96,7 @@ export default function UnknownCodeModal(props: UnknownCodeModalProps) {
 
       onClose();
     } catch (error) {
-      if (isServerError(error)) {
+      if (error instanceof Error) {
         setError("code", {
           message: error.message,
         });

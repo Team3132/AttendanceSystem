@@ -468,7 +468,7 @@ export const Route = createFileRoute("/api/interaction")({
                 createOutreachEmbedPage(toPage),
               );
               if (leaderboardPageError) {
-                console.error(
+                logger.error(
                   `Error creating outreach embed page: ${leaderboardPageError.message}`,
                 );
                 return reply({

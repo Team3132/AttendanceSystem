@@ -1,5 +1,6 @@
 import { useDisclosure } from "@/hooks/useDisclosure";
 import { eventQueryOptions } from "@/queries/events.queries";
+import { logger } from "@/utils/logger";
 import { trytm } from "@/utils/trytm";
 import { Divider, IconButton, Menu, MenuItem } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
@@ -50,7 +51,7 @@ export default function RSVPActionsButton(props: RSVPActionsButtonProps) {
     );
 
     if (detailsError) {
-      console.error(detailsError);
+      logger.error(detailsError);
       return;
     }
 
@@ -59,7 +60,7 @@ export default function RSVPActionsButton(props: RSVPActionsButtonProps) {
     );
 
     if (eventDetailsError) {
-      console.error(eventDetailsError);
+      logger.error(eventDetailsError);
       return;
     }
 

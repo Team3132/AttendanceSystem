@@ -1,5 +1,4 @@
 import ControlledTextField from "@/components/ControlledTextField";
-import { isServerError } from "@/server/utils/errors";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Paper, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -60,7 +59,7 @@ export default function ScaninCard(props: ScaninCardProps) {
           setUnknownCode(undefined);
           setFocus("code");
         } catch (error) {
-          if (isServerError(error) && error.code === "NOT_FOUND") {
+          if (error instanceof Error) {
             setUnknownCode(data.code);
             onOpen();
           }

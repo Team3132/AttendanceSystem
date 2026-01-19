@@ -1,5 +1,4 @@
 import ControlledTextField from "@/components/ControlledTextField";
-import { isServerError } from "@/server/utils/errors";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, ListItem } from "@mui/material";
 import { useForm } from "react-hook-form";
@@ -39,7 +38,7 @@ export default function NewScancodeListItem() {
         code: "",
       });
     } catch (error) {
-      if (isServerError(error)) {
+      if (error instanceof Error) {
         setError("code", {
           message: error.message,
         });

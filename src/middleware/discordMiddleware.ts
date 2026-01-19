@@ -19,7 +19,7 @@ export const discordMiddleware = createMiddleware().server(
     const rawBody = await request.text();
 
     if (!signature || !timestamp || !rawBody) {
-      console.error("Missing signature, timestamp, or raw body");
+      logger.error("Missing signature, timestamp, or raw body");
       throw new Error("Missing required headers or body");
     }
 

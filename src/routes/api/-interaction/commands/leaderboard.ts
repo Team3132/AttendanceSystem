@@ -1,6 +1,7 @@
 import type { LeaderBoardUser } from "@/server/schema/LeaderboardSchema";
 import { getOutreachTime } from "@/server/services/outreach.service";
 import { randomStr } from "@/server/utils/randomStr";
+import { logger } from "@/utils/logger";
 import { trytm } from "@/utils/trytm";
 import {
   ActionRowBuilder,
@@ -24,7 +25,7 @@ export async function leaderboardCommand(
   );
 
   if (leaderboardPageError) {
-    console.error(
+    logger.error(
       `Error creating outreach embed page: ${leaderboardPageError.message}`,
     );
     return reply({

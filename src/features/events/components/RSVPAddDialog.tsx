@@ -6,7 +6,6 @@ import { eventQueryOptions } from "@/queries/events.queries";
 import { usersQueryOptions } from "@/queries/users.queries";
 import { Route } from "@/routes/_authenticated/events/$eventId/index";
 import { RSVPStatusUpdateSchema } from "@/server/schema/RSVPStatusSchema";
-import { isServerError } from "@/server/utils/errors";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
@@ -98,7 +97,7 @@ export default function RSVPAddDialog(props: RSVPAddDialogProps) {
           reset();
           onClose();
         } catch (error) {
-          if (isServerError(error)) {
+          if (error instanceof Error) {
             setError("userOption", {
               message: error.message,
             });
