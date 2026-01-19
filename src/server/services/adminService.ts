@@ -3,6 +3,7 @@ import { logger } from "@/utils/logger";
 import { trytm } from "@/utils/trytm";
 import { ChannelType } from "@discordjs/core";
 import { createServerFn, createServerOnlyFn } from "@tanstack/react-start";
+import { setResponseStatus } from "@tanstack/react-start/server";
 import { Cron, scheduledJobs } from "croner";
 import { and, asc, between, eq, inArray, not } from "drizzle-orm";
 import { DateTime } from "luxon";
@@ -153,21 +154,20 @@ export const createParsingRule = createServerFn({
 
     if (!parsingRule || scheduleError) {
       job.stop();
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error creating parsing rule",
+      setResponseStatus(500);
+      throw new Error("Error creating parsing rule", {
         cause: scheduleError,
       });
     }
 
     const [reapplyData, reapplyError] = await trytm(reapplyRules());
 
-    if (reapplyError)
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error reapplying parsing rules",
+    if (reapplyError) {
+      setResponseStatus(500);
+      throw new Error("Error reapplying parsing rules", {
         cause: reapplyError,
       });
+    }
 
     return {
       ...parsingRule,
@@ -216,9 +216,8 @@ export const getParsingRule = createServerFn({ method: "GET" })
     );
 
     if (ruleGetError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error fetching parsing rule",
+      setResponseStatus(500);
+      throw new Error("Error fetching parsing rule", {
         cause: ruleGetError,
       });
     }
@@ -226,10 +225,8 @@ export const getParsingRule = createServerFn({ method: "GET" })
     const [rule] = rules;
 
     if (!rule) {
-      throw new ServerError({
-        code: "NOT_FOUND",
-        message: "Parsing rule not found",
-      });
+      setResponseStatus(404);
+      throw new Error("Parsing rule not found");
     }
 
     return rule;
@@ -254,9 +251,8 @@ export const deleteParsingRule = createServerFn({
     );
 
     if (ruleFetchError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error fetching parsing rule",
+      setResponseStatus(500);
+      throw new Error("Error fetching parsing rule", {
         cause: ruleFetchError,
       });
     }
@@ -264,29 +260,31 @@ export const deleteParsingRule = createServerFn({
     const [rule] = rules;
 
     if (!rule) {
-      throw new ServerError({
-        code: "NOT_FOUND",
-        message: "Parsing rule not found",
-      });
+      setResponseStatus(404);
+      throw new Error("Parsing rule not found");
     }
 
     scheduledJobs.find((job) => job.name === id)?.stop();
 
-    try {
-      await db
+    const [_deleteResult, deleteError] = await trytm(
+      db
         .delete(eventParsingRuleTable)
-        .where(eq(eventParsingRuleTable.id, id));
-    } catch (error) {
-      logger.log(`Error deleting rule: ${rule.name} (${rule.id})`, error);
-      throw error;
+        .where(eq(eventParsingRuleTable.id, id))
+        .returning(),
+    );
+
+    if (deleteError) {
+      setResponseStatus(500);
+      throw new Error("Failed to delete parsing rule", {
+        cause: deleteError,
+      });
     }
 
     const [reapplyData, reapplyError] = await trytm(reapplyRules());
 
     if (reapplyError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error reapplying parsing rules",
+      setResponseStatus(500);
+      throw new Error("Error reapplying parsing rules", {
         cause: reapplyError,
       });
     }
@@ -331,9 +329,8 @@ export const updateParsingRule = createServerFn({
     );
 
     if (updateError) {
-      throw new ServerError({
-        code: "NOT_FOUND",
-        message: "Parsing rule not found",
+      setResponseStatus(404);
+      throw new Error("Parsing rule not found", {
         cause: updateError,
       });
     }
@@ -341,18 +338,15 @@ export const updateParsingRule = createServerFn({
     const [rule] = updatedRules;
 
     if (!rule) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error updating parsing rule",
-      });
+      setResponseStatus(500);
+      throw new Error("Error updating parsing rule");
     }
 
     const [reapplyData, reapplyError] = await trytm(reapplyRules());
 
     if (reapplyError) {
-      throw new ServerError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Error reapplying parsing rules",
+      setResponseStatus(500);
+      throw new Error("Error reapplying parsing rules", {
         cause: reapplyError,
       });
     }

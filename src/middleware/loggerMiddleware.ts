@@ -5,13 +5,13 @@ export const requestLoggerMiddleware = createMiddleware().server(
   async ({ request, next }) => {
     const startTime = performance.now();
 
-    logger.debug(`${request.method} ${request.url} - Starting`);
+    logger.start(`${request.method} ${request.url} - Starting`);
 
     try {
       const result = await next();
       const duration = performance.now() - startTime;
 
-      logger.debug(
+      logger.success(
         `${request.method} ${request.url} - ${result.response.status} (${Math.round(duration)}ms)`,
       );
 
@@ -29,26 +29,24 @@ export const requestLoggerMiddleware = createMiddleware().server(
 
 export const functionLoggerMiddleware = createMiddleware({
   type: "function",
-}).server(async ({ method, next, serverFnMeta }) => {
+}).server(async ({ next, serverFnMeta }) => {
   const startTime = performance.now();
 
-  logger.debug(
-    `${method} ${serverFnMeta.filename} ${serverFnMeta.name} - Starting`,
-  );
+  logger.start(`${serverFnMeta.filename} ${serverFnMeta.name} - Starting`);
 
   try {
     const result = await next();
     const duration = performance.now() - startTime;
 
-    logger.debug(
-      `${method} ${serverFnMeta.filename} ${serverFnMeta.name} - (${Math.round(duration)}ms)`,
+    logger.success(
+      `${serverFnMeta.filename} ${serverFnMeta.name} - (${Math.round(duration)}ms)`,
     );
 
     return result;
   } catch (error) {
     const duration = performance.now() - startTime;
     logger.error(
-      `${method} ${serverFnMeta.filename} ${serverFnMeta.name} - Error (${Math.round(duration)}ms):`,
+      `${serverFnMeta.filename} ${serverFnMeta.name} - Error (${Math.round(duration)}ms):`,
       error,
     );
     throw error;

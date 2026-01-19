@@ -4,7 +4,7 @@ import { LogLevels, createConsola } from "consola";
 const createLogger = createIsomorphicFn()
   .server(() => {
     const base = createConsola({
-      // level: import.meta.env.DEV ? LogLevels.debug : undefined,
+      level: import.meta.env.DEV ? LogLevels.debug : undefined,
       formatOptions: {
         date: true,
       },
