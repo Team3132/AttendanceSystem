@@ -1,5 +1,11 @@
 # frontend
 
+## 6.2.13
+
+### Patch Changes
+
+- [`41258c6`](https://github.com/Team3132/attendance/commit/41258c6b4ccb93f761ad8e089f7669e3289fc6fc) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Logging
+
 ## 6.2.12
 
 ### Patch Changes
