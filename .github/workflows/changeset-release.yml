@@ -109,5 +109,5 @@ jobs:
       packages: write
     uses: ./.github/workflows/deploy.yml
     with:
-      version: ${{ needs.publish.outputs.version }}
+      tag: ${{ needs.publish.outputs.version }}
     
