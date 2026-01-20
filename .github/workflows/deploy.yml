@@ -32,14 +32,13 @@ jobs:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:ci
+          
       - name: Add to Known Hosts
         run:
           |
           mkdir -p ~/.ssh/
           touch ~/.ssh/known_hosts
           ssh-keyscan ${{ secrets.HOST }} >> ~/.ssh/known_hosts
-      - name: Test SSH
-        run: ssh team3132@${{ secrets.HOST }} ls
       - name: Init Remote Context
         run: |
           docker context create remote --docker "host=${{ secrets.DOCKER_HOST }}"
