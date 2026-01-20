@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Divider, Stack, Typography } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { CronPattern } from "croner";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -33,7 +34,19 @@ export const Route = createFileRoute(
     roleIds: z.array(z.string()).optional(),
     cronExpr: z
       .string()
-      .regex(/((((\d+,)+\d+|(\d+(\/|-)\d+)|\d+|\*) ?){5,7})/g)
+      .superRefine((v, ctx) => {
+        try {
+          new CronPattern(v);
+        } catch (e) {
+          if (e instanceof TypeError) {
+            ctx.addIssue({
+              code: "custom",
+              message: e.message,
+              input: v,
+            });
+          }
+        }
+      })
       .optional(),
     isOutreach: z.boolean().optional(),
   }),
@@ -68,7 +81,19 @@ const NewEventParsingRuleFormSchema = z.object({
       }
     }),
   roles: z.array(OptionSchema).min(1),
-  cronExpr: z.string().regex(/((((\d+,)+\d+|(\d+(\/|-)\d+)|\d+|\*) ?){5,7})/g),
+  cronExpr: z.string().superRefine((v, ctx) => {
+    try {
+      new CronPattern(v);
+    } catch (e) {
+      if (e instanceof TypeError) {
+        ctx.addIssue({
+          code: "custom",
+          message: e.message,
+          input: v,
+        });
+      }
+    }
+  }),
   isOutreach: z.boolean(),
 });
 

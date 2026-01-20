@@ -1,3 +1,4 @@
+import { CronPattern } from "croner";
 import { z } from "zod";
 import { strToRegex } from "../utils/regexBuilder";
 
@@ -14,6 +15,18 @@ export const NewEventParsingRuleSchema = z.object({
     }
   }),
   roleIds: z.array(z.string()),
-  cronExpr: z.string().regex(/((((\d+,)+\d+|(\d+(\/|-)\d+)|\d+|\*) ?){5,7})/g),
+  cronExpr: z.string().superRefine((v, ctx) => {
+    try {
+      new CronPattern(v);
+    } catch (e) {
+      if (e instanceof TypeError) {
+        ctx.addIssue({
+          code: "custom",
+          message: e.message,
+          input: v,
+        });
+      }
+    }
+  }),
   isOutreach: z.boolean(),
 });

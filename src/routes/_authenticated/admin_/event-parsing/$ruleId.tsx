@@ -6,9 +6,10 @@ import { adminQueries } from "@/queries/adminQueries";
 import { discordQueryOptions } from "@/queries/discord.queries";
 import { strToRegex } from "@/server/utils/regexBuilder";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Stack, TextField, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { CronPattern } from "croner";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -50,6 +51,20 @@ const NewEventParsingRuleFormSchema = z.object({
     }),
   roles: z.array(OptionSchema).min(1),
   isOutreach: z.boolean(),
+  cronExpr: z.string().superRefine((v, ctx) => {
+    try {
+      new CronPattern(v);
+    } catch (e) {
+      if (e instanceof TypeError) {
+        ctx.addIssue({
+          code: "custom",
+          message: e.message,
+          input: v,
+        });
+      }
+    }
+  }),
+  name: z.string().min(1),
 });
 
 function RouteComponent() {
@@ -97,6 +112,8 @@ function RouteComponent() {
         parsingRuleQuery.data?.roleIds.includes(r.value),
       ),
       isOutreach: parsingRuleQuery.data?.isOutreach,
+      cronExpr: parsingRuleQuery.data.cronExpr,
+      name: parsingRuleQuery.data.name,
     },
   });
 
@@ -117,13 +134,12 @@ function RouteComponent() {
     <Stack gap={2} component="form" onSubmit={onSubmit}>
       <Typography variant="h4">Edit Rule</Typography>
 
-      <TextField value={parsingRuleQuery.data?.name} label="Name" disabled />
+      <ControlledTextField control={control} name="name" label="Name" />
       <ControlledTextField control={control} name="regex" label="Regex" />
-      <TextField
-        disabled
-        value={parsingRuleQuery.data?.cronExpr}
+      <ControlledTextField
+        control={control}
+        name="cronExpr"
         label="Cron Expression"
-        helperText="Create a new rule to change this"
       />
 
       <ControlledAutocomplete

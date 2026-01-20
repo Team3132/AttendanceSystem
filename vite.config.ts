@@ -10,7 +10,7 @@ const ReactCompilerConfig = {
 
 export default defineConfig({
   build: {
-    sourcemap: true,
+    sourcemap: "hidden",
   },
   server: {
     port: 1420,

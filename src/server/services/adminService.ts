@@ -330,33 +330,77 @@ export const updateParsingRule = createServerFn({
   .inputValidator(UpdateRuleSchema)
   .middleware([adminMiddleware])
   .handler(async ({ data: { id, ...data }, context: { db } }) => {
-    const { channelId, regex, roleIds, priority, isOutreach } = data;
-    const [updatedRules, updateError] = await trytm(
-      db
-        .update(eventParsingRuleTable)
-        .set({
-          channelId,
-          regex,
-          roleIds,
-          priority,
-          isOutreach,
-        })
-        .where(eq(eventParsingRuleTable.id, id))
-        .returning(),
+    const { channelId, regex, roleIds, priority, isOutreach, cronExpr, name } =
+      data;
+
+    const [transactionResult, transactionError] = await trytm(
+      db.transaction(async (tx) => {
+        const updatedRules = await tx
+          .update(eventParsingRuleTable)
+          .set({
+            channelId,
+            regex,
+            roleIds,
+            priority,
+            isOutreach,
+            cronExpr,
+            name,
+          })
+          .where(eq(eventParsingRuleTable.id, id))
+          .returning();
+
+        const existingJob = scheduledJobs.find(
+          (j) => j.name === id && cronExpr !== j.getPattern(),
+        );
+
+        const updatedRule = updatedRules?.at(0);
+
+        if (existingJob && updatedRule) {
+          existingJob.stop();
+
+          const job = new Cron(
+            updatedRule.cronExpr,
+            {
+              name: updatedRule.id,
+              timezone: env.TZ,
+              catch: (error) => {
+                logger.withTag("Tasks").error(error);
+              },
+            },
+            (job) => reminderFn(job, db),
+          );
+
+          const nextRun = job.nextRun();
+
+          logger
+            .withTag("Tasks")
+            .info(
+              `${job.name} (${updatedRule.name}) cron updated, next run: ${
+                nextRun
+                  ? DateTime.fromJSDate(nextRun).toLocaleString(
+                      DateTime.DATETIME_MED,
+                    )
+                  : "unknown"
+              }`,
+            );
+        }
+
+        return updatedRules;
+      }),
     );
 
-    if (updateError) {
-      setResponseStatus(404);
-      throw new Error("Parsing rule not found", {
-        cause: updateError,
+    if (transactionError) {
+      setResponseStatus(500);
+      throw new Error("Failed to update job", {
+        cause: transactionError,
       });
     }
 
-    const [rule] = updatedRules;
+    const [rule] = transactionResult;
 
     if (!rule) {
       setResponseStatus(500);
-      throw new Error("Error updating parsing rule");
+      throw new Error("Error updating parsing rule, no rule returned");
     }
 
     const [reapplyData, reapplyError] = await trytm(reapplyRules());

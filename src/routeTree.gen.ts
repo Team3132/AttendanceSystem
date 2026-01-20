@@ -190,13 +190,13 @@ const AuthenticatedAdminUsersUserIdPendingRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof AuthenticatedIndexRoute
   '/error': typeof ErrorRoute
   '/login': typeof LoginRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/leaderboard': typeof AuthenticatedLeaderboardRoute
   '/profile': typeof AuthenticatedProfileRouteWithChildren
   '/api/interaction': typeof ApiInteractionRoute
-  '/': typeof AuthenticatedIndexRoute
   '/events/$eventId': typeof AuthenticatedEventsEventIdRouteWithChildren
   '/profile/pending': typeof AuthenticatedProfilePendingRoute
   '/profile/sessions': typeof AuthenticatedProfileSessionsRoute
@@ -210,8 +210,8 @@ export interface FileRoutesByFullPath {
   '/events/$eventId/qr-code': typeof AuthenticatedEventsEventIdQrCodeRoute
   '/api/auth/discord/callback': typeof ApiAuthDiscordCallbackRoute
   '/api/scheduler/calendar/trigger': typeof ApiSchedulerCalendarTriggerRoute
-  '/admin/event-parsing': typeof AuthenticatedAdminEventParsingIndexRoute
-  '/admin/users': typeof AuthenticatedAdminUsersIndexRoute
+  '/admin/event-parsing/': typeof AuthenticatedAdminEventParsingIndexRoute
+  '/admin/users/': typeof AuthenticatedAdminUsersIndexRoute
   '/events/$eventId/': typeof AuthenticatedEventsEventIdIndexRoute
   '/admin/users/$userId/pending': typeof AuthenticatedAdminUsersUserIdPendingRoute
   '/admin/users/$userId/sessions': typeof AuthenticatedAdminUsersUserIdSessionsRoute
@@ -274,13 +274,13 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/error'
     | '/login'
     | '/admin'
     | '/leaderboard'
     | '/profile'
     | '/api/interaction'
-    | '/'
     | '/events/$eventId'
     | '/profile/pending'
     | '/profile/sessions'
@@ -294,8 +294,8 @@ export interface FileRouteTypes {
     | '/events/$eventId/qr-code'
     | '/api/auth/discord/callback'
     | '/api/scheduler/calendar/trigger'
-    | '/admin/event-parsing'
-    | '/admin/users'
+    | '/admin/event-parsing/'
+    | '/admin/users/'
     | '/events/$eventId/'
     | '/admin/users/$userId/pending'
     | '/admin/users/$userId/sessions'
@@ -383,7 +383,7 @@ declare module '@tanstack/react-router' {
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -474,14 +474,14 @@ declare module '@tanstack/react-router' {
     '/_authenticated/admin_/users/': {
       id: '/_authenticated/admin_/users/'
       path: '/users'
-      fullPath: '/admin/users'
+      fullPath: '/admin/users/'
       preLoaderRoute: typeof AuthenticatedAdminUsersIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin_/event-parsing/': {
       id: '/_authenticated/admin_/event-parsing/'
       path: '/event-parsing'
-      fullPath: '/admin/event-parsing'
+      fullPath: '/admin/event-parsing/'
       preLoaderRoute: typeof AuthenticatedAdminEventParsingIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
