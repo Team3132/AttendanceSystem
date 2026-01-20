@@ -78,7 +78,7 @@
     "@vitejs/plugin-react": "5.1.2",
     "babel-plugin-react-compiler": "19.1.0-rc.3",
     "drizzle-kit": "0.31.8",
-    "knip": "5.80.2",
+    "knip": "5.82.1",
     "lefthook": "2.0.14",
     "rollup-plugin-visualizer": "^6.0.5",
     "typescript": "5.9.3",
