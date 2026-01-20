@@ -1,5 +1,11 @@
 # frontend
 
+## 6.3.0
+
+### Minor Changes
+
+- [`5b8c14f`](https://github.com/Team3132/attendance/commit/5b8c14ff4dc3b328162fd999f2d5f6415bf68acc) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add the ability to update and change the name and Cron Expression of a Job
+
 ## 6.2.16
 
 ### Patch Changes
