@@ -1,5 +1,11 @@
 # frontend
 
+## 6.2.15
+
+### Patch Changes
+
+- [`32b55ee`](https://github.com/Team3132/attendance/commit/32b55ee8e86e5836f21fd2a339286d56665aca72) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Inherit secrets
+
 ## 6.2.14
 
 ### Patch Changes
