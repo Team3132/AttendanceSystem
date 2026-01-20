@@ -107,6 +107,7 @@ jobs:
       - release
     permissions:
       packages: write
+    secrets: inherit
     uses: ./.github/workflows/deploy.yml
     with:
       tag: ${{ needs.publish.outputs.version }}

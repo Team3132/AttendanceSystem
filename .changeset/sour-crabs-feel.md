@@ -1,0 +1,5 @@
+---
+"attendance": patch
+---
+
+Inherit secrets
