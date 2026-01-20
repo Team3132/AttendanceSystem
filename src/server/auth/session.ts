@@ -1,3 +1,4 @@
+import type { ServerContext } from "@/server";
 import { sha256 } from "@oslojs/crypto/sha2";
 import { encodeBase32, encodeHexLowerCase } from "@oslojs/encoding";
 import { createServerOnlyFn } from "@tanstack/react-start";
@@ -8,11 +9,10 @@ import {
 } from "@tanstack/react-start/server";
 import { eq } from "drizzle-orm";
 import { type Session, type User, sessionTable } from "../drizzle/schema";
-import { getServerContext } from "../utils/context";
 
 const validateSessionToken = createServerOnlyFn(
-  async (token: string): Promise<SessionValidationResult> => {
-    const { db } = getServerContext();
+  async (c: ServerContext, token: string): Promise<SessionValidationResult> => {
+    const { db } = c;
 
     const sessionId = encodeHexLowerCase(
       sha256(new TextEncoder().encode(token)),
@@ -50,12 +50,12 @@ const validateSessionToken = createServerOnlyFn(
 );
 
 export const getCurrentSession = createServerOnlyFn(
-  async (): Promise<SessionValidationResult> => {
+  async (c: ServerContext): Promise<SessionValidationResult> => {
     const token = getCookie("session");
     const authorizationHeader = getRequestHeader("Authorization");
 
     if (token) {
-      const result = await validateSessionToken(token);
+      const result = await validateSessionToken(c, token);
 
       return result;
     }
@@ -63,7 +63,7 @@ export const getCurrentSession = createServerOnlyFn(
     if (authorizationHeader?.startsWith("Bearer")) {
       const token = authorizationHeader.slice("Bearer ".length - 1).trim();
 
-      const result = await validateSessionToken(token);
+      const result = await validateSessionToken(c, token);
 
       return result;
     }
@@ -73,16 +73,16 @@ export const getCurrentSession = createServerOnlyFn(
 );
 
 export const invalidateSession = createServerOnlyFn(
-  async (sessionId: string) => {
-    const { db } = getServerContext();
+  async (c: ServerContext, sessionId: string) => {
+    const { db } = c;
 
     await db.delete(sessionTable).where(eq(sessionTable.id, sessionId));
   },
 );
 
 export const invalidateUserSessions = createServerOnlyFn(
-  async (userId: string) => {
-    const { db } = getServerContext();
+  async (c: ServerContext, userId: string) => {
+    const { db } = c;
     await db.delete(sessionTable).where(eq(sessionTable.userId, userId));
   },
 );
@@ -117,8 +117,8 @@ export const generateSessionToken = createServerOnlyFn((): string => {
 });
 
 export const createSession = createServerOnlyFn(
-  async (token: string, userId: string): Promise<Session> => {
-    const { db } = getServerContext();
+  async (c: ServerContext, token: string, userId: string): Promise<Session> => {
+    const { db } = c;
 
     const sessionId = encodeHexLowerCase(
       sha256(new TextEncoder().encode(token)),
@@ -136,6 +136,6 @@ export const createSession = createServerOnlyFn(
   },
 );
 
-type SessionValidationResult =
+export type SessionValidationResult =
   | { session: Session; user: User }
   | { session: null; user: null };

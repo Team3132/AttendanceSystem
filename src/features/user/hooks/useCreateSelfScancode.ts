@@ -12,7 +12,7 @@ const createSelfScancodeFn = createServerFn({
   .middleware([sessionMiddleware])
   .inputValidator(z.string())
   .handler(async ({ data, context }) =>
-    createUserScancode(context.user.id, data),
+    createUserScancode(context, context.user.id, data),
   );
 
 type CreateSelfScancodeFn = FlattenServerFn<typeof createSelfScancodeFn>;

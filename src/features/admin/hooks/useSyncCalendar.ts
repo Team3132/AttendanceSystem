@@ -9,7 +9,7 @@ const syncCalendarFn = createServerFn({
   method: "POST",
 })
   .middleware([adminMiddleware])
-  .handler(() => syncEvents());
+  .handler(({ context }) => syncEvents(context));
 
 export default function useSyncCalendar() {
   const syncCalendar = useServerFn(syncCalendarFn);

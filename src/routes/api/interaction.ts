@@ -75,7 +75,8 @@ export const Route = createFileRoute("/api/interaction")({
   server: {
     middleware: [discordMiddleware],
     handlers: {
-      POST: async ({ context: { db, interaction, logger } }) => {
+      POST: async ({ context: c }) => {
+        const { db, interaction, logger } = c;
         if (
           interaction.member === undefined ||
           interaction.guild_id !== env.GUILD_ID
@@ -109,11 +110,11 @@ export const Route = createFileRoute("/api/interaction")({
                 content: "Pong!",
               });
             case "syncplz":
-              return syncplzCommand(interaction.data);
+              return syncplzCommand(c, interaction.data);
             case "requestrsvp":
-              return requestRSVPCommand(interaction.data, db);
+              return requestRSVPCommand(c, interaction.data, db);
             case "leaderboard":
-              return leaderboardCommand(interaction.data);
+              return leaderboardCommand(c, interaction.data);
             default:
               logger.debug(`Unknown command: ${interaction.data.name}`);
               return reply({
@@ -158,7 +159,7 @@ export const Route = createFileRoute("/api/interaction")({
 
               const { eventId } = paramObject.data;
 
-              const [rsvpEvent, eventErr] = await trytm(getEvent(eventId));
+              const [rsvpEvent, eventErr] = await trytm(getEvent(c, eventId));
 
               if (eventErr) {
                 return reply({
@@ -168,7 +169,7 @@ export const Route = createFileRoute("/api/interaction")({
               }
 
               const [eventRsvps, rsvpsErr] = await trytm(
-                getEventRsvps(eventId),
+                getEventRsvps(c, eventId),
               );
 
               if (rsvpsErr) {
@@ -224,7 +225,7 @@ export const Route = createFileRoute("/api/interaction")({
               const { eventId, rsvpStatus } = paramObject.data;
 
               const [fetchedEvent, fetchedEventErr] = await trytm(
-                getEvent(eventId),
+                getEvent(c, eventId),
               );
 
               if (fetchedEventErr || !fetchedEvent) {
@@ -248,7 +249,7 @@ export const Route = createFileRoute("/api/interaction")({
               const username = nick ?? user.username;
 
               const [_userUpsert, userUpsertErr] = await trytm(
-                createUser({
+                createUser(c, {
                   id: user.id,
                   username,
                   roles,
@@ -314,7 +315,7 @@ export const Route = createFileRoute("/api/interaction")({
               }
 
               const [_, err] = await trytm(
-                editUserRsvpStatus(user.id, {
+                editUserRsvpStatus(c, user.id, {
                   eventId,
                   status: rsvpStatus,
                 }),
@@ -417,7 +418,7 @@ export const Route = createFileRoute("/api/interaction")({
               }
 
               const [_, checkoutErr] = await trytm(
-                userCheckout(member.user.id, eventId),
+                userCheckout(c, member.user.id, eventId),
               );
 
               if (checkoutErr) {
@@ -465,7 +466,7 @@ export const Route = createFileRoute("/api/interaction")({
               const { toPage } = paramObject.data;
 
               const [leaderboardPageEmbed, leaderboardPageError] = await trytm(
-                createOutreachEmbedPage(toPage),
+                createOutreachEmbedPage(c, toPage),
               );
               if (leaderboardPageError) {
                 logger.error(
@@ -539,7 +540,9 @@ export const Route = createFileRoute("/api/interaction")({
 
             const { data: value } = parsedValueSchema;
 
-            const [eventData, eventDataError] = await trytm(getEvent(eventId));
+            const [eventData, eventDataError] = await trytm(
+              getEvent(c, eventId),
+            );
 
             if (eventDataError || !eventData) {
               return reply({
@@ -563,7 +566,7 @@ export const Route = createFileRoute("/api/interaction")({
               startDateTime.plus({ minutes: value }).toJSDate() ?? undefined;
 
             const [_updatedRsvp, updateRsvpError] = await trytm(
-              editUserRsvpStatus(user.id, {
+              editUserRsvpStatus(c, user.id, {
                 eventId,
                 status: "LATE",
                 arrivingAt,
@@ -623,7 +626,7 @@ export const Route = createFileRoute("/api/interaction")({
             }
             const { eventId } = paramObject.data;
 
-            const [secret, secretErr] = await trytm(getEventSecret(eventId));
+            const [secret, secretErr] = await trytm(getEventSecret(c, eventId));
 
             if (secretErr || !secret) {
               return reply({
@@ -650,7 +653,7 @@ export const Route = createFileRoute("/api/interaction")({
             const { roles, user, nick } = member;
             const username = nick ?? user.username;
             const [_userUpsert, userUpsertErr] = await trytm(
-              createUser({
+              createUser(c, {
                 id: user.id,
                 username,
                 roles,
@@ -663,7 +666,7 @@ export const Route = createFileRoute("/api/interaction")({
               });
             }
             const [_checkinResponse, checkinErr] = await trytm(
-              selfCheckin(user.id, {
+              selfCheckin(c, user.id, {
                 eventId,
                 secret: secret.secret,
               }),
@@ -713,7 +716,7 @@ export const Route = createFileRoute("/api/interaction")({
 
             const query = meetingStringOption.value.toLowerCase();
 
-            const [events, err] = await trytm(getAutocompleteEvents(query));
+            const [events, err] = await trytm(getAutocompleteEvents(c, query));
 
             if (err) {
               return autocompleteReply({

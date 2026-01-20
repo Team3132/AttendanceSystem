@@ -24,6 +24,8 @@ import { getDiscordBotAPI } from "./discordService";
 export const reminderFn = createServerOnlyFn(async (job: Cron, db: DB) => {
   if (!job.name) return;
 
+  const start = performance.now();
+
   const rule = await db.query.eventParsingRuleTable.findFirst({
     where: eq(eventParsingRuleTable.id, job.name),
   });
@@ -31,6 +33,8 @@ export const reminderFn = createServerOnlyFn(async (job: Cron, db: DB) => {
   if (!rule) {
     throw new Error("Rule not found");
   }
+
+  logger.start(`Reminder for ${rule.name}`);
 
   const nextRun = job.nextRun();
 
@@ -89,9 +93,11 @@ export const reminderFn = createServerOnlyFn(async (job: Cron, db: DB) => {
     logger.error(`Events not posted: ${rejectedEventsMessages.join(", ")}`);
   }
 
-  logger.success(
-    `Posted ${matchingEventIds.length} events for rule ${job.name}`,
-  );
+  if (matchingEventIds.length) {
+    logger.success(
+      `Posted ${matchingEventIds.length} events for rule ${job.name}`,
+    );
+  }
 
   const successfullyPostedEvents = messagedEvents
     .filter((p) => p.status === "fulfilled")
@@ -110,6 +116,10 @@ export const reminderFn = createServerOnlyFn(async (job: Cron, db: DB) => {
       lastRun: new Date(),
     })
     .where(eq(eventParsingRuleTable.id, job.name));
+
+  const end = performance.now();
+
+  logger.success(`Reminder for ${rule.name} (${Math.round(end - start)}ms)`);
 });
 
 /**

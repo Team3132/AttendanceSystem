@@ -11,7 +11,9 @@ const selfCheckoutFn = createServerFn({
 })
   .middleware([sessionMiddleware])
   .inputValidator(z.string())
-  .handler(async ({ data, context }) => userCheckout(context.user.id, data));
+  .handler(async ({ data, context }) =>
+    userCheckout(context, context.user.id, data),
+  );
 
 type SelfCheckoutFn = FlattenServerFn<typeof selfCheckoutFn>;
 

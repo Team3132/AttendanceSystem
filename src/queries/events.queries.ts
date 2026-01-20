@@ -20,22 +20,24 @@ type GetEventsParams = Omit<z.infer<typeof GetEventParamsSchema>, "cursor">;
 const getEventFn = createServerFn({ method: "GET" })
   .middleware([sessionMiddleware])
   .inputValidator(z.string().describe("The event ID"))
-  .handler(async ({ data }) => getEvent(data));
+  .handler(async ({ data, context }) => getEvent(context, data));
 
 const getEventSecretFn = createServerFn({ method: "GET" })
   .middleware([adminMiddleware])
   .inputValidator(z.string().describe("The event ID"))
-  .handler(async ({ data }) => getEventSecret(data));
+  .handler(async ({ data, context }) => getEventSecret(context, data));
 
 const getSelfEventRsvpFn = createServerFn({ method: "GET" })
   .middleware([sessionMiddleware])
   .inputValidator(z.string().describe("The event ID"))
-  .handler(async ({ data, context }) => getEventRsvp(data, context.user.id));
+  .handler(async ({ data, context }) =>
+    getEventRsvp(context, data, context.user.id),
+  );
 
 const getEventRsvpsFn = createServerFn({ method: "GET" })
   .middleware([sessionMiddleware])
   .inputValidator(z.string().describe("The event ID"))
-  .handler(async ({ data }) => getEventRsvps(data));
+  .handler(async ({ data, context }) => getEventRsvps(context, data));
 
 const getUserRsvpFn = createServerFn({ method: "GET" })
   .middleware([sessionMiddleware])
@@ -45,7 +47,9 @@ const getUserRsvpFn = createServerFn({ method: "GET" })
       userId: z.string().describe("The user ID"),
     }),
   )
-  .handler(async ({ data }) => getEventRsvp(data.eventId, data.userId));
+  .handler(async ({ data, context }) =>
+    getEventRsvp(context, data.eventId, data.userId),
+  );
 
 export const eventQueryOptions = {
   eventList: (options: GetEventsParams) =>

@@ -1,3 +1,4 @@
+import type { ServerContext } from "@/server";
 import type { LeaderBoardUser } from "@/server/schema/LeaderboardSchema";
 import { getOutreachTime } from "@/server/services/outreach.service";
 import { randomStr } from "@/server/utils/randomStr";
@@ -18,10 +19,11 @@ import type z from "zod";
 import { type JSONReply, reply } from "../interactionReply";
 
 export async function leaderboardCommand(
+  c: ServerContext,
   _interaction: APIChatInputApplicationCommandInteractionData,
 ): Promise<JSONReply> {
   const [leaderboardPageEmbed, leaderboardPageError] = await trytm(
-    createOutreachEmbedPage(1),
+    createOutreachEmbedPage(c, 1),
   );
 
   if (leaderboardPageError) {
@@ -39,11 +41,14 @@ export async function leaderboardCommand(
   });
 }
 
-export const createOutreachEmbedPage = async (page: number) => {
+export const createOutreachEmbedPage = async (
+  c: ServerContext,
+  page: number,
+) => {
   const perPage = 10;
 
   const [leaderboardResponse, leaderboardError] = await trytm(
-    getOutreachTime({
+    getOutreachTime(c, {
       cursor: page - 1,
       limit: perPage,
     }),

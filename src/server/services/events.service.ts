@@ -1,4 +1,5 @@
 import { sessionMiddleware } from "@/middleware/authMiddleware";
+import type { ServerContext } from "@/server";
 import { logger } from "@/utils/logger";
 import { trytm } from "@/utils/trytm";
 import { createServerFn, createServerOnlyFn } from "@tanstack/react-start";
@@ -15,7 +16,6 @@ import type { ScaninSchema } from "../schema/ScaninSchema";
 import type { SelfCheckinSchema } from "../schema/SelfCheckinSchema";
 import type { UserCheckinSchema } from "../schema/UserCheckinSchema";
 import clampDateTime from "../utils/clampDateTime";
-import { getServerContext } from "../utils/context";
 import { buildConflictUpdateColumns } from "../utils/db/buildConflictUpdateColumns";
 import { buildSetWhereColumns } from "../utils/db/buildSetWhereColumns";
 
@@ -104,39 +104,41 @@ export const getEvents = createServerFn({ method: "GET" })
  * @param id The id of the event
  * @returns The event
  */
-export const getEvent = createServerOnlyFn(async (id: string) => {
-  const { db } = getServerContext();
+export const getEvent = createServerOnlyFn(
+  async (c: ServerContext, id: string) => {
+    const { db } = c;
 
-  const [dbEvent, dbError] = await trytm(
-    db.query.eventTable.findFirst({
-      where: eq(eventTable.id, id),
-      with: {
-        rule: {
-          columns: {
-            id: true,
-            name: true,
+    const [dbEvent, dbError] = await trytm(
+      db.query.eventTable.findFirst({
+        where: eq(eventTable.id, id),
+        with: {
+          rule: {
+            columns: {
+              id: true,
+              name: true,
+            },
           },
         },
-      },
-    }),
-  );
+      }),
+    );
 
-  if (dbError) {
-    setResponseStatus(500);
-    throw new Error("Failed to fetch event", {
-      cause: dbError,
-    });
-  }
+    if (dbError) {
+      setResponseStatus(500);
+      throw new Error("Failed to fetch event", {
+        cause: dbError,
+      });
+    }
 
-  if (!dbEvent) {
-    setResponseStatus(404);
-    throw new Error("Event not found");
-  }
+    if (!dbEvent) {
+      setResponseStatus(404);
+      throw new Error("Event not found");
+    }
 
-  const { secret, ...rest } = dbEvent;
+    const { secret, ...rest } = dbEvent;
 
-  return rest;
-});
+    return rest;
+  },
+);
 
 /**
  * Get the secret of an event
@@ -145,11 +147,12 @@ export const getEvent = createServerOnlyFn(async (id: string) => {
  */
 export const getEventSecret = createServerOnlyFn(
   async (
+    c: ServerContext,
     id: string,
   ): Promise<{
     secret: string;
   }> => {
-    const { db } = getServerContext();
+    const { db } = c;
 
     const [dbEvent, dbError] = await trytm(
       db.query.eventTable.findFirst({
@@ -182,8 +185,8 @@ export const getEventSecret = createServerOnlyFn(
  * @returns The RSVP of the user for the event
  */
 export const getEventRsvp = createServerOnlyFn(
-  async (eventId: string, userId: string) => {
-    const { db } = getServerContext();
+  async (c: ServerContext, eventId: string, userId: string) => {
+    const { db } = c;
 
     const [eventRsvp, eventError] = await trytm(
       db.query.rsvpTable.findFirst({
@@ -208,8 +211,11 @@ export const getEventRsvp = createServerOnlyFn(
  * @param eventId The id of the event
  */
 export const getEventRsvps = createServerOnlyFn(
-  async (eventId: string): Promise<Array<z.infer<typeof RSVPUserSchema>>> => {
-    const { db } = getServerContext();
+  async (
+    c: ServerContext,
+    eventId: string,
+  ): Promise<Array<z.infer<typeof RSVPUserSchema>>> => {
+    const { db } = c;
 
     const [eventRsvps, eventRsvpFetchError] = await trytm(
       db
@@ -242,8 +248,12 @@ export const getEventRsvps = createServerOnlyFn(
  * Edit user rsvp status
  */
 export const editUserRsvpStatus = createServerOnlyFn(
-  async (userId: string, params: z.infer<typeof EditRSVPSelfSchema>) => {
-    const { db } = getServerContext();
+  async (
+    c: ServerContext,
+    userId: string,
+    params: z.infer<typeof EditRSVPSelfSchema>,
+  ) => {
+    const { db } = c;
 
     const { eventId, status, arrivingAt } = params;
     const [existingRsvp, rsvpFetchError] = await trytm(
@@ -316,8 +326,8 @@ export const editUserRsvpStatus = createServerOnlyFn(
  * @returns The updated rsvp
  */
 const userCheckin = createServerOnlyFn(
-  async (params: z.infer<typeof UserCheckinSchema>) => {
-    const { db } = getServerContext();
+  async (c: ServerContext, params: z.infer<typeof UserCheckinSchema>) => {
+    const { db } = c;
 
     const { eventId, userId } = params;
     const [dbEvent, dbEventError] = await trytm(
@@ -418,8 +428,8 @@ const userCheckin = createServerOnlyFn(
  * @returns The updated rsvp
  */
 export const userScanin = createServerOnlyFn(
-  async (params: z.infer<typeof ScaninSchema>) => {
-    const { db } = getServerContext();
+  async (c: ServerContext, params: z.infer<typeof ScaninSchema>) => {
+    const { db } = c;
 
     const { eventId, scancode: code } = params;
 
@@ -442,7 +452,7 @@ export const userScanin = createServerOnlyFn(
       throw new Error("Scancode not found");
     }
 
-    const checkedIn = await userCheckin({
+    const checkedIn = await userCheckin(c, {
       eventId,
       userId: dbScancode.userId,
     });
@@ -460,8 +470,8 @@ export const userScanin = createServerOnlyFn(
  * @returns The updated rsvp
  */
 export const userCheckout = createServerOnlyFn(
-  async (userId: string, eventId: string) => {
-    const { db } = getServerContext();
+  async (c: ServerContext, userId: string, eventId: string) => {
+    const { db } = c;
 
     const [existingRsvp, existingRSVPError] = await trytm(
       db.query.rsvpTable.findFirst({
@@ -567,10 +577,14 @@ export const userCheckout = createServerOnlyFn(
 );
 
 export const selfCheckin = createServerOnlyFn(
-  async (userId: string, params: z.infer<typeof SelfCheckinSchema>) => {
+  async (
+    c: ServerContext,
+    userId: string,
+    params: z.infer<typeof SelfCheckinSchema>,
+  ) => {
     const { eventId, secret } = params;
 
-    const { db } = getServerContext();
+    const { db } = c;
 
     const [dbEvent, dbEventError] = await trytm(
       db.query.eventTable.findFirst({
@@ -595,7 +609,7 @@ export const selfCheckin = createServerOnlyFn(
       throw new Error("Invalid secret");
     }
 
-    const updatedRSVP = await userCheckin({
+    const updatedRSVP = await userCheckin(c, {
       eventId,
       userId,
     });
@@ -605,11 +619,11 @@ export const selfCheckin = createServerOnlyFn(
 );
 
 export const createUserRsvp = createServerOnlyFn(
-  async (params: z.infer<typeof CreateUserRsvpSchema>) => {
+  async (c: ServerContext, params: z.infer<typeof CreateUserRsvpSchema>) => {
     const { userId, eventId, checkinTime, checkoutTime, status, arrivingAt } =
       params;
 
-    const { db } = getServerContext();
+    const { db } = c;
 
     if (checkoutTime && !checkinTime) {
       setResponseStatus(400);
@@ -679,8 +693,8 @@ export const createUserRsvp = createServerOnlyFn(
 );
 
 export const getAutocompleteEvents = createServerOnlyFn(
-  async (like?: string) => {
-    const { db } = getServerContext();
+  async (c: ServerContext, like?: string) => {
+    const { db } = c;
 
     const [events, eventsError] = await trytm(
       db.query.eventTable.findMany({
@@ -718,32 +732,34 @@ export const getAutocompleteEvents = createServerOnlyFn(
   },
 );
 
-export const markEventPosted = createServerOnlyFn(async (eventId: string) => {
-  const { db } = getServerContext();
+export const markEventPosted = createServerOnlyFn(
+  async (c: ServerContext, eventId: string) => {
+    const { db } = c;
 
-  const [updatedEvents, updateEventsError] = await trytm(
-    db
-      .update(eventTable)
-      .set({
-        isPosted: true,
-      })
-      .where(eq(eventTable.id, eventId))
-      .returning(),
-  );
+    const [updatedEvents, updateEventsError] = await trytm(
+      db
+        .update(eventTable)
+        .set({
+          isPosted: true,
+        })
+        .where(eq(eventTable.id, eventId))
+        .returning(),
+    );
 
-  if (updateEventsError) {
-    setResponseStatus(500);
-    throw new Error("Failed to mark event as posted", {
-      cause: updateEventsError,
-    });
-  }
+    if (updateEventsError) {
+      setResponseStatus(500);
+      throw new Error("Failed to mark event as posted", {
+        cause: updateEventsError,
+      });
+    }
 
-  const [updatedEvent] = updatedEvents;
+    const [updatedEvent] = updatedEvents;
 
-  if (!updatedEvent) {
-    setResponseStatus(500);
-    throw new Error("Failed to mark event as posted");
-  }
+    if (!updatedEvent) {
+      setResponseStatus(500);
+      throw new Error("Failed to mark event as posted");
+    }
 
-  return updatedEvent;
-});
+    return updatedEvent;
+  },
+);

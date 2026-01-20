@@ -51,7 +51,7 @@ export const functionLoggerMiddleware = createMiddleware({
     logger
       .withTag("Function")
       .success(
-        `${method} ${serverFnMeta.filename} ${serverFnMeta.name} - (${Math.round(duration)}ms)`,
+        `${method ?? "UNKNOWN"} ${serverFnMeta.filename} ${serverFnMeta.name} - (${Math.round(duration)}ms)`,
       );
 
     return result;
@@ -60,7 +60,7 @@ export const functionLoggerMiddleware = createMiddleware({
     logger
       .withTag("Function")
       .error(
-        `${method} ${serverFnMeta.filename} ${serverFnMeta.name} - Error (${Math.round(duration)}ms):`,
+        `${method ?? "UNKNOWN"} ${serverFnMeta.filename} ${serverFnMeta.name} - Error (${Math.round(duration)}ms):`,
         error,
       );
     throw error;

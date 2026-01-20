@@ -13,7 +13,7 @@ const editSelfRsvpFn = createServerFn({
   .middleware([sessionMiddleware])
   .inputValidator(EditRSVPSelfSchema)
   .handler(async ({ data, context }) =>
-    editUserRsvpStatus(context.user.id, data),
+    editUserRsvpStatus(context, context.user.id, data),
   );
 
 type EditSelfRsvpFn = FlattenServerFn<typeof editSelfRsvpFn>;

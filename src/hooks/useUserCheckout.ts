@@ -12,7 +12,9 @@ const userCheckoutFn = createServerFn({
 })
   .middleware([adminMiddleware])
   .inputValidator(UserCheckoutSchema)
-  .handler(async ({ data }) => userCheckout(data.userId, data.eventId));
+  .handler(async ({ data, context }) =>
+    userCheckout(context, data.userId, data.eventId),
+  );
 
 type UserCheckoutFn = FlattenServerFn<typeof userCheckoutFn>;
 

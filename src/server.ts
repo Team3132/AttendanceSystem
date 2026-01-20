@@ -73,7 +73,7 @@ async function restoreCron() {
 
 if (!env.TSS_PRERENDERING) await restoreCron();
 
-type MyRequestContext = {
+export type ServerContext = {
   server: Server<undefined>;
   pubSub: typeof pubSub;
   db: DB;
@@ -84,7 +84,7 @@ type MyRequestContext = {
 declare module "@tanstack/react-start" {
   interface Register {
     server: {
-      requestContext: MyRequestContext;
+      requestContext: ServerContext;
     };
   }
 }
@@ -101,7 +101,7 @@ export default {
       pubSub,
       db,
       kv,
-    } satisfies MyRequestContext;
+    } satisfies ServerContext;
 
     return serverHandler(req, { context });
   },

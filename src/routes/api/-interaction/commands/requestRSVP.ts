@@ -1,3 +1,4 @@
+import type { ServerContext } from "@/server";
 import type { DB } from "@/server/drizzle/db";
 import { generateMessage } from "@/server/services/botService";
 import { markEventPosted } from "@/server/services/events.service";
@@ -12,6 +13,7 @@ import {
 import { type JSONReply, reply } from "../interactionReply";
 
 export async function requestRSVPCommand(
+  c: ServerContext,
   interaction: APIChatInputApplicationCommandInteractionData,
   db: DB,
 ): Promise<JSONReply> {
@@ -32,7 +34,7 @@ export async function requestRSVPCommand(
 
   const [response, err] = await trytm(generateMessage(db, meetingId));
 
-  const [_, eventPostedError] = await trytm(markEventPosted(meetingId));
+  const [_, eventPostedError] = await trytm(markEventPosted(c, meetingId));
 
   if (eventPostedError) {
     logger.error(`Error marking event as posted: ${eventPostedError.message}`);

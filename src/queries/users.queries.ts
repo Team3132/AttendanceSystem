@@ -20,7 +20,7 @@ type UserListParams = Omit<z.infer<typeof UserListParamsSchema>, "cursor">;
 const getUserScancodesFn = createServerFn({ method: "GET" })
   .middleware([adminMiddleware])
   .inputValidator(z.string().describe("The user ID"))
-  .handler(async ({ data }) => getUserScancodes(data));
+  .handler(async ({ data, context }) => getUserScancodes(context, data));
 
 const getSelfFn = createServerFn({ method: "GET" })
   .middleware([sessionMiddleware])
@@ -28,25 +28,27 @@ const getSelfFn = createServerFn({ method: "GET" })
 
 const getSelfScancodesFn = createServerFn({ method: "GET" })
   .middleware([sessionMiddleware])
-  .handler(async ({ context }) => getUserScancodes(context.user.id));
+  .handler(async ({ context }) => getUserScancodes(context, context.user.id));
 
 const getSelfPendingRsvpsFn = createServerFn({ method: "GET" })
   .middleware([sessionMiddleware])
-  .handler(async ({ context }) => getPendingUserRsvps(context.user.id));
+  .handler(async ({ context }) =>
+    getPendingUserRsvps(context, context.user.id),
+  );
 
 const getUserPendingRsvpsFn = createServerFn({ method: "GET" })
   .middleware([adminMiddleware])
   .inputValidator(z.string().describe("The user ID"))
-  .handler(async ({ data }) => getPendingUserRsvps(data));
+  .handler(async ({ data, context }) => getPendingUserRsvps(context, data));
 
 const getUserSessionsFn = createServerFn({ method: "GET" })
   .middleware([adminMiddleware])
   .inputValidator(z.string())
-  .handler(async ({ data }) => getUserSessions(data));
+  .handler(async ({ data, context }) => getUserSessions(context, data));
 
 const getSelfSessionsFn = createServerFn({ method: "GET" })
   .middleware([sessionMiddleware])
-  .handler(async ({ context }) => getUserSessions(context.user.id));
+  .handler(async ({ context }) => getUserSessions(context, context.user.id));
 
 export const usersQueryOptions = {
   userList: (params: UserListParams) =>

@@ -12,7 +12,9 @@ const deleteSelfScancodeFn = createServerFn({
 })
   .middleware([sessionMiddleware])
   .inputValidator(z.string())
-  .handler(async ({ data, context }) => removeScancode(context.user.id, data));
+  .handler(async ({ data, context }) =>
+    removeScancode(context, context.user.id, data),
+  );
 
 type deleteSelfScancodeFn = FlattenServerFn<typeof deleteSelfScancodeFn>;
 

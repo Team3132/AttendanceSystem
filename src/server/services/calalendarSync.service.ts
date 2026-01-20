@@ -1,3 +1,4 @@
+import type { ServerContext } from "@/server";
 import { logger } from "@/utils/logger";
 import { trytm } from "@/utils/trytm";
 import { createServerOnlyFn } from "@tanstack/react-start";
@@ -6,7 +7,6 @@ import { Common, type calendar_v3, google } from "googleapis";
 import { DateTime } from "luxon";
 import { eventParsingRuleTable, eventTable } from "../drizzle/schema";
 import env from "../env";
-import { getServerContext } from "../utils/context";
 import type { ColumnNames } from "../utils/db/ColumnNames";
 import { buildConflictUpdateColumns } from "../utils/db/buildConflictUpdateColumns";
 import { buildSetWhereColumns } from "../utils/db/buildSetWhereColumns";
@@ -18,6 +18,7 @@ type EventInsert = typeof eventTable.$inferInsert;
  * Generator function to get all calendar events
  */
 const incrementalSync = createServerOnlyFn(async function* (
+  c: ServerContext,
   syncToken?: string,
 ) {
   if (
@@ -49,14 +50,14 @@ const incrementalSync = createServerOnlyFn(async function* (
 
   const [responseData, error] = await trytm(calendar.events.list(params));
 
-  const { kv } = getServerContext();
+  const { kv } = c;
 
   if (error) {
     if (error instanceof Common.GaxiosError && error.status === 410) {
       // Sync token is invalid, need to do a full sync
-      logger.warn("Sync token is invalid, performing full sync");
+      syncLogger.warn("Sync token is invalid, performing full sync");
       await kv.delete("syncToken");
-      return incrementalSync();
+      return incrementalSync(c);
     }
 
     throw error;
@@ -70,7 +71,7 @@ const incrementalSync = createServerOnlyFn(async function* (
 
   if (initialData.nextSyncToken) {
     await kv.set("syncToken", initialData.nextSyncToken);
-    logger.debug("Updated sync token", initialData.nextSyncToken);
+    syncLogger.debug("Updated sync token", initialData.nextSyncToken);
   }
 
   /** The page token */
@@ -91,9 +92,9 @@ const incrementalSync = createServerOnlyFn(async function* (
     if (error) {
       if (error instanceof Common.GaxiosError && error.status === 410) {
         // Sync token is invalid, need to do a full sync
-        logger.warn("Sync token is invalid, performing full sync");
+        syncLogger.warn("Sync token is invalid, performing full sync");
         await kv.delete("syncToken");
-        return incrementalSync();
+        return incrementalSync(c);
       }
 
       throw error;
@@ -113,7 +114,7 @@ const incrementalSync = createServerOnlyFn(async function* (
     // If the sync token is present, update it
     if (data.nextSyncToken) {
       await kv.set("syncToken", data.nextSyncToken);
-      logger.debug("Updated sync token", data.nextSyncToken);
+      syncLogger.debug("Updated sync token", data.nextSyncToken);
     }
   }
 });
@@ -216,19 +217,22 @@ const isMatchingRule = (
   return regex.test(e.title);
 };
 
+const syncLogger = logger.withTag("CalendarSync");
+
 /**
  * Syncs events from Google Calendar to the database
  * @todo maybe replace with serveronlyfn
  */
-export const syncEvents = createServerOnlyFn(async () => {
-  const { kv, db } = getServerContext();
+export const syncEvents = createServerOnlyFn(async (c: ServerContext) => {
+  const { kv, db } = c;
+  const start = performance.now();
 
-  logger.info("Sync Events");
+  syncLogger.start("Sync Events");
   const syncToken = await kv.get<string>("syncToken");
-  logger.debug("Using sync token", syncToken);
+  syncLogger.debug("Using sync token", syncToken);
 
   /** All the calendar events */
-  const calendarEvents = incrementalSync(syncToken);
+  const calendarEvents = incrementalSync(c, syncToken);
 
   /** Filters to map events to */
   const filters = await db
@@ -262,7 +266,7 @@ export const syncEvents = createServerOnlyFn(async () => {
       );
 
       if (deleteError) {
-        logger.error("Failed to delete events", deleteError);
+        syncLogger.error("Failed to delete events", deleteError);
       }
 
       if (deletedData?.length) {
@@ -285,7 +289,7 @@ export const syncEvents = createServerOnlyFn(async () => {
       );
 
       if (insertError) {
-        logger.error("Failed to insert events", insertError);
+        syncLogger.error("Failed to insert events", insertError);
       }
 
       if (insertedData?.length) {
@@ -294,10 +298,12 @@ export const syncEvents = createServerOnlyFn(async () => {
     }
   }
 
-  if (totalDeleted) logger.info(`Deleted ${totalDeleted} events`);
-  if (totalUpserted) logger.info(`Upserted ${totalUpserted} events`);
+  if (totalDeleted) syncLogger.info(`Deleted ${totalDeleted} events`);
+  if (totalUpserted) syncLogger.info(`Upserted ${totalUpserted} events`);
 
-  logger.success("Sync Events");
+  syncLogger.success(
+    `Sync Events (${Math.round(performance.now() - start)}ms)`,
+  );
 
   return { updatedEvents: totalUpserted, deletedEventCount: totalDeleted };
 });

@@ -1,4 +1,5 @@
 import { adminMiddleware } from "@/middleware/authMiddleware";
+import type { ServerContext } from "@/server";
 import { trytm } from "@/utils/trytm";
 import { createServerFn, createServerOnlyFn } from "@tanstack/react-start";
 import { setResponseStatus } from "@tanstack/react-start/server";
@@ -7,7 +8,6 @@ import { z } from "zod";
 import { scancodeTable, sessionTable, userTable } from "../drizzle/schema";
 import type { UserCreateSchema } from "../schema/UserCreateSchema";
 import { UserListParamsSchema } from "../schema/UserListParamsSchema";
-import { getServerContext } from "../utils/context";
 import { buildConflictUpdateColumns } from "../utils/db/buildConflictUpdateColumns";
 
 /**
@@ -45,24 +45,26 @@ export const getUser = createServerFn({ method: "GET" })
  * @param userId The user ID to get scancodes for
  * @returns The scancodes for the user
  */
-export const getUserScancodes = createServerOnlyFn(async (userId: string) => {
-  const { db } = getServerContext();
+export const getUserScancodes = createServerOnlyFn(
+  async (c: ServerContext, userId: string) => {
+    const { db } = c;
 
-  const [scancodes, dberror] = await trytm(
-    db.query.scancodeTable.findMany({
-      where: (scancode) => eq(scancode.userId, userId),
-    }),
-  );
+    const [scancodes, dberror] = await trytm(
+      db.query.scancodeTable.findMany({
+        where: (scancode) => eq(scancode.userId, userId),
+      }),
+    );
 
-  if (dberror) {
-    setResponseStatus(500);
-    throw new Error("Error fetching scancodes", {
-      cause: dberror,
-    });
-  }
+    if (dberror) {
+      setResponseStatus(500);
+      throw new Error("Error fetching scancodes", {
+        cause: dberror,
+      });
+    }
 
-  return scancodes;
-});
+    return scancodes;
+  },
+);
 
 /**
  * Gets the pending RSVPs for a user
@@ -70,8 +72,8 @@ export const getUserScancodes = createServerOnlyFn(async (userId: string) => {
  * @returns The pending RSVPs for the user
  */
 export const getPendingUserRsvps = createServerOnlyFn(
-  async (userId: string) => {
-    const { db } = getServerContext();
+  async (c: ServerContext, userId: string) => {
+    const { db } = c;
 
     const [rsvps, dbError] = await trytm(
       db.query.rsvpTable.findMany({
@@ -114,7 +116,8 @@ export const getPendingUserRsvps = createServerOnlyFn(
 export const getUserList = createServerFn({ method: "GET" })
   .middleware([adminMiddleware])
   .inputValidator(UserListParamsSchema)
-  .handler(async ({ data, context: { db } }) => {
+  .handler(async ({ data, context: c }) => {
+    const { db } = c;
     const { limit, cursor: page } = data;
 
     const offset = page * limit;
@@ -173,8 +176,8 @@ export const getUserList = createServerFn({ method: "GET" })
   });
 
 export const createUserScancode = createServerOnlyFn(
-  async (userId: string, scancodeCode: string) => {
-    const { db } = getServerContext();
+  async (c: ServerContext, userId: string, scancodeCode: string) => {
+    const { db } = c;
 
     const [dbScancodes, dbScancodeError] = await trytm(
       db
@@ -230,8 +233,8 @@ export const createUserScancode = createServerOnlyFn(
 );
 
 export const removeScancode = createServerOnlyFn(
-  async (userId: string, code: string) => {
-    const { db } = getServerContext();
+  async (c: ServerContext, userId: string, code: string) => {
+    const { db } = c;
 
     const [dbScancodes, scancodesError] = await trytm(
       db
@@ -286,8 +289,8 @@ export const removeScancode = createServerOnlyFn(
 );
 
 export const createUser = createServerOnlyFn(
-  async (userdata: z.infer<typeof UserCreateSchema>) => {
-    const { db } = getServerContext();
+  async (c: ServerContext, userdata: z.infer<typeof UserCreateSchema>) => {
+    const { db } = c;
     const [dbUsers, dbUsersError] = await trytm(
       db
         .insert(userTable)
@@ -324,20 +327,22 @@ export const createUser = createServerOnlyFn(
   },
 );
 
-export const getUserSessions = createServerOnlyFn(async (userId: string) => {
-  const { db } = getServerContext();
-  const [sessions, sessionsError] = await trytm(
-    db.query.sessionTable.findMany({
-      where: eq(sessionTable.userId, userId),
-    }),
-  );
+export const getUserSessions = createServerOnlyFn(
+  async (c: ServerContext, userId: string) => {
+    const { db } = c;
+    const [sessions, sessionsError] = await trytm(
+      db.query.sessionTable.findMany({
+        where: eq(sessionTable.userId, userId),
+      }),
+    );
 
-  if (sessionsError) {
-    setResponseStatus(500);
-    throw new Error("Error fetching sessions", {
-      cause: sessionsError,
-    });
-  }
+    if (sessionsError) {
+      setResponseStatus(500);
+      throw new Error("Error fetching sessions", {
+        cause: sessionsError,
+      });
+    }
 
-  return sessions;
-});
+    return sessions;
+  },
+);

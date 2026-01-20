@@ -11,7 +11,9 @@ const addUserScanCodeFn = createServerFn({
 })
   .middleware([adminMiddleware])
   .inputValidator(AddUserScancodeParams)
-  .handler(async ({ data }) => createUserScancode(data.userId, data.scancode));
+  .handler(async ({ data, context }) =>
+    createUserScancode(context, data.userId, data.scancode),
+  );
 
 type AddUserScanCodeFn = FlattenServerFn<typeof addUserScanCodeFn>;
 

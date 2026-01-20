@@ -1,4 +1,8 @@
-import { getCurrentSession } from "@/server/auth/session";
+import type { ServerContext } from "@/server";
+import {
+  type SessionValidationResult,
+  getCurrentSession,
+} from "@/server/auth/session";
 import env from "@/server/env";
 import { redirect } from "@tanstack/react-router";
 import { createMiddleware } from "@tanstack/react-start";
@@ -15,11 +19,11 @@ export const authBaseMiddleware = createMiddleware({
   .client(async ({ next }) => {
     return next();
   })
-  .server(async ({ next }) => {
-    const result = await getCurrentSession();
+  .server(async ({ next, context: c }) => {
+    const result = await getCurrentSession(c as unknown as ServerContext);
 
     return next({
-      context: result,
+      context: result as ServerContext & SessionValidationResult,
     });
   });
 

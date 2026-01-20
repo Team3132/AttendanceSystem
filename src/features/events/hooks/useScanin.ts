@@ -12,7 +12,7 @@ const scaninFn = createServerFn({
 })
   .middleware([adminMiddleware])
   .inputValidator(ScaninSchema)
-  .handler(async ({ data }) => userScanin(data));
+  .handler(async ({ data, context }) => userScanin(context, data));
 
 type ScaninFn = FlattenServerFn<typeof scaninFn>;
 

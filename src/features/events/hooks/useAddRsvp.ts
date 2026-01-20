@@ -13,7 +13,7 @@ const createUserRsvpFn = createServerFn({
 })
   .middleware([adminMiddleware])
   .inputValidator(CreateUserRsvpSchema)
-  .handler(async ({ data }) => createUserRsvp(data));
+  .handler(async ({ data, context }) => createUserRsvp(context, data));
 
 type CreateUserRsvpFn = FlattenServerFn<typeof createUserRsvpFn>;
 

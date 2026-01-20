@@ -12,7 +12,9 @@ const removeUserScancodeFn = createServerFn({
 })
   .middleware([adminMiddleware])
   .inputValidator(AddUserScancodeParams)
-  .handler(async ({ data }) => removeScancode(data.userId, data.scancode));
+  .handler(async ({ data, context }) =>
+    removeScancode(context, data.userId, data.scancode),
+  );
 
 type RemoveUserScancodeFn = FlattenServerFn<typeof removeUserScancodeFn>;
 

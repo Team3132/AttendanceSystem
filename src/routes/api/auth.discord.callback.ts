@@ -1,3 +1,4 @@
+import type { ServerContext } from "@/server";
 import {
   createSession,
   generateSessionToken,
@@ -25,7 +26,8 @@ const querySchema = z.object({
 export const Route = createFileRoute("/api/auth/discord/callback")({
   server: {
     handlers: {
-      GET: async ({ context: { db }, request }) => {
+      GET: async ({ context: c, request }) => {
+        const { db } = c as unknown as ServerContext;
         const headers = new Headers({
           Location: env.VITE_URL,
         });
@@ -180,7 +182,7 @@ export const Route = createFileRoute("/api/auth/discord/callback")({
         const sessionToken = generateSessionToken();
 
         const [session, sessionError] = await trytm(
-          createSession(sessionToken, id),
+          createSession(c as unknown as ServerContext, sessionToken, id),
         );
 
         if (sessionError) {

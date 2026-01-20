@@ -1,9 +1,16 @@
+import type { ServerContext } from "@/server";
 import env from "@/server/env";
 import { logger as parentLogger } from "@/utils/logger";
 import type { APIInteraction } from "@discordjs/core";
 import { createMiddleware } from "@tanstack/react-start";
 import { getRequestHeader } from "@tanstack/react-start/server";
+import type { ConsolaInstance } from "consola";
 import { verifyKey } from "discord-interactions";
+
+interface ContextReturn {
+  logger: ConsolaInstance;
+  interaction: APIInteraction;
+}
 
 export const discordMiddleware = createMiddleware().server(
   async ({ next, request }) => {
@@ -40,7 +47,7 @@ export const discordMiddleware = createMiddleware().server(
       context: {
         interaction,
         logger,
-      },
+      } as ContextReturn & ServerContext,
     });
   },
 );

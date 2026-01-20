@@ -11,7 +11,7 @@ type Options = Omit<z.infer<typeof OutreachTimeSchema>, "cursor">;
 const getOutreachLeaderboardFn = createServerFn({ method: "GET" })
   .middleware([sessionMiddleware])
   .inputValidator(OutreachTimeSchema)
-  .handler(async ({ data }) => getOutreachTime(data));
+  .handler(async ({ data, context }) => getOutreachTime(context, data));
 
 export const leaderboardQueryOptions = (options: Options) =>
   infiniteQueryOptions({

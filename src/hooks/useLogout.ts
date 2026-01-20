@@ -12,14 +12,14 @@ const logoutFn = createServerFn({
   method: "POST",
 })
   .middleware([authBaseMiddleware])
-  .handler(async () => {
-    const { session } = await getCurrentSession();
+  .handler(async ({ context }) => {
+    const { session } = await getCurrentSession(context);
 
     if (session === null) {
       throw new Error("Not authenticated");
     }
 
-    await invalidateSession(session.id);
+    await invalidateSession(context, session.id);
 
     deleteSessionTokenCookie();
 

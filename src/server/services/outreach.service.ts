@@ -1,3 +1,4 @@
+import type { ServerContext } from "@/server";
 import { trytm } from "@/utils/trytm";
 import { setResponseStatus } from "@tanstack/react-start/server";
 import {
@@ -22,7 +23,6 @@ import {
 import env from "../env";
 import { OutreachTimeSchema } from "../schema/OutreachTimeSchema";
 import type { PagedLeaderboardSchema } from "../schema/PagedLeaderboardSchema";
-import { getServerContext } from "../utils/context";
 
 /**
  * Get the sum of the difference between the start and end dates of all
@@ -32,11 +32,12 @@ import { getServerContext } from "../utils/context";
  * and every event before the last 25th of the last april, all in sql
  */
 export async function getOutreachTime(
+  c: ServerContext,
   params: z.infer<typeof OutreachTimeSchema>,
 ): Promise<z.infer<typeof PagedLeaderboardSchema>> {
   const { limit, cursor: page } = OutreachTimeSchema.parse(params);
 
-  const { db } = getServerContext();
+  const { db } = c;
 
   const lastApril25 = getLastApril25();
 

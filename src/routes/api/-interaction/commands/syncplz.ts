@@ -1,3 +1,4 @@
+import type { ServerContext } from "@/server";
 import { syncEvents } from "@/server/services/calalendarSync.service";
 import { trytm } from "@/utils/trytm";
 import { EmbedBuilder } from "@discordjs/builders";
@@ -8,9 +9,10 @@ import {
 import { type JSONReply, reply } from "../interactionReply";
 
 export async function syncplzCommand(
+  c: ServerContext,
   _interaction: APIChatInputApplicationCommandInteractionData,
 ): Promise<JSONReply> {
-  const [response, err] = await trytm(syncEvents());
+  const [response, err] = await trytm(syncEvents(c));
 
   if (err) {
     return reply({
