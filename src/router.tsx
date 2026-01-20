@@ -5,8 +5,11 @@ import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query
 import { toaster } from "./components/Toaster";
 import { routeTree } from "./routeTree.gen";
 import type { StrictlyTypedQueryKeys } from "./server/queryKeys";
+import { logger } from "./utils/logger";
 
 export function getRouter() {
+  const queryLogger = logger.withTag("Query");
+
   const queryClient = new QueryClient({
     mutationCache: new MutationCache({
       onSuccess: (_data, _vars, _context, mutation) => {
@@ -18,6 +21,7 @@ export function getRouter() {
         });
       },
       onError: (error, _vars, _onMutateResult, _mutation, _context) => {
+        queryLogger.error("Error thrown in mutation", error);
         if (error instanceof Error) {
           toaster.error({
             title: "An error occured",
