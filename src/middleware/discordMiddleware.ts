@@ -1,7 +1,9 @@
+import { reply } from "@/routes/api/-interaction/interactionReply";
 import type { ServerContext } from "@/server";
 import env from "@/server/env";
 import { logger as parentLogger } from "@/utils/logger";
-import type { APIInteraction } from "@discordjs/core";
+import { EmbedBuilder, codeBlock } from "@discordjs/builders";
+import { type APIInteraction, MessageFlags } from "@discordjs/core";
 import { createMiddleware } from "@tanstack/react-start";
 import { getRequestHeader } from "@tanstack/react-start/server";
 import type { ConsolaInstance } from "consola";
@@ -42,12 +44,49 @@ export const discordMiddleware = createMiddleware().server(
     }
 
     const interaction: APIInteraction = JSON.parse(rawBody);
+    const start = performance.now();
+    try {
+      const result = await next({
+        context: {
+          interaction,
+          logger,
+        } as ContextReturn & ServerContext,
+      });
 
-    return next({
-      context: {
-        interaction,
-        logger,
-      } as ContextReturn & ServerContext,
-    });
+      return result;
+    } catch (error) {
+      logger.error(
+        `Type ${interaction.type} - ${interaction.user?.username} (${Math.round(performance.now() - start)}ms)`,
+        error,
+      );
+
+      if (error instanceof Error) {
+        return reply({
+          content: error.name,
+          flags: MessageFlags.Ephemeral,
+          embeds: [
+            new EmbedBuilder()
+              .setTitle(error.name)
+              .setDescription(codeBlock(error.message))
+              .setColor([255, 0, 0])
+              .toJSON(),
+          ],
+        });
+      }
+
+      return reply({
+        content: "Unknown Error Occured",
+        flags: MessageFlags.Ephemeral,
+        embeds: [
+          new EmbedBuilder()
+            .setTitle("Unknown Error")
+            .setDescription(
+              codeBlock("An unknown error occured, please message maintainer."),
+            )
+            .setColor([255, 0, 0])
+            .toJSON(),
+        ],
+      });
+    }
   },
 );
