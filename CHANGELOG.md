@@ -1,5 +1,11 @@
 # frontend
 
+## 6.3.1
+
+### Patch Changes
+
+- [`3effefe`](https://github.com/Team3132/attendance/commit/3effefe4c641d27be30d723f7e29e3832cbae8fe) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Discord error handling
+
 ## 6.3.0
 
 ### Minor Changes
