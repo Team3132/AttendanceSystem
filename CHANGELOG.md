@@ -1,5 +1,11 @@
 # frontend
 
+## 6.2.14
+
+### Patch Changes
+
+- [`771b709`](https://github.com/Team3132/attendance/commit/771b709e3f1b22a2e994cca8272cfd6d6146c014) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Test Deploy
+
 ## 6.2.13
 
 ### Patch Changes
