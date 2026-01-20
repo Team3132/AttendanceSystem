@@ -1,5 +1,11 @@
 # frontend
 
+## 6.2.16
+
+### Patch Changes
+
+- [`a5ded9b`](https://github.com/Team3132/attendance/commit/a5ded9b2bd9919c783b56996cab45acdbe1d6bb5) Thanks [@sebasptsch](https://github.com/sebasptsch)! - log error in mutation
+
 ## 6.2.15
 
 ### Patch Changes
