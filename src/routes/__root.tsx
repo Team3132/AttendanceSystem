@@ -18,7 +18,7 @@ import {
 import { Scripts } from "@tanstack/react-router";
 import { Outlet } from "@tanstack/react-router";
 import type * as React from "react";
-import rootCss from "./root.css?url";
+import rootCss from "./root.css?inline";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -53,7 +53,7 @@ export const Route = createRootRouteWithContext<{
         href: "/favicon.ico",
       },
       { rel: "stylesheet", href: fontsourceVariableRobotoCss },
-      { rel: "stylesheet", href: rootCss },
+      // { rel: "stylesheet", href: rootCss },
     ],
     // styles: [
     //   {
@@ -125,7 +125,7 @@ function ThemeProviderWrapper({
 
   return (
     <CacheProvider value={emotionCache}>
-      <GlobalStyles styles="@layer mui;" />
+      <GlobalStyles styles={rootCss} />
       <ThemeProvider theme={theme}>
         <CssBaseline enableColorScheme />
         {children}
