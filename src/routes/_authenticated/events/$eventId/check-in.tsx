@@ -18,6 +18,7 @@ export const Route = createFileRoute(
     ],
   }),
   component: Component,
+  wrapInSuspense: true,
 });
 
 function Component() {

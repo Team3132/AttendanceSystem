@@ -34,6 +34,7 @@ export const Route = createFileRoute("/_authenticated/admin_/event-parsing/")({
     queryClient.prefetchQuery(adminQueries.eventParsingRules);
   },
   component: RouteComponent,
+  wrapInSuspense: true,
 });
 
 function RouteComponent() {

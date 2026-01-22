@@ -15,6 +15,7 @@ export const Route = createFileRoute("/_authenticated/events/$eventId/")({
     ],
   }),
   component: Component,
+  wrapInSuspense: true,
 });
 
 function Component() {

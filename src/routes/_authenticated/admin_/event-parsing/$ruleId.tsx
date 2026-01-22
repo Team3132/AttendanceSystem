@@ -28,6 +28,7 @@ export const Route = createFileRoute(
     queryClient.prefetchQuery(adminQueries.eventParsingRule(ruleId));
   },
   component: RouteComponent,
+  wrapInSuspense: true,
 });
 
 const OptionSchema = z.object({

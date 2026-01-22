@@ -19,6 +19,7 @@ export const Route = createFileRoute("/_authenticated/admin_/users/$userId/")({
       },
     ],
   }),
+  wrapInSuspense: true,
 });
 
 function Component() {

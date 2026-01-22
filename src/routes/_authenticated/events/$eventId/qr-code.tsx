@@ -41,6 +41,7 @@ export const Route = createFileRoute("/_authenticated/events/$eventId/qr-code")(
       ],
     }),
     component: Component,
+    wrapInSuspense: true,
   },
 );
 

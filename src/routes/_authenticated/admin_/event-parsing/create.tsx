@@ -58,6 +58,7 @@ export const Route = createFileRoute(
     ],
   }),
   component: RouteComponent,
+  wrapInSuspense: true,
 });
 
 const OptionSchema = z.object({

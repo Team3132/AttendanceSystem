@@ -12,6 +12,7 @@ export const Route = createFileRoute("/_authenticated/profile/sessions")({
     queryClient.prefetchQuery(usersQueryOptions.userSelfSessions());
   },
   component: RouteComponent,
+  wrapInSuspense: true,
 });
 
 function RouteComponent() {

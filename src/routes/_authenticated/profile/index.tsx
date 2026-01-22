@@ -18,6 +18,7 @@ export const Route = createFileRoute("/_authenticated/profile/")({
     ],
   }),
   component: Component,
+  wrapInSuspense: true,
 });
 
 function Component() {
