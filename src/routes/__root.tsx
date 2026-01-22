@@ -1,10 +1,10 @@
 import Devtools from "@/components/Devtools";
 import GenericServerErrorBoundary from "@/components/GenericServerErrorBoundary";
 import { Toaster } from "@/components/Toaster";
-import createCache from "@emotion/cache";
+import createEmotionCache from "@/utils/createEmotionCache";
 import { CacheProvider } from "@emotion/react";
 import fontsourceVariableRobotoCss from "@fontsource-variable/roboto?url";
-import { CssBaseline } from "@mui/material";
+import { CssBaseline, GlobalStyles } from "@mui/material";
 import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -18,7 +18,7 @@ import {
 import { Scripts } from "@tanstack/react-router";
 import { Outlet } from "@tanstack/react-router";
 import type * as React from "react";
-import rootCss from "./root.css?inline";
+import rootCss from "./root.css?url";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -53,12 +53,13 @@ export const Route = createRootRouteWithContext<{
         href: "/favicon.ico",
       },
       { rel: "stylesheet", href: fontsourceVariableRobotoCss },
+      { rel: "stylesheet", href: rootCss },
     ],
-    styles: [
-      {
-        children: rootCss,
-      },
-    ],
+    // styles: [
+    //   {
+    //     children: rootCss,
+    //   },
+    // ],
 
     // scripts: import.meta.env.DEV
     //   ? [
@@ -117,10 +118,14 @@ const theme = createTheme({
 function ThemeProviderWrapper({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const emotionCache = createCache({ key: "css" });
+  const emotionCache = createEmotionCache({
+    enableCssLayer: true,
+    key: "mui",
+  });
 
   return (
     <CacheProvider value={emotionCache}>
+      <GlobalStyles styles="@layer mui;" />
       <ThemeProvider theme={theme}>
         <CssBaseline enableColorScheme />
         {children}
