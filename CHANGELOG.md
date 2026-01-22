@@ -1,5 +1,11 @@
 # frontend
 
+## 6.3.2
+
+### Patch Changes
+
+- [`aa311a0`](https://github.com/Team3132/attendance/commit/aa311a078357487234977647a8ff2086562f8c2a) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add some more suspense
+
 ## 6.3.1
 
 ### Patch Changes
