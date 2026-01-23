@@ -1,3 +1,4 @@
+import { toaster } from "@/components/Toaster";
 import { adminQueryKeys } from "@/server/queryKeys";
 import { triggerRule } from "@/server/services/adminService";
 import { useMutation } from "@tanstack/react-query";
@@ -10,6 +11,11 @@ export default function useTriggerRule() {
     mutationFn: triggerRuleFn,
     meta: {
       invalidates: [adminQueryKeys.parsingRuleList()],
+    },
+    onSuccess: () => {
+      toaster.success({
+        description: "Successfully triggered notification rule",
+      });
     },
   });
 }

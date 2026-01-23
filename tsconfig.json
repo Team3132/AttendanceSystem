@@ -4,6 +4,7 @@
 		"strict": true,
 		"esModuleInterop": true,
 		"jsx": "react-jsx",
+		"jsxImportSource": "@emotion/react",
 		"module": "ESNext",
 		"moduleResolution": "Bundler",
 		"lib": ["DOM", "DOM.Iterable", "ES2022"],

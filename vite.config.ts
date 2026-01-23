@@ -31,6 +31,7 @@ export default defineConfig({
       },
     }),
     viteReact({
+      jsxImportSource: "@emotion/react",
       babel: {
         plugins: [
           ["babel-plugin-react-compiler", ReactCompilerConfig],
