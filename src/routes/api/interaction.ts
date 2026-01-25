@@ -719,15 +719,22 @@ export const Route = createFileRoute("/api/interaction")({
             const [events, err] = await trytm(getAutocompleteEvents(c, query));
 
             if (err) {
+              logger.error("Failed to get autocomplete events", err);
               return autocompleteReply({
                 choices: [],
               });
             }
 
-            const choices = events.map((event) => ({
-              name: event.title,
-              value: event.id,
-            }));
+            const choices = events.map((event) => {
+              const localStart = DateTime.fromJSDate(event.startDate, {
+                zone: env.TZ,
+              }).toLocaleString(DateTime.DATETIME_SHORT);
+
+              return {
+                name: `${event.title} - ${localStart}`,
+                value: event.id,
+              };
+            });
 
             return autocompleteReply({
               choices,
