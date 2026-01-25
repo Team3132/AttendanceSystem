@@ -1,5 +1,11 @@
 # frontend
 
+## 6.3.4
+
+### Patch Changes
+
+- [`b5982ee`](https://github.com/Team3132/attendance/commit/b5982eeb1307622a507f994dc48f184f6d9138ce) Thanks [@sebasptsch](https://github.com/sebasptsch)! - locale
+
 ## 6.3.3
 
 ### Patch Changes
