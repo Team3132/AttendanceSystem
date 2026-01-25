@@ -18,6 +18,8 @@
 			"@/*": ["./src/*"]
 		},
 		"types": ["@types/bun"],
-		"noEmit": true
+		"noEmit": true,
+		"incremental": true,
+		"tsBuildInfoFile": ".tsbuildinfo"
 	}
 }
