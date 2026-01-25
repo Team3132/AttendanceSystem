@@ -728,7 +728,9 @@ export const Route = createFileRoute("/api/interaction")({
             const choices = events.map((event) => {
               const localStart = DateTime.fromJSDate(event.startDate, {
                 zone: env.TZ,
-              }).toLocaleString(DateTime.DATETIME_SHORT);
+              }).toLocaleString(DateTime.DATETIME_SHORT, {
+                locale: interaction.locale,
+              });
 
               return {
                 name: `${event.title} - ${localStart}`,
