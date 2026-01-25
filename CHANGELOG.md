@@ -1,5 +1,13 @@
 # frontend
 
+## 6.3.3
+
+### Patch Changes
+
+- [`ff1469d`](https://github.com/Team3132/attendance/commit/ff1469df1040d08b0d0d57ca2673bd981aee14f8) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add datetime to autocomplete
+
+- [`67b53a8`](https://github.com/Team3132/attendance/commit/67b53a88401505356037c8f7b16b6691475eba5d) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Toast for successful rule trigger
+
 ## 6.3.2
 
 ### Patch Changes
