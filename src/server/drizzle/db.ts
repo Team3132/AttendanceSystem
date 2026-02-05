@@ -90,13 +90,12 @@ async function initPostgresDatabase(databaseUrl: string) {
 }
 
 async function initBunDatabase(databaseUrl: string) {
-  const { SQL } = await import("bun");
   const { drizzle } = await import("drizzle-orm/bun-sql");
   const { migrate } = await import("drizzle-orm/bun-sql/migrator");
   const schema = await import("./schema"); // Import the database schema
   const migrationsFolder = path.resolve("./drizzle"); // Path to migration files, SQL and metadata
 
-  const migrationClient = new SQL({
+  const migrationClient = new Bun.SQL({
     url: databaseUrl,
     max: 1,
   });
@@ -113,7 +112,7 @@ async function initBunDatabase(databaseUrl: string) {
 
   dbLogger.success("Database migrations completed successfully");
 
-  const client = new SQL({
+  const client = new Bun.SQL({
     url: databaseUrl,
   });
 
