@@ -1,5 +1,11 @@
 # frontend
 
+## 6.3.5
+
+### Patch Changes
+
+- [`53b25cf`](https://github.com/Team3132/attendance/commit/53b25cfe871ee9b149ba06e0d282fe9fd5de36d7) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Add websocket endpoint
+
 ## 6.3.4
 
 ### Patch Changes
