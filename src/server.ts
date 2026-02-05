@@ -4,6 +4,7 @@ import type { RequestOptions } from "@tanstack/react-start/server";
 import handler from "@tanstack/react-start/server-entry";
 import type { Server } from "bun";
 import { Cron, scheduledJobs } from "croner";
+import type { BunWebSocketData } from "hono/bun";
 import { DateTime } from "luxon";
 import type z from "zod";
 import { type DB, initialiseDatabase } from "./server/drizzle/db";
@@ -74,7 +75,7 @@ async function restoreCron() {
 if (!env.TSS_PRERENDERING) await restoreCron();
 
 export type ServerContext = {
-  server: Server<undefined>;
+  server?: Server<BunWebSocketData>;
   pubSub: typeof pubSub;
   db: DB;
   kv: ReturnType<typeof getKV>;

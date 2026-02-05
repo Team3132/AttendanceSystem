@@ -13,6 +13,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as ErrorRouteImport } from './routes/error'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
+import { Route as ApiWsRouteImport } from './routes/api/ws'
 import { Route as ApiInteractionRouteImport } from './routes/api/interaction'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedLeaderboardRouteImport } from './routes/_authenticated/leaderboard'
@@ -55,6 +56,11 @@ const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthenticatedRoute,
+} as any)
+const ApiWsRoute = ApiWsRouteImport.update({
+  id: '/api/ws',
+  path: '/api/ws',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiInteractionRoute = ApiInteractionRouteImport.update({
   id: '/api/interaction',
@@ -197,6 +203,7 @@ export interface FileRoutesByFullPath {
   '/leaderboard': typeof AuthenticatedLeaderboardRoute
   '/profile': typeof AuthenticatedProfileRouteWithChildren
   '/api/interaction': typeof ApiInteractionRoute
+  '/api/ws': typeof ApiWsRoute
   '/events/$eventId': typeof AuthenticatedEventsEventIdRouteWithChildren
   '/profile/pending': typeof AuthenticatedProfilePendingRoute
   '/profile/sessions': typeof AuthenticatedProfileSessionsRoute
@@ -222,6 +229,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/leaderboard': typeof AuthenticatedLeaderboardRoute
   '/api/interaction': typeof ApiInteractionRoute
+  '/api/ws': typeof ApiWsRoute
   '/': typeof AuthenticatedIndexRoute
   '/profile/pending': typeof AuthenticatedProfilePendingRoute
   '/profile/sessions': typeof AuthenticatedProfileSessionsRoute
@@ -250,6 +258,7 @@ export interface FileRoutesById {
   '/_authenticated/leaderboard': typeof AuthenticatedLeaderboardRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRouteWithChildren
   '/api/interaction': typeof ApiInteractionRoute
+  '/api/ws': typeof ApiWsRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/events/$eventId': typeof AuthenticatedEventsEventIdRouteWithChildren
   '/_authenticated/profile/pending': typeof AuthenticatedProfilePendingRoute
@@ -281,6 +290,7 @@ export interface FileRouteTypes {
     | '/leaderboard'
     | '/profile'
     | '/api/interaction'
+    | '/api/ws'
     | '/events/$eventId'
     | '/profile/pending'
     | '/profile/sessions'
@@ -306,6 +316,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/leaderboard'
     | '/api/interaction'
+    | '/api/ws'
     | '/'
     | '/profile/pending'
     | '/profile/sessions'
@@ -333,6 +344,7 @@ export interface FileRouteTypes {
     | '/_authenticated/leaderboard'
     | '/_authenticated/profile'
     | '/api/interaction'
+    | '/api/ws'
     | '/_authenticated/'
     | '/_authenticated/events/$eventId'
     | '/_authenticated/profile/pending'
@@ -360,6 +372,7 @@ export interface RootRouteChildren {
   ErrorRoute: typeof ErrorRoute
   LoginRoute: typeof LoginRoute
   ApiInteractionRoute: typeof ApiInteractionRoute
+  ApiWsRoute: typeof ApiWsRoute
   ApiAuthDiscordRoute: typeof ApiAuthDiscordRouteWithChildren
   ApiSchedulerCalendarTriggerRoute: typeof ApiSchedulerCalendarTriggerRoute
 }
@@ -393,6 +406,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
+    }
+    '/api/ws': {
+      id: '/api/ws'
+      path: '/api/ws'
+      fullPath: '/api/ws'
+      preLoaderRoute: typeof ApiWsRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/interaction': {
       id: '/api/interaction'
@@ -676,6 +696,7 @@ const rootRouteChildren: RootRouteChildren = {
   ErrorRoute: ErrorRoute,
   LoginRoute: LoginRoute,
   ApiInteractionRoute: ApiInteractionRoute,
+  ApiWsRoute: ApiWsRoute,
   ApiAuthDiscordRoute: ApiAuthDiscordRouteWithChildren,
   ApiSchedulerCalendarTriggerRoute: ApiSchedulerCalendarTriggerRoute,
 }

@@ -13,26 +13,20 @@ import { createMiddleware } from "@tanstack/react-start";
  * If the user is authenticated, the session is validated and updated if required
  * If there's any errors then session and user are set to null
  */
-export const authBaseMiddleware = createMiddleware({
-  type: "function",
-})
-  .client(async ({ next }) => {
-    return next();
-  })
-  .server(async ({ next, context: c }) => {
+export const authBaseMiddleware = createMiddleware().server(
+  async ({ next, context: c }) => {
     const result = await getCurrentSession(c as unknown as ServerContext);
 
     return next({
       context: result as ServerContext & SessionValidationResult,
     });
-  });
+  },
+);
 
 /**
  * Middleware to check if the user is authenticated and has a valid session
  */
-export const sessionMiddleware = createMiddleware({
-  type: "function",
-})
+export const sessionMiddleware = createMiddleware()
   .middleware([authBaseMiddleware])
   .server(async ({ context, next }) => {
     const { session, user } = context;
@@ -58,9 +52,7 @@ export const sessionMiddleware = createMiddleware({
 /**
  * Middleware to check the role of the user
  */
-export const adminMiddleware = createMiddleware({
-  type: "function",
-})
+export const adminMiddleware = createMiddleware()
   .middleware([sessionMiddleware])
   .server(async ({ context, next }) => {
     const { user } = context;

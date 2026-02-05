@@ -65,6 +65,7 @@
 
 import path from "node:path";
 import type { Register } from "@tanstack/react-start";
+import { websocket } from "hono/bun";
 
 // Configuration
 const SERVER_PORT = Number(process.env.PORT ?? 1420);
@@ -536,6 +537,7 @@ async function initializeServer() {
   const server = Bun.serve({
     port: SERVER_PORT,
     idleTimeout: 0, // Disable idle timeout
+    websocket,
     routes: {
       // Serve static assets (preloaded or on-demand)
       ...routes,

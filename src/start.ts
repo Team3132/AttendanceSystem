@@ -7,7 +7,7 @@ import {
 
 export const startInstance = createStart(() => {
   return {
-    functionMiddleware: [functionLoggerMiddleware, authBaseMiddleware],
-    requestMiddleware: [requestLoggerMiddleware],
+    functionMiddleware: [functionLoggerMiddleware],
+    requestMiddleware: [requestLoggerMiddleware, authBaseMiddleware],
   };
 });
