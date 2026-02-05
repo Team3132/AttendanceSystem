@@ -66,7 +66,6 @@
 import path from "node:path";
 import type { BunWebsocketEvents } from "@/server";
 import type { Register } from "@tanstack/react-start";
-import type { Server } from "bun";
 
 // Configuration
 const SERVER_PORT = Number(process.env.PORT ?? 1420);
@@ -535,10 +534,11 @@ async function initializeServer() {
   // Build static routes with intelligent preloading
   const { routes } = await initializeStaticRoutes(CLIENT_DIRECTORY);
   // Create Bun server
-  const server = Bun.serve<BunWebsocketEvents>({
+  const server = Bun.serve({
     port: SERVER_PORT,
     idleTimeout: 0, // Disable idle timeout
     websocket: {
+      data: {} as BunWebsocketEvents,
       open: (ws) => {
         ws.data.open?.(ws);
       },
@@ -554,7 +554,7 @@ async function initializeServer() {
       ...routes,
 
       // Fallback to TanStack Start handler for all other routes
-      "/*": (req: Request, routeServer: Server<BunWebsocketEvents>) => {
+      "/*": (req: Request, routeServer) => {
         try {
           return handler.fetch(req, { context: { server: routeServer } });
         } catch (error) {

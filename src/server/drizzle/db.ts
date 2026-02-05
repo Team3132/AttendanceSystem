@@ -1,6 +1,7 @@
 import path from "node:path";
 import { logger } from "@/utils/logger";
 import { createServerOnlyFn } from "@tanstack/react-start";
+import type { BunSQLDatabase } from "drizzle-orm/bun-sql";
 import type { PgliteDatabase } from "drizzle-orm/pglite";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import env from "../env";
@@ -25,13 +26,23 @@ export const initialiseDatabase = createServerOnlyFn(async (): Promise<DB> => {
 
   const isPGLite = protocol === "file:" || protocol === "memory:";
 
-  const humanProtocol = protocol.slice(0, -1);
+  if (isPGLite) {
+    const humanProtocol = protocol.slice(0, -1);
 
-  dbLogger.info(`Using ${humanProtocol} database`);
+    dbLogger.info(`Using PGLITE ${humanProtocol} database`);
 
-  return isPGLite
-    ? await initPGLiteDatabase(connectionString)
-    : await initPostgresDatabase(connectionString);
+    return initPGLiteDatabase(connectionString);
+  }
+
+  if (typeof Bun !== "undefined") {
+    dbLogger.info("Using Bun Postgres database");
+
+    return initBunDatabase(connectionString);
+  }
+
+  dbLogger.info("Using PostgresJS database");
+
+  return initPostgresDatabase(connectionString);
 });
 
 /**
@@ -78,6 +89,43 @@ async function initPostgresDatabase(databaseUrl: string) {
   return db;
 }
 
+async function initBunDatabase(databaseUrl: string) {
+  const { SQL } = await import("bun");
+  const { drizzle } = await import("drizzle-orm/bun-sql");
+  const { migrate } = await import("drizzle-orm/bun-sql/migrator");
+  const schema = await import("./schema"); // Import the database schema
+  const migrationsFolder = path.resolve("./drizzle"); // Path to migration files, SQL and metadata
+
+  const migrationClient = new SQL({
+    url: databaseUrl,
+    max: 1,
+  });
+
+  /** The Postgres Migration Client backed Drizzle client  */
+  const migrationDrizzle = drizzle({
+    schema,
+    client: migrationClient,
+  });
+
+  await migrate(migrationDrizzle, { migrationsFolder }); // Finally run migrations
+
+  await migrationClient.end(); // Close migration client
+
+  dbLogger.success("Database migrations completed successfully");
+
+  const client = new SQL({
+    url: databaseUrl,
+  });
+
+  /** The Postgres backed Drizzle client */
+  const db = drizzle({
+    schema,
+    client,
+  });
+
+  return db;
+}
+
 /**
  * Initialise the PGLite Drizzle ORM
  *
@@ -111,4 +159,5 @@ async function initPGLiteDatabase(databaseUrl: string) {
 
 export type DB =
   | PostgresJsDatabase<Awaited<typeof import("./schema")>>
-  | PgliteDatabase<Awaited<typeof import("./schema")>>;
+  | PgliteDatabase<Awaited<typeof import("./schema")>>
+  | BunSQLDatabase<Awaited<typeof import("./schema")>>;
