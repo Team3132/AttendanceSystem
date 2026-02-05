@@ -2,40 +2,39 @@ import type { ServerContext } from "@/server";
 import type { SessionValidationResult } from "@/server/auth/session";
 import { logger } from "@/utils/logger";
 import { createFileRoute } from "@tanstack/react-router";
-import { type Context, Hono } from "hono";
-import { upgradeWebSocket } from "hono/bun";
-
-type HonoEnv = {
-  Bindings: ServerContext & SessionValidationResult;
-};
+import { unpack } from "msgpackr";
 
 const wsLogger = logger.withTag("Websocket");
 
 export const Route = createFileRoute("/api/ws")({
   server: {
     handlers: {
-      ANY: ({ context, request }) => honoServer.fetch(request, context),
+      GET: ({ context, request }) => {
+        const success = (
+          context as unknown as ServerContext & SessionValidationResult
+        ).server?.upgrade(request, {
+          data: {
+            message: (ws, message) => {
+              wsLogger.log("Message received from websocket", message);
+              const unpacked =
+                typeof message !== "string" ? unpack(message) : undefined;
+              if (unpacked) {
+                wsLogger.log("Unpacked", unpacked);
+              }
+              ws.send("Hello from 3132!");
+            },
+            open: (_ws) => {
+              wsLogger.log("Websocket connection opened!");
+            },
+            close: (_ws, _code, _reason) => {
+              wsLogger.log("Websocket connection closed!");
+            },
+          },
+        });
+        if (!success) throw new Error("Failed to open websocket");
+
+        return undefined;
+      },
     },
   },
 });
-
-const honoServer = new Hono<HonoEnv>().get(
-  "/api/ws",
-  upgradeWebSocket((c: Context<HonoEnv>) => {
-    return {
-      onOpen(_event, _ws) {
-        wsLogger.info("New websocket connection opened.");
-      },
-      async onMessage(event, ws) {
-        wsLogger.log(
-          `Websocket Message received from ${c.env.user?.username ?? "Unknown User"}`,
-          event.data,
-        );
-        ws.send("Hello from Team 3132!");
-      },
-      onClose: () => {
-        wsLogger.info("Websocket connection closed.");
-      },
-    };
-  }),
-);
