@@ -1,5 +1,11 @@
 # frontend
 
+## 6.4.0
+
+### Minor Changes
+
+- [`97f206f`](https://github.com/Team3132/attendance/commit/97f206f2558d810ab93c35e8ea673c8de10e5ac0) Thanks [@sebasptsch](https://github.com/sebasptsch)! - Use bun postgres database
+
 ## 6.3.5
 
 ### Patch Changes
