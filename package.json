@@ -39,7 +39,7 @@
     "@tanstack/react-virtual": "3.13.18",
     "@tanstack/table-core": "8.21.3",
     "@tanstack/zod-adapter": "1.158.1",
-    "@types/node": "25.2.0",
+    "@types/node": "25.2.3",
     "@zag-js/react": "1.33.1",
     "@zag-js/toast": "1.33.1",
     "arctic": "3.7.0",
